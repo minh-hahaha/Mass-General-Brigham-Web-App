@@ -1,17 +1,18 @@
 import React from 'react';
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
-import ExamplePage from './routes/ExamplePage.tsx';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import ChestnutHillDirectory from './routes/ChestnutHillDirectory.tsx';
 
 function App() {
-    const router = createBrowserRouter([
-        {
-            path: '/',
-            errorElement: <div />,
-            element: <ExamplePage />,
-        },
-    ]);
+    return(
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<ChestnutHillDirectory />} />
+            </Routes>
+        </BrowserRouter>
+    )
 
-    return <RouterProvider router={router} />;
 }
+
+
 
 export default App;
