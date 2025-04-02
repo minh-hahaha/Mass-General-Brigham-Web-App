@@ -7,14 +7,18 @@ import ChestnutHillDirectory from './routes/ChestnutHillDirectory.tsx';
 function App() {
     return(
         <BrowserRouter>
-            <NavBar />
+            <div className="flex flex-row h-screen">
+                <div className="basis-1/4 bg-blue-500 bg-opacity-50 min-h-full ">
+                    <NavBar />
+                </div>
+                <div className="basis-3/4">
+                    <Routes>
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/ChestnutHillDirectory" element={<ChestnutHillDirectory />} />
+                    </Routes>
+                </div>
+            </div>
 
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-            </Routes>
-            <Routes>
-                <Route path="/ChestnutHillDirectory" element={<ChestnutHillDirectory />} />
-            </Routes>
         </BrowserRouter>
     )
 
