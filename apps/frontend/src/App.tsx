@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import NavBar from './NavBar.tsx';
+import LoginPage from './routes/LoginPage.tsx';
 import HomePage from './routes/HomePage.tsx';
 import ChestnutHillDirectory from './routes/ChestnutHillDirectory.tsx';
 
@@ -24,6 +25,7 @@ function App() {
 
         </BrowserRouter>
     )
+
 
 }
 
