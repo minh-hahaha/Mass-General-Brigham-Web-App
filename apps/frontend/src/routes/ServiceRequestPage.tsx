@@ -14,7 +14,6 @@ interface transportRequest {
     pickupTime: string;
     status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
     notes: string;
-    requesterName: string;
     requesterId: string;
     requestDate: string;
     assignedToId: string;
@@ -28,12 +27,12 @@ const TransportRequestPage = () => {
     const [priority, setPriority] = useState<transportRequest['priority']> ('Low');
     const [pickupLocation, setPickupLocation] = useState('');
     const [dropOffLocation, setDropOffLocation] = useState('');
-    const [pickupDate, setPickupDate] = useState(new Date());
+    const [pickupDate, setPickupDate] = useState(new Date().toISOString().split('T')[0]);
     const [pickupTime, setPickupTime] = useState('');
     const [status, setStatus] = useState<transportRequest['status']> ('Pending');
     const [notes, setNotes] = useState('');
-    const [requesterName, setRequesterName] = useState('');
     const [requesterId, setRequesterId] = useState('');
+    const [requestDate, setRequestDate] = useState(new Date().toISOString().split('T')[0]);
     const [assignedToId, setAssignedToId] = useState('');
 
     const [submittedRequest, setSubmittedRequest] = useState<transportRequest | null>(null);
@@ -49,13 +48,12 @@ const TransportRequestPage = () => {
             priority,
             pickupLocation,
             dropOffLocation,
-            pickupDate: new Date().toISOString(),
+            pickupDate,
             pickupTime,
             status,
             notes,
-            requesterName,
             requesterId,
-            requestDate: new Date().toISOString().split('T')[0],
+            requestDate,
             assignedToId
         }
         setSubmittedRequest(newRequest);
@@ -166,8 +164,8 @@ const TransportRequestPage = () => {
                     <div>
                         <h3>Transport Details</h3>
 
-                        <div className="form-group">
-                            <label htmlFor="transportType">Transport Type</label>
+                        <div>
+                            <label>Transport Type</label>
                             <select
                                 id="transportType"
                                 value={transportType}
@@ -181,7 +179,7 @@ const TransportRequestPage = () => {
                         </div>
 
                         <div>
-                            <label htmlFor="priority">Priority</label>
+                            <label>Priority</label>
                             <select
                                 id="priority"
                                 value={priority}
@@ -229,6 +227,16 @@ const TransportRequestPage = () => {
                         </div>
 
                         <div>
+                            <label>Scheduled Pickup Date</label>
+                            <input
+                                type="date"
+                                id="scheduledDate"
+                                value={pickupDate}
+                                onChange={(e) => setPickupDate(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
                             <label>Scheduled Pickup Time</label>
                             <input
                                 type="datetime-local"
@@ -238,22 +246,24 @@ const TransportRequestPage = () => {
                                 required
                             />
                         </div>
+                        <div>
+                            <label> Status</label>
+                            <select
+                                id="status"
+                                value={status}
+                                onChange={(e) => setStatus(e.target.value as transportRequest['status'])}
+                                required>
+                                <option value="Pending">Pending</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
 
                     </div>
 
                     <div>
                         <h3>Requester Information</h3>
-
-                        <div>
-                            <label>Requester Name</label>
-                            <input
-                                type="text"
-                                id="requesterName"
-                                value={requesterName}
-                                onChange={(e) => setRequesterName(e.target.value)}
-                                required
-                            />
-                        </div>
 
 
                         <div>
@@ -263,6 +273,16 @@ const TransportRequestPage = () => {
                                 id="requesterId"
                                 value={requesterId}
                                 onChange={(e) => setRequesterId(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label>Request Date</label>
+                            <input
+                                type="date"
+                                id="requestDate"
+                                value={requestDate}
+                                onChange={(e) => setRequestDate(e.target.value)}
                                 required
                             />
                         </div>
@@ -320,8 +340,8 @@ const TransportRequestPage = () => {
 
 
                             <h4>Requester Information</h4>
-                            <p><strong>Requested By:</strong> {submittedRequest.requesterName}</p>
-                            <p><strong>ID:</strong> {submittedRequest.requesterId}</p>
+                            <p><strong>Requester ID:</strong> {submittedRequest.requesterId}</p>
+                            <p><strong>Request Date:</strong> {submittedRequest.requestDate}</p>
                             <p><strong>Employee Assigned ID:</strong> {submittedRequest.assignedToId}</p>
 
                             {submittedRequest.notes && (
