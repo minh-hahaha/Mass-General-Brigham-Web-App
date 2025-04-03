@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+@theme {
+    --color-mgbblue: #254692;
+}
+
 :root {
     background-color: #ffffff;
     font-size: 18px;
