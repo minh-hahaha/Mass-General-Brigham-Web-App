@@ -2,9 +2,6 @@
   "private": true,
   "name": "softeng-startercode-d25",
   "version": "1.0.1",
-  "prisma": {
-    "seed": "yarn ./apps/backend/src/seed.ts"
-  },
   "scripts": {
     "dev": "dotenv -e .env -- turbo run dev",
     "dev:wpi": "dotenv -e .env.wpi -- turbo run dev",
