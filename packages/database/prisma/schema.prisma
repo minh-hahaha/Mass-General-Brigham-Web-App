@@ -20,20 +20,23 @@ model Score {
 }
 
 model Employee {
-  id          Int      @id @default(autoincrement())
-  first_name  String
-  middle_name String?
-  last_name   String
-  position    String
-  date_hired  DateTime @default(now()) @db.Date
+  id             Int              @id @default(autoincrement())
+  first_name     String
+  middle_name    String?
+  last_name      String
+  position       String
+  date_hired     DateTime         @default(now()) @db.Date
+  ServiceRequest ServiceRequest[]
 }
 
 model ServiceRequest {
-  requestID       Int     @id @default(autoincrement())
-  // need to know what employee has the task
-  task_completion Boolean
-  comments        String?
-  // need to know the location
-  // need to know the urgency
-  //
+  request_id   Int      @id @default(autoincrement())
+  assigned_id  Employee @relation(fields: [employee_id], references: [id])
+  employee_id  Int
+  request_date DateTime
+  status       String
+  comments     String?
+  urgency      Int
+  location     Int
+  service      String
 }
