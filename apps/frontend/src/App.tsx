@@ -1,17 +1,29 @@
 import React from 'react';
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
-import ExamplePage from './routes/ExamplePage.tsx';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import NavBar from './NavBar.tsx';
+import HomePage from './routes/HomePage.tsx';
+import ChestnutHillDirectory from './routes/ChestnutHillDirectory.tsx';
 
 function App() {
-    const router = createBrowserRouter([
-        {
-            path: '/',
-            errorElement: <div />,
-            element: <ExamplePage />,
-        },
-    ]);
+    return(
+        <BrowserRouter>
+            <div className="flex flex-row h-screen">
+                <div className="basis-1/4">
+                    <NavBar />
+                </div>
+                <div className="basis-3/4">
+                    <Routes>
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/ChestnutHillDirectory" element={<ChestnutHillDirectory />} />
+                    </Routes>
+                </div>
+            </div>
 
-    return <RouterProvider router={router} />;
+        </BrowserRouter>
+    )
+
 }
+
+
 
 export default App;
