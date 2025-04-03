@@ -5475,7 +5475,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prisma@npm:6.5.0":
+"prisma@npm:6.5.0, prisma@npm:^6.5.0":
   version: 6.5.0
   resolution: "prisma@npm:6.5.0"
   dependencies:
@@ -6200,6 +6200,7 @@ __metadata:
     husky: "npm:^9.1.7"
     prettier: "npm:^3.5.3"
     prettier-config-custom: "workspace:*"
+    prisma: "npm:^6.5.0"
     ts-config-custom: "workspace:*"
     turbo: "npm:*"
     typescript: "npm:^5.8.2"
