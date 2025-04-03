@@ -8,10 +8,10 @@ function App() {
     return(
         <BrowserRouter>
             <div className="flex flex-row h-screen">
-                <div className="basis-1/4">
+                <div className="basis-1/6">
                     <NavBar />
                 </div>
-                <div className="basis-3/4">
+                <div className="basis-5/6">
                     <Routes>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/ChestnutHillDirectory" element={<ChestnutHillDirectory />} />
