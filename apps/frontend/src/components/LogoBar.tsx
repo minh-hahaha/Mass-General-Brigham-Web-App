@@ -1,20 +1,18 @@
-import msgLogo from '../assests/msgLogo.jpeg'
+import msgLogo from '../assests/msgLogo.png'
 
 const LogoBar = () => {
 
     return (
         <>
-            <header>
-                <h1 className = "flex items-center justify-center p-4 bg-gray-200">
+            <header className = "flex items-center justify-center bg-gray-200">
+
+                <img src = {msgLogo} alt="MASS GENERAL BRINGHAM " className="h-20 20 mr-2"/>
+                <h1 className = "text-3xl font bold">
+
                     Mass General Brigham
                 </h1>
-                <img src = {msgLogo} alt="MASS GENERAL BRINGHAM " className="h-20 20 mr-5"/>
 
             </header>
-
-
-
-
 
         </>
     )
