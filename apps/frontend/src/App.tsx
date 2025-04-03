@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import NavBar from './NavBar.tsx';
 import HomePage from './routes/HomePage.tsx';
 import ChestnutHillDirectory from './routes/ChestnutHillDirectory.tsx';
-import ServiceRequestPage from './routes/ServiceRequestPage.tsx';
 
 function App() {
     return(
@@ -15,8 +14,10 @@ function App() {
                 <div className="basis-3/4">
                     <Routes>
                         <Route path="/" element={<HomePage />} />
+                        <Route path="/Login" element={<Login />} />
                         <Route path="/ChestnutHillDirectory" element={<ChestnutHillDirectory />} />
                         <Route path="/ServiceRequestPage" element={<ServiceRequestPage />} />
+
                     </Routes>
                 </div>
             </div>
