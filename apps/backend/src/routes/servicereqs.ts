@@ -22,7 +22,6 @@ router.get('/', async function (req: Request, res: Response) {
         res.sendStatus(204); // Send error
         return; // Don't try to send duplicate statuses
     }
-
 });
 
 export default router;

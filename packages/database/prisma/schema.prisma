@@ -18,13 +18,3 @@ model Score {
   score Int
 }
 
-model Employee {
-  name    String @id
-}
-
-model ServiceRequest {
-  id        Int     @id @default(autoincrement())
-  name      String  @default("")
-  priority  String
-  assigned  Boolean
-}

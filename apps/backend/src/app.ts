@@ -25,7 +25,7 @@ app.use(express.json()); // This processes requests as JSON
 app.use(express.urlencoded({ extended: false })); // URL parser
 app.use(cookieParser()); // Cookie parser
 
-// Setup routers. ALL ROUTERS MUST use /api as a start point, or they
+// Setup routers. ALL ROUTERS MUST use /api as a start point, or they //SIR YES SIR
 // won't be reached by the default proxy and prod setup
 app.use(API_ROUTES.HEALTHCHECK, healthcheckRouter);
 app.use(API_ROUTES.SCORE, highscoreRouter);
