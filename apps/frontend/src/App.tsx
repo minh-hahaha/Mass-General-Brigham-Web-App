@@ -14,7 +14,10 @@ function App() {
                 <div className="basis-3/4">
                     <Routes>
                         <Route path="/" element={<HomePage />} />
+                        <Route path="/Login" element={<Login />} />
                         <Route path="/ChestnutHillDirectory" element={<ChestnutHillDirectory />} />
+                        <Route path="/ServiceRequestPage" element={<ServiceRequestPage />} />
+
                     </Routes>
                 </div>
             </div>

@@ -6,7 +6,9 @@ const Navbar=()=>{
         <div className='navBar'>
             <ul>
                 <li><Link to="/">Home Page</Link></li>
+                <li><Link to="/Login">Login</Link></li>
                 <li><Link to="/ChestnutHillDirectory">ChestnutHillDirectory</Link></li>
+                <li><Link to="/ServiceRequestPage">ServiceRequestPage</Link></li>
             </ul>
         </div>
     )
