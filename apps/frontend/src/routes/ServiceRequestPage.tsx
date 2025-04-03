@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { API_ROUTES } from 'common/src/constants.ts';
+import {useState } from 'react';
+import MGBButton from "../components/MGBButton.tsx";
+
 
 interface transportRequest {
     id: number;
@@ -311,10 +311,8 @@ const TransportRequestPage = () => {
                             ></textarea>
                         </div>
                     </div>
+                    <MGBButton onClick={()=>handleSubmit} variant={'primary'} disabled={false}>Submit Transport Request</MGBButton>
 
-                    <button type="submit">
-                        Submit Transport Request
-                    </button>
                 </form>
 
                 {submittedRequest && (
