@@ -10,7 +10,7 @@ router.get('/', async function (req: Request, res: Response) {
         //Attempt to pull from employee
         const EMPLOYEE_LIST = await PrismaClient.employee.findMany({
             orderBy: {
-                name: 'desc',
+                last_name: 'desc',
             },
         });
         console.info('Successfully pulled employees score'); // Log that it was successful

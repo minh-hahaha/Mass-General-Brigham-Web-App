@@ -9,10 +9,7 @@ router.get('/', async function (req: Request, res: Response) {
         //Attempt to pull from
         const ASSIGNED_LIST = await PrismaClient.serviceRequest.findMany({
             where: {
-                assigned: true,
-            },
-            orderBy: {
-                name: 'desc',
+                assigned: true
             },
         });
         console.info('Successfully pulled service requests assigned'); // Log that it was successful

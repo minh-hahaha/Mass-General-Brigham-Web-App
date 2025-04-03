@@ -39,4 +39,5 @@ model ServiceRequest {
   urgency      Int
   location     Int
   service      String
+  assigned     Boolean
 }
