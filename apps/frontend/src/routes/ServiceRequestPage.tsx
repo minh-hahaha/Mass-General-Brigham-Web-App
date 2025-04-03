@@ -17,6 +17,8 @@ interface transportRequest {
     requesterName: string;
     requesterId: string;
     requestDate: string;
+    assignedTo: string;
+    assignedToId: string;
 }
 
 // Component definition
