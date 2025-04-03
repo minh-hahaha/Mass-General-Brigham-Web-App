@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import NavBar from './NavBar.tsx';
 import HomePage from './routes/HomePage.tsx';
 import ChestnutHillDirectory from './routes/ChestnutHillDirectory.tsx';
+import ServiceRequestPage from './routes/ServiceRequestPage.tsx';
 
 function App() {
     return(

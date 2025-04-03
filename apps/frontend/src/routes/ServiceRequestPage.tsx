@@ -17,7 +17,6 @@ interface transportRequest {
     requesterName: string;
     requesterId: string;
     requestDate: string;
-    assignedTo: string;
     assignedToId: string;
 }
 
@@ -35,6 +34,7 @@ const TransportRequestPage = () => {
     const [notes, setNotes] = useState('');
     const [requesterName, setRequesterName] = useState('');
     const [requesterId, setRequesterId] = useState('');
+    const [assignedToId, setAssignedToId] = useState('');
 
     const [submittedRequest, setSubmittedRequest] = useState<transportRequest | null>(null);
 
@@ -55,7 +55,8 @@ const TransportRequestPage = () => {
             notes,
             requesterName,
             requesterId,
-            requestDate: new Date().toISOString().split('T')[0]
+            requestDate: new Date().toISOString().split('T')[0],
+            assignedToId
         }
         setSubmittedRequest(newRequest);
 
@@ -130,15 +131,15 @@ const TransportRequestPage = () => {
 
     return (
         <div className="patient-transport-page">
-            <h2>External Patient Transportation Request</h2>
+            <h2> Patient Transportation Request</h2>
 
             <div className="transport-request-container">
                 <form onSubmit={handleSubmit} className="transport-request-form">
                     <div className="form-section">
                         <h3>Patient Information</h3>
 
-                        <div className="form-group">
-                            <label htmlFor="patientId">Patient ID (MRN)</label>
+                        <div>
+                            <label>Patient ID (MRN)</label>
                             <input
                                 type="text"
                                 id="patientId"
@@ -149,8 +150,8 @@ const TransportRequestPage = () => {
                             />
                         </div>
 
-                        <div className="form-group">
-                            <label htmlFor="patientName">Patient Name</label>
+                        <div>
+                            <label>Patient Name</label>
                             <input
                                 type="text"
                                 id="patientName"
@@ -162,7 +163,7 @@ const TransportRequestPage = () => {
                         </div>
                     </div>
 
-                    <div className="form-section">
+                    <div>
                         <h3>Transport Details</h3>
 
                         <div className="form-group">
@@ -171,8 +172,7 @@ const TransportRequestPage = () => {
                                 id="transportType"
                                 value={transportType}
                                 onChange={(e) => setTransportType(e.target.value as transportRequest['transportType'])}
-                                required
-                            >
+                                required>
                                 <option value="Ambulance">Ambulance</option>
                                 <option value="Helicopter">Helicopter</option>
                                 <option value="Medical Van">Medical Van</option>
@@ -180,7 +180,7 @@ const TransportRequestPage = () => {
                             </select>
                         </div>
 
-                        <div className="form-group">
+                        <div>
                             <label htmlFor="priority">Priority</label>
                             <select
                                 id="priority"
@@ -194,8 +194,8 @@ const TransportRequestPage = () => {
                             </select>
                         </div>
 
-                        <div className="form-group">
-                            <label htmlFor="pickupLocation">Pickup Location</label>
+                        <div>
+                            <label>Pickup Location</label>
                             <select
                                 id="pickupLocation"
                                 value={pickupLocation}
@@ -211,8 +211,8 @@ const TransportRequestPage = () => {
                             </select>
                         </div>
 
-                        <div className="form-group">
-                            <label htmlFor="destinationLocation">Destination</label>
+                        <div>
+                            <label>Destination</label>
                             <select
                                 id="destinationLocation"
                                 value={dropOffLocation}
@@ -228,8 +228,8 @@ const TransportRequestPage = () => {
                             </select>
                         </div>
 
-                        <div className="form-group">
-                            <label htmlFor="scheduledTime">Scheduled Pickup Time</label>
+                        <div>
+                            <label>Scheduled Pickup Time</label>
                             <input
                                 type="datetime-local"
                                 id="scheduledTime"
@@ -241,11 +241,11 @@ const TransportRequestPage = () => {
 
                     </div>
 
-                    <div className="form-section">
+                    <div>
                         <h3>Requester Information</h3>
 
-                        <div className="form-group">
-                            <label htmlFor="requesterName">Requester Name</label>
+                        <div>
+                            <label>Requester Name</label>
                             <input
                                 type="text"
                                 id="requesterName"
@@ -256,8 +256,8 @@ const TransportRequestPage = () => {
                         </div>
 
 
-                        <div className="form-group">
-                            <label htmlFor="requesterId">Requester ID</label>
+                        <div>
+                            <label>Requester ID</label>
                             <input
                                 type="number"
                                 id="requesterId"
@@ -266,30 +266,39 @@ const TransportRequestPage = () => {
                                 required
                             />
                         </div>
+                        <div>
+                            <label>Employee assigned ID</label>
+                            <input
+                                type="number"
+                                id="assignedToId"
+                                value={assignedToId}
+                                onChange={(e) => setAssignedToId(e.target.value)}
+                            />
+                        </div>
                     </div>
 
-                    <div className="form-section">
+                    <div >
                         <h3>Medical Information</h3>
 
-                        <div className="form-group">
-                            <label htmlFor="medicalNotes">Medical Notes/Special Instructions</label>
+                        <div>
+                            <label>Medical Notes/Special Instructions</label>
                             <textarea
                                 id="medicalNotes"
                                 value={notes}
                                 onChange={(e) => setNotes   (e.target.value)}
-                                rows={4}
-                                placeholder="Include relevant medical information for the transport team"
+                                rows={3}
+                                placeholder="Notes for the transport"
                             ></textarea>
                         </div>
                     </div>
 
-                    <button type="submit" className="submit-button">
+                    <button type="submit">
                         Submit Transport Request
                     </button>
                 </form>
 
                 {submittedRequest && (
-                    <div className="submitted-request">
+                    <div>
                         <h3>Submitted Transport Request</h3>
                         <div className="transport-confirmation">
                             <p className="confirmation-id">Request ID: #{submittedRequest.id}</p>
@@ -313,6 +322,7 @@ const TransportRequestPage = () => {
                             <h4>Requester Information</h4>
                             <p><strong>Requested By:</strong> {submittedRequest.requesterName}</p>
                             <p><strong>ID:</strong> {submittedRequest.requesterId}</p>
+                            <p><strong>Employee Assigned ID:</strong> {submittedRequest.assignedToId}</p>
 
                             {submittedRequest.notes && (
                                 <>
