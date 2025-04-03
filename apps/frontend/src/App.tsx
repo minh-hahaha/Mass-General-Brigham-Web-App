@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import NavBar from './NavBar.tsx';
+import LogoBar from './components/LogoBar.tsx';
 import LoginPage from './routes/LoginPage.tsx';
 import HomePage from './routes/HomePage.tsx';
 import ChestnutHillDirectory from './routes/ChestnutHillDirectory.tsx';
@@ -8,6 +9,10 @@ import ServiceRequestPage from './routes/ServiceRequestPage.tsx';
 
 function App() {
     return(
+        <>
+        <div>
+            <LogoBar />
+        </div>
         <BrowserRouter>
             <div className="flex flex-row h-screen">
                 <div className="basis-1/4">
@@ -25,6 +30,7 @@ function App() {
             </div>
 
         </BrowserRouter>
+        </>
     )
 
 
