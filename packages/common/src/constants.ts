@@ -4,5 +4,6 @@ export const API_ROUTES = {
     ASSIGNED: '/api/assigned',
     EMPLOYEE: '/api/employee',
     SERVICEREQS: '/api/servicereqs',
+    FORMTEST: '/api/form-temp-test',
 };
 

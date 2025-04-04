@@ -7,6 +7,7 @@ import highscoreRouter from './routes/score.ts';
 import assignedRouter from './routes/assigned.ts';
 import employeeRouter from './routes/employee.ts';
 import servicereqsRouter from './routes/servicereqs.ts';
+
 import { API_ROUTES } from 'common/src/constants';
 
 const app: Express = express(); // Setup the backend

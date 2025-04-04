@@ -31,13 +31,12 @@ model Employee {
 
 model ServiceRequest {
   request_id   Int      @id @default(autoincrement())
-  assigned_id  Employee @relation(fields: [employee_id], references: [id])
-  employee_id  Int
+  assigned_id  Employee? @relation(fields: [employee_id], references: [id])
+  employee_id  Int?
   request_date DateTime
   status       String
   comments     String?
   urgency      Int
   location     Int
   service      String
-  assigned     Boolean
 }

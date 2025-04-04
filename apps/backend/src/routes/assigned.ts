@@ -3,14 +3,13 @@ import PrismaClient from '../bin/prisma-client';
 
 const router: Router = express.Router();
 
+
 router.get('/', async function (req: Request, res: Response) {
     // Attempt to get list of assigned service requests
     try {
         //Attempt to pull from
         const ASSIGNED_LIST = await PrismaClient.serviceRequest.findMany({
-            where: {
-                assigned: true
-            },
+            where: {},
         });
         console.info('Successfully pulled service requests assigned'); // Log that it was successful
         console.log(ASSIGNED_LIST);
