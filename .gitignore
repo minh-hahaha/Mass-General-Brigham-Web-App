@@ -6,6 +6,7 @@
 **/.turbo
 **/.prisma
 **/dist
+.pnp.cjs
 
 out
 
