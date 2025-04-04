@@ -11,7 +11,7 @@ router.get('/', async function (req: Request, res: Response) {
             where: {
                 assigned_id: {
                     isNot: null,
-                }
+                },
             },
         });
         console.info('Successfully pulled service requests assigned'); // Log that it was successful
