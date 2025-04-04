@@ -30,10 +30,10 @@ model Employee {
 }
 
 model ServiceRequest {
-  request_id   Int      @id @default(autoincrement())
+  request_id   Int       @id @default(autoincrement())
   assigned_id  Employee? @relation(fields: [employee_id], references: [id])
   employee_id  Int?
-  request_date DateTime
+  request_date DateTime  @default(now()) @db.Date
   status       String
   comments     String?
   urgency      Int
