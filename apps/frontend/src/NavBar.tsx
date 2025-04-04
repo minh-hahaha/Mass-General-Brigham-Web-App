@@ -38,8 +38,12 @@ const Navbar=()=>{
                 '>
                 <ul>
                 <LinkHover><Link to="/">Home Page</Link></LinkHover>
+                <LinkHover><Link to="/Login">Login</Link></LinkHover>
                 <LinkHover><Link to="/ChestnutHillDirectory">Chestnut Hill</Link></LinkHover>
-            </ul></div>
+                <LinkHover><Link to="/ServiceRequestPage">ServiceRequestPage</Link></LinkHover>
+
+            </ul>
+            </div>
         </div>
     )
 
