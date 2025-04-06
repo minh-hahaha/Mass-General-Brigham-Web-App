@@ -21,7 +21,7 @@ const Navbar=()=>{
         <div dir='rtl' className='navBar
         h-full
         bg-blue-900
-        border-t-0
+        border-t-1
         border-b-0
         border-l-0
         border-r-5
@@ -40,8 +40,8 @@ const Navbar=()=>{
                 <LinkHover><Link to="/">Home Page</Link></LinkHover>
                 <LinkHover><Link to="/Login">Login</Link></LinkHover>
                 <LinkHover><Link to="/ChestnutHillDirectory">Chestnut Hill</Link></LinkHover>
-                <LinkHover><Link to="/ServiceRequestPage">ServiceRequestPage</Link></LinkHover>
-
+                <LinkHover><Link to="/ServiceRequestPage">Service Request</Link></LinkHover>
+                <LinkHover><Link to="/DataTable">Data Table</Link></LinkHover>
             </ul>
             </div>
         </div>

@@ -6,7 +6,7 @@ import LoginPage from './routes/LoginPage.tsx';
 import HomePage from './routes/HomePage.tsx';
 import ChestnutHillDirectory from './routes/ChestnutHillDirectory.tsx';
 import ServiceRequestPage from './routes/ServiceRequestPage.tsx';
-
+import DataTable from './routes/DataTable';
 function App() {
     return(
         <>
@@ -24,6 +24,7 @@ function App() {
                         <Route path="/Login" element={<LoginPage />} />
                         <Route path="/ChestnutHillDirectory" element={<ChestnutHillDirectory />} />
                         <Route path="/ServiceRequestPage" element={<ServiceRequestPage />} />
+                        <Route path="/DataTable" element={<DataTable />} />
 
                     </Routes>
                 </div>
