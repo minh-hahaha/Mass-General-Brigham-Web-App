@@ -27,6 +27,8 @@ model Employee {
   position       String
   date_hired     DateTime         @default(now()) @db.Date
   ServiceRequest ServiceRequest[]
+  email          String
+  password       String
 }
 
 model ServiceRequest {

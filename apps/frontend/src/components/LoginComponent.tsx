@@ -1,4 +1,3 @@
-
 import MGBButton from "./MGBButton.tsx";
 import {useState} from "react";
 
