@@ -1,5 +1,12 @@
 import MGBButton from "./MGBButton.tsx";
 import {useState} from "react";
+import axios from "axios";
+import {ROUTES} from "common/src/constants.ts";
+
+let loggedIn = false;
+export function LoggedIn() {
+    return loggedIn;
+}
 
 const LoginComponent = () => {
 
@@ -16,7 +23,25 @@ const LoginComponent = () => {
     async function validateUser() {
         //This function will change when we start using OAuth
         //For now, any entered email and password will be saved to the browser locally
-        localStorage.setItem(email, enteredPassword);
+        try {
+            const res = await axios.get(ROUTES.VALIDATE, {
+                params: { email: email },
+            });
+            console.log(res.data.email);
+            console.log(res.data.password);
+            if (res.status === 200) {
+                if (res.data.password == enteredPassword) {
+                    loggedIn = true;
+                    console.log("logged in admin");
+                }
+            }
+            else {
+                console.error(res.data);
+            }
+        }
+        catch (error) {
+            console.log("wtf bruh");
+        }
     }
 
     return (
