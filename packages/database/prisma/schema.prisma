@@ -40,3 +40,33 @@ model ServiceRequest {
   location     Int
   service      String
 }
+
+model Directory {
+  directory_id  Int            @id @default(autoincrement())
+  service       String
+  opening_hours OpeningHours[] // Some services have multiple different opening hours
+  specialty     String
+  location      Location[]
+  telephone     String
+}
+
+model OpeningHours {
+  fk_directory      Directory @relation(fields: [directory_id], references: [directory_id])
+  directory_id      Int
+  start_day         String // Needs to have a CHECK constraint in DB (cant be done in prisma) Only Days Sunday-Saturday valid
+  end_day           String // Needs to have a CHECK constraint in DB (cant be done in prisma) Only Days Sunday-Saturday valid
+  open_time         DateTime  @db.Time()
+  close_time        DateTime  @db.Time()
+  excludes_holidays Boolean
+
+  @@id([directory_id, start_day, end_day])
+}
+
+model Location {
+  fk_directory Directory @relation(fields: [directory_id], references: [directory_id])
+  directory_id Int
+  floor        Int
+  suite        String
+
+  @@id([floor, suite])
+}
