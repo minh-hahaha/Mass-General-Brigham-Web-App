@@ -41,18 +41,18 @@ model ServiceRequest {
   status                       String
   comments                     String?
   urgency                      Int
-  location                     Int
-  service                      String
+  location                     Location          @relation(name: "ServiceLocation", fields: [location_id], references: [loc_id])
+  location_id                  Int
+  service_type                 String
   patientTransport_id          PatientTransport?
 }
 
 model PatientTransport {
-  transport_id    Int            @id @default(autoincrement())
+  servReq_id      Int            @id
   patient_id      Int
   patient_name    String
   pickup_location String
-  servReq_id      Int            @unique
-  assigned_id     ServiceRequest @relation(fields: [servReq_id], references: [request_id])
+  servRequest_id  ServiceRequest @relation(fields: [servReq_id], references: [request_id])
 }
 
 model Department {
@@ -69,11 +69,14 @@ model Department {
 
 model Location {
   loc_id           Int         @id @default(autoincrement())
-  Department       Department? @relation(fields: [department_id], references: [dep_id])
+  department       Department? @relation(fields: [department_id], references: [dep_id])
   department_id    Int?
-  type             String
+  loc_type         String
   room_num         Int?
   floor            Int
+
+  //making prisma happy here
+  serviceRequests ServiceRequest[] @relation("ServiceLocation") //unused relation
 }
 
 model Building {
