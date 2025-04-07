@@ -8,6 +8,7 @@ import assignedRouter from './routes/assigned.ts';
 import employeeRouter from './routes/employee.ts';
 import servicereqsRouter from './routes/servicereqs.ts';
 import validateRouter from './routes/validate.ts';
+import patientTransportRouter from './routes/patienttransport.ts';
 
 import { ROUTES } from 'common/src/constants';
 
@@ -34,6 +35,7 @@ app.use(ROUTES.ASSIGNED, assignedRouter);
 app.use(ROUTES.EMPLOYEE, employeeRouter);
 app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
 app.use(ROUTES.VALIDATE, validateRouter);
+app.use(ROUTES.PATIENTTRANSPORT, patientTransportRouter);
 
 /**
  * Catch all 404 errors, and forward them to the error handler

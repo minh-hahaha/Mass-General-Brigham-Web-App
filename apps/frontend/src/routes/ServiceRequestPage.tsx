@@ -1,5 +1,7 @@
 import {useState } from 'react';
 import MGBButton from "../components/MGBButton.tsx";
+import axios from "axios";
+
 
 
 interface transportRequest {
@@ -56,8 +58,9 @@ const TransportRequestPage = () => {
             requestDate,
             assignedToId
         }
-        setSubmittedRequest(newRequest);
 
+        DisplayTransportRequest(newRequest); //sends new data to backend
+        setSubmittedRequest(newRequest);
         handleReset();
     }
 
@@ -77,6 +80,10 @@ const TransportRequestPage = () => {
         setAssignedToId('');
     }
 
+    //Data is sent to the backend
+    async function DisplayTransportRequest(request: transportRequest) {
+        await axios.post('/api/patientTransport', request);
+    }
 
     const mgbLocations = ["Chestnut Hill"]
 
