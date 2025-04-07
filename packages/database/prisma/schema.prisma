@@ -26,11 +26,11 @@ model Employee {
   last_name        String
   position         String
   date_hired       DateTime         @default(now()) @db.Date
-  ServiceRequest   ServiceRequest[]
-  Email            String
-  Password         String
-  Department       Department?      @relation(fields: [departmentDep_id], references: [dep_id])
-  departmentDep_id Int?
+  serviceRequest   ServiceRequest[]
+  email            String
+  password         String
+  department       Department     @relation(fields: [department_id], references: [dep_id])
+  department_id    Int
 }
 
 model ServiceRequest {
@@ -43,7 +43,7 @@ model ServiceRequest {
   urgency                      Int
   location                     Int
   service                      String
-  patientTransportTransport_id PatientTransport?
+  patientTransport_id          PatientTransport?
 }
 
 model PatientTransport {
@@ -51,8 +51,8 @@ model PatientTransport {
   patient_id      Int
   patient_name    String
   pickup_location String
-  sr_id           Int            @unique
-  assigned_id     ServiceRequest @relation(fields: [sr_id], references: [request_id])
+  servReq_id      Int            @unique
+  assigned_id     ServiceRequest @relation(fields: [servReq_id], references: [request_id])
 }
 
 model Department {
@@ -69,8 +69,8 @@ model Department {
 
 model Location {
   loc_id           Int         @id @default(autoincrement())
-  Department       Department? @relation(fields: [departmentDep_id], references: [dep_id])
-  departmentDep_id Int?
+  Department       Department? @relation(fields: [department_id], references: [dep_id])
+  department_id    Int?
   type             String
   room_num         Int?
   floor            Int
@@ -83,7 +83,7 @@ model Building {
 }
 
 model Node {
-  node_id      Int   @id @default(autoincrement())
+  node_id      Int          @id @default(autoincrement())
   neighbor_ids Int[]
   pixel_x      Int
   pixel_y      Int
