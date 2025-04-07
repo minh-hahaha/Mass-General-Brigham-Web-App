@@ -6,7 +6,6 @@ const router: Router = express.Router();
 
 router.get('/', async function (req: Request, res: Response) {
     const email = req.query.email as string;
-    console.log(email);
     const adminUser = await PrismaClient.employee.findUnique({
         where: { email: email },
     });
