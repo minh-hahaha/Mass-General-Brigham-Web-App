@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import {createRoot} from 'react-dom/client';
-import {APIProvider, Map, useMap, useMapsLibrary} from '@vis.gl/react-google-maps';
+import {APIProvider, Map, MapControl, useMap, useMapsLibrary} from '@vis.gl/react-google-maps';
 import MGBButton from "../components/MGBButton.tsx";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
@@ -36,7 +36,6 @@ function DirectionsMap(){
 
     useEffect(()=> {
         if(!routesLibrary || !map) return;
-
         setDirectionsService(new routesLibrary.DirectionsService());
         setDirectionsRenderer(new routesLibrary.DirectionsRenderer({map}));
     }, [map, routesLibrary])
@@ -62,7 +61,7 @@ function DirectionsMap(){
 
     return(
         <div className="flex flex-row">
-            <div className="w-70 bg-white p-6">
+            <div className="basis-[22vw] bg-white p-6">
                 <h2 className="text-xl font-bold mb-4">Get Directions</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
@@ -108,15 +107,14 @@ function DirectionsMap(){
                 )}
             </div>
 
-            <div id="googleMap" className="flex-grow">
+            <div className="basis-[80vw]">
                 <Map
-                    style={{width: '100vw', height: '100vh'}}
-                    defaultCenter={{lat: 42.32627997310998, lng: -71.14960710777854}}
-                    // MGB at Chestnut hill 42.32627997310998, -71.14960710777854
+                    style={{width: '100%', height: '89vh'}}
+                    defaultCenter={{lat: 42.32598, lng: -71.14957}}
+                    // MGB at Chestnut hill 42.325988270594415, -71.1495669288061
                     defaultZoom={15}
-                    gestureHandling={'greedy'}
-                    disableDefaultUI={true}
-                />
+                >
+                </Map>
             </div>
         </div>
     )
