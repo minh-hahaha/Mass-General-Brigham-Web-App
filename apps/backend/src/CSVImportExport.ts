@@ -27,8 +27,8 @@ export async function dataToCSV(data: Record<string, any>[]) {
                 csvData.push(value.toISOString());
                 continue;
             }
-            if (typeof value === 'string') {
-                csvData.push(value.replaceAll(',', '"@"'));
+            if (typeof value === 'string' && value.includes(',')) {
+                csvData.push('"' + value + '"');
             } else {
                 csvData.push(value);
             }
@@ -69,7 +69,8 @@ async function CSVtoData(data: string): Promise<Record<string, any>[]> {
     // Parse the non-header CSV data
     const objs: Record<string, any>[] = [];
     for (let i = 1; i < splitData.length - 1; i++) {
-        let row = splitData[i].split(',');
+        //let row = splitData[i].split(',');
+        let row = splitString(splitData[i]);
         console.log(row);
         // Go through all the CSV's data and turn it back into {xx: xx, xx: xx} format
         const obj: Record<string, any> = {};
@@ -103,4 +104,25 @@ async function CSVtoData(data: string): Promise<Record<string, any>[]> {
         objs.push(obj);
     }
     return objs;
+}
+
+function splitString(row: string): string[] {
+    let ignoreCommas = false;
+    let splitString: string[] = [];
+    let stringPiece = '';
+    for (let char of row) {
+        if (char === '"') {
+            ignoreCommas = !ignoreCommas;
+            continue;
+        }
+        if (char === ',' && !ignoreCommas) {
+            splitString.push(stringPiece);
+            stringPiece = '';
+        } else {
+            stringPiece += char;
+        }
+    }
+    splitString.push(stringPiece);
+
+    return splitString;
 }
