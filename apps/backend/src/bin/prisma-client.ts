@@ -161,6 +161,268 @@ async function main() {
         ],
         skipDuplicates: true,
     });
+    const createDirectory = await client.directory.createMany({
+        data: [
+            {
+                directory_id: 0,
+                service: 'Allergy and Clinical Immunology',
+                specialty:
+                    'Allergy, (environmental, food, medication, and venoms), asthma, anaphylaxis, angioedema, sinusitis, and immunodeficiency',
+                telephone: '(617) 732-9850',
+            },
+            {
+                directory_id: 1,
+                service: 'Backup Child Care Center',
+                specialty: 'Backup childcare for employees',
+                telephone: '(617) 732-9543',
+            },
+            {
+                directory_id: 2,
+                service: 'Brigham Dermatology Associated (BDA)',
+                specialty: 'Medical and surgical dermatology',
+                telephone: '(617) 732-9080',
+            },
+            {
+                directory_id: 3,
+                service: 'Brigham Obstetrics and Gynecology Group (BOGG)',
+                specialty: 'Gynecology, obsterics',
+                telephone: '(617) 732-9100',
+            },
+            {
+                directory_id: 4,
+                service: 'Brigham Physicians Group (BPG)',
+                specialty: 'Adult primary care',
+                telephone: '(617) 732-9900',
+            },
+            {
+                directory_id: 5,
+                service: 'Brigham Psychiatric Specialties',
+                specialty: 'Psychiatry psychology, social work',
+                telephone: '(617) 732-9811',
+            },
+            {
+                directory_id: 6,
+                service: 'Center for Pain Medicine',
+                specialty: 'Multidisciplinary pain management',
+                telephone: '(617) 732-9060',
+            },
+            {
+                directory_id: 7,
+                service: "Crohn's and Colitis Center",
+                specialty:
+                    'Crohn’s disease, inflammatory bowel disease, infusion services, microscopic colitis, pulmonary, rheumatology, ulcerative colitis',
+                telephone: '(617) 732-6389',
+            },
+            {
+                directory_id: 8,
+                service: 'Endoscopy Center',
+                specialty:
+                    'Bacterial overgrowth breath test, colonoscopy, H. Pylori breath test, lactose malabsorption breath test, upper endoscopy',
+                telephone: '(617) 732-7426',
+            },
+            {
+                directory_id: 9,
+                service: "Gretchen S. and Edward A. Fish Center for Women's Health",
+                specialty:
+                    'Cardiology, dermatology (cosmetic, medical, and surgical), endocrinology, gastroenterology, gynecology, hematology, infectious diseases, mental health (social work), general neurology, nutrition, primary care, pulmonary, renal, rheumatology, sleep medicine, Women’s Health (Menopause and Midlife Clinic, Obstetric Internal Medicine)',
+                telephone: '(617) 732-9300',
+            },
+            {
+                directory_id: 10,
+                service: 'Laboratory',
+                specialty: 'Blood work, lab services',
+                telephone: '(617) 732-9841',
+            },
+            {
+                directory_id: 11,
+                service: 'Multi-Specialty Clinic',
+                specialty:
+                    'Orthopedic surgery, Vascular surgery, Contact Dermatitis and Occupational Dermatology Program, Pain Medicine and Travel Medicine',
+                telephone: '(617) 732-9500',
+            },
+            {
+                directory_id: 12,
+                service: 'Osher Clinical Center for Integrative Health',
+                specialty:
+                    'Acupuncture, health coaching, chiropractic, craniosacral therapy, integrative medicine, structural massage & movement therapies, neurology (movement disorders and headache), echocardiography, and pulmonary. Educational courses: Integrative wellness courses are also offered.',
+                telephone: '(617) 732-9700',
+            },
+            {
+                directory_id: 13,
+                service: 'Patient Financial Services',
+                specialty: 'Patient financial counselling',
+                telephone: '(617) 732-9677',
+            },
+            {
+                directory_id: 14,
+                service: 'Pharmacy',
+                specialty: 'Outpatient pharmacy services',
+                telephone: '(617) 732-9040',
+            },
+            {
+                directory_id: 15,
+                service: 'Radiology',
+                specialty: 'Bone density, Breast imaging/Mammography, ultrasound, X-Ray',
+                telephone: '(617) 732-9801',
+            },
+            {
+                directory_id: 16,
+                service: 'Radiology, MRI/CT scan',
+                specialty: 'CT scan, MRI, X-Ray',
+                telephone: '(617) 732-9821',
+            },
+            {
+                directory_id: 17,
+                service: 'Rehabilitation Services',
+                specialty:
+                    'Orthopedic, sports, neurologic and vestibular Physical Therapy, Men’s and Women’s pelvic floor Physical Therapy. Hand/Occupational Therapy, Speech Language Pathology',
+                telephone: '(617) 732-9525',
+            },
+        ],
+        skipDuplicates: true,
+    });
+    const createLocations = await client.location.createMany({
+        data: [
+            {
+                directory_id: 0,
+                floor: 3,
+                suite: '301',
+            },
+            {
+                directory_id: 0,
+                floor: 5,
+                suite: '540',
+            },
+            {
+                directory_id: 1,
+                floor: 2,
+                suite: '210',
+            },
+            {
+                directory_id: 2,
+                floor: 3,
+                suite: '317',
+            },
+            {
+                directory_id: 3,
+                floor: 5,
+                suite: '575',
+            },
+            {
+                directory_id: 4,
+                floor: 4,
+                suite: '428',
+            },
+            {
+                directory_id: 4,
+                floor: 5,
+                suite: '530',
+            },
+            {
+                directory_id: 5,
+                floor: 3,
+                suite: '303',
+            },
+            {
+                directory_id: 6,
+                floor: 3,
+                suite: '320',
+            },
+            {
+                directory_id: 7,
+                floor: 2,
+                suite: '201',
+            },
+            {
+                directory_id: 8,
+                floor: 2,
+                suite: '202',
+            },
+            {
+                directory_id: 9,
+                floor: 4,
+                suite: '402',
+            },
+            {
+                directory_id: 10,
+                floor: 1,
+                suite: '100',
+            },
+            {
+                directory_id: 11,
+                floor: 1,
+                suite: '130',
+            },
+            {
+                directory_id: 12,
+                floor: 4,
+                suite: '422',
+            },
+            {
+                directory_id: 13,
+                floor: 2,
+                suite: '204B',
+            },
+            {
+                directory_id: 14,
+                floor: 3,
+                suite: '317',
+            },
+            {
+                directory_id: 15,
+                floor: 5,
+                suite: '560',
+            },
+            {
+                directory_id: 16,
+                floor: 1,
+                suite: '102B',
+            },
+            {
+                directory_id: 17,
+                floor: 2,
+                suite: '200',
+            },
+        ],
+        skipDuplicates: true,
+    });
+    const createOpeningHours = await client.openingHours.createMany({
+        data: [
+            {
+                directory_id: 1,
+                start_day: 'Monday',
+                end_day: 'Friday',
+                open_time: new Date(0, 0, 0, 8, 0),
+                close_time: new Date(0, 0, 0, 16, 30),
+                excludes_holidays: false,
+            },
+            {
+                directory_id: 10,
+                start_day: 'Monday',
+                end_day: 'Friday',
+                open_time: new Date(0, 0, 0, 7, 0),
+                close_time: new Date(0, 0, 0, 18, 30),
+                excludes_holidays: true,
+            },
+            {
+                directory_id: 10,
+                start_day: 'Saturday',
+                end_day: 'Saturday',
+                open_time: new Date(0, 0, 0, 9, 0),
+                close_time: new Date(0, 0, 0, 13, 0),
+                excludes_holidays: true,
+            },
+            {
+                directory_id: 14,
+                start_day: 'Monday',
+                end_day: 'Friday',
+                open_time: new Date(0, 0, 0, 9, 0),
+                close_time: new Date(0, 0, 0, 16, 0),
+                excludes_holidays: true,
+            },
+        ],
+        skipDuplicates: true,
+    });
 }
 
 main().then(() => console.log('Temp Data Loaded'));
