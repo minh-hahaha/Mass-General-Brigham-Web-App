@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import {createRoot} from 'react-dom/client';
 import {APIProvider, Map, MapControl, useMap, useMapsLibrary} from '@vis.gl/react-google-maps';
 import MGBButton from "../components/MGBButton.tsx";
@@ -25,20 +25,55 @@ export default HomePage;
 function DirectionsMap(){
     const map = useMap();
     const routesLibrary = useMapsLibrary('routes')
+    const placesLibrary = useMapsLibrary('places')
     const [fromLocation, setFromLocation] = useState('');
     const [toLocation, setToLocation] = useState('');
     const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>([]);
 
     const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
     const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
-    // const [error, setError] = useState('');
-
 
     useEffect(()=> {
         if(!routesLibrary || !map) return;
         setDirectionsService(new routesLibrary.DirectionsService());
         setDirectionsRenderer(new routesLibrary.DirectionsRenderer({map}));
     }, [map, routesLibrary])
+
+
+    // refs for autocomplete
+    const fromLocationRef = useRef(null)
+    const toLocationRef = useRef(null)
+
+    useEffect(()=>{
+        if (!placesLibrary || !fromLocationRef.current || !toLocationRef.current) return
+
+        // autocomplete for origin
+        const fromAutocomplete = new placesLibrary.Autocomplete(fromLocationRef.current, {
+            types: ['geocode', 'establishment'],
+            fields: ['place_id', 'geometry', 'formatted_address', 'name']
+        })
+        // autocomplete for origin
+        const toAutocomplete = new placesLibrary.Autocomplete(toLocationRef.current, {
+            types: ['geocode', 'establishment'],
+            fields: ['place_id', 'geometry', 'formatted_address', 'name']
+        })
+
+
+        // event listeners so that when autocomplete the state is changed
+        fromAutocomplete.addListener('place_changed', () => {
+            const place = fromAutocomplete.getPlace();
+            if (place.formatted_address) {
+                setFromLocation(place.formatted_address);
+            }
+        });
+
+        toAutocomplete.addListener('place_changed', () => {
+            const place = toAutocomplete.getPlace();
+            if (place.formatted_address) {
+                setToLocation(place.formatted_address);
+            }
+        });
+    }, [placesLibrary])
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -69,6 +104,7 @@ function DirectionsMap(){
                         <input
                             type="text"
                             id="fromLocation"
+                            ref={fromLocationRef}
                             value={fromLocation}
                             className="w-full p-2 border border-gray-300 rounded"
                             onChange={(e) => setFromLocation(e.target.value)}
@@ -81,6 +117,7 @@ function DirectionsMap(){
                         <input
                             type="text"
                             id="toLocation"
+                            ref={toLocationRef}
                             value={toLocation}
                             className="w-full p-2 border border-gray-300 rounded"
                             onChange={(e) => setToLocation(e.target.value)}
