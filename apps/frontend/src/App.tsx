@@ -15,10 +15,10 @@ function App() {
         </div>
         <BrowserRouter>
             <div className="flex flex-row h-screen">
-                <div className="basis-1/6">
+                <div className="basis-1/7 transition-[delay-100 duration-500 ease-in-out] hover:basis-2/7">
                     <NavBar />
                 </div>
-                <div className="basis-5/6">
+                <div className="basis-6/7">
                     <Routes>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/Login" element={<LoginPage />} />

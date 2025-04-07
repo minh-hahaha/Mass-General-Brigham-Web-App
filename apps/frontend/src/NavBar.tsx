@@ -5,12 +5,12 @@ const LinkHover: React.FC = ({ children }) => {
     return <li
         className='
                 text-white
-                drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]
-                hover:drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0)]
-                hover:text-teal-200
-                active:drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0)]
-                active:text-teal-300
-                focus:outline-2'>
+                active:bg-blue-600
+                focus:outline-2
+                hover:bg-blue-700
+                pr-2
+                my-1
+                py-2'>
         {children}
     </li>;
 }
@@ -21,8 +21,8 @@ const Navbar=()=>{
         <div dir='rtl' className='navBar
         h-full
         bg-blue-900
-        border-t-1
-        border-b-0
+        border-t-2
+        border-b-5
         border-l-0
         border-r-5
         border-black
@@ -30,19 +30,18 @@ const Navbar=()=>{
         hover:rounded-r-4xl
         '>
             <div className='unorderedList
-                p-8
-                font-[Bahnschrift]
-                font-bold
+                my-8
+                font-semibold
                 text-white
-                drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]
+                text-2xl
                 '>
                 <ul>
-                <LinkHover><Link to="/">Home Page</Link></LinkHover>
-                <LinkHover><Link to="/Login">Login</Link></LinkHover>
-                <LinkHover><Link to="/ChestnutHillDirectory">Chestnut Hill</Link></LinkHover>
-                <LinkHover><Link to="/ServiceRequestPage">Service Request</Link></LinkHover>
-                <LinkHover><Link to="/DataTable">Data Table</Link></LinkHover>
-            </ul>
+                    <Link to='/'><LinkHover classname=''>Home Page</LinkHover></Link>
+                    <Link to="/Login"><LinkHover>Login</LinkHover></Link>
+                    <Link to="/ChestnutHillDirectory"><LinkHover>Chestnut Hill</LinkHover></Link>
+                    <Link to="/ServiceRequestPage"><LinkHover>Service Request</LinkHover></Link>
+                    <Link to="/DataTable"><LinkHover>Data Table</LinkHover></Link>
+                </ul>
             </div>
         </div>
     )
