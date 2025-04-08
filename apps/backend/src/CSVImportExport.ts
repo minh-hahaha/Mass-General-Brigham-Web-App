@@ -68,7 +68,7 @@ function CSVtoData(data: string): Record<string, any>[] {
 
     // Parse the non-header CSV data
     const objs: Record<string, any>[] = [];
-    for (let i = 1; i < splitData.length - 1; i++) {
+    for (let i = 1; i < splitData.length; i++) {
         let row = splitString(splitData[i]);
         // Go through all the CSV's data and turn it back into {xx: xx, xx: xx} format
         const obj: Record<string, any> = {};
