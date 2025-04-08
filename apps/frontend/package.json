@@ -19,6 +19,7 @@
         "common": "*",
         "dotenv": "*",
         "dotenv-cli": "*",
+        "framer-motion": "^12.6.3",
         "localforage": "^1.10.0",
         "match-sorter": "^6.3.1",
         "react": "^19.1.0",
