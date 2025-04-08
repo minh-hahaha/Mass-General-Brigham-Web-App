@@ -6,6 +6,7 @@ import { dataToCSV, readCSV } from '../CSVImportExport.ts';
 const router: Router = express.Router();
 
 router.get('/', async function (req: Request, res: Response) {
+    console.log('sup');
     // Attempt to get list of employees
     try {
         //Attempt to pull from employee

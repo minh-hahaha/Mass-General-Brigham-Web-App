@@ -14,6 +14,9 @@ router.get('/', async function (req: Request, res: Response) {
                     isNot: null,
                 },
             },
+            include: {
+                assigned_id: true,
+            },
         });
         // Temporary for testing
         //TODO: move to its own route (probably)

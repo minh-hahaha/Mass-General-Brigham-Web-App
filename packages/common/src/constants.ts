@@ -1,9 +1,7 @@
 
-
 export const ROUTES = {
-    ASSIGNED: '/assigned',
-    EMPLOYEE: '/employee',
-    SERVICEREQUESTS: '/servicereqs',
-    DIRECTORY: '/directory',
-    DIRECTORY_CSV: '/directory/csv',
+    ASSIGNED: '/api/assigned',
+    EMPLOYEE: '/api/employee',
+    SERVICEREQUESTS: '/api/servicereqs',
+    VALIDATE: '/api/validate'
 }
