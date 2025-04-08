@@ -26,8 +26,12 @@ export async function dataToCSV(data: Record<string, any>[]) {
                 csvData.push(value.toISOString());
                 continue;
             }
-            if (typeof value === 'string' && value.includes(',')) {
-                csvData.push('"' + value.replaceAll('"', '""') + '"');
+            if (typeof value === 'string') {
+                let newVal = value.replaceAll('\"', '\"\"');
+                if (value.includes(',')) {
+                    newVal = '"' + newVal + '"';
+                }
+                csvData.push(newVal);
             } else {
                 csvData.push(value);
             }
@@ -59,18 +63,13 @@ export async function readCSV(pathToFile: string): Promise<Record<string, any>[]
 }
 
 function CSVtoData(data: string): Record<string, any>[] {
-    console.log('Data to CSV');
-
     let splitData = data.split('\n');
     let headerFields = splitData[0].split(',');
-    console.log(headerFields);
 
     // Parse the non-header CSV data
     const objs: Record<string, any>[] = [];
     for (let i = 1; i < splitData.length - 1; i++) {
-        //let row = splitData[i].split(',');
         let row = splitString(splitData[i]);
-        console.log(row);
         // Go through all the CSV's data and turn it back into {xx: xx, xx: xx} format
         const obj: Record<string, any> = {};
         for (let j = 0; j < row.length; j++) {
@@ -108,7 +107,6 @@ function CSVtoData(data: string): Record<string, any>[] {
             // Otherwise, add as is
             obj[headerFields[j]] = row[j];
         }
-        console.log(obj);
         objs.push(obj);
     }
     return objs;
@@ -121,11 +119,11 @@ function splitString(row: string): string[] {
 
     for (let i = 0; i < row.length; i++) {
         let char = row[i];
-        // Check for quote marks, denoting the final string having "'s or a , in it
+        // Check for quote marks, denoting the final string having "'s or a comma in it
         if (char === '"') {
             // Check for double quotes, which means that one of the "'s is part of the original string
-            if (inQuotes && char[i + 1] == '"') {
-                stringPiece += '"';
+            if (inQuotes && row[i + 1] === '"') {
+                stringPiece += '\"';
                 i++;
             } else {
                 inQuotes = !inQuotes;

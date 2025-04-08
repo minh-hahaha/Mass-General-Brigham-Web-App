@@ -4,7 +4,27 @@ import { dataToCSV, readCSV } from '../CSVImportExport.ts';
 
 const router: Router = express.Router();
 
+// GET Send Data
 router.get('/', async function (req: Request, res: Response) {
+    // Attempt to get directory
+    try {
+        //Attempt to pull from directory
+        const DIRECTORY = await PrismaClient.directory.findMany({
+            include: {
+                location: true,
+            },
+        });
+        res.send(DIRECTORY);
+    } catch (error) {
+        // Log any failures
+        console.error(`NO DIRECTORY: ${error}`);
+        res.sendStatus(204); // Send error
+        return; // Don't try to send duplicate statuses
+    }
+});
+
+// GET Send CSV
+router.get('/csv', async function (req: Request, res: Response) {
     // Attempt to get directory
     try {
         //Attempt to pull from directory
@@ -22,11 +42,10 @@ router.get('/', async function (req: Request, res: Response) {
             }))
         );
 
-        // Temporary for testing
-        //TODO: move to its own route (probably)
         await dataToCSV(flattenedDirectories);
         console.info('Successfully pulled directory'); // Log that it was successful
-        res.send(DIRECTORY);
+        //TODO: actually send the file
+        //res.sendFile(DIRECTORY);
     } catch (error) {
         // Log any failures
         console.error(`NO DIRECTORY: ${error}`);
@@ -35,9 +54,8 @@ router.get('/', async function (req: Request, res: Response) {
     }
 });
 
-//TODO: move to its own route (probably)
-router.post('/', async function (req: Request, res: Response) {
-    const csvData = await readCSV('./nodes.csv');
+router.post('/csv', async function (req: Request, res: Response) {
+    const csvData = await readCSV('./data.csv');
     try {
         for (let data of csvData) {
             const dataToUpsertDirectory = {
