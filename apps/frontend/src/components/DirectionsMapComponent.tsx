@@ -224,7 +224,7 @@ const  DirectionsMapComponent = () => {
 
             </div>
 
-            <div className="basis-[80vw]">
+            <div className="basis-[78vw]">
                 {showHospital ? (
                     <div>
                         <HospitalMap />

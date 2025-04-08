@@ -107,10 +107,10 @@ const TransportRequestPage = () => {
                             <div>
                                 <label>Patient ID</label>
                                 <input
-                                    type="text"
+                                    type="number"
                                     id="patientId"
                                     value={patientId}
-                                    onChange={(e) => setPatientId(e.target.value)}
+                                    onChange={(e) => setPatientId(Number(e.target.value))}
                                     required
                                     placeholder="Enter patient ID"
                                 />
@@ -237,7 +237,7 @@ const TransportRequestPage = () => {
                                     type="number"
                                     id="requesterId"
                                     value={requesterId}
-                                    onChange={(e) => setRequesterId(e.target.value)}
+                                    onChange={(e) => setRequesterId(Number(e.target.value))}
                                     required
                                 />
                             </div>
@@ -247,7 +247,7 @@ const TransportRequestPage = () => {
                                     type="date"
                                     id="requestDate"
                                     value={requestDate}
-                                    onChange={(e) => setRequestDate(e.target.value)}
+                                    onChange={(e) => setRequestDate((e.target.value).toString().split('T')[0])}
                                     required
                                 />
                             </div>
@@ -257,7 +257,7 @@ const TransportRequestPage = () => {
                                     type="number"
                                     id="assignedToId"
                                     value={assignedToId}
-                                    onChange={(e) => setAssignedToId(e.target.value)}
+                                    onChange={(e) => setAssignedToId(Number(e.target.value))}
                                 />
                             </div>
                         </div>
