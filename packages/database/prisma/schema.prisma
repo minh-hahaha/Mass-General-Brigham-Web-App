@@ -20,33 +20,33 @@ model Score {
 }
 
 model Employee {
-  id               Int              @id @default(autoincrement())
-  first_name       String
-  middle_name      String?
-  last_name        String
-  position         String
-  date_hired       DateTime         @default(now()) @db.Date
-  serviceRequest   ServiceRequest[]
-  email            String           @unique
-  password         String
-  department       Department     @relation(fields: [department_id], references: [dep_id])
-  department_id    Int
+  id             Int              @id @default(autoincrement())
+  first_name     String
+  middle_name    String?
+  last_name      String
+  position       String
+  date_hired     DateTime         @default(now()) @db.Date
+  serviceRequest ServiceRequest[]
+  email          String           @unique
+  password       String
+  department     Department       @relation(fields: [department_id], references: [dep_id])
+  department_id  Int
 }
 
 model ServiceRequest {
-  request_id                   Int               @id @default(autoincrement())
-  assigned_id                  Employee?          @relation(fields: [employee_id], references: [id])
-  employee_id                  Int?
-  request_date                 DateTime?         @default(now()) @db.Date
-  status                       String
-  comments                     String?
-  priority                     String
-  location                     Location?         @relation(name: "ServiceLocation", fields: [location_id], references: [loc_id])
-  location_id                  Int?
-  service_type                 String
-  patientTransport          PatientTransport? @relation(name: "ServicePatientTransport")
-  transport_type               String
-  request_time                 DateTime?         @default(now()) @db.Time
+  request_id       Int               @id @default(autoincrement())
+  assigned_id      Employee?         @relation(fields: [employee_id], references: [id])
+  employee_id      Int?
+  request_date     DateTime?         @default(now()) @db.Date
+  status           String
+  comments         String?
+  priority         String
+  location         Location?         @relation(name: "ServiceLocation", fields: [location_id], references: [loc_id])
+  location_id      Int?
+  service_type     String
+  patientTransport PatientTransport? @relation(name: "ServicePatientTransport")
+  transport_type   String
+  request_time     DateTime?         @default(now()) @db.Time
 }
 
 model PatientTransport {
@@ -59,24 +59,22 @@ model PatientTransport {
 
 model Department {
   dep_id       Int        @id @default(autoincrement())
-  dep_services String[]
+  dep_services String
   dep_name     String
   building_id  Int
   dep_phone    String     @unique
   members      Employee[]
   locations    Location[]
-  building     Building   @relation(fields: [build_id], references: [building_id])
-  build_id     Int
+  building     Building   @relation(fields: [building_id], references: [building_id])
 }
 
 model Location {
-  loc_id           Int         @id @default(autoincrement())
-  department       Department? @relation(fields: [department_id], references: [dep_id])
-  department_id    Int?
-  loc_type         String
-  room_num         Int?
-  floor            Int
-
+  loc_id        Int         @id @default(autoincrement())
+  department    Department? @relation(fields: [department_id], references: [dep_id])
+  department_id Int?
+  loc_type      String
+  room_num      Int?
+  floor         Int
 
   //making prisma happy here
   serviceRequests ServiceRequest[] @relation("ServiceLocation") //unused relation
@@ -89,7 +87,7 @@ model Building {
 }
 
 model Node {
-  node_id      Int          @id @default(autoincrement())
+  node_id      Int   @id @default(autoincrement())
   neighbor_ids Int[]
   pixel_x      Int
   pixel_y      Int
