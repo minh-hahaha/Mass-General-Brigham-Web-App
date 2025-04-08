@@ -1,6 +1,6 @@
 import express, { Router, Request, Response } from 'express';
 import PrismaClient from '../bin/prisma-client';
-import { dataToCSV, readCSV } from '../CSVImportExport.ts';
+import { CSVtoData, dataToCSV, readCSV } from '../CSVImportExport.ts';
 import * as path from 'node:path';
 import fs from 'node:fs';
 
@@ -61,14 +61,13 @@ router.get('/csv', async function (req: Request, res: Response) {
 });
 
 router.post('/csv', async function (req: Request, res: Response) {
-    fs.writeFile('data_in.csv', req.body, (err) => {
-        if (err) {
-            console.error(err);
-        } else {
-            console.log('Successfully created file');
-        }
-    });
-    const csvData = await readCSV('./data_in.csv');
+    if (!req.file) {
+        console.error('No file uploaded');
+        res.sendStatus(500);
+        return;
+    }
+    const fileData = req.file.buffer;
+    const csvData = CSVtoData(fileData.toString('utf-8'));
     try {
         for (let data of csvData) {
             const dataToUpsertDirectory = {

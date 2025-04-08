@@ -53,7 +53,7 @@ export async function readCSV(pathToFile: string): Promise<Record<string, any>[]
     });
 }
 
-function CSVtoData(data: string): Record<string, any>[] {
+export function CSVtoData(data: string): Record<string, any>[] {
     let splitData = data.split('\n');
     let headerFields = splitData[0].split(',');
 
