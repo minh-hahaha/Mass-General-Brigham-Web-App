@@ -27,7 +27,7 @@ model Employee {
   position         String
   date_hired       DateTime         @default(now()) @db.Date
   serviceRequest   ServiceRequest[]
-  email            String
+  email            String           @unique
   password         String
   department       Department     @relation(fields: [department_id], references: [dep_id])
   department_id    Int
@@ -35,16 +35,18 @@ model Employee {
 
 model ServiceRequest {
   request_id                   Int               @id @default(autoincrement())
-  assigned_id                  Employee          @relation(fields: [employee_id], references: [id])
-  employee_id                  Int
-  request_date                 DateTime          @default(now()) @db.Date
+  assigned_id                  Employee?          @relation(fields: [employee_id], references: [id])
+  employee_id                  Int?
+  request_date                 DateTime?         @default(now()) @db.Date
   status                       String
   comments                     String?
-  urgency                      Int
-  location                     Location          @relation(name: "ServiceLocation", fields: [location_id], references: [loc_id])
-  location_id                  Int
+  priority                     String
+  location                     Location?         @relation(name: "ServiceLocation", fields: [location_id], references: [loc_id])
+  location_id                  Int?
   service_type                 String
-  patientTransport_id          PatientTransport?
+  patientTransport          PatientTransport? @relation(name: "ServicePatientTransport")
+  transport_type               String
+  request_time                 DateTime?         @default(now()) @db.Time
 }
 
 model PatientTransport {
@@ -52,7 +54,7 @@ model PatientTransport {
   patient_id      Int
   patient_name    String
   pickup_location String
-  servRequest_id  ServiceRequest @relation(fields: [servReq_id], references: [request_id])
+  servRequest_id  ServiceRequest @relation(name: "ServicePatientTransport", fields: [servReq_id], references: [request_id])
 }
 
 model Department {
@@ -74,6 +76,7 @@ model Location {
   loc_type         String
   room_num         Int?
   floor            Int
+
 
   //making prisma happy here
   serviceRequests ServiceRequest[] @relation("ServiceLocation") //unused relation
