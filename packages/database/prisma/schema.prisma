@@ -34,19 +34,19 @@ model Employee {
 }
 
 model ServiceRequest {
-  request_id          Int               @id @default(autoincrement())
-  assigned_id         Employee?         @relation(fields: [employee_id], references: [id])
-  employee_id         Int?
-  request_date        DateTime? //@default(now()) @db.Date
-  status              String
-  comments            String?
-  priority            String
-  location            Location?         @relation(name: "ServiceLocation", fields: [location_id], references: [loc_id])
-  location_id         Int?
-  service_type        String
-  patientTransport_id PatientTransport?
-  transport_type      String
-  request_time        DateTime?         @default(now()) @db.Time
+  request_id       Int               @id @default(autoincrement())
+  assigned_id      Employee?         @relation(fields: [employee_id], references: [id])
+  employee_id      Int?
+  request_date     DateTime?         @default(now()) @db.Date
+  status           String
+  comments         String?
+  priority         String
+  location         Location?         @relation(name: "ServiceLocation", fields: [location_id], references: [loc_id])
+  location_id      Int?
+  service_type     String
+  patientTransport PatientTransport? @relation(name: "ServicePatientTransport")
+  transport_type   String
+  request_time     DateTime?         @default(now()) @db.Time
 }
 
 model PatientTransport {
@@ -54,19 +54,18 @@ model PatientTransport {
   patient_id      Int
   patient_name    String
   pickup_location String
-  servRequest_id  ServiceRequest @relation(fields: [servReq_id], references: [request_id])
+  servRequest_id  ServiceRequest @relation(name: "ServicePatientTransport", fields: [servReq_id], references: [request_id])
 }
 
 model Department {
   dep_id       Int        @id @default(autoincrement())
-  dep_services String[]
+  dep_services String
   dep_name     String
   building_id  Int
   dep_phone    String     @unique
   members      Employee[]
   locations    Location[]
-  building     Building?  @relation(fields: [build_id], references: [building_id])
-  build_id     Int?
+  building     Building   @relation(fields: [building_id], references: [building_id])
 }
 
 model Location {
