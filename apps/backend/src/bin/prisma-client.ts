@@ -18,6 +18,8 @@ async function main() {
                 last_name: 'Person',
                 position: 'Surgeon',
                 date_hired: new Date(2025, 4, 5),
+                email: 'surgeon1@gmail.com',
+                password: 'surgeon',
             },
             {
                 id: 2,
@@ -26,6 +28,8 @@ async function main() {
                 last_name: 'Person',
                 position: 'Nurse',
                 date_hired: new Date(2023, 6, 9),
+                email: 'nurse1@gmail.com',
+                password: 'nurse',
             },
             {
                 id: 3,
@@ -34,6 +38,8 @@ async function main() {
                 last_name: 'Person',
                 position: 'Doctor',
                 date_hired: new Date(2020, 10, 17),
+                email: 'doctor1@gmail.com',
+                password: 'doctor',
             },
             {
                 id: 4,
@@ -42,6 +48,8 @@ async function main() {
                 last_name: 'Person',
                 position: 'Surgeon',
                 date_hired: new Date(2022, 2, 6),
+                email: 'surgeon2@gmail.com',
+                password: 'surgeon2',
             },
             {
                 id: 5,
@@ -50,6 +58,8 @@ async function main() {
                 last_name: 'Person',
                 position: 'Nurse',
                 date_hired: new Date(2024, 1, 14),
+                email: 'nurse2@gmail.com',
+                password: 'nurse2',
             },
         ],
         skipDuplicates: true,
