@@ -44,7 +44,6 @@ const TransportRequestPage = () => {
         e.preventDefault();
 
         const newRequest: transportRequest = {
-            id: 4,
             patientId,
             patientName,
             transportType,
@@ -100,7 +99,7 @@ const TransportRequestPage = () => {
                         <div>
                             <label>Patient ID</label>
                             <input
-                                type="text"
+                                type="number"
                                 id="patientId"
                                 value={patientId}
                                 onChange={(e) => setPatientId(e.target.value)}
