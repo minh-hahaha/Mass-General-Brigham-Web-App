@@ -37,14 +37,16 @@ model ServiceRequest {
   request_id                   Int               @id @default(autoincrement())
   assigned_id                  Employee?          @relation(fields: [employee_id], references: [id])
   employee_id                  Int?
-  request_date                 DateTime          @default(now()) @db.Date
+  request_date                 DateTime?         @default(now()) @db.Date
   status                       String
   comments                     String?
-  urgency                      Int
-  location                     Location          @relation(name: "ServiceLocation", fields: [location_id], references: [loc_id])
-  location_id                  Int
+  priority                     String
+  location                     Location?         @relation(name: "ServiceLocation", fields: [location_id], references: [loc_id])
+  location_id                  Int?
   service_type                 String
   patientTransport_id          PatientTransport?
+  transport_type               String
+  request_time                 DateTime?         @default(now()) @db.Time
 }
 
 model PatientTransport {
