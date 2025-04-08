@@ -13,7 +13,7 @@ router.get('/', async function (req: Request, res: Response) {
                 location: true,
             },
         });
-        // Take the joined Location fields and flatten them for CSV parsing
+        // Take the joined Location fields and flatten them for CSV parsing {xx:xx, yy:yy, zz:{aa:aa, bb:bb}} => {xx:xx, yy:yy, aa:aa, bb:bb}
         const flattenedDirectories = DIRECTORY.flatMap((directory) =>
             directory.location.map((location) => ({
                 ...directory,
@@ -37,7 +37,7 @@ router.get('/', async function (req: Request, res: Response) {
 
 //TODO: move to its own route (probably)
 router.post('/', async function (req: Request, res: Response) {
-    const csvData = await readCSV('./data.csv');
+    const csvData = await readCSV('./nodes.csv');
     try {
         for (let data of csvData) {
             const dataToUpsertDirectory = {

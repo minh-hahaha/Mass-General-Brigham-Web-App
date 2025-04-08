@@ -1,5 +1,4 @@
 import fs from 'node:fs';
-import PrismaClient from './bin/prisma-client';
 
 export async function dataToCSV(data: Record<string, any>[]) {
     const headers: string[] = [];
@@ -28,7 +27,7 @@ export async function dataToCSV(data: Record<string, any>[]) {
                 continue;
             }
             if (typeof value === 'string' && value.includes(',')) {
-                csvData.push('"' + value + '"');
+                csvData.push('"' + value.replaceAll('"', '""') + '"');
             } else {
                 csvData.push(value);
             }
@@ -49,7 +48,7 @@ export async function dataToCSV(data: Record<string, any>[]) {
 
 export async function readCSV(pathToFile: string): Promise<Record<string, any>[]> {
     return new Promise((resolve, reject) => {
-        fs.readFile(pathToFile, 'utf8', async (err, data) => {
+        fs.readFile(pathToFile, 'utf8', (err, data) => {
             if (err) {
                 console.error(err);
                 reject(err);
@@ -59,7 +58,7 @@ export async function readCSV(pathToFile: string): Promise<Record<string, any>[]
     });
 }
 
-async function CSVtoData(data: string): Promise<Record<string, any>[]> {
+function CSVtoData(data: string): Record<string, any>[] {
     console.log('Data to CSV');
 
     let splitData = data.split('\n');
@@ -97,8 +96,17 @@ async function CSVtoData(data: string): Promise<Record<string, any>[]> {
                 continue;
             }
 
+            // Check if the value is boolean
+            if (value === 'true') {
+                obj[headerFields[j]] = true;
+                continue;
+            } else if (value === 'false') {
+                obj[headerFields[j]] = false;
+                continue;
+            }
+
             // Otherwise, add as is
-            obj[headerFields[j]] = row[j].replaceAll('"@"', ',');
+            obj[headerFields[j]] = row[j];
         }
         console.log(obj);
         objs.push(obj);
@@ -107,22 +115,31 @@ async function CSVtoData(data: string): Promise<Record<string, any>[]> {
 }
 
 function splitString(row: string): string[] {
-    let ignoreCommas = false;
-    let splitString: string[] = [];
+    let inQuotes = false;
     let stringPiece = '';
-    for (let char of row) {
+    let splitString: string[] = [];
+
+    for (let i = 0; i < row.length; i++) {
+        let char = row[i];
+        // Check for quote marks, denoting the final string having "'s or a , in it
         if (char === '"') {
-            ignoreCommas = !ignoreCommas;
-            continue;
-        }
-        if (char === ',' && !ignoreCommas) {
+            // Check for double quotes, which means that one of the "'s is part of the original string
+            if (inQuotes && char[i + 1] == '"') {
+                stringPiece += '"';
+                i++;
+            } else {
+                inQuotes = !inQuotes;
+            }
+            // A comma not in quotes signifies the end of the string
+        } else if (char === ',' && !inQuotes) {
             splitString.push(stringPiece);
             stringPiece = '';
+            // Otherwise add the character normally
         } else {
             stringPiece += char;
         }
     }
+    // Add the final string to the array
     splitString.push(stringPiece);
-
     return splitString;
 }
