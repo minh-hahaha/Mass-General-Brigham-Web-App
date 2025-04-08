@@ -5,7 +5,7 @@ interface ButtonProps {
     onClick: () => void;
     children: React.ReactNode;
     variant: 'primary' | 'secondary';
-    disabled: boolean;
+    disabled: boolean | undefined;
 }
 
 // ExampleButton component definition
