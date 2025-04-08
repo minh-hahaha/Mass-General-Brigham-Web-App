@@ -58,7 +58,7 @@ class graph{
 
 
     bfs (starterNode: myNode, targetNode: myNode) : myNode[] | null | undefined {
-        if (!starterNode || !targetNode || !graph){
+        if (!starterNode || !targetNode){
             return null;
         }
 
@@ -87,6 +87,7 @@ class graph{
             }
 
             let neighbours: myNode[] = [];
+            //adding to visited, and updating queues to add the neighbours
             for(const edge of this.edges){
                 if (edge.from.id === currentNode.id){
                     const neighbour = edge.to;
@@ -166,6 +167,6 @@ class graph{
 
 
 // Need to test my BFS
-
+const myGraph = new graph();
 
 
