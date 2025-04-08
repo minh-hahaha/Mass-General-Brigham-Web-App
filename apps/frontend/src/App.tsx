@@ -4,8 +4,10 @@ import NavBar from './NavBar.tsx';
 import LogoBar from './components/LogoBar.tsx';
 import LoginPage from './routes/LoginPage.tsx';
 import HomePage from './routes/HomePage.tsx';
-import ChestnutHillDirectory from './routes/ChestnutHillDirectory.tsx';
 import ServiceRequestPage from './routes/ServiceRequestPage.tsx';
+import ServiceRequestDisplayPage from './routes/ServiceRequestDisplayPage.tsx';
+import DirectoryDisplayPage from './routes/DirectoryDisplayPage.tsx';
+import ImportExportDirectoryPage from './routes/ImportExportDirectoryPage.tsx';
 
 function App() {
     return(
@@ -22,8 +24,10 @@ function App() {
                     <Routes>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/Login" element={<LoginPage />} />
-                        <Route path="/ChestnutHillDirectory" element={<ChestnutHillDirectory />} />
                         <Route path="/ServiceRequestPage" element={<ServiceRequestPage />} />
+                        <Route path="/ServiceRequestDisplay" element={<ServiceRequestDisplayPage />} />
+                        <Route path="/ImportExportDirectory" element={<ImportExportDirectoryPage />} />
+                        <Route path="/DirectoryDisplay" element={<DirectoryDisplayPage />} />
 
                     </Routes>
                 </div>
