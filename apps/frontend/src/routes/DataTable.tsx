@@ -1,11 +1,18 @@
-//papaparse won't install; figure out how to parse csv manually
+const axios = require('axios').default;
+const data = axios.get('/directory');
+
+function getData()  {
+    for (let key in data) {
+        let value = data[key];
+    }
 
 export default function DataTable() {
+
     return (
-        <section className="h-screen rounded-md border-black border-2 flex flex-row flex-col justify-center my-25 mx-25 items-center">
-            <div className="">
-               Hello
+        <div className='flex justify-center py-20 h-screen'>
+            <div className='w-120 h-120 border-3 rounded-lg'>
+                Hello
             </div>
-        </section>
+        </div>
     )
 }

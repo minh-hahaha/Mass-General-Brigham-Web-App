@@ -6,11 +6,11 @@ const LinkHover: React.FC = ({ children }) => {
         className='
                 text-white
                 active:bg-blue-600
-                focus:outline-2
-                hover:bg-blue-700
                 pr-2
-                my-1
-                py-2'>
+                py-4
+                transition-[delay-150 duration-200 ease-in]
+                hover:bg-blue-700
+                '>
         {children}
     </li>;
 }
