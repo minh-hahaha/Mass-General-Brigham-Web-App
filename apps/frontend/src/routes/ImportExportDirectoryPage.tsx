@@ -51,7 +51,9 @@ const ImportExportDirectoryPage = () => {
         <div className="space-y-2">
             <input
                 className="border border-rounded border-r-1px"
-                type="file" onChange={handleFileChange} />
+                type="file" onChange={handleFileChange}
+                accept=".csv, text/csv"
+            />
             <MGBButton onClick={handleFileUpload} variant={'primary'} disabled={false}> Upload!</MGBButton>
             {upload ? (
                 <p>Upload Successfully</p>
