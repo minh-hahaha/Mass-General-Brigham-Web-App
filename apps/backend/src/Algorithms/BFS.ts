@@ -1,5 +1,8 @@
+import { loadGraph } from './ExportNodesAndEdges.ts';
 
-class myNode{
+
+
+export class myNode{
     id: String;
     xPixel: number;
     yPixel: number;
@@ -19,7 +22,7 @@ class myNode{
 
 }
 
-class myEdge{
+export class myEdge{
     id: String;
     from: myNode;
     to: myNode;
@@ -35,7 +38,7 @@ class myEdge{
 
 
 
-class graph{
+export class Graph{
     /* need to create the graph for traversal */
     nodes: myNode[];
     edges: myEdge[];
@@ -57,7 +60,10 @@ class graph{
     }
 }
 
-function bfs (starterNode: myNode, targetNode: myNode, graph: graph){
+async function bfs (starterNode: myNode, targetNode: myNode){
+
+    // calls upon loadGraph to fill the graph with nodes and edges from the files.
+    const graph = await loadGraph('./CSVFiles/tempnodes.csv', './CSVFiles/tempedges.csv')
     console.log(starterNode);
     return starterNode;
 
@@ -65,7 +71,7 @@ function bfs (starterNode: myNode, targetNode: myNode, graph: graph){
 
 
 /* I am testing my BFS*/
-const myGraph = new graph();
+const myGraph = new Graph();
 
 const practiceNodeA = myGraph.addNode("A",0,0, 1, "A");
 const practiceNode1 = myGraph.addNode("1",0,0, 1, "1");
