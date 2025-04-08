@@ -77,16 +77,16 @@ async function main() {
                                                                                                           yyyy:mm:dd */
             {
 
-                first_name: 'Admin',
-                last_name: 'Admin',
+                first_name: 'AdMinh',
+                last_name: 'Ha',
                 position: 'WebAdmin',
-                email: 'Admin',
-                password: 'Admin',
+                email: 'admin',
+                password: 'admin',
                 department_id: 1,
             },
             {
 
-                first_name: 'Test1',
+                first_name: 'Test',
                 middle_name: 'A',
                 last_name: 'Person',
                 position: 'Surgeon',
@@ -189,7 +189,7 @@ async function main() {
 }
 
 
-main()
+/*main()
     .then(async () => {
         await client.$disconnect()
     })
@@ -198,7 +198,7 @@ main()
         await client.$disconnect()
 
 
-    })
+    })*/
 main().then(() => console.log('Temp Data Loaded'));
 
 

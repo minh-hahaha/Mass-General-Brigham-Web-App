@@ -8,7 +8,7 @@ const client = new PrismaClient();
 //if there's an error with "TABLECreateManyInput" make sure to run "yarn workspace database generate" in the console
 
 async function main() {
-    const createEmployee = await client.employee.create({
+   /* const createEmployee = await client.employee.create({
         data: {
             first_name: 'AdMinh',
             middle_name: '',
@@ -19,7 +19,7 @@ async function main() {
             password: 'admin',
             admin: true,
         },
-    });
+    });*/
 }
 
 main().then(() => console.log('Temp Data Loaded'));
