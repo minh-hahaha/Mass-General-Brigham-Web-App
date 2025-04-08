@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface TransportRequest {
     id: number;
@@ -23,15 +23,25 @@ interface ConfirmationMessageProps {
 }
 
 function ConfirmMesg({ request, onClose }: ConfirmationMessageProps) {
-    return (
-        <div className="bg-blue-600 text-white">
-            <h2 className="text-[20px] font-bold">Request Submitted Successfully</h2>
-            <p className="text-[20px] font-bold">Request ID: #{request.id}</p>
-            <p>Status: {request.status}</p>
-            <p>Date Submitted: {request.requestDate}</p>
+    const [visible, setVisible] = useState(true);
 
-            <div className="text-center text-[20px] font-bold">
-                Transport request has been submitted to the system
+    // set a timer
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setVisible(false);
+            if (onClose) onClose();
+        }, 2000);
+
+        // clean up the timer
+        return () => clearTimeout(timer);
+    }, [onClose]);
+
+    if (!visible) return null;
+
+    return (
+        <div className="bg-blue-600 text-white p-6 rounded-lg shadow-lg animate-fade-in">
+            <div className="flex items-center mb-4">
+                <h2 className="text-xl font-bold">Request Submitted Successfully</h2>
             </div>
         </div>
     );
