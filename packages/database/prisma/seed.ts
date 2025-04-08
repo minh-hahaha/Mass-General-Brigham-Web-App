@@ -9,47 +9,7 @@ import client from '../../../apps/backend/src/bin/prisma-client.ts'
 //if there's an error with "TABLECreateManyInput" make sure to run "yarn workspace database generate" in the console
 
 async function main() {
-    const createManyDepartments = await client.department.createMany({
-        data: [
-            /*                                                                                                    yyyy:mm:dd */
-            {
-                dep_id: 1,
-                dep_name: 'Department1',
-                building_id: 0,
-                dep_phone: '1',
-                dep_services: 'surgery',
-            },
-            {
-                dep_id: 2,
-                dep_name: 'Department2',
-                building_id: 0,
-                dep_phone: '12',
-                dep_services: 'surgery',
-            },
-            {
-                dep_id: 3,
-                dep_name: 'Department3',
-                building_id: 0,
-                dep_phone: '123',
-                dep_services: 'surgery',
-            },
-            {
-                dep_id: 4,
-                dep_name: 'Department4',
-                building_id: 0,
-                dep_phone: '1234',
-                dep_services: 'surgery',
-            },
-            {
-                dep_id: 5,
-                dep_name: 'Department5',
-                building_id: 0,
-                dep_phone: '12345',
-                dep_services: 'surgery',
-            },
-        ],
-        skipDuplicates: true,
-    });
+
     const createManyBuildings = await client.building.createMany({
         data: [
             /*                                                                                                    yyyy:mm:dd */
@@ -59,6 +19,47 @@ async function main() {
 
             },
         ],
+    });
+    const createManyDepartments = await client.department.createMany({
+        data: [
+            /*                                                                                                    yyyy:mm:dd */
+            {
+                dep_id: 1,
+                dep_name: 'Department1',
+                building_id: 1,
+                dep_phone: '1',
+                dep_services: 'surgery',
+            },
+            {
+                dep_id: 2,
+                dep_name: 'Department2',
+                building_id: 1,
+                dep_phone: '12',
+                dep_services: 'surgery',
+            },
+            {
+                dep_id: 3,
+                dep_name: 'Department3',
+                building_id: 1,
+                dep_phone: '123',
+                dep_services: 'surgery',
+            },
+            {
+                dep_id: 4,
+                dep_name: 'Department4',
+                building_id: 1,
+                dep_phone: '1234',
+                dep_services: 'surgery',
+            },
+            {
+                dep_id: 5,
+                dep_name: 'Department5',
+                building_id: 1,
+                dep_phone: '12345',
+                dep_services: 'surgery',
+            },
+        ],
+        skipDuplicates: true,
     });
     const createManyLocations = await client.location.createMany({
         data: [
@@ -72,10 +73,20 @@ async function main() {
 
     const createManyEmployees = await client.employee.createMany({
         data: [
-            /*                                                                                                    yyyy:mm:dd */
+            /*      
+                                                                                                          yyyy:mm:dd */
             {
-                id: 1,
-                first_name: 'Test',
+
+                first_name: 'Admin',
+                last_name: 'Admin',
+                position: 'WebAdmin',
+                email: 'Admin',
+                password: 'Admin',
+                department_id: 1,
+            },
+            {
+
+                first_name: 'Test1',
                 middle_name: 'A',
                 last_name: 'Person',
                 position: 'Surgeon',
@@ -85,7 +96,7 @@ async function main() {
                 department_id: 1,
             },
             {
-                id: 2,
+
                 first_name: 'Test',
                 middle_name: 'B',
                 last_name: 'Person',
@@ -96,7 +107,7 @@ async function main() {
                 department_id: 2,
             },
             {
-                id: 3,
+
                 first_name: 'Test',
                 middle_name: 'C',
                 last_name: 'Person',
@@ -107,7 +118,7 @@ async function main() {
                 department_id: 3,
             },
             {
-                id: 4,
+
                 first_name: 'Test',
                 middle_name: 'D',
                 last_name: 'Person',
@@ -118,7 +129,7 @@ async function main() {
                 department_id: 4,
             },
             {
-                id: 5,
+
                 first_name: 'Test',
                 middle_name: 'E',
                 last_name: 'Person',
