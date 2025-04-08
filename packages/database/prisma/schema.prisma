@@ -44,7 +44,7 @@ model ServiceRequest {
   location                     Location?         @relation(name: "ServiceLocation", fields: [location_id], references: [loc_id])
   location_id                  Int?
   service_type                 String
-  patientTransport_id          PatientTransport?
+  patientTransport          PatientTransport? @relation(name: "ServicePatientTransport")
   transport_type               String
   request_time                 DateTime?         @default(now()) @db.Time
 }
@@ -54,7 +54,7 @@ model PatientTransport {
   patient_id      Int
   patient_name    String
   pickup_location String
-  servRequest_id  ServiceRequest @relation(fields: [servReq_id], references: [request_id])
+  servRequest_id  ServiceRequest @relation(name: "ServicePatientTransport", fields: [servReq_id], references: [request_id])
 }
 
 model Department {
@@ -76,6 +76,7 @@ model Location {
   loc_type         String
   room_num         Int?
   floor            Int
+
 
   //making prisma happy here
   serviceRequests ServiceRequest[] @relation("ServiceLocation") //unused relation
