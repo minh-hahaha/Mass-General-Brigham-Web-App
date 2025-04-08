@@ -15,9 +15,6 @@ router.get('/', async function (req: Request, res: Response) {
                 last_name: 'asc',
             },
         });
-        // Temporary for testing
-        //TODO: move to its own route (probably)
-        await dataToCSV(EMPLOYEE_LIST);
         console.info('Successfully pulled employees score'); // Log that it was successful
         console.log(EMPLOYEE_LIST);
         res.send(EMPLOYEE_LIST);
@@ -29,9 +26,9 @@ router.get('/', async function (req: Request, res: Response) {
     }
 });
 
-//TODO: move to its own route (probably)
-router.post('/', async function (req: Request, res: Response) {
-    const csvData = await readCSV('./data.csv');
+//Note: Route not set up yet
+router.post('/csv', async function (req: Request, res: Response) {
+    const csvData = await readCSV('./id.csv');
     try {
         for (let data of csvData) {
             const dataToUpsert = {
@@ -41,6 +38,10 @@ router.post('/', async function (req: Request, res: Response) {
                 last_name: data.last_name,
                 position: data.position,
                 date_hired: data.date_hired,
+                service_request: data.service_request,
+                email: data.email,
+                password: data.password,
+                department_id: data.department_id,
             };
             await PrismaClient.employee.upsert({
                 where: { id: data.id },
