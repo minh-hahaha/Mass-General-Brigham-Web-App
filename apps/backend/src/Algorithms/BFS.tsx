@@ -5,11 +5,11 @@ class myNode{
     xPixel: number;
     yPixel: number;
 
-    constructor(id: string, neighbors: myNode[],  xPixel: number,yPixel: number){
+    constructor(id: string, xPixel: number,yPixel: number){
         /* Do i need the neighbors */
 
         this.id = id;
-        this.neighbors = neighbors;
+        this.neighbors = [];
         this.xPixel = xPixel;
         this.yPixel = yPixel;
     }
@@ -27,9 +27,10 @@ class graph{
     constructor(nodes: myNode[]){
         this.nodes = nodes;
     }
-    addNode(id:string, neighbors:myNode[], xPixel:number, yPixel:number){
-        const node = new myNode(id, neighbors, xPixel, yPixel);
+    addNode(id:string, xPixel:number, yPixel:number){
+        const node = new myNode(id, xPixel, yPixel);
         this.nodes.push(node);
+        return node;
     }
 
     addEdge(sourceNode: myNode, destinationNode: myNode){
