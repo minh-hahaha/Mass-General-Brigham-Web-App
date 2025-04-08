@@ -18,14 +18,11 @@ interface transportRequest {
     assignedToId: number;
 }
 
-export interface transportForm {
-    request: transportRequest;
-}
 
-export async function SubmitTransportRequest(request: transportForm) {
+export async function SubmitTransportRequest(request: transportRequest) {
     await axios.post(ROUTES.PATIENTTRANSPORT, request);
 }
 
-export async function getTransportRequest(request: transportForm) {
+export async function GetTransportRequest(request: transportRequest) {
     return (await axios.get<transportRequest>(ROUTES.PATIENTTRANSPORT)).data;
 }
