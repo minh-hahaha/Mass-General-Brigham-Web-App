@@ -58,93 +58,45 @@ const TransportRequestPage = () => {
         }
         setSubmittedRequest(newRequest);
 
-        // clear out form here.....
-        // .........
+        handleReset();
     }
+
+    const handleReset=()=>{
+        setPatientId('');
+        setPatientName('');
+        setTransportType('Ambulance');
+        setPriority('Low');
+        setPickupLocation('');
+        setDropOffLocation('');
+        setPickupDate(new Date().toISOString().split('T')[0]);
+        setPickupTime('');
+        setStatus('Pending');
+        setNotes('');
+        setRequesterId('');
+        setRequestDate(new Date().toISOString().split('T')[0]);
+        setAssignedToId('');
+    }
+
 
     const mgbLocations = ["Chestnut Hill"]
 
-
-    // // React useEffect hook — read more here: https://react.dev/reference/react/useEffect
-    // // This will run on page load
-    // useEffect(() => {
-    //     fetchScore();
-    // }, []);
-    //
-    // // Fetches the current score from the backend and updates the corresponding useStates
-    // async function fetchScore() {
-    //     try {
-    //         // Send a GET request to the backend at API_ROUTES.SCORE
-    //         const res = await axios.get(API_ROUTES.SCORE);
-    //
-    //         // HTTP 200 = OK (the request was successful)
-    //         if (res.status === 200) {
-    //             setLoading(false);
-    //
-    //             // res.data holds a JSON object with a property called score
-    //             // This object is created in the backend route (score.ts)
-    //             // It's a good idea to define the property keys in a common constants file
-    //             // To avoid potential runtime errors due to typos or missing properties
-    //             // You can then use bracket notation to access these properties dynamically
-    //             // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors#bracket_notation
-    //             setScore(res.data.score);
-    //         }
-    //         // HTTP 204 = No data (sent by the backend when the DB is empty)
-    //         else if (res.status === 204) {
-    //             // Set loading to false and use default value of score
-    //             setLoading(false);
-    //         }
-    //     } catch (error) {
-    //         console.log('Error fetching score, retrying:', error);
-    //
-    //         // Retry the request after a short delay
-    //         // During development, if the frontend loads before the backend, the request will fail
-    //         setTimeout(() => fetchScore(), 1500);
-    //     }
-    // }
-    //
-    // // Sends a post request to update the score
-    // async function submitScore() {
-    //     try {
-    //         // Build data JSON
-    //         const data = JSON.stringify({
-    //             time: new Date(),
-    //             score: score,
-    //         });
-    //
-    //         const res = await axios.post(API_ROUTES.SCORE, data, {
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //         });
-    //
-    //         // This will output in your browser console
-    //         if (res.status == 200) {
-    //             console.log('Added score');
-    //         }
-    //     } catch (error) {
-    //         console.log('Error submitting score:', error);
-    //     }
-    // }
-
     return (
-        <div className="patient-transport-page">
-            <h2> Patient Transportation Request</h2>
-
-            <div className="transport-request-container">
-                <form onSubmit={handleSubmit} className="transport-request-form">
-                    <div className="form-section">
-                        <h3>Patient Information</h3>
+        <div>
+            <h1 className="text-[20px] font-bold">Patient Transportation Request</h1>
+            <div>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <h3><b>Patient Information</b></h3>
 
                         <div>
-                            <label>Patient ID (MRN)</label>
+                            <label>Patient ID</label>
                             <input
                                 type="text"
                                 id="patientId"
                                 value={patientId}
                                 onChange={(e) => setPatientId(e.target.value)}
                                 required
-                                placeholder="Enter patient MRN"
+                                placeholder="Enter patient ID"
                             />
                         </div>
 
@@ -156,14 +108,13 @@ const TransportRequestPage = () => {
                                 value={patientName}
                                 onChange={(e) => setPatientName(e.target.value)}
                                 required
-                                placeholder="Full patient name"
+                                placeholder="Patient Full Name"
                             />
                         </div>
                     </div>
 
                     <div>
-                        <h3>Transport Details</h3>
-
+                        <h3><b>Transport Details</b></h3>
                         <div>
                             <label>Transport Type</label>
                             <select
@@ -263,9 +214,7 @@ const TransportRequestPage = () => {
                     </div>
 
                     <div>
-                        <h3>Requester Information</h3>
-
-
+                        <h3><b>Requester Information</b></h3>
                         <div>
                             <label>Requester ID</label>
                             <input
@@ -311,7 +260,9 @@ const TransportRequestPage = () => {
                             ></textarea>
                         </div>
                     </div>
-                    <MGBButton onClick={()=>handleSubmit} variant={'primary'} disabled={false}>Submit Transport Request</MGBButton>
+                    <MGBButton onClick={()=>handleSubmit} variant={'primary'} disabled={false}>Submit Request</MGBButton>
+                    <br/>
+                    <MGBButton onClick={()=>handleReset()} variant={'primary'} disabled={false}>Clear Form</MGBButton>
 
                 </form>
 
