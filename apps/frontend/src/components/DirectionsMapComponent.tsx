@@ -107,6 +107,7 @@ const  DirectionsMapComponent = () => {
     const [parking, setParking] = useState(false)
     const [showHospital, setShowHospital] = useState(false)
     const handleHere = () => {
+        setShowHospital(true);
         setParking(true);
     }
 
