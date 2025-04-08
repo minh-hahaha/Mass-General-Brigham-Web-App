@@ -2,15 +2,6 @@ import fs from 'node:fs';
 
 export async function dataToCSV(data: Record<string, any>[]) {
     const headers: string[] = [];
-    const dataHeaders = data.pop();
-    if (dataHeaders !== undefined) {
-        Object.entries(dataHeaders).forEach(([k, v]) => {
-            if (!Array.isArray(v)) {
-                headers.push(k);
-            }
-        });
-    }
-
     let dataToWrite = '';
     let row = data.pop();
     while (row !== undefined) {
@@ -39,9 +30,9 @@ export async function dataToCSV(data: Record<string, any>[]) {
         dataToWrite += csvData.toString() + '\n';
         row = data.pop();
     }
-
-    // Write all data to data.csv
-    fs.writeFile('data.csv', headers + '\n' + dataToWrite, (err) => {
+    // Write all data to header_name.csv
+    // Uses the first key as the name of the file EX: dep_id.csv
+    fs.writeFile(headers[0] + '.csv', headers + '\n' + dataToWrite, (err) => {
         if (err) {
             console.error(err);
         } else {
