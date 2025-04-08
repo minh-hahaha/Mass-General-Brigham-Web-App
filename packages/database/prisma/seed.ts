@@ -1,15 +1,81 @@
-import { PrismaClient } from 'database'
+import client from '../../../apps/backend/src/bin/prisma-client.ts'
 
 
 // Create the prisma client, this automatically connects to the database
-const prisma = new PrismaClient();
+//const prisma = new PrismaClient();
 
 //EXAMPLE DATABASE VALUES
 //is ran with "yarn run dev"
 //if there's an error with "TABLECreateManyInput" make sure to run "yarn workspace database generate" in the console
 
 async function main() {
-    const createManyEmployees = await prisma.employee.createMany({
+    const createManyDepartments = await client.department.createMany({
+        data: [
+            /*                                                                                                    yyyy:mm:dd */
+            {
+                dep_id: 1,
+                dep_name: 'Department1',
+                building_id: 0,
+                dep_phone: '1',
+                build_id: 0,
+                dep_services: ['surgery','triage']
+            },
+            {
+                dep_id: 2,
+                dep_name: 'Department2',
+                building_id: 0,
+                dep_phone: '12',
+                build_id: 0,
+                dep_services: ['surgery','triage']
+            },
+            {
+                dep_id: 3,
+                dep_name: 'Department3',
+                building_id: 0,
+                dep_phone: '123',
+                build_id: 0,
+                dep_services: ['surgery','triage']
+            },
+            {
+                dep_id: 4,
+                dep_name: 'Department4',
+                building_id: 0,
+                dep_phone: '1234',
+                build_id: 0,
+                dep_services: ['surgery','triage']
+            },
+            {
+                dep_id: 5,
+                dep_name: 'Department5',
+                building_id: 0,
+                dep_phone: '12345',
+                build_id: 0,
+                dep_services: ['surgery','triage']
+            },
+        ],
+        skipDuplicates: true,
+    });
+    const createManyBuildings = await client.building.createMany({
+        data: [
+            /*                                                                                                    yyyy:mm:dd */
+            {
+
+                building_name: 'Building0',
+
+            },
+        ],
+    });
+    const createManyLocations = await client.location.createMany({
+        data: [
+            /*                                                                                                    yyyy:mm:dd */
+            {
+                loc_type: 'hallway',
+                floor: 0,
+            },
+        ],
+    });
+
+    const createManyEmployees = await client.employee.createMany({
         data: [
             /*                                                                                                    yyyy:mm:dd */
             {
@@ -71,133 +137,59 @@ async function main() {
         skipDuplicates: true,
     });
 
-    const createManyServiceReqs = await prisma.serviceRequest.createMany({
+    const createManyServiceReqs = await client.serviceRequest.createMany({
         data: [
-            /*                                      yyyy:mm:dd  hh:mm:ss */
+            /* 
+                                                 yyyy:mm:dd  hh:mm:ss */
+
             {
-                request_id: 1,
-                employee_id: 1,
-                request_date: new Date(2025, 3, 15, 13, 32, 10),
-                status: 'in progress',
-                comments: 'comment',
-                priority: "urgent",
-                location_id: 1,
-                service_type: 'equipment',
-                transport_type:'Equipment Request',
+                status: 'Completed',
+                priority: 'urgent',
+                service_type: 'Patient Transportation',
+                transport_type: 'Gurney',
+            },
+
+            {
+                status: 'In Progress',
+                priority: 'urgent',
+                service_type: 'Equipment Request',
+                transport_type: 'Cart',
             },
             {
-                request_id: 2,
-                employee_id: null,
-                request_date: new Date(2025, 3, 6, 9, 15, 14),
-                status: 'not started',
-                comments: null,
-                priority: "urgent",
-                location_id: 1,
-                service_type: 'equipment',
-                transport_type:'Equipment Request',
+                status: 'Queued',
+                priority: 'urgent',
+                service_type: 'X-Ray',
+                transport_type: 'None',
             },
             {
-                request_id: 3,
-                employee_id: 2,
-                request_date: new Date(2025, 4, 2, 10, 4, 38),
-                status: 'in progress',
-                comments: null,
-                priority: "urgent",
-                location_id: 1,
-                service_type: 'equipment',
-                transport_type:'Equipment Request',
+                status: 'Queued',
+                priority: 'urgent',
+                service_type: 'equipment request',
+                transport_type: 'cart',
             },
             {
-                request_id: 4,
-                employee_id: 4,
-                request_date: new Date(2025, 2, 20, 7, 8, 50),
-                status: 'completed',
-                comments: 'comment',
-                priority: "urgent",
-                location_id: 1,
-                service_type: 'equipment',
-                transport_type:'Equipment Request',
-            },
-            {
-                request_id: 5,
-                employee_id: 2,
-                request_date: new Date(2025, 1, 31, 15, 1, 42),
-                status: 'in progress',
-                comments: 'comment',
-                priority: "urgent",
-                location_id: 1,
-                service_type: 'equipment',
-                transport_type:'Equipment Request',
-            },
-            {
-                request_id: 6,
-                employee_id: 3,
-                request_date: new Date(2025, 4, 1, 13, 23, 30),
-                status: 'not started',
-                comments: 'comment',
-                priority: "urgent",
-                location_id: 1,
-                service_type: 'equipment',
-                transport_type:'Equipment Request',
-            },
-            {
-                request_id: 7,
-                employee_id: 3,
-                request_date: new Date(2025, 1, 16, 12, 54, 14),
-                status: 'completed',
-                comments: null,
-                priority: "urgent",
-                location_id: 1,
-                service_type: 'equipment',
-                transport_type:'Equipment Request',
-            },
-            {
-                request_id: 8,
-                employee_id: null,
-                request_date: new Date(2025, 4, 3, 10, 33, 11),
-                status: 'not started',
-                comments: 'comment',
-                priority: "urgent",
-                location_id: 1,
-                service_type: 'equipment',
-                transport_type:'Equipment Request',
-            },
-            {
-                request_id: 9,
-                employee_id: null,
-                request_date: new Date(2025, 3, 19, 15, 39, 20),
-                status: 'not started',
-                comments: null,
-                priority: "urgent",
-                location_id: 1,
-                service_type: 'equipment',
-                transport_type:'Equipment Request',
-            },
-            {
-                request_id: 10,
-                employee_id: 5,
-                request_date: new Date(2025, 4, 2, 3, 42, 15),
-                status: 'completed',
-                comments: null,
-                priority: "urgent",
-                location_id: 1,
-                service_type: 'equipment',
-                transport_type:'Equipment Request',
+                status: 'Queued',
+                priority: 'urgent',
+                service_type: 'Blood Work',
+                transport_type: 'None',
             },
         ],
         skipDuplicates: true,
     });
-    console.log({ createManyEmployees, createManyServiceReqs})
+
+
+
+    console.log({ createManyDepartments, createManyBuildings , createManyLocations, createManyEmployees , createManyServiceReqs});
 }
 
 
 main()
     .then(async () => {
-        await prisma.$disconnect()
+        await client.$disconnect()
     })
     .catch(async (e) => {
         console.error(e)
-        await prisma.$disconnect()
+        await client.$disconnect()
 
 
     })

@@ -37,7 +37,7 @@ model ServiceRequest {
   request_id          Int               @id @default(autoincrement())
   assigned_id         Employee?         @relation(fields: [employee_id], references: [id])
   employee_id         Int?
-  request_date        DateTime?         @default(now()) @db.Date
+  request_date        DateTime? //@default(now()) @db.Date
   status              String
   comments            String?
   priority            String
@@ -65,8 +65,8 @@ model Department {
   dep_phone    String     @unique
   members      Employee[]
   locations    Location[]
-  building     Building   @relation(fields: [build_id], references: [building_id])
-  build_id     Int
+  building     Building?  @relation(fields: [build_id], references: [building_id])
+  build_id     Int?
 }
 
 model Location {
