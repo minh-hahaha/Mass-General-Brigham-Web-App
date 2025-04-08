@@ -112,61 +112,35 @@ class graph{
     }
 }
 
-// remove undefined eventually
-// function bfs (starterNode: myNode, targetNode: myNode, graph: graph) : {nodes: myNode[], edges: myEdge[]} | null | undefined {
-//
-//     // if there is an error with the node, or the grpah return nulls
-//     if (!starterNode || !targetNode || !graph){
-//         return null;
-//     }
-//
-//     const visited: Set<String> = new Set();
-//     const queue: {
-//         pathNodes: myNode[];
-//         pathEdges: myEdge[];
-//         node: myNode;
-//
-//     } [] = [];
-//
-//     visited.add(starterNode.id);
-//     queue.push({pathNodes:[starterNode],pathEdges: [], node: starterNode});
-//
-//     while (queue.length > 0){
-//         //const [current, edge, currentPath, currentNodes] = queue.shift();
-//         // let node = queue.shift() as myNode;
-//         const {pathNodes, pathEdges, node} = queue.shift()!;
-//         if(targetNode.id === node.id){
-//             return {nodes: pathNodes, edges: pathEdges};
-//         }
-//         if(!visited.has(node.id)){
-//             visited.add(node.id);
-//         }
-//
-//         // get all the neighbors that are yet to be visited
-//
-//         const unvistedNeighbors = graph.edges.filter(
-//             (edge) => edge.to.id === node.id || edge.from.id === node.id
-//         )
-//
-//         for ( const edge of unvistedNeighbors){
-//             const path
-//             if(!visited.has(edge.id)){
-//                queue.push({
-//                    pathNodes: [...pathNodes,unvistedNeighbors],
-//                    pathEdges: [...pathEdges,edge],
-//                    node: unvistedNeighbors
-//                 });
-//             }
-//         }
-//
-//
-//     }
-//
-// }
-
 
 
 // Need to test my BFS
-const myGraph = new graph();
+const g = new graph();
+
+const A = g.addNode("A", 0, 0, 1, "type");
+const B = g.addNode("B", -1, 1, 1, "type");
+const C = g.addNode("C", 0, 1, 1, "type");
+const D = g.addNode("D", 1, 1, 1, "type");
+const E = g.addNode("E", -2, 2, 1, "type");
+const F = g.addNode("F", -1, 2, 1, "type");
+const H = g.addNode("H", 0, 2, 1, "type");
+const G = g.addNode("G", 1, 3, 1, "type");
+
+// Edges
+g.addEdge(A, B, "e1");
+g.addEdge(A, C, "e2");
+g.addEdge(A, D, "e3");
+g.addEdge(B, E, "e4");
+g.addEdge(B, F, "e5");
+g.addEdge(C, H, "e6");
+g.addEdge(F, H, "e7");
+g.addEdge(D, G, "e8");
+g.addEdge(H, G, "e9");
+g.addEdge(D, H, "e10"); // Optional shortcut
+
+
+
+console.log(g.bfs(A,G));
+
 
 
