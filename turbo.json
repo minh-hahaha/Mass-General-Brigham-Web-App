@@ -37,7 +37,8 @@
                 "POSTGRES_DB",
                 "POSTGRES_PORT",
                 "POSTGRES_HOST",
-                "POSTGRES_URL"
+                "POSTGRES_URL",
+                "VITE_GOOGLE_MAPS_API_KEY"
             ],
             "dependsOn": ["^dependencies"],
             "outputs": ["build/**"]
