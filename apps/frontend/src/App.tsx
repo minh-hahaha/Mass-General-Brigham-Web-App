@@ -9,12 +9,12 @@ import ServiceRequestPage from './routes/ServiceRequestPage.tsx';
 
 function App() {
     return(
-        <>
+        <div className="h-dvh flex flex-col">
         <div>
             <LogoBar />
         </div>
         <BrowserRouter>
-            <div className="flex flex-row h-screen">
+            <div className="flex flex-row flex-1">
                 <div className="basis-1/6">
                     <NavBar />
                 </div>
@@ -30,7 +30,7 @@ function App() {
             </div>
 
         </BrowserRouter>
-        </>
+        </div>
     )
 
 
