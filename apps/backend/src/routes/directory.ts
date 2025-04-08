@@ -49,12 +49,9 @@ router.get('/csv', async function (req: Request, res: Response) {
         console.info('Successfully pulled directory'); // Log that it was successful
         // Uses the first key as the name of the file EX: dep_id.csv
         const fileName = Object.keys(DIRECTORY[0])[0].toString();
-        res.sendFile(
-            `${fileName}.csv`,
-            {
-                root: path.join(__dirname, '../../'),
-            },
-        );
+        res.sendFile(`${fileName}.csv`, {
+            root: path.join(__dirname, '../../'),
+        });
     } catch (error) {
         // Log any failures
         console.error(`NO DIRECTORY: ${error}`);

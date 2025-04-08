@@ -12,7 +12,7 @@ router.get('/', async function (req: Request, res: Response) {
         //Attempt to pull from service reqs
         const SERVICE_REQS_LIST = await PrismaClient.serviceRequest.findMany({
             orderBy: {
-                urgency: 'asc',
+                priority: 'asc',
             },
         });
         console.info('Successfully pulled service reqs list'); // Log that it was successful
@@ -37,10 +37,11 @@ router.post('/csv', async function (req: Request, res: Response) {
                 request_date: data.request_date,
                 status: data.status,
                 comments: data.comments,
-                urgency: data.urgency,
-                location: data.location,
+                priority: data.priority,
+                location_id: data.location_id,
                 service_type: data.service_type,
-                patientTransport_id: data.patient_transport_id,
+                transport_type: data.service_type,
+                request_time: data.request_time,
             };
             await PrismaClient.serviceRequest.upsert({
                 where: { request_id: data.request_id },

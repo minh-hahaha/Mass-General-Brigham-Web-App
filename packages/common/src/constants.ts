@@ -4,6 +4,7 @@ export const ROUTES = {
     EMPLOYEE: '/api/employee',
     SERVICEREQUESTS: '/api/servicereqs',
     VALIDATE: '/api/validate',
-    DIRECTORY: '/api/directory',
-    DIRECTORY_CSV: '/api/directory/csv',
+    PATIENTTRANSPORT: '/api/patienttransport',
+    DIRECTORY: 'api/directory',
+    DIRECTORY_CSV: 'api/directory/csv',
 }
