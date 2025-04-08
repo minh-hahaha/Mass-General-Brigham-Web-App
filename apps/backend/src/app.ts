@@ -7,6 +7,7 @@ import highscoreRouter from './routes/score.ts';
 import assignedRouter from './routes/assigned.ts';
 import employeeRouter from './routes/employee.ts';
 import servicereqsRouter from './routes/servicereqs.ts';
+//import BFSRouter from './Algorithms/BFS.ts';
 
 import { ROUTES } from 'common/src/constants';
 
@@ -32,6 +33,7 @@ app.use(cookieParser()); // Cookie parser
 app.use(ROUTES.ASSIGNED, assignedRouter);
 app.use(ROUTES.EMPLOYEE, employeeRouter);
 app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
+//app.use(ROUTES.BFS,BFSRouter);
 
 /**
  * Catch all 404 errors, and forward them to the error handler
