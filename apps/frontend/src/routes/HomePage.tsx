@@ -1,15 +1,19 @@
+import {APIProvider} from '@vis.gl/react-google-maps';
+import DirectionsMapComponent from "../components/DirectionsMapComponent.tsx";
 
-import React from 'react';
+const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+
 
 const HomePage = () => {
     return (
-        <div className= "flex-flex-row">
-            <br/>
-            <h1>HOME PAGE</h1>
-            <p> Hello world!:)</p>
+        <div>
+            <APIProvider apiKey={API_KEY} libraries={['places','routes']}>
+                <DirectionsMapComponent/>
+            </APIProvider>
         </div>
 
     );
 };
 
 export default HomePage;
+

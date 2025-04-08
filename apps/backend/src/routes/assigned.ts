@@ -1,5 +1,6 @@
 import express, { Router, Request, Response } from 'express';
 import PrismaClient from '../bin/prisma-client';
+import { dataToCSV } from '../CSVImportExport.ts';
 
 const router: Router = express.Router();
 
@@ -9,8 +10,8 @@ router.get('/', async function (req: Request, res: Response) {
         //Attempt to pull from
         const ASSIGNED_LIST = await PrismaClient.serviceRequest.findMany({
             where: {
-                assigned_id: {
-                    isNot: null,
+                employee_id: {
+                    not: null,
                 },
             },
             include: {
@@ -26,8 +27,6 @@ router.get('/', async function (req: Request, res: Response) {
         res.sendStatus(204); // Send error
         return; // Don't try to send duplicate statuses
     }
-
-    // res.sendStatus(200); // Otherwise say it's fine
 });
 
 export default router;
