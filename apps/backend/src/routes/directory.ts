@@ -77,8 +77,6 @@ router.post('/csv', async function (req: Request, res: Response) {
                 dep_name: data.dep_name,
                 building_id: data.building_id,
                 dep_phone: data.dep_phone,
-                members: data.members,
-                locations: data.locations,
                 build_id: data.build_id,
             };
             const dataToUpsertLocation = {
