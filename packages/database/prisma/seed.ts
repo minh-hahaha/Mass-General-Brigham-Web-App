@@ -17,40 +17,35 @@ async function main() {
                 dep_name: 'Department1',
                 building_id: 0,
                 dep_phone: '1',
-                build_id: 0,
-                dep_services: ['surgery','triage']
+                dep_services: 'surgery',
             },
             {
                 dep_id: 2,
                 dep_name: 'Department2',
                 building_id: 0,
                 dep_phone: '12',
-                build_id: 0,
-                dep_services: ['surgery','triage']
+                dep_services: 'surgery',
             },
             {
                 dep_id: 3,
                 dep_name: 'Department3',
                 building_id: 0,
                 dep_phone: '123',
-                build_id: 0,
-                dep_services: ['surgery','triage']
+                dep_services: 'surgery',
             },
             {
                 dep_id: 4,
                 dep_name: 'Department4',
                 building_id: 0,
                 dep_phone: '1234',
-                build_id: 0,
-                dep_services: ['surgery','triage']
+                dep_services: 'surgery',
             },
             {
                 dep_id: 5,
                 dep_name: 'Department5',
                 building_id: 0,
                 dep_phone: '12345',
-                build_id: 0,
-                dep_services: ['surgery','triage']
+                dep_services: 'surgery',
             },
         ],
         skipDuplicates: true,
