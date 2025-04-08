@@ -55,37 +55,117 @@ class graph{
         this.edges.push(edge);
         return edge;
     }
+
+
+    bfs (starterNode: myNode, targetNode: myNode) : myNode[] | null | undefined {
+        if (!starterNode || !targetNode || !graph){
+            return null;
+        }
+
+        const visited: Set<String> = new Set();
+        const queue: {
+            node: myNode;
+            path: myNode[];
+
+        } [] = [];
+        // Initalizing the queue
+        queue.push({ node: starterNode, path: [starterNode] });
+
+        visited.add(starterNode.id);
+
+        while (queue.length > 0 ) {
+            //pop the first item in the list
+            const current = queue.shift()!;
+            // change the current node and current path to that of the poped element
+
+            const currentNode = current.node;
+            const currentPath = current.path;
+
+            // checking if we found the target node
+            if(currentNode.id === targetNode.id){
+                return currentPath;
+            }
+
+            let neighbours: myNode[] = [];
+            for(const edge of this.edges){
+                if (edge.from.id === currentNode.id){
+                    const neighbour = edge.to;
+                    if(!visited.has(neighbour.id) ){
+                        visited.add(neighbour.id);
+                        queue.push({ node: neighbour, path: [...currentPath, neighbour] });
+
+                    }
+                }
+                else if (edge.to.id === currentNode.id){
+                    const neighbour = edge.from;
+                    if(!visited.has(neighbour.id) ){
+                        visited.add(neighbour.id);
+                        queue.push({ node: neighbour, path: [...currentPath,neighbour] });
+                    }
+                }
+
+            }
+        }
+
+
+    }
 }
 
-function bfs (starterNode: myNode, targetNode: myNode, graph: graph){
-    console.log(starterNode);
-    return starterNode;
+// remove undefined eventually
+// function bfs (starterNode: myNode, targetNode: myNode, graph: graph) : {nodes: myNode[], edges: myEdge[]} | null | undefined {
+//
+//     // if there is an error with the node, or the grpah return nulls
+//     if (!starterNode || !targetNode || !graph){
+//         return null;
+//     }
+//
+//     const visited: Set<String> = new Set();
+//     const queue: {
+//         pathNodes: myNode[];
+//         pathEdges: myEdge[];
+//         node: myNode;
+//
+//     } [] = [];
+//
+//     visited.add(starterNode.id);
+//     queue.push({pathNodes:[starterNode],pathEdges: [], node: starterNode});
+//
+//     while (queue.length > 0){
+//         //const [current, edge, currentPath, currentNodes] = queue.shift();
+//         // let node = queue.shift() as myNode;
+//         const {pathNodes, pathEdges, node} = queue.shift()!;
+//         if(targetNode.id === node.id){
+//             return {nodes: pathNodes, edges: pathEdges};
+//         }
+//         if(!visited.has(node.id)){
+//             visited.add(node.id);
+//         }
+//
+//         // get all the neighbors that are yet to be visited
+//
+//         const unvistedNeighbors = graph.edges.filter(
+//             (edge) => edge.to.id === node.id || edge.from.id === node.id
+//         )
+//
+//         for ( const edge of unvistedNeighbors){
+//             const path
+//             if(!visited.has(edge.id)){
+//                queue.push({
+//                    pathNodes: [...pathNodes,unvistedNeighbors],
+//                    pathEdges: [...pathEdges,edge],
+//                    node: unvistedNeighbors
+//                 });
+//             }
+//         }
+//
+//
+//     }
+//
+// }
 
-}
 
 
-/* I am testing my BFS*/
-const myGraph = new graph();
-
-const practiceNodeA = myGraph.addNode("A",0,0, 1, "A");
-const practiceNode1 = myGraph.addNode("1",0,0, 1, "1");
-const practiceNodeE1 = myGraph.addNode("E1",0,0, 1, "E1");
-
-
-myGraph.addEdge(practiceNodeA,practiceNode1, "A-1");
-myGraph.addEdge(practiceNode1,practiceNodeA, "1-A");
-
-
-
-myGraph.addEdge(practiceNode1,practiceNodeE1, "1-E1");
-myGraph.addEdge(practiceNodeE1,practiceNode1, "E1-1");
-
-
-
-bfs(practiceNode1,practiceNodeA,myGraph);
-
-
-
+// Need to test my BFS
 
 
 
