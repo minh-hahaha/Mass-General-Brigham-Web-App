@@ -5,7 +5,6 @@ import { ROUTES } from 'common/src/constants';
 
 
 interface transportRequest {
-    id: number;
     patientId: number;
     patientName: string;
     transportType: 'Ambulance' | 'Helicopter' | 'Other';
@@ -19,7 +18,6 @@ interface transportRequest {
     requesterId: number;
     requestDate: string;
     assignedToId: number;
-    serviceType: string;
 }
 
 // Component definition
