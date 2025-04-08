@@ -7,6 +7,7 @@ import HomePage from './routes/HomePage.tsx';
 import ChestnutHillDirectory from './routes/ChestnutHillDirectory.tsx';
 import ServiceRequestPage from './routes/ServiceRequestPage.tsx';
 
+
 function App() {
     return(
         <>
@@ -28,6 +29,9 @@ function App() {
                     </Routes>
                 </div>
             </div>
+
+            // remove the following
+
 
         </BrowserRouter>
         </>
