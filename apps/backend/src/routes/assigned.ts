@@ -13,6 +13,9 @@ router.get('/', async function (req: Request, res: Response) {
                     isNot: null,
                 },
             },
+            include: {
+                assigned_id: true,
+            },
         });
         console.info('Successfully pulled service requests assigned'); // Log that it was successful
         console.log(ASSIGNED_LIST);

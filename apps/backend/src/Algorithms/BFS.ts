@@ -1,5 +1,6 @@
+import { loadGraph } from './ExportNodesAndEdges.ts';
 
-class myNode{
+export class myNode{
     id: String;
     xPixel: number;
     yPixel: number;
@@ -19,7 +20,7 @@ class myNode{
 
 }
 
-class myEdge{
+export class myEdge{
     id: String;
     from: myNode;
     to: myNode;
@@ -35,7 +36,7 @@ class myEdge{
 
 
 
-class graph{
+export class Graph{
     /* need to create the graph for traversal */
     nodes: myNode[];
     edges: myEdge[];
@@ -57,8 +58,11 @@ class graph{
     }
 
 
-    bfs (starterNode: myNode, targetNode: myNode) : myNode[] | null | undefined {
-        if (!starterNode || !targetNode){
+    async bfs(starterNode: myNode, targetNode: myNode): Promise<myNode[] | null | undefined> {
+
+        const graph = await loadGraph('./CSVFiles/tempnodes.csv', './CSVFiles/tempedges.csv');
+
+        if (!starterNode || !targetNode) {
             return null;
         }
 
@@ -69,7 +73,7 @@ class graph{
 
         } [] = [];
         // Initalizing the queue
-        queue.push({ node: starterNode, path: [starterNode] });
+        queue.push({node: starterNode, path: [starterNode]});
 
         visited.add(starterNode.id);
 
@@ -88,16 +92,15 @@ class graph{
 
             let neighbours: myNode[] = [];
             //adding to visited, and updating queues to add the neighbours
-            for(const edge of this.edges){
-                if (edge.from.id === currentNode.id){
+            for (const edge of this.edges) {
+                if (edge.from.id === currentNode.id) {
                     const neighbour = edge.to;
                     if(!visited.has(neighbour.id) ){
                         visited.add(neighbour.id);
                         queue.push({ node: neighbour, path: [...currentPath, neighbour] });
 
                     }
-                }
-                else if (edge.to.id === currentNode.id){
+                } else if (edge.to.id === currentNode.id) {
                     const neighbour = edge.from;
                     if(!visited.has(neighbour.id) ){
                         visited.add(neighbour.id);
@@ -115,7 +118,7 @@ class graph{
 
 
 // Need to test my BFS
-const g = new graph();
+const g = new Graph();
 
 const A = g.addNode("A", 0, 0, 1, "type");
 const B = g.addNode("B", -1, 1, 1, "type");

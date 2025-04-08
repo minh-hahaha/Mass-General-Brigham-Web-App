@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { API_ROUTES } from 'common/src/constants.ts';
+import { ROUTES } from 'common/src/constants.ts';
 import ExampleButton from './ExampleButton.tsx';
 
 // Component definition
@@ -19,7 +19,7 @@ const ExampleComponent = () => {
     async function fetchScore() {
         try {
             // Send a GET request to the backend at API_ROUTES.SCORE
-            const res = await axios.get(API_ROUTES.SCORE);
+            const res = await axios.get(ROUTES.SCORE);
 
             // HTTP 200 = OK (the request was successful)
             if (res.status === 200) {
@@ -56,7 +56,7 @@ const ExampleComponent = () => {
                 score: score,
             });
 
-            const res = await axios.post(API_ROUTES.SCORE, data, {
+            const res = await axios.post(ROUTES.SCORE, data, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
