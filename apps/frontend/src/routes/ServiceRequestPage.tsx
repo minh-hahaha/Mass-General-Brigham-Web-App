@@ -1,12 +1,12 @@
 import {useState } from 'react';
 import MGBButton from "../components/MGBButton.tsx";
 import axios from "axios";
-
+import { ROUTES } from 'common/src/constants';
 
 
 interface transportRequest {
     id: number;
-    patientId: string;
+    patientId: number;
     patientName: string;
     transportType: 'Ambulance' | 'Helicopter' | 'Other';
     priority: 'Low' | 'Medium' | 'High';
@@ -16,14 +16,15 @@ interface transportRequest {
     pickupTime: string;
     status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
     notes: string;
-    requesterId: string;
+    requesterId: number;
     requestDate: string;
-    assignedToId: string;
+    assignedToId: number;
+    serviceType: string;
 }
 
 // Component definition
 const TransportRequestPage = () => {
-    const [patientId, setPatientId] = useState('');
+    const [patientId, setPatientId] = useState(0);
     const [patientName, setPatientName] = useState('');
     const [transportType, setTransportType] = useState<transportRequest['transportType']> ('Ambulance');
     const [priority, setPriority] = useState<transportRequest['priority']> ('Low');
@@ -33,9 +34,9 @@ const TransportRequestPage = () => {
     const [pickupTime, setPickupTime] = useState('');
     const [status, setStatus] = useState<transportRequest['status']> ('Pending');
     const [notes, setNotes] = useState('');
-    const [requesterId, setRequesterId] = useState('');
+    const [requesterId, setRequesterId] = useState(0);
     const [requestDate, setRequestDate] = useState(new Date().toISOString().split('T')[0]);
-    const [assignedToId, setAssignedToId] = useState('');
+    const [assignedToId, setAssignedToId] = useState(0);
 
     const [submittedRequest, setSubmittedRequest] = useState<transportRequest | null>(null);
 
@@ -43,7 +44,7 @@ const TransportRequestPage = () => {
         e.preventDefault();
 
         const newRequest: transportRequest = {
-            id: Date.now(),
+            id: 4,
             patientId,
             patientName,
             transportType,
@@ -56,7 +57,7 @@ const TransportRequestPage = () => {
             notes,
             requesterId,
             requestDate,
-            assignedToId
+            assignedToId,
         }
 
         DisplayTransportRequest(newRequest); //sends new data to backend
@@ -65,7 +66,7 @@ const TransportRequestPage = () => {
     }
 
     const handleReset=()=>{
-        setPatientId('');
+        setPatientId(0);
         setPatientName('');
         setTransportType('Ambulance');
         setPriority('Low');
@@ -75,15 +76,16 @@ const TransportRequestPage = () => {
         setPickupTime('');
         setStatus('Pending');
         setNotes('');
-        setRequesterId('');
+        setRequesterId(0);
         setRequestDate(new Date().toISOString().split('T')[0]);
-        setAssignedToId('');
+        setAssignedToId(0);
     }
 
     //Data is sent to the backend
     async function DisplayTransportRequest(request: transportRequest) {
-        await axios.post('/api/patientTransport', request);
+        await axios.post(ROUTES.PATIENTTRANSPORT, request);
     }
+
 
     const mgbLocations = ["Chestnut Hill"]
 
@@ -267,7 +269,7 @@ const TransportRequestPage = () => {
                             ></textarea>
                         </div>
                     </div>
-                    <MGBButton onClick={()=>handleSubmit} variant={'primary'} disabled={false}>Submit Request</MGBButton>
+                    <MGBButton onClick={() => handleSubmit} variant={'primary'} disabled={false}>Submit Request</MGBButton>
                     <br/>
                     <MGBButton onClick={()=>handleReset()} variant={'primary'} disabled={false}>Clear Form</MGBButton>
 
