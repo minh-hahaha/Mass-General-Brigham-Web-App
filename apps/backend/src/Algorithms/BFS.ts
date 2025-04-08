@@ -64,8 +64,6 @@ async function bfs (starterNode: myNode, targetNode: myNode){
 
     // calls upon loadGraph to fill the graph with nodes and edges from the files.
     const graph = await loadGraph('./CSVFiles/tempnodes.csv', './CSVFiles/tempedges.csv')
-    console.log(starterNode);
-    return starterNode;
 
 }
 
