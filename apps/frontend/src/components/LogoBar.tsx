@@ -1,4 +1,4 @@
-import msgLogo from '../assests/msgLogo.png'
+import msgLogo from '../assets/msgLogo.png'
 
 const LogoBar = () => {
 
