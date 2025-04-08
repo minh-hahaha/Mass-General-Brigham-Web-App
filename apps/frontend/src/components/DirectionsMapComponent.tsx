@@ -1,7 +1,8 @@
-import React, { Component, useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import MGBButton from "./MGBButton.tsx";
 import {Map, useMap, useMapsLibrary} from '@vis.gl/react-google-maps';
-// import {ReactComponent as HospitalMap} from '../assets/ChestnutHill Parking Lot + Floor 1.svg'
+import ChestnutHillMapComponent from "./ChestnutHillMapComponent.tsx"
+
 
 const  DirectionsMapComponent = () => {
     const map = useMap();
@@ -75,14 +76,69 @@ const  DirectionsMapComponent = () => {
         })
     }
 
+    const [parkA, setParkA] = useState(false)
+    const handleParkA=()=>{
+        clearParking();
+        setParkA(true);
+        setShowHospital(true);
 
-    // const handleHere = () => {
-    //     setHospitalMap();
-    // }
+    }
 
-    // const setHospitalMap = () => {
-    //     <HospitalMap/>
-    // }
+    const [parkB, setParkB] = useState(false)
+    const handleParkB=()=>{
+        clearParking();
+        setParkB(true);
+        setShowHospital(true);
+    }
+
+    const [parkC, setParkC] = useState(false)
+    const handleParkC=()=>{
+        clearParking();
+        setParkC(true);
+        setShowHospital(true);
+    }
+
+    const clearParking=()=>{
+        setParkA(false);
+        setParkB(false);
+        setParkC(false);
+    }
+
+    const [parking, setParking] = useState(false)
+    const [showHospital, setShowHospital] = useState(false)
+    const handleHere = () => {
+        setParking(true);
+    }
+
+    const svg = '/ChestnutHillMap.svg';
+
+    const HospitalMap = () => {
+        return(
+            <div>
+                {parkA ? (
+                    <ChestnutHillMapComponent
+                        svgPath={svg}
+                        nodeConnections={[["A","B"], ["B","C"], ["C","D"],["D","E"], ["E","F"], ["F","G"]]}
+                    />
+                ) : parkB ? (
+                        <ChestnutHillMapComponent
+                            svgPath={svg}
+                            nodeConnections={[["J","H"], ["H","G"]]}
+                        />
+                ) : parkC ? (
+                        <ChestnutHillMapComponent
+                            svgPath={svg}
+                            nodeConnections={[["L","K"], ["K","J"], ["J","H"], ["H","G"]]}
+                        />
+                ) : (
+                    <ChestnutHillMapComponent
+                        svgPath={svg}
+                        nodeConnections={[]}/>
+                )}
+
+            </div>
+            )
+    }
 
     return (
         <div className="flex flex-row">
@@ -123,16 +179,63 @@ const  DirectionsMapComponent = () => {
                     >
                         Find Directions
                     </MGBButton>
+
                 </form>
+
+                <br/>
+                <MGBButton
+                    onClick={()=>handleHere()}
+                    variant={'primary'}
+                    disabled={undefined}
+                >
+                    I am here!
+                </MGBButton>
+
+                {parking ? (
+                    <div className="flex flex-col">
+                        <p>Where did you park?</p>
+                        <MGBButton
+                            onClick={()=>handleParkA()}
+                            variant={'primary'}
+                            disabled={!parking}
+                        >
+                            Lot A
+                        </MGBButton>
+
+                        <MGBButton
+                            onClick={()=>handleParkB()}
+                            variant={'primary'}
+                            disabled={!parking}
+                        >
+                            Lot B
+                        </MGBButton>
+                        <MGBButton
+                            onClick={()=>handleParkC()}
+                            variant={'primary'}
+                            disabled={!parking}
+                        >
+                            Lot C
+                        </MGBButton>
+                    </div>
+                ): (
+                    <></>
+                )}
+
             </div>
 
             <div className="basis-[80vw]">
-                <Map
-                    style={{ width: '100%', height: '89vh' }}
-                    defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
-                    // MGB at Chestnut hill 42.325988270594415, -71.1495669288061
-                    defaultZoom={15}
-                ></Map>
+                {showHospital ? (
+                    <div>
+                        <HospitalMap />
+                    </div>
+                    ):(
+                    <Map
+                        style={{ width: '100%', height: '92vh' }}
+                        defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
+                        // MGB at Chestnut hill 42.325988270594415, -71.1495669288061
+                        defaultZoom={15}
+                    ></Map>
+                )}
             </div>
         </div>
     );
