@@ -37,6 +37,7 @@ const TransportRequestPage = () => {
     const [assignedToId, setAssignedToId] = useState('');
 
     const [submittedRequest, setSubmittedRequest] = useState<transportRequest | null>(null);
+    const [showConfirmation, setShowConfirmation] = useState(false);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -58,6 +59,7 @@ const TransportRequestPage = () => {
             assignedToId
         }
         setSubmittedRequest(newRequest);
+        setShowConfirmation(true);
 
         handleReset();
     }
@@ -78,13 +80,16 @@ const TransportRequestPage = () => {
         setAssignedToId('');
     }
 
+    const handleConfirmationClose = () => {
+        setShowConfirmation(false);
+    };
 
-    const mgbLocations = ["Chestnut Hill"]
+    const mgbLocations = ["Chestnut Hill"];
 
     return (
-        // flex row container for adjust the place
+        // flex row container
         <div className="flex flex-row">
-            {/*make the form left side*/}
+            {/* make the form left side */}
             <div className="w-1/2 pr-4">
                 <h1 className="text-[20px] font-bold">Patient Transportation Request</h1>
                 <div>
@@ -250,7 +255,7 @@ const TransportRequestPage = () => {
                             </div>
                         </div>
 
-                        <div >
+                        <div>
                             <h3>Medical Information</h3>
 
                             <div>
@@ -264,56 +269,29 @@ const TransportRequestPage = () => {
                                 ></textarea>
                             </div>
                         </div>
-                        <MGBButton onClick={()=>handleSubmit} variant={'primary'} disabled={false}>Submit Request</MGBButton>
+
+                        {/* submit button and confirmation message */}
+                        <div className="flex items-center space-x-4">
+                            <MGBButton onClick={()=>handleSubmit} variant={'primary'} disabled={false}>
+                                Submit Request
+                            </MGBButton>
+
+                            {showConfirmation && submittedRequest && (
+                                <div className="inline-block">
+                                    <ConfirmMesg
+                                        request={submittedRequest}
+                                        onClose={handleConfirmationClose}
+                                    />
+                                </div>
+                            )}
+                        </div>
+
                         <br/>
                         <MGBButton onClick={()=>handleReset()} variant={'primary'} disabled={false}>Clear Form</MGBButton>
-
                     </form>
-
-                    {submittedRequest && (
-                        <div>
-                            <h3>Submitted Transport Request</h3>
-                            <div className="transport-confirmation">
-                                <p className="confirmation-id">Request ID: #{submittedRequest.id}</p>
-                                <p className="confirmation-status">Status: {submittedRequest.status}</p>
-                                <p className="confirmation-date">Date Submitted: {submittedRequest.requestDate}</p>
-                            </div>
-
-                            <div className="request-details">
-                                <h4>Patient Details</h4>
-                                <p><strong>Patient ID:</strong> {submittedRequest.patientId}</p>
-                                <p><strong>Patient Name:</strong> {submittedRequest.patientName}</p>
-
-                                <h4>Transport Details</h4>
-                                <p><strong>Transport Type:</strong> {submittedRequest.transportType}</p>
-                                <p><strong>Priority:</strong> {submittedRequest.priority}</p>
-                                <p><strong>From:</strong> {submittedRequest.pickupLocation}</p>
-                                <p><strong>To:</strong> {submittedRequest.dropOffLocation}</p>
-                                <p><strong>Scheduled Time:</strong> {new Date(submittedRequest.pickupTime).toLocaleString()}</p>
-
-
-                                <h4>Requester Information</h4>
-                                <p><strong>Requester ID:</strong> {submittedRequest.requesterId}</p>
-                                <p><strong>Request Date:</strong> {submittedRequest.requestDate}</p>
-                                <p><strong>Employee Assigned ID:</strong> {submittedRequest.assignedToId}</p>
-
-                                {submittedRequest.notes && (
-                                    <>
-                                        <h4>Medical Notes</h4>
-                                        <p>{submittedRequest.notes}</p>
-                                    </>
-                                )}
-                            </div>
-                        </div>
-                    )}
                 </div>
             </div>
-
-            {/* confirmation message on right side*/}
             <div className="w-1/2 pl-4">
-                {submittedRequest && (
-                    <ConfirmMesg request={submittedRequest} />
-                )}
             </div>
         </div>
     )

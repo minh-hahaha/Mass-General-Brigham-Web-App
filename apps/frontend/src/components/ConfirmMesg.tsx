@@ -39,10 +39,8 @@ function ConfirmMesg({ request, onClose }: ConfirmationMessageProps) {
     if (!visible) return null;
 
     return (
-        <div className="bg-blue-600 text-white p-6 rounded-lg shadow-lg animate-fade-in">
-            <div className="flex items-center mb-4">
-                <h2 className="text-xl font-bold">Request Submitted Successfully</h2>
-            </div>
+        <div className="inline-block bg-blue-600 text-white py-2 px-4 rounded shadow-md animate-fade-in" style={{ height: '38px', lineHeight: '1.5' }}>
+            <span className="font-medium">Request Submitted</span>
         </div>
     );
 }
