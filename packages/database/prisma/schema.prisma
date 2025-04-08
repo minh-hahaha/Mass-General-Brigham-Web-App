@@ -27,7 +27,7 @@ model Employee {
   position         String
   date_hired       DateTime         @default(now()) @db.Date
   serviceRequest   ServiceRequest[]
-  email            String
+  email            String           @unique
   password         String
   department       Department     @relation(fields: [department_id], references: [dep_id])
   department_id    Int
@@ -35,8 +35,8 @@ model Employee {
 
 model ServiceRequest {
   request_id                   Int               @id @default(autoincrement())
-  assigned_id                  Employee          @relation(fields: [employee_id], references: [id])
-  employee_id                  Int
+  assigned_id                  Employee?          @relation(fields: [employee_id], references: [id])
+  employee_id                  Int?
   request_date                 DateTime          @default(now()) @db.Date
   status                       String
   comments                     String?

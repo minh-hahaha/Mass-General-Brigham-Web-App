@@ -4785,6 +4785,7 @@ const RAW_RUNTIME_STATE =
           ["react-router-bootstrap", "virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:0.26.3"],\
           ["react-router-dom", "virtual:d3996bc66f5a97675d735c6457b44af0f25df32a5e5981f61ff7f22e93004839ccc5d56298eff651f971a908820429de35800a3f2669be95e1c0f6bb82e8a700#npm:6.30.0"],\
           ["serve", "npm:14.2.4"],\
+          ["shadcn-ui", "npm:0.9.5"],\
           ["tailwindcss", "npm:4.0.17"],\
           ["ts-config-custom", "workspace:configs/ts-config-custom"],\
           ["typescript", "patch:typescript@npm%3A5.8.2#optional!builtin<compat/typescript>::version=5.8.2&hash=5786d5"],\
@@ -7431,6 +7432,16 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/setprototypeof-npm-1.2.0-0fedbdcd3a-6873317302.zip/node_modules/setprototypeof/",\
         "packageDependencies": [\
           ["setprototypeof", "npm:1.2.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["shadcn-ui", [\
+      ["npm:0.9.5", {\
+        "packageLocation": "./.yarn/cache/shadcn-ui-npm-0.9.5-80bb1d1bea-e9b11edaf7.zip/node_modules/shadcn-ui/",\
+        "packageDependencies": [\
+          ["shadcn-ui", "npm:0.9.5"],\
+          ["chalk", "npm:5.4.1"]\
         ],\
         "linkType": "HARD"\
       }]\

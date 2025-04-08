@@ -10,7 +10,7 @@ router.get('/', async function (req: Request, res: Response) {
         const ASSIGNED_LIST = await PrismaClient.serviceRequest.findMany({
             where: {
                 assigned_id: {
-                    isNot: null,
+                    isNot: undefined,
                 },
             },
             include: {
