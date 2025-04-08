@@ -10,7 +10,7 @@
         - [Nodemon](#nodemon)
         - [Miscellaneous](#miscellaneous)
     - [Code Structure](#code-structure)
-      <!-- TOC -->
+        <!-- TOC -->
 
 This package defines the backend server, and the RESTful API it
 represents. It also includes the packages used.
@@ -132,4 +132,4 @@ documents the recommended structure for using this.
   of processing is done
 - bin/database-connection.ts provides a database connection the rest of the
   database package can use. When this is required by www.ts, it automatically starts
-  the database. It also automatically disconnects WHENEVER the client exits
+  the database. It also automatically disconnects WHENEVER the client exit
