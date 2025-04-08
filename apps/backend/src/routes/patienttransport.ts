@@ -19,30 +19,39 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 router.post('/', async (req: Request, res: Response) => {
-    // res.sendStatus(200);
-    await PrismaClient.serviceRequest.create({
-        data: {
-            request_id: req.body.id,
-            transport_type: req.body.transportType,
-            priority: req.body.priority,
-            status: req.body.status,
-            comments: req.body.notes,
-            service_type: 'Patient Transport',
-        },
-    });
-    //
-    // await PrismaClient.patientTransport.create({
-    //     data: {
-    //         patient_id: req.body.patientId,
-    //         patient_name: req.body.patientName,
-    //         pickup_location: req.body.pickupLocation,
-    //         servReq_id: req.body.requesterId,
-    //     },
-    // });
+    console.log(req.body.requestDate);
+    try {
+        const result = await PrismaClient.$transaction(async (prisma) => {
+            const serviceRequest = await prisma.serviceRequest.create({
+                data: {
+                    transport_type: req.body.transportType,
+                    priority: req.body.priority,
+                    status: req.body.status,
+                    comments: req.body.notes,
+                    service_type: 'Patient Transport',
+                    location_id: req.body.locationId ?? null, // optional
+                    employee_id: req.body.employeeId ?? null, // optional
+                    request_date: req.body.requestDate ?? null,
+                },
+            });
 
-    console.log('CREATED ENTRIES !!');
+            const patientTransport = await prisma.patientTransport.create({
+                data: {
+                    servReq_id: serviceRequest.request_id,
+                    patient_id: req.body.patientId,
+                    patient_name: req.body.patientName,
+                    pickup_location: req.body.pickupLocation,
+                },
+            });
 
-    res.sendStatus(200);
+            return { serviceRequest, patientTransport };
+        });
+
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Something went wrong' });
+    }
 });
 
 export default router;
