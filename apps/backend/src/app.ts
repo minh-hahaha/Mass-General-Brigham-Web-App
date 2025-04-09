@@ -41,6 +41,8 @@ app.use(ROUTES.PATIENTTRANSPORT, patientTransportRouter);
 app.use(ROUTES.DIRECTORY, directoryRouter);
 app.use(ROUTES.DIRECTORY_CSV, directoryRouter);
 
+app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
+
 /**
  * Catch all 404 errors, and forward them to the error handler
  */
