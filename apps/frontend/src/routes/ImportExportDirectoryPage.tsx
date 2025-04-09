@@ -7,8 +7,8 @@ const ImportExportDirectoryPage = () => {
     const [file, setFile] = useState<File | null>(null);
     const [upload, setUpload] = useState(false);
 
-    const handleFileChange = (e:ChangeEvent<HTMLInputElement>)=>{
-        if(e.target.files){
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
             const selectedFile = e.target.files[0];
             if (!selectedFile.name.endsWith('.csv') && selectedFile.type !== 'text/csv') {
                 console.log('Please select a CSV file');
@@ -21,15 +21,16 @@ const ImportExportDirectoryPage = () => {
 
     }
 
-    async function handleFileUpload(){
-        if(!file) return;
+    async function handleFileUpload() {
+        console.log("hi");
+        if (!file) return;
 
         const formData = new FormData();
         formData.append('file', file);
 
         console.log("Sending file:", file.name, file.type, file.size);
 
-        try{
+        try {
             await ImportCSV(formData);
             // Clear file after successful upload
             setFile(null);
@@ -37,7 +38,7 @@ const ImportExportDirectoryPage = () => {
                 (document.getElementById('fileInput') as HTMLInputElement).value = '';
             }
             setUpload(true);
-        }catch{
+        } catch {
             setFile(null);
             console.error("Upload failed.");
             return;
@@ -46,11 +47,11 @@ const ImportExportDirectoryPage = () => {
 
     }
 
-    async function handleExport(){
-        try{
+    async function handleExport() {
+        try {
             const response = await ExportCSV(); // has backend data
             // download csv
-            const blob = new Blob([response], { type: 'text/csv;charset=utf-8;' });
+            const blob = new Blob([response], {type: 'text/csv;charset=utf-8;'});
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
 
@@ -61,26 +62,30 @@ const ImportExportDirectoryPage = () => {
             document.body.removeChild(link);
             URL.revokeObjectURL(url); // Free up memory by revoking the object URL
 
-        }catch (e) {
+        } catch (e) {
             console.log("Downloading");
         }
     }
 
-
     return (
-        <div className="space-y-2">
-            <input
-                className="border border-rounded border-r-1px"
-                type="file" onChange={handleFileChange}
-                accept=".csv, text/csv"
-            />
-            <MGBButton onClick={handleFileUpload} variant={'primary'} disabled={false}> Upload!</MGBButton>
-            <MGBButton onClick={handleExport} variant={'primary'} disabled={false}> Export!</MGBButton>
-            {upload ? (
-                <p>Upload Successfully</p>
-            ): (
-                <></>
-            )}
+        <div className="flex flex-col justify-center items-center mt-10">
+            <div className="flex flex-col items-center border border-[#d3d5d7] bg-white rounded-2xl shadow-xl p-8 w-full max-w-[700px] mt-10">
+                <input
+                    className="border border-gray-300 rounded-md p-2 w-full"
+                    type="file" onChange={handleFileChange}
+                    accept=".csv, text/csv"
+                />
+                {/* Added margin-top to separate the buttons from the input */}
+                <div className="flex justify-end space-x-4 mt-4">
+                    <MGBButton onClick={handleFileUpload} variant={'primary'} disabled={false}>Upload!</MGBButton>
+                    <MGBButton onClick={handleExport} variant={'primary'} disabled={false}>Export!</MGBButton>
+                    {upload ? (
+                        <p>Upload Successfully</p>
+                    ) : (
+                        <></>
+                    )}
+                </div>
+            </div>
         </div>
 
     );
