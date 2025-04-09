@@ -43,6 +43,7 @@
     "common": "workspace:*",
     "dotenv": "^16.4.7",
     "dotenv-cli": "^7.4.4",
+    "framer-motion": "^12.6.3",
     "lucide-react": "^0.487.0",
     "prisma": "^6.5.0",
     "react": "^19.1.0",

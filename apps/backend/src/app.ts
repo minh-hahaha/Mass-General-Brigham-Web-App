@@ -9,6 +9,7 @@ import employeeRouter from './routes/employee.ts';
 import servicereqsRouter from './routes/servicereqs.ts';
 import validateRouter from './routes/validate.ts';
 import patientTransportRouter from './routes/patienttransport.ts';
+import directoryRouter from './routes/directory.ts';
 
 import { ROUTES } from 'common/src/constants';
 
@@ -33,9 +34,13 @@ app.use(cookieParser()); // Cookie parser
 
 app.use(ROUTES.ASSIGNED, assignedRouter);
 app.use(ROUTES.EMPLOYEE, employeeRouter);
+app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
 
 app.use(ROUTES.VALIDATE, validateRouter);
 app.use(ROUTES.PATIENTTRANSPORT, patientTransportRouter);
+
+app.use(ROUTES.DIRECTORY, directoryRouter);
+app.use(ROUTES.DIRECTORY_CSV, directoryRouter);
 
 /**
  * Catch all 404 errors, and forward them to the error handler

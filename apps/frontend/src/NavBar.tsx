@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import {Link} from 'react-router-dom';
 
-const LinkHover: React.FC = ({ children }) => {
+interface LinkHoverProps {
+    children: ReactNode;
+}
+
+
+const LinkHover: React.FC<LinkHoverProps> = ({ children }) => {
     return <li
         className='
                 text-white
@@ -39,9 +44,10 @@ const Navbar=()=>{
                 <ul>
                 <LinkHover><Link to="/">Home Page</Link></LinkHover>
                 <LinkHover><Link to="/Login">Login</Link></LinkHover>
-                <LinkHover><Link to="/ChestnutHillDirectory">Chestnut Hill</Link></LinkHover>
-                <LinkHover><Link to="/ServiceRequestPage">ServiceRequestPage</Link></LinkHover>
-
+                <LinkHover><Link to="/ServiceRequestPage">Service Request</Link></LinkHover>
+                <LinkHover><Link to="/ServiceRequestDisplay">Service Request Display</Link></LinkHover>
+                <LinkHover><Link to="/ImportExportDirectory">Import/Export Directory</Link></LinkHover>
+                <LinkHover><Link to="/DirectoryDisplay">Directory Display</Link></LinkHover>
             </ul>
             </div>
         </div>
