@@ -1,8 +1,8 @@
 import React, {useState, useEffect, useRef} from 'react';
 import MGBButton from "./MGBButton.tsx";
 import {Map, useMap, useMapsLibrary} from '@vis.gl/react-google-maps';
-import ChestnutHillMapComponent from "./ChestnutHillMapComponent.tsx"
-
+import ChestnutHillMapComponent from "./ChestnutHillMapComponent.tsx";
+import {cleanedUpBFS, bfs} from "../../../backend/src/Algorithms/BFS.ts";
 
 const  DirectionsMapComponent = () => {
     const map = useMap();
@@ -113,24 +113,52 @@ const  DirectionsMapComponent = () => {
 
     const svg = '/ChestnutHillMap.svg';
 
-    const HospitalMap = () => {
-        return(
+
+    const HospitalMap =  () => {
+        const[path,setPaths] = useState<string[][]> ([]);
+
+        useEffect(() => {
+            const getMyPaths = async () => {
+                if (parkA) {
+                    const result = await cleanedUpBFS("A","G");
+                    setPaths(result);
+                }
+                else if (parkB) {
+                    const result = await cleanedUpBFS("J","G");
+                    setPaths(result);
+                }
+                else if (parkC) {
+                    const result = await cleanedUpBFS("L","G");
+                    setPaths(result);
+                }
+                else{
+                    setPaths([]);
+                }
+            };
+            void getMyPaths();
+        },
+            [parkA, parkB, parkC]);
+        return (
             <div>
+
                 {parkA ? (
                     <ChestnutHillMapComponent
                         svgPath={svg}
-                        nodeConnections={[["A","B"], ["B","C"], ["C","D"],["D","E"], ["E","F"], ["F","G"]]}
+
+                        // nodeConnections={[["A","B"], ["B","C"], ["C","D"],["D","E"], ["E","F"], ["F","G"]]}
+                        nodeConnections={path}
+
                     />
                 ) : parkB ? (
-                        <ChestnutHillMapComponent
-                            svgPath={svg}
-                            nodeConnections={[["J","H"], ["H","G"]]}
-                        />
+                    <ChestnutHillMapComponent
+                        svgPath={svg}
+                        nodeConnections={[["J", "H"], ["H", "G"]]}
+                    />
                 ) : parkC ? (
-                        <ChestnutHillMapComponent
-                            svgPath={svg}
-                            nodeConnections={[["L","K"], ["K","J"], ["J","H"], ["H","G"]]}
-                        />
+                    <ChestnutHillMapComponent
+                        svgPath={svg}
+                        nodeConnections={[["L", "K"], ["K", "J"], ["J", "H"], ["H", "G"]]}
+                    />
                 ) : (
                     <ChestnutHillMapComponent
                         svgPath={svg}
@@ -138,7 +166,7 @@ const  DirectionsMapComponent = () => {
                 )}
 
             </div>
-            )
+        )
     }
 
     return (
