@@ -95,6 +95,7 @@ const TransportRequestPage = () => {
 
     return (
         // flex row container
+        <>
         <div className="flex flex-row">
             {/* make the form left side */}
             <div className="w-1/2 pr-4">
@@ -301,6 +302,7 @@ const TransportRequestPage = () => {
             <div className="w-1/2 pl-4">
             </div>
         </div>
+            </>
     )
 };
 
