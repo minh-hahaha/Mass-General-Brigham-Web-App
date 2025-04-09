@@ -1,0 +1,16 @@
+@import 'tailwindcss';
+
+@theme {
+    --color-mgbblue: #254692;
+}
+
+:root {
+    background-color: #ffffff;
+    line-height: 1.4;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+}

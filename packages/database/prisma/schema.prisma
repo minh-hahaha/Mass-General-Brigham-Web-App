@@ -1,0 +1,95 @@
+// This is your Prisma schema file, learn more about it in the docs: https://pris.ly/d/prisma-schema
+// To push the databases from here to Postgres, use "yarn workspace database push"
+
+generator client {
+  provider   = "prisma-client-js"
+  output     = "../.prisma/client"
+  engineType = "binary"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+// Example table used in the express router example
+model Score {
+  id    Int      @id @default(autoincrement())
+  time  DateTime
+  score Int
+}
+
+model Employee {
+  id             Int              @id @default(autoincrement())
+  first_name     String
+  middle_name    String?
+  last_name      String
+  position       String
+  date_hired     DateTime         @default(now()) @db.Date
+  serviceRequest ServiceRequest[]
+  email          String           @unique
+  password       String
+  department     Department?      @relation(fields: [department_id], references: [dep_id])
+  department_id  Int?
+  admin          Boolean          @default(false)
+}
+
+model ServiceRequest {
+  request_id       Int               @id @default(autoincrement())
+  assigned_id      Employee?         @relation(fields: [employee_id], references: [id])
+  employee_id      Int?
+  request_date     DateTime?         @default(now()) @db.Date
+  status           String
+  comments         String?
+  priority         String
+  location         Location?         @relation(name: "ServiceLocation", fields: [location_id], references: [loc_id])
+  location_id      Int?
+  service_type     String
+  patientTransport PatientTransport? @relation(name: "ServicePatientTransport")
+  transport_type   String
+  request_time     DateTime?         @default(now()) @db.Time
+}
+
+model PatientTransport {
+  servReq_id      Int            @id
+  patient_id      Int
+  patient_name    String
+  pickup_location String
+  servRequest_id  ServiceRequest @relation(name: "ServicePatientTransport", fields: [servReq_id], references: [request_id])
+}
+
+model Department {
+  dep_id       Int        @id @default(autoincrement())
+  dep_services String
+  dep_name     String
+  building_id  Int
+  dep_phone    String     @unique
+  members      Employee[]
+  locations    Location[]
+  building     Building   @relation(fields: [building_id], references: [building_id])
+}
+
+model Location {
+  loc_id        Int         @id @default(autoincrement())
+  department    Department? @relation(fields: [department_id], references: [dep_id])
+  department_id Int?
+  loc_type      String
+  room_num      Int?
+  floor         Int
+
+  //making prisma happy here
+  serviceRequests ServiceRequest[] @relation("ServiceLocation") //unused relation
+}
+
+model Building {
+  building_id   Int          @id @default(autoincrement())
+  building_name String
+  departments   Department[]
+}
+
+model Node {
+  node_id      Int   @id @default(autoincrement())
+  neighbor_ids Int[]
+  pixel_x      Int
+  pixel_y      Int
+}
