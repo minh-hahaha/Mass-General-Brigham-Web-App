@@ -1,9 +1,0 @@
-!.*
-**/build
-**/coverage
-**/.yarn
-**/.idea
-**/node_modules
-**/.turbo
-**/.prisma
-**/dist
