@@ -1,7 +1,7 @@
 import { Graph, myNode } from './classes.ts';
 import { readCSV } from '../CSVImportExport.ts';
 
-export async function loadGraph (): Promise<Graph> {
+export async function loadGraph(): Promise<Graph> {
     const graph = new Graph();
     const path = require('path');
 
@@ -10,7 +10,7 @@ export async function loadGraph (): Promise<Graph> {
 
     // load node data
     const nodeData = await readCSV(nodePath);
-    const nodeMap: Map<string, myNode> = new Map()
+    const nodeMap: Map<string, myNode> = new Map();
 
     for (const row of nodeData) {
         const node = graph.addNode(
@@ -22,7 +22,7 @@ export async function loadGraph (): Promise<Graph> {
             String(row.nodeType)
         );
         // set row ID key to the node value
-        nodeMap.set(row.nodeID, node)
+        nodeMap.set(row.nodeID, node);
     }
 
     // absolute path to edges file
@@ -44,7 +44,7 @@ export async function loadGraph (): Promise<Graph> {
             continue;
         }
         // add the edges to the graph
-        graph.addEdge(fromNode, toNode, row.edgeID)
+        graph.addEdge(fromNode, toNode, row.edgeID);
     }
 
     return graph;
