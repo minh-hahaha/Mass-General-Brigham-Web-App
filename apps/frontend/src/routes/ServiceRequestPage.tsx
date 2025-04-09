@@ -225,33 +225,33 @@ const TransportRequestPage = () => {
                                 </div>
                             </div>
 
-                            <div className="flex flex-col pt-2">
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Pickup Date</label>
-                                    <input
-                                        type="date"
-                                        id="scheduledDate"
-                                        value={pickupDate}
-                                        onChange={(e) => setPickupDate(e.target.value)}
-                                        required
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    />
-                                </div>
-                            </div>
+                            {/*<div className="flex flex-col pt-2">*/}
+                            {/*    <div className="flex items-center gap-2">*/}
+                            {/*        <label className="w-1/4">Pickup Date</label>*/}
+                            {/*        <input*/}
+                            {/*            type="date"*/}
+                            {/*            id="scheduledDate"*/}
+                            {/*            value={pickupDate}*/}
+                            {/*            onChange={(e) => setPickupDate(e.target.value)}*/}
+                            {/*            required*/}
+                            {/*            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"*/}
+                            {/*        />*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
 
-                            <div className="flex flex-col pt-2">
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Pickup Time</label>
-                                    <input
-                                        type="datetime-local"
-                                        id="scheduledTime"
-                                        value={pickupTime}
-                                        onChange={(e) => setPickupTime(e.target.value)}
-                                        required
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    />
-                                </div>
-                            </div>
+                            {/*<div className="flex flex-col pt-2">*/}
+                            {/*    <div className="flex items-center gap-2">*/}
+                            {/*        <label className="w-1/4">Pickup Time</label>*/}
+                            {/*        <input*/}
+                            {/*            type="time"*/}
+                            {/*            id="scheduledTime"*/}
+                            {/*            value={pickupTime}*/}
+                            {/*            onChange={(e) => setPickupTime(e.target.value)}*/}
+                            {/*            required*/}
+                            {/*            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"*/}
+                            {/*        />*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
 
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
