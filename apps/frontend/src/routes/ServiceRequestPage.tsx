@@ -23,6 +23,9 @@ interface transportRequest {
 
 // Component definition
 const TransportRequestPage = () => {
+    const loggedIn = sessionStorage.getItem('loggedIn');
+    if (!loggedIn) {window.location.href = '/';}
+
     const [patientId, setPatientId] = useState(0);
     const [patientName, setPatientName] = useState('');
     const [transportType, setTransportType] =
@@ -98,7 +101,7 @@ const TransportRequestPage = () => {
         // flex row container
         <div className="flex flex-col justify-center items-center min-h-screen">
             {/* make the form left side */}
-            <div className="flex flex-col items-center border border-[#d3d5d7] bg-white rounded-2xl shadow-xl p-8 w-full max-w-[700px] mt-10">
+            <div className="flex flex-col items-center border border-[#d3d5d7] bg-white rounded-2xl shadow-xl p-8 w-full max-w-[700px] mt-10 mb-10">
                 <h1 className="text-[30px] font-bold mb-6">Patient Transportation Request</h1>
                 <div>
                     <form onSubmit={handleSubmit} className="space-y-6">
@@ -115,6 +118,7 @@ const TransportRequestPage = () => {
                                         value={patientId}
                                         onChange={(e) => setPatientId(Number(e.target.value))}
                                         required
+                                        min="0"
                                         placeholder="Enter patient ID"
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
@@ -283,6 +287,7 @@ const TransportRequestPage = () => {
                                         value={requesterId}
                                         onChange={(e) => setRequesterId(Number(e.target.value))}
                                         required
+                                        min="0"
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
                                 </div>
@@ -304,11 +309,12 @@ const TransportRequestPage = () => {
                             </div>
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Employee assigned ID</label>
+                                    <label className="w-1/4">Employee ID</label>
                                     <input
                                         type="number"
                                         id="assignedToId"
                                         value={assignedToId}
+                                        min="0"
                                         onChange={(e) => setAssignedToId(Number(e.target.value))}
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
@@ -323,7 +329,7 @@ const TransportRequestPage = () => {
 
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Medical Notes/Special Instructions</label>
+                                    <label className="w-1/4">Special Instructions</label>
                                     <textarea
                                         id="medicalNotes"
                                         value={notes}
