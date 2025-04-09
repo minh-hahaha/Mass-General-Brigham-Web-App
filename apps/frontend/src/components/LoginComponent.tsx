@@ -71,7 +71,11 @@ const LoginComponent = () => {
                     <span className="flex-shrink mx-2 font-semibold text-slate-800">Sign In</span>
                     <div className="flex-grow border-t border-gray-800"></div>
                 </div>
-                {wrongPassword && <div>Wrong Password</div>}
+                {wrongPassword && (
+                    <div className="bg-red-600 text-white px-4 py-2 rounded-md mt-2 text-sm font-semibold text-center shadow">
+                        Wrong Password
+                    </div>
+                )}
                 <div className="grid grid-cols-1 gap-5 my-1">
                     <input
                         className="text-sm w-90 px-4 py-2 border border-solid border-mgbblue rounded-md"
