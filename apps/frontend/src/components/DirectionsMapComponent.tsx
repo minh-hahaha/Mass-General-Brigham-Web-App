@@ -4,9 +4,6 @@ import {Map, useMap, useMapsLibrary} from '@vis.gl/react-google-maps';
 import ChestnutHillMapComponent from "./ChestnutHillMapComponent.tsx";
 import {cleanedUpBFS, bfs} from "../../../backend/src/Algorithms/BFS.ts";
 
-async function test (){
-    return await cleanedUpBFS("A","G");
-}
 
 const  DirectionsMapComponent = () => {
     const map = useMap();
@@ -121,58 +118,38 @@ const  DirectionsMapComponent = () => {
     const HospitalMap =  () => {
         const[path,setPaths] = useState<string[][]> ([]);
 
+
         useEffect(() => {
             const getMyPaths = async () => {
-                try {
-                    const result = await cleanedUpBFS("A", "G");
+                if (parkA) {
+                    const result = await cleanedUpBFS("A","G");
+                    console.log("ParkA   " + result);
+
                     setPaths(result);
-                } catch (e) {
-                    console.error(e);
+                }
+                else if (parkB) {
+                    const result = await cleanedUpBFS("J","G");
+                    console.log("ParkB   " + result);
+                    setPaths(result);
+                }
+                else if (parkC) {
+                    const result = await cleanedUpBFS("L","G");
+                    console.log("ParkC   " + result);
+                    setPaths(result);
+                }
+                else{
+                    setPaths([]);
                 }
             }
-            getMyPaths();
-        },[])
-        //         else if (parkB) {
-        //             const result = await cleanedUpBFS("J","G");
-        //             setPaths(result);
-        //         }
-        //         else if (parkC) {
-        //             const result = await cleanedUpBFS("L","G");
-        //             setPaths(result);
-        //         }
-        //         else{
-        //             setPaths([]);
-        //         }
-        //     };
-        //     void getMyPaths();
-        // },
-        //     [parkA, parkB, parkC]);
+             getMyPaths();
+        }, [parkA, parkB, parkC]);
+
         return (
             <div>
-
-                {parkA ? (
-                    <ChestnutHillMapComponent
-                        svgPath={svg}
-
-                        // nodeConnections={[["A","B"], ["B","C"], ["C","D"],["D","E"], ["E","F"], ["F","G"]]}
-                        nodeConnections={path}
-
-                    />
-                ) : parkB ? (
-                    <ChestnutHillMapComponent
-                        svgPath={svg}
-                        nodeConnections={[["J", "H"], ["H", "G"]]}
-                    />
-                ) : parkC ? (
-                    <ChestnutHillMapComponent
-                        svgPath={svg}
-                        nodeConnections={[["L", "K"], ["K", "J"], ["J", "H"], ["H", "G"]]}
-                    />
-                ) : (
-                    <ChestnutHillMapComponent
-                        svgPath={svg}
-                        nodeConnections={[]}/>
-                )}
+                <ChestnutHillMapComponent
+                    svgPath={svg}
+                    nodeConnections={path}
+                />
 
             </div>
         )
