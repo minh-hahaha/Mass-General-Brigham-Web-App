@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import Papa from 'papaparse';
 import axios from 'axios';
 import {ROUTES} from 'common/src/constants.ts';
 
@@ -28,7 +27,7 @@ const ImportExportCSV = ({ tableName: string}) => {
             const link = document.createElement('a');
 
             link.href = url;
-            link.setAttribute('download', '');
+            link.setAttribute('download', 'export.csv');
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
