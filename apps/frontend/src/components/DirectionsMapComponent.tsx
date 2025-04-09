@@ -4,6 +4,10 @@ import {Map, useMap, useMapsLibrary} from '@vis.gl/react-google-maps';
 import ChestnutHillMapComponent from "./ChestnutHillMapComponent.tsx";
 import {cleanedUpBFS, bfs} from "../../../backend/src/Algorithms/BFS.ts";
 
+async function test (){
+    return await cleanedUpBFS("A","G");
+}
+
 const  DirectionsMapComponent = () => {
     const map = useMap();
     const routesLibrary = useMapsLibrary('routes')
@@ -119,25 +123,30 @@ const  DirectionsMapComponent = () => {
 
         useEffect(() => {
             const getMyPaths = async () => {
-                if (parkA) {
-                    const result = await cleanedUpBFS("A","G");
+                try {
+                    const result = await cleanedUpBFS("A", "G");
                     setPaths(result);
+                } catch (e) {
+                    console.error(e);
                 }
-                else if (parkB) {
-                    const result = await cleanedUpBFS("J","G");
-                    setPaths(result);
-                }
-                else if (parkC) {
-                    const result = await cleanedUpBFS("L","G");
-                    setPaths(result);
-                }
-                else{
-                    setPaths([]);
-                }
-            };
-            void getMyPaths();
-        },
-            [parkA, parkB, parkC]);
+            }
+            getMyPaths();
+        },[])
+        //         else if (parkB) {
+        //             const result = await cleanedUpBFS("J","G");
+        //             setPaths(result);
+        //         }
+        //         else if (parkC) {
+        //             const result = await cleanedUpBFS("L","G");
+        //             setPaths(result);
+        //         }
+        //         else{
+        //             setPaths([]);
+        //         }
+        //     };
+        //     void getMyPaths();
+        // },
+        //     [parkA, parkB, parkC]);
         return (
             <div>
 
