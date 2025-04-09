@@ -1,0 +1,3 @@
+dep_id,dep_services,dep_name,building_id,dep_phone,floor,room_num,loc_id,loc_type
+1,Backup childcare for employees,Backup Child Care Center,1,(617) 732-9543,2,201,1,Room
+0,"Allergy, (environmental, food, medication, and venoms), asthma, anaphylaxis, angioedema, sinusitis, and immunodeficiency",Allergy and Clinical Immunology,1,(617) 732-9850,3,301,0,Room

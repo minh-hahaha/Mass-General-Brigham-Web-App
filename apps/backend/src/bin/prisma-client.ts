@@ -1,4 +1,4 @@
-import { PrismaClient } from 'database';
+import { PrismaClient } from '../../../../packages/database';
 
 // Create the prisma client, this automatically connects to the database
 const client = new PrismaClient();
@@ -8,24 +8,21 @@ const client = new PrismaClient();
 //if there's an error with "TABLECreateManyInput" make sure to run "yarn workspace database generate" in the console
 
 async function main() {
-    const createBuilding = await client.building.create({
+    /* const createEmployee = await client.employee.create({
         data: {
-            building_name: 'name',
-            building_id: 1,
+            first_name: 'AdMinh',
+            middle_name: '',
+            last_name: 'Ha',
+            position: 'Surgeon',
+            date_hired: new Date(2025, 4, 5),
+            email: 'admin',
+            password: 'admin',
+            admin: true,
         },
-    });
-
-    const createDepartment = await client.department.create({
-        data: {
-            dep_services: 'Intensive Care',
-            dep_name: 'Wilson Wong ICU',
-            building_id: 1,
-            dep_phone: 'Phone Number',
-        },
-    });
+    });*/
 }
 
-main().then(() => console.log('Temp Data Loaded'));
+//main().then(() => console.log('Temp Data Loaded'));
 
 // Export the client
 export default client;

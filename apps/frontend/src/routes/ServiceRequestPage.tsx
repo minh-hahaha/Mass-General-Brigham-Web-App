@@ -3,7 +3,7 @@ import MGBButton from "../components/MGBButton.tsx";
 import axios from "axios";
 import { ROUTES } from 'common/src/constants';
 import ConfirmMesg from "../components/ConfirmMesg.tsx"; // Import the new component
-
+import {SubmitTransportRequest} from "../database/transportRequest.ts"
 
 interface transportRequest {
     patientId: number;
@@ -14,7 +14,7 @@ interface transportRequest {
     dropOffLocation: string;
     pickupDate: string;
     pickupTime: string;
-    status: 'Pending' | 'In Progress' | 'Complete   d' | 'Cancelled';
+    status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
     notes: string;
     requesterId: number;
     requestDate: string;
@@ -59,7 +59,8 @@ const TransportRequestPage = () => {
             assignedToId,
         }
 
-        DisplayTransportRequest(newRequest); //sends new data to backend
+
+        SubmitTransportRequest(newRequest);
         setSubmittedRequest(newRequest);
         setShowConfirmation(true);
 
@@ -82,10 +83,10 @@ const TransportRequestPage = () => {
         setAssignedToId(0);
     }
 
-    //Data is sent to the backend
-    async function DisplayTransportRequest(request: transportRequest) {
-        await axios.post(ROUTES.PATIENTTRANSPORT, request);
-    }
+    // //Data is sent to the backend
+    // async function DisplayTransportRequest(request: transportRequest) {
+    //     await axios.post(ROUTES.PATIENTTRANSPORT, request);
+    // }
 
     const handleConfirmationClose = () => {
         setShowConfirmation(false);
@@ -95,6 +96,7 @@ const TransportRequestPage = () => {
 
     return (
         // flex row container
+        <>
         <div className="flex flex-row">
             {/* make the form left side */}
             <div className="w-1/2 pr-4">
@@ -301,6 +303,7 @@ const TransportRequestPage = () => {
             <div className="w-1/2 pl-4">
             </div>
         </div>
+            </>
     )
 };
 

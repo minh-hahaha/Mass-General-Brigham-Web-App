@@ -30,7 +30,6 @@ export async function dataToCSV(data: Record<string, any>[]) {
         dataToWrite += csvData.toString() + '\n';
         row = data.pop();
     }
-
     // Write all data to header_name.csv
     // Uses the first key as the name of the file EX: dep_id.csv
     fs.writeFile(headers[0] + '.csv', headers + '\n' + dataToWrite, (err) => {
@@ -54,19 +53,26 @@ export async function readCSV(pathToFile: string): Promise<Record<string, any>[]
     });
 }
 
-function CSVtoData(data: string): Record<string, any>[] {
-    let splitData = data.split('\n');
+export function CSVtoData(data: string): Record<string, any>[] {
+    let splitData: string[] = [];
+    if (data.includes('\r')) {
+        splitData = data.split('\r');
+    } else {
+        splitData = data.split('\n');
+    }
     let headerFields = splitData[0].split(',');
 
     // Parse the non-header CSV data
     const objs: Record<string, any>[] = [];
-    for (let i = 1; i < splitData.length - 1; i++) {
+    for (let i = 1; i < splitData.length; i++) {
+        if (splitData[i] === '') {
+            continue;
+        }
         let row = splitString(splitData[i]);
         // Go through all the CSV's data and turn it back into {xx: xx, xx: xx} format
         const obj: Record<string, any> = {};
         for (let j = 0; j < row.length; j++) {
             const value = row[j];
-
             // Check if the current value is a number
             const num = Number(value);
             if (!isNaN(num) && value.trim() !== '') {
