@@ -42,21 +42,21 @@ const DirectoryDisplayPage = () => {
             {data.map((department) => (
                     <tbody>
                         <tr>
-                            <th>
+                            <td>
                                 {department.dep_id}
-                            </th>
-                            <th>
+                            </td>
+                            <td>
                                 {department.dep_services}
-                            </th>
-                            <th>
+                            </td>
+                            <td>
                                 {department.dep_name}
-                            </th>
-                            <th>
+                            </td>
+                            <td>
                                 {department.building_id}
-                            </th>
-                            <th>
+                            </td>
+                            <td>
                                 {department.dep_phone}
-                            </th>
+                            </td>
                         </tr>
                     </tbody>
 
