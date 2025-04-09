@@ -1,41 +1,86 @@
 import { useEffect, useState } from 'react';
-import { GetDirectory } from '../database/gettingDirectory';
+import { GetDirectory, DepartmentRequest } from '../database/gettingDirectory';
 
 const DirectoryDisplayPage = () => {
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<DepartmentRequest[]>([]);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                return await GetDirectory();
+                const result = await GetDirectory();
+                setData(result);
             } catch (error) {
-                console.log('Error getting directory');
+                console.error('Failed to fetch directory data:', error);
             }
         };
-    });
+        fetchData();
+    }, []);
 
-    const columns = Object.keys(data[0]);
 
     return (
         <div className="table-container">
-            <h2>Database Table</h2>
-            <table className="data-table">
+            <table>
                 <thead>
-                    <tr>
-                        {columns.map((column) => (
-                            <th key={column}>{column}</th>
-                        ))}
-                    </tr>
+                <tr>
+                    <th>
+                        Department ID
+                    </th>
+                    <th>
+                        Department Services
+                    </th>
+                    <th>
+                        Department Name
+                    </th>
+                    <th>
+                        Building ID
+                    </th>
+                    <th>
+                        Phone Number
+                    </th>
+                </tr>
                 </thead>
-                <tbody>
-                    {data.map((row, rowIndex) => (
-                        <tr key={rowIndex}>
-                            {columns.map((column) => (
-                                <td key={`${rowIndex}-${column}`}>{row[column]}</td>
-                            ))}
+            {data.map((department) => (
+                    <tbody>
+                        <tr>
+                            <th>
+                                {department.dep_id}
+                            </th>
+                            <th>
+                                {department.dep_services}
+                            </th>
+                            <th>
+                                {department.dep_name}
+                            </th>
+                            <th>
+                                {department.building_id}
+                            </th>
+                            <th>
+                                {department.dep_phone}
+                            </th>
                         </tr>
-                    ))}
-                </tbody>
+                    </tbody>
+
+            ))}
             </table>
+            {/*<h2>Database Table</h2>*/}
+            {/*<table className="data-table">*/}
+            {/*    <thead>*/}
+            {/*        <tr>*/}
+            {/*            {columns.map((column) => (*/}
+            {/*                <th key={column}>{column}</th>*/}
+            {/*            ))}*/}
+            {/*        </tr>*/}
+            {/*    </thead>*/}
+            {/*    <tbody>*/}
+            {/*        {data.map((row: DepartmentRequest, rowIndex) => (*/}
+            {/*            <tr key={rowIndex}>*/}
+            {/*                {columns.map((column) => (*/}
+            {/*                    <td key={`${rowIndex}-${column}`}>{row[column]}</td>*/}
+            {/*                ))}*/}
+            {/*            </tr>*/}
+            {/*        ))}*/}
+            {/*    </tbody>*/}
+            {/*</table>*/}
         </div>
     );
 };
