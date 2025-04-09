@@ -1,5 +1,13 @@
 import { useEffect, useState } from 'react';
 import { GetDirectory, DepartmentRequest } from '../database/gettingDirectory';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
 
 const DirectoryDisplayPage = () => {
     const [data, setData] = useState<DepartmentRequest[]>([]);
@@ -16,71 +24,32 @@ const DirectoryDisplayPage = () => {
         fetchData();
     }, []);
 
-
     return (
-        <div className="table-container">
-            <table>
-                <thead>
-                <tr>
-                    <th>
-                        Department ID
-                    </th>
-                    <th>
-                        Department Services
-                    </th>
-                    <th>
-                        Department Name
-                    </th>
-                    <th>
-                        Building ID
-                    </th>
-                    <th>
-                        Phone Number
-                    </th>
-                </tr>
-                </thead>
-            {data.map((department) => (
-                    <tbody>
-                        <tr>
-                            <td>
-                                {department.dep_id}
-                            </td>
-                            <td>
-                                {department.dep_services}
-                            </td>
-                            <td>
-                                {department.dep_name}
-                            </td>
-                            <td>
-                                {department.building_id}
-                            </td>
-                            <td>
-                                {department.dep_phone}
-                            </td>
-                        </tr>
-                    </tbody>
-
-            ))}
-            </table>
-            {/*<h2>Database Table</h2>*/}
-            {/*<table className="data-table">*/}
-            {/*    <thead>*/}
-            {/*        <tr>*/}
-            {/*            {columns.map((column) => (*/}
-            {/*                <th key={column}>{column}</th>*/}
-            {/*            ))}*/}
-            {/*        </tr>*/}
-            {/*    </thead>*/}
-            {/*    <tbody>*/}
-            {/*        {data.map((row: DepartmentRequest, rowIndex) => (*/}
-            {/*            <tr key={rowIndex}>*/}
-            {/*                {columns.map((column) => (*/}
-            {/*                    <td key={`${rowIndex}-${column}`}>{row[column]}</td>*/}
-            {/*                ))}*/}
-            {/*            </tr>*/}
-            {/*        ))}*/}
-            {/*    </tbody>*/}
-            {/*</table>*/}
+        <div className="flex justify-center mt-10">
+            <div className="w-full max-w-6xl border border-gray-300 rounded-2xl shadow-md overflow-auto p-4 bg-white">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Department ID</TableHead>
+                            <TableHead>Department Services</TableHead>
+                            <TableHead>Department Name</TableHead>
+                            <TableHead>Building ID</TableHead>
+                            <TableHead>Phone Number</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {data.map((department) => (
+                            <TableRow>
+                                <TableCell>{department.dep_id}</TableCell>
+                                <TableCell className="break-words whitespace-normal max-w-s">{department.dep_services}</TableCell>
+                                <TableCell>{department.dep_name}</TableCell>
+                                <TableCell>{department.building_id}</TableCell>
+                                <TableCell>{department.dep_phone}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </div>
         </div>
     );
 };
