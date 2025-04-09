@@ -14,5 +14,5 @@ export async function ImportCSV(request:FormData) {
 }
 
 export async function ExportCSV() {
-    return (await axios.get(ROUTES.DIRECTORY)).data;
+    return (await axios.get(ROUTES.DIRECTORY_CSV)).data;
 }

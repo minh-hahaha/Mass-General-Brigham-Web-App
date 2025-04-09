@@ -1,5 +1,5 @@
 import {ChangeEvent, useState} from 'react';
-import {ImportCSV} from "../database/CSVImportExport.ts";
+import {ImportCSV, ExportCSV} from "../database/CSVImportExport.ts";
 import MGBButton from "../components/MGBButton.tsx";
 
 const ImportExportDirectoryPage = () => {
@@ -29,7 +29,6 @@ const ImportExportDirectoryPage = () => {
 
         console.log("Sending file:", file.name, file.type, file.size);
 
-
         try{
             await ImportCSV(formData);
             // Clear file after successful upload
@@ -47,6 +46,27 @@ const ImportExportDirectoryPage = () => {
 
     }
 
+    async function handleExport(){
+        try{
+            const response = await ExportCSV(); // has backend data
+            // download csv
+            const blob = new Blob([response], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+
+            link.href = url;
+            link.setAttribute('download', 'export.csv');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url); // Free up memory by revoking the object URL
+
+        }catch (e) {
+            console.log("Downloading");
+        }
+    }
+
+
     return (
         <div className="space-y-2">
             <input
@@ -55,6 +75,7 @@ const ImportExportDirectoryPage = () => {
                 accept=".csv, text/csv"
             />
             <MGBButton onClick={handleFileUpload} variant={'primary'} disabled={false}> Upload!</MGBButton>
+            <MGBButton onClick={handleExport} variant={'primary'} disabled={false}> Export!</MGBButton>
             {upload ? (
                 <p>Upload Successfully</p>
             ): (
