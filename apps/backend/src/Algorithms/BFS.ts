@@ -34,7 +34,6 @@ export async function bfs(
 
         // checking if we found the target node
         if (currentNode.id === targetNode.id) {
-            console.log(currentPath);
             return currentPath;
         }
 
@@ -81,7 +80,26 @@ export async function bfs(
 //
 //
 //
-console.log(bfs('L', 'G'));
 
 //
 //
+export async function cleanedUpBFS(
+    startPoint: string,
+    endPoint: string
+): Promise<[string, string][] | null | undefined> {
+    const bfsResult = await bfs(startPoint, endPoint);
+
+    const results: [string, string][] = [];
+
+    if (bfsResult) {
+        for (let i = 0, lenBFS = bfsResult.length - 1; i < lenBFS; i++) {
+            results.push([bfsResult[i].id, bfsResult[i + 1].id]);
+        }
+    } else {
+        return null;
+    }
+
+    return results;
+}
+
+//const test = cleanedUpBFS("L","G")

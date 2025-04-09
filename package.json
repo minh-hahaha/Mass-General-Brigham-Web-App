@@ -17,8 +17,11 @@
     "deploy": "bash ./scripts/deploy.sh",
     "prepare": "husky"
   },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} packages/database/prisma/seed.ts"
+  },
   "devDependencies": {
-    "@types/node": "^22.14.0",
+    "@types/node": "^22.13.13",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitest/ui": "^3.0.9",
