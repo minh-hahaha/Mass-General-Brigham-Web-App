@@ -1,5 +1,5 @@
 export class myNode {
-    id: String;
+    id: string;
     xPixel: number;
     yPixel: number;
     floor: number;

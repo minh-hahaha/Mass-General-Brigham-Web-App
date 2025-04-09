@@ -1,11 +1,11 @@
 import { loadGraph } from './ExportNodesAndEdges.ts';
-import { myNode } from './classes.ts';
+import { Graph, myNode } from './classes.ts';
 
-export async function bfs(
-    starterNode: myNode,
-    targetNode: myNode
-): Promise<myNode[] | null | undefined> {
+export async function bfs(startPoint: string, endPoint: string): Promise<myNode[] | null | undefined> {
     const graph = await loadGraph();
+
+    const starterNode = graph.getNode(startPoint);
+    const targetNode = graph.getNode(endPoint);
 
     if (!starterNode || !targetNode) {
         return null;
@@ -31,7 +31,6 @@ export async function bfs(
 
         // checking if we found the target node
         if (currentNode.id === targetNode.id) {
-            console.log(currentPath);
             return currentPath;
         }
 
@@ -55,11 +54,8 @@ export async function bfs(
     }
 }
 
-// // Need to test my BFS
-// const g = new Graph();
-//
-// const A = g.addNode("A", 0, 0, 1, "type");
-// const B = g.addNode("B", -1, 1, 1, "type");
+// Need to test my BFS
+
 // const C = g.addNode("C", 0, 1, 1, "type");
 // const D = g.addNode("D", 1, 1, 1, "type");
 // const E = g.addNode("E", -2, 2, 1, "type");
@@ -81,7 +77,32 @@ export async function bfs(
 //
 //
 //
-// console.log(g.bfs(A,G));
+
+
 //
 //
-//
+export async function cleanedUpBFS(startPoint: string, endPoint: string) : Promise<[string,string][] | null | undefined> {
+    const bfsResult = await bfs(startPoint, endPoint);
+
+    const results: [string,string][] = [];
+
+
+    if(bfsResult) {
+        for(let i = 0, lenBFS = bfsResult.length - 1; i < lenBFS; i++) {
+
+            results.push([bfsResult[i].id, bfsResult[i + 1].id]);
+        }
+    }
+    else {
+        return null;
+    }
+
+
+
+
+
+    return results
+}
+
+//const test = cleanedUpBFS("L","G")
+
