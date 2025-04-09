@@ -1,7 +1,10 @@
 import { loadGraph } from './ExportNodesAndEdges.ts';
 import { Graph, myNode } from './classes.ts';
 
-export async function bfs(startPoint: string, endPoint: string): Promise<myNode[] | null | undefined> {
+export async function bfs(
+    startPoint: string,
+    endPoint: string
+): Promise<myNode[] | null | undefined> {
     const graph = await loadGraph();
 
     const starterNode = graph.getNode(startPoint);
@@ -78,31 +81,25 @@ export async function bfs(startPoint: string, endPoint: string): Promise<myNode[
 //
 //
 
-
 //
 //
-export async function cleanedUpBFS(startPoint: string, endPoint: string) : Promise<[string,string][] | null | undefined> {
+export async function cleanedUpBFS(
+    startPoint: string,
+    endPoint: string
+): Promise<[string, string][] | null | undefined> {
     const bfsResult = await bfs(startPoint, endPoint);
 
-    const results: [string,string][] = [];
+    const results: [string, string][] = [];
 
-
-    if(bfsResult) {
-        for(let i = 0, lenBFS = bfsResult.length - 1; i < lenBFS; i++) {
-
+    if (bfsResult) {
+        for (let i = 0, lenBFS = bfsResult.length - 1; i < lenBFS; i++) {
             results.push([bfsResult[i].id, bfsResult[i + 1].id]);
         }
-    }
-    else {
+    } else {
         return null;
     }
 
-
-
-
-
-    return results
+    return results;
 }
 
 //const test = cleanedUpBFS("L","G")
-
