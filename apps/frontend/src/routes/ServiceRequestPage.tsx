@@ -60,8 +60,8 @@ const TransportRequestPage = () => {
         }
 
 
-        setSubmittedRequest(newRequest);
         SubmitTransportRequest(newRequest);
+        setSubmittedRequest(newRequest);
         setShowConfirmation(true);
 
         handleReset();
