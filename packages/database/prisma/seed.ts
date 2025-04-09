@@ -19,6 +19,7 @@ async function main() {
 
             },
         ],
+        skipDuplicates: true,
     });
     const createManyDepartments = await client.department.createMany({
         data: [
@@ -69,6 +70,7 @@ async function main() {
                 floor: 0,
             },
         ],
+        skipDuplicates: true,
     });
 
     const createManyEmployees = await client.employee.createMany({
