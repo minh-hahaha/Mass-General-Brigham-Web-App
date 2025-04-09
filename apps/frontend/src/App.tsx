@@ -23,8 +23,9 @@ function App() {
                 </div>
                 <div className="basis-5/6">
                     <Routes>
-                        <Route path="/" element={<HomePage />} />
+                        <Route path="/" element={<LoginPage />} />
                         <Route path="/Login" element={<LoginPage />} />
+                        <Route path="/Home" element={<HomePage />} />
                         <Route path="/ServiceRequestPage" element={<ServiceRequestPage />} />
                         <Route path="/ServiceRequestDisplay" element={<ServiceRequestDisplayPage />} />
                         <Route path="/ImportExportDirectory" element={<ImportExportDirectoryPage />} />
@@ -33,9 +34,6 @@ function App() {
                     </Routes>
                 </div>
             </div>
-
-            // remove the following
-
 
         </BrowserRouter>
         </div>
