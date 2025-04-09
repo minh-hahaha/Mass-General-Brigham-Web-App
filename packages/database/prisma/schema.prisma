@@ -74,7 +74,7 @@ model Location {
   department    Department? @relation(fields: [department_id], references: [dep_id])
   department_id Int?
   loc_type      String
-  room_num      Int?
+  room_num      Int?        @unique
   floor         Int
 
   //making prisma happy here
@@ -83,7 +83,7 @@ model Location {
 
 model Building {
   building_id   Int          @id @default(autoincrement())
-  building_name String
+  building_name String@unique
   departments   Department[]
 }
 
