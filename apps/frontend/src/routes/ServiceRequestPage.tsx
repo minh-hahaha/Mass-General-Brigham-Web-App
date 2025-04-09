@@ -23,6 +23,9 @@ interface transportRequest {
 
 // Component definition
 const TransportRequestPage = () => {
+    const loggedIn = sessionStorage.getItem('loggedIn');
+    if (!loggedIn) {window.location.href = '/';}
+
     const [patientId, setPatientId] = useState(0);
     const [patientName, setPatientName] = useState('');
     const [transportType, setTransportType] =
