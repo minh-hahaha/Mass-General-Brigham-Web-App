@@ -1,8 +1,10 @@
 import { loadGraph } from './ExportNodesAndEdges.ts';
-import { myNode } from "./classes.ts";
+import { myNode } from './classes.ts';
 
-export async function bfs(starterNode: myNode, targetNode: myNode): Promise<myNode[] | null | undefined> {
-
+export async function bfs(
+    starterNode: myNode,
+    targetNode: myNode
+): Promise<myNode[] | null | undefined> {
     const graph = await loadGraph();
 
     if (!starterNode || !targetNode) {
@@ -13,14 +15,13 @@ export async function bfs(starterNode: myNode, targetNode: myNode): Promise<myNo
     const queue: {
         node: myNode;
         path: myNode[];
-
-    } [] = [];
+    }[] = [];
     // Initalizing the queue
-    queue.push({node: starterNode, path: [starterNode]});
+    queue.push({ node: starterNode, path: [starterNode] });
 
     visited.add(starterNode.id);
 
-    while (queue.length > 0 ) {
+    while (queue.length > 0) {
         //pop the first item in the list
         const current = queue.shift()!;
         // change the current node and current path to that of the poped element
@@ -29,7 +30,7 @@ export async function bfs(starterNode: myNode, targetNode: myNode): Promise<myNo
         const currentPath = current.path;
 
         // checking if we found the target node
-        if(currentNode.id === targetNode.id){
+        if (currentNode.id === targetNode.id) {
             console.log(currentPath);
             return currentPath;
         }
@@ -39,19 +40,17 @@ export async function bfs(starterNode: myNode, targetNode: myNode): Promise<myNo
         for (const edge of graph.edges) {
             if (edge.from.id === currentNode.id) {
                 const neighbour = edge.to;
-                if(!visited.has(neighbour.id) ){
+                if (!visited.has(neighbour.id)) {
                     visited.add(neighbour.id);
                     queue.push({ node: neighbour, path: [...currentPath, neighbour] });
-
                 }
             } else if (edge.to.id === currentNode.id) {
                 const neighbour = edge.from;
-                if(!visited.has(neighbour.id) ){
+                if (!visited.has(neighbour.id)) {
                     visited.add(neighbour.id);
-                    queue.push({ node: neighbour, path: [...currentPath,neighbour] });
+                    queue.push({ node: neighbour, path: [...currentPath, neighbour] });
                 }
             }
-
         }
     }
 }
