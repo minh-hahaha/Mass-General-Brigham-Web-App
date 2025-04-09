@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import MGBButton from './MGBButton.tsx';
-import { Map, useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
-import ChestnutHillMapComponent from './ChestnutHillMapComponent.tsx';
+import React, {useState, useEffect, useRef} from 'react';
+import MGBButton from "./MGBButton.tsx";
+import {Map, useMap, useMapsLibrary} from '@vis.gl/react-google-maps';
+import ChestnutHillMapComponent from "./ChestnutHillMapComponent.tsx";
+import {cleanedUpBFS, bfs} from "../../../backend/src/Algorithms/BFS.ts";
 
-const DirectionsMapComponent = () => {
+
+const  DirectionsMapComponent = () => {
     const map = useMap();
-    const routesLibrary = useMapsLibrary('routes');
-    const placesLibrary = useMapsLibrary('places');
+    const routesLibrary = useMapsLibrary('routes')
+    const placesLibrary = useMapsLibrary('places')
     const [fromLocation, setFromLocation] = useState('');
     const [toLocation, setToLocation] = useState('');
     const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>([]);
@@ -14,29 +16,31 @@ const DirectionsMapComponent = () => {
     const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
     const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
 
-    useEffect(() => {
-        if (!routesLibrary || !map) return;
+    useEffect(()=> {
+        if(!routesLibrary || !map) return;
         setDirectionsService(new routesLibrary.DirectionsService());
-        setDirectionsRenderer(new routesLibrary.DirectionsRenderer({ map }));
-    }, [map, routesLibrary]);
+        setDirectionsRenderer(new routesLibrary.DirectionsRenderer({map}));
+    }, [map, routesLibrary])
+
 
     // refs for autocomplete
-    const fromLocationRef = useRef(null);
-    const toLocationRef = useRef(null);
+    const fromLocationRef = useRef(null)
+    const toLocationRef = useRef(null)
 
-    useEffect(() => {
-        if (!placesLibrary || !fromLocationRef.current || !toLocationRef.current) return;
+    useEffect(()=>{
+        if (!placesLibrary || !fromLocationRef.current || !toLocationRef.current) return
 
         // autocomplete for origin
         const fromAutocomplete = new placesLibrary.Autocomplete(fromLocationRef.current, {
             types: ['geocode', 'establishment'],
-            fields: ['place_id', 'geometry', 'formatted_address', 'name'],
-        });
+            fields: ['place_id', 'geometry', 'formatted_address', 'name']
+        })
         // autocomplete for origin
         const toAutocomplete = new placesLibrary.Autocomplete(toLocationRef.current, {
             types: ['geocode', 'establishment'],
-            fields: ['place_id', 'geometry', 'formatted_address', 'name'],
-        });
+            fields: ['place_id', 'geometry', 'formatted_address', 'name']
+        })
+
 
         // event listeners so that when autocomplete the state is changed
         fromAutocomplete.addListener('place_changed', () => {
@@ -52,104 +56,104 @@ const DirectionsMapComponent = () => {
                 setToLocation(place.formatted_address);
             }
         });
-    }, [placesLibrary]);
+    }, [placesLibrary])
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         calculateRoute();
-    };
+    }
 
     const calculateRoute = () => {
-        if (!directionsRenderer || !directionsService) return;
+        if(!directionsRenderer || !directionsService) return;
 
-        directionsService
-            .route({
-                origin: fromLocation,
-                destination: toLocation,
-                travelMode: google.maps.TravelMode.DRIVING,
-                provideRouteAlternatives: false,
-            })
-            .then((response) => {
-                directionsRenderer.setDirections(response);
-                setRoutes(response.routes);
-            });
-    };
+        directionsService.route({
+            origin: fromLocation,
+            destination: toLocation,
+            travelMode: google.maps.TravelMode.DRIVING,
+            provideRouteAlternatives: false
+        }).then((response) => {
+            directionsRenderer.setDirections(response);
+            setRoutes(response.routes);
+        })
+    }
 
-    const [parkA, setParkA] = useState(false);
-    const handleParkA = () => {
+    const [parkA, setParkA] = useState(false)
+    const handleParkA=()=>{
         clearParking();
         setParkA(true);
         setShowHospital(true);
-    };
 
-    const [parkB, setParkB] = useState(false);
-    const handleParkB = () => {
+    }
+
+    const [parkB, setParkB] = useState(false)
+    const handleParkB=()=>{
         clearParking();
         setParkB(true);
         setShowHospital(true);
-    };
+    }
 
-    const [parkC, setParkC] = useState(false);
-    const handleParkC = () => {
+    const [parkC, setParkC] = useState(false)
+    const handleParkC=()=>{
         clearParking();
         setParkC(true);
         setShowHospital(true);
-    };
+    }
 
-    const clearParking = () => {
+    const clearParking=()=>{
         setParkA(false);
         setParkB(false);
         setParkC(false);
-    };
+    }
 
-    const [parking, setParking] = useState(false);
-    const [showHospital, setShowHospital] = useState(false);
+    const [parking, setParking] = useState(false)
+    const [showHospital, setShowHospital] = useState(false)
     const handleHere = () => {
         setShowHospital(true);
         setParking(true);
-    };
+    }
 
     const svg = '/ChestnutHillMap.svg';
 
-    const HospitalMap = () => {
+
+    const HospitalMap =  () => {
+        const[path,setPaths] = useState<string[][]> ([]);
+
+
+        useEffect(() => {
+            const getMyPaths = async () => {
+                if (parkA) {
+                    const result = await cleanedUpBFS("A","G");
+                    console.log("ParkA   " + result);
+
+                    setPaths(result);
+                }
+                else if (parkB) {
+                    const result = await cleanedUpBFS("J","G");
+                    console.log("ParkB   " + result);
+                    setPaths(result);
+                }
+                else if (parkC) {
+                    const result = await cleanedUpBFS("L","G");
+                    console.log("ParkC   " + result);
+                    setPaths(result);
+                }
+                else{
+                    setPaths([]);
+                }
+            }
+             getMyPaths();
+        }, [parkA, parkB, parkC]);
+
         return (
             <div>
-                {parkA ? (
-                    <ChestnutHillMapComponent
-                        svgPath={svg}
-                        nodeConnections={[
-                            ['A', 'B'],
-                            ['B', 'C'],
-                            ['C', 'D'],
-                            ['D', 'E'],
-                            ['E', 'F'],
-                            ['F', 'G'],
-                        ]}
-                    />
-                ) : parkB ? (
-                    <ChestnutHillMapComponent
-                        svgPath={svg}
-                        nodeConnections={[
-                            ['J', 'H'],
-                            ['H', 'G'],
-                        ]}
-                    />
-                ) : parkC ? (
-                    <ChestnutHillMapComponent
-                        svgPath={svg}
-                        nodeConnections={[
-                            ['L', 'K'],
-                            ['K', 'J'],
-                            ['J', 'H'],
-                            ['H', 'G'],
-                        ]}
-                    />
-                ) : (
-                    <ChestnutHillMapComponent svgPath={svg} nodeConnections={[]} />
-                )}
+                <ChestnutHillMapComponent
+                    svgPath={svg}
+                    nodeConnections={path}
+                />
+
             </div>
-        );
-    };
+        )
+    }
 
     return (
         <div className="flex flex-row">
@@ -183,32 +187,30 @@ const DirectionsMapComponent = () => {
                         />
                     </div>
 
-                    <div className="mt-5">
-                        <MGBButton
-                            onClick={() => handleSubmit}
-                            variant={'primary'}
-                            disabled={!fromLocation || !toLocation}
-                        >
-                            Find Directions
-                        </MGBButton>
-                    </div>
+                    <MGBButton
+                        onClick={() => handleSubmit}
+                        variant={'primary'}
+                        disabled={!fromLocation || !toLocation}
+                    >
+                        Find Directions
+                    </MGBButton>
 
-                    <div className="mt-2">
-                        <MGBButton
-                            onClick={() => handleHere()}
-                            variant={'primary'}
-                            disabled={undefined}
-                        >
-                            I am here!
-                        </MGBButton>
-                    </div>
                 </form>
 
+                <br/>
+                <MGBButton
+                    onClick={()=>handleHere()}
+                    variant={'primary'}
+                    disabled={undefined}
+                >
+                    I am here!
+                </MGBButton>
+
                 {parking ? (
-                    <div className="flex flex-col gap-2 mt-5">
-                        <p className="font-semibold">Where did you park?</p>
+                    <div className="flex flex-col">
+                        <p>Where did you park?</p>
                         <MGBButton
-                            onClick={() => handleParkA()}
+                            onClick={()=>handleParkA()}
                             variant={'primary'}
                             disabled={!parking}
                         >
@@ -216,23 +218,24 @@ const DirectionsMapComponent = () => {
                         </MGBButton>
 
                         <MGBButton
-                            onClick={() => handleParkB()}
+                            onClick={()=>handleParkB()}
                             variant={'primary'}
                             disabled={!parking}
                         >
                             Lot B
                         </MGBButton>
                         <MGBButton
-                            onClick={() => handleParkC()}
+                            onClick={()=>handleParkC()}
                             variant={'primary'}
                             disabled={!parking}
                         >
                             Lot C
                         </MGBButton>
                     </div>
-                ) : (
+                ): (
                     <></>
                 )}
+
             </div>
 
             <div className="basis-[78vw]">
@@ -240,7 +243,7 @@ const DirectionsMapComponent = () => {
                     <div>
                         <HospitalMap />
                     </div>
-                ) : (
+                    ):(
                     <Map
                         style={{ width: '100%', height: '92vh' }}
                         defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
@@ -251,6 +254,7 @@ const DirectionsMapComponent = () => {
             </div>
         </div>
     );
-};
+
+}
 
 export default DirectionsMapComponent;
