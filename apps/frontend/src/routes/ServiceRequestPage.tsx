@@ -14,7 +14,7 @@ interface transportRequest {
     dropOffLocation: string;
     pickupDate: string;
     pickupTime: string;
-    status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
+    status: 'Pending' | 'In Progress' | 'Complete   d' | 'Cancelled';
     notes: string;
     requesterId: number;
     requestDate: string;

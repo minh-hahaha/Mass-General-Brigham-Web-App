@@ -29,8 +29,9 @@ model Employee {
   serviceRequest ServiceRequest[]
   email          String           @unique
   password       String
-  department     Department       @relation(fields: [department_id], references: [dep_id])
-  department_id  Int
+  department     Department?      @relation(fields: [department_id], references: [dep_id])
+  department_id  Int?
+  admin          Boolean          @default(false)
 }
 
 model ServiceRequest {
