@@ -12,6 +12,9 @@ import {
 } from '@/components/ui/table';
 
 const ServiceRequestDisplayPage = () => {
+    const loggedIn = sessionStorage.getItem('loggedIn');
+    if (!loggedIn) {window.location.href = '/';}
+
     const [loading, setLoading] = useState(true);
     const [requests, setRequests] = useState<incomingRequest[]>([]);
 
