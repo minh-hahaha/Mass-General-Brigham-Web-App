@@ -307,7 +307,7 @@ const TransportRequestPage = () => {
                             </div>
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Employee assigned ID</label>
+                                    <label className="w-1/4">Employee ID</label>
                                     <input
                                         type="number"
                                         id="assignedToId"
@@ -326,7 +326,7 @@ const TransportRequestPage = () => {
 
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Medical Notes/Special Instructions</label>
+                                    <label className="w-1/4">Special Instructions</label>
                                     <textarea
                                         id="medicalNotes"
                                         value={notes}
