@@ -10,7 +10,7 @@ export default function LoginPage() {
             {!displayLogin && (
                 <section className="h-screen relative bg-[url('/mgbhero.jpeg')] bg-cover bg-center flex flex-col justify-center">
                     {/* Overlay */}
-                    <div className="absolute inset-0 bg-black/40 z-0"></div>
+                    <div className="absolute inset-0 bg-black/45 z-0"></div>
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -27,18 +27,23 @@ export default function LoginPage() {
                         </div>
                     </motion.div>
                     <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1, delay: 1 }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1, delay: 1 }}
                     >
                         <div className="relative z-10 flex flex-col items-center mt-5">
-                            <MGBButton
-                                onClick={() => setDisplayLogin(true)}
-                                variant={'primary'}
-                                disabled={false}
+                            <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
                             >
-                                Login To My Account
-                            </MGBButton>
+                                <MGBButton
+                                    onClick={() => setDisplayLogin(true)}
+                                    variant={'primary'}
+                                    disabled={false}
+                                >
+                                    Login To My Account
+                                </MGBButton>
+                            </motion.button>
                         </div>
                     </motion.div>
                 </section>
