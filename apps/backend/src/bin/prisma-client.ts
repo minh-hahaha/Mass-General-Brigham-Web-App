@@ -20,6 +20,13 @@ async function main() {
             admin: true,
         },
     });
+
+    const building = await client.building.create({
+        data: {
+            building_id: 0,
+            building_name: 'Chestnut Hill',
+        },
+    });
 }
 
 //main().then(() => console.log('Temp Data Loaded'));

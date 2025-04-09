@@ -61,14 +61,6 @@ router.get('/csv', async function (req: Request, res: Response) {
 });
 
 router.post('/csv', async function (req: Request, res: Response) {
-    // console.log(req.file);
-    // console.log(req.body);
-    // console.log(req.files);
-    // if (!req.file) {
-    //     console.error('No file uploaded');
-    //     res.sendStatus(200);
-    //     return;
-    // }
     const [test, test2] = Object.entries(req.body);
     const csvData = CSVtoData(test[0].toString());
     try {
@@ -79,7 +71,6 @@ router.post('/csv', async function (req: Request, res: Response) {
                 dep_name: data.dep_name,
                 building_id: data.building_id,
                 dep_phone: data.dep_phone,
-                build_id: data.build_id,
             };
             const dataToUpsertLocation = {
                 loc_id: data.loc_id,
