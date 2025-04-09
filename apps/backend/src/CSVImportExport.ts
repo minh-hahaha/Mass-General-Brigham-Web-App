@@ -53,8 +53,13 @@ export async function readCSV(pathToFile: string): Promise<Record<string, any>[]
     });
 }
 
-function CSVtoData(data: string): Record<string, any>[] {
-    let splitData = data.split('\n');
+export function CSVtoData(data: string): Record<string, any>[] {
+    let splitData: string[] = [];
+    if (data.includes('\r')) {
+        splitData = data.split('\r');
+    } else {
+        splitData = data.split('\n');
+    }
     let headerFields = splitData[0].split(',');
 
     // Parse the non-header CSV data
@@ -68,7 +73,6 @@ function CSVtoData(data: string): Record<string, any>[] {
         const obj: Record<string, any> = {};
         for (let j = 0; j < row.length; j++) {
             const value = row[j];
-
             // Check if the current value is a number
             const num = Number(value);
             if (!isNaN(num) && value.trim() !== '') {
