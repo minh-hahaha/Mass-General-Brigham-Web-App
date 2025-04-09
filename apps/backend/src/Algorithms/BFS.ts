@@ -104,5 +104,5 @@ export async function cleanedUpBFS(startPoint: string, endPoint: string) : Promi
     return results
 }
 
-const test = cleanedUpBFS("L","G")
+//const test = cleanedUpBFS("L","G")
 
