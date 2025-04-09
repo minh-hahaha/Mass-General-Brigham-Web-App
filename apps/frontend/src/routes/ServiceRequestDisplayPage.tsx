@@ -46,9 +46,9 @@ const ServiceRequestDisplayPage = () => {
                             <TableHead>Patient Name</TableHead>
                             <TableHead>Priority</TableHead>
                             <TableHead>Status</TableHead>
-                            <TableHead>Transport Type</TableHead>
                             <TableHead>Pick Up Location</TableHead>
                             <TableHead>Request Date</TableHead>
+                            <TableHead>Request Time</TableHead>
                             <TableHead>Service Type</TableHead>
                             <TableHead>Transport Type</TableHead>
                         </TableRow>
@@ -61,9 +61,9 @@ const ServiceRequestDisplayPage = () => {
                                 <TableCell>{req.patientTransport.patient_name}</TableCell>
                                 <TableCell>{req.priority}</TableCell>
                                 <TableCell>{req.status}</TableCell>
-                                <TableCell>{req.transport_type}</TableCell>
                                 <TableCell>{req.patientTransport.pickup_location}</TableCell>
                                 <TableCell>{req.request_date}</TableCell>
+                                <TableCell>{req.request_time}</TableCell>
                                 <TableCell>{req.service_type}</TableCell>
                                 <TableCell>{req.transport_type}</TableCell>
                             </TableRow>
