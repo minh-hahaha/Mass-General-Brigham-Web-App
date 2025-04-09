@@ -22,7 +22,7 @@ async function main() {
     });
 }
 
-main().then(() => console.log('Temp Data Loaded'));
+//main().then(() => console.log('Temp Data Loaded'));
 
 // Export the client
 export default client;

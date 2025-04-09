@@ -61,13 +61,16 @@ router.get('/csv', async function (req: Request, res: Response) {
 });
 
 router.post('/csv', async function (req: Request, res: Response) {
-    if (!req.file) {
-        console.error('No file uploaded');
-        res.sendStatus(500);
-        return;
-    }
-    const fileData = req.file.buffer;
-    const csvData = CSVtoData(fileData.toString('utf-8'));
+    // console.log(req.file);
+    // console.log(req.body);
+    // console.log(req.files);
+    // if (!req.file) {
+    //     console.error('No file uploaded');
+    //     res.sendStatus(200);
+    //     return;
+    // }
+    const [test, test2] = Object.entries(req.body);
+    const csvData = CSVtoData(test[0].toString());
     try {
         for (let data of csvData) {
             const dataToUpsertDirectory = {
@@ -80,7 +83,7 @@ router.post('/csv', async function (req: Request, res: Response) {
             };
             const dataToUpsertLocation = {
                 loc_id: data.loc_id,
-                department_id: data.department_id,
+                department_id: data.dep_id,
                 loc_type: data.loc_type,
                 room_num: data.room_num,
                 floor: data.floor,

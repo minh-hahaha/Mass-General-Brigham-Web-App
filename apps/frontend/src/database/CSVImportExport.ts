@@ -5,7 +5,8 @@ import axios from 'axios';
 
 export async function ImportCSV(request:FormData) {
     try{
-        await axios.post(ROUTES.DIRECTORY_CSV, request);
+        console.log(request.get('file'));
+        await axios.post(ROUTES.DIRECTORY_CSV, request.get('file'));
         console.log('Import CSV Successfully');
     } catch (error) {
         console.log("Error Importing CSV");
