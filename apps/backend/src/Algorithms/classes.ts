@@ -1,5 +1,5 @@
 export class myNode {
-    id: String;
+    id: string;
     xPixel: number;
     yPixel: number;
     floor: number;
@@ -47,9 +47,5 @@ export class Graph {
         const edge = new myEdge(id, from, to);
         this.edges.push(edge);
         return edge;
-    }
-
-    getNode(id: string): myNode | undefined {
-        return this.nodes.find((node) => node.id === id);
     }
 }
