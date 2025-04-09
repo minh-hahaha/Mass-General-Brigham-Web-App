@@ -2,21 +2,19 @@ import express, { Router, Request, Response } from 'express';
 import { Prisma } from 'database';
 import PrismaClient from '../bin/prisma-client';
 import { dataToCSV, readCSV } from '../CSVImportExport.ts';
+import * as console from 'node:console';
 
 const router: Router = express.Router();
 
 router.get('/', async function (req: Request, res: Response) {
     // Attempt to get list of service requests
     try {
-        //Attempt to pull from
+        //Attempt to pull from service reqs
         const SERVICE_REQS_LIST = await PrismaClient.serviceRequest.findMany({
             orderBy: {
-                urgency: 'asc',
+                priority: 'asc',
             },
         });
-        // Temporary for testing
-        //TODO: move to its own route (probably)
-        await dataToCSV(SERVICE_REQS_LIST);
         console.info('Successfully pulled service reqs list'); // Log that it was successful
         console.log(SERVICE_REQS_LIST);
         res.send(SERVICE_REQS_LIST); //sends http request
@@ -28,8 +26,8 @@ router.get('/', async function (req: Request, res: Response) {
     }
 });
 
-//TODO: move to its own route (probably)
-router.post('/', async function (req: Request, res: Response) {
+//Note: Route not set up yet
+router.post('/csv', async function (req: Request, res: Response) {
     const csvData = await readCSV('./data.csv');
     try {
         for (let data of csvData) {
@@ -39,9 +37,11 @@ router.post('/', async function (req: Request, res: Response) {
                 request_date: data.request_date,
                 status: data.status,
                 comments: data.comments,
-                urgency: data.urgency,
-                location: data.location,
-                service: data.service,
+                priority: data.priority,
+                location_id: data.location_id,
+                service_type: data.service_type,
+                transport_type: data.service_type,
+                request_time: data.request_time,
             };
             await PrismaClient.serviceRequest.upsert({
                 where: { request_id: data.request_id },

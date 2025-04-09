@@ -24,7 +24,8 @@
         "studio": "dotenv -e ${PROJECT_CWD}/.env prisma studio",
         "studio:wpi": "dotenv -e ${PROJECT_CWD}/.env.wpi prisma studio",
         "studio:prod": "dotenv -e ${PROJECT_CWD}/.env.prod prisma studio",
-        "db:push": "dotenv -e ${PROJECT_CWD}/.env -- prisma db push --skip-generate"
+        "db:push": "dotenv -e ${PROJECT_CWD}/.env -- prisma db push",
+        "db:push-reset": "dotenv -e ${PROJECT_CWD}/.env -- prisma db push --skip-generate --force-reset"
     },
     "devDependencies": {
         "@yarnpkg/pnpify": "^4.0.0-rc.45",
@@ -39,5 +40,8 @@
         "@prisma/client": "6.5.0",
         "dotenv": "*",
         "dotenv-cli": "*"
+    },
+    "prisma": {
+        "seed": "ts-node prisma/seed.ts"
     }
 }

@@ -1,17 +1,7 @@
 import fs from 'node:fs';
-import PrismaClient from './bin/prisma-client';
 
 export async function dataToCSV(data: Record<string, any>[]) {
     const headers: string[] = [];
-    const dataHeaders = data.pop();
-    if (dataHeaders !== undefined) {
-        Object.entries(dataHeaders).forEach(([k, v]) => {
-            if (!Array.isArray(v)) {
-                headers.push(k);
-            }
-        });
-    }
-
     let dataToWrite = '';
     let row = data.pop();
     while (row !== undefined) {
@@ -27,8 +17,12 @@ export async function dataToCSV(data: Record<string, any>[]) {
                 csvData.push(value.toISOString());
                 continue;
             }
-            if (typeof value === 'string' && value.includes(',')) {
-                csvData.push('"' + value + '"');
+            if (typeof value === 'string') {
+                let newVal = value.replaceAll('\"', '\"\"');
+                if (value.includes(',')) {
+                    newVal = '"' + newVal + '"';
+                }
+                csvData.push(newVal);
             } else {
                 csvData.push(value);
             }
@@ -37,8 +31,9 @@ export async function dataToCSV(data: Record<string, any>[]) {
         row = data.pop();
     }
 
-    // Write all data to data.csv
-    fs.writeFile('data.csv', headers + '\n' + dataToWrite, (err) => {
+    // Write all data to header_name.csv
+    // Uses the first key as the name of the file EX: dep_id.csv
+    fs.writeFile(headers[0] + '.csv', headers + '\n' + dataToWrite, (err) => {
         if (err) {
             console.error(err);
         } else {
@@ -49,7 +44,7 @@ export async function dataToCSV(data: Record<string, any>[]) {
 
 export async function readCSV(pathToFile: string): Promise<Record<string, any>[]> {
     return new Promise((resolve, reject) => {
-        fs.readFile(pathToFile, 'utf8', async (err, data) => {
+        fs.readFile(pathToFile, 'utf8', (err, data) => {
             if (err) {
                 console.error(err);
                 reject(err);
@@ -59,19 +54,14 @@ export async function readCSV(pathToFile: string): Promise<Record<string, any>[]
     });
 }
 
-async function CSVtoData(data: string): Promise<Record<string, any>[]> {
-    console.log('Data to CSV');
-
+function CSVtoData(data: string): Record<string, any>[] {
     let splitData = data.split('\n');
     let headerFields = splitData[0].split(',');
-    console.log(headerFields);
 
     // Parse the non-header CSV data
     const objs: Record<string, any>[] = [];
     for (let i = 1; i < splitData.length - 1; i++) {
-        //let row = splitData[i].split(',');
         let row = splitString(splitData[i]);
-        console.log(row);
         // Go through all the CSV's data and turn it back into {xx: xx, xx: xx} format
         const obj: Record<string, any> = {};
         for (let j = 0; j < row.length; j++) {
@@ -97,32 +87,49 @@ async function CSVtoData(data: string): Promise<Record<string, any>[]> {
                 continue;
             }
 
+            // Check if the value is boolean
+            if (value === 'true') {
+                obj[headerFields[j]] = true;
+                continue;
+            } else if (value === 'false') {
+                obj[headerFields[j]] = false;
+                continue;
+            }
+
             // Otherwise, add as is
-            obj[headerFields[j]] = row[j].replaceAll('"@"', ',');
+            obj[headerFields[j]] = row[j];
         }
-        console.log(obj);
         objs.push(obj);
     }
     return objs;
 }
 
 function splitString(row: string): string[] {
-    let ignoreCommas = false;
-    let splitString: string[] = [];
+    let inQuotes = false;
     let stringPiece = '';
-    for (let char of row) {
+    let splitString: string[] = [];
+
+    for (let i = 0; i < row.length; i++) {
+        let char = row[i];
+        // Check for quote marks, denoting the final string having "'s or a comma in it
         if (char === '"') {
-            ignoreCommas = !ignoreCommas;
-            continue;
-        }
-        if (char === ',' && !ignoreCommas) {
+            // Check for double quotes, which means that one of the "'s is part of the original string
+            if (inQuotes && row[i + 1] === '"') {
+                stringPiece += '\"';
+                i++;
+            } else {
+                inQuotes = !inQuotes;
+            }
+            // A comma not in quotes signifies the end of the string
+        } else if (char === ',' && !inQuotes) {
             splitString.push(stringPiece);
             stringPiece = '';
+            // Otherwise add the character normally
         } else {
             stringPiece += char;
         }
     }
+    // Add the final string to the array
     splitString.push(stringPiece);
-
     return splitString;
 }

@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import {Link} from 'react-router-dom';
 
-const LinkHover: React.FC = ({ children }) => {
+interface LinkHoverProps {
+    children: ReactNode;
+}
+
+
+const LinkHover: React.FC<LinkHoverProps> = ({ children }) => {
     return <li
         className='
                 text-white
-                active:bg-blue-600
-                pr-2
-                py-4
-                transition-[delay-150 duration-200 ease-in]
-                hover:bg-blue-700
-                '>
+                drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]
+                hover:drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0)]
+                hover:text-teal-200
+                active:drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0)]
+                active:text-teal-300
+                focus:outline-2'>
         {children}
     </li>;
 }
@@ -21,8 +26,8 @@ const Navbar=()=>{
         <div dir='rtl' className='navBar
         h-full
         bg-blue-900
-        border-t-2
-        border-b-5
+        border-t-0
+        border-b-0
         border-l-0
         border-r-5
         border-black
@@ -30,18 +35,20 @@ const Navbar=()=>{
         hover:rounded-r-4xl
         '>
             <div className='unorderedList
-                my-8
-                font-semibold
+                p-8
+                font-[Bahnschrift]
+                font-bold
                 text-white
-                text-2xl
+                drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]
                 '>
                 <ul>
-                    <Link to='/'><LinkHover classname=''>Home Page</LinkHover></Link>
-                    <Link to="/Login"><LinkHover>Login</LinkHover></Link>
-                    <Link to="/ChestnutHillDirectory"><LinkHover>Chestnut Hill</LinkHover></Link>
-                    <Link to="/ServiceRequestPage"><LinkHover>Service Request</LinkHover></Link>
-                    <Link to="/DataTable"><LinkHover>Data Table</LinkHover></Link>
-                </ul>
+                <LinkHover><Link to="/">Home Page</Link></LinkHover>
+                <LinkHover><Link to="/Login">Login</Link></LinkHover>
+                <LinkHover><Link to="/ServiceRequestPage">Service Request</Link></LinkHover>
+                <LinkHover><Link to="/ServiceRequestDisplay">Service Request Display</Link></LinkHover>
+                <LinkHover><Link to="/ImportExportDirectory">Import/Export Directory</Link></LinkHover>
+                <LinkHover><Link to="/DirectoryDisplay">Directory Display</Link></LinkHover>
+            </ul>
             </div>
         </div>
     )

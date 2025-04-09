@@ -23,6 +23,7 @@ router.post('/', async function (req: Request, res: Response) {
 
 // Whenever a get request is made, return the latest score
 router.get('/', async function (req: Request, res: Response) {
+    console.log('hello');
     // Fetch the latest score from database
     const score = await PrismaClient.score.findFirst({
         orderBy: {
