@@ -4,24 +4,27 @@ import axios from 'axios';
 import { ROUTES } from 'common/src/constants.ts';
 
 const LoginComponent = () => {
+
     const [email, setEmail] = useState('');
     const [enteredPassword, setEnteredPassword] = useState('');
     const [loggedIn, setLoggedIn] = useState(false);
     const [wrongPassword, setWrongPassword] = useState(false);
 
+
+    // Check sessionStorage for loggedIn state on initial load
     useEffect(() => {
-        localStorage.setItem('loggedIn', JSON.stringify(loggedIn));
+        const storedLoginState = sessionStorage.getItem('loggedIn');
 
-        const handleBeforeUnload = () => {
-            localStorage.clear();
-        };
-
-        window.addEventListener('beforeunload', handleBeforeUnload);
+        if (storedLoginState === 'true') {
+            setLoggedIn(true);
+        } else {
+            setLoggedIn(false);
+        }
 
         return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
+            sessionStorage.removeItem('loggedIn');
         };
-    }, [loggedIn]);
+    }, []);
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
@@ -40,7 +43,8 @@ const LoginComponent = () => {
             if (res.status === 200) {
                 if (res.data.password == enteredPassword) {
                     setLoggedIn(true);
-                    window.location.href = '/';
+                    sessionStorage.setItem('loggedIn', JSON.stringify(true));
+                    window.location.href = '/Home';
                 } else {
                     setWrongPassword(true);
                 }

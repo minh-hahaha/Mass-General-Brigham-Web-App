@@ -3,6 +3,8 @@ import {ImportCSV, ExportCSV} from "../database/CSVImportExport.ts";
 import MGBButton from "../components/MGBButton.tsx";
 
 const ImportExportDirectoryPage = () => {
+    const loggedIn = sessionStorage.getItem('loggedIn');
+    if (!loggedIn) {window.location.href = '/';}
 
     const [file, setFile] = useState<File | null>(null);
     const [upload, setUpload] = useState(false);
