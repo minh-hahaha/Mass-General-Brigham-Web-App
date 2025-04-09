@@ -1,29 +1,25 @@
-export class myNode{
+export class myNode {
     id: String;
     xPixel: number;
     yPixel: number;
     floor: number;
     nodeType: string;
 
-
-    constructor(id: string, xPixel: number,yPixel: number, floor: number, nodeType: string) {
-
+    constructor(id: string, xPixel: number, yPixel: number, floor: number, nodeType: string) {
         this.id = id;
         this.xPixel = xPixel;
         this.yPixel = yPixel;
         this.floor = floor;
         this.nodeType = nodeType;
     }
-
-
 }
 
-class myEdge{
+class myEdge {
     id: String;
     from: myNode;
     to: myNode;
 
-    constructor(id: string, from: myNode,to: myNode){
+    constructor(id: string, from: myNode, to: myNode) {
         /* Do i need the neighbors */
 
         this.id = id;
@@ -32,14 +28,12 @@ class myEdge{
     }
 }
 
-
-
-export class Graph{
+export class Graph {
     /* need to create the graph for traversal */
     nodes: myNode[];
     edges: myEdge[];
 
-    constructor(){
+    constructor() {
         this.nodes = [];
         this.edges = [];
     }
@@ -56,6 +50,6 @@ export class Graph{
     }
 
     getNode(id: string): myNode | undefined {
-        return this.nodes.find(node => node.id === id);
+        return this.nodes.find((node) => node.id === id);
     }
 }

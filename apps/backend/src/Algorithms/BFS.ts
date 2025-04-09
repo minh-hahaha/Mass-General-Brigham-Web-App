@@ -1,30 +1,30 @@
 import { loadGraph } from './ExportNodesAndEdges.ts';
-import { Graph, myNode } from "./classes.ts";
+import { Graph, myNode } from './classes.ts';
 
-export async function bfs(startPoint: string, endPoint: string): Promise<myNode[] | null | undefined> {
-
+export async function bfs(
+    startPoint: string,
+    endPoint: string
+): Promise<myNode[] | null | undefined> {
     const graph = await loadGraph();
 
-    const starterNode = graph.getNode(startPoint)
+    const starterNode = graph.getNode(startPoint);
     const targetNode = graph.getNode(endPoint);
 
     if (!starterNode || !targetNode) {
         return null;
     }
 
-
     const visited: Set<String> = new Set();
     const queue: {
         node: myNode;
         path: myNode[];
-
-    } [] = [];
+    }[] = [];
     // Initalizing the queue
-    queue.push({node: starterNode, path: [starterNode]});
+    queue.push({ node: starterNode, path: [starterNode] });
 
     visited.add(starterNode.id);
 
-    while (queue.length > 0 ) {
+    while (queue.length > 0) {
         //pop the first item in the list
         const current = queue.shift()!;
         // change the current node and current path to that of the poped element
@@ -33,7 +33,7 @@ export async function bfs(startPoint: string, endPoint: string): Promise<myNode[
         const currentPath = current.path;
 
         // checking if we found the target node
-        if(currentNode.id === targetNode.id){
+        if (currentNode.id === targetNode.id) {
             console.log(currentPath);
             return currentPath;
         }
@@ -43,19 +43,17 @@ export async function bfs(startPoint: string, endPoint: string): Promise<myNode[
         for (const edge of graph.edges) {
             if (edge.from.id === currentNode.id) {
                 const neighbour = edge.to;
-                if(!visited.has(neighbour.id) ){
+                if (!visited.has(neighbour.id)) {
                     visited.add(neighbour.id);
                     queue.push({ node: neighbour, path: [...currentPath, neighbour] });
-
                 }
             } else if (edge.to.id === currentNode.id) {
                 const neighbour = edge.from;
-                if(!visited.has(neighbour.id) ){
+                if (!visited.has(neighbour.id)) {
                     visited.add(neighbour.id);
-                    queue.push({ node: neighbour, path: [...currentPath,neighbour] });
+                    queue.push({ node: neighbour, path: [...currentPath, neighbour] });
                 }
             }
-
         }
     }
 }
@@ -83,7 +81,7 @@ export async function bfs(startPoint: string, endPoint: string): Promise<myNode[
 //
 //
 //
-console.log(bfs("L","G"));
+console.log(bfs('L', 'G'));
 
 //
 //
