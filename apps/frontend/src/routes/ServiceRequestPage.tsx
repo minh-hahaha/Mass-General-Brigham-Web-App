@@ -118,6 +118,7 @@ const TransportRequestPage = () => {
                                         value={patientId}
                                         onChange={(e) => setPatientId(Number(e.target.value))}
                                         required
+                                        min="0"
                                         placeholder="Enter patient ID"
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
@@ -286,6 +287,7 @@ const TransportRequestPage = () => {
                                         value={requesterId}
                                         onChange={(e) => setRequesterId(Number(e.target.value))}
                                         required
+                                        min="0"
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
                                 </div>
@@ -312,6 +314,7 @@ const TransportRequestPage = () => {
                                         type="number"
                                         id="assignedToId"
                                         value={assignedToId}
+                                        min="0"
                                         onChange={(e) => setAssignedToId(Number(e.target.value))}
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
