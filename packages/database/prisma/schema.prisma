@@ -48,6 +48,7 @@ model ServiceRequest {
   patientTransport PatientTransport? @relation(name: "ServicePatientTransport")
   transport_type   String
   request_time     DateTime?         @default(now()) @db.Time
+  sanitation       Sanitation?       @relation(name: "ServiceSanitation")
 }
 
 model PatientTransport {
@@ -92,4 +93,14 @@ model Node {
   neighbor_ids Int[]
   pixel_x      Int
   pixel_y      Int
+}
+
+model Sanitation {
+    servReq_id          Int @id
+    sanitationType      String
+    recurring           Boolean
+    hazardLevel         String
+    disposalRequired    Boolean
+    completeBy          DateTime
+    servRequest_id  ServiceRequest @relation(name: "ServiceSanitation", fields: [servReq_id], references: [request_id])
 }
