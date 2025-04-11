@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import MGBButton from './MGBButton.tsx';
+import MGBButton from '../elements/MGBButton.tsx';
 import { Map, useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
 import ChestnutHillMapComponent from './ChestnutHillMapComponent.tsx';
 import { cleanedUpBFS, bfs } from '../../../backend/src/Algorithms/BFS.ts';

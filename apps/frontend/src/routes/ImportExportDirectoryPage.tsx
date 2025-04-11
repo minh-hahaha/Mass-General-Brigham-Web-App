@@ -1,6 +1,6 @@
 import {ChangeEvent, useState} from 'react';
-import {ImportCSV, ExportCSV} from "../database/CSVImportExport.ts";
-import MGBButton from "../components/MGBButton.tsx";
+import {ImportCSV, ExportCSV} from "../database/csvImportExport.ts";
+import MGBButton from "../elements/MGBButton.tsx";
 
 const ImportExportDirectoryPage = () => {
     const loggedIn = sessionStorage.getItem('loggedIn');
