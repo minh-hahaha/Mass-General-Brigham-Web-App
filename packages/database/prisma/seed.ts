@@ -12,18 +12,23 @@ async function main() {
 
     const createManyBuildings = await client.building.createMany({
         data: [
-            /*                                                                                                    yyyy:mm:dd */
             {
-
-                building_name: 'Building0',
-
+                building_id: 1,
+                building_name: 'Chestnut Hill',
             },
+            {
+                building_id: 2,
+                building_name: '20 Patriot Place',
+            },
+            {
+                building_id: 3,
+                building_name: '22 Patriot Place',
+            }
         ],
         skipDuplicates: true,
     });
     const createManyDepartments = await client.department.createMany({
         data: [
-            /*                                                                                                    yyyy:mm:dd */
             {
                 dep_id: 1,
                 dep_name: 'Allergy and Clinical Immunology',
@@ -151,12 +156,172 @@ async function main() {
                 dep_phone: '617-732-9525',
                 dep_services: 'Orthopedic, sports, neurologic and vestibular Physical Therapy, Mens and Womens pelvic floor Physical Therapy. Hand/Occupational Therapy Speech Language Pathology',
             },
+            {
+                dep_id: 19,
+                dep_name: 'Blood Draw / Phlebotomy',
+                building_id: 2,
+                dep_phone: 'idk',
+                dep_services: 'Blood Draw / Phlebotomy',
+            },
+            {
+                dep_id: 20,
+                dep_name: 'Pharmacy',
+                building_id: 2,
+                dep_phone: 'idk1',
+                dep_services: 'Pharmacy',
+            },
+            {
+                dep_id: 21,
+                dep_name: 'Radiology',
+                building_id: 2,
+                dep_phone: 'idk2',
+                dep_services: 'Radiology',
+            },
+            {
+                dep_id: 22,
+                dep_name: 'Cardiovascular Services',
+                building_id: 2,
+                dep_phone: 'idk3',
+                dep_services: 'Cardiovascular Services',
+            },
+            {
+                dep_id: 23,
+                dep_name: 'Urology',
+                building_id: 2,
+                dep_phone: 'idk4',
+                dep_services: 'Urology',
+            },
+            {
+                dep_id: 24,
+                dep_name: 'Urgent Care Center',
+                building_id: 2,
+                dep_phone: '(508)-718-4400',
+                dep_services: 'Urgent Care',
+            },
+            {
+                dep_id: 25,
+                dep_name: 'Orthopedics',
+                building_id: 2,
+                dep_phone: 'idk6',
+                dep_services: 'Hand and Upper Extremity, Arthroplasty, Pediatric Trauma, Physiatry, Podiatry',
+            },
+            {
+                dep_id: 26,
+                dep_name: 'Rehabilitation Services',
+                building_id: 2,
+                dep_phone: 'idk7',
+                dep_services: 'Cardiac Rehab, Occupational Therapy(Hand Therapy, Upper Extremity), Physical Therapy, Speech - Language, Clinical Lab, Surgi-Care',
+            },
+            {
+                dep_id: 27,
+                dep_name: 'Surgical Specialties',
+                building_id: 2,
+                dep_phone: 'idk8',
+                dep_services: 'Audiology, ENT, General and Gastrointestinal Surgery, Plastic Surgery, Thoracic Surgery, Vascular Surgery, Weight Management and Wellness',
+            },
+            {
+                dep_id: 28,
+                dep_name: 'Sports Medicine Center',
+                building_id: 2,
+                dep_phone: 'idk9',
+                dep_services: 'X-Ray',
+            },
+            {
+                dep_id: 29,
+                dep_name: 'Electromyography (EMG)',
+                building_id: 2,
+                dep_phone: 'idk10',
+                dep_services: 'Electromyography (EMG)',
+            },
+            {
+                dep_id: 30,
+                dep_name: 'Nutrition',
+                building_id: 2,
+                dep_phone: 'idk11',
+                dep_services: 'Nutrition',
+            },
+            {
+                dep_id: 31,
+                dep_name: 'Pain Medicine',
+                building_id: 2,
+                dep_phone: 'idk12',
+                dep_services: 'Pain Medicine',
+            },
+            {
+                dep_id: 32,
+                dep_name: 'Psysiatry',
+                building_id: 2,
+                dep_phone: 'idk13',
+                dep_services: 'Psysiatry',
+            },
+            {
+                dep_id: 33,
+                dep_name: 'Plumonary Function Testing',
+                building_id: 2,
+                dep_phone: 'idk14',
+                dep_services: 'Plumonary Function Testing',
+            },
+            {
+                dep_id: 34,
+                dep_name: 'Day Surgery Center',
+                building_id: 2,
+                dep_phone: 'idk15',
+                dep_services: 'Day Surgery Center',
+            },
+            {
+                dep_id: 35,
+                dep_name: 'Mass General Hospital for Children',
+                building_id: 3,
+                dep_phone: 'idk16',
+                dep_services: 'Mass General Hospital for Children',
+            },
+            {
+                dep_id: 36,
+                dep_name: 'Spaulding Outpatient Center for Children',
+                building_id: 3,
+                dep_phone: 'idk17',
+                dep_services: 'Spaulding Outpatient Center for Children',
+            },
+            {
+                dep_id: 37,
+                dep_name: 'Multi Specialty Clinic',
+                building_id: 3,
+                dep_phone: 'idk18',
+                dep_services: "Allergy, Cardiac Arrhythmia, Dermatology, Endocrinology, Gastroenterology, Kidney (Renal) Medicine, Neurology, Neurosurgery, Ophthalmology, Optometry, Pulmonology, Rheumatology, Vein Care Services, Women's Health",
+            },
+            {
+                dep_id: 38,
+                dep_name: 'Patient Financial Services',
+                building_id: 3,
+                dep_phone: 'idk19',
+                dep_services: 'Patient Financial Services',
+            },
+            {
+                dep_id: 39,
+                dep_name: 'Blood Draw / Phlebotomy',
+                building_id: 3,
+                dep_phone: 'idk20',
+                dep_services: 'Blood Draw / Phlebotomy',
+            },
+            {
+                dep_id: 40,
+                dep_name: 'Community Room',
+                building_id: 3,
+                dep_phone: 'idk21',
+                dep_services: 'Community Room',
+            },
+            {
+                dep_id: 41,
+                dep_name: 'Primary Care',
+                building_id: 3,
+                dep_phone: 'idk22',
+                dep_services: 'Primary Care',
+            },
         ],
         skipDuplicates: true,
     });
     const createManyLocations = await client.location.createMany({
         data: [
-            /*                                                                                                    yyyy:mm:dd */
             {
                 loc_type: 'hallway',
                 floor: 0,
@@ -281,14 +446,150 @@ async function main() {
                 floor: 2,
                 department_id: 18,
             },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 1,
+                department_id: 19,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 1,
+                department_id: 20,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 1,
+                department_id: 21,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 1,
+                department_id: 22,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 1,
+                department_id: 23,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 1,
+                department_id: 24,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 2,
+                department_id: 25,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 2,
+                department_id: 26,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 27,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 28,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 4,
+                department_id: 29,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 4,
+                department_id: 30,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 4,
+                department_id: 31,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 4,
+                department_id: 32,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 4,
+                department_id: 33,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 4,
+                department_id: 34,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 1,
+                department_id: 35,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 1,
+                department_id: 36,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 37,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 38,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 4,
+                department_id: 39,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 4,
+                department_id: 40,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 4,
+                department_id: 41,
+            },
         ],
         skipDuplicates: true,
     });
 
     const createManyEmployees = await client.employee.createMany({
         data: [
-            /*      
-                                                                                                          yyyy:mm:dd */
             {
 
                 first_name: 'AdMinh',
@@ -413,6 +714,6 @@ async function main() {
 
 
     })*/
-main().then(() => console.log('Temp Data Loaded'));
+main().then(() => console.log('Temp Data Loaded')).then(async () => {await client.$disconnect()});
 
 
