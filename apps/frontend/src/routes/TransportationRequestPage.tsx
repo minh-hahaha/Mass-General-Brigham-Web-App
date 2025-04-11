@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import MGBButton from '../components/MGBButton.tsx';
-import axios from 'axios';
-import { ROUTES } from 'common/src/constants';
 import ConfirmMesg from '../components/ConfirmMesg.tsx'; // Import the new component
 import { SubmitTransportRequest } from '../database/transportRequest.ts';
 
