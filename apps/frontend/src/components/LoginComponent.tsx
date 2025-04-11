@@ -1,4 +1,4 @@
-import MGBButton from './MGBButton.tsx';
+import MGBButton from '../elements/MGBButton.tsx';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ROUTES } from 'common/src/constants.ts';

@@ -4,7 +4,7 @@ import React from 'react';
 interface ButtonProps {
     onClick: () => void;
     children: React.ReactNode;
-    variant: 'primary' | 'secondary';
+    variant: 'primary' | 'secondary'; // primary is BLUE, secondary is GRAY
     disabled: boolean | undefined;
 }
 
@@ -13,6 +13,7 @@ const MGBButton = ({ onClick, children, variant, disabled }: ButtonProps) => {
     return (
         <button
             //Todo: Add 'secondary' Tailwind style to match MGB theme colors
+
             className={`
                 ${variant === 'primary' ? 'bg-mgbblue hover:bg-blue-950' : 'bg-gray-500 hover:bg-gray-700'}
                 py-2 px-4 cursor-pointer text-white rounded-md text-sm tracking-wider

@@ -5,7 +5,16 @@
 
 @theme {
     --color-mgbblue: #254692;
+
+    /*hospital color*/
+    --color-matisse: #20499C;
+    --color-jaggedIce: #B7E2E4;
+    --color-codGray: #0F0F0F;
+    --color-fountainBlue: #66B8BE;
+
 }
+
+
 
 :root {
     background-color: #ffffff;
