@@ -1,11 +1,15 @@
-import { loadGraph } from './ExportNodesAndEdges.ts';
-import { Graph, myNode } from './classes.ts';
+import { myNode } from './classes.ts';
+import PrismaClient from '../bin/prisma-client';
 
 export async function bfs(
     startPoint: string,
     endPoint: string
 ): Promise<myNode[] | null | undefined> {
-    const graph = await loadGraph();
+
+    const nodes = await PrismaClient.node.findMany({})
+    const edges = await PrismaClient.Edge.findMany({})
+
+
 
     const starterNode = graph.getNode(startPoint);
     const targetNode = graph.getNode(endPoint);
@@ -57,32 +61,6 @@ export async function bfs(
     }
 }
 
-// Need to test my BFS
-
-// const C = g.addNode("C", 0, 1, 1, "type");
-// const D = g.addNode("D", 1, 1, 1, "type");
-// const E = g.addNode("E", -2, 2, 1, "type");
-// const F = g.addNode("F", -1, 2, 1, "type");
-// const H = g.addNode("H", 0, 2, 1, "type");
-// const G = g.addNode("G", 1, 3, 1, "type");
-//
-// // Edges
-// g.addEdge(A, B, "e1");
-// g.addEdge(A, C, "e2");
-// g.addEdge(A, D, "e3");
-// g.addEdge(B, E, "e4");
-// g.addEdge(B, F, "e5");
-// g.addEdge(C, H, "e6");
-// g.addEdge(F, H, "e7");
-// g.addEdge(D, G, "e8");
-// g.addEdge(H, G, "e9");
-// g.addEdge(D, H, "e10"); // Optional shortcut
-//
-//
-//
-
-//
-//
 export async function cleanedUpBFS(startPoint: string, endPoint: string): Promise<string[][]> {
     const bfsResult = await bfs(startPoint, endPoint);
 
