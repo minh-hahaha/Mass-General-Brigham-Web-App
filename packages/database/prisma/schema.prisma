@@ -93,6 +93,9 @@ model Node {
   yPixel    Int
   floor     Int
   nodeType  String
+  building  String
+  longName  String
+  shortName String
   edgesFrom Edge[] @relation("NodeToEdgeFrom")
   edgesTo   Edge[] @relation("NodeToEdgeTo")
 }

@@ -7,7 +7,7 @@ export async function bfs(
 ): Promise<myNode[] | null | undefined> {
 
     const nodes = await PrismaClient.node.findMany({})
-    const edges = await PrismaClient.Edge.findMany({})
+    const edges = await PrismaClient.edge.findMany({})
 
 
 
