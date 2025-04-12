@@ -1,14 +1,37 @@
-import { myNode } from './classes.ts';
+import { myNode, Graph } from './classes.ts';
 import PrismaClient from '../bin/prisma-client';
 
-export async function bfs(
-    startPoint: string,
-    endPoint: string
-): Promise<myNode[] | null | undefined> {
 
+export async function loadMyGraph(): Promise<Graph> {
     const nodes = await PrismaClient.node.findMany({})
     const edges = await PrismaClient.edge.findMany({})
 
+    const graph = new Graph();
+
+    for (const aNode of nodes){
+        const node = graph.addNode(
+            aNode.id,
+            aNode.xPixel,
+            aNode.yPixel,
+            aNode.floor,
+
+
+        )
+    }
+
+
+
+
+
+
+    return graph
+}
+
+export async function bfs(
+    startPoint: string,
+    endPoint: string,
+    graph: Graph
+): Promise<myNode[] | null | undefined> {
 
 
     const starterNode = graph.getNode(startPoint);
