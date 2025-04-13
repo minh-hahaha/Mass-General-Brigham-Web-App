@@ -34,7 +34,6 @@ function App() {
                 </div>
             </div>
 
-            // remove the following
 
 
         </BrowserRouter>

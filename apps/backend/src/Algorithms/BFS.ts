@@ -81,7 +81,6 @@ export async function bfs(
             return currentPath;
         }
 
-        let neighbours: myNode[] = [];
         //adding to visited, and updating queues to add the neighbours
         for (const edge of graph.edges) {
             if (edge.from.id === currentNode.id) {
