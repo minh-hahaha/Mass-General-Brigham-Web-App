@@ -3,7 +3,7 @@ import PrismaClient from '../bin/prisma-client';
 import { CSVtoData, dataToCSV, readCSV } from '../CSVImportExport.ts';
 import * as path from 'node:path';
 import fs from 'node:fs';
-import { buildQuery, QueryOptions } from '../Utility.ts';
+import { buildGetRequest, buildQuery, QueryOptions } from '../Utility.ts';
 
 const router: Router = express.Router();
 
@@ -37,6 +37,7 @@ router.get('/', async function (req: Request, res: Response) {
         };
         const args = buildQuery(queryOptions);
         args.select = { ...args.select, locations: true };
+        buildGetRequest('', queryOptions);
         //Attempt to pull from directory
         const DIRECTORY = await PrismaClient.department.findMany(args);
         console.log(DIRECTORY);

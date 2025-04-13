@@ -15,5 +15,7 @@ export function buildQuery(options: QueryOptions) {
 }
 
 export function buildGetRequest(route: any, options: QueryOptions) {
-    let requestURL = route;
+    options.filterOptions.forEach((filter) => {
+        console.log(Object.entries(filter).toString());
+    });
 }
