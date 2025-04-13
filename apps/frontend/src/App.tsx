@@ -4,7 +4,7 @@ import NavBar from './NavBar.tsx';
 import LogoBar from './components/LogoBar.tsx';
 import LoginPage from './routes/LoginPage.tsx';
 import HomePage from './routes/HomePage.tsx';
-import ServiceRequestPage from './routes/TransportationRequestPage.tsx';
+import TransportRequestPage from './routes/TransportationRequestPage.tsx';
 import ServiceRequestDisplayPage from './routes/ServiceRequestDisplayPage.tsx';
 import DirectoryDisplayPage from './routes/DirectoryDisplayPage.tsx';
 import ImportExportDirectoryPage from './routes/ImportExportDirectoryPage.tsx';
@@ -26,7 +26,7 @@ function App() {
                             <Route path="/" element={<LoginPage />} />
                             <Route path="/Login" element={<LoginPage />} />
                             <Route path="/Home" element={<HomePage />} />
-                            <Route path="/ServiceRequestPage" element={<ServiceRequestPage />} />
+                            <Route path="/TransportRequestPage" element={<TransportRequestPage />} />
                             <Route path="/ServiceRequestDisplay" element={<ServiceRequestDisplayPage />} />
                             <Route path="/ImportExportDirectory" element={<ImportExportDirectoryPage />} />
                             <Route path="/DirectoryDisplay" element={<DirectoryDisplayPage />} />
