@@ -1,14 +1,54 @@
-import { myNode } from './classes.ts';
 import PrismaClient from '../bin/prisma-client';
+import { myNode, Graph } from './classes.ts';
 
-export async function bfs(
-    startPoint: string,
-    endPoint: string
-): Promise<myNode[] | null | undefined> {
 
+
+export async function loadMyGraph(): Promise<Graph> {
+    // get the nodes and edges from the datbase
     const nodes = await PrismaClient.node.findMany({})
     const edges = await PrismaClient.edge.findMany({})
 
+    const graph = new Graph();
+
+    //craeting a map to look up nodes when creatig the edges
+
+    let nodeMap = new Map<number, myNode>();
+
+    for (const aNode of nodes){
+        const node = graph.addNode(
+            aNode.id.toString(),
+            aNode.xPixel,
+            aNode.yPixel,
+            aNode.floor,
+            aNode.nodeType,
+            aNode.building,
+            aNode.longName,
+            aNode.shortName
+        )
+        nodeMap.set(aNode.id, node);
+    }
+
+    for(const aEdge of edges){
+        const from = nodeMap.get(aEdge.fromId);
+        const to = nodeMap.get(aEdge.toId);
+
+        if (from && to){
+            graph.addEdge(from,to, aEdge.id)
+        }
+
+
+    }
+
+    return graph
+}
+
+export async function bfs(
+    startPoint: string,
+    endPoint: string,
+    graph: Graph
+): Promise<myNode[] | null | undefined> {
+
+    await loadMyGraph()
 
 
     const starterNode = graph.getNode(startPoint);
@@ -41,7 +81,6 @@ export async function bfs(
             return currentPath;
         }
 
-        let neighbours: myNode[] = [];
         //adding to visited, and updating queues to add the neighbours
         for (const edge of graph.edges) {
             if (edge.from.id === currentNode.id) {
@@ -62,7 +101,7 @@ export async function bfs(
 }
 
 export async function cleanedUpBFS(startPoint: string, endPoint: string): Promise<string[][]> {
-    const bfsResult = await bfs(startPoint, endPoint);
+    const bfsResult = await bfs(startPoint, endPoint, await loadMyGraph());
 
     const results: string[][] = [];
 

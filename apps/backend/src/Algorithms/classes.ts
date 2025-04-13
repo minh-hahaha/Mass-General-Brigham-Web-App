@@ -4,13 +4,19 @@ export class myNode {
     yPixel: number;
     floor: number;
     nodeType: string;
+    building: string;
+    longName: string;
+    shortName: string;
 
-    constructor(id: string, xPixel: number, yPixel: number, floor: number, nodeType: string) {
+    constructor(id: string, xPixel: number, yPixel: number, floor: number, nodeType: string, building: string, longName: string, shortName: string) {
         this.id = id;
         this.xPixel = xPixel;
         this.yPixel = yPixel;
         this.floor = floor;
         this.nodeType = nodeType;
+        this.building = building;
+        this.longName = longName;
+        this.shortName = shortName;
     }
 }
 
@@ -37,8 +43,8 @@ export class Graph {
         this.nodes = [];
         this.edges = [];
     }
-    addNode(id: string, xPixel: number, yPixel: number, floor: number, nodeType: string): myNode {
-        const node = new myNode(id, xPixel, yPixel, floor, nodeType);
+    addNode(id: string, xPixel: number, yPixel: number, floor: number, nodeType: string, building: string, longName: string, shortName: string): myNode {
+        const node = new myNode(id, xPixel, yPixel, floor, nodeType, building, longName, shortName);
         this.nodes.push(node);
         return node;
     }
