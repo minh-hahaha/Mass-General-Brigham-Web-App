@@ -153,28 +153,29 @@ const DirectionsMapComponent = () => {
 
     const HospitalMap = () => {
         const [path, setPaths] = useState<string[][]>([]);
+        // useEffect(() => {
+        //     const getMyPaths = async () => {
+        //         if (parkA) {
+        //             const result = await cleanedUpBFS('A', 'G');
+        //             console.log('ParkA   ' + result);
+        //
+        //             setPaths(result);
+        //         } else if (parkB) {
+        //             const result = await cleanedUpBFS('J', 'G');
+        //             console.log('ParkB   ' + result);
+        //             setPaths(result);
+        //         } else if (parkC) {
+        //             const result = await cleanedUpBFS('L', 'G');
+        //             console.log('ParkC   ' + result);
+        //             setPaths(result);
+        //         } else {
+        //             setPaths([]);
+        //         }
+        //     };
+        //     getMyPaths();
+        // }, [parkA, parkB, parkC]);
 
-        useEffect(() => {
-            const getMyPaths = async () => {
-                if (parkA) {
-                    const result = await cleanedUpBFS('A', 'G');
-                    console.log('ParkA   ' + result);
 
-                    setPaths(result);
-                } else if (parkB) {
-                    const result = await cleanedUpBFS('J', 'G');
-                    console.log('ParkB   ' + result);
-                    setPaths(result);
-                } else if (parkC) {
-                    const result = await cleanedUpBFS('L', 'G');
-                    console.log('ParkC   ' + result);
-                    setPaths(result);
-                } else {
-                    setPaths([]);
-                }
-            };
-            getMyPaths();
-        }, [parkA, parkB, parkC]);
 
         return (
             <div>
