@@ -1,7 +1,7 @@
 import React, {ChangeEvent} from 'react';
 
 // An interface that defines the props the component accepts
-interface InputProps {
+interface InputElementProps {
     label: string
     type: 'text' | 'number' | 'email' | 'password' | 'tel' | 'date' | 'datetime-local';
     id: string
@@ -12,7 +12,7 @@ interface InputProps {
 }
 
 
-const FormInput : React.FC<InputProps>  = ({label, type, id, value, onChange, required,placeholder}) => {
+const InputElement : React.FC<InputElementProps>  = ({label, type, id, value, onChange, required,placeholder}) => {
     return (
         <>
             <label className="w-1/4">{label}</label>
@@ -33,4 +33,4 @@ const FormInput : React.FC<InputProps>  = ({label, type, id, value, onChange, re
 
 
 // Export the component so it can be used in other files
-export default FormInput;
+export default InputElement;

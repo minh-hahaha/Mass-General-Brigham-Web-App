@@ -1,8 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import MGBButton from '../elements/MGBButton.tsx';
+import SelecElement from '../elements/SelectElement.tsx';
 import { Map, useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
 import ChestnutHillMapComponent from './ChestnutHillMapComponent.tsx';
 import { cleanedUpBFS, bfs } from '../../../backend/src/Algorithms/BFS.ts';
+
+const Buildings = [
+    "20 Patriot Place",
+    "22 Patriot Place",
+    "Chestnut Hill - 850 Boylston Street",
+];
+
 
 const DirectionsMapComponent = () => {
     const map = useMap();
@@ -33,11 +41,6 @@ const DirectionsMapComponent = () => {
             types: ['geocode', 'establishment'],
             fields: ['place_id', 'geometry', 'formatted_address', 'name'],
         });
-        // autocomplete for origin
-        const toAutocomplete = new placesLibrary.Autocomplete(toLocationRef.current, {
-            types: ['geocode', 'establishment'],
-            fields: ['place_id', 'geometry', 'formatted_address', 'name'],
-        });
 
         // event listeners so that when autocomplete the state is changed
         fromAutocomplete.addListener('place_changed', () => {
@@ -45,6 +48,12 @@ const DirectionsMapComponent = () => {
             if (place.formatted_address) {
                 setFromLocation(place.formatted_address);
             }
+        });
+
+        //autocomplete for destination - no need anymore
+        const toAutocomplete = new placesLibrary.Autocomplete(toLocationRef.current, {
+            types: ['geocode', 'establishment'],
+            fields: ['place_id', 'geometry', 'formatted_address', 'name'],
         });
 
         toAutocomplete.addListener('place_changed', () => {
@@ -67,7 +76,7 @@ const DirectionsMapComponent = () => {
             .route({
                 origin: fromLocation,
                 destination: toLocation,
-                travelMode: google.maps.TravelMode.DRIVING,
+                travelMode: google.maps.TravelMode.TRANSIT,
                 provideRouteAlternatives: false,
             })
             .then((response) => {
@@ -146,7 +155,7 @@ const DirectionsMapComponent = () => {
 
     return (
         <div className="flex flex-row">
-            <div className="basis-[22vw] bg-white p-6">
+            <div className="basis-[15vw] bg-white p-6">
                 <h2 className="text-xl font-bold mb-4">Get Directions</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
@@ -162,20 +171,15 @@ const DirectionsMapComponent = () => {
                             placeholder="Choose a starting point..."
                         />
                     </div>
-                    <div className="mb-4">
-                        <label>To:</label>
-                        <input
-                            type="text"
-                            id="toLocation"
-                            ref={toLocationRef}
-                            value={toLocation}
-                            className="w-full p-2 border border-gray-300 rounded"
-                            onChange={(e) => setToLocation(e.target.value)}
-                            required
-                            placeholder="Choose a destination point..."
-                        />
-                    </div>
-                    <div className="">
+                    {/*Choose building a auto location change*/}
+                    <SelecElement className="mb-4"
+                                  label={"To:"}
+                                  id={"toLocation"}
+                                  value={toLocation}
+                                  onChange={e=> setToLocation(e.target.value)}
+                                  options={Buildings}
+                    />
+                    <div className="mt-5">
                         <MGBButton
                             onClick={() => handleSubmit}
                             variant={'secondary'}
@@ -226,7 +230,7 @@ const DirectionsMapComponent = () => {
                 )}
             </div>
 
-            <div className="basis-[78vw]">
+            <div className="basis-[85vw]">
                 {showHospital ? (
                     <div>
                         <HospitalMap />
