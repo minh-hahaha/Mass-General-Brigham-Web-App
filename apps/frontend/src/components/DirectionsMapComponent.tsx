@@ -1,15 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef, ChangeEvent} from 'react';
 import MGBButton from '../elements/MGBButton.tsx';
-import SelecElement from '../elements/SelectElement.tsx';
+import SelectElement from '../elements/SelectElement.tsx';
+import InputElement from '../elements/InputElement.tsx';
 import { Map, useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
 import ChestnutHillMapComponent from './ChestnutHillMapComponent.tsx';
 import { cleanedUpBFS, bfs } from '../../../backend/src/Algorithms/BFS.ts';
+import TravelModeComponent from "@/components/TravelModeComponent.tsx";
+import {setDragLock} from "framer-motion";
 
 const Buildings = [
     "20 Patriot Place",
     "22 Patriot Place",
     "Chestnut Hill - 850 Boylston Street",
 ];
+
+type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
+
 
 
 const DirectionsMapComponent = () => {
@@ -18,7 +24,12 @@ const DirectionsMapComponent = () => {
     const placesLibrary = useMapsLibrary('places');
     const [fromLocation, setFromLocation] = useState('');
     const [toLocation, setToLocation] = useState('');
+    const [travelMode, setTravelMode] = useState<TravelModeType>('DRIVING');
     const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>([]);
+    const [distance, setDistance] = useState('');
+    const [duration, setDuration] = useState('');
+    const [showRouteInfo, setShowRouteInfo] = useState(false);
+
 
     const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
     const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
@@ -31,15 +42,16 @@ const DirectionsMapComponent = () => {
 
     // refs for autocomplete
     const fromLocationRef = useRef(null);
-    const toLocationRef = useRef(null);
+    // const toLocationRef = useRef(null);
 
     useEffect(() => {
-        if (!placesLibrary || !fromLocationRef.current || !toLocationRef.current) return;
+        if (!placesLibrary || !fromLocationRef.current) return;
 
         // autocomplete for origin
         const fromAutocomplete = new placesLibrary.Autocomplete(fromLocationRef.current, {
             types: ['geocode', 'establishment'],
             fields: ['place_id', 'geometry', 'formatted_address', 'name'],
+            componentRestrictions: {country: "us"} // limit to US places
         });
 
         // event listeners so that when autocomplete the state is changed
@@ -51,55 +63,75 @@ const DirectionsMapComponent = () => {
         });
 
         //autocomplete for destination - no need anymore
-        const toAutocomplete = new placesLibrary.Autocomplete(toLocationRef.current, {
-            types: ['geocode', 'establishment'],
-            fields: ['place_id', 'geometry', 'formatted_address', 'name'],
-        });
-
-        toAutocomplete.addListener('place_changed', () => {
-            const place = toAutocomplete.getPlace();
-            if (place.formatted_address) {
-                setToLocation(place.formatted_address);
-            }
-        });
+        // const toAutocomplete = new placesLibrary.Autocomplete(toLocationRef.current, {
+        //     types: ['geocode', 'establishment'],
+        //     fields: ['place_id', 'geometry', 'formatted_address', 'name'],
+        // });
+        //
+        // toAutocomplete.addListener('place_changed', () => {
+        //     const place = toAutocomplete.getPlace();
+        //     if (place.formatted_address) {
+        //         setToLocation(place.formatted_address);
+        //     }
+        // });
     }, [placesLibrary]);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleFindDirections = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         calculateRoute();
     };
 
+    const handleTravelModeChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setTravelMode(e.target.value as TravelModeType);
+    }
+
     const calculateRoute = () => {
         if (!directionsRenderer || !directionsService) return;
 
+        let actualLocation = toLocation;
+        if(toLocation === '22 Patriot Place'){
+            actualLocation = "20 Patriot Place";
+        }
+
+        const googleTravelMode = google.maps.TravelMode[travelMode as keyof typeof google.maps.TravelMode];
         directionsService
             .route({
                 origin: fromLocation,
-                destination: toLocation,
-                travelMode: google.maps.TravelMode.TRANSIT,
+                destination: actualLocation,
+                travelMode: googleTravelMode,
                 provideRouteAlternatives: false,
             })
             .then((response) => {
                 directionsRenderer.setDirections(response);
                 setRoutes(response.routes);
+
+                if(response.routes.length > 0 && response.routes[0].legs.length > 0) {
+                    const leg = response.routes[0].legs[0];
+                    setDistance(leg.distance?.text || "N/A");
+                    setDuration(leg.duration?.text || "N/A");
+                    setShowRouteInfo(true);
+                }
             });
     };
 
     const [parkA, setParkA] = useState(false);
+    const [parkB, setParkB] = useState(false);
+    const [parkC, setParkC] = useState(false);
+    const [parking, setParking] = useState(false);
+    const [showHospital, setShowHospital] = useState(false);
+
     const handleParkA = () => {
         clearParking();
         setParkA(true);
         setShowHospital(true);
     };
 
-    const [parkB, setParkB] = useState(false);
     const handleParkB = () => {
         clearParking();
         setParkB(true);
         setShowHospital(true);
     };
 
-    const [parkC, setParkC] = useState(false);
     const handleParkC = () => {
         clearParking();
         setParkC(true);
@@ -112,8 +144,6 @@ const DirectionsMapComponent = () => {
         setParkC(false);
     };
 
-    const [parking, setParking] = useState(false);
-    const [showHospital, setShowHospital] = useState(false);
     const handleHere = () => {
         setShowHospital(true);
         setParking(true);
@@ -157,7 +187,7 @@ const DirectionsMapComponent = () => {
         <div className="flex flex-row">
             <div className="basis-[15vw] bg-white p-6">
                 <h2 className="text-xl font-bold mb-4">Get Directions</h2>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleFindDirections}>
                     <div className="mb-4">
                         <label>From:</label>
                         <input
@@ -171,8 +201,8 @@ const DirectionsMapComponent = () => {
                             placeholder="Choose a starting point..."
                         />
                     </div>
-                    {/*Choose building a auto location change*/}
-                    <SelecElement className="mb-4"
+                    {/*Choose hospital buildings*/}
+                    <SelectElement className="mb-4"
                                   label={"To:"}
                                   id={"toLocation"}
                                   value={toLocation}
@@ -180,14 +210,31 @@ const DirectionsMapComponent = () => {
                                   options={Buildings}
                     />
                     <div className="mt-5">
+                        <TravelModeComponent selectedMode={travelMode} onChange={handleTravelModeChange}
+                        />
+                    </div>
+
+
+                    <div className="mt-5">
                         <MGBButton
-                            onClick={() => handleSubmit}
+                            onClick={() => handleFindDirections}
                             variant={'secondary'}
                             disabled={!fromLocation || !toLocation}
                         >
                             Find Directions
                         </MGBButton>
                     </div>
+
+                    {showRouteInfo && (
+                            <div className="mt-4 p-3 bg-gray-100 rounded-md">
+                                <h3 className="font-semibold mb-2">Route Information</h3>
+                                <div className="text-sm space-y-1">
+                                    <p><span className="font-medium">Distance:</span> {distance}</p>
+                                    <p><span className="font-medium">Travel Time:</span> {duration}</p>
+                                </div>
+                            </div>
+                    )}
+                    
                     <div className="mt-2">
                         <MGBButton
                             onClick={() => handleHere()}
