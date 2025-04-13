@@ -24,8 +24,6 @@ async function main() {
 
 //main().then(() => console.log('Temp Data Loaded'));
 
-const prisma = new PrismaClient();
-
 async function populateDatabase() {
     try {
         // Node Data
@@ -143,7 +141,7 @@ async function populateDatabase() {
         // Create Nodes
         const createdNodes = [];
         for (const nodeData of nodesData) {
-            const createdNode = await prisma.node.create({
+            const createdNode = await client.node.create({
                 data: nodeData,
             });
             createdNodes.push(createdNode);
@@ -185,7 +183,7 @@ async function populateDatabase() {
 
         // Create Edges
         for (const edgeData of edgesData) {
-            await prisma.edge.create({
+            await client.edge.create({
                 data: edgeData,
             });
         }
@@ -194,11 +192,9 @@ async function populateDatabase() {
     } catch (error) {
         console.error('Error populating database:', error);
     } finally {
-        await prisma.$disconnect();
+        await client.$disconnect();
     }
 }
-
-populateDatabase();
 
 // Export the client
 export default client;
