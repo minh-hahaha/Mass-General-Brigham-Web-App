@@ -3,19 +3,43 @@ import PrismaClient from '../bin/prisma-client';
 import { CSVtoData, dataToCSV, readCSV } from '../CSVImportExport.ts';
 import * as path from 'node:path';
 import fs from 'node:fs';
+import { buildQuery, QueryOptions } from '../Utility.ts';
 
 const router: Router = express.Router();
+
+export const SORT_OPTIONS = {
+    DEP_ID_ASC: { dep_id: 'asc' },
+    DEP_ID_DSC: { dep_id: 'desc' },
+    DEP_NAME_ASC: { dep_name: 'asc' },
+    DEP_NAME_DSC: { dep_name: 'desc' },
+    BLDG_ID_ASC: { building_id: 'desc' },
+    BLDG_ID_DSC: { building_id: 'desc' },
+    FLOOR_ASC: { floor: 'asc' },
+    FLOOR_DSC: { floor: 'asc' },
+};
+
+export const FILTER_OPTIONS = {
+    INCLUDE_DEP_ID: { dep_id: true },
+    INCLUDE_SERVICES: { dep_services: true },
+    INCLUDE_NAME: { dep_name: true },
+    INCLUDE_BLDG_ID: { building_id: true },
+    INCLUDE_PHONE: { dep_phone: true },
+};
 
 // GET Send Data
 router.get('/', async function (req: Request, res: Response) {
     // Attempt to get directory
     try {
+        const queryOptions: QueryOptions = {
+            sortOptions: SORT_OPTIONS.BLDG_ID_ASC,
+            filterOptions: [FILTER_OPTIONS.INCLUDE_DEP_ID, FILTER_OPTIONS.INCLUDE_NAME],
+            maxQuery: 2,
+        };
+        const args = buildQuery(queryOptions);
+        args.select = { ...args.select, locations: true };
         //Attempt to pull from directory
-        const DIRECTORY = await PrismaClient.department.findMany({
-            include: {
-                locations: true,
-            },
-        });
+        const DIRECTORY = await PrismaClient.department.findMany(args);
+        console.log(DIRECTORY);
         res.send(DIRECTORY);
     } catch (error) {
         // Log any failures
