@@ -7,4 +7,5 @@ export const ROUTES = {
     PATIENTTRANSPORT: '/api/patienttransport',
     DIRECTORY: '/api/directory',
     DIRECTORY_CSV: '/api/directory/csv',
+    BFSGRAPH: '/api/graph',
 }
