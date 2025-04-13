@@ -1,42 +1,58 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 export default function ServiceRequestSelectPage() {
+    const navigate = useNavigate();
+
+    const animationProps = {
+        whileHover: { scale: 1.10 },
+        whileTap: { scale: 0.90 },
+        transition: {
+            type: 'tween',
+            ease: [0.5, 0, 0.75, 0], // custom: fast start, snappy end
+            duration: 0.12,
+        }
+    };
+
+    const cardStyle = "bg-white border border-gray-200 rounded-xl h-80 w-64 p-4 flex items-center justify-center text-lg font-semibold shadow-md hover:shadow-lg transition-transform";
+
+    const firstRowRequests = [
+        { label: 'Transportation', path: '/TransportRequestPage' },
+        { label: 'Medical Device', path: '/MedicalDevicePage' },
+        { label: 'Maintenance', path: '/MaintenancePage' },
+    ];
+
+    const secondRowRequests = [
+        { label: 'Sanitation', path: '/SanitationPage' },
+        { label: 'Security', path: '/SecurityPage' },
+    ];
+
     return (
-        <section className="min-h-screen flex flex-col justify-center items-center p-5 gap-12 bg-gradient-to-b from-slate-100 to-slate-300">
-            {/* First Row - 3 vertical smaller card-style items */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-6xl">
-                {[1, 2, 3].map((num) => (
+        <section className="min-h-screen flex flex-col justify-center items-center p-5 gap-4 bg-gradient-to-b from-slate-100 to-slate-300">
+            {/* First Row */}
+            <div className="flex flex-wrap justify-center gap-4 w-full max-w-6xl">
+                {firstRowRequests.map((req, i) => (
                     <motion.div
-                        key={`row1-${num}`}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        transition={{
-                            type: 'spring',
-                            stiffness: 200,
-                            damping: 20,
-                        }}
-                        className="bg-white border border-gray-200 rounded-xl h-48 p-4 flex items-center justify-center text-lg font-semibold shadow-md hover:shadow-lg overflow-hidden transition-transform duration-150 ease-out"
+                        key={`row1-${i}`}
+                        onClick={() => navigate(req.path)}
+                        {...animationProps}
+                        className={cardStyle}
                     >
-                        Link to Request {num}
+                        {req.label}
                     </motion.div>
                 ))}
             </div>
 
-            {/* Second Row - 2 vertical smaller card-style items */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-4xl">
-                {[1, 2].map((num) => (
+            {/* Second Row */}
+            <div className="flex flex-wrap justify-center gap-4 w-full max-w-4xl">
+                {secondRowRequests.map((req, i) => (
                     <motion.div
-                        key={`row2-${num}`}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        transition={{
-                            type: 'spring',
-                            stiffness: 200,
-                            damping: 20,
-                        }}
-                        className="bg-white border border-gray-200 rounded-xl h-48 p-4 flex items-center justify-center text-lg font-semibold shadow-md hover:shadow-lg overflow-hidden transition-transform duration-150 ease-out"
+                        key={`row2-${i}`}
+                        onClick={() => navigate(req.path)}
+                        {...animationProps}
+                        className={cardStyle}
                     >
-                        Link to Request {num}
+                        {req.label}
                     </motion.div>
                 ))}
             </div>
