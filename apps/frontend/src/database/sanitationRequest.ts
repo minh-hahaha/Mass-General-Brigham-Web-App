@@ -6,14 +6,14 @@ export interface sanitationRequest {
     //Service Request fields
     request_id:          number;
     status:              'Unassigned' | 'Assigned' | 'Working' | null;
-    priority:            'Low' | 'Medium' | 'High' | 'Emergency';
+    priority:            'Unassigned' | 'Low' | 'Medium' | 'High' | 'Emergency';
     request_time:        string;
 
     //Optional fields
     location_id:         string;
     comments:            string;
     request_date:        string;
-    employee_id:         string;
+    employee_id:         number;
 
     //Sanitation fields
     sanitationType:      string;

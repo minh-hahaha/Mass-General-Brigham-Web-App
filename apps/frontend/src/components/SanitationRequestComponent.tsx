@@ -3,67 +3,53 @@ import MGBButton from '../components/MGBButton.tsx';
 import axios from 'axios';
 import { ROUTES } from 'common/src/constants';
 import ConfirmMesg from '../components/ConfirmMesg.tsx'; // Import the new component
-import { SubmitTransportRequest } from '../database/transportRequest.ts';
-
-interface transportRequest {
-    patientId: number;
-    patientName: string;
-    transportType: 'Ambulance' | 'Helicopter' | 'Other';
-    priority: 'Low' | 'Medium' | 'High';
-    pickupLocation: string;
-    dropOffLocation: string;
-    pickupDate: string;
-    pickupTime: string;
-    status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
-    notes: string;
-    requesterId: number;
-    requestDate: string;
-    assignedToId: number;
-}
+import { SubmitSanitationRequest, sanitationRequest } from '../database/sanitationRequest.ts';
 
 // Component definition
 const TransportRequestPage = () => {
     const loggedIn = sessionStorage.getItem('loggedIn');
     if (!loggedIn) {window.location.href = '/';}
 
-    const [patientId, setPatientId] = useState(0);
-    const [patientName, setPatientName] = useState('');
-    const [transportType, setTransportType] =
-        useState<transportRequest['transportType']>('Ambulance');
-    const [priority, setPriority] = useState<transportRequest['priority']>('Low');
-    const [pickupLocation, setPickupLocation] = useState('');
-    const [dropOffLocation, setDropOffLocation] = useState('');
-    const [pickupDate, setPickupDate] = useState(new Date().toISOString().split('T')[0]);
-    const [pickupTime, setPickupTime] = useState('');
-    const [status, setStatus] = useState<transportRequest['status']>('Pending');
-    const [notes, setNotes] = useState('');
-    const [requesterId, setRequesterId] = useState(0);
-    const [requestDate, setRequestDate] = useState(new Date().toISOString().split('T')[0]);
-    const [assignedToId, setAssignedToId] = useState(0);
+    //Service request fields
+    const [status, setStatus] = useState('Unassigned');
+    const [priority, setPriority] = useState('Unassigned');
+    const [request_time, setRequest_time] = useState('');
 
-    const [submittedRequest, setSubmittedRequest] = useState<transportRequest | null>(null);
+    //Optional fields
+    const [location_id, setLocation_id] = useState('');
+    const [comments, setComments] = useState('');
+    const [request_date, setRequest_date] = useState(new Date().toISOString().split('T')[0]);
+    const [employee_id, setEmployee_id] = useState(0);
+
+    //Sanitation fields
+    const [sanitationType, setSanitationType] = useState('');
+    const [recurring, setRecurring] = useState(false);
+    const [hazardLevel, setHazardLevel] = useState('None');
+    const [disposalRequired, setDisposalRequired] = useState(false);
+    const [completeby, setCompleteBy] = useState(new Date().toISOString().split('T')[0]);
+
+    const [submittedRequest, setSubmittedRequest] = useState<sanitationRequest | null>(null);
     const [showConfirmation, setShowConfirmation] = useState(false);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const newRequest: transportRequest = {
-            patientId,
-            patientName,
-            transportType,
-            priority,
-            pickupLocation,
-            dropOffLocation,
-            pickupDate,
-            pickupTime,
+        const newRequest: sanitationRequest = {
             status,
-            notes,
-            requesterId,
-            requestDate,
-            assignedToId,
-        };
+            priority,
+            request_time,
+            location_id,
+            comments,
+            request_date,
+            employee_id,
+            sanitationType,
+            recurring,
+            hazardLevel,
+            disposalRequired,
+            completeBy,
+        } //for Jack: I stopped here. There seems to be something off with the type declarations here
 
-        SubmitTransportRequest(newRequest);
+        SubmitSanitationRequest(newRequest);
         setSubmittedRequest(newRequest);
         setShowConfirmation(true);
 
