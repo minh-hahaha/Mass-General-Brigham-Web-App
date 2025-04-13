@@ -1,27 +1,30 @@
-import MGBButton from './MGBButton.tsx';
+import MGBButton from '../elements/MGBButton.tsx';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ROUTES } from 'common/src/constants.ts';
 
 const LoginComponent = () => {
+
     const [email, setEmail] = useState('');
     const [enteredPassword, setEnteredPassword] = useState('');
     const [loggedIn, setLoggedIn] = useState(false);
     const [wrongPassword, setWrongPassword] = useState(false);
 
+
+    // Check sessionStorage for loggedIn state on initial load
     useEffect(() => {
-        localStorage.setItem('loggedIn', JSON.stringify(loggedIn));
+        const storedLoginState = sessionStorage.getItem('loggedIn');
 
-        const handleBeforeUnload = () => {
-            localStorage.clear();
-        };
-
-        window.addEventListener('beforeunload', handleBeforeUnload);
+        if (storedLoginState === 'true') {
+            setLoggedIn(true);
+        } else {
+            setLoggedIn(false);
+        }
 
         return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
+            sessionStorage.removeItem('loggedIn');
         };
-    }, [loggedIn]);
+    }, []);
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
@@ -40,7 +43,8 @@ const LoginComponent = () => {
             if (res.status === 200) {
                 if (res.data.password == enteredPassword) {
                     setLoggedIn(true);
-                    window.location.href = '/';
+                    sessionStorage.setItem('loggedIn', JSON.stringify(true));
+                    window.location.href = '/Home';
                 } else {
                     setWrongPassword(true);
                 }
@@ -67,7 +71,11 @@ const LoginComponent = () => {
                     <span className="flex-shrink mx-2 font-semibold text-slate-800">Sign In</span>
                     <div className="flex-grow border-t border-gray-800"></div>
                 </div>
-                {wrongPassword && <div>Wrong Password</div>}
+                {wrongPassword && (
+                    <div className="bg-red-600 text-white px-4 py-2 rounded-md mt-2 text-sm font-semibold text-center shadow">
+                        Wrong Password
+                    </div>
+                )}
                 <div className="grid grid-cols-1 gap-5 my-1">
                     <input
                         className="text-sm w-90 px-4 py-2 border border-solid border-mgbblue rounded-md"

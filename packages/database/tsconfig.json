@@ -1,5 +1,5 @@
 {
-    "extends": "ts-config-custom/tsconfig.base.json",
+    "extends": "../../configs/ts-config-custom/tsconfig.base.json",
     "compilerOptions": {
         "module": "ESNext",
         "moduleResolution": "node",

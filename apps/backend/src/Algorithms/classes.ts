@@ -72,8 +72,4 @@ export class Graph {
         this.edges.push(edge);
         return edge;
     }
-
-    getNode(id: string): myNode | undefined {
-        return this.nodes.find((node) => node.id === id);
-    }
 }
