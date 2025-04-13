@@ -45,7 +45,7 @@ model ServiceRequest {
   location         Location?         @relation(name: "ServiceLocation", fields: [location_id], references: [loc_id])
   location_id      Int?
   service_type     String
-  patientTransport PatientTransport? @relation(name: "ServicePatientTransport")
+  patientTransport PatientTransport? @relation(name: "ServicePatientTransport") //unused relation
   transport_type   String
   request_time     DateTime?         @default(now()) @db.Time
 }
