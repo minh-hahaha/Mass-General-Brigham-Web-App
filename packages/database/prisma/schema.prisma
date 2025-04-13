@@ -62,6 +62,9 @@ model Department {
   dep_id       Int        @id @default(autoincrement())
   dep_services String
   dep_name     String
+  //1-  Chestnut Hill
+  //2 - 20 Patriot Place
+  //3 - 22 Patriot Place
   building_id  Int
   dep_phone    String     @unique
   members      Employee[]
