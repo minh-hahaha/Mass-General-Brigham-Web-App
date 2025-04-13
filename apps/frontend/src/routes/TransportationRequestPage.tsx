@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import MGBButton from '../elements/MGBButton.tsx';
-import FormInput from '../elements/FormInput.tsx';
+import InputElement from '../elements/InputElement.tsx';
 import ConfirmMessageComponent from '../components/ConfirmMessageComponent.tsx'; // Import the new component
 import { SubmitTransportRequest } from '../database/transportRequest.ts';
 
@@ -110,23 +110,23 @@ const TransportRequestPage = () => {
                             </h3>
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center gap-2">
-                                    <FormInput label={"Patient ID"}
-                                               type={"number"}
-                                               id={"patientId"}
-                                               value={patientId}
-                                               onChange={e => setPatientId(Number(e.target.value))}
-                                               required={true}
-                                               placeholder={"Enter Patient ID"}
+                                    <InputElement label={"Patient ID"}
+                                                  type={"number"}
+                                                  id={"patientId"}
+                                                  value={patientId}
+                                                  onChange={e => setPatientId(Number(e.target.value))}
+                                                  required={true}
+                                                  placeholder={"Enter Patient ID"}
                                     />
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <FormInput label={"Patient Name"}
-                                               type={"text"}
-                                               id={"patientName"}
-                                               value={patientName}
-                                               onChange={e => setPatientName(e.target.value)}
-                                               required={true}
-                                               placeholder={"Enter Patient Name"}
+                                    <InputElement label={"Patient Name"}
+                                                  type={"text"}
+                                                  id={"patientName"}
+                                                  value={patientName}
+                                                  onChange={e => setPatientName(e.target.value)}
+                                                  required={true}
+                                                  placeholder={"Enter Patient Name"}
                                                />
                                 </div>
                             </div>
@@ -235,11 +235,11 @@ const TransportRequestPage = () => {
 
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
-                                    <FormInput label={"Pickup Time"}
-                                               type={"datetime-local"}
-                                               id={"scheduledTime"}
-                                               value={pickupTime} onChange={e => setPickupTime(e.target.value)}
-                                               required={true}
+                                    <InputElement label={"Pickup Time"}
+                                                  type={"datetime-local"}
+                                                  id={"scheduledTime"}
+                                                  value={pickupTime} onChange={e => setPickupTime(e.target.value)}
+                                                  required={true}
                                     />
                                 </div>
                             </div><div className="flex flex-col pt-2">
@@ -269,25 +269,25 @@ const TransportRequestPage = () => {
                             </h3>
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
-                                    <FormInput label={"Requester Id"} type={"number"} id={"requesterId"} value={requesterId}
-                                               onChange={e => setRequesterId(Number(e.target.value))}
-                                               required={true}
+                                    <InputElement label={"Requester Id"} type={"number"} id={"requesterId"} value={requesterId}
+                                                  onChange={e => setRequesterId(Number(e.target.value))}
+                                                  required={true}
                                     />
                                 </div>
                             </div>
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
-                                    <FormInput label={"Request Date"} type={"date"} id={requestDate} value={requestDate}
-                                               onChange={e => setRequestDate(e.target.value.toString().split('T')[0])}
-                                               required={true}
+                                    <InputElement label={"Request Date"} type={"date"} id={requestDate} value={requestDate}
+                                                  onChange={e => setRequestDate(e.target.value.toString().split('T')[0])}
+                                                  required={true}
                                     />
                                 </div>
                             </div>
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
-                                    <FormInput label={"Employee ID"} type={"number"} id={"assignedToId"} value={assignedToId}
-                                               onChange={e => setAssignedToId(Number(e.target.value))}
-                                               required={true}
+                                    <InputElement label={"Employee ID"} type={"number"} id={"assignedToId"} value={assignedToId}
+                                                  onChange={e => setAssignedToId(Number(e.target.value))}
+                                                  required={true}
                                     />
                                 </div>
                             </div>
