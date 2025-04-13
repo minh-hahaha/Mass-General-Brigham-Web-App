@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import MGBButton from '../components/MGBButton.tsx';
-import axios from 'axios';
-import { ROUTES } from 'common/src/constants';
-import ConfirmMesg from '../components/ConfirmMesg.tsx'; // Import the new component
+import MGBButton from '../elements/MGBButton.tsx';
+import FormInput from '../elements/FormInput.tsx';
+import ConfirmMessageComponent from '../components/ConfirmMessageComponent.tsx'; // Import the new component
 import { SubmitTransportRequest } from '../database/transportRequest.ts';
 
 interface transportRequest {
@@ -95,7 +94,7 @@ const TransportRequestPage = () => {
         setShowConfirmation(false);
     };
 
-    const mgbLocations = ['Chestnut Hill'];
+    const mgbLocations = ['Chestnut Hill', '20 Patriot Place', '22 Patriot Place'];
 
     return (
         // flex row container
@@ -111,29 +110,24 @@ const TransportRequestPage = () => {
                             </h3>
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Patient ID</label>
-                                    <input
-                                        type="number"
-                                        id="patientId"
-                                        value={patientId}
-                                        onChange={(e) => setPatientId(Number(e.target.value))}
-                                        required
-                                        min="0"
-                                        placeholder="Enter patient ID"
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                    <FormInput label={"Patient ID"}
+                                               type={"number"}
+                                               id={"patientId"}
+                                               value={patientId}
+                                               onChange={e => setPatientId(Number(e.target.value))}
+                                               required={true}
+                                               placeholder={"Enter Patient ID"}
                                     />
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Patient Name</label>
-                                    <input
-                                        type="text"
-                                        id="patientName"
-                                        value={patientName}
-                                        onChange={(e) => setPatientName(e.target.value)}
-                                        required
-                                        placeholder="Patient Full Name"
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    />
+                                    <FormInput label={"Patient Name"}
+                                               type={"text"}
+                                               id={"patientName"}
+                                               value={patientName}
+                                               onChange={e => setPatientName(e.target.value)}
+                                               required={true}
+                                               placeholder={"Enter Patient Name"}
+                                               />
                                 </div>
                             </div>
                         </div>
@@ -241,37 +235,32 @@ const TransportRequestPage = () => {
 
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Pickup Time</label>
-                                    <input
-                                        type="datetime-local"
-                                        id="scheduledTime"
-                                        value={pickupTime}
-                                        onChange={(e) => setPickupTime(e.target.value)}
-                                        required
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                    <FormInput label={"Pickup Time"}
+                                               type={"datetime-local"}
+                                               id={"scheduledTime"}
+                                               value={pickupTime} onChange={e => setPickupTime(e.target.value)}
+                                               required={true}
                                     />
                                 </div>
+                            </div><div className="flex flex-col pt-2">
+                            <div className="flex items-center gap-2">
+                                <label className="w-1/4"> Status</label>
+                                <select
+                                    id="status"
+                                    value={status}
+                                    onChange={(e) =>
+                                        setStatus(e.target.value as transportRequest['status'])
+                                    }
+                                    required
+                                    className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                >
+                                    <option value="Pending">Pending</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                </select>
                             </div>
-
-                            <div className="flex flex-col pt-2">
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4"> Status</label>
-                                    <select
-                                        id="status"
-                                        value={status}
-                                        onChange={(e) =>
-                                            setStatus(e.target.value as transportRequest['status'])
-                                        }
-                                        required
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    >
-                                        <option value="Pending">Pending</option>
-                                        <option value="In Progress">In Progress</option>
-                                        <option value="Completed">Completed</option>
-                                        <option value="Cancelled">Cancelled</option>
-                                    </select>
-                                </div>
-                            </div>
+                        </div>
                         </div>
 
                         <div>
@@ -280,43 +269,25 @@ const TransportRequestPage = () => {
                             </h3>
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Requester ID</label>
-                                    <input
-                                        type="number"
-                                        id="requesterId"
-                                        value={requesterId}
-                                        onChange={(e) => setRequesterId(Number(e.target.value))}
-                                        required
-                                        min="0"
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                    <FormInput label={"Requester Id"} type={"number"} id={"requesterId"} value={requesterId}
+                                               onChange={e => setRequesterId(Number(e.target.value))}
+                                               required={true}
                                     />
                                 </div>
                             </div>
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Request Date</label>
-                                    <input
-                                        type="date"
-                                        id="requestDate"
-                                        value={requestDate}
-                                        onChange={(e) =>
-                                            setRequestDate(e.target.value.toString().split('T')[0])
-                                        }
-                                        required
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                    <FormInput label={"Request Date"} type={"date"} id={requestDate} value={requestDate}
+                                               onChange={e => setRequestDate(e.target.value.toString().split('T')[0])}
+                                               required={true}
                                     />
                                 </div>
                             </div>
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Employee ID</label>
-                                    <input
-                                        type="number"
-                                        id="assignedToId"
-                                        value={assignedToId}
-                                        min="0"
-                                        onChange={(e) => setAssignedToId(Number(e.target.value))}
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                    <FormInput label={"Employee ID"} type={"number"} id={"assignedToId"} value={assignedToId}
+                                               onChange={e => setAssignedToId(Number(e.target.value))}
+                                               required={true}
                                     />
                                 </div>
                             </div>
@@ -354,8 +325,7 @@ const TransportRequestPage = () => {
 
                             {showConfirmation && submittedRequest && (
                                 <div className="inline-block">
-                                    <ConfirmMesg
-                                        request={submittedRequest}
+                                    <ConfirmMessageComponent
                                         onClose={handleConfirmationClose}
                                     />
                                 </div>
@@ -368,11 +338,9 @@ const TransportRequestPage = () => {
                                 Clear Form
                             </MGBButton>
                         </div>
-
                     </form>
                 </div>
             </div>
-            <div className="w-1/2 pl-4"></div>
         </div>
     );
 };
