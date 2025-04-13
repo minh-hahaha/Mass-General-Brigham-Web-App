@@ -8,8 +8,6 @@ const router: Router = express.Router();
 
 //SWITCH CASE ROULETTE
 
-
-
 //Here Lies what remains of Jake's code
 // //Note: Route not set up yet
 // router.post('/csv', async function (req: Request, res: Response) {
