@@ -4,7 +4,7 @@ const LogoBar = () => {
 
     return (
         <>
-            <header className = "flex items-center justify-center bg-gray-200">
+            <header className = "flex items-center justify-center bg-gray-200 border-b-4 border-black">
 
                 <img src = {msgLogo} alt="MASS GENERAL BRINGHAM " className="h-15 20 mr-2"/>
                 <h1 className = "text-3xl font bold">

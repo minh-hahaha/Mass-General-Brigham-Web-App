@@ -4,6 +4,9 @@ import DirectoryItemComponent from '../components/DirectoryItemComponent.tsx';
 
 
 const ChestnutHillDirectory = () => {
+    const loggedIn = sessionStorage.getItem('loggedIn');
+    if (!loggedIn) {window.location.href = '/Login';}
+
     const directoryData = [
         {
             name: "Allergy and Clinical Immunology",
