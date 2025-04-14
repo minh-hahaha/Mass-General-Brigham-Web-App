@@ -10,7 +10,7 @@ import servicereqsRouter from './routes/servicereqs.ts';
 import validateRouter from './routes/validate.ts';
 import patientTransportRouter from './routes/patienttransport.ts';
 import directoryRouter from './routes/directory.ts';
-import graphRouter from './routes/bfsRoutes.ts'
+import graphRouter from './routes/bfsRoutes.ts';
 
 import { ROUTES } from 'common/src/constants';
 
