@@ -16,8 +16,10 @@ export default function ServiceRequestSelectPage() {
 
     const cardStyle = "bg-white border border-gray-200 rounded-xl h-80 w-64 p-4 flex items-center justify-center text-lg font-semibold shadow-md hover:shadow-lg transition-transform";
 
+
+    // TODO: EDIT PAGES TO GO WITH REQUESTS PAGES
     const firstRowRequests = [
-        { label: 'Transportation', path: '/TransportRequestPage' },
+        { label: 'Transportation', path: '/TransportationRequestPage' },
         { label: 'Medical Device', path: '/MedicalDevicePage' },
         { label: 'Maintenance', path: '/MaintenancePage' },
     ];
@@ -28,9 +30,9 @@ export default function ServiceRequestSelectPage() {
     ];
 
     return (
-        <section className="min-h-screen flex flex-col justify-center items-center p-5 gap-4 bg-gradient-to-b from-slate-100 to-slate-300">
+        <section className="min-h-screen flex flex-col justify-center items-center p-8 gap-4 bg-gradient-to-b from-slate-100 to-slate-300">
             {/* First Row */}
-            <div className="flex flex-wrap justify-center gap-4 w-full max-w-6xl">
+            <div className="flex flex-wrap justify-center gap-8 w-full max-w-6xl">
                 {firstRowRequests.map((req, i) => (
                     <motion.div
                         key={`row1-${i}`}
@@ -44,7 +46,7 @@ export default function ServiceRequestSelectPage() {
             </div>
 
             {/* Second Row */}
-            <div className="flex flex-wrap justify-center gap-4 w-full max-w-4xl">
+            <div className="flex flex-wrap justify-center gap-8 w-full max-w-4xl">
                 {secondRowRequests.map((req, i) => (
                     <motion.div
                         key={`row2-${i}`}
