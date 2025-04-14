@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LogoBar from './components/LogoBar.tsx';
 import LoginPage from './routes/LoginPage.tsx';
 import HomePage from './routes/HomePage.tsx';
-import ServiceRequestPage from './routes/TransportationRequestPage.tsx';
+import TransportationRequestPage from './routes/TransportationRequestPage.tsx';
 import ServiceRequestDisplayPage from './routes/ServiceRequestDisplayPage.tsx';
 import DirectoryDisplayPage from './routes/DirectoryDisplayPage.tsx';
 import ImportExportDirectoryPage from './routes/ImportExportDirectoryPage.tsx';
@@ -28,7 +28,7 @@ function App() {
                                 <Route path="/Home" element={<HomePage />} />
                                 <Route
                                     path="/ServiceRequestPage"
-                                    element={<ServiceRequestPage />}
+                                    element={<ServiceRequestSelectPage />}
                                 />
                                 <Route
                                     path="/ServiceRequestDisplay"
@@ -41,6 +41,10 @@ function App() {
                                 <Route
                                     path="/DirectoryDisplay"
                                     element={<DirectoryDisplayPage />}
+                                />
+                                <Route
+                                    path="/TransportationRequestPage"
+                                    element={<TransportationRequestPage />}
                                 />
                             </Routes>
                         </main>
