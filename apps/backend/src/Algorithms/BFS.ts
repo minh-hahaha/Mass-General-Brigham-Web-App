@@ -1,10 +1,14 @@
 import PrismaClient from '../bin/prisma-client';
 import { myNode, Graph } from './classes.ts';
+import { exportNodesAndEdges } from './ExportNodesAndEdges.ts'
 
 export async function loadMyGraph(): Promise<Graph> {
-    // get the nodes and edges from the datbase
-    const nodes = await PrismaClient.node.findMany({});
-    const edges = await PrismaClient.edge.findMany({});
+    // get the nodes and edges from the database
+
+    await exportNodesAndEdges();
+
+    const nodes =  await PrismaClient.node.findMany({});
+    const edges =  await PrismaClient.edge.findMany({});
 
     const graph = new Graph();
 
