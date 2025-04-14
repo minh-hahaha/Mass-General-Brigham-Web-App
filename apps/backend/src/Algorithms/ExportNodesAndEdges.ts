@@ -19,15 +19,19 @@ export async function exportNodesAndEdges(): Promise<void> {
     try {
         for (const row of nodeData) {
             // put nodes in graph for edges
-            const exportedNode = await PrismaClient.node.create({
-                data: {
+            const exportedNode = await PrismaClient.node.upsert({
+                where: {
+                    id: row.nodeID,
+                },
+                update: {},
+                create: {
                     xPixel: Number(row.xcoord),
                     yPixel: Number(row.ycoord),
-                    floor: Number(row.floor),
-                    nodeType: String(row.nodeType),
-                    building: String(row.building),
-                    longName: String(row.longName),
-                    shortName: String(row.shortName),
+                    floor: Number(row.floor), nodeType:
+                        String(row.nodeType),
+                        building: String(row.building),
+                        longName: String(row.longName),
+                        shortName: String(row.shortName),
                 },
             });
 
@@ -46,8 +50,12 @@ export async function exportNodesAndEdges(): Promise<void> {
                 continue;
             }
 
-            PrismaClient.edge.create({
-                data: {
+            await PrismaClient.edge.upsert({
+                where: {
+                    id: row.id
+                },
+                update: {},
+                create: {
                     id: row.id,
                     fromId,
                     toId,
