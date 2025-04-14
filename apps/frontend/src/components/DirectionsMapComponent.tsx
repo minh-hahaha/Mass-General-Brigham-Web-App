@@ -9,7 +9,7 @@ import DrawNodes from "@/components/DrawNodes.tsx";
 import ViewPath from "@/components/ViewPath.tsx";
 import {sampleNodes, sampleEdges} from "@/components/SampleNodesEdges.tsx";
 
-const samplePath =["CH1Door1", "CH1Hallway2", "CH1Hallway3", "CH1Door4", "CH1Room130"];
+const samplePath =["CH1Door9", "CH1Hallway8", "CH1Hallway13", "CH1Hallway14", "CH1Hallway15", "CH1Door16", "CH1Room102"];
 
 const Buildings = [
     "20 Patriot Place",
@@ -203,13 +203,29 @@ const DirectionsMapComponent = () => {
                         />
                     </div>
                     {/*Choose hospital buildings*/}
-                    <SelectElement className="mb-4"
-                                  label={"To:"}
-                                  id={"toLocation"}
-                                  value={toLocation}
-                                  onChange={e=> setToLocation(e.target.value)}
-                                  options={Buildings}
+                    <div className="mt-4">
+                    <SelectElement
+                                   label={"To:"}
+                                   id={"toLocation"}
+                                   value={toLocation}
+                                   onChange={e=> setToLocation(e.target.value)}
+                                   options={Buildings}
+                                   placeholder={"Select Hospital Building"}
                     />
+                    </div>
+                    {/*Choose hospital department*/}
+                    <div className="mt-4">
+                        <SelectElement
+                            label={"Department"}
+                            id={"toLocation"}
+                            value={toLocation}
+                            onChange={e=> setToLocation(e.target.value)}
+                            options={Buildings}
+                            placeholder={"Select Department"}
+                        />
+                    </div>
+
+
                     <div className="mt-5">
                         <TravelModeComponent selectedMode={travelMode} onChange={handleTravelModeChange}
                         />
@@ -225,16 +241,16 @@ const DirectionsMapComponent = () => {
                         </MGBButton>
                     </div>
 
-                    <div className="mt-2">
-                        <MGBButton
-                            onClick={() => handleHere()}
-                            variant={'primary'}
-                            disabled={undefined}
-                        >
-                            {showHospital ? 'Show Google Map' : 'Show Hospital Map'}
-                        </MGBButton>
-                    </div>
                 </form>
+                <div className="mt-2">
+                    <MGBButton
+                        onClick={() => handleHere()}
+                        variant={'primary'}
+                        disabled={undefined}
+                    >
+                        {showHospital ? 'Show Google Map' : "I'm Here!"}
+                    </MGBButton>
+                </div>
 
                 {parking && (
                     <div className="flex flex-col gap-2 mt-5">
@@ -277,6 +293,8 @@ const DirectionsMapComponent = () => {
                         // MGB at Chestnut hill 42.325988270594415, -71.1495669288061
                         defaultZoom={15}
                         renderingType={RenderingType.RASTER}
+                        mapTypeControl={false}
+
                     >
                         <OverlayComponent bounds={ChestnutParkingBounds} imageSrc={ChestnutParkingSVG} visible={true}/>
                     </Map>

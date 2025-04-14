@@ -42,7 +42,7 @@ export default function HospitalPathViewer({
     const svgRef = useRef<SVGSVGElement>(null);
 
     // Zoom and pan state
-    const [scale, setScale] = useState(1);
+    const [scale, setScale] = useState(1.1);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [isDragging, setIsDragging] = useState(false);
     const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
@@ -121,8 +121,8 @@ export default function HospitalPathViewer({
 
     // Get node color based on its role in the path
     const getNodeColor = (nodeId: string): string => {
-        if (isEndpoint(nodeId)) return 'green';
-        return 'yellow';
+        if (isEndpoint(nodeId)) return 'red';
+        return 'blue';
     };
 
     // Filter to get only edges that connect nodes in the path
@@ -146,7 +146,7 @@ export default function HospitalPathViewer({
         <div className="flex flex-col items-start">
 
             <div className="relative w-full">
-                    <div className="absolute top-2 left-2 p-2">
+                    <div className="absolute top-2 left-2 p-2 bg-white rounded-lg shadow-md">
                         <div className="text-sm text-gray-600 mb-2">
                             Use mouse wheel to zoom. Hold Shift or Alt + drag (or middle mouse button) to pan the map.
                         </div>
@@ -192,7 +192,7 @@ export default function HospitalPathViewer({
                                     y1={fromNode.y}
                                     x2={toNode.x}
                                     y2={toNode.y}
-                                    stroke="#FFD700"
+                                    stroke="blue"
                                     strokeWidth={4 / scale}
                                     strokeOpacity={0.8}
                                     strokeLinecap="round"
@@ -215,13 +215,12 @@ export default function HospitalPathViewer({
                                         stroke="white"
                                         strokeWidth={2 / scale}
                                     >
-                                        <title>{node.name} (ID: {node.id})</title>
                                     </circle>
                                     {isEndpointNode && (
                                         <text
                                             x={node.x + (12 / scale)}
                                             y={node.y + (5 / scale)}
-                                            fontSize={14 / scale}
+                                            fontSize={20 / scale}
                                             fontWeight="bold"
                                             fill="black"
                                         >
