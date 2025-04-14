@@ -1,4 +1,4 @@
-edges/from,edges/to
+from,to
 CH1Door1,CH1Hallway2
 CH1Hallway2,CH1Hallway3
 CH1Hallway3,CH1Door4
