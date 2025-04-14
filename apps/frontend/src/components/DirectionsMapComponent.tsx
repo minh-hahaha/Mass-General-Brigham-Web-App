@@ -3,10 +3,9 @@ import MGBButton from '../elements/MGBButton.tsx';
 import SelectElement from '../elements/SelectElement.tsx';
 import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google-maps';
 import ChestnutHillMapComponent from './ChestnutHillMapComponent.tsx';
-import { cleanedUpBFS, bfs } from '../../../backend/src/Algorithms/BFS.ts';
 import TravelModeComponent from "@/components/TravelModeComponent.tsx";
 import OverlayComponent from "@/components/svgOverlay.tsx";
-import NodesGetter from "@/components/NodesGetter.tsx";
+import DrawNodes from "@/components/DrawNodes.tsx";
 
 const Buildings = [
     "20 Patriot Place",
@@ -262,7 +261,7 @@ const DirectionsMapComponent = () => {
             <div className="basis-5/6 relative">
                 {showHospital ? (
                     <div>
-                        <NodesGetter svgMapUrl="/ChestnutHillFloor1.svg" currentFloor='1' buildingId='1' />
+                        <DrawNodes svgMapUrl="/ChestnutHillFloor1.svg" currentFloor='1' buildingId='1' />
                     </div>
                 ) : (
                     <Map
