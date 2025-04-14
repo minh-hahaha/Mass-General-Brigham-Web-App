@@ -1,0 +1,17 @@
+edges/from,edges/to
+CH1Door1,CH1Hallway2
+CH1Hallway2,CH1Hallway3
+CH1Hallway3,CH1Door4
+CH1Door4,CH1Room130
+CH1Hallway2,CH1Hallway6
+CH1Hallway7,CH1Hallway6
+CH1Hallway7,CH1Hallway8
+CH1Hallway8,CH1Hallway10
+CH1Hallway10,CH1Door9
+CH1Hallway10,CH1Door11
+CH1Door11,CH1Room100
+CH1Hallway8,CH1Hallway13
+CH1Hallway13,CH1Hallway14
+CH1Hallway14,CH1Hallway15
+CH1Hallway15,CH1Door16
+CH1Door16,CH1Room102
