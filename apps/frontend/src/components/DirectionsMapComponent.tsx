@@ -17,8 +17,6 @@ const Buildings = [
 type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
 
 
-
-
 const DirectionsMapComponent = () => {
     const map = useMap();
     const routesLibrary = useMapsLibrary('routes');
@@ -43,7 +41,6 @@ const DirectionsMapComponent = () => {
 
     // refs for autocomplete
     const fromLocationRef = useRef(null);
-    // const toLocationRef = useRef(null);
 
     useEffect(() => {
         if (!placesLibrary || !fromLocationRef.current) return;
@@ -63,18 +60,6 @@ const DirectionsMapComponent = () => {
             }
         });
 
-        //autocomplete for destination - no need anymore
-        // const toAutocomplete = new placesLibrary.Autocomplete(toLocationRef.current, {
-        //     types: ['geocode', 'establishment'],
-        //     fields: ['place_id', 'geometry', 'formatted_address', 'name'],
-        // });
-        //
-        // toAutocomplete.addListener('place_changed', () => {
-        //     const place = toAutocomplete.getPlace();
-        //     if (place.formatted_address) {
-        //         setToLocation(place.formatted_address);
-        //     }
-        // });
     }, [placesLibrary]);
 
     const handleFindDirections = (e: React.FormEvent<HTMLFormElement>) => {
