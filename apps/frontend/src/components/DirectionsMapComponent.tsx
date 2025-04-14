@@ -1,11 +1,12 @@
 import React, {useState, useEffect, useRef, useMemo, ChangeEvent} from 'react';
 import MGBButton from '../elements/MGBButton.tsx';
 import SelectElement from '../elements/SelectElement.tsx';
-import { Map, useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
+import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google-maps';
 import ChestnutHillMapComponent from './ChestnutHillMapComponent.tsx';
 import { cleanedUpBFS, bfs } from '../../../backend/src/Algorithms/BFS.ts';
 import TravelModeComponent from "@/components/TravelModeComponent.tsx";
 import OverlayComponent from "@/components/svgOverlay.tsx";
+import NodesGetter from "@/components/NodesGetter.tsx";
 
 const Buildings = [
     "20 Patriot Place",
@@ -138,8 +139,8 @@ const DirectionsMapComponent = () => {
     };
 
     const handleHere = () => {
-        //setShowHospital(true);
-        setParking(true);
+        setShowHospital(true);
+        //setParking(true);
     };
 
     const svg = '/ChestnutHillMap.svg';
@@ -178,7 +179,7 @@ const DirectionsMapComponent = () => {
 
     return (
         <div className="flex flex-row">
-            <div className="basis-[15vw] bg-white p-6">
+            <div className="basis-1/6 bg-white p-6">
                 <h2 className="text-xl font-bold mb-4">Get Directions</h2>
                 <form onSubmit={handleFindDirections}>
                     <div className="mb-4">
@@ -257,10 +258,10 @@ const DirectionsMapComponent = () => {
                 )}
             </div>
 
-            <div className="basis-[88vw] relative">
+            <div className="basis-5/6 relative">
                 {showHospital ? (
                     <div>
-                        <HospitalMap />
+                        <NodesGetter svgMapUrl="/ChestnutHillFloor1.svg" currentFloor='1' buildingId='1' />
                     </div>
                 ) : (
                     <Map
@@ -268,6 +269,7 @@ const DirectionsMapComponent = () => {
                         defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
                         // MGB at Chestnut hill 42.325988270594415, -71.1495669288061
                         defaultZoom={15}
+                        renderingType={RenderingType.RASTER}
                     >
                         <OverlayComponent bounds={ChestnutParkingBounds} imageSrc={ChestnutParkingSVG} visible={true}/>
                     </Map>
