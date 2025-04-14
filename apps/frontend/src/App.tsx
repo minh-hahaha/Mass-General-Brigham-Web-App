@@ -8,8 +8,10 @@ import ServiceRequestDisplayPage from './routes/ServiceRequestDisplayPage.tsx';
 import DirectoryDisplayPage from './routes/DirectoryDisplayPage.tsx';
 import ImportExportDirectoryPage from './routes/ImportExportDirectoryPage.tsx';
 import ServiceRequestSelectPage from "@/routes/ServiceRequestSelectPage.tsx";
+import TranslationServiceRequestPage from './routes/TranslationServiceRequestPage.tsx';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { ShadSidebar } from '@/components/ui/shadsidebar.tsx';
+import {MapPage} from "@/routes/MapPage.tsx";
 
 function App() {
     return (
@@ -20,10 +22,10 @@ function App() {
                 </div>
                 <BrowserRouter>
                     <div className="flex flex-row flex-1 overflow-hidden">
-                            <ShadSidebar />
+                        <ShadSidebar />
                         <main className="flex-1 overflow-auto">
                             <Routes>
-                                <Route path="/" element={<LoginPage />} />
+                                <Route path="/" element={<HomePage />} />
                                 <Route path="/Login" element={<LoginPage />} />
                                 <Route path="/Home" element={<HomePage />} />
                                 <Route
@@ -42,6 +44,16 @@ function App() {
                                     path="/DirectoryDisplay"
                                     element={<DirectoryDisplayPage />}
                                 />
+                                <Route
+                                  path="/MapPage"
+                                  element={<MapPage />}
+                                />
+
+                                <Route
+                                  path="/TranslationServiceRequestPage"
+                                  element={<TranslationServiceRequestPage />}
+                                 />
+
                                 <Route
                                     path="/TransportationRequestPage"
                                     element={<TransportationRequestPage />}
