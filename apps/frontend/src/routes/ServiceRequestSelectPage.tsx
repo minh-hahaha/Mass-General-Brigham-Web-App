@@ -26,7 +26,7 @@ export default function ServiceRequestSelectPage() {
 
     const secondRowRequests = [
         { label: 'Sanitation', path: '/SanitationPage' },
-        { label: 'Security', path: '/SecurityPage' },
+        { label: 'Translation', path: '/TranslationServiceRequestPage' },
     ];
 
     return (

@@ -21,7 +21,7 @@ const items = [
     },
     {
         title: "Directions to Hospital",
-        url: '/Home',
+        url: '/MapPage',
         icon: MapPin,
     },
     {
