@@ -88,8 +88,22 @@ model Building {
 }
 
 model Node {
-  node_id      Int   @id @default(autoincrement())
-  neighbor_ids Int[]
-  pixel_x      Int
-  pixel_y      Int
+  id        Int    @id @default(autoincrement())
+  xPixel    Int
+  yPixel    Int
+  floor     Int
+  nodeType  String
+  building  String
+  longName  String
+  shortName String
+  edgesFrom Edge[] @relation("NodeToEdgeFrom")
+  edgesTo   Edge[] @relation("NodeToEdgeTo")
+}
+
+model Edge {
+  id       String @id
+  toId     Int
+  fromId   Int
+  nodeTo   Node   @relation("NodeToEdgeTo", fields: [toId], references: [id])
+  nodeFrom Node   @relation("NodeToEdgeFrom", fields: [fromId], references: [id])
 }
