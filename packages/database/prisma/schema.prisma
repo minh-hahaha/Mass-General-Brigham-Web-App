@@ -66,7 +66,7 @@ model Department {
   //2 - 20 Patriot Place
   //3 - 22 Patriot Place
   building_id  Int
-  dep_phone    String     @unique
+  dep_phone    String
   members      Employee[]
   locations    Location[]
   building     Building   @relation(fields: [building_id], references: [building_id])
@@ -91,8 +91,22 @@ model Building {
 }
 
 model Node {
-  node_id      Int   @id @default(autoincrement())
-  neighbor_ids Int[]
-  pixel_x      Int
-  pixel_y      Int
+  id        Int    @id @default(autoincrement())
+  xPixel    Int
+  yPixel    Int
+  floor     Int
+  nodeType  String
+  building  String
+  longName  String
+  shortName String
+  edgesFrom Edge[] @relation("NodeToEdgeFrom")
+  edgesTo   Edge[] @relation("NodeToEdgeTo")
+}
+
+model Edge {
+  id       String @id
+  toId     Int
+  fromId   Int
+  nodeTo   Node   @relation("NodeToEdgeTo", fields: [toId], references: [id])
+  nodeFrom Node   @relation("NodeToEdgeFrom", fields: [fromId], references: [id])
 }
