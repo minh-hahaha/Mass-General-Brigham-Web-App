@@ -47,7 +47,7 @@ export default function HospitalSVGEditor({ svgMapUrl, currentFloor, buildingId 
     };
 
     const handleSVGClick = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
-        if (isDragging) return; // Don't create node if we're dragging
+        if (isDragging || e.shiftKey || e.altKey) return; // Don't create node if we're dragging
 
         const svg = svgRef.current;
         if (!svg) return;
@@ -111,7 +111,7 @@ export default function HospitalSVGEditor({ svgMapUrl, currentFloor, buildingId 
 
     // Pan functionality
     const handleMouseDown = (e: React.MouseEvent) => {
-        if (e.button === 1 || e.button === 0 && e.shiftKey) { // Middle button or Alt+Left click
+        if (e.button === 1 || e.button === 0 && (e.altKey || e.shiftKey)) { // Middle button or Alt+Left click
             e.preventDefault();
             setIsDragging(true);
             setDragStart({ x: e.clientX, y: e.clientY });
@@ -168,28 +168,16 @@ export default function HospitalSVGEditor({ svgMapUrl, currentFloor, buildingId 
                     onChange={(e) => setNodeType(e.target.value)}
                     className="border p-1"
                 >
-                    <option value="intersection">Intersection</option>
-                    <option value="door">Door</option>
-                    <option value="elevator">Elevator</option>
-                    <option value="stairs">Stairs</option>
-                    <option value="room">Room</option>
+                    <option value="Hallway">Hallway</option>
+                    <option value="Door">Door</option>
+                    <option value="Elevator">Elevator</option>
+                    <option value="Stairs">Stairs</option>
+                    <option value="Room">Room</option>
                 </select>
                 <button onClick={exportData} className="bg-blue-500 text-white px-3 py-1 rounded">
                     Export Nodes & Edges
                 </button>
-                <div className="flex items-center gap-2">
-                    <button
-                        onClick={() => setScale(Math.min(scale * 1.2, 5))}
-                        className="bg-gray-200 px-3 py-1 rounded"
-                    >
-                        Zoom In
-                    </button>
-                    <button
-                        onClick={() => setScale(Math.max(scale / 1.2, 0.5))}
-                        className="bg-gray-200 px-3 py-1 rounded"
-                    >
-                        Zoom Out
-                    </button>
+                <div className="flex flex-row items-center gap-2">
                     <button
                         onClick={() => {
                             setScale(1);
@@ -199,11 +187,12 @@ export default function HospitalSVGEditor({ svgMapUrl, currentFloor, buildingId 
                     >
                         Reset View
                     </button>
+                    <div className="text-sm text-gray-600 mb-2">
+                        Use mouse wheel to zoom. Hold Shift or Alt + drag (or middle mouse button) to pan the map.
+                    </div>
                 </div>
             </div>
-            <div className="text-sm text-gray-600 mb-2">
-                Use mouse wheel to zoom. Hold Alt + drag (or middle mouse button) to pan the map.
-            </div>
+
 
             <svg
                 ref={svgRef}

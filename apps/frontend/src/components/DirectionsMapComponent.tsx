@@ -6,6 +6,10 @@ import ChestnutHillMapComponent from './ChestnutHillMapComponent.tsx';
 import TravelModeComponent from "@/components/TravelModeComponent.tsx";
 import OverlayComponent from "@/components/svgOverlay.tsx";
 import DrawNodes from "@/components/DrawNodes.tsx";
+import ViewPath from "@/components/ViewPath.tsx";
+import {sampleNodes, sampleEdges} from "@/components/SampleNodesEdges.tsx";
+
+const samplePath =["CH1Door1", "CH1Hallway2", "CH1Hallway3", "CH1Door4", "CH1Room130"];
 
 const Buildings = [
     "20 Patriot Place",
@@ -66,17 +70,20 @@ const DirectionsMapComponent = () => {
             }
         });
 
-    }, [placesLibrary]);
+    }, [placesLibrary]); // autocomplete
 
+    // find directions
     const handleFindDirections = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         calculateRoute();
     };
 
+    // change travel mode
     const handleTravelModeChange = (e: ChangeEvent<HTMLInputElement>) => {
         setTravelMode(e.target.value as TravelModeType);
     }
 
+    // draw route
     const calculateRoute = () => {
         if (!directionsRenderer || !directionsService) return;
 
@@ -138,7 +145,7 @@ const DirectionsMapComponent = () => {
     };
 
     const handleHere = () => {
-        setShowHospital(true);
+        setShowHospital(prevState => !prevState);
         //setParking(true);
     };
 
@@ -224,7 +231,7 @@ const DirectionsMapComponent = () => {
                             variant={'primary'}
                             disabled={undefined}
                         >
-                            I am here!
+                            {showHospital ? 'Show Google Map' : 'Show Hospital Map'}
                         </MGBButton>
                     </div>
                 </form>
@@ -261,7 +268,7 @@ const DirectionsMapComponent = () => {
             <div className="basis-5/6 relative">
                 {showHospital ? (
                     <div>
-                        <DrawNodes svgMapUrl="/ChestnutHillFloor1.svg" currentFloor='1' buildingId='1' />
+                        <ViewPath svgMapUrl="/ChestnutHillFloor1.svg" nodes={sampleNodes} edges={sampleEdges} path={samplePath}/>
                     </div>
                 ) : (
                     <Map
@@ -276,7 +283,7 @@ const DirectionsMapComponent = () => {
                 )}
 
                 {/* Route information box positioned at bottom left of map */}
-                {showRouteInfo && (
+                {showRouteInfo && !showHospital && (
                     <div className="absolute bottom-6 left-6 p-3 bg-white rounded-md shadow-md z-10 max-w-xs">
                         <h3 className="font-semibold mb-1 text-sm">Route Information</h3>
                         <div className="text-sm space-y-1">
@@ -289,5 +296,7 @@ const DirectionsMapComponent = () => {
         </div>
     );
 };
+
+
 
 export default DirectionsMapComponent;
