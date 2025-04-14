@@ -8,6 +8,7 @@ import ServiceRequestPage from './routes/TransportationRequestPage.tsx';
 import ServiceRequestDisplayPage from './routes/ServiceRequestDisplayPage.tsx';
 import DirectoryDisplayPage from './routes/DirectoryDisplayPage.tsx';
 import ImportExportDirectoryPage from './routes/ImportExportDirectoryPage.tsx';
+import TranslationServiceRequestPage from './routes/TranslationServiceRequestPage.tsx';
 
 
 function App() {
@@ -30,6 +31,8 @@ function App() {
                         <Route path="/ServiceRequestDisplay" element={<ServiceRequestDisplayPage />} />
                         <Route path="/ImportExportDirectory" element={<ImportExportDirectoryPage />} />
                         <Route path="/DirectoryDisplay" element={<DirectoryDisplayPage />} />
+                        <Route path="/TranslationServiceRequestPage" element={<TranslationServiceRequestPage />} />
+
 
                     </Routes>
                 </div>
