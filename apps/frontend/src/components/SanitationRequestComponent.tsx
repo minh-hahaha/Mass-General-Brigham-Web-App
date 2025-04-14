@@ -11,8 +11,8 @@ const TransportRequestPage = () => {
     if (!loggedIn) {window.location.href = '/';}
 
     //Service request fields
-    const [status, setStatus] = useState('Unassigned');
-    const [priority, setPriority] = useState('Unassigned');
+    const [status, setStatus] = useState<sanitationRequest ['status']>('Unassigned');
+    const [priority, setPriority] = useState<sanitationRequest['priority']>('Unassigned');
     const [request_time, setRequest_time] = useState('');
 
     //Optional fields
@@ -24,9 +24,9 @@ const TransportRequestPage = () => {
     //Sanitation fields
     const [sanitationType, setSanitationType] = useState('');
     const [recurring, setRecurring] = useState(false);
-    const [hazardLevel, setHazardLevel] = useState('None');
+    const [hazardLevel, setHazardLevel] = useState<sanitationRequest['hazardLevel']>('None');
     const [disposalRequired, setDisposalRequired] = useState(false);
-    const [completeby, setCompleteBy] = useState(new Date().toISOString().split('T')[0]);
+    const [completeBy, setCompleteBy] = useState(new Date().toISOString().split('T')[0]);
 
     const [submittedRequest, setSubmittedRequest] = useState<sanitationRequest | null>(null);
     const [showConfirmation, setShowConfirmation] = useState(false);
@@ -35,6 +35,7 @@ const TransportRequestPage = () => {
         e.preventDefault();
 
         const newRequest: sanitationRequest = {
+
             status,
             priority,
             request_time,
@@ -47,6 +48,7 @@ const TransportRequestPage = () => {
             hazardLevel,
             disposalRequired,
             completeBy,
+
         } //for Jack: I stopped here. There seems to be something off with the type declarations here
 
         SubmitSanitationRequest(newRequest);
@@ -57,19 +59,18 @@ const TransportRequestPage = () => {
     };
 
     const handleReset = () => {
-        setPatientId(0);
-        setPatientName('');
-        setTransportType('Ambulance');
-        setPriority('Low');
-        setPickupLocation('');
-        setDropOffLocation('');
-        setPickupDate(new Date().toISOString().split('T')[0]);
-        setPickupTime('');
-        setStatus('Pending');
-        setNotes('');
-        setRequesterId(0);
-        setRequestDate(new Date().toISOString().split('T')[0]);
-        setAssignedToId(0);
+        setStatus('Unassigned');//done
+        setPriority('Low');//done
+        setRequest_time('');//done
+        setLocation_id('');//done
+        setComments('');//done
+        setRequest_date(new Date().toISOString().split('T')[0]);//done
+        setEmployee_id(0);//done
+        setSanitationType('');//done
+        setRecurring(false);
+        setHazardLevel('None');//done
+        setDisposalRequired(false);
+        setCompleteBy('');//
     };
 
     // //Data is sent to the backend
@@ -88,36 +89,36 @@ const TransportRequestPage = () => {
         <div className="flex flex-col justify-center items-center min-h-screen">
             {/* make the form left side */}
             <div className="flex flex-col items-center border border-[#d3d5d7] bg-white rounded-2xl shadow-xl p-8 w-full max-w-[700px] mt-10 mb-10">
-                <h1 className="text-[30px] font-bold mb-6">Patient Transportation Request</h1>
+                <h1 className="text-[30px] font-bold mb-6">Sanitation Request</h1>
                 <div>
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
                             <h3 className="text-xl font-semibold mb-4">
-                                <b>Patient Information</b>
+                                <b>Request Information</b>
                             </h3>
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Patient ID</label>
+                                    <label className="w-1/4">Requester ID</label>
                                     <input
                                         type="number"
-                                        id="patientId"
-                                        value={patientId}
-                                        onChange={(e) => setPatientId(Number(e.target.value))}
+                                        id="employee_id"
+                                        value={employee_id}
+                                        onChange={(e) => setEmployee_id(Number(e.target.value))}
                                         required
                                         min="0"
-                                        placeholder="Enter patient ID"
+                                        placeholder="Enter Employee ID"
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Patient Name</label>
+                                    <label className="w-1/4">Time of Request</label>
                                     <input
                                         type="text"
-                                        id="patientName"
-                                        value={patientName}
-                                        onChange={(e) => setPatientName(e.target.value)}
+                                        id="request_time"
+                                        value={request_time}
+                                        onChange={(e) => setRequest_time(e.target.value)}
                                         required
-                                        placeholder="Patient Full Name"
+                                        placeholder="Time of Request"
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
                                 </div>
@@ -130,21 +131,21 @@ const TransportRequestPage = () => {
                             </h3>
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Transport</label>
+                                    <label className="w-1/4">Status</label>
                                     <select
-                                        id="transportType"
-                                        value={transportType}
+                                        id="status"
+                                        value={status}
                                         onChange={(e) =>
-                                            setTransportType(
-                                                e.target.value as transportRequest['transportType']
+                                            setStatus(
+                                                e.target.value as sanitationRequest['status']
                                             )
                                         }
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >
-                                        <option value="Ambulance">Ambulance</option>
-                                        <option value="Helicopter">Helicopter</option>
-                                        <option value="Medical Van">Medical Van</option>
+                                        <option value="Unassigned">Unassigned</option>
+                                        <option value="Assigned">Assigned</option>
+                                        <option value="Working">Working</option>
                                         <option value="Other">Other</option>
                                     </select>
                                 </div>
@@ -158,14 +159,16 @@ const TransportRequestPage = () => {
                                         value={priority}
                                         onChange={(e) =>
                                             setPriority(
-                                                e.target.value as transportRequest['priority']
+                                                e.target.value as sanitationRequest['priority']
                                             )
                                         }
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >
-                                        <option value="Routine">Routine</option>
-                                        <option value="Urgent">Urgent</option>
+                                        <option value="Unassigned">Unassigned</option>
+                                        <option value="Low">Low</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="High">High</option>
                                         <option value="Emergency">Emergency</option>
                                     </select>
                                 </div>
@@ -176,12 +179,12 @@ const TransportRequestPage = () => {
                                     <label className="w-1/4">Location</label>
                                     <select
                                         id="pickupLocation"
-                                        value={pickupLocation}
-                                        onChange={(e) => setPickupLocation(e.target.value)}
+                                        value={location_id}
+                                        onChange={(e) => setLocation_id(e.target.value)}
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >
-                                        <option value="">Select pickup location</option>
+                                        <option value="">Select Location For Sanitation</option>
                                         {mgbLocations.map((location) => (
                                             <option key={`pickup-${location}`} value={location}>
                                                 {location}
@@ -191,7 +194,7 @@ const TransportRequestPage = () => {
                                 </div>
                             </div>
 
-                            <div className="flex flex-col pt-2">
+                            {/*<div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
                                     <label className="w-1/4">Destination</label>
                                     <select
@@ -209,7 +212,7 @@ const TransportRequestPage = () => {
                                         ))}
                                     </select>
                                 </div>
-                            </div>
+                            </div>*/}
 
                             {/*<div className="flex flex-col pt-2">*/}
                             {/*    <div className="flex items-center gap-2">*/}
@@ -227,12 +230,12 @@ const TransportRequestPage = () => {
 
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Pickup Time</label>
+                                    <label className="w-1/4">Complete By</label>
                                     <input
                                         type="datetime-local"
-                                        id="scheduledTime"
-                                        value={pickupTime}
-                                        onChange={(e) => setPickupTime(e.target.value)}
+                                        id="completeBy"
+                                        value={completeBy}
+                                        onChange={(e) => setCompleteBy(e.target.value)}
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
@@ -241,20 +244,20 @@ const TransportRequestPage = () => {
 
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4"> Status</label>
+                                    <label className="w-1/4"> Hazard Level</label>
                                     <select
-                                        id="status"
-                                        value={status}
+                                        id="hazardLevel"
+                                        value={hazardLevel}
                                         onChange={(e) =>
-                                            setStatus(e.target.value as transportRequest['status'])
+                                            setHazardLevel(e.target.value as sanitationRequest['hazardLevel'])
                                         }
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >
-                                        <option value="Pending">Pending</option>
-                                        <option value="In Progress">In Progress</option>
-                                        <option value="Completed">Completed</option>
-                                        <option value="Cancelled">Cancelled</option>
+                                        <option value="None">None</option>
+                                        <option value="Sharp">Sharp</option>
+                                        <option value="Biohazard">Biohazard</option>
+
                                     </select>
                                 </div>
                             </div>
@@ -266,12 +269,12 @@ const TransportRequestPage = () => {
                             </h3>
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Requester ID</label>
+                                    <label className="w-1/4">Sanitation Type</label>
                                     <input
-                                        type="number"
-                                        id="requesterId"
-                                        value={requesterId}
-                                        onChange={(e) => setRequesterId(Number(e.target.value))}
+                                        type="text"
+                                        id="sanitationType"
+                                        value={sanitationType}
+                                        onChange={(e) => setSanitationType(e.target.value)}
                                         required
                                         min="0"
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -284,16 +287,16 @@ const TransportRequestPage = () => {
                                     <input
                                         type="date"
                                         id="requestDate"
-                                        value={requestDate}
+                                        value={request_date}
                                         onChange={(e) =>
-                                            setRequestDate(e.target.value.toString().split('T')[0])
+                                            setRequest_date(e.target.value.toString().split('T')[0])
                                         }
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
                                 </div>
                             </div>
-                            <div className="flex flex-col pt-2">
+                            {/*<div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
                                     <label className="w-1/4">Employee ID</label>
                                     <input
@@ -305,7 +308,16 @@ const TransportRequestPage = () => {
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
                                 </div>
-                            </div>
+                            </div>*/}
+                        </div>
+                        <div>
+                            <label>
+                                Recurring:
+                                <input type="checkbox" id="recurring" checked={recurring} onChange={(e) => setRecurring(Boolean(e.target.value))} />
+                                Disposal Required:
+                                <input type="checkbox" id="disposalRequired" checked={disposalRequired} onChange={(e) => setDisposalRequired(Boolean(e.target.value))} />
+                            </label>
+
                         </div>
 
                         <div>
@@ -317,11 +329,11 @@ const TransportRequestPage = () => {
                                 <div className="flex items-center gap-2">
                                     <label className="w-1/4">Special Instructions</label>
                                     <textarea
-                                        id="medicalNotes"
-                                        value={notes}
-                                        onChange={(e) => setNotes(e.target.value)}
+                                        id="comments"
+                                        value={comments}
+                                        onChange={(e) => setComments(e.target.value)}
                                         rows={3}
-                                        placeholder="Notes for the transport"
+                                        placeholder="Comments for Sanitation"
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     ></textarea>
                                 </div>

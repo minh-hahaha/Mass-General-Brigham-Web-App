@@ -1,5 +1,4 @@
 import express, { Router, Request, Response } from 'express';
-import { Prisma } from 'database';
 import PrismaClient from '../bin/prisma-client';
 
 const router: Router = express.Router();
@@ -29,11 +28,11 @@ router.get('/', async (req: Request, res: Response) => {
     try {
         const requests = await PrismaClient.serviceRequest.findMany({
             where: {
-                service_type: 'Patient Transport',
+                service_type: 'Sanitation',
             },
             include: {
                 //might flag an error
-                patientTransport: true, // includes PatientTransport entry
+                sanitation: true,
             },
         });
 

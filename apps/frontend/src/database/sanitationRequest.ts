@@ -4,8 +4,8 @@ import axios from 'axios';
 
 export interface sanitationRequest {
     //Service Request fields
-    request_id:          number;
-    status:              'Unassigned' | 'Assigned' | 'Working' | null;
+    /*request_id:          number;*/
+    status:              'Unassigned' | 'Assigned' | 'Working' | 'Other';
     priority:            'Unassigned' | 'Low' | 'Medium' | 'High' | 'Emergency';
     request_time:        string;
 
