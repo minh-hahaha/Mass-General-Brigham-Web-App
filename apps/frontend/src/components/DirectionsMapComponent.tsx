@@ -1,12 +1,11 @@
-import React, {useState, useEffect, useRef, ChangeEvent} from 'react';
+import React, {useState, useEffect, useRef, useMemo, ChangeEvent} from 'react';
 import MGBButton from '../elements/MGBButton.tsx';
 import SelectElement from '../elements/SelectElement.tsx';
-import InputElement from '../elements/InputElement.tsx';
 import { Map, useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
 import ChestnutHillMapComponent from './ChestnutHillMapComponent.tsx';
 import { cleanedUpBFS, bfs } from '../../../backend/src/Algorithms/BFS.ts';
 import TravelModeComponent from "@/components/TravelModeComponent.tsx";
-import {setDragLock} from "framer-motion";
+import OverlayComponent from "@/components/svgOverlay.tsx";
 
 const Buildings = [
     "20 Patriot Place",
@@ -15,6 +14,13 @@ const Buildings = [
 ];
 
 type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
+
+const ChestnutParkingBounds = {
+    southWest: { lat: 42.32546535760605, lng: -71.15029519348985}, // Bottom-left corner
+    northEast: { lat: 42.32659860801865, lng: -71.14889438933609}  // Top-right corner
+};
+
+const ChestnutParkingSVG = '/ChestnutParking.svg';
 
 
 const DirectionsMapComponent = () => {
@@ -75,8 +81,9 @@ const DirectionsMapComponent = () => {
         if (!directionsRenderer || !directionsService) return;
 
         let actualLocation = toLocation;
-        if(toLocation === '22 Patriot Place'){
-            actualLocation = "20 Patriot Place";
+        if(toLocation === '20 Patriot Place' || toLocation === "22 Patriot Place") {
+            actualLocation = "42.09253421464256, -71.26638758014579";
+
         }
 
         const googleTravelMode = google.maps.TravelMode[travelMode as keyof typeof google.maps.TravelMode];
@@ -131,7 +138,7 @@ const DirectionsMapComponent = () => {
     };
 
     const handleHere = () => {
-        setShowHospital(true);
+        //setShowHospital(true);
         setParking(true);
     };
 
@@ -200,7 +207,6 @@ const DirectionsMapComponent = () => {
                         />
                     </div>
 
-
                     <div className="mt-5">
                         <MGBButton
                             onClick={() => handleFindDirections}
@@ -211,16 +217,6 @@ const DirectionsMapComponent = () => {
                         </MGBButton>
                     </div>
 
-                    {showRouteInfo && (
-                            <div className="mt-4 p-3 bg-gray-100 rounded-md">
-                                <h3 className="font-semibold mb-2">Route Information</h3>
-                                <div className="text-sm space-y-1">
-                                    <p><span className="font-medium">Distance:</span> {distance}</p>
-                                    <p><span className="font-medium">Travel Time:</span> {duration}</p>
-                                </div>
-                            </div>
-                    )}
-                    
                     <div className="mt-2">
                         <MGBButton
                             onClick={() => handleHere()}
@@ -232,7 +228,7 @@ const DirectionsMapComponent = () => {
                     </div>
                 </form>
 
-                {parking ? (
+                {parking && (
                     <div className="flex flex-col gap-2 mt-5">
                         <p className="font-semibold">Where did you park?</p>
                         <MGBButton
@@ -258,12 +254,10 @@ const DirectionsMapComponent = () => {
                             Lot C
                         </MGBButton>
                     </div>
-                ) : (
-                    <></>
                 )}
             </div>
 
-            <div className="basis-[85vw]">
+            <div className="basis-[88vw] relative">
                 {showHospital ? (
                     <div>
                         <HospitalMap />
@@ -274,7 +268,20 @@ const DirectionsMapComponent = () => {
                         defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
                         // MGB at Chestnut hill 42.325988270594415, -71.1495669288061
                         defaultZoom={15}
-                    ></Map>
+                    >
+                        <OverlayComponent bounds={ChestnutParkingBounds} imageSrc={ChestnutParkingSVG} visible={true}/>
+                    </Map>
+                )}
+
+                {/* Route information box positioned at bottom left of map */}
+                {showRouteInfo && (
+                    <div className="absolute bottom-6 left-6 p-3 bg-white rounded-md shadow-md z-10 max-w-xs">
+                        <h3 className="font-semibold mb-1 text-sm">Route Information</h3>
+                        <div className="text-sm space-y-1">
+                            <p><span className="font-medium">Distance:</span> {distance}</p>
+                            <p><span className="font-medium">Travel Time:</span> {duration}</p>
+                        </div>
+                    </div>
                 )}
             </div>
         </div>
