@@ -1,4 +1,4 @@
-import { Home, MapPin, Hammer, Tablet, User, ChevronUp } from 'lucide-react';
+import { Home, MapPin, Hammer, Tablet, User, ChevronUp, ArrowRightFromLine } from 'lucide-react';
 
 import {
     Sidebar,
@@ -34,6 +34,16 @@ const items = [
         url: '/ServiceRequestDisplay',
         icon: Tablet,
     },
+    {
+        title: "Import/Export Directory",
+        url: '/ImportExportDirectory',
+        icon: ArrowRightFromLine,
+    },
+    {
+      title: "Directory Display Page",
+      url: '/DirectoryDisplay',
+      icon: Tablet,
+    }
 ]
 
 export function ShadSidebar() {
@@ -41,7 +51,7 @@ export function ShadSidebar() {
         <Sidebar className="pt-16">
             <SidebarContent className="flex flex-col justify-between">
                 <SidebarGroup>
-                    <SidebarGroupLabel>Directory</SidebarGroupLabel>
+                    <SidebarGroupLabel>Hospital</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
                             {items.map((item) => (
@@ -63,7 +73,7 @@ export function ShadSidebar() {
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <SidebarMenuButton>
-                                        <User /> Login
+                                        <User /> User
                                         <ChevronUp className="ml-auto" />
                                     </SidebarMenuButton>
                                 </DropdownMenuTrigger>
@@ -74,11 +84,8 @@ export function ShadSidebar() {
                                     <DropdownMenuItem>
                                         <span>Account</span>
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem>
-                                        <span>Billing</span>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem>
-                                        <span>Sign out</span>
+                                    <DropdownMenuItem onClick={() => window.location.href = '/Login'}>
+                                        <span>Log In</span>
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
