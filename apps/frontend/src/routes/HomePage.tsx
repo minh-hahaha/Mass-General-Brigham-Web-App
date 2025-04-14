@@ -1,6 +1,3 @@
-import { APIProvider } from '@vis.gl/react-google-maps';
-import DirectionsMapComponent from '../components/DirectionsMapComponent.tsx';
-import { useState } from 'react';
 import MGBButton from '@/elements/MGBButton.tsx';
 import { motion } from 'framer-motion';
 
