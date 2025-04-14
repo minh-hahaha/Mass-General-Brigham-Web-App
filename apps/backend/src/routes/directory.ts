@@ -18,21 +18,37 @@ export const SORT_OPTIONS = {
     FLOOR_DSC: { floor: 'asc' },
 };
 
-export const FILTER_OPTIONS = {
-    INCLUDE_DEP_ID: { dep_id: true },
-    INCLUDE_SERVICES: { dep_services: true },
-    INCLUDE_NAME: { dep_name: true },
-    INCLUDE_BLDG_ID: { building_id: true },
-    INCLUDE_PHONE: { dep_phone: true },
-};
+export enum FILTER_OPTIONS {
+    INCLUDE_DEP_ID,
+    INCLUDE_SERVICES,
+    INCLUDE_NAME,
+    INCLUDE_BLDG_ID,
+    INCLUDE_PHONE,
+}
+
+export const DIRECTORY_FILTER_OPTIONS: object[] = [];
+DIRECTORY_FILTER_OPTIONS.push({ dep_id: true });
+DIRECTORY_FILTER_OPTIONS.push({ dep_services: true });
+DIRECTORY_FILTER_OPTIONS.push({ dep_name: true });
+DIRECTORY_FILTER_OPTIONS.push({ building_id: true });
+DIRECTORY_FILTER_OPTIONS.push({ dep_phone: true });
 
 // GET Send Data
 router.get('/', async function (req: Request, res: Response) {
+    // Get from url
+    const { sortOptions, filterOptions, maxQuery } = req.query;
     // Attempt to get directory
     try {
+        console.log(sortOptions);
+        console.log(filterOptions);
+        console.log(maxQuery);
         const queryOptions: QueryOptions = {
             sortOptions: SORT_OPTIONS.BLDG_ID_ASC,
-            filterOptions: [FILTER_OPTIONS.INCLUDE_DEP_ID, FILTER_OPTIONS.INCLUDE_NAME],
+            filterOptions: [
+                FILTER_OPTIONS.INCLUDE_BLDG_ID,
+                FILTER_OPTIONS.INCLUDE_DEP_ID,
+                FILTER_OPTIONS.INCLUDE_NAME,
+            ],
             maxQuery: 2,
         };
         const args = buildQuery(queryOptions);
