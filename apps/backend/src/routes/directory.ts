@@ -3,20 +3,20 @@ import PrismaClient from '../bin/prisma-client';
 import { CSVtoData, dataToCSV, readCSV } from '../CSVImportExport.ts';
 import * as path from 'node:path';
 import fs from 'node:fs';
-import { buildGetRequest, buildQuery, QueryOptions } from '../Utility.ts';
+import { buildQuery, QueryOptions } from '../Utility.ts';
 
 const router: Router = express.Router();
 
-export const SORT_OPTIONS = {
-    DEP_ID_ASC: { dep_id: 'asc' },
-    DEP_ID_DSC: { dep_id: 'desc' },
-    DEP_NAME_ASC: { dep_name: 'asc' },
-    DEP_NAME_DSC: { dep_name: 'desc' },
-    BLDG_ID_ASC: { building_id: 'desc' },
-    BLDG_ID_DSC: { building_id: 'desc' },
-    FLOOR_ASC: { floor: 'asc' },
-    FLOOR_DSC: { floor: 'asc' },
-};
+export enum SORT_OPTIONS {
+    DEP_ID_ASC,
+    DEP_ID_DSC,
+    DEP_NAME_ASC,
+    DEP_NAME_DSC,
+    BLDG_ID_ASC,
+    BLDG_ID_DSC,
+    FLOOR_ASC,
+    FLOOR_DSC,
+}
 
 export enum FILTER_OPTIONS {
     INCLUDE_DEP_ID,
@@ -26,7 +26,17 @@ export enum FILTER_OPTIONS {
     INCLUDE_PHONE,
 }
 
-export const DIRECTORY_FILTER_OPTIONS: object[] = [];
+const DIRECTORY_SORT_OPTIONS: object[] = [];
+DIRECTORY_SORT_OPTIONS.push({ dep_id: 'asc' });
+DIRECTORY_SORT_OPTIONS.push({ dep_id: 'desc' });
+DIRECTORY_SORT_OPTIONS.push({ dep_name: 'asc' });
+DIRECTORY_SORT_OPTIONS.push({ dep_name: 'desc' });
+DIRECTORY_SORT_OPTIONS.push({ building_id: 'asc' });
+DIRECTORY_SORT_OPTIONS.push({ building_id: 'desc' });
+DIRECTORY_SORT_OPTIONS.push({ floor: 'asc' });
+DIRECTORY_SORT_OPTIONS.push({ floor: 'desc' });
+
+const DIRECTORY_FILTER_OPTIONS: object[] = [];
 DIRECTORY_FILTER_OPTIONS.push({ dep_id: true });
 DIRECTORY_FILTER_OPTIONS.push({ dep_services: true });
 DIRECTORY_FILTER_OPTIONS.push({ dep_name: true });
@@ -36,24 +46,19 @@ DIRECTORY_FILTER_OPTIONS.push({ dep_phone: true });
 // GET Send Data
 router.get('/', async function (req: Request, res: Response) {
     // Get from url
-    const { sortOptions, filterOptions, maxQuery } = req.query;
+    // should be in the format: http://localhost:3000/api/directory?sortOptions=[]&filterOptions=[]&maxQuery=anyNumber
+    const sortOptions: number[] = JSON.parse(req.query.sortOptions as string);
+    const filterOptions: number[] = JSON.parse(req.query.filterOptions as string);
+    const maxQuery = Number(req.query.maxQuery as string);
     // Attempt to get directory
     try {
-        console.log(sortOptions);
-        console.log(filterOptions);
-        console.log(maxQuery);
         const queryOptions: QueryOptions = {
-            sortOptions: SORT_OPTIONS.BLDG_ID_ASC,
-            filterOptions: [
-                FILTER_OPTIONS.INCLUDE_BLDG_ID,
-                FILTER_OPTIONS.INCLUDE_DEP_ID,
-                FILTER_OPTIONS.INCLUDE_NAME,
-            ],
-            maxQuery: 2,
+            sortOptions: sortOptions.map((option) => DIRECTORY_SORT_OPTIONS[option]),
+            filterOptions: filterOptions.map((option) => DIRECTORY_FILTER_OPTIONS[option]),
+            maxQuery: Number.isNaN(maxQuery) ? undefined : maxQuery,
         };
         const args = buildQuery(queryOptions);
         args.select = { ...args.select, locations: true };
-        buildGetRequest('', queryOptions);
         //Attempt to pull from directory
         const DIRECTORY = await PrismaClient.department.findMany(args);
         console.log(DIRECTORY);

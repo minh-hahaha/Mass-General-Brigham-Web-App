@@ -1,8 +1,6 @@
-import { DIRECTORY_FILTER_OPTIONS } from './routes/directory.ts';
-
 export interface QueryOptions {
-    sortOptions: any;
-    filterOptions: any[];
+    sortOptions: object[];
+    filterOptions: object[];
     maxQuery: number | undefined;
 }
 
@@ -12,13 +10,6 @@ export function buildQuery(options: QueryOptions) {
         take: options.maxQuery,
         orderBy: options.sortOptions,
     };
-    args.select = Object.assign(
-        {},
-        ...options.filterOptions.map((opt) => DIRECTORY_FILTER_OPTIONS[opt])
-    );
+    args.select = Object.assign({}, ...options.filterOptions);
     return args;
-}
-
-export function buildGetRequest(route: any, options: QueryOptions) {
-    console.log();
 }
