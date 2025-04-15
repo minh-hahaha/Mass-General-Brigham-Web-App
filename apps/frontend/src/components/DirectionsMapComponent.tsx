@@ -266,42 +266,22 @@ const DirectionsMapComponent = () => {
                     />
                     </div>
                     {/*Choose hospital department ===== WORK HERE =====*/}
-                    <div className="mt-4">
-                        <SelectElement
-                            label={"Department"}
-                            id={"toLocation"}
-                            value={toLocation}
-                            onChange={e=> setToLocation(e.target.value)}
-                            options={Buildings}
-                            placeholder={"Select Department"}
-                        />
-                    </div>
-
-
                     <div className="mb-4">
                         <label htmlFor="toLocation" className="block text-sm font-medium text-gray-700 mb-1">
                             To:
                         </label>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger
-                                id="toLocation"
-                                className="w-full p-2 border border-mgbblue rounded text-sm bg-white"
-                            >
-                                {toLocation || "Select a destination"}
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-full max-h-60 overflow-y-auto">
-                                {directoryName.map((dept) => (
-                                    <DropdownMenuItem
-                                        key={dept.dep_name}
-                                        onSelect={() => setToLocation(dept.dep_name)}
-                                        className={toLocation === dept.dep_name ? "font-semibold bg-accent/20" : ""}
-                                    >
-                                        {dept.dep_name}
-                                    </DropdownMenuItem>
-                                ))}
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                        <SelectElement
+                            label={"Department"}
+                            id={"toLocation"}
+                            value={toLocation}
+                            onChange={(e) => setToLocation(e.target.value)}
+                            options={directoryName.map((dept) => {
+                                return dept.deptName
+                            })}
+                            placeholder={"Select Department"}
+                        />
                     </div>
+
 
                     <div className="mt-5">
                         <TravelModeComponent selectedMode={travelMode} onChange={handleTravelModeChange}
