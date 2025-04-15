@@ -6,7 +6,7 @@ export class myNode {
     nodeType: string;
     buildingId: string;
     name: string;
-    roomNumber: number | null;
+    roomNumber: string | null;
 
     constructor(
         nodeID: string,
@@ -16,8 +16,7 @@ export class myNode {
         nodeType: string,
         buildingId: string,
         name: string,
-        roomNumber: number | null,
-
+        roomNumber: string | null
     ) {
         this.nodeID = nodeID;
         this.x = x;
@@ -61,7 +60,6 @@ export class myNode {
 //     }
 // }
 
-
 class myEdge {
     id: number;
     from: myNode;
@@ -93,9 +91,9 @@ export class Graph {
         nodeType: string,
         buildingId: string,
         name: string,
-        roomNumber: number | null,
+        roomNumber: string | null
     ): myNode {
-        const node = new myNode(id, x, y, floor, nodeType, buildingId, name,roomNumber);
+        const node = new myNode(id, x, y, floor, nodeType, buildingId, name, roomNumber);
         this.nodes.push(node);
         return node;
     }
