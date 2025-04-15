@@ -14,6 +14,7 @@ import TranslationServiceRequestPage from './routes/TranslationServiceRequestPag
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { ShadSidebar } from '@/components/ui/shadsidebar.tsx';
 import {MapPage} from "@/routes/MapPage.tsx";
+    import TranslationServiceDisplayPage from "@/routes/TranslationServiceDisplayPage.tsx";
 
 function App() {
     return (
@@ -55,6 +56,10 @@ function App() {
                                   path="/TranslationServiceRequestPage"
                                   element={<TranslationServiceRequestPage />}
                                  />
+                                <Route
+                                    path="/TranslationServiceDisplayPage"
+                                    element={<TranslationServiceDisplayPage />}
+                                />
                         <Route path="/SanitationRequest" element={<SanitationRequestPage />} />
                         <Route path="/SanitationRequestDisplayPage" element={<SanitationRequestDisplayPage />} />
 

@@ -4,9 +4,12 @@ import SelectElement from '../elements/SelectElement.tsx';
 import InputElement from '../elements/InputElement.tsx';
 import { Map, useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
 import ChestnutHillMapComponent from './ChestnutHillMapComponent.tsx';
-import { cleanedUpBFS, bfs } from '../../../backend/src/Algorithms/BFS.ts';
+import { bfs } from '../../../backend/src/Algorithms/BFS.ts';
 import TravelModeComponent from "@/components/TravelModeComponent.tsx";
 import {setDragLock} from "framer-motion";
+import {myNode} from "../../../backend/src/Algorithms/classes.ts";
+import axios from 'axios';
+import {ROUTES} from "common/src/constants.ts";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu.tsx";
 import {DirectoryRequestName, getDirectoryNames} from "@/database/gettingDirectory.ts";
 
@@ -168,35 +171,70 @@ const DirectionsMapComponent = () => {
 
     const svg = '/ChestnutHillMap.svg';
 
+    async function FindPath(start: myNode, end: myNode) {
+        const data = JSON.stringify({start, end})
+        console.log(data);
+        const res = await axios.post(ROUTES.BFSGRAPH, data, {
+            headers: {'Content-Type': 'application/json'}
+        })
+        const nodes : myNode[] = res.data
+        console.log(nodes)
+        return nodes;
+
+    }
+
     const HospitalMap = () => {
-        const [path, setPaths] = useState<string[][]>([]);
-        // useEffect(() => {
-        //     const getMyPaths = async () => {
-        //         if (parkA) {
-        //             const result = await cleanedUpBFS('A', 'G');
-        //             console.log('ParkA   ' + result);
-        //
-        //             setPaths(result);
-        //         } else if (parkB) {
-        //             const result = await cleanedUpBFS('J', 'G');
-        //             console.log('ParkB   ' + result);
-        //             setPaths(result);
-        //         } else if (parkC) {
-        //             const result = await cleanedUpBFS('L', 'G');
-        //             console.log('ParkC   ' + result);
-        //             setPaths(result);
-        //         } else {
-        //             setPaths([]);
-        //         }
-        //     };
-        //     getMyPaths();
-        // }, [parkA, parkB, parkC]);
+        const [path, setPaths] = useState<myNode[]>([]);
+
+        useEffect(() => {
+            const getMyPaths = async () => {
+                const door1 : myNode = {
+                    nodeID: "CH1Door1",
+                    x: 694.6909401633523,
+                    y: 164.93491432883522,
+                    floor: "1",
+                    buildingId: "1",
+                    nodeType: "Door",
+                    name: "Exit1",
+                    roomNumber: ""
+                    }
+                const room102: myNode = {
+                    nodeID: "CH1Room102",
+                    x: 662.2247373611947,
+                    y: 757.8635425826869,
+                    floor: "1",
+                    buildingId: "1",
+                    nodeType: "Room",
+                    name: "Radiology, MR/CT Scan 102",
+                    roomNumber: "102"
+                }
+                if (parkA) {
+                    const result = await FindPath(door1, room102);
+                    setPaths(result);
+                // } else if (parkB) {
+                //     const result = await cleanedUpBFS('J', 'G');
+                //     console.log('ParkB   ' + result);
+                //     setPaths(result);
+                // } else if (parkC) {
+                //     const result = await cleanedUpBFS('L', 'G');
+                //     console.log('ParkC   ' + result);
+                //     setPaths(result);
+                } else {
+                    setPaths([]);
+                }
+            };
+            getMyPaths();
+            // console.log(path);
+        }, [parkA, parkB, parkC]);
 
 
 
         return (
+            // <div>
+            //      <ChestnutHillMapComponent svgPath={svg} nodeConnections={path} />
+            // </div>
             <div>
-                <ChestnutHillMapComponent svgPath={svg} nodeConnections={path} />
+
             </div>
         );
     };
@@ -213,7 +251,7 @@ const DirectionsMapComponent = () => {
                             id="fromLocation"
                             ref={fromLocationRef}
                             value={fromLocation}
-                            className="w-full p-2 border border-mgbblue rounded"
+                            className="w-full p-2 border border-gray-300 rounded"
                             onChange={(e) => setFromLocation(e.target.value)}
                             required
                             placeholder="Choose a starting point..."
@@ -270,7 +308,7 @@ const DirectionsMapComponent = () => {
                                 </div>
                             </div>
                     )}
-
+                    
                     <div className="mt-2">
                         <MGBButton
                             onClick={() => handleHere()}
