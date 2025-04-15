@@ -3,19 +3,105 @@ import PrismaClient from '../bin/prisma-client';
 import { CSVtoData, dataToCSV, readCSV } from '../CSVImportExport.ts';
 import * as path from 'node:path';
 import fs from 'node:fs';
+import { buildQuery, QueryOptions } from '../Utility.ts';
 
 const router: Router = express.Router();
 
+export enum SORT_OPTIONS {
+    DEP_ID_ASC,
+    DEP_ID_DSC,
+    DEP_NAME_ASC,
+    DEP_NAME_DSC,
+    BLDG_ID_ASC,
+    BLDG_ID_DSC,
+    FLOOR_ASC,
+    FLOOR_DSC,
+}
+
+export enum FILTER_OPTIONS {
+    INCLUDE_DEP_ID,
+    INCLUDE_SERVICES,
+    INCLUDE_NAME,
+    INCLUDE_BLDG_ID,
+    INCLUDE_PHONE,
+    INCLUDE_ALL,
+}
+
+const DIRECTORY_SORT_OPTIONS: object[] = [];
+DIRECTORY_SORT_OPTIONS.push({ dep_id: 'asc' });
+DIRECTORY_SORT_OPTIONS.push({ dep_id: 'desc' });
+DIRECTORY_SORT_OPTIONS.push({ dep_name: 'asc' });
+DIRECTORY_SORT_OPTIONS.push({ dep_name: 'desc' });
+DIRECTORY_SORT_OPTIONS.push({ building_id: 'asc' });
+DIRECTORY_SORT_OPTIONS.push({ building_id: 'desc' });
+DIRECTORY_SORT_OPTIONS.push({ floor: 'asc' });
+DIRECTORY_SORT_OPTIONS.push({ floor: 'desc' });
+
+const DIRECTORY_FILTER_OPTIONS: object[] = [];
+DIRECTORY_FILTER_OPTIONS.push({ dep_id: true });
+DIRECTORY_FILTER_OPTIONS.push({ dep_services: true });
+DIRECTORY_FILTER_OPTIONS.push({ dep_name: true });
+DIRECTORY_FILTER_OPTIONS.push({ building_id: true });
+DIRECTORY_FILTER_OPTIONS.push({ dep_phone: true });
+DIRECTORY_FILTER_OPTIONS.push(Object.assign({}, ...DIRECTORY_FILTER_OPTIONS));
+
 // GET Send Data
 router.get('/', async function (req: Request, res: Response) {
+    // Get from url
+    // should be in the format: http://localhost:3000/api/directory?sortOptions=[]&filterOptions=[]&maxQuery=anyNumber
     // Attempt to get directory
     try {
+        let queryOptions: QueryOptions;
+        let sortOptions: number[] = [];
+        let filterOptions: number[] = [FILTER_OPTIONS.INCLUDE_ALL];
+        let maxQuery: number | undefined = undefined;
+        try {
+            sortOptions = JSON.parse(req.query.sortOptions as string);
+            filterOptions = JSON.parse(req.query.filterOptions as string);
+            maxQuery = Number(req.query.maxQuery as string);
+            // Try to create query options from url data
+            queryOptions = {
+                sortOptions: sortOptions
+                    .filter(
+                        (option) =>
+                            option !== SORT_OPTIONS.FLOOR_ASC && option !== SORT_OPTIONS.FLOOR_DSC
+                    )
+                    .map((option) => DIRECTORY_SORT_OPTIONS[option]),
+                filterOptions: filterOptions.map((option) => DIRECTORY_FILTER_OPTIONS[option]),
+                maxQuery: Number.isNaN(maxQuery) ? undefined : maxQuery,
+            };
+        } catch (error) {
+            // If that fails, use default queryOptions set above
+            queryOptions = {
+                sortOptions: sortOptions.map((option) => DIRECTORY_SORT_OPTIONS[option]),
+                filterOptions: filterOptions.map((option) => DIRECTORY_FILTER_OPTIONS[option]),
+                maxQuery: maxQuery,
+            };
+        }
+        // Create the query args from queryOptions
+        const args = buildQuery(queryOptions);
+        // Include the locations table
+        const locationArgs = {
+            locations: {},
+        };
+        if (
+            sortOptions.includes(SORT_OPTIONS.FLOOR_ASC) ||
+            sortOptions.includes(SORT_OPTIONS.FLOOR_DSC)
+        ) {
+            locationArgs.locations = Object.assign(
+                {},
+                ...sortOptions
+                    .filter(
+                        (option) =>
+                            option === SORT_OPTIONS.FLOOR_ASC || option === SORT_OPTIONS.FLOOR_DSC
+                    )
+                    .map((option) => DIRECTORY_SORT_OPTIONS[option])
+            );
+        }
+        args.select = { ...args.select, locations: true };
         //Attempt to pull from directory
-        const DIRECTORY = await PrismaClient.department.findMany({
-            include: {
-                locations: true,
-            },
-        });
+        const DIRECTORY = await PrismaClient.department.findMany(args);
+        //console.log(DIRECTORY);
         res.send(DIRECTORY);
     } catch (error) {
         // Log any failures
