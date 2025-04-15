@@ -65,7 +65,7 @@ const SanitationRequestDisplayPage = () => {
                     <TableBody>
                         {requests.map((req) => (
                             <TableRow>
-                                <TableCell>{req.request_id}</TableCell>
+                                <TableCell>{req.requestId}</TableCell>
                                 <TableCell>{req.sanitation.completeBy}</TableCell>
                                 <TableCell>{JSON.stringify(req.sanitation.disposalRequired)}</TableCell>
                                 <TableCell>{req.sanitation.hazardLevel}</TableCell>
@@ -73,8 +73,8 @@ const SanitationRequestDisplayPage = () => {
                                 <TableCell>{req.sanitation.sanitationType}</TableCell>
                                 <TableCell>{req.priority}</TableCell>
                                 <TableCell>{req.status}</TableCell>
-                                <TableCell>{req.request_date}</TableCell>
-                                <TableCell>{req.service_type}</TableCell>
+                                <TableCell>{req.requestDate}</TableCell>
+                                <TableCell>{req.serviceType}</TableCell>
 
                             </TableRow>
                         ))}
