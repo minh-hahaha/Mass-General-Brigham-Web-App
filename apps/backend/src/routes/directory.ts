@@ -6,6 +6,10 @@ import fs from 'node:fs';
 
 const router: Router = express.Router();
 
+export interface DirectoryRequestName {
+    dep_name: string;
+}
+
 // GET Send Data
 router.get('/', async function (req: Request, res: Response) {
     // Attempt to get directory
@@ -39,6 +43,31 @@ router.get('/name', async function (req: Request, res: Response) {
         return;
     }
 })
+
+router.get('/nameSearch', async function (req: Request, res: Response) {
+    try {
+        const depName = req.query.dep_name as string;
+
+        const departments = await PrismaClient.department.findMany({
+            where: {
+                dep_name: depName,
+            },
+            include: {
+                locations: {
+                    include: {
+                        : true,
+                    },
+                },
+            },
+        });
+
+        res.status(200).json(departments);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 
 // GET Send CSV
 router.get('/csv', async function (req: Request, res: Response) {
