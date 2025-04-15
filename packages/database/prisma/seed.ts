@@ -12,18 +12,23 @@ async function main() {
 
     const createManyBuildings = await client.building.createMany({
         data: [
-            /*                                                                                                    yyyy:mm:dd */
             {
-
-                building_name: 'Building0',
-
+                building_id: 1,
+                building_name: 'Chestnut Hill',
             },
+            {
+                building_id: 2,
+                building_name: '20 Patriot Place',
+            },
+            {
+                building_id: 3,
+                building_name: '22 Patriot Place',
+            }
         ],
         skipDuplicates: true,
     });
     const createManyDepartments = await client.department.createMany({
         data: [
-            /*                                                                                                    yyyy:mm:dd */
             {
                 dep_id: 1,
                 dep_name: 'Allergy and Clinical Immunology',
@@ -151,12 +156,270 @@ async function main() {
                 dep_phone: '617-732-9525',
                 dep_services: 'Orthopedic, sports, neurologic and vestibular Physical Therapy, Mens and Womens pelvic floor Physical Therapy. Hand/Occupational Therapy Speech Language Pathology',
             },
+            {
+                dep_id: 19,
+                dep_name: 'Blood Draw / Phlebotomy',
+                building_id: 2,
+                dep_phone: 'N/A',
+                dep_services: 'Blood Draw / Phlebotomy',
+            },
+            {
+                dep_id: 20,
+                dep_name: 'Pharmacy',
+                building_id: 2,
+                dep_phone: 'N/A',
+                dep_services: 'Pharmacy',
+            },
+            {
+                dep_id: 21,
+                dep_name: 'Radiology',
+                building_id: 2,
+                dep_phone: 'Via Fax: 508-718-4026',
+                dep_services: 'magnetic resonance imaging (MRI), computed tomography (CT), single photon emission computed tomography (SPECT) imaging, ultrasound, digital mammography, x-ray, bone densitometry. Available twice a week: arthrograms, magnetic resonance (MR) arthrograms, computed tomography (CT) arthrograms, diagnostic and therapeutic joint injections',
+            },
+            {
+                dep_id: 22,
+                dep_name: 'Cardiovascular Services',
+                building_id: 2,
+                dep_phone: '1-866-378-9164',
+                dep_services: 'Transthoracic echocardiography, Holter monitoring, Electrocardiogram (ECG), Exercise tolerance testing, Exercise stress echocardiography, Vascular and arterial studies',
+            },
+            {
+                dep_id: 23,
+                dep_name: 'Urology',
+                building_id: 2,
+                dep_phone: '1-866-378-9164',
+                dep_services: 'diagnostic cystoscopy (cysto), retrograde pyelogram, transurethral resection of bladder tumor, cold knife urethrotomy, bladder stone removal, fulguration, bladder biopsy, ureteroscopy, chemotherapy and formalin instillation, laser lithotripsy, electrohydraulic lithotripsy (EHL), urethral or bladder neck contracture dilation, circumcision, suprapubic tube (catheter) change, ureteral stent placement and removal, prostate needle biopsy, varicocelectomy, hydrocelectomy, vasectomy, testicular biopsy, orchiectomy, SPARC™ procedures',
+            },
+            {
+                dep_id: 24,
+                dep_name: 'Urgent Care Center',
+                building_id: 2,
+                dep_phone: '508-718-4400',
+                dep_services: 'Urgent Care',
+            },
+            {
+                dep_id: 25,
+                dep_name: 'Orthopedics',
+                building_id: 2,
+                dep_phone: '1-866-378-9164',
+                dep_services: 'Hand and Upper Extremity, Arthroplasty, Pediatric Trauma, Physiatry, Podiatry',
+            },
+            {
+                dep_id: 26,
+                dep_name: 'Rehabilitation Services',
+                building_id: 2,
+                dep_phone: ' 1-866-378-9164',
+                dep_services: 'Cardiac Rehab, Occupational Therapy(Hand Therapy, Upper Extremity), Physical Therapy, Speech - Language, Clinical Lab, Surgi-Care',
+            },
+            {
+                dep_id: 27,
+                dep_name: 'Surgical Specialties',
+                building_id: 2,
+                dep_phone: 'N/A',
+                dep_services: 'Audiology, ENT, General and Gastrointestinal Surgery, Plastic Surgery, Thoracic Surgery, Vascular Surgery, Weight Management and Wellness',
+            },
+            {
+                dep_id: 28,
+                dep_name: 'Sports Medicine Center',
+                building_id: 2,
+                dep_phone: '1-866-378-9164',
+                dep_services: 'arm, elbow and hand disorders, athletic injuries, spine disorders, foot and ankle problems, hip and knee disorders, shoulder issues, joint replacement, musculoskeletal oncology',
+            },
+            {
+                dep_id: 29,
+                dep_name: 'X-Ray Suite',
+                building_id: 2,
+                dep_phone: 'N/A',
+                dep_services: 'X-Ray',
+            },
+            {
+                dep_id: 30,
+                dep_name: 'Electromyography (EMG)',
+                building_id: 2,
+                dep_phone: 'N/A',
+                dep_services: 'Electromyography (EMG)',
+            },
+            {
+                dep_id: 31,
+                dep_name: 'Nutrition',
+                building_id: 2,
+                dep_phone: 'N/A',
+                dep_services: 'Nutrition',
+            },
+            {
+                dep_id: 32,
+                dep_name: 'Pain Medicine',
+                building_id: 2,
+                dep_phone: '1-866-378-9164',
+                dep_services: 'diagnosis and treatment of spine-related low-back and neck pain, complex regional pain syndrome, post-herpetic neuralgia (shingles), other neuropathic syndromes, chronic pelvic pain, chronic pain in young adults, comprehensive evaluation for patients with cancer-related pain, headaches, arthritis',
+            },
+            {
+                dep_id: 33,
+                dep_name: 'Physiatry',
+                building_id: 2,
+                dep_phone: 'N/A',
+                dep_services: 'interventional spine procedures, electrodiagnostic medicine consultations and alternative therapies such as medical acupuncture',
+            },
+            {
+                dep_id: 34,
+                dep_name: 'Plumonary Function Testing',
+                building_id: 2,
+                dep_phone: 'N/A',
+                dep_services: 'Plumonary Function Testing',
+            },
+            {
+                dep_id: 35,
+                dep_name: 'Day Surgery Center',
+                building_id: 2,
+                dep_phone: 'N/A',
+                dep_services: 'Day Surgery Center',
+            },
+            {
+                dep_id: 36,
+                dep_name: 'Mass General Hospital for Children',
+                building_id: 3,
+                dep_phone: '888-644-3248',
+                dep_services: 'Mass General Hospital for Children',
+            },
+            {
+                dep_id: 37,
+                dep_name: 'Spaulding Outpatient Center for Children',
+                building_id: 3,
+                dep_phone: '(857) 307-3202',
+                dep_services: 'Spaulding Outpatient Center for Children',
+            },
+            {
+                dep_id: 38,
+                dep_name: 'Allergy',
+                building_id: 3,
+                dep_phone: '1-866-378-9164',
+                dep_services: 'Allergic Rhinoconjunctivitis, Adverse Drug Reactions, Anaphylaxis, Asthma, Contact Dermatitis, Food Allergies, Immunodeficiency, Mastocytosis, Sinusitis, Stinging Insect, Urticaria',
+            },
+            {
+                dep_id: 39,
+                dep_name: 'Cardiology',
+                building_id: 3,
+                dep_phone: 'N/A',
+                dep_services: 'Evaluation, Diagnosis, Treatment Services, Arrhythmias, Irregular Heart Rhythms, Heart Palpitations, Rapid Heartbeats',
+            },
+            {
+                dep_id: 40,
+                dep_name: 'Dermatology',
+                building_id: 3,
+                dep_phone: '1-866-378-9164',
+                dep_services: 'Evaluation, Diagnosis, and Medical and Surgical treatment for Skin Cancers, Immune Processes, Allergic Processes, Psoriasis, Atopic Dermatitis, Skin Conditions Indicating Diseases of Other Organ Systems',
+            },
+            {
+                dep_id: 41,
+                dep_name: 'Endocrinology',
+                building_id: 3,
+                dep_phone: '1-866-378-9164',
+                dep_services: 'Care for Patients with: Hormonal Disorders, Diabetes, Hypertension, Thyroid Disease, Osteoporosis, Pituitary Dysfunction, Adrenal Disorders, Sexual Dysfunction, Infertility, Hirsutism, Polycystic Ovarian Syndrome, Hypoglycemia, Calcium Disorders',
+            },
+            {
+                dep_id: 42,
+                dep_name: 'Gastroenterology',
+                building_id: 3,
+                dep_phone: 'N/A',
+                dep_services: 'Gastroenterology',
+            },
+            {
+                dep_id: 43,
+                dep_name: 'Kidney Medicine',
+                building_id: 3,
+                dep_phone: '1-866-378-9164',
+                dep_services: 'Comprehensive evaluation and Management Services for kidney afflictions such as: Hypertension, Diabetic Kidney Disease, Glomerulonephritis, Vasculitis, Chronic Kidney Disease, Kidney Stones, Polycystic Kidney Disease, Inherited Kidney Diseases',
+            },
+            {
+                dep_id: 44,
+                dep_name: 'Neurology',
+                building_id: 3,
+                dep_phone: '1-866-378-9164',
+                dep_services: 'Consultation, Evaluation and Management services for neurologic complications including: General Neurology Complications, Epilepsy, Seizure-Related Disorders, Headache. Additionally offers Electromyography (EMG) testing',
+            },
+            {
+                dep_id: 45,
+                dep_name: 'Neurosurgery',
+                building_id: 3,
+                dep_phone: '1-866-378-9164',
+                dep_services: 'Complete management of pre and post surgical care for neurological conditions including: Benign Brain Tumors, Malignant Brain Tumors, Cerebrovascular Diseases, Movement Disorders, Epilepsy, Vascular Abnormalities, Degenerative Spine Disease, Brain and Spinal Disorders',
+            },
+            {
+                dep_id: 46,
+                dep_name: "Women's Health (Obstetrics and Gynecology)",
+                building_id: 3,
+                dep_phone: '1-866-378-9164',
+                dep_services: 'Normal Pregnancy, High-Risk Pregnancy, General Gynecology, Infertility, Abnormal Pap Smear Evaluation, Minimally-Invasive Gynecologic Surgery, Menopause, Pap Smears, Colposcopy, Cervical LEEP, Fiberoptic Hysteroscopy, Electronic Fetal Monitoring, Ultrasound',
+            },
+            {
+                dep_id: 47,
+                dep_name: 'Ophthalmology',
+                building_id: 3,
+                dep_phone: 'N/A',
+                dep_services: 'Comprehensive Ophthalmology, Cataract Care, Routine Eye Care, Screenings for Systemic Diseases, Diabetes, Ophthalmic Diseases, Glaucoma, Corneal Disorders, Eye Surface Disorders, Refractive Disorders, Diagnostic Testing, Corneal Conditions, Cataract Treatment, Dry Eye, Corneal Scarring, Corneal Degenerations',
+            },
+            {
+                dep_id: 48,
+                dep_name: 'Optometry',
+                building_id: 3,
+                dep_phone: '617-573-3202',
+                dep_services: 'Comprehensive Eye Examinations, Screening, Diagnosis, Management of Eye Conditions, Diabetic Eye Exams, Urgent Care, Eyeglass Prescriptions',
+            },
+            {
+                dep_id: 49,
+                dep_name: 'Pathology',
+                building_id: 3,
+                dep_phone: '1-866-378-9164',
+                dep_services: 'Testing including: Complete Blood Cell Count (CBC), Red Blood Cells, White Blood Cells, Hemoglobin, CBC and Automated Differential Count (Auto Diff), Manual Differential (Blood Smear), Urinalysis, Prothrombin Time/International Normalized Ratio (PT/INR), Partial Thromboplastin Time (PTT), Erythrocyte Sedimentation Rate (ESR), Comprehensive Metabolic Panel (CMP), Basic Metabolic Panel (BMP), Electrolyte Panel, Hepatic Function Panel, Renal Function Panel, Lipid Panel, Parathyroid Hormone (PTH), hCG, Rapid Strep Test, Fingerstick Glucose, Thyroid-Stimulating Hormone (TSH), High-Sensitivity C-Reactive Protein (hsCRP), Brain Natriuretic Peptide (proBNP), Cardiac-Specific Troponin T (cTnT), Creatine Kinase, Creatine Kinase-MB, D-Dimer, Lipase, Infectious Mono Heterophile Screen, Rapid Influenza A/B',
+            },
+            {
+                dep_id: 50,
+                dep_name: 'Pulmonology',
+                building_id: 3,
+                dep_phone: '1-866-378-9164',
+                dep_services: 'Consultation, Diagnosis and Treatment for the entire spectrum of respiratory diseases including: Asthma, Chronic Obstructive Pulmonary Disease (COPD), Lung Nodules, Interstitial Lung Diseases, Sarcoidosis',
+            },
+            {
+                dep_id: 51,
+                dep_name: 'Rheumatology',
+                building_id: 3,
+                dep_phone: '(866) 378-9164',
+                dep_services: "Services for Treating: Bursitis, Tendonitis, Gout, Pseudogout, Juvenile Arthritis (JA), Lupus, Neck Pain, Low Back Pain, Osteoarthritis, Osteoporosis, Polymyalgia Rheumatica, Giant Cell Arteritis, Polymyositis, Dermatomyositis, Psoriatic Arthritis, Raynaud's Disease, Rheumatoid Arthritis, Rheumatic Diseases of Pregnancy, Scleroderma, Sjogren's Syndrome, Spondyloarthropathy, Unexplained Connective Tissue Diseases, Vasculitis, Women's Health"
+            },
+            {
+                dep_id: 52,
+                dep_name: 'Patient Financial Services',
+                building_id: 3,
+                dep_phone: 'N/A',
+                dep_services: 'Patient Financial Services',
+            },
+            {
+                dep_id: 53,
+                dep_name: 'Blood Draw / Phlebotomy',
+                building_id: 3,
+                dep_phone: 'N/A',
+                dep_services: 'Blood Draw / Phlebotomy',
+            },
+            {
+                dep_id: 54,
+                dep_name: 'Community Room',
+                building_id: 3,
+                dep_phone: 'N/A',
+                dep_services: 'Community Room',
+            },
+            {
+                dep_id: 55,
+                dep_name: 'Primary Care',
+                building_id: 3,
+                dep_phone: '(508) 718-4050',
+                dep_services: 'Primary Care',
+            },
         ],
         skipDuplicates: true,
     });
     const createManyLocations = await client.location.createMany({
         data: [
-            /*                                                                                                    yyyy:mm:dd */
             {
                 loc_type: 'hallway',
                 floor: 0,
@@ -281,14 +544,234 @@ async function main() {
                 floor: 2,
                 department_id: 18,
             },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 1,
+                department_id: 19,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 1,
+                department_id: 20,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 1,
+                department_id: 21,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 1,
+                department_id: 22,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 1,
+                department_id: 23,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 1,
+                department_id: 24,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 2,
+                department_id: 25,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 2,
+                department_id: 26,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 27,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 28,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 29,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 4,
+                department_id: 30,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 4,
+                department_id: 31,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 4,
+                department_id: 32,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 4,
+                department_id: 33,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 4,
+                department_id: 34,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 4,
+                department_id: 35,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 1,
+                department_id: 36,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 1,
+                department_id: 37,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 38,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 39,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 40,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 41,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 42,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 43,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 44,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 45,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 46,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 47,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 48,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 49,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 50,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 51,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 3,
+                department_id: 52,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 4,
+                department_id: 53,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 4,
+                department_id: 54,
+            },
+            {
+                loc_type: 'department',
+                room_num: null,
+                floor: 4,
+                department_id: 55,
+            },
         ],
         skipDuplicates: true,
     });
 
     const createManyEmployees = await client.employee.createMany({
         data: [
-            /*      
-                                                                                                          yyyy:mm:dd */
             {
 
                 first_name: 'AdMinh',
@@ -413,6 +896,6 @@ async function main() {
 
 
     })*/
-main().then(() => console.log('Temp Data Loaded'));
+main().then(() => console.log('Temp Data Loaded')).then(async () => {await client.$disconnect()});
 
 
