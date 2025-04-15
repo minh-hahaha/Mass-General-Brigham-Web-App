@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import {sanitationRequest} from '../database/sanitationRequest.ts';
 
 interface TransportRequest {
     id: number;
@@ -19,7 +18,7 @@ interface TransportRequest {
 }
 
 interface ConfirmationMessageProps {
-    request: TransportRequest | sanitationRequest;
+    request: TransportRequest;
     onClose?: () => void;
 }
 
