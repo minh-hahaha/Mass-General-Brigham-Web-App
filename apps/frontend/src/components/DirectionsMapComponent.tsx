@@ -10,6 +10,8 @@ import ViewPath from "@/components/ViewPath.tsx";
 import {myNode} from "../../../backend/src/Algorithms/classes.ts";
 import axios from 'axios';
 import {ROUTES} from "common/src/constants.ts";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu.tsx";
+import {DirectoryRequestName, getDirectoryNames} from "@/database/gettingDirectory.ts";
 import {GetTransportRequest, incomingRequest} from "@/database/transportRequest.ts";
 import {getDepartmentNode} from "@/database/getDepartmentNode.ts";
 
@@ -40,7 +42,7 @@ const DirectionsMapComponent = () => {
     const [distance, setDistance] = useState('');
     const [duration, setDuration] = useState('');
     const [showRouteInfo, setShowRouteInfo] = useState(false);
-
+    const [directoryName, setDirectoryName] = useState<DirectoryRequestName[]>([]);
 
     const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
     const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
@@ -53,6 +55,7 @@ const DirectionsMapComponent = () => {
 
     // refs for autocomplete
     const fromLocationRef = useRef(null);
+    // const toLocationRef = useRef(null);
 
     useEffect(() => {
         if (!placesLibrary || !fromLocationRef.current) return;
@@ -74,6 +77,21 @@ const DirectionsMapComponent = () => {
 
     }, [placesLibrary]); // autocomplete
 
+    useEffect(() => {
+        const fetchDirectoryNames = async () => {
+            try {
+                const data = await getDirectoryNames();
+                console.log(data);
+                setDirectoryName(data);
+            } catch (error) {
+                console.error("Error fetching building names:", error);
+            }
+
+        };
+        fetchDirectoryNames();
+        console.log(directoryName);
+    }, []);
+
     // find directions
     const handleFindDirections = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -89,6 +107,8 @@ const DirectionsMapComponent = () => {
     const calculateRoute = () => {
         if (!directionsRenderer || !directionsService) return;
 
+
+        //bro minh what is this???
         let actualLocation = toLocation;
         if(toLocation === '20 Patriot Place' || toLocation === "22 Patriot Place") {
             actualLocation = "42.09253421464256, -71.26638758014579";
@@ -233,22 +253,27 @@ const DirectionsMapComponent = () => {
                     />
                     </div>
                     {/*Choose hospital department ===== WORK HERE =====*/}
-                    <div className="mt-4">
+                    <div className="mb-4">
+                        <label htmlFor="toLocation" className="block text-sm font-medium text-gray-700 mb-1">
+                            To:
+                        </label>
                         <SelectElement
                             label={"Department"}
                             id={"toLocation"}
                             value={toLocation}
-                            onChange={e=> setToLocation(e.target.value)}
-                            options={Buildings}
+                            onChange={(e) => setToLocation(e.target.value)}
+                            options={directoryName.map((dept) => {
+                                return dept.deptName
+                            })}
                             placeholder={"Select Department"}
                         />
                     </div>
-
 
                     <div className="mt-5">
                         <TravelModeComponent selectedMode={travelMode} onChange={handleTravelModeChange}
                         />
                     </div>
+
 
                     <div className="mt-5">
                         <MGBButton

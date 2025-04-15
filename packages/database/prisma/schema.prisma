@@ -80,6 +80,7 @@ model Department {
   building      Building   @relation(fields: [buildingId], references: [buildingId])
   nodeId        String?        @unique
   nodeReception Node?      @relation(fields: [nodeId], references: [id], name:"DepartmentNode")
+
 }
 
 model Location {
