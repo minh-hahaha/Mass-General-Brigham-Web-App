@@ -23,7 +23,6 @@ export async function exportNodesAndEdges(): Promise<void> {
             // extract edges from all buildings
             await PrismaClient.edge.createMany({
                 data: edges.map((e: { from: any; to: any }) => ({
-                    fromAndTo: `${e.from}_${e.to}`, // or any consistent unique string
                     from: e.from,
                     to: e.to,
                 })),

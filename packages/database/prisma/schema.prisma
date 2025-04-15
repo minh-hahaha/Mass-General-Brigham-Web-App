@@ -97,7 +97,7 @@ model Node {
   buildingId String
   nodeType   String
   name       String
-  roomNumber Int?
+  roomNumber String?
   edgesFrom  Edge[]  @relation("NodeToEdgeFrom")
   edgesTo    Edge[]  @relation("NodeToEdgeTo")
 }
