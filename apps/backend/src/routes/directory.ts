@@ -118,45 +118,43 @@ router.get('/', async function (req: Request, res: Response) {
     }
 });
 
-
 router.get('/name', async function (req: Request, res: Response) {
     try {
         const DIRECTORY_NAMES = await PrismaClient.department.findMany({
-            select:{
-                dep_name:true
-            }
-        })
-    } catch (error){
+            select: {
+                deptName: true,
+            },
+        });
+    } catch (error) {
         console.error(`NO DIRECTORY_NAMES: ${error}`);
         res.sendStatus(404);
         return;
     }
-})
-
-router.get('/nameSearch', async function (req: Request, res: Response) {
-    try {
-        const depName = req.query.dep_name as string;
-
-        const departments = await PrismaClient.department.findMany({
-            where: {
-                dep_name: depName,
-            },
-            include: {
-                locations: {
-                    include: {
-                        : true,
-                    },
-                },
-            },
-        });
-
-        res.status(200).json(departments);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
 });
 
+// router.get('/nameSearch', async function (req: Request, res: Response) {
+//     try {
+//         const depName = req.query.dep_name as string;
+//
+//         const departments = await PrismaClient.department.findMany({
+//             where: {
+//                 deptName: depName,
+//             }
+//             include: {
+//                 locations: {
+//                     include: {
+//                         : true,
+//                     },
+//                 },
+//             },
+//         });
+//
+//         res.status(200).json(departments);
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// });
 
 // GET Send CSV
 router.get('/csv', async function (req: Request, res: Response) {
