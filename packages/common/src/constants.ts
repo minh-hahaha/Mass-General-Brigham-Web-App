@@ -10,4 +10,5 @@ export const ROUTES = {
     DIRECTORY_CSV: '/api/directory/csv',
     SANITATION: '/api/sanitation',
     BFSGRAPH: '/api/graph/traverse',
+    DIRECTORY_NODE: '/api/directory/node',
 }

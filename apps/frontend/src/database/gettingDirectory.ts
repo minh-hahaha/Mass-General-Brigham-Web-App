@@ -11,7 +11,6 @@ export interface DepartmentRequest {
 }
 
 
-
 export async function GetDirectory(): Promise<DepartmentRequest[]> {
     const response = await axios.get<DepartmentRequest[]>(ROUTES.DIRECTORY);
     return response.data;
