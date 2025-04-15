@@ -67,9 +67,9 @@ const SanitationRequestDisplayPage = () => {
                             <TableRow>
                                 <TableCell>{req.request_id}</TableCell>
                                 <TableCell>{req.sanitation.completeBy}</TableCell>
-                                <TableCell>{req.sanitation.disposalRequired}</TableCell>
+                                <TableCell>{JSON.stringify(req.sanitation.disposalRequired)}</TableCell>
                                 <TableCell>{req.sanitation.hazardLevel}</TableCell>
-                                <TableCell>{req.sanitation.recurring}</TableCell>
+                                <TableCell>{JSON.stringify(req.sanitation.recurring)}</TableCell>
                                 <TableCell>{req.sanitation.sanitationType}</TableCell>
                                 <TableCell>{req.priority}</TableCell>
                                 <TableCell>{req.status}</TableCell>

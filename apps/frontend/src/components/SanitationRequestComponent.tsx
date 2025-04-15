@@ -301,9 +301,9 @@ const SanitationRequestPage = () => {
                         <div>
                             <label>
                                 Recurring:
-                                <input type="checkbox" id="recurring" checked={recurring} onChange={(e) => setRecurring(Boolean(e.target.value))} />
+                                <input type="checkbox" id="recurring"  onChange={(e) => setRecurring(Boolean(e.target.value))} />
                                 Disposal Required:
-                                <input type="checkbox" id="disposalRequired" checked={disposalRequired} onChange={(e) => setDisposalRequired(Boolean(e.target.value))} />
+                                <input type="checkbox" id="disposalRequired"  onChange={(e) => setDisposalRequired(Boolean(e.target.value))} />
                             </label>
 
                         </div>
