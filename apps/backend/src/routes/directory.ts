@@ -98,9 +98,7 @@ router.get('/', async function (req: Request, res: Response) {
                     .map((option) => DIRECTORY_SORT_OPTIONS[option])
             );
         }
-        args.orderBy = { ...args.orderBy, ...locationArgs };
         args.select = { ...args.select, locations: true };
-        console.log(args);
         //Attempt to pull from directory
         const DIRECTORY = await PrismaClient.department.findMany(args);
         //console.log(DIRECTORY);
