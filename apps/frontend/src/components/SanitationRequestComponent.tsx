@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import MGBButton from '../components/MGBButton.tsx';
+import MGBButton from '../elements/MGBButton.tsx';
 import axios from 'axios';
 import { ROUTES } from 'common/src/constants';
-import ConfirmMesg from '../components/ConfirmMesg.tsx'; // Import the new component
+import ConfirmMesg from '../components/ConfirmMessageComponent.tsx'; // Import the new component
 import { SubmitSanitationRequest, sanitationRequest } from '../database/sanitationRequest.ts';
 
 // Component definition
@@ -341,7 +341,7 @@ const SanitationRequestPage = () => {
                             {showConfirmation && submittedRequest && (
                                 <div className="inline-block">
                                     <ConfirmMesg
-                                        request={ submittedRequest }
+                                        //request={ submittedRequest }
                                         onClose={handleConfirmationClose}
                                     />
                                 </div>
