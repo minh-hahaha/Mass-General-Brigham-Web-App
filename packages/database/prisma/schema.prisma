@@ -34,17 +34,15 @@ model ServiceRequest {
   assignedId     Employee?         @relation(fields: [employeeId], references: [employeeId])
   employeeId      Int?
   requestDate     DateTime?         @default(now()) @db.Date
-  requestTime     DateTime?         @default(now()) @db.Time
   status           String
   comments         String?
   priority         String
   location         Location?         @relation(name: "ServiceLocation", fields: [locationId], references: [locId])
   locationId     Int?
   serviceType    String
-
-
-  //service requests
   patientTransport PatientTransport? @relation(name: "ServicePatientTransport")
+  requestTime     DateTime?         @default(now()) @db.Time
+
   translationRequest TranslationRequest?
   sanitation       Sanitation?       @relation(name: "ServiceSanitation")
 }
@@ -82,8 +80,8 @@ model Department {
   members      Employee[]
   locations    Location[]
   building     Building   @relation(fields: [buildingId], references: [buildingId])
-  nodeId       Int?      @unique @default(autoincrement())
-  // nodeReception Node?     @relation(fields: [nodeId], references: [id], name:"DepartmentNode")
+  nodeId       Int        @unique
+  nodeReception Node      @relation(fields: [nodeId], references: [id], name:"DepartmentNode")
 }
 
 model Location {
@@ -115,7 +113,7 @@ model Node {
   shortName String
   edgesFrom Edge[] @relation("NodeToEdgeFrom")
   edgesTo   Edge[] @relation("NodeToEdgeTo")
-  // department  Department? @relation(name:"DepartmentNode")
+  department  Department? @relation(name:"DepartmentNode")
 }
 
 model Edge {

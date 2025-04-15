@@ -7,6 +7,8 @@ import ChestnutHillMapComponent from './ChestnutHillMapComponent.tsx';
 import { cleanedUpBFS, bfs } from '../../../backend/src/Algorithms/BFS.ts';
 import TravelModeComponent from "@/components/TravelModeComponent.tsx";
 import {setDragLock} from "framer-motion";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu.tsx";
+import {DirectoryRequestName, getDirectoryNames} from "@/database/gettingDirectory.ts";
 
 const Buildings = [
     "20 Patriot Place",
@@ -29,7 +31,7 @@ const DirectionsMapComponent = () => {
     const [distance, setDistance] = useState('');
     const [duration, setDuration] = useState('');
     const [showRouteInfo, setShowRouteInfo] = useState(false);
-
+    const [directoryName, setDirectoryName] = useState<DirectoryRequestName[]>([]);
 
     const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
     const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
@@ -76,6 +78,19 @@ const DirectionsMapComponent = () => {
         // });
     }, [placesLibrary]);
 
+    useEffect(() => {
+        const fetchDirectoryNames = async () => {
+            try {
+                const data = await getDirectoryNames();
+                setDirectoryName(data);
+            } catch (error) {
+                console.error("Error fetching building names:", error);
+            }
+        };
+
+        fetchDirectoryNames();
+    }, []);
+
     const handleFindDirections = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         calculateRoute();
@@ -88,6 +103,8 @@ const DirectionsMapComponent = () => {
     const calculateRoute = () => {
         if (!directionsRenderer || !directionsService) return;
 
+
+        //bro minh what is this???
         let actualLocation = toLocation;
         if(toLocation === '22 Patriot Place'){
             actualLocation = "20 Patriot Place";
@@ -196,20 +213,38 @@ const DirectionsMapComponent = () => {
                             id="fromLocation"
                             ref={fromLocationRef}
                             value={fromLocation}
-                            className="w-full p-2 border border-gray-300 rounded"
+                            className="w-full p-2 border border-mgbblue rounded"
                             onChange={(e) => setFromLocation(e.target.value)}
                             required
                             placeholder="Choose a starting point..."
                         />
                     </div>
                     {/*Choose hospital buildings*/}
-                    <SelectElement className="mb-4"
-                                  label={"To:"}
-                                  id={"toLocation"}
-                                  value={toLocation}
-                                  onChange={e=> setToLocation(e.target.value)}
-                                  options={Buildings}
-                    />
+                    <div className="mb-4">
+                        <label htmlFor="toLocation" className="block text-sm font-medium text-gray-700 mb-1">
+                            To:
+                        </label>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger
+                                id="toLocation"
+                                className="w-full p-2 border border-mgbblue rounded text-sm bg-white"
+                            >
+                                {toLocation || "Select a destination"}
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-full max-h-60 overflow-y-auto">
+                                {directoryName.map((dept) => (
+                                    <DropdownMenuItem
+                                        key={dept.dep_name}
+                                        onSelect={() => setToLocation(dept.dep_name)}
+                                        className={toLocation === dept.dep_name ? "font-semibold bg-accent/20" : ""}
+                                    >
+                                        {dept.dep_name}
+                                    </DropdownMenuItem>
+                                ))}
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
+
                     <div className="mt-5">
                         <TravelModeComponent selectedMode={travelMode} onChange={handleTravelModeChange}
                         />
@@ -235,7 +270,7 @@ const DirectionsMapComponent = () => {
                                 </div>
                             </div>
                     )}
-                    
+
                     <div className="mt-2">
                         <MGBButton
                             onClick={() => handleHere()}

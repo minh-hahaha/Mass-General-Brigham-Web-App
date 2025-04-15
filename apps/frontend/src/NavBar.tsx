@@ -76,7 +76,10 @@ const Navbar = () => {
                                 <Link to="/DirectoryDisplay">Directory Display</Link>
                             </LinkHover>
                             <LinkHover>
-                                <Link to="/ServiceRequestSelectPage">Service Request Select</Link>
+                                <Link to="/SanitationRequest">Sanitation Request</Link>
+                            </LinkHover>
+                            <LinkHover>
+                                <Link to="/SanitationRequestDisplayPage">Sanitation Request Display</Link>
                             </LinkHover>
                         </>
                     )}

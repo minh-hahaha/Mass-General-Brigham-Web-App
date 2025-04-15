@@ -32,18 +32,18 @@ router.post('/csv', async function (req: Request, res: Response) {
     try {
         for (let data of csvData) {
             const dataToUpsert = {
-                request_id: data.request_id,
-                employee_id: data.employee_id,
-                request_date: data.request_date,
+                requestId: data.requestId,
+                employeeId: data.employeeId,
+                requestDate: data.requestDate,
                 status: data.status,
                 comments: data.comments,
                 priority: data.priority,
-                location_id: data.location_id,
-                service_type: data.service_type,
-                request_time: data.request_time,
+                locationId: data.locationId,
+                serviceType: data.serviceType,
+                requestTime: data.requestTime,
             };
             await PrismaClient.serviceRequest.upsert({
-                where: { request_id: data.request_id },
+                where: { requestId: data.requestId },
                 update: dataToUpsert,
                 create: dataToUpsert,
             });

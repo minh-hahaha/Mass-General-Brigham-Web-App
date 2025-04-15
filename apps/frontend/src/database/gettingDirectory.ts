@@ -10,9 +10,15 @@ export interface DepartmentRequest {
     dep_phone: string;
 }
 
-
-
+export interface DirectoryRequestName {
+    dep_name: string;
+}
 export async function GetDirectory(): Promise<DepartmentRequest[]> {
     const response = await axios.get<DepartmentRequest[]>(ROUTES.DIRECTORY);
+    return response.data;
+}
+
+export async function getDirectoryNames(): Promise<DirectoryRequestName[]> {
+    const response = await axios.get<DirectoryRequestName[]>(ROUTES.DIRECTORY_NAMES);
     return response.data;
 }

@@ -7,6 +7,9 @@ import TransportationRequestPage from './routes/TransportationRequestPage.tsx';
 import ServiceRequestDisplayPage from './routes/ServiceRequestDisplayPage.tsx';
 import DirectoryDisplayPage from './routes/DirectoryDisplayPage.tsx';
 import ImportExportDirectoryPage from './routes/ImportExportDirectoryPage.tsx';
+import SanitationRequestPage from './components/SanitationRequestComponent.tsx';
+import SanitationRequestDisplayPage from './routes/SanitationRequestDisplayPage.tsx';
+
 import ServiceRequestSelectPage from "@/routes/ServiceRequestSelectPage.tsx";
 import TranslationServiceRequestPage from './routes/TranslationServiceRequestPage.tsx';
 import { SidebarProvider } from '@/components/ui/sidebar';
@@ -30,7 +33,7 @@ function App() {
                                 <Route path="/Home" element={<HomePage />} />
                                 <Route
                                     path="/ServiceRequestPage"
-                                    element={<ServiceRequestSelectPage />}
+                                    element={<ServiceRequestPage />}
                                 />
                                 <Route
                                     path="/ServiceRequestDisplay"
@@ -53,6 +56,8 @@ function App() {
                                   path="/TranslationServiceRequestPage"
                                   element={<TranslationServiceRequestPage />}
                                  />
+                        <Route path="/SanitationRequest" element={<SanitationRequestPage />} />
+                        <Route path="/SanitationRequestDisplayPage" element={<SanitationRequestDisplayPage />} />
 
                                 <Route
                                     path="/TransportationRequestPage"
