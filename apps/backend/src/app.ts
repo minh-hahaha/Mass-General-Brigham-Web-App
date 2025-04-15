@@ -2,8 +2,6 @@ import createError, { HttpError } from 'http-errors';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-import healthcheckRouter from './routes/healthcheck';
-import highscoreRouter from './routes/score.ts';
 import assignedRouter from './routes/assigned.ts';
 import employeeRouter from './routes/employee.ts';
 import servicereqsRouter from './routes/servicereqs.ts';

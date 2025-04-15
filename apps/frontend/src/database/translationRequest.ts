@@ -4,21 +4,21 @@ import {TranslationRequestData} from "@/routes/TranslationServiceRequestPage.tsx
 
 export interface incomingRequest {
     comments: string;
-    employee_id: number;
-    location_id: number;
+    employeeId: number;
+    locationId: number;
     patientTransport: {
-        patient_id: number;
-        patient_name: string;
-        pickup_location: string;
-        servReq_id: number;
+        patientId: number;
+        patientName: string;
+        pickupLocation: string;
+        servReqId: number;
     }
     priority: 'Low' | 'Medium' | 'High';
-    request_date: string;
-    request_id: number;
-    request_time: number;
-    service_type: string;
+    requestDate: string;
+    requestId: number;
+    requestTime: number;
+    serviceType: string;
     status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
-    transport_type: string;
+    transportType: string;
 }
 
 

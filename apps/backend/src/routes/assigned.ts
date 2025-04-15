@@ -4,18 +4,19 @@ import { dataToCSV } from '../CSVImportExport.ts';
 
 const router: Router = express.Router();
 
+//TODO: NUKE
 router.get('/', async function (req: Request, res: Response) {
     // Attempt to get list of assigned service requests
     try {
         //Attempt to pull from
         const ASSIGNED_LIST = await PrismaClient.serviceRequest.findMany({
             where: {
-                employee_id: {
+                employeeId: {
                     not: null,
                 },
             },
             include: {
-                assigned_id: true,
+                assignedId: true,
             },
         });
         console.info('Successfully pulled service requests assigned'); // Log that it was successful

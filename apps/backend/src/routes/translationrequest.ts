@@ -7,7 +7,7 @@ router.get('/', async (req: Request, res: Response) => {
     try {
         const requests = await PrismaClient.serviceRequest.findMany({
             where: {
-                service_type: 'Translation',
+                serviceType: 'Translation',
             },
             include: {
                 //might flag an error
@@ -33,26 +33,26 @@ router.post('/', async (req: Request, res: Response) => {
             //creates entry for service request
             const serviceRequest = await prisma.serviceRequest.create({
                 data: {
-                    employee_id: req.body.employeeId,
-                    request_date: tempDate,
+                    employeeId: req.body.employeeId,
+                    requestDate: tempDate,
                     status: req.body.status,
                     comments: req.body.notes,
                     priority: req.body.priority,
-                    location_id: 1,
-                    service_type: 'Translation',
+                    locationId: 1,
+                    serviceType: 'Translation',
                 },
             });
 
             //create entry for patient transport table
             const translationRequest = await prisma.translationRequest.create({
                 data: {
-                    request_id: serviceRequest.request_id,
-                    patient_name: req.body.patientName,
+                    serviceReqId: serviceRequest.requestId,
+                    patientName: req.body.patientName,
                     language: req.body.language,
                     duration: req.body.duration,
-                    type_meeting: req.body.typeMeeting,
+                    typeMeeting: req.body.typeMeeting,
                     date: new Date(req.body.date),
-                    meeting_link: req.body.meetingLink,
+                    meetingLink: req.body.meetingLink,
                     location: req.body.location,
                 },
             });
