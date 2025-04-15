@@ -50,13 +50,11 @@ const SanitationRequestDisplayPage = () => {
                             recurring: boolean
                             sanitationType: string*/}
                             <TableHead>Request ID</TableHead>
-
                             <TableHead>Complete By</TableHead>
                             <TableHead>Disposal Required</TableHead>
                             <TableHead>Hazard level</TableHead>
                             <TableHead>Recurring</TableHead>
                             <TableHead>Sanitation Type</TableHead>
-
                             <TableHead>Priority</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Request Date</TableHead>

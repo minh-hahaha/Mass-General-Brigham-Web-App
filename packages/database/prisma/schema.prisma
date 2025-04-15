@@ -101,6 +101,6 @@ model Sanitation {
   recurring        Boolean
   hazardLevel      String
   disposalRequired Boolean
-  completeBy       DateTime
+  completeBy       DateTime       @default(now()) @db.Time
   servRequest_id   ServiceRequest @relation(name: "ServiceSanitation", fields: [servReq_id], references: [request_id])
 }

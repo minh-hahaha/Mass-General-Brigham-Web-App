@@ -60,10 +60,10 @@ router.post('/', async (req: Request, res: Response) => {
                     service_type: 'Sanitation',
 
                     //optional fields
-                    location_id: req.body.locationId ?? null,
+                    //location_id: req.body.locationId ?? null,
                     employee_id: req.body.employeeId ?? null, // change to user id in the future?
-                    request_date: new Date(pickupDate) ?? null,
-                    request_time: new Date(req.body.pickupTime) ?? null,
+                    //request_date: new Date(pickupDate) ?? null,
+                    //request_time: new Date(req.body.pickupTime) ?? null,
                 },
             });
 
@@ -75,7 +75,7 @@ router.post('/', async (req: Request, res: Response) => {
                     recurring: req.body.recurring,
                     hazardLevel: req.body.hazardLevel,
                     disposalRequired: req.body.disposalRequired,
-                    completeBy: req.body.completeBy,
+                    //completeBy: req.body.completeBy,
                 },
                 select: {
                     servReq_id: true,
