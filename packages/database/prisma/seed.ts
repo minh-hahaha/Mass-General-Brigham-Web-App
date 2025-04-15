@@ -849,32 +849,32 @@ async function main() {
                 status: 'Completed',
                 priority: 'urgent',
                 service_type: 'Patient Transportation',
-                transport_type: 'Gurney',
+
             },
 
             {
                 status: 'In Progress',
                 priority: 'urgent',
                 service_type: 'Equipment Request',
-                transport_type: 'Cart',
+
             },
             {
                 status: 'Queued',
                 priority: 'urgent',
                 service_type: 'X-Ray',
-                transport_type: 'None',
+
             },
             {
                 status: 'Queued',
                 priority: 'urgent',
                 service_type: 'equipment request',
-                transport_type: 'cart',
+
             },
             {
                 status: 'Queued',
                 priority: 'urgent',
                 service_type: 'Blood Work',
-                transport_type: 'None',
+
             },
         ],
         skipDuplicates: true,
