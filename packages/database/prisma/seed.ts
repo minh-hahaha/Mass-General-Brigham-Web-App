@@ -711,7 +711,7 @@ async function main() {
         ],
         skipDuplicates: true,
     });
-    //const baseNodesAndEdges = await exportNodesAndEdges();
+    const baseNodesAndEdges = await exportNodesAndEdges();
 
     console.log({ createManyDepartments, createManyBuildings , createManyLocations, createManyEmployees , createManyServiceReqs});
 }

@@ -1,492 +1,184 @@
 {
     "nodes": [
         {
-            "id": "20PPFloor1Door1",
-            "x": 695.1784234122125,
-            "y": 140.26777091722593,
+            "id": "20PPFloor1Hallway1",
+            "x": 696.5666200468332,
+            "y": 197.35774699872937,
             "floor": "1",
             "buildingId": "1",
-            "nodeType": "Door",
+            "nodeType": "Hallway",
             "name": "Node 1",
             "roomNumber": ""
         },
         {
-            "id": "20PPFloor1Door2",
-            "x": 695.1784234122125,
-            "y": 194.38437018476574,
+            "id": "20PPFloor1Hallway2",
+            "x": 697.3026558924364,
+            "y": 222.38301463794838,
             "floor": "1",
             "buildingId": "1",
-            "nodeType": "Door",
+            "nodeType": "Hallway",
             "name": "Node 2",
             "roomNumber": ""
         },
         {
-            "id": "20PPFloor1Door3",
-            "x": 954.8899814268078,
-            "y": 517.7819357296107,
+            "id": "20PPFloor1Hallway3",
+            "x": 611.9223185438608,
+            "y": 222.38301463794838,
             "floor": "1",
             "buildingId": "1",
-            "nodeType": "Door",
+            "nodeType": "Hallway",
             "name": "Node 3",
             "roomNumber": ""
         },
         {
-            "id": "20PPFloor1Door4",
-            "x": 989.0250604206997,
-            "y": 518.614505955133,
+            "id": "20PPFloor1Hallway4",
+            "x": 565.5519624934386,
+            "y": 258.4488525536891,
             "floor": "1",
             "buildingId": "1",
-            "nodeType": "Door",
+            "nodeType": "Hallway",
             "name": "Node 4",
             "roomNumber": ""
         },
         {
-            "id": "20PPFloor1Door100",
-            "x": 925.5182586097702,
-            "y": 477.06317459046926,
+            "id": "20PPFloor1Hallway5",
+            "x": 692.0208285922071,
+            "y": 518.4600905918235,
             "floor": "1",
             "buildingId": "1",
-            "nodeType": "Door",
+            "nodeType": "Hallway",
             "name": "Node 5",
-            "roomNumber": "100"
+            "roomNumber": ""
         },
         {
-            "id": "20PPFloor1Door102",
-            "x": 613.7695677437179,
-            "y": 814.5739599288752,
+            "id": "20PPFloor1Hallway6",
+            "x": 653.3026935927211,
+            "y": 519.4925720582372,
             "floor": "1",
             "buildingId": "1",
-            "nodeType": "Door",
+            "nodeType": "Hallway",
             "name": "Node 6",
-            "roomNumber": "102"
+            "roomNumber": ""
         },
         {
-            "id": "20PPFloor1Door130",
-            "x": 566.0907954512797,
-            "y": 258.02770432495356,
+            "id": "20PPFloor1Hallway7",
+            "x": 827.7924386017909,
+            "y": 517.9438498586165,
             "floor": "1",
             "buildingId": "1",
-            "nodeType": "Door",
+            "nodeType": "Hallway",
             "name": "Node 7",
-            "roomNumber": "130"
+            "roomNumber": ""
         },
         {
-            "id": "20PPFloor1Room130",
-            "x": 521.9649525674073,
-            "y": 302.98611368119174,
+            "id": "20PPFloor1Hallway8",
+            "x": 925.818216903119,
+            "y": 514.7364274153839,
             "floor": "1",
             "buildingId": "1",
-            "nodeType": "Room",
+            "nodeType": "Hallway",
             "name": "Node 8",
-            "roomNumber": "130"
+            "roomNumber": ""
         },
         {
-            "id": "20PPFloor1Room100",
-            "x": 903.2788243383441,
-            "y": 436.19620880517476,
+            "id": "20PPFloor1Hallway9",
+            "x": 925.818216903119,
+            "y": 476.0182924158978,
             "floor": "1",
             "buildingId": "1",
-            "nodeType": "Room",
+            "nodeType": "Hallway",
             "name": "Node 9",
-            "roomNumber": "100"
+            "roomNumber": ""
         },
         {
-            "id": "20PPFloor1Room102",
-            "x": 659.6784865171496,
-            "y": 758.4849567892195,
+            "id": "20PPFloor1Hallway10",
+            "x": 955.7602708679409,
+            "y": 519.3826054440987,
             "floor": "1",
             "buildingId": "1",
-            "nodeType": "Room",
+            "nodeType": "Hallway",
             "name": "Node 10",
-            "roomNumber": "102"
+            "roomNumber": ""
         },
         {
-            "id": "20PPFloor1Elevator11",
-            "x": 768.7062433081346,
-            "y": 500.97160005156843,
+            "id": "20PPFloor1Hallway11",
+            "x": 825.8389624535292,
+            "y": 826.8128544943038,
             "floor": "1",
             "buildingId": "1",
-            "nodeType": "Elevator",
+            "nodeType": "Hallway",
             "name": "Node 11",
             "roomNumber": ""
         },
         {
-            "id": "20PPFloor1Elevator12",
-            "x": 654.7700483203984,
-            "y": 518.2699811957564,
+            "id": "20PPFloor1Hallway12",
+            "x": 612.1148645714721,
+            "y": 827.8453359607175,
             "floor": "1",
             "buildingId": "1",
-            "nodeType": "Elevator",
+            "nodeType": "Hallway",
             "name": "Node 12",
             "roomNumber": ""
         },
         {
-            "id": "20PPFloor1Elevator13",
-            "x": 655.6025885206682,
-            "y": 576.5494015656554,
+            "id": "20PPFloor1Hallway13",
+            "x": 615.2123089707134,
+            "y": 793.7733789899463,
             "floor": "1",
             "buildingId": "1",
-            "nodeType": "Elevator",
+            "nodeType": "Hallway",
             "name": "Node 13",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Stairs14",
-            "x": 610.8738798520784,
-            "y": 351.49666803627514,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Stairs",
-            "name": "Node 14",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Stairs15",
-            "x": 789.0423768259865,
-            "y": 532.1628606741241,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Stairs",
-            "name": "Node 15",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Stairs16",
-            "x": 74.97484190045567,
-            "y": 537.6384984088244,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Stairs",
-            "name": "Node 16",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Hallway17",
-            "x": 695.9348406114113,
-            "y": 220.32747635452017,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Hallway",
-            "name": "Node 17",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Hallway18",
-            "x": 610.1944178381739,
-            "y": 217.56165760572657,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Hallway",
-            "name": "Node 18",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Hallway19",
-            "x": 611.1163574211051,
-            "y": 257.6660502435517,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Hallway",
-            "name": "Node 19",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Hallway20",
-            "x": 582.0748241720969,
-            "y": 275.74051721309246,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Hallway",
-            "name": "Node 20",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Hallway21",
-            "x": 582.5357898074989,
-            "y": 363.78578063153077,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Hallway",
-            "name": "Node 21",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Hallway22",
-            "x": 612.0378730855516,
-            "y": 364.24675457905994,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Hallway",
-            "name": "Node 22",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Hallway23",
-            "x": 695.4734344332703,
-            "y": 363.78578063153077,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Hallway",
-            "name": "Node 23",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Hallway24",
-            "x": 699.7519377771254,
-            "y": 517.2715343488715,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Hallway",
-            "name": "Node 24",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Hallway25",
-            "x": 769.5964938294727,
-            "y": 519.6258520639632,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Hallway",
-            "name": "Node 25",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Hallway26",
-            "x": 790.7853108127781,
-            "y": 518.8410747753193,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Hallway",
-            "name": "Node 26",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Hallway27",
-            "x": 928.1201476549013,
-            "y": 519.6258520639632,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Hallway",
-            "name": "Node 27",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Hallway28",
-            "x": 830.7642903814763,
-            "y": 518.724884020622,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Hallway",
-            "name": "Node 28",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Hallway29",
-            "x": 829.0700600415812,
-            "y": 827.4669732413568,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Hallway",
-            "name": "Node 29",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Hallway30",
-            "x": 611.2547349152749,
-            "y": 829.7719170532063,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Hallway",
-            "name": "Node 30",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Hallway31",
-            "x": 449.9100656071018,
-            "y": 826.3145428974035,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Hallway",
-            "name": "Node 31",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Hallway32",
-            "x": 448.7575937011771,
-            "y": 750.2520413169284,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Hallway",
-            "name": "Node 32",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Hallway33",
-            "x": 121.12658343841181,
-            "y": 745.9074853188713,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Hallway",
-            "name": "Node 33",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Hallway34",
-            "x": 118.14285989957666,
-            "y": 547.0610907127764,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Hallway",
-            "name": "Node 34",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PPFloor1Hallway35",
-            "x": 76.65422975828992,
-            "y": 549.3660137436401,
-            "floor": "1",
-            "buildingId": "1",
-            "nodeType": "Hallway",
-            "name": "Node 35",
             "roomNumber": ""
         }
     ],
     "edges": [
         {
-            "from": "20PPFloor1Door1",
-            "to": "20PPFloor1Door2"
+            "from": "20PPFloor1Hallway1",
+            "to": "20PPFloor1Hallway2"
         },
         {
-            "from": "20PPFloor1Hallway17",
-            "to": "20PPFloor1Door2"
+            "from": "20PPFloor1Hallway2",
+            "to": "20PPFloor1Hallway3"
         },
         {
-            "from": "20PPFloor1Hallway17",
-            "to": "20PPFloor1Hallway18"
+            "from": "20PPFloor1Hallway3",
+            "to": "20PPFloor1Hallway4"
         },
         {
-            "from": "20PPFloor1Hallway18",
-            "to": "20PPFloor1Hallway19"
+            "from": "20PPFloor1Hallway2",
+            "to": "20PPFloor1Hallway5"
         },
         {
-            "from": "20PPFloor1Hallway19",
-            "to": "20PPFloor1Door130"
+            "from": "20PPFloor1Hallway5",
+            "to": "20PPFloor1Hallway6"
         },
         {
-            "from": "20PPFloor1Door130",
-            "to": "20PPFloor1Room130"
+            "from": "20PPFloor1Hallway5",
+            "to": "20PPFloor1Hallway7"
         },
         {
-            "from": "20PPFloor1Hallway20",
-            "to": "20PPFloor1Hallway19"
+            "from": "20PPFloor1Hallway7",
+            "to": "20PPFloor1Hallway8"
         },
         {
-            "from": "20PPFloor1Hallway20",
-            "to": "20PPFloor1Hallway21"
+            "from": "20PPFloor1Hallway8",
+            "to": "20PPFloor1Hallway10"
         },
         {
-            "from": "20PPFloor1Hallway21",
-            "to": "20PPFloor1Hallway22"
+            "from": "20PPFloor1Hallway8",
+            "to": "20PPFloor1Hallway9"
         },
         {
-            "from": "20PPFloor1Hallway22",
-            "to": "20PPFloor1Stairs14"
+            "from": "20PPFloor1Hallway7",
+            "to": "20PPFloor1Hallway11"
         },
         {
-            "from": "20PPFloor1Hallway22",
-            "to": "20PPFloor1Hallway23"
+            "from": "20PPFloor1Hallway11",
+            "to": "20PPFloor1Hallway12"
         },
         {
-            "from": "20PPFloor1Hallway17",
-            "to": "20PPFloor1Hallway23"
-        },
-        {
-            "from": "20PPFloor1Hallway23",
-            "to": "20PPFloor1Hallway24"
-        },
-        {
-            "from": "20PPFloor1Hallway24",
-            "to": "20PPFloor1Elevator12"
-        },
-        {
-            "from": "20PPFloor1Hallway24",
-            "to": "20PPFloor1Hallway25"
-        },
-        {
-            "from": "20PPFloor1Hallway25",
-            "to": "20PPFloor1Elevator11"
-        },
-        {
-            "from": "20PPFloor1Hallway25",
-            "to": "20PPFloor1Hallway26"
-        },
-        {
-            "from": "20PPFloor1Hallway26",
-            "to": "20PPFloor1Stairs15"
-        },
-        {
-            "from": "20PPFloor1Hallway26",
-            "to": "20PPFloor1Hallway28"
-        },
-        {
-            "from": "20PPFloor1Hallway28",
-            "to": "20PPFloor1Hallway27"
-        },
-        {
-            "from": "20PPFloor1Hallway27",
-            "to": "20PPFloor1Door3"
-        },
-        {
-            "from": "20PPFloor1Door4",
-            "to": "20PPFloor1Door3"
-        },
-        {
-            "from": "20PPFloor1Door100",
-            "to": "20PPFloor1Hallway27"
-        },
-        {
-            "from": "20PPFloor1Door100",
-            "to": "20PPFloor1Room100"
-        },
-        {
-            "from": "20PPFloor1Hallway28",
-            "to": "20PPFloor1Hallway29"
-        },
-        {
-            "from": "20PPFloor1Hallway29",
-            "to": "20PPFloor1Hallway30"
-        },
-        {
-            "from": "20PPFloor1Hallway30",
-            "to": "20PPFloor1Door102"
-        },
-        {
-            "from": "20PPFloor1Door102",
-            "to": "20PPFloor1Room102"
-        },
-        {
-            "from": "20PPFloor1Hallway30",
-            "to": "20PPFloor1Hallway31"
-        },
-        {
-            "from": "20PPFloor1Hallway31",
-            "to": "20PPFloor1Hallway32"
-        },
-        {
-            "from": "20PPFloor1Hallway32",
-            "to": "20PPFloor1Hallway33"
-        },
-        {
-            "from": "20PPFloor1Hallway33",
-            "to": "20PPFloor1Hallway34"
-        },
-        {
-            "from": "20PPFloor1Hallway34",
-            "to": "20PPFloor1Hallway35"
-        },
-        {
-            "from": "20PPFloor1Hallway35",
-            "to": "20PPFloor1Stairs16"
+            "from": "20PPFloor1Hallway12",
+            "to": "20PPFloor1Hallway13"
         }
     ]
 }

@@ -146,34 +146,19 @@ const DirectionsMapComponent = () => {
             headers: {'Content-Type': 'application/json'}
         })
         const nodes : myNode[] = res.data
-        console.log(nodes)
+        console.log("Path is " + nodes)
         return nodes;
     }
-    // toLocation === Buildings[2] ? (
-    //     <div>
-    //         <HospitalMap/>
-    //     </div>
-    // ) : (toLocation === Buildings[0] ? (
-    //         <div>
-    //             {/*<ViewPath svgMapUrl="/20PPFloor1.svg" nodes={testNodes} path={testPath}/>*/}
-    //         </div>
-    //     ) : (
-    //         <div>
-    //             {/*<ViewPath svgMapUrl="/20PPFloor2.svg" nodes={testNodes}  path={testPath}/>*/}
-    //         </div>
-    //     )
+    // const [deptNode, setDeptNode] = useState<myNode>();
     //
-    // )
-    const [deptNode, setDeptNode] = useState<myNode>();
-
-    useEffect(() => {
-        async function fetchDeptNode() {
-            const data = await getDepartmentNode();
-            console.log(data);
-            setDeptNode(data);
-        }
-        fetchDeptNode();
-    }, []);
+    // useEffect(() => {
+    //     async function fetchDeptNode() {
+    //         const data = await getDepartmentNode();
+    //         console.log(data);
+    //         setDeptNode(data);
+    //     }
+    //     fetchDeptNode();
+    // }, []);
 
 
     const HospitalMap = () => {
@@ -182,25 +167,25 @@ const DirectionsMapComponent = () => {
         useEffect(() => {
             const getMyPaths = async () => {
                 const door1 : myNode = {
-                    id: "CH1Door1",
-                    x: 694.6909401633523,
-                    y: 164.93491432883522,
+                    id: "20PPFloor1Door2",
+                    x: 55.25522849727386,
+                    y: 839.8053213627713,
+                    floor: "1",
+                    buildingId: "2",
+                    nodeType: "Hallway",
+                    name: "Node 1",
+                    roomNumber: ""
+                }
+                const room102: myNode = {
+                    id: "20PPFloor1Room120",
+                    x:  409.4296614277226,
+                    y: 766.2121368495918,
                     floor: "1",
                     buildingId: "1",
-                    nodeType: "Door",
-                    name: "Exit1",
+                    nodeType: "Hallway",
+                    name: "Node 8",
                     roomNumber: ""
-                    }
-                const room102: myNode = {
-                        id: "CH1Room130",
-                        x: 528.8599611031434,
-                        y: 284.5968690890998,
-                        floor: "1",
-                        buildingId: "1",
-                        nodeType: "Room",
-                        name: "Multi-Specialty Clinic 130",
-                        roomNumber: "130"
-                    }
+                }
 
                     const result = await FindPath(door1, room102);
                     setBFSPath(result);
@@ -212,7 +197,7 @@ const DirectionsMapComponent = () => {
 
         return (
             <div>
-                <ViewPath svgMapUrl="/ChestnutHillFloor1.svg" path={bfsPath}/>
+                <ViewPath svgMapUrl="/20PPFloor1.svg" path={bfsPath}/>
             </div>
 
         );
