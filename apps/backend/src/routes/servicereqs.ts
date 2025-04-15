@@ -40,7 +40,6 @@ router.post('/csv', async function (req: Request, res: Response) {
                 priority: data.priority,
                 location_id: data.location_id,
                 service_type: data.service_type,
-                transport_type: data.service_type,
                 request_time: data.request_time,
             };
             await PrismaClient.serviceRequest.upsert({
