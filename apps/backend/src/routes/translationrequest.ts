@@ -40,7 +40,6 @@ router.post('/', async (req: Request, res: Response) => {
                     priority: req.body.priority,
                     location_id: 1,
                     service_type: 'Translation',
-                    transport_type: '',
                 },
             });
 
