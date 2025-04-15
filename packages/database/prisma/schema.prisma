@@ -89,8 +89,8 @@ model Building {
 
 model Node {
   // ignore id
-  id         Int    @id @default(autoincrement())
-  nodeID     String @unique
+  id         Int     @id @default(autoincrement())
+  nodeID     String  @unique
   x          Decimal
   y          Decimal
   floor      Int
@@ -98,8 +98,8 @@ model Node {
   nodeType   String
   name       String
   roomNumber Int?
-  edgesFrom  Edge[] @relation("NodeToEdgeFrom")
-  edgesTo    Edge[] @relation("NodeToEdgeTo")
+  edgesFrom  Edge[]  @relation("NodeToEdgeFrom")
+  edgesTo    Edge[]  @relation("NodeToEdgeTo")
 }
 
 model Edge {
