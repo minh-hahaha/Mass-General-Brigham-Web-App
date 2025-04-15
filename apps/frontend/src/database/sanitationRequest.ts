@@ -23,7 +23,7 @@ export interface sanitationRequest {
     completeBy:          string;
 }
 
-export interface incomingRequest {
+export interface incomingSanitationRequest {
     comments: string;
     employee_id: number;
     location_id: number;
@@ -50,5 +50,5 @@ export async function SubmitSanitationRequest(request: sanitationRequest) {
 }
 
 export async function GetSanitationRequest() {
-    return (await axios.get<incomingRequest[]>(ROUTES.SANITATION)).data;
+    return (await axios.get<incomingSanitationRequest[]>(ROUTES.SANITATION)).data;
 }

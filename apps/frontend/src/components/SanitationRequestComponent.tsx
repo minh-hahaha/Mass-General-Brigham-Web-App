@@ -6,7 +6,7 @@ import ConfirmMesg from '../components/ConfirmMesg.tsx'; // Import the new compo
 import { SubmitSanitationRequest, sanitationRequest } from '../database/sanitationRequest.ts';
 
 // Component definition
-const TransportRequestPage = () => {
+const SanitationRequestPage = () => {
     const loggedIn = sessionStorage.getItem('loggedIn');
     if (!loggedIn) {window.location.href = '/';}
 
@@ -353,7 +353,7 @@ const TransportRequestPage = () => {
                             {showConfirmation && submittedRequest && (
                                 <div className="inline-block">
                                     <ConfirmMesg
-                                        request={submittedRequest}
+                                        request={ submittedRequest }
                                         onClose={handleConfirmationClose}
                                     />
                                 </div>
@@ -375,4 +375,4 @@ const TransportRequestPage = () => {
     );
 };
 
-export default TransportRequestPage;
+export default SanitationRequestPage;

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { GetTransportRequest } from '@/database/transportRequest.ts';
+import { GetSanitationRequest,incomingSanitationRequest } from '@/database/sanitationRequest.ts';
 import { incomingRequest } from '@/database/transportRequest.ts';
 import {
     Table,
