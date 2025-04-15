@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
-import { cleanedUpBFS } from '../Algorithms/BFS.ts';
+import  {cleanedUpBFS} from "../Algorithms/BFS.ts";
 
-const expressRouter = express.Router();
+const expressRouter = express.Router()
 
 expressRouter.post('/traverse', async (req: Request, res: Response) => {
     try {

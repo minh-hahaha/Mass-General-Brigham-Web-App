@@ -47,6 +47,8 @@ model ServiceRequest {
   service_type     String
   patientTransport PatientTransport? @relation(name: "ServicePatientTransport")
   request_time     DateTime?         @default(now()) @db.Time
+
+  translationRequest TranslationRequest?
 }
 
 
@@ -59,6 +61,18 @@ model PatientTransport {
   dropoff_location String
   transport_type   String
   servRequest_id  ServiceRequest @relation(name: "ServicePatientTransport", fields: [servReq_id], references: [request_id])
+}
+
+model TranslationRequest {
+  request_id     Int            @id
+  service_req_id ServiceRequest @relation(fields: [request_id], references: [request_id])
+  patient_name   String
+  language       String
+  duration       Float
+  type_meeting   String
+  date           DateTime
+  meeting_link   String
+  location       String
 }
 
 model Department {
