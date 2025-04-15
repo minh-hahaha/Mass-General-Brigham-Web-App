@@ -3,15 +3,36 @@ import PrismaClient from '../bin/prisma-client';
 
 const router: Router = express.Router();
 
+// sanitationRequest {
+//     //Service Request fields
+//     request_id:          number;
+//     status:              'Unassigned' | 'Assigned' | 'Working' | null;
+//     priority:            'Low' | 'Medium' | 'High' | 'Emergency';
+//     request_time:        string;
+//
+//     //Optional fields
+//     location_id:         string;
+//     comments:            string;
+//     request_date:        string;
+//     employee_id:         string;
+//
+//     //Sanitation fields
+//     sanitationType:      string;
+//     recurring:           boolean;
+//     hazardLevel:         'None' | 'Sharp' | 'Biohazard';
+//     disposalRequired:    boolean;
+//     completeBy:          string;
+// }
+
 router.get('/', async (req: Request, res: Response) => {
     try {
         const requests = await PrismaClient.serviceRequest.findMany({
             where: {
-                serviceType: 'Patient Transport',
+                serviceType: 'Sanitation',
             },
             include: {
                 //might flag an error
-                patientTransport: true, // includes PatientTransport entry
+                sanitation: true,
             },
         });
 
@@ -36,35 +57,37 @@ router.post('/', async (req: Request, res: Response) => {
                     priority: req.body.priority,
                     status: req.body.status,
                     comments: req.body.notes,
-                    serviceType: 'Patient Transport',
+                    serviceType: 'Sanitation',
 
                     //optional fields
-                    locationId: req.body.locationId ?? null,
+                    //location_id: req.body.locationId ?? null,
                     employeeId: req.body.employeeId ?? null, // change to user id in the future?
-                    requestDate: new Date(pickupDate) ?? null,
-                    requestTime: new Date(req.body.pickupTime) ?? null,
+                    //request_date: new Date(pickupDate) ?? null,
+                    //request_time: new Date(req.body.pickupTime) ?? null,
                 },
             });
 
             //create entry for patient transport table
-            const patientTransport = await prisma.patientTransport.create({
+            const sanitation = await prisma.sanitation.create({
                 data: {
                     servReqId: serviceRequest.requestId,
-                    patientId: req.body.patientId,
-                    patientName: req.body.patientName,
-                    pickupLocation: req.body.pickupLocation,
-                    transportType: req.body.transportType,
-                    dropoffLocation: 'nowhere',
+                    sanitationType: req.body.sanitationType,
+                    recurring: req.body.recurring,
+                    hazardLevel: req.body.hazardLevel,
+                    disposalRequired: req.body.disposalRequired,
+                    //completeBy: req.body.completeBy,
                 },
                 select: {
                     servReqId: true,
-                    patientId: true,
-                    patientName: true,
-                    pickupLocation: true,
+                    sanitationType: true,
+                    recurring: true,
+                    hazardLevel: true,
+                    disposalRequired: true,
+                    completeBy: true,
                 },
             });
 
-            return { serviceRequest, patientTransport };
+            return { serviceRequest, sanitation };
         });
 
         res.status(201).json(result);

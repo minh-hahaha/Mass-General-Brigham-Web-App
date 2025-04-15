@@ -3,6 +3,7 @@ import MGBButton from '../elements/MGBButton.tsx';
 import SelectElement from '../elements/SelectElement.tsx';
 import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google-maps';
 import ChestnutHillMapComponent from './ChestnutHillMapComponent.tsx';
+import { bfs } from '../../../backend/src/Algorithms/BFS.ts';
 import TravelModeComponent from "@/components/TravelModeComponent.tsx";
 import OverlayComponent from "@/components/svgOverlay.tsx";
 import ViewPath from "@/components/ViewPath.tsx";
@@ -10,6 +11,10 @@ import {sampleNodes, sampleEdges, testNodes, testEdges} from "@/components/Sampl
 
 const samplePath =["CH1Door1,", "CH1Hallway2", "CH1Hallway3", "CH1Door4", "CH1Room130"];
 const testPath =["CH1Intersection1", "CH1Intersection2", "CH1Intersection3"];
+import {setDragLock} from "framer-motion";
+import {myNode} from "../../../backend/src/Algorithms/classes.ts";
+import axios from 'axios';
+import {ROUTES} from "common/src/constants.ts";
 
 const Buildings = [
     "20 Patriot Place",
@@ -149,37 +154,72 @@ const DirectionsMapComponent = () => {
     };
 
 
+    async function FindPath(start: myNode, end: myNode) {
+        const data = JSON.stringify({start, end})
+        console.log(data);
+        const res = await axios.post(ROUTES.BFSGRAPH, data, {
+            headers: {'Content-Type': 'application/json'}
+        })
+        const nodes : myNode[] = res.data
+        console.log(nodes)
+        return nodes;
+
+    }
+
     const HospitalMap = () => {
-        const [path, setPaths] = useState<string[][]>([]);
-        // useEffect(() => {
-        //     const getMyPaths = async () => {
-        //         if (parkA) {
-        //             const result = await cleanedUpBFS('A', 'G');
-        //             console.log('ParkA   ' + result);
-        //
-        //             setPaths(result);
-        //         } else if (parkB) {
-        //             const result = await cleanedUpBFS('J', 'G');
-        //             console.log('ParkB   ' + result);
-        //             setPaths(result);
-        //         } else if (parkC) {
-        //             const result = await cleanedUpBFS('L', 'G');
-        //             console.log('ParkC   ' + result);
-        //             setPaths(result);
-        //         } else {
-        //             setPaths([]);
-        //         }
-        //     };
-        //     getMyPaths();
-        // }, [parkA, parkB, parkC]);
-        //
-        //
-        //
-        // return (
-        //     <div>
-        //         <ChestnutHillMapComponent svgPath={svg} nodeConnections={path} />
-        //     </div>
-        // );
+        const [path, setPaths] = useState<myNode[]>([]);
+
+        useEffect(() => {
+            const getMyPaths = async () => {
+                const door1 : myNode = {
+                    nodeID: "CH1Door1",
+                    x: 694.6909401633523,
+                    y: 164.93491432883522,
+                    floor: "1",
+                    buildingId: "1",
+                    nodeType: "Door",
+                    name: "Exit1",
+                    roomNumber: ""
+                    }
+                const room102: myNode = {
+                    nodeID: "CH1Room102",
+                    x: 662.2247373611947,
+                    y: 757.8635425826869,
+                    floor: "1",
+                    buildingId: "1",
+                    nodeType: "Room",
+                    name: "Radiology, MR/CT Scan 102",
+                    roomNumber: "102"
+                }
+                if (parkA) {
+                    const result = await FindPath(door1, room102);
+                    setPaths(result);
+                // } else if (parkB) {
+                //     const result = await cleanedUpBFS('J', 'G');
+                //     console.log('ParkB   ' + result);
+                //     setPaths(result);
+                // } else if (parkC) {
+                //     const result = await cleanedUpBFS('L', 'G');
+                //     console.log('ParkC   ' + result);
+                //     setPaths(result);
+                } else {
+                    setPaths([]);
+                }
+            };
+            getMyPaths();
+            // console.log(path);
+        }, [parkA, parkB, parkC]);
+
+
+
+        return (
+            // <div>
+            //      <ChestnutHillMapComponent svgPath={svg} nodeConnections={path} />
+            // </div>
+            <div>
+
+            </div>
+        );
     };
 
     return (
