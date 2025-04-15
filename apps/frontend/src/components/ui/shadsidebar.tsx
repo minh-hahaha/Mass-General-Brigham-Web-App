@@ -10,6 +10,7 @@ import {
     Ambulance,
     SprayCan,
     LibraryBig,
+    PencilLine,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
@@ -45,6 +46,11 @@ const navItems = [
         url: '/MapPage',
         icon: MapPin,
     },
+    {
+        title: 'Map Editor',
+        url: '/MapEditor',
+        icon: PencilLine,
+    },
 ];
 
 const directoryItems = [
@@ -73,7 +79,7 @@ const forms = [
     },
     {
         title: 'Sanitation Request',
-        url: '/', //todo: add url
+        url: '/SanitationRequest',
         icon: SprayCan,
     },
     {
