@@ -171,27 +171,28 @@ const DirectionsMapComponent = () => {
 
         useEffect(() => {
             const getMyPaths = async () => {
-                const lotA : myNode = {id: "1",
-                    shortName: 'A',
-                    xPixel: 384.23,
-                    yPixel: 441.85,
-                    floor: 1,
-                    nodeType: 'Parking Lot',
-                    building: 'Main Building',
-                    longName: 'Parking Lot A'
+                const door1 : myNode = {
+                    nodeID: "CH1Door1",
+                    x: 694.6909401633523,
+                    y: 164.93491432883522,
+                    floor: "1",
+                    buildingId: "1",
+                    nodeType: "Door",
+                    name: "Exit1",
+                    roomNumber: ""
                     }
-                const reception: myNode = {
-                    id: "7",
-                    shortName: 'G',
-                    xPixel: 617.38,
-                    yPixel: 700.03,
-                    floor: 1,
-                    nodeType: 'Reception',
-                    building: 'Main Building',
-                    longName: 'Reception'
+                const room102: myNode = {
+                    nodeID: "CH1Room102",
+                    x: 662.2247373611947,
+                    y: 757.8635425826869,
+                    floor: "1",
+                    buildingId: "1",
+                    nodeType: "Room",
+                    name: "Radiology, MR/CT Scan 102",
+                    roomNumber: "102"
                 }
                 if (parkA) {
-                    const result = await FindPath(lotA, reception);
+                    const result = await FindPath(door1, room102);
                     console.log('ParkA   ' + result);
 
                     setPaths(result);
