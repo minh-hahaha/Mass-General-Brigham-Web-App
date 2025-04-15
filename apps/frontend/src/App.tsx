@@ -1,4 +1,4 @@
-import React from 'react';
+    import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LogoBar from './components/LogoBar.tsx';
 import LoginPage from './routes/LoginPage.tsx';
@@ -7,6 +7,9 @@ import ServiceRequestPage from './routes/TransportationRequestPage.tsx';
 import ServiceRequestDisplayPage from './routes/ServiceRequestDisplayPage.tsx';
 import DirectoryDisplayPage from './routes/DirectoryDisplayPage.tsx';
 import ImportExportDirectoryPage from './routes/ImportExportDirectoryPage.tsx';
+import SanitationRequestPage from './components/SanitationRequestComponent.tsx';
+import SanitationRequestDisplayPage from './routes/SanitationRequestDisplayPage.tsx';
+
 import TranslationServiceRequestPage from './routes/TranslationServiceRequestPage.tsx';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { ShadSidebar } from '@/components/ui/shadsidebar.tsx';
@@ -47,11 +50,13 @@ function App() {
                                   path="/MapPage"
                                   element={<MapPage />}
                                 />
-                                
-                                <Route 
-                                  path="/TranslationServiceRequestPage" 
-                                  element={<TranslationServiceRequestPage />} 
+
+                                <Route
+                                  path="/TranslationServiceRequestPage"
+                                  element={<TranslationServiceRequestPage />}
                                  />
+                        <Route path="/SanitationRequest" element={<SanitationRequestPage />} />
+                        <Route path="/SanitationRequestDisplayPage" element={<SanitationRequestDisplayPage />} />
 
                             </Routes>
                         </main>

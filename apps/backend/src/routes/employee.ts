@@ -12,7 +12,7 @@ router.get('/', async function (req: Request, res: Response) {
         //Attempt to pull from employee
         const EMPLOYEE_LIST = await PrismaClient.employee.findMany({
             orderBy: {
-                last_name: 'asc',
+                lastName: 'asc',
             },
         });
         console.info('Successfully pulled employees score'); // Log that it was successful
@@ -33,18 +33,18 @@ router.post('/csv', async function (req: Request, res: Response) {
         for (let data of csvData) {
             const dataToUpsert = {
                 id: data.id,
-                first_name: data.first_name,
-                middle_name: data.middle_name,
-                last_name: data.last_name,
+                firstName: data.firstName,
+                middleName: data.middleName,
+                lastName: data.lastName,
                 position: data.position,
-                date_hired: data.date_hired,
-                service_request: data.service_request,
+                dateHired: data.dateHired,
+                serviceRequest: data.serviceRequest,
                 email: data.email,
                 password: data.password,
-                department_id: data.department_id,
+                departmentId: data.departmentId,
             };
             await PrismaClient.employee.upsert({
-                where: { id: data.id },
+                where: { employeeId: data.employeeId },
                 update: dataToUpsert,
                 create: dataToUpsert,
             });
