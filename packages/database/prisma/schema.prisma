@@ -80,8 +80,8 @@ model Department {
   members      Employee[]
   locations    Location[]
   building     Building   @relation(fields: [buildingId], references: [buildingId])
-  nodeId       Int        @unique
-  nodeReception Node      @relation(fields: [nodeId], references: [id], name:"DepartmentNode")
+  nodeId       String?        @unique
+  nodeReception Node?      @relation(fields: [nodeId], references: [nodeId], name:"DepartmentNode")
 }
 
 model Location {
@@ -103,25 +103,28 @@ model Building {
 }
 
 model Node {
-  id        Int    @id @default(autoincrement())
-  xPixel    Int
-  yPixel    Int
-  floor     Int
-  nodeType  String
-  building  String
-  longName  String
-  shortName String
-  edgesFrom Edge[] @relation("NodeToEdgeFrom")
-  edgesTo   Edge[] @relation("NodeToEdgeTo")
+  // ignore id
+  // id         Int     @id @default(autoincrement())
+  nodeId     String  @id
+  x          Decimal
+  y          Decimal
+  floor      String
+  buildingId String
+  nodeType   String
+  name       String
+  roomNumber String?
+  edgesFrom  Edge[]  @relation("NodeToEdgeFrom")
+  edgesTo    Edge[]  @relation("NodeToEdgeTo")
   department  Department? @relation(name:"DepartmentNode")
 }
 
 model Edge {
-  id       String @id
-  toId     Int
-  fromId   Int
-  nodeTo   Node   @relation("NodeToEdgeTo", fields: [toId], references: [id])
-  nodeFrom Node   @relation("NodeToEdgeFrom", fields: [fromId], references: [id])
+  // making prisma happy lol
+  id       Int    @id @default(autoincrement())
+  from     String
+  to       String
+  nodeTo   Node   @relation("NodeToEdgeTo", fields: [to], references: [nodeId])
+  nodeFrom Node   @relation("NodeToEdgeFrom", fields: [from], references: [nodeId])
 }
 
 model Sanitation {

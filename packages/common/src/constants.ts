@@ -8,6 +8,6 @@ export const ROUTES = {
     TRANSLATIONREQUEST: '/api/translation',
     DIRECTORY: '/api/directory',
     DIRECTORY_CSV: '/api/directory/csv',
-    BFSGRAPH: '/api/graph',
     SANITATION: '/api/sanitation',
+    BFSGRAPH: '/api/graph/traverse',
 }
