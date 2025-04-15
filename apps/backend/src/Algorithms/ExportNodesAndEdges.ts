@@ -1,8 +1,12 @@
 import PrismaClient from '../bin/prisma-client';
+// @ts-ignore
 import fs from 'fs';
+// @ts-ignore
+import path from 'path';
+
+declare const __dirname: string;
 
 export async function exportNodesAndEdges(): Promise<void> {
-    const path = require('path');
     // Paths to JSON files
     const CHPath = path.resolve(__dirname, 'JSONFiles', 'chestnutHillNodesEdges.json');
     const PP20thPath = path.resolve(__dirname, 'JSONFiles', '20PPFloor1NodesEdges.json');
