@@ -1,14 +1,14 @@
 import PrismaClient from '../bin/prisma-client';
 import { myNode, Graph } from './classes.ts';
-import { exportNodesAndEdges } from './ExportNodesAndEdges.ts'
+// import { exportNodesAndEdges } from './ExportNodesAndEdges.ts';
 
 export async function loadMyGraph(): Promise<Graph> {
     // get the nodes and edges from the database
 
-    await exportNodesAndEdges();
+    // await exportNodesAndEdges();
 
-    const nodes =  await PrismaClient.node.findMany({});
-    const edges =  await PrismaClient.edge.findMany({});
+    const nodes = await PrismaClient.node.findMany({});
+    const edges = await PrismaClient.edge.findMany({});
 
     const graph = new Graph();
 
@@ -43,14 +43,13 @@ export async function loadMyGraph(): Promise<Graph> {
 }
 
 export async function bfs(
-    startPoint: string,
-    endPoint: string,
-    graph: Graph
+    startPoint: myNode,
+    endPoint: myNode
 ): Promise<myNode[] | null | undefined> {
-    await loadMyGraph();
+    const graph = await loadMyGraph();
 
-    const starterNode = graph.getNode(startPoint);
-    const targetNode = graph.getNode(endPoint);
+    const starterNode = startPoint;
+    const targetNode = endPoint;
 
     if (!starterNode || !targetNode) {
         return null;
@@ -98,18 +97,18 @@ export async function bfs(
     }
 }
 
-export async function cleanedUpBFS(startPoint: string, endPoint: string): Promise<string[][]> {
-    const bfsResult = await bfs(startPoint, endPoint, await loadMyGraph());
+// export async function cleanedUpBFS(startPoint: string, endPoint: string): Promise<string[][]> {
+//     const bfsResult = await bfs(startPoint, endPoint);
+//
+//     const results: string[][] = [];
+//
+//     if (bfsResult) {
+//         for (let i = 0, lenBFS = bfsResult.length - 1; i < lenBFS; i++) {
+//             results.push([bfsResult[i].id, bfsResult[i + 1].id]);
+//         }
+//     }
+//
+//     return results;
+// }
 
-    const results: string[][] = [];
-
-    if (bfsResult) {
-        for (let i = 0, lenBFS = bfsResult.length - 1; i < lenBFS; i++) {
-            results.push([bfsResult[i].id, bfsResult[i + 1].id]);
-        }
-    }
-
-    return results;
-}
-
-const test = cleanedUpBFS('1', '19');
+// const test = cleanedUpBFS('1', '19');

@@ -1,12 +1,12 @@
 import express, { Request, Response } from 'express';
-import  {cleanedUpBFS} from "../Algorithms/BFS.ts";
+import { bfs } from '../Algorithms/BFS.ts';
 
-const expressRouter = express.Router()
+const expressRouter = express.Router();
 
-expressRouter.post('/traverse', async (req: Request, res: Response) => {
+expressRouter.post('/', async function (req: Request, res: Response) {
     try {
-        const { startNode, targetNode } = req.body;
-        const traversalResult = await cleanedUpBFS(startNode, targetNode);
+        const { start: startNode, end: targetNode } = req.body;
+        const traversalResult = await bfs(startNode, targetNode);
         res.json(traversalResult);
     } catch (error) {
         console.error('Graph traversal error:', error);
