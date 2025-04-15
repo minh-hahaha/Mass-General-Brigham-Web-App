@@ -8,6 +8,7 @@ import { cleanedUpBFS, bfs } from '../../../backend/src/Algorithms/BFS.ts';
 import TravelModeComponent from "@/components/TravelModeComponent.tsx";
 import {setDragLock} from "framer-motion";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu.tsx";
+import {DirectoryRequestName, getDirectoryNames} from "@/database/gettingDirectory.ts";
 
 const Buildings = [
     "20 Patriot Place",
@@ -30,7 +31,7 @@ const DirectionsMapComponent = () => {
     const [distance, setDistance] = useState('');
     const [duration, setDuration] = useState('');
     const [showRouteInfo, setShowRouteInfo] = useState(false);
-
+    const [directoryName, setDirectoryName] = useState<DirectoryRequestName[]>([]);
 
     const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
     const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
@@ -76,6 +77,19 @@ const DirectionsMapComponent = () => {
         //     }
         // });
     }, [placesLibrary]);
+
+    useEffect(() => {
+        const fetchDirectoryNames = async () => {
+            try {
+                const data = await getDirectoryNames();
+                setDirectoryName(data);
+            } catch (error) {
+                console.error("Error fetching building names:", error);
+            }
+        };
+
+        fetchDirectoryNames();
+    }, []);
 
     const handleFindDirections = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -206,22 +220,31 @@ const DirectionsMapComponent = () => {
                         />
                     </div>
                     {/*Choose hospital buildings*/}
-                    <DropdownMenu>
-                        <DropdownMenuTrigger className="mb-4 inline-flex items-center justify-between rounded-md border bg-white px-4 py-2 text-sm shadow-sm hover:bg-gray-50">
-                            {toLocation}
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-56">
-                            {Buildings.map((building) => (
-                                <DropdownMenuItem
-                                    key={building}
-                                    onSelect={() => setToLocation(building)}
-                                    className={toLocation === building ? "font-semibold bg-accent/20" : ""}
-                                >
-                                    {building}
-                                </DropdownMenuItem>
-                            ))}
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    <div className="mb-4">
+                        <label htmlFor="toLocation" className="block text-sm font-medium text-gray-700 mb-1">
+                            To:
+                        </label>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger
+                                id="toLocation"
+                                className="w-full p-2 border border-gray-300 rounded text-sm bg-white"
+                            >
+                                {toLocation || "Select a destination"}
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-full max-h-60 overflow-y-auto">
+                                {directoryName.map((dept) => (
+                                    <DropdownMenuItem
+                                        key={dept.dep_name}
+                                        onSelect={() => setToLocation(dept.dep_name)}
+                                        className={toLocation === dept.dep_name ? "font-semibold bg-accent/20" : ""}
+                                    >
+                                        {dept.dep_name}
+                                    </DropdownMenuItem>
+                                ))}
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
+
                     <div className="mt-5">
                         <TravelModeComponent selectedMode={travelMode} onChange={handleTravelModeChange}
                         />

@@ -42,6 +42,7 @@ app.use(ROUTES.PATIENTTRANSPORT, patientTransportRouter);
 
 app.use(ROUTES.DIRECTORY, directoryRouter);
 app.use(ROUTES.DIRECTORY_CSV, directoryRouter);
+app.use(ROUTES.DIRECTORY_NAMES, directoryRouter);
 
 app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
 

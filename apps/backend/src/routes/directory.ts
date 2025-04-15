@@ -25,6 +25,21 @@ router.get('/', async function (req: Request, res: Response) {
     }
 });
 
+
+router.get('/name', async function (req: Request, res: Response) {
+    try {
+        const DIRECTORY_NAMES = await PrismaClient.department.findMany({
+            select:{
+                dep_name:true
+            }
+        })
+    } catch (error){
+        console.error(`NO DIRECTORY_NAMES: ${error}`);
+        res.sendStatus(404);
+        return;
+    }
+})
+
 // GET Send CSV
 router.get('/csv', async function (req: Request, res: Response) {
     // Attempt to get directory
