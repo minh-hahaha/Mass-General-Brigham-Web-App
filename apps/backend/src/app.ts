@@ -8,6 +8,7 @@ import servicereqsRouter from './routes/servicereqs.ts';
 import validateRouter from './routes/validate.ts';
 import patientTransportRouter from './routes/patienttransport.ts';
 import directoryRouter from './routes/directory.ts';
+import sanitationRouter from './routes/sanitation.ts';
 import translationRouter from "./routes/translationrequest.ts";
 import graphRouter from './routes/bfsRoutes.ts'
 
@@ -38,6 +39,7 @@ app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
 
 app.use(ROUTES.VALIDATE, validateRouter);
 app.use(ROUTES.PATIENTTRANSPORT, patientTransportRouter);
+app.use(ROUTES.SANITATION, sanitationRouter);
 
 app.use(ROUTES.DIRECTORY, directoryRouter);
 app.use(ROUTES.DIRECTORY_CSV, directoryRouter);

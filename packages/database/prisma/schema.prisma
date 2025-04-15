@@ -44,6 +44,7 @@ model ServiceRequest {
   requestTime     DateTime?         @default(now()) @db.Time
 
   translationRequest TranslationRequest?
+  sanitation       Sanitation?       @relation(name: "ServiceSanitation")
 }
 
 
@@ -121,4 +122,14 @@ model Edge {
   fromId   Int
   nodeTo   Node   @relation("NodeToEdgeTo", fields: [toId], references: [id])
   nodeFrom Node   @relation("NodeToEdgeFrom", fields: [fromId], references: [id])
+}
+
+model Sanitation {
+  servReq_id       Int            @id
+  sanitationType   String
+  recurring        Boolean
+  hazardLevel      String
+  disposalRequired Boolean
+  completeBy       DateTime       @default(now()) @db.Time
+  servRequest_id   ServiceRequest @relation(name: "ServiceSanitation", fields: [servReq_id], references: [request_id])
 }

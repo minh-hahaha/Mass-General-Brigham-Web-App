@@ -9,4 +9,5 @@ export const ROUTES = {
     DIRECTORY: '/api/directory',
     DIRECTORY_CSV: '/api/directory/csv',
     BFSGRAPH: '/api/graph',
+    SANITATION: '/api/sanitation',
 }
