@@ -1,4 +1,3 @@
-import PrismaClient from '../bin/prisma-client';
 // @ts-ignore
 import prisma from '../bin/prisma-client';
 import fs from 'fs';
