@@ -28,6 +28,7 @@
         "common": "*",
         "dotenv": "*",
         "dotenv-cli": "*",
+        "embla-carousel": "^8.6.0",
         "embla-carousel-autoplay": "^8.6.0",
         "embla-carousel-react": "^8.6.0",
         "framer-motion": "^12.6.3",
