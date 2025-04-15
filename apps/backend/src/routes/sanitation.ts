@@ -28,7 +28,7 @@ router.get('/', async (req: Request, res: Response) => {
     try {
         const requests = await PrismaClient.serviceRequest.findMany({
             where: {
-                service_type: 'Sanitation',
+                serviceType: 'Sanitation',
             },
             include: {
                 //might flag an error
@@ -57,11 +57,11 @@ router.post('/', async (req: Request, res: Response) => {
                     priority: req.body.priority,
                     status: req.body.status,
                     comments: req.body.notes,
-                    service_type: 'Sanitation',
+                    serviceType: 'Sanitation',
 
                     //optional fields
                     //location_id: req.body.locationId ?? null,
-                    employee_id: req.body.employeeId ?? null, // change to user id in the future?
+                    employeeId: req.body.employeeId ?? null, // change to user id in the future?
                     //request_date: new Date(pickupDate) ?? null,
                     //request_time: new Date(req.body.pickupTime) ?? null,
                 },
@@ -70,7 +70,7 @@ router.post('/', async (req: Request, res: Response) => {
             //create entry for patient transport table
             const sanitation = await prisma.sanitation.create({
                 data: {
-                    servReq_id: serviceRequest.request_id,
+                    servReqId: serviceRequest.requestId,
                     sanitationType: req.body.sanitationType,
                     recurring: req.body.recurring,
                     hazardLevel: req.body.hazardLevel,
@@ -78,7 +78,7 @@ router.post('/', async (req: Request, res: Response) => {
                     //completeBy: req.body.completeBy,
                 },
                 select: {
-                    servReq_id: true,
+                    servReqId: true,
                     sanitationType: true,
                     recurring: true,
                     hazardLevel: true,
