@@ -169,32 +169,32 @@ const DirectionsMapComponent = () => {
     const HospitalMap = () => {
         const [path, setPaths] = useState<myNode[]>([]);
 
-        // useEffect(() => {
-        //     const getMyPaths = async () => {
-        //         const lotA : myNode = {id: "1",
-        //             shortName: 'A',
-        //             xPixel: 384.23,
-        //             yPixel: 441.85,
-        //             floor: 1,
-        //             nodeType: 'Parking Lot',
-        //             building: 'Main Building',
-        //             longName: 'Parking Lot A'
-        //             }
-        //         const reception: myNode = {
-        //             id: "7",
-        //             shortName: 'G',
-        //             xPixel: 617.38,
-        //             yPixel: 700.03,
-        //             floor: 1,
-        //             nodeType: 'Reception',
-        //             building: 'Main Building',
-        //             longName: 'Reception'
-        //         }
-        //         if (parkA) {
-        //             const result = await FindPath(lotA, reception);
-        //             console.log('ParkA   ' + result);
-        //
-        //             setPaths(result);
+        useEffect(() => {
+            const getMyPaths = async () => {
+                const lotA : myNode = {id: "1",
+                    shortName: 'A',
+                    xPixel: 384.23,
+                    yPixel: 441.85,
+                    floor: 1,
+                    nodeType: 'Parking Lot',
+                    building: 'Main Building',
+                    longName: 'Parking Lot A'
+                    }
+                const reception: myNode = {
+                    id: "7",
+                    shortName: 'G',
+                    xPixel: 617.38,
+                    yPixel: 700.03,
+                    floor: 1,
+                    nodeType: 'Reception',
+                    building: 'Main Building',
+                    longName: 'Reception'
+                }
+                if (parkA) {
+                    const result = await FindPath(lotA, reception);
+                    console.log('ParkA   ' + result);
+
+                    setPaths(result);
                 // } else if (parkB) {
                 //     const result = await cleanedUpBFS('J', 'G');
                 //     console.log('ParkB   ' + result);
@@ -203,12 +203,12 @@ const DirectionsMapComponent = () => {
                 //     const result = await cleanedUpBFS('L', 'G');
                 //     console.log('ParkC   ' + result);
                 //     setPaths(result);
-        //         } else {
-        //             setPaths([]);
-        //         }
-        //     };
-        //     getMyPaths();
-        // }, [parkA, parkB, parkC]);
+                } else {
+                    setPaths([]);
+                }
+            };
+            getMyPaths();
+        }, [parkA, parkB, parkC]);
 
 
 

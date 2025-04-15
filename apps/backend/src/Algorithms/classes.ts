@@ -1,40 +1,73 @@
 export class myNode {
-    id: string;
-    xPixel: number;
-    yPixel: number;
-    floor: number;
+    nodeID: string;
+    x: number;
+    y: number;
+    floor: string;
     nodeType: string;
-    building: string;
-    longName: string;
-    shortName: string;
+    buildingId: string;
+    name: string;
+    roomNumber: number | null;
 
     constructor(
-        id: string,
-        xPixel: number,
-        yPixel: number,
-        floor: number,
+        nodeID: string,
+        x: number,
+        y: number,
+        floor: string,
         nodeType: string,
-        building: string,
-        longName: string,
-        shortName: string
+        buildingId: string,
+        name: string,
+        roomNumber: number | null,
+
     ) {
-        this.id = id;
-        this.xPixel = xPixel;
-        this.yPixel = yPixel;
+        this.nodeID = nodeID;
+        this.x = x;
+        this.y = y;
         this.floor = floor;
         this.nodeType = nodeType;
-        this.building = building;
-        this.longName = longName;
-        this.shortName = shortName;
+        this.buildingId = buildingId;
+        this.name = name;
+        this.roomNumber = roomNumber;
     }
 }
 
+// export class myNode {
+//     nodeid: string;
+//     x: number;
+//     y: number;
+//     floor: number;
+//     nodeType: string;
+//     building: string;
+//     longName: string;
+//     shortName: string;
+//
+//     constructor(
+//         id: string,
+//         x: number,
+//         y: number,
+//         floor: number,
+//         nodeType: string,
+//         building: string,
+//         longName: string,
+//         shortName: string
+//     ) {
+//         this.id = id;
+//         this.x = x;
+//         this.y = y;
+//         this.floor = floor;
+//         this.nodeType = nodeType;
+//         this.building = building;
+//         this.longName = longName;
+//         this.shortName = shortName;
+//     }
+// }
+
+
 class myEdge {
-    id: String;
+    id: number;
     from: myNode;
     to: myNode;
 
-    constructor(id: string, from: myNode, to: myNode) {
+    constructor(id: number, from: myNode, to: myNode) {
         /* Do i need the neighbors */
 
         this.id = id;
@@ -54,26 +87,26 @@ export class Graph {
     }
     addNode(
         id: string,
-        xPixel: number,
-        yPixel: number,
-        floor: number,
+        x: number,
+        y: number,
+        floor: string,
         nodeType: string,
-        building: string,
-        longName: string,
-        shortName: string
+        buildingId: string,
+        name: string,
+        roomNumber: number | null,
     ): myNode {
-        const node = new myNode(id, xPixel, yPixel, floor, nodeType, building, longName, shortName);
+        const node = new myNode(id, x, y, floor, nodeType, buildingId, name,roomNumber);
         this.nodes.push(node);
         return node;
     }
 
-    addEdge(from: myNode, to: myNode, id: string): myEdge {
+    addEdge(from: myNode, to: myNode, id: number): myEdge {
         const edge = new myEdge(id, from, to);
         this.edges.push(edge);
         return edge;
     }
 
     getNode(id: string): myNode | undefined {
-        return this.nodes.find((node) => node.id === id);
+        return this.nodes.find((node) => node.nodeID === id);
     }
 }
