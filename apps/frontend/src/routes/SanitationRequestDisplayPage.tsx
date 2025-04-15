@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { GetTransportRequest } from '@/database/transportRequest.ts';
+//import { GetTransportRequest } from '@/database/transportRequest.ts';
 import { GetSanitationRequest,incomingSanitationRequest } from '@/database/sanitationRequest.ts';
-import { incomingRequest } from '@/database/transportRequest.ts';
+//import { incomingRequest } from '@/database/transportRequest.ts';
 import {
     Table,
     TableBody,
@@ -12,16 +12,16 @@ import {
     TableRow,
 } from '@/components/ui/table';
 
-const ServiceRequestDisplayPage = () => {
+const SanitationRequestDisplayPage = () => {
     const loggedIn = sessionStorage.getItem('loggedIn');
     if (!loggedIn) {window.location.href = '/';}
 
     const [loading, setLoading] = useState(true);
-    const [requests, setRequests] = useState<incomingRequest[]>([]);
+    const [requests, setRequests] = useState<incomingSanitationRequest[]>([]);
 
     useEffect(() => {
         async function fetchReqs() {
-            const data = await GetTransportRequest();
+            const data = await GetSanitationRequest();
             console.log(data);
             setRequests(data);
             setLoading(false);
@@ -42,29 +42,40 @@ const ServiceRequestDisplayPage = () => {
                 <Table>
                     <TableHeader>
                         <TableRow>
+
+                            {/*
+                            completeBy: number
+                            disposalRequired: boolean
+                            hazardLevel: string
+                            recurring: boolean
+                            sanitationType: string*/}
                             <TableHead>Request ID</TableHead>
-                            <TableHead>Patient ID</TableHead>
-                            <TableHead>Patient Name</TableHead>
+                            <TableHead>Complete By</TableHead>
+                            <TableHead>Disposal Required</TableHead>
+                            <TableHead>Hazard level</TableHead>
+                            <TableHead>Recurring</TableHead>
+                            <TableHead>Sanitation Type</TableHead>
                             <TableHead>Priority</TableHead>
                             <TableHead>Status</TableHead>
-                            <TableHead>Pick Up Location</TableHead>
                             <TableHead>Request Date</TableHead>
                             <TableHead>Service Type</TableHead>
-                            <TableHead>Transport Type</TableHead>
+
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {requests.map((req) => (
                             <TableRow>
                                 <TableCell>{req.requestId}</TableCell>
-                                <TableCell>{req.patientTransport.patientId}</TableCell>
-                                <TableCell>{req.patientTransport.patientName}</TableCell>
+                                <TableCell>{req.sanitation.completeBy}</TableCell>
+                                <TableCell>{JSON.stringify(req.sanitation.disposalRequired)}</TableCell>
+                                <TableCell>{req.sanitation.hazardLevel}</TableCell>
+                                <TableCell>{JSON.stringify(req.sanitation.recurring)}</TableCell>
+                                <TableCell>{req.sanitation.sanitationType}</TableCell>
                                 <TableCell>{req.priority}</TableCell>
                                 <TableCell>{req.status}</TableCell>
-                                <TableCell>{req.patientTransport.pickupLocation}</TableCell>
                                 <TableCell>{req.requestDate}</TableCell>
                                 <TableCell>{req.serviceType}</TableCell>
-                                <TableCell>{req.transportType}</TableCell>
+
                             </TableRow>
                         ))}
                     </TableBody>
@@ -74,4 +85,4 @@ const ServiceRequestDisplayPage = () => {
     );
 };
 
-export default ServiceRequestDisplayPage;
+export default SanitationRequestDisplayPage;

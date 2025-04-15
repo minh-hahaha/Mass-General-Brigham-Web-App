@@ -33,8 +33,9 @@
     "prettier-config-custom": "workspace:*",
     "prisma": "^6.5.0",
     "ts-config-custom": "workspace:*",
+    "ts-node": "^10.9.2",
     "turbo": "*",
-    "typescript": "^5.8.2",
+    "typescript": "^5.8.3",
     "vitest": "^3.0.9"
   },
   "dependencies": {
@@ -48,6 +49,7 @@
     "common": "workspace:*",
     "dotenv": "^16.4.7",
     "dotenv-cli": "^7.4.4",
+    "embla-carousel": "^8.6.0",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.6.3",

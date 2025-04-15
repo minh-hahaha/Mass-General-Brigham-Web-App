@@ -1,8 +1,12 @@
 import PrismaClient from '../bin/prisma-client';
 import { myNode, Graph } from './classes.ts';
+import { exportNodesAndEdges } from './ExportNodesAndEdges.ts';
 
 export async function loadMyGraph(): Promise<Graph> {
-    // get the nodes and edges from the datbase
+    // get the nodes and edges from the database
+
+    await exportNodesAndEdges();
+
     const nodes = await PrismaClient.node.findMany({});
     const edges = await PrismaClient.edge.findMany({});
 
@@ -10,25 +14,25 @@ export async function loadMyGraph(): Promise<Graph> {
 
     //craeting a map to look up nodes when creatig the edges
 
-    let nodeMap = new Map<number, myNode>();
+    let nodeMap = new Map<string, myNode>();
 
     for (const aNode of nodes) {
         const node = graph.addNode(
-            aNode.id.toString(),
-            aNode.xPixel,
-            aNode.yPixel,
+            aNode.nodeId,
+            Number(aNode.x),
+            Number(aNode.y),
             aNode.floor,
             aNode.nodeType,
-            aNode.building,
-            aNode.longName,
-            aNode.shortName
+            aNode.buildingId,
+            aNode.name,
+            aNode.roomNumber
         );
-        nodeMap.set(aNode.id, node);
+        nodeMap.set(aNode.nodeId, node);
     }
 
     for (const aEdge of edges) {
-        const from = nodeMap.get(aEdge.fromId);
-        const to = nodeMap.get(aEdge.toId);
+        const from = nodeMap.get(aEdge.from);
+        const to = nodeMap.get(aEdge.to);
 
         if (from && to) {
             graph.addEdge(from, to, aEdge.id);
@@ -39,14 +43,13 @@ export async function loadMyGraph(): Promise<Graph> {
 }
 
 export async function bfs(
-    startPoint: string,
-    endPoint: string,
-    graph: Graph
+    startPoint: myNode,
+    endPoint: myNode
 ): Promise<myNode[] | null | undefined> {
-    await loadMyGraph();
+    const graph = await loadMyGraph();
 
-    const starterNode = graph.getNode(startPoint);
-    const targetNode = graph.getNode(endPoint);
+    const starterNode = startPoint;
+    const targetNode = endPoint;
 
     if (!starterNode || !targetNode) {
         return null;
@@ -93,19 +96,3 @@ export async function bfs(
         }
     }
 }
-
-export async function cleanedUpBFS(startPoint: string, endPoint: string): Promise<string[][]> {
-    const bfsResult = await bfs(startPoint, endPoint, await loadMyGraph());
-
-    const results: string[][] = [];
-
-    if (bfsResult) {
-        for (let i = 0, lenBFS = bfsResult.length - 1; i < lenBFS; i++) {
-            results.push([bfsResult[i].id, bfsResult[i + 1].id]);
-        }
-    }
-
-    return results;
-}
-
-const test = cleanedUpBFS('1', '19');
