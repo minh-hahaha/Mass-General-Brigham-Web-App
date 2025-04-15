@@ -40,9 +40,9 @@ router.get('/csv', async function (req: Request, res: Response) {
             directory.locations.map((location) => ({
                 ...directory,
                 floor: location.floor,
-                room_num: location.room_num,
-                loc_id: location.loc_id,
-                loc_type: location.loc_type,
+                roomNum: location.roomNum,
+                locId: location.locId,
+                locType: location.locType,
             }))
         );
         await dataToCSV(flattenedDirectories);
@@ -60,41 +60,42 @@ router.get('/csv', async function (req: Request, res: Response) {
     }
 });
 
-router.post('/csv', async function (req: Request, res: Response) {
-    const [test, test2] = Object.entries(req.body);
-    const csvData = CSVtoData(test[0].toString());
-    try {
-        for (let data of csvData) {
-            const dataToUpsertDirectory = {
-                dep_id: data.dep_id,
-                dep_services: data.dep_services,
-                dep_name: data.dep_name,
-                building_id: data.building_id,
-                dep_phone: data.dep_phone,
-            };
-            const dataToUpsertLocation = {
-                loc_id: data.loc_id,
-                department_id: data.dep_id,
-                loc_type: data.loc_type,
-                room_num: data.room_num,
-                floor: data.floor,
-            };
-            await PrismaClient.department.upsert({
-                where: { dep_id: data.dep_id },
-                update: dataToUpsertDirectory,
-                create: dataToUpsertDirectory,
-            });
-            await PrismaClient.location.upsert({
-                where: { loc_id: data.loc_id },
-                update: dataToUpsertLocation,
-                create: dataToUpsertLocation,
-            });
-        }
-        res.sendStatus(200);
-    } catch (err) {
-        console.log(err);
-        res.sendStatus(400);
-    }
-});
+//TODO: JAKE HELP THERE IS NO NODE HERE
+// router.post('/csv', async function (req: Request, res: Response) {
+//     const [test, test2] = Object.entries(req.body);
+//     const csvData = CSVtoData(test[0].toString());
+//     try {
+//         for (let data of csvData) {
+//             const dataToUpsertDirectory = {
+//                 deptId: data.deptId,
+//                 deptServices: data.deptServices,
+//                 deptName: data.deptName,
+//                 buildingId: data.buildingId,
+//                 deptPhone: data.deptPhone,
+//             };
+//             const dataToUpsertLocation = {
+//                 locId: data.locId,
+//                 departmentId: data.deptId,
+//                 locType: data.locType,
+//                 roomNum: data.roomNum,
+//                 floor: data.floor,
+//             };
+//             await PrismaClient.department.upsert({
+//                 where: { deptId: data.deptId },
+//                 update: dataToUpsertDirectory,
+//                 create: dataToUpsertDirectory,
+//             });
+//             await PrismaClient.location.upsert({
+//                 where: { locId: data.locId },
+//                 update: dataToUpsertLocation,
+//                 create: dataToUpsertLocation,
+//             });
+//         }
+//         res.sendStatus(200);
+//     } catch (err) {
+//         console.log(err);
+//         res.sendStatus(400);
+//     }
+// });
 
 export default router;
