@@ -28,7 +28,6 @@
         "db:push-reset": "dotenv -e ${PROJECT_CWD}/.env -- prisma db push --skip-generate --force-reset"
     },
     "devDependencies": {
-        "@types/node": "*",
         "@yarnpkg/pnpify": "^4.0.0-rc.45",
         "eslint": "*",
         "eslint-config-custom": "*",
