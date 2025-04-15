@@ -43,6 +43,7 @@ app.use(ROUTES.SANITATION, sanitationRouter);
 
 app.use(ROUTES.DIRECTORY, directoryRouter);
 app.use(ROUTES.DIRECTORY_CSV, directoryRouter);
+app.use(ROUTES.DIRECTORY_NODE, directoryRouter);
 
 app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
 app.use(ROUTES.TRANSLATIONREQUEST, translationRouter);

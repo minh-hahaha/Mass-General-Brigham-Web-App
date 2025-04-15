@@ -20,11 +20,13 @@ interface Props {
     svgMapUrl: string;
     currentFloor: string;
     buildingId: string;
+    prefix: string;
 }
 
 export default function HospitalSVGEditor({ svgMapUrl, currentFloor, buildingId }: Props) {
     const [nodes, setNodes] = useState<NodeData[]>([]);
     const [edges, setEdges] = useState<Edge[]>([]);
+    const [history, setHistory] = useState<{nodes: NodeData[], edges: Edge[]}[]>([]);
     const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
     const [nodeType, setNodeType] = useState('Hallway');
     const [nodeName, setNodeName] = useState('');
@@ -40,10 +42,25 @@ export default function HospitalSVGEditor({ svgMapUrl, currentFloor, buildingId 
     // Generate custom ID
     const generateCustomId = () => {
         const prefix = "20PP";
-        const floorPart = currentFloor;
+        const floorPart = "Floor" + currentFloor;
         const typePart = nodeType.charAt(0).toUpperCase() + nodeType.slice(1);
         const roomPart = roomNumber || `${nodes.length + 1}`;
         return `${prefix}${floorPart}${typePart}${roomPart}`;
+    };
+
+    // Save current state to history before making changes
+    const saveToHistory = () => {
+        setHistory([...history, { nodes: [...nodes], edges: [...edges] }]);
+    };
+
+    // Undo last action
+    const handleUndo = () => {
+        if (history.length > 0) {
+            const previousState = history[history.length - 1];
+            setNodes(previousState.nodes);
+            setEdges(previousState.edges);
+            setHistory(history.slice(0, -1));
+        }
     };
 
     const handleSVGClick = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
@@ -61,6 +78,9 @@ export default function HospitalSVGEditor({ svgMapUrl, currentFloor, buildingId 
         // when zoom and pan
         const adjustedX = (svgP.x - position.x) / scale;
         const adjustedY = (svgP.y - position.y) / scale;
+
+        // Save current state before adding new node
+        saveToHistory();
 
         const newNode: NodeData = {
             id: generateCustomId(),
@@ -85,6 +105,8 @@ export default function HospitalSVGEditor({ svgMapUrl, currentFloor, buildingId 
             setSelectedNodeId(nodeId);
         } else {
             if (selectedNodeId !== nodeId) {
+                // Save current state before adding new edge
+                saveToHistory();
                 setEdges([...edges, { from: selectedNodeId, to: nodeId }]);
             }
             setSelectedNodeId(null);
@@ -100,12 +122,13 @@ export default function HospitalSVGEditor({ svgMapUrl, currentFloor, buildingId 
         alert('Exported data logged in console.');
     };
 
-    // Handle zoom with mouse wheel
+    // Handle zoom with mouse wheel - adjusted for slower zoom
     const handleZoom = (e: React.WheelEvent) => {
         e.preventDefault();
+        const zoomFactor = 1.03; // Reduced from 1.1 for slower zoom
         const newScale = e.deltaY < 0
-            ? Math.min(scale * 1.1, 5) // Zoom in (max 5x)
-            : Math.max(scale / 1.1, 0.5); // Zoom out (min 0.5x)
+            ? Math.min(scale * zoomFactor, 5) // Zoom in (max 5x)
+            : Math.max(scale / zoomFactor, 0.5); // Zoom out (min 0.5x)
         setScale(newScale);
     };
 
@@ -177,6 +200,13 @@ export default function HospitalSVGEditor({ svgMapUrl, currentFloor, buildingId 
                 <button onClick={exportData} className="bg-blue-500 text-white px-3 py-1 rounded">
                     Export Nodes & Edges
                 </button>
+                <button
+                    onClick={handleUndo}
+                    className="bg-yellow-500 text-white px-3 py-1 rounded"
+                    disabled={history.length === 0}
+                >
+                    Undo Last Action
+                </button>
                 <div className="flex flex-row items-center gap-2">
                     <button
                         onClick={() => {
@@ -193,6 +223,10 @@ export default function HospitalSVGEditor({ svgMapUrl, currentFloor, buildingId 
                 </div>
             </div>
 
+            <div className="mb-2">
+                <span className="text-sm font-medium mr-2">Stats:</span>
+                <span className="text-sm text-gray-600">Nodes: {nodes.length} | Edges: {edges.length}</span>
+            </div>
 
             <svg
                 ref={svgRef}
