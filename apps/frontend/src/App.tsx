@@ -7,6 +7,7 @@ import ServiceRequestPage from './routes/TransportationRequestPage.tsx';
 import ServiceRequestDisplayPage from './routes/ServiceRequestDisplayPage.tsx';
 import DirectoryDisplayPage from './routes/DirectoryDisplayPage.tsx';
 import ImportExportDirectoryPage from './routes/ImportExportDirectoryPage.tsx';
+import TransportationRequestPage from './routes/TransportationRequestPage.tsx';
 import TranslationServiceRequestPage from './routes/TranslationServiceRequestPage.tsx';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { ShadSidebar } from '@/components/ui/shadsidebar.tsx';
@@ -28,8 +29,8 @@ function App() {
                                 <Route path="/Login" element={<LoginPage />} />
                                 <Route path="/Home" element={<HomePage />} />
                                 <Route
-                                    path="/ServiceRequestPage"
-                                    element={<ServiceRequestPage />}
+                                    path="/TransportationRequestPage"
+                                    element={<TransportationRequestPage />}
                                 />
                                 <Route
                                     path="/ServiceRequestDisplay"
