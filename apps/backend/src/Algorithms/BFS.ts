@@ -5,8 +5,6 @@ import { exportNodesAndEdges } from './ExportNodesAndEdges.ts';
 export async function loadMyGraph(): Promise<Graph> {
     // get the nodes and edges from the database
 
-    await exportNodesAndEdges();
-
     const nodes = await PrismaClient.node.findMany({});
     const edges = await PrismaClient.edge.findMany({});
 
