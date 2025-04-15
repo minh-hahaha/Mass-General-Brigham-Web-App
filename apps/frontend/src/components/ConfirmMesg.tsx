@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import { sanitationRequest } from '../database/sanitationRequest.ts';
 interface TransportRequest {
     id: number;
     patientId: string;
@@ -18,7 +18,7 @@ interface TransportRequest {
 }
 
 interface ConfirmationMessageProps {
-    request: TransportRequest;
+    request: TransportRequest | sanitationRequest;
     onClose?: () => void;
 }
 
