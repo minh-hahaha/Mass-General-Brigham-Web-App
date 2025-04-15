@@ -7,6 +7,7 @@ export async function exportNodesAndEdges(): Promise<void> {
     const CHPath = path.resolve(__dirname, 'JSONFiles', 'chestnutHillNodesEdges.json');
     const PP20thPath = path.resolve(__dirname, 'JSONFiles', '20PPFloor1NodesEdges.json');
 
+
     const buildings = [CHPath, PP20thPath];
 
     // go through buildings

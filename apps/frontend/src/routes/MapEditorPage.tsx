@@ -5,7 +5,7 @@ const MapEditorPage = () => {
     return (
         <>
             <div>
-                <DrawNodes svgMapUrl={"/20PPFloor1.svg"} buildingId={"2"} currentFloor={"1"}/>
+                <DrawNodes svgMapUrl={"/20PPFloor2.svg"} buildingId={"2"} currentFloor={"2"}/>
             </div>
         </>
     )
