@@ -46,7 +46,7 @@ model ServiceRequest {
   location_id      Int?
   service_type     String
   patientTransport PatientTransport? @relation(name: "ServicePatientTransport")
-  transport_type   String
+  transport_type   String?
   request_time     DateTime?         @default(now()) @db.Time
   sanitation       Sanitation?       @relation(name: "ServiceSanitation")
 }
@@ -96,11 +96,11 @@ model Node {
 }
 
 model Sanitation {
-    servReq_id          Int @id
-    sanitationType      String
-    recurring           Boolean
-    hazardLevel         String
-    disposalRequired    Boolean
-    completeBy          DateTime
-    servRequest_id  ServiceRequest @relation(name: "ServiceSanitation", fields: [servReq_id], references: [request_id])
+  servReq_id       Int            @id
+  sanitationType   String
+  recurring        Boolean
+  hazardLevel      String
+  disposalRequired Boolean
+  completeBy       DateTime
+  servRequest_id   ServiceRequest @relation(name: "ServiceSanitation", fields: [servReq_id], references: [request_id])
 }

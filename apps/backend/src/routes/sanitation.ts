@@ -54,11 +54,11 @@ router.post('/', async (req: Request, res: Response) => {
             //creates entry for service request
             const serviceRequest = await prisma.serviceRequest.create({
                 data: {
-                    transport_type: req.body.transportType,
+
                     priority: req.body.priority,
                     status: req.body.status,
                     comments: req.body.notes,
-                    service_type: 'Patient Transport',
+                    service_type: 'Sanitation',
 
                     //optional fields
                     location_id: req.body.locationId ?? null,
@@ -69,22 +69,30 @@ router.post('/', async (req: Request, res: Response) => {
             });
 
             //create entry for patient transport table
-            const patientTransport = await prisma.patientTransport.create({
+            const sanitation = await prisma.sanitation.create({
                 data: {
                     servReq_id: serviceRequest.request_id,
-                    patient_id: req.body.patientId,
-                    patient_name: req.body.patientName,
-                    pickup_location: req.body.pickupLocation,
+                    sanitationType: req.body.sanitationType,
+                    recurring:req.body.recurring,
+                    hazardLevel:req.body.hazardLevel,
+                    disposalRequired:req.body.disposalRequired,
+                    completeBy:req.body.completeBy,
+
+
                 },
                 select: {
                     servReq_id: true,
-                    patient_id: true,
-                    patient_name: true,
-                    pickup_location: true,
+                    sanitationType:true,
+                    recurring:true,
+                    hazardLevel:true,
+                    disposalRequired:true,
+                    completeBy:true,
+
+
                 },
             });
 
-            return { serviceRequest, patientTransport };
+            return { serviceRequest, sanitation };
         });
 
         res.status(201).json(result);
