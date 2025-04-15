@@ -33,7 +33,7 @@ export default function LoginPage() {
                         className="bg-black bg-opacity-50 p-6 rounded-lg w-full max-w-md"
                         plugins={[
                             Autoplay({
-                                delay: 3000,
+                                delay: 4000,
                             }),
                         ]}
                     >
