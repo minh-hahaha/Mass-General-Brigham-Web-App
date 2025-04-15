@@ -28,21 +28,21 @@ export enum FILTER_OPTIONS {
 }
 
 const DIRECTORY_SORT_OPTIONS: object[] = [];
-DIRECTORY_SORT_OPTIONS.push({ dep_id: 'asc' });
-DIRECTORY_SORT_OPTIONS.push({ dep_id: 'desc' });
-DIRECTORY_SORT_OPTIONS.push({ dep_name: 'asc' });
-DIRECTORY_SORT_OPTIONS.push({ dep_name: 'desc' });
-DIRECTORY_SORT_OPTIONS.push({ building_id: 'asc' });
-DIRECTORY_SORT_OPTIONS.push({ building_id: 'desc' });
+DIRECTORY_SORT_OPTIONS.push({ deptId: 'asc' });
+DIRECTORY_SORT_OPTIONS.push({ deptId: 'desc' });
+DIRECTORY_SORT_OPTIONS.push({ deptName: 'asc' });
+DIRECTORY_SORT_OPTIONS.push({ deptName: 'desc' });
+DIRECTORY_SORT_OPTIONS.push({ buildingId: 'asc' });
+DIRECTORY_SORT_OPTIONS.push({ buildingId: 'desc' });
 DIRECTORY_SORT_OPTIONS.push({ floor: 'asc' });
 DIRECTORY_SORT_OPTIONS.push({ floor: 'desc' });
 
 const DIRECTORY_FILTER_OPTIONS: object[] = [];
-DIRECTORY_FILTER_OPTIONS.push({ dep_id: true });
-DIRECTORY_FILTER_OPTIONS.push({ dep_services: true });
-DIRECTORY_FILTER_OPTIONS.push({ dep_name: true });
-DIRECTORY_FILTER_OPTIONS.push({ building_id: true });
-DIRECTORY_FILTER_OPTIONS.push({ dep_phone: true });
+DIRECTORY_FILTER_OPTIONS.push({ deptId: true });
+DIRECTORY_FILTER_OPTIONS.push({ deptServices: true });
+DIRECTORY_FILTER_OPTIONS.push({ deptName: true });
+DIRECTORY_FILTER_OPTIONS.push({ buildingId: true });
+DIRECTORY_FILTER_OPTIONS.push({ deptPhone: true });
 DIRECTORY_FILTER_OPTIONS.push(Object.assign({}, ...DIRECTORY_FILTER_OPTIONS));
 
 export interface DirectoryRequestName {

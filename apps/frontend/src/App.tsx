@@ -1,4 +1,4 @@
-    import React from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LogoBar from './components/LogoBar.tsx';
 import LoginPage from './routes/LoginPage.tsx';
@@ -14,6 +14,7 @@ import TranslationServiceRequestPage from './routes/TranslationServiceRequestPag
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { ShadSidebar } from '@/components/ui/shadsidebar.tsx';
 import {MapPage} from "@/routes/MapPage.tsx";
+import MapEditorPage from "@/routes/MapEditorPage.tsx";
     import TranslationServiceDisplayPage from "@/routes/TranslationServiceDisplayPage.tsx";
 
 function App() {
@@ -50,6 +51,10 @@ function App() {
                                 <Route
                                   path="/MapPage"
                                   element={<MapPage />}
+                                />
+                                <Route
+                                path="/MapEditor"
+                                element={<MapEditorPage />}
                                 />
 
                                 <Route

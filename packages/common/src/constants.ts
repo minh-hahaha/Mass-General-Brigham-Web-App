@@ -12,4 +12,5 @@ export const ROUTES = {
     // BFSGRAPH: '/api/graph',
     SANITATION: '/api/sanitation',
     BFSGRAPH: '/api/graph/traverse',
+    DIRECTORY_NODE: '/api/directory/node',
 }

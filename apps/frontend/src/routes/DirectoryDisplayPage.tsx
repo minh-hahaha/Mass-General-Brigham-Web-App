@@ -40,11 +40,11 @@ const DirectoryDisplayPage = () => {
                     <TableBody>
                         {data.map((department) => (
                             <TableRow>
-                                <TableCell>{department.dep_id}</TableCell>
-                                <TableCell className="break-words whitespace-normal max-w-s">{department.dep_services}</TableCell>
-                                <TableCell>{department.dep_name}</TableCell>
-                                <TableCell>{department.building_id}</TableCell>
-                                <TableCell>{department.dep_phone}</TableCell>
+                                <TableCell>{department.deptId}</TableCell>
+                                <TableCell className="break-words whitespace-normal max-w-s">{department.deptServices}</TableCell>
+                                <TableCell>{department.deptName}</TableCell>
+                                <TableCell>{department.buildingId}</TableCell>
+                                <TableCell>{department.deptPhone}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

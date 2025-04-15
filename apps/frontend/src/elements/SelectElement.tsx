@@ -17,13 +17,13 @@ interface SelectElementProps {
 const SelectElement : React.FC<SelectElementProps>  = ({label, id, value, onChange, required, options, placeholder}) => {
     return (
             <div className="flex items-center gap-2">
-                <label className="w-1/4">{label}</label>
+                <label className="w-1/3 pr-1">{label}</label>
                 <select
                     id={id}
                     value={value}
                     onChange={onChange}
                     required={required}
-                    className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    className="w-53 px-3 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                 >
                     <option value="">{placeholder}</option>
                     {options.map((option,index ) => (
