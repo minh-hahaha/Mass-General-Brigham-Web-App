@@ -81,13 +81,15 @@ const DirectionsMapComponent = () => {
         const fetchDirectoryNames = async () => {
             try {
                 const data = await getDirectoryNames();
+                console.log(data);
                 setDirectoryName(data);
             } catch (error) {
                 console.error("Error fetching building names:", error);
             }
-        };
 
+        };
         fetchDirectoryNames();
+        console.log(directoryName);
     }, []);
 
     // find directions
@@ -182,16 +184,16 @@ const DirectionsMapComponent = () => {
     //     )
     //
     // )
-    const [deptNode, setDeptNode] = useState<myNode>();
+    // const [deptNode, setDeptNode] = useState<myNode>();
 
-    useEffect(() => {
-        async function fetchDeptNode() {
-            const data = await getDepartmentNode();
-            console.log(data);
-            setDeptNode(data);
-        }
-        fetchDeptNode();
-    }, []);
+    // useEffect(() => {
+    //     async function fetchDeptNode() {
+    //         const data = await getDepartmentNode();
+    //         console.log(data);
+    //         setDeptNode(data);
+    //     }
+    //     fetchDeptNode();
+    // }, []);
 
 
     const HospitalMap = () => {
@@ -281,7 +283,6 @@ const DirectionsMapComponent = () => {
                             placeholder={"Select Department"}
                         />
                     </div>
-
 
                     <div className="mt-5">
                         <TravelModeComponent selectedMode={travelMode} onChange={handleTravelModeChange}
