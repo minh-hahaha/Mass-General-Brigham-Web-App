@@ -52,31 +52,58 @@ router.get('/', async function (req: Request, res: Response) {
     // Attempt to get directory
     try {
         let queryOptions: QueryOptions;
+        let sortOptions: number[] = [];
+        let filterOptions: number[] = [FILTER_OPTIONS.INCLUDE_ALL];
+        let maxQuery: number | undefined = undefined;
         try {
-            const sortOptions: number[] = JSON.parse(req.query.sortOptions as string);
-            const filterOptions: number[] = JSON.parse(req.query.filterOptions as string);
-            const maxQuery = Number(req.query.maxQuery as string);
+            sortOptions = JSON.parse(req.query.sortOptions as string);
+            filterOptions = JSON.parse(req.query.filterOptions as string);
+            maxQuery = Number(req.query.maxQuery as string);
             // Try to create query options from url data
             queryOptions = {
-                sortOptions: sortOptions.map((option) => DIRECTORY_SORT_OPTIONS[option]),
+                sortOptions: sortOptions
+                    .filter(
+                        (option) =>
+                            option !== SORT_OPTIONS.FLOOR_ASC && option !== SORT_OPTIONS.FLOOR_DSC
+                    )
+                    .map((option) => DIRECTORY_SORT_OPTIONS[option]),
                 filterOptions: filterOptions.map((option) => DIRECTORY_FILTER_OPTIONS[option]),
                 maxQuery: Number.isNaN(maxQuery) ? undefined : maxQuery,
             };
         } catch (error) {
-            // If that fails, use an empty queryOptions
+            // If that fails, use default queryOptions set above
             queryOptions = {
-                sortOptions: [],
-                filterOptions: DIRECTORY_FILTER_OPTIONS.map((option) => option),
-                maxQuery: undefined,
+                sortOptions: sortOptions.map((option) => DIRECTORY_SORT_OPTIONS[option]),
+                filterOptions: filterOptions.map((option) => DIRECTORY_FILTER_OPTIONS[option]),
+                maxQuery: maxQuery,
             };
         }
         // Create the query args from queryOptions
         const args = buildQuery(queryOptions);
         // Include the locations table
+        const locationArgs = {
+            locations: {},
+        };
+        if (
+            sortOptions.includes(SORT_OPTIONS.FLOOR_ASC) ||
+            sortOptions.includes(SORT_OPTIONS.FLOOR_DSC)
+        ) {
+            locationArgs.locations = Object.assign(
+                {},
+                ...sortOptions
+                    .filter(
+                        (option) =>
+                            option === SORT_OPTIONS.FLOOR_ASC || option === SORT_OPTIONS.FLOOR_DSC
+                    )
+                    .map((option) => DIRECTORY_SORT_OPTIONS[option])
+            );
+        }
+        args.orderBy = { ...args.orderBy, ...locationArgs };
         args.select = { ...args.select, locations: true };
+        console.log(args);
         //Attempt to pull from directory
         const DIRECTORY = await PrismaClient.department.findMany(args);
-        console.log(DIRECTORY);
+        //console.log(DIRECTORY);
         res.send(DIRECTORY);
     } catch (error) {
         // Log any failures
