@@ -45,16 +45,19 @@ model ServiceRequest {
   location         Location?         @relation(name: "ServiceLocation", fields: [location_id], references: [loc_id])
   location_id      Int?
   service_type     String
-  patientTransport PatientTransport? @relation(name: "ServicePatientTransport") //unused relation
-  transport_type   String
+  patientTransport PatientTransport? @relation(name: "ServicePatientTransport")
   request_time     DateTime?         @default(now()) @db.Time
 }
 
+
+//TODO: FIX LOCATION FIELDS
 model PatientTransport {
   servReq_id      Int            @id
   patient_id      Int
   patient_name    String
   pickup_location String
+  dropoff_location String
+  transport_type   String
   servRequest_id  ServiceRequest @relation(name: "ServicePatientTransport", fields: [servReq_id], references: [request_id])
 }
 
@@ -62,9 +65,6 @@ model Department {
   dep_id       Int        @id @default(autoincrement())
   dep_services String
   dep_name     String
-  //1-  Chestnut Hill
-  //2 - 20 Patriot Place
-  //3 - 22 Patriot Place
   building_id  Int
   dep_phone    String
   members      Employee[]
