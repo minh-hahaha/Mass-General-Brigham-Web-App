@@ -24,6 +24,7 @@ export enum FILTER_OPTIONS {
     INCLUDE_NAME,
     INCLUDE_BLDG_ID,
     INCLUDE_PHONE,
+    INCLUDE_ALL,
 }
 
 const DIRECTORY_SORT_OPTIONS: object[] = [];
@@ -42,6 +43,7 @@ DIRECTORY_FILTER_OPTIONS.push({ dep_services: true });
 DIRECTORY_FILTER_OPTIONS.push({ dep_name: true });
 DIRECTORY_FILTER_OPTIONS.push({ building_id: true });
 DIRECTORY_FILTER_OPTIONS.push({ dep_phone: true });
+DIRECTORY_FILTER_OPTIONS.push(Object.assign({}, ...DIRECTORY_FILTER_OPTIONS));
 
 // GET Send Data
 router.get('/', async function (req: Request, res: Response) {
