@@ -4,8 +4,9 @@ import ConfirmMessageComponent from '@/components/ConfirmMessageComponent.tsx';
 import { useState } from 'react';
 import { SubmitTransportRequest } from '@/database/transportRequest.ts';
 import SelectElement from '@/elements/SelectElement.tsx';
+import { SubmitTranslatorRequest } from '@/database/translationRequest.ts';
 
-interface TranslationRequestData {
+export interface TranslationRequestData {
     employeeName: string;
     employeeId: number;
     priority: 'Low' | 'Medium' | 'High' | 'Emergency';
@@ -17,45 +18,58 @@ interface TranslationRequestData {
     date: string;
     meetingLink: string;
     status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
+    notes: string;
 }
 
 const TranslationServiceRequestPage = () => {
     const [employeeName, setEmployeeName] = useState('');
-    const [employeeId, setEmployeeId] = useState('');
+    const [employeeId, setEmployeeId] = useState<number>(0);
     const [patientName, setPatientName] = useState('');
     const [patientLanguage, setPatientLanguage] = useState('');
     const [priority, setPriority] = useState('');
     const [location, setLocation] = useState('');
-    const [date, setDate] = useState('');
-    const [duration, setDuration] = useState('');
-    const[typeMeeting, setTypeMeeting] = useState('');
-    const[meetingLink, setMeetingLink] = useState('');
-    const[status, setStatus] = useState('');
+    const [date, setDate] = useState(new Date().toISOString());
+    const [duration, setDuration] = useState(0);
+    const [typeMeeting, setTypeMeeting] = useState('');
+    const [meetingLink, setMeetingLink] = useState('');
+    const [status, setStatus] = useState('');
+    const [notes, setNotes] = useState('');
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        // e.preventDefault();
-        //
-        // const newRequest: translatorRequest = {
-        //     employeeName,
-        //     employeeId,
-        //
-        // };
-        //
-        // SubmitTranslatorRequest(newRequest);
+        e.preventDefault();
+
+        const newRequest: TranslationRequestData = {
+            employeeName: employeeName,
+            employeeId: employeeId,
+            priority: priority as 'Low' | 'Medium' | 'High' | 'Emergency',
+            location: location as 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place',
+            language: patientLanguage,
+            patientName: patientName,
+            duration: duration,
+            typeMeeting: typeMeeting as 'Remote (Online)' | 'On-site (In-Person)',
+            date: date,
+            meetingLink: meetingLink,
+            status: status as 'Pending' | 'In Progress' | 'Completed' | 'Cancelled',
+            notes: notes,
+        };
+
+        SubmitTranslatorRequest(newRequest);
+        handleReset();
     };
 
     const handleReset = () => {
         setEmployeeName('');
-        setEmployeeId('');
+        setEmployeeId(0);
         setPatientName('');
         setPatientLanguage('');
         setPriority('');
         setLocation('');
-        setDate('');
-        setDuration('');
+        setDate(new Date().toISOString().split('T')[0]);
+        setDuration(0);
         setTypeMeeting('');
         setMeetingLink('');
         setStatus('');
+        setNotes('');
     };
 
     return (
@@ -95,7 +109,7 @@ const TranslationServiceRequestPage = () => {
                                         required={true}
                                         type="text"
                                         value={employeeId}
-                                        onChange={(e) => setEmployeeId(e.target.value)}
+                                        onChange={(e) => setEmployeeId(Number(e.target.value))}
                                     />
                                 </div>
                             </div>
@@ -173,7 +187,7 @@ const TranslationServiceRequestPage = () => {
                                         required={true}
                                         type="number"
                                         value={duration}
-                                        onChange={(e) => setDuration(e.target.value)}
+                                        onChange={(e) => setDuration(Number(e.target.value))}
                                     />
                                 </div>
                             </div>
@@ -186,7 +200,7 @@ const TranslationServiceRequestPage = () => {
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center gap-2">
                                     <SelectElement
-                                        options={['Remote (Online)','On-site (In-Person)']}
+                                        options={['Remote (Online)', 'On-site (In-Person)']}
                                         id="typeMeeting"
                                         label="Meeting Type:  "
                                         placeholder="Please select the Meeting Type"
@@ -195,18 +209,10 @@ const TranslationServiceRequestPage = () => {
                                         onChange={(e) => setTypeMeeting(e.target.value)}
                                     />
                                 </div>
-                                <div className="flex items-center gap-2">
-                                    <SelectElement
-                                        options={['Chestnut Hill', '20 Patriot Place', '22 Patriot Place']}
-                                        id="location"
-                                        label="Location:  "
-                                        placeholder="Please select the Location"
-                                        required={true}
-                                        value={location}
-                                        onChange={(e) => setLocation(e.target.value)}
-                                    />
-                                </div>
-                                <div className="flex items-center gap-2">
+                                <div
+                                    className="flex items-center gap-2"
+                                    hidden={typeMeeting !== 'Remote (Online)'}
+                                >
                                     <InputElement
                                         id="meetingLink"
                                         name="meetingLink"
@@ -220,7 +226,27 @@ const TranslationServiceRequestPage = () => {
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <SelectElement
-                                        options={['Pending', 'In Progress', 'Completed', 'Cancelled']}
+                                        options={[
+                                            'Chestnut Hill',
+                                            '20 Patriot Place',
+                                            '22 Patriot Place',
+                                        ]}
+                                        id="location"
+                                        label="Location:  "
+                                        placeholder="Please select the Location"
+                                        required={true}
+                                        value={location}
+                                        onChange={(e) => setLocation(e.target.value)}
+                                    />
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <SelectElement
+                                        options={[
+                                            'Pending',
+                                            'In Progress',
+                                            'Completed',
+                                            'Cancelled',
+                                        ]}
                                         id="status"
                                         label="Status:  "
                                         placeholder="Please select the Status of the Request"
@@ -229,30 +255,39 @@ const TranslationServiceRequestPage = () => {
                                         onChange={(e) => setStatus(e.target.value)}
                                     />
                                 </div>
-
+                                <div className="flex items-center gap-2">
+                                    <label htmlFor={'notes'}>Additional Notes</label>
+                                    <textarea
+                                        id="notes"
+                                        placeholder="Additional Notes"
+                                        value={notes}
+                                        onChange={(e) => setNotes(e.target.value)}
+                                        cols={3}
+                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                    />
+                                </div>
                             </div>
+                        </div>
+                        <div>
+                            <div className="flex flex-col gap-2">
+                                <div className="flex items-center justify-center space-x-4">
+                                    <MGBButton
+                                        onClick={() => handleSubmit}
+                                        variant={'primary'}
+                                        disabled={false}
+                                    >
+                                        Submit Request
+                                    </MGBButton>
 
-
-                            <div className="flex items-center justify-center space-x-4">
-                                <MGBButton
-                                    onClick={() => handleSubmit}
-                                    variant={'primary'}
-                                    disabled={false}
-                                >
-                                    Submit Request
-                                </MGBButton>
-
-                                <MGBButton
-                                    onClick={() => handleReset()}
-                                    variant={'secondary'}
-                                    disabled={false}
-                                >
-                                    Clear Form
-                                </MGBButton>
+                                    <MGBButton
+                                        onClick={() => handleReset()}
+                                        variant={'secondary'}
+                                        disabled={false}
+                                    >
+                                        Clear Form
+                                    </MGBButton>
+                                </div>
                             </div>
-
-
-
                         </div>
                     </form>
                 </div>
