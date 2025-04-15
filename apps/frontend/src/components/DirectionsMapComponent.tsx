@@ -213,7 +213,7 @@ const DirectionsMapComponent = () => {
                             id="fromLocation"
                             ref={fromLocationRef}
                             value={fromLocation}
-                            className="w-full p-2 border border-gray-300 rounded"
+                            className="w-full p-2 border border-mgbblue rounded"
                             onChange={(e) => setFromLocation(e.target.value)}
                             required
                             placeholder="Choose a starting point..."
@@ -227,7 +227,7 @@ const DirectionsMapComponent = () => {
                         <DropdownMenu>
                             <DropdownMenuTrigger
                                 id="toLocation"
-                                className="w-full p-2 border border-gray-300 rounded text-sm bg-white"
+                                className="w-full p-2 border border-mgbblue rounded text-sm bg-white"
                             >
                                 {toLocation || "Select a destination"}
                             </DropdownMenuTrigger>
