@@ -27,7 +27,7 @@ const HomePage = () => {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1, delay: 1 }}
                 >
-                    <div className="relative z-10 flex flex-col items-center mt-5">
+                    <div className="relative z-10 flex flex-row justify-center items-center mt-5 gap-3">
                         <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                             <MGBButton
                                 onClick={() => window.location.href = '/MapPage'}
@@ -35,6 +35,15 @@ const HomePage = () => {
                                 disabled={false}
                             >
                                 I Need Directions
+                            </MGBButton>
+                        </motion.button>
+                        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                            <MGBButton
+                                onClick={() => window.location.href = '/Login'}
+                                variant={'secondary'}
+                                disabled={false}
+                            >
+                                Log In
                             </MGBButton>
                         </motion.button>
                     </div>

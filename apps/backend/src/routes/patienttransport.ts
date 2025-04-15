@@ -7,7 +7,7 @@ router.get('/', async (req: Request, res: Response) => {
     try {
         const requests = await PrismaClient.serviceRequest.findMany({
             where: {
-                service_type: 'Patient Transport',
+                serviceType: 'Patient Transport',
             },
             include: {
                 //might flag an error
@@ -33,33 +33,34 @@ router.post('/', async (req: Request, res: Response) => {
             //creates entry for service request
             const serviceRequest = await prisma.serviceRequest.create({
                 data: {
-                    transport_type: req.body.transportType,
                     priority: req.body.priority,
                     status: req.body.status,
                     comments: req.body.notes,
-                    service_type: 'Patient Transport',
+                    serviceType: 'Patient Transport',
 
                     //optional fields
-                    location_id: req.body.locationId ?? null,
-                    employee_id: req.body.employeeId ?? null, // change to user id in the future?
-                    request_date: new Date(pickupDate) ?? null,
-                    request_time: new Date(req.body.pickupTime) ?? null,
+                    locationId: req.body.locationId ?? null,
+                    employeeId: req.body.employeeId ?? null, // change to user id in the future?
+                    requestDate: new Date(pickupDate) ?? null,
+                    requestTime: new Date(req.body.pickupTime) ?? null,
                 },
             });
 
             //create entry for patient transport table
             const patientTransport = await prisma.patientTransport.create({
                 data: {
-                    servReq_id: serviceRequest.request_id,
-                    patient_id: req.body.patientId,
-                    patient_name: req.body.patientName,
-                    pickup_location: req.body.pickupLocation,
+                    servReqId: serviceRequest.requestId,
+                    patientId: req.body.patientId,
+                    patientName: req.body.patientName,
+                    pickupLocation: req.body.pickupLocation,
+                    transportType: req.body.transportType,
+                    dropoffLocation: 'nowhere',
                 },
                 select: {
-                    servReq_id: true,
-                    patient_id: true,
-                    patient_name: true,
-                    pickup_location: true,
+                    servReqId: true,
+                    patientId: true,
+                    patientName: true,
+                    pickupLocation: true,
                 },
             });
 
