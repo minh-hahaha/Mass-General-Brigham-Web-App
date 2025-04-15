@@ -11,6 +11,8 @@ import validateRouter from './routes/validate.ts';
 import patientTransportRouter from './routes/patienttransport.ts';
 import directoryRouter from './routes/directory.ts';
 import sanitationRouter from './routes/sanitation.ts';
+import translationRouter from "./routes/translationrequest.ts";
+import graphRouter from './routes/bfsRoutes.ts'
 
 import { ROUTES } from 'common/src/constants';
 
@@ -45,6 +47,8 @@ app.use(ROUTES.DIRECTORY, directoryRouter);
 app.use(ROUTES.DIRECTORY_CSV, directoryRouter);
 
 app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
+app.use(ROUTES.TRANSLATIONREQUEST, translationRouter);
+app.use(ROUTES.BFSGRAPH, graphRouter);
 
 /**
  * Catch all 404 errors, and forward them to the error handler

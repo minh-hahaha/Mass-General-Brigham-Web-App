@@ -19,11 +19,10 @@ interface TransportRequest {
 }
 
 interface ConfirmationMessageProps {
-    request: TransportRequest | sanitationRequest;
     onClose?: () => void;
 }
 
-function ConfirmMesg({ request, onClose }: ConfirmationMessageProps) {
+function ConfirmMessageComponent({onClose}: ConfirmationMessageProps) {
     const [visible, setVisible] = useState(true);
 
     // set a timer
@@ -46,4 +45,4 @@ function ConfirmMesg({ request, onClose }: ConfirmationMessageProps) {
     );
 }
 
-export default ConfirmMesg;
+export default ConfirmMessageComponent;

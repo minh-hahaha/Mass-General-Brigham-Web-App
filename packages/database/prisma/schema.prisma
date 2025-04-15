@@ -46,17 +46,34 @@ model ServiceRequest {
   location_id      Int?
   service_type     String
   patientTransport PatientTransport? @relation(name: "ServicePatientTransport")
-  transport_type   String?
   request_time     DateTime?         @default(now()) @db.Time
+
+  translationRequest TranslationRequest?
   sanitation       Sanitation?       @relation(name: "ServiceSanitation")
 }
 
+
+//TODO: FIX LOCATION FIELDS
 model PatientTransport {
   servReq_id      Int            @id
   patient_id      Int
   patient_name    String
   pickup_location String
+  dropoff_location String
+  transport_type   String
   servRequest_id  ServiceRequest @relation(name: "ServicePatientTransport", fields: [servReq_id], references: [request_id])
+}
+
+model TranslationRequest {
+  request_id     Int            @id
+  service_req_id ServiceRequest @relation(fields: [request_id], references: [request_id])
+  patient_name   String
+  language       String
+  duration       Float
+  type_meeting   String
+  date           DateTime
+  meeting_link   String
+  location       String
 }
 
 model Department {
@@ -64,7 +81,7 @@ model Department {
   dep_services String
   dep_name     String
   building_id  Int
-  dep_phone    String     @unique
+  dep_phone    String
   members      Employee[]
   locations    Location[]
   building     Building   @relation(fields: [building_id], references: [building_id])
@@ -89,10 +106,24 @@ model Building {
 }
 
 model Node {
-  node_id      Int   @id @default(autoincrement())
-  neighbor_ids Int[]
-  pixel_x      Int
-  pixel_y      Int
+  id        Int    @id @default(autoincrement())
+  xPixel    Int
+  yPixel    Int
+  floor     Int
+  nodeType  String
+  building  String
+  longName  String
+  shortName String
+  edgesFrom Edge[] @relation("NodeToEdgeFrom")
+  edgesTo   Edge[] @relation("NodeToEdgeTo")
+}
+
+model Edge {
+  id       String @id
+  toId     Int
+  fromId   Int
+  nodeTo   Node   @relation("NodeToEdgeTo", fields: [toId], references: [id])
+  nodeFrom Node   @relation("NodeToEdgeFrom", fields: [fromId], references: [id])
 }
 
 model Sanitation {
