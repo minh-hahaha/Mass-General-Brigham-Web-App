@@ -56,15 +56,15 @@ const ServiceRequestDisplayPage = () => {
                     <TableBody>
                         {requests.map((req) => (
                             <TableRow>
-                                <TableCell>{req.request_id}</TableCell>
-                                <TableCell>{req.patientTransport.patient_id}</TableCell>
-                                <TableCell>{req.patientTransport.patient_name}</TableCell>
+                                <TableCell>{req.requestId}</TableCell>
+                                <TableCell>{req.patientTransport.patientId}</TableCell>
+                                <TableCell>{req.patientTransport.patientName}</TableCell>
                                 <TableCell>{req.priority}</TableCell>
                                 <TableCell>{req.status}</TableCell>
-                                <TableCell>{req.patientTransport.pickup_location}</TableCell>
-                                <TableCell>{req.request_date}</TableCell>
-                                <TableCell>{req.service_type}</TableCell>
-                                <TableCell>{req.transport_type}</TableCell>
+                                <TableCell>{req.patientTransport.pickupLocation}</TableCell>
+                                <TableCell>{req.requestDate}</TableCell>
+                                <TableCell>{req.serviceType}</TableCell>
+                                <TableCell>{req.transportType}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

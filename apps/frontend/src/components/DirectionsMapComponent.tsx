@@ -2,19 +2,16 @@ import React, {useState, useEffect, useRef, useMemo, ChangeEvent} from 'react';
 import MGBButton from '../elements/MGBButton.tsx';
 import SelectElement from '../elements/SelectElement.tsx';
 import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google-maps';
-import ChestnutHillMapComponent from './ChestnutHillMapComponent.tsx';
-import { bfs } from '../../../backend/src/Algorithms/BFS.ts';
 import TravelModeComponent from "@/components/TravelModeComponent.tsx";
 import OverlayComponent from "@/components/svgOverlay.tsx";
 import ViewPath from "@/components/ViewPath.tsx";
-import {sampleNodes, sampleEdges, testNodes, testEdges} from "@/components/SampleNodesEdges.tsx";
 
-const samplePath =["CH1Door1,", "CH1Hallway2", "CH1Hallway3", "CH1Door4", "CH1Room130"];
-const testPath =["CH1Intersection1", "CH1Intersection2", "CH1Intersection3"];
-import {setDragLock} from "framer-motion";
+
 import {myNode} from "../../../backend/src/Algorithms/classes.ts";
 import axios from 'axios';
 import {ROUTES} from "common/src/constants.ts";
+import {GetTransportRequest, incomingRequest} from "@/database/transportRequest.ts";
+import {getDepartmentNode} from "@/database/getDepartmentNode.ts";
 
 const Buildings = [
     "20 Patriot Place",
@@ -131,18 +128,6 @@ const DirectionsMapComponent = () => {
         setShowHospital(true);
     };
 
-    const handleParkB = () => {
-        clearParking();
-        setParkB(true);
-        setShowHospital(true);
-    };
-
-    const handleParkC = () => {
-        clearParking();
-        setParkC(true);
-        setShowHospital(true);
-    };
-
     const clearParking = () => {
         setParkA(false);
         setParkB(false);
@@ -163,16 +148,41 @@ const DirectionsMapComponent = () => {
         const nodes : myNode[] = res.data
         console.log(nodes)
         return nodes;
-
     }
+    // toLocation === Buildings[2] ? (
+    //     <div>
+    //         <HospitalMap/>
+    //     </div>
+    // ) : (toLocation === Buildings[0] ? (
+    //         <div>
+    //             {/*<ViewPath svgMapUrl="/20PPFloor1.svg" nodes={testNodes} path={testPath}/>*/}
+    //         </div>
+    //     ) : (
+    //         <div>
+    //             {/*<ViewPath svgMapUrl="/20PPFloor2.svg" nodes={testNodes}  path={testPath}/>*/}
+    //         </div>
+    //     )
+    //
+    // )
+    const [deptNode, setDeptNode] = useState<myNode>();
+
+    useEffect(() => {
+        async function fetchDeptNode() {
+            const data = await getDepartmentNode();
+            console.log(data);
+            setDeptNode(data);
+        }
+        fetchDeptNode();
+    }, []);
+
 
     const HospitalMap = () => {
-        const [path, setPaths] = useState<myNode[]>([]);
+        const [bfsPath, setBFSPath] = useState<myNode[]>([]);
 
         useEffect(() => {
             const getMyPaths = async () => {
                 const door1 : myNode = {
-                    nodeID: "CH1Door1",
+                    id: "CH1Door1",
                     x: 694.6909401633523,
                     y: 164.93491432883522,
                     floor: "1",
@@ -182,43 +192,29 @@ const DirectionsMapComponent = () => {
                     roomNumber: ""
                     }
                 const room102: myNode = {
-                    nodeID: "CH1Room102",
-                    x: 662.2247373611947,
-                    y: 757.8635425826869,
-                    floor: "1",
-                    buildingId: "1",
-                    nodeType: "Room",
-                    name: "Radiology, MR/CT Scan 102",
-                    roomNumber: "102"
-                }
-                if (parkA) {
+                        id: "CH1Room130",
+                        x: 528.8599611031434,
+                        y: 284.5968690890998,
+                        floor: "1",
+                        buildingId: "1",
+                        nodeType: "Room",
+                        name: "Multi-Specialty Clinic 130",
+                        roomNumber: "130"
+                    }
+
                     const result = await FindPath(door1, room102);
-                    setPaths(result);
-                // } else if (parkB) {
-                //     const result = await cleanedUpBFS('J', 'G');
-                //     console.log('ParkB   ' + result);
-                //     setPaths(result);
-                // } else if (parkC) {
-                //     const result = await cleanedUpBFS('L', 'G');
-                //     console.log('ParkC   ' + result);
-                //     setPaths(result);
-                } else {
-                    setPaths([]);
-                }
+                    setBFSPath(result);
+
             };
             getMyPaths();
             // console.log(path);
-        }, [parkA, parkB, parkC]);
-
-
+        }, [showHospital]);
 
         return (
-            // <div>
-            //      <ChestnutHillMapComponent svgPath={svg} nodeConnections={path} />
-            // </div>
             <div>
-
+                <ViewPath svgMapUrl="/ChestnutHillFloor1.svg" path={bfsPath}/>
             </div>
+
         );
     };
 
@@ -300,42 +296,15 @@ const DirectionsMapComponent = () => {
                         >
                             Lot A
                         </MGBButton>
-
-                        <MGBButton
-                            onClick={() => handleParkB()}
-                            variant={'primary'}
-                            disabled={!parking}
-                        >
-                            Lot B
-                        </MGBButton>
-                        <MGBButton
-                            onClick={() => handleParkC()}
-                            variant={'primary'}
-                            disabled={!parking}
-                        >
-                            Lot C
-                        </MGBButton>
                     </div>
                 )}
             </div>
 
             <div className="basis-5/6 relative">
                 {showHospital ? (
-                        toLocation === Buildings[2] ? (
-                            <div>
-                                <ViewPath svgMapUrl="/ChestnutHillFloor1.svg" nodes={sampleNodes} edges={sampleEdges} path={samplePath}/>
-                            </div>
-                        ) : (toLocation === Buildings[0] ? (
-                                <div>
-                                    <ViewPath svgMapUrl="/20PPFloor1.svg" nodes={testNodes} edges={testEdges} path={testPath}/>
-                                </div>
-                            ) : (
-                                <div>
-                                    <ViewPath svgMapUrl="/20PPFloor2.svg" nodes={testNodes} edges={testEdges} path={testPath}/>
-                                </div>
-                            )
-
-                        )) :  (
+                        <div>
+                            <HospitalMap />
+                        </div>) :  (
                     <Map
                         style={{ width: '100%', height: '92vh' }}
                         defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
