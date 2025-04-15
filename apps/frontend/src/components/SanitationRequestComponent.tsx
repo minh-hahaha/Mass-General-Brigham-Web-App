@@ -94,7 +94,7 @@ const SanitationRequestPage = () => {
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
                             <h3 className="text-xl font-semibold mb-4">
-                                <b>Request Information</b>
+                                <b>Employee Information</b>
                             </h3>
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center gap-2">
@@ -115,7 +115,7 @@ const SanitationRequestPage = () => {
 
                         <div>
                             <h3 className="text-xl font-semibold mb-4">
-                                <b>Transport Details</b>
+                                <b>Sanitation Details</b>
                             </h3>
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center gap-2">
