@@ -85,7 +85,6 @@ const TranslationServiceRequestPage = () => {
                             <h3 className="text-xl font-semibold mb-4">
                                 <b>Employee Information</b>
                             </h3>
-
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center gap-2">
                                     <InputElement
@@ -153,7 +152,7 @@ const TranslationServiceRequestPage = () => {
                                 <b>Translator Information</b>
                             </h3>
                             <div className="flex flex-col gap-2">
-                                <div className="flex items-center gap-2">
+
                                     <SelectElement
                                         options={['Low', 'Medium', 'High', 'Emergency']}
                                         id="priority"
@@ -163,7 +162,6 @@ const TranslationServiceRequestPage = () => {
                                         value={priority}
                                         onChange={(e) => setPriority(e.target.value)}
                                     />
-                                </div>
 
                                 <div className="flex items-center gap-2">
                                     <InputElement
@@ -198,7 +196,7 @@ const TranslationServiceRequestPage = () => {
                                 <b>Meeting Information</b>
                             </h3>
                             <div className="flex flex-col gap-2">
-                                <div className="flex items-center gap-2">
+
                                     <SelectElement
                                         options={['Remote (Online)', 'On-site (In-Person)']}
                                         id="typeMeeting"
@@ -208,7 +206,7 @@ const TranslationServiceRequestPage = () => {
                                         value={typeMeeting}
                                         onChange={(e) => setTypeMeeting(e.target.value)}
                                     />
-                                </div>
+
                                 <div
                                     className="flex items-center gap-2"
                                     hidden={typeMeeting !== 'Remote (Online)'}
@@ -224,7 +222,7 @@ const TranslationServiceRequestPage = () => {
                                         onChange={(e) => setMeetingLink(e.target.value)}
                                     />
                                 </div>
-                                <div className="flex items-center gap-2">
+
                                     <SelectElement
                                         options={[
                                             'Chestnut Hill',
@@ -238,8 +236,6 @@ const TranslationServiceRequestPage = () => {
                                         value={location}
                                         onChange={(e) => setLocation(e.target.value)}
                                     />
-                                </div>
-                                <div className="flex items-center gap-2">
                                     <SelectElement
                                         options={[
                                             'Pending',
@@ -254,9 +250,8 @@ const TranslationServiceRequestPage = () => {
                                         value={status}
                                         onChange={(e) => setStatus(e.target.value)}
                                     />
-                                </div>
                                 <div className="flex items-center gap-2">
-                                    <label htmlFor={'notes'}>Additional Notes</label>
+                                    <label className="w-1/4" htmlFor={'notes'}>Additional Notes</label>
                                     <textarea
                                         id="notes"
                                         placeholder="Additional Notes"
