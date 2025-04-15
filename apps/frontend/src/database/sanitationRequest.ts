@@ -25,8 +25,8 @@ export interface sanitationRequest {
 
 export interface incomingSanitationRequest {
     comments: string;
-    employee_id: number;
-    location_id: number;
+    employeeId: number;
+    locationId: number;
     sanitation: {
         servReq_id:          number;
         sanitationType:      string;
@@ -36,12 +36,12 @@ export interface incomingSanitationRequest {
         completeBy:          number;
     }
     priority: 'Low' | 'Medium' | 'High';
-    request_date: string;
-    request_id: number;
-    request_time: number;
-    service_type: string;
+    requestDate: string;
+    requestId: number;
+    requestTime: number;
+    serviceType: string;
     status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
-    transport_type: string;
+    transportType: string;
 }
 
 

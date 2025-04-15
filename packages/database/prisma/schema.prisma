@@ -12,84 +12,82 @@ datasource db {
   url      = env("POSTGRES_URL")
 }
 
-
-
 model Employee {
-  employeeId             Int              @id @default(autoincrement())
-  firstName     String
-  middleName    String?
-  lastName      String
+  employeeId     Int              @id @default(autoincrement())
+  firstName      String
+  middleName     String?
+  lastName       String
   position       String
-  dateHired     DateTime         @default(now()) @db.Date
+  dateHired      DateTime         @default(now()) @db.Date
   serviceRequest ServiceRequest[]
   email          String           @unique
   password       String
   department     Department?      @relation(fields: [departmentId], references: [deptId])
-  departmentId  Int?
+  departmentId   Int?
   admin          Boolean          @default(false)
 }
 
 model ServiceRequest {
-  requestId       Int               @id @default(autoincrement())
-  assignedId     Employee?         @relation(fields: [employeeId], references: [employeeId])
-  employeeId      Int?
-  requestDate     DateTime?         @default(now()) @db.Date
-  status           String
-  comments         String?
-  priority         String
-  location         Location?         @relation(name: "ServiceLocation", fields: [locationId], references: [locId])
-  locationId     Int?
-  serviceType    String
-  patientTransport PatientTransport? @relation(name: "ServicePatientTransport")
-  requestTime     DateTime?         @default(now()) @db.Time
+  requestId          Int               @id @default(autoincrement())
+  assignedId         Employee?         @relation(fields: [employeeId], references: [employeeId])
+  employeeId         Int?
+  requestDate        DateTime?         @default(now()) @db.Date
+  status             String
+  comments           String?
+  priority           String
+  location           Location?         @relation(name: "ServiceLocation", fields: [locationId], references: [locId])
+  locationId         Int?
+  serviceType        String
+  patientTransport   PatientTransport? @relation(name: "ServicePatientTransport")
+  requestTime        DateTime?         @default(now()) @db.Time
 
   translationRequest TranslationRequest?
-  sanitation       Sanitation?       @relation(name: "ServiceSanitation")
+  sanitation         Sanitation?       @relation(name: "ServiceSanitation")
 }
 
 
 //TODO: FIX LOCATION FIELDS
 model PatientTransport {
-  servReqId     Int            @id
-  patientId      Int
-  patientName    String
-  pickupLocation String
+  servReqId       Int            @id
+  patientId       Int
+  patientName     String
+  pickupLocation  String
   dropoffLocation String
   transportType   String
-  servRequestId  ServiceRequest @relation(name: "ServicePatientTransport", fields: [servReqId], references: [requestId])
+  servRequestId   ServiceRequest @relation(name: "ServicePatientTransport", fields: [servReqId], references: [requestId])
 }
 
 model TranslationRequest {
   serviceReqId    Int            @id
-  servRequestId ServiceRequest @relation(fields: [serviceReqId], references: [requestId])
-  patientName   String
-  language       String
-  duration       Float
-  typeMeeting   String
-  date           DateTime
-  meetingLink   String
-  location       String
+  servRequestId   ServiceRequest @relation(fields: [serviceReqId], references: [requestId])
+  patientName     String
+  language        String
+  duration        Float
+  typeMeeting     String
+  date            DateTime
+  meetingLink     String
+  location        String
 }
 
 model Department {
-  deptId       Int        @id @default(autoincrement())
-  deptServices String
-  deptName     String
-  buildingId  Int
-  deptPhone    String
-  members      Employee[]
-  locations    Location[]
-  building     Building   @relation(fields: [buildingId], references: [buildingId])
-  nodeId       String?        @unique
+  deptId        Int        @id @default(autoincrement())
+  deptServices  String
+  deptName      String
+  buildingId    Int
+  deptPhone     String
+  members       Employee[]
+  locations     Location[]
+  building      Building   @relation(fields: [buildingId], references: [buildingId])
+  nodeId        String?        @unique
   nodeReception Node?      @relation(fields: [nodeId], references: [nodeId], name:"DepartmentNode")
 }
 
 model Location {
-  locId       Int         @id @default(autoincrement())
+  locId         Int         @id @default(autoincrement())
   department    Department? @relation(fields: [departmentId], references: [deptId])
-  departmentId Int?
-  locType      String
-  roomNum      Int?        @unique
+  departmentId  Int?
+  locType       String
+  roomNum       Int?        @unique
   floor         Int
 
   // making prisma happy here
@@ -97,24 +95,24 @@ model Location {
 }
 
 model Building {
-  buildingId   Int          @id @default(autoincrement())
-  buildingName String
+  buildingId    Int          @id @default(autoincrement())
+  buildingName  String
   departments   Department[]
 }
 
 model Node {
   // ignore id
   // id         Int     @id @default(autoincrement())
-  nodeId     String  @id
-  x          Decimal
-  y          Decimal
-  floor      String
-  buildingId String
-  nodeType   String
-  name       String
-  roomNumber String?
-  edgesFrom  Edge[]  @relation("NodeToEdgeFrom")
-  edgesTo    Edge[]  @relation("NodeToEdgeTo")
+  nodeId      String  @id
+  x           Decimal
+  y           Decimal
+  floor       String
+  buildingId  String
+  nodeType    String
+  name        String
+  roomNumber  String?
+  edgesFrom   Edge[]  @relation("NodeToEdgeFrom")
+  edgesTo     Edge[]  @relation("NodeToEdgeTo")
   department  Department? @relation(name:"DepartmentNode")
 }
 
@@ -128,7 +126,7 @@ model Edge {
 }
 
 model Sanitation {
-  servReqId       Int            @id
+  servReqId        Int            @id
   sanitationType   String
   recurring        Boolean
   hazardLevel      String
