@@ -8,10 +8,15 @@ export interface DepartmentRequest {
     deptName: string;
     buildingId: number;
     deptPhone: string;
+    // node: {
+    //     nodeId: number;
+    //     xcoord: number;
+    //     ycoord: number;
+    // }
 }
 
 export interface DirectoryRequestName {
-    dep_name: string;
+    deptName: string;
 }
 export async function GetDirectory(): Promise<DepartmentRequest[]> {
     const response = await axios.get<DepartmentRequest[]>(ROUTES.DIRECTORY);
