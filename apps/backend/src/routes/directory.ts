@@ -118,7 +118,7 @@ router.get('/', async function (req: Request, res: Response) {
     }
 });
 
-router.get('/name', async function (req: Request, res: Response) {
+router.get('/names', async function (req: Request, res: Response) {
     try {
         const DIRECTORY_NAMES = await PrismaClient.department.findMany({
             select: {
