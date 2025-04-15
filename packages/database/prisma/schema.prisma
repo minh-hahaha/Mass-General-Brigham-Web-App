@@ -89,12 +89,12 @@ model Building {
 
 model Node {
   // ignore id
-  id         Int     @id @default(autoincrement())
-  nodeID     String  @unique
+  // id         Int     @id @default(autoincrement())
+  nodeID     String  @id
   x          Decimal
   y          Decimal
-  floor      Int
-  buildingId Int
+  floor      String
+  buildingId String
   nodeType   String
   name       String
   roomNumber Int?
@@ -104,10 +104,9 @@ model Node {
 
 model Edge {
   // making prisma happy lol
-  id        Int    @id @default(autoincrement())
-  fromAndTo String @unique
-  from      String
-  to        String
-  nodeTo    Node   @relation("NodeToEdgeTo", fields: [to], references: [nodeID])
-  nodeFrom  Node   @relation("NodeToEdgeFrom", fields: [from], references: [nodeID])
+  id       Int    @id @default(autoincrement())
+  from     String
+  to       String
+  nodeTo   Node   @relation("NodeToEdgeTo", fields: [to], references: [nodeID])
+  nodeFrom Node   @relation("NodeToEdgeFrom", fields: [from], references: [nodeID])
 }
