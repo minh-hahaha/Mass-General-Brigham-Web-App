@@ -1,7 +1,7 @@
 export interface QueryOptions {
-    sortOptions: object[];
-    filterOptions: object[];
-    maxQuery: number | undefined;
+    sortOptions: object[]; // Array of options to sort data by
+    filterOptions: object[]; // Array of options to filter data by
+    maxQuery: number | undefined; // The first x rows to return. Specify undefined if you want all
 }
 
 export function buildQuery(options: QueryOptions) {

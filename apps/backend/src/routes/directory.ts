@@ -47,17 +47,30 @@ DIRECTORY_FILTER_OPTIONS.push({ dep_phone: true });
 router.get('/', async function (req: Request, res: Response) {
     // Get from url
     // should be in the format: http://localhost:3000/api/directory?sortOptions=[]&filterOptions=[]&maxQuery=anyNumber
-    const sortOptions: number[] = JSON.parse(req.query.sortOptions as string);
-    const filterOptions: number[] = JSON.parse(req.query.filterOptions as string);
-    const maxQuery = Number(req.query.maxQuery as string);
     // Attempt to get directory
     try {
-        const queryOptions: QueryOptions = {
-            sortOptions: sortOptions.map((option) => DIRECTORY_SORT_OPTIONS[option]),
-            filterOptions: filterOptions.map((option) => DIRECTORY_FILTER_OPTIONS[option]),
-            maxQuery: Number.isNaN(maxQuery) ? undefined : maxQuery,
-        };
+        let queryOptions: QueryOptions;
+        try {
+            const sortOptions: number[] = JSON.parse(req.query.sortOptions as string);
+            const filterOptions: number[] = JSON.parse(req.query.filterOptions as string);
+            const maxQuery = Number(req.query.maxQuery as string);
+            // Try to create query options from url data
+            queryOptions = {
+                sortOptions: sortOptions.map((option) => DIRECTORY_SORT_OPTIONS[option]),
+                filterOptions: filterOptions.map((option) => DIRECTORY_FILTER_OPTIONS[option]),
+                maxQuery: Number.isNaN(maxQuery) ? undefined : maxQuery,
+            };
+        } catch (error) {
+            // If that fails, use an empty queryOptions
+            queryOptions = {
+                sortOptions: [],
+                filterOptions: DIRECTORY_FILTER_OPTIONS.map((option) => option),
+                maxQuery: undefined,
+            };
+        }
+        // Create the query args from queryOptions
         const args = buildQuery(queryOptions);
+        // Include the locations table
         args.select = { ...args.select, locations: true };
         //Attempt to pull from directory
         const DIRECTORY = await PrismaClient.department.findMany(args);
