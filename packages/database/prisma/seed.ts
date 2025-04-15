@@ -1,6 +1,5 @@
 import client from '../../../apps/backend/src/bin/prisma-client.ts'
-import {Prisma} from "../.prisma/client";
-import Decimal = Prisma.Decimal;
+import { exportNodesAndEdges } from '../../../apps/backend/src/Algorithms/ExportNodesAndEdges.ts'
 
 
 // Create the prisma client, this automatically connects to the database
@@ -29,21 +28,6 @@ async function main() {
         ],
         skipDuplicates: true,
     });
-
-    await client.node.createMany({
-        data: Array.from({ length: 42 }, (_, i) => ({
-            nodeId: `NODE${(i + 1).toString().padStart(3, '0')}`, // NODE001 to NODE042
-            x: new Decimal((i + 1) * 10.5),               // 10.5, 21.0, ...
-            y: new Decimal((i + 1) * 8.25),               // 8.25, 16.5, ...
-            floor: `F${(i % 5) + 1}`,                            // F1 to F5
-            buildingId: `B${(i % 3) + 1}`,                       // B1 to B3
-            nodeType: `TYPE${(i % 4) + 1}`,                      // TYPE1 to TYPE4
-            name: `Sample Node ${(i + 1)}`,
-            roomNumber: (i % 6 === 0 ? null : `R${100 + i}`),    // null every 6th node
-        }))
-    });
-
-
     const createManyDepartments = await client.department.createMany({
         data: [
             {
@@ -51,16 +35,13 @@ async function main() {
                 deptName: 'Allergy and Clinical Immunology',
                 buildingId: 1,
                 deptPhone: '617-732-9850',
-                nodeId: "NODE001",
                 deptServices: 'Allergy (environmental, food, medication and venoms), asthma, anaphylaxis, angioedema, sinusitis, and immunodeficiencyy',
-
             },
             {
                 deptId: 2,
                 deptName: 'Backup Child Care Center (Monday-Friday, 8am-4:30pm)',
                 buildingId: 1,
                 deptPhone: '617-732-9543',
-                nodeId: "NODE002",
                 deptServices: 'Backup childcare for employees',
             },
             {
@@ -68,7 +49,6 @@ async function main() {
                 deptName: 'Brigham Dermatology Associates (BDA)',
                 buildingId: 1,
                 deptPhone: '617-732-9080',
-                nodeId: "NODE003",
                 deptServices: 'Medical and surgical dermatology',
             },
             {
@@ -76,7 +56,6 @@ async function main() {
                 deptName: 'Brigham Obstetrics and Gynecology Group (BPG)',
                 buildingId: 1,
                 deptPhone: '617-732-9100',
-                nodeId: "NODE004",
                 deptServices: 'Gynecology, obstetrics',
             },
             {
@@ -84,7 +63,6 @@ async function main() {
                 deptName: 'Brigham Physicians Group',
                 buildingId: 1,
                 deptPhone: '617-732-9900',
-                nodeId: "NODE005",
                 deptServices: 'Adult primary care',
             },
             {
@@ -92,7 +70,6 @@ async function main() {
                 deptName: 'Brigham Psychiatric Specialties',
                 buildingId: 1,
                 deptPhone: '617-732-9811',
-                nodeId: "NODE006",
                 deptServices: 'Psychiatry, psychology, social work',
             },
             {
@@ -100,7 +77,6 @@ async function main() {
                 deptName: 'Center for Pain Medicine',
                 buildingId: 1,
                 deptPhone: '617-732-9060',
-                nodeId: "NODE007",
                 deptServices: 'Multidisciplinary pain management',
             },
             {
@@ -108,7 +84,6 @@ async function main() {
                 deptName: 'Crohns and Colitis Center',
                 buildingId: 1,
                 deptPhone: '617-732-6389',
-                nodeId: "NODE008",
                 deptServices: 'Crohns disease, inflammatory bowel disease, infusion services, microscopic colitis, pulmonary, rheumatology, ulcerative colitis',
             },
             {
@@ -116,7 +91,6 @@ async function main() {
                 deptName: 'Endoscopy Center',
                 buildingId: 1,
                 deptPhone: '617-732-7426',
-                nodeId: "NODE009",
                 deptServices: 'Bacterial overgrowth breath test, colonoscopy, H.Pylori breath test, lactose malabsorbtion breath test, upper endoscopy',
             },
             {
@@ -124,7 +98,6 @@ async function main() {
                 deptName: 'Gretchen S. and Edward A.Fish Center for Womens Health',
                 buildingId: 1,
                 deptPhone: '617-732-9300',
-                nodeId: "NODE010",
                 deptServices: 'Cardiology, dermatology, (cosmetic, medical, and surgical), endocrinology, gastroenterology, gynecology, hematology, infectious diseases, mental health (social work), general neurology, nutrition, primary care, pulmonary, renal, rheumatology, sleep medicine, Womens Health (Menopause and Midlife Clinic, Obstetric Internal Medicine)',
             },
             {
@@ -132,7 +105,6 @@ async function main() {
                 deptName: 'Laboratory (Monday-Friday 7am-6:30pm, Saturday 9am-1pm, excluding holidays)',
                 buildingId: 1,
                 deptPhone: '617-732-9841',
-                nodeId: "NODE011",
                 deptServices: 'Blood work, lab services',
             },
             {
@@ -140,7 +112,6 @@ async function main() {
                 deptName: 'Multi-Specialty Clinic',
                 buildingId: 1,
                 deptPhone: '617-732-9500',
-                nodeId: "NODE012",
                 deptServices: 'Orthopedic surgery, Vascular surgery, Contact Dermatitis and Occupational Dermatology Program, Pain Medicine and Travel Medicine',
             },
             {
@@ -148,7 +119,6 @@ async function main() {
                 deptName: 'Osher Clinical Center for Integrative Health',
                 buildingId: 1,
                 deptPhone: '617-732-9700',
-                nodeId: "NODE013",
                 deptServices: 'Acupuncture, health coaching, chiropractic, craniosacral therapy, integrative medicine, structural massage & movement therapies, neurology (movement disorders and headache), echocardiography, and pulmonary. Educational courses: Integrative wellness courses are also offered.',
             },
             {
@@ -156,7 +126,6 @@ async function main() {
                 deptName: 'Patient Financial Services',
                 buildingId: 1,
                 deptPhone: '617-732-9677',
-                nodeId: "NODE014",
                 deptServices: 'Patient financial counseling',
             },
             {
@@ -164,7 +133,6 @@ async function main() {
                 deptName: 'Pharmacy (Monday-Friday 9am-4pm, excluding holidays)',
                 buildingId: 1,
                 deptPhone: '617-732-9040',
-                nodeId: "NODE015",
                 deptServices: 'Outpatient pharmacy services',
             },
             {
@@ -172,7 +140,6 @@ async function main() {
                 deptName: 'Radiology',
                 buildingId: 1,
                 deptPhone: '617-732-9801',
-                nodeId: "NODE016",
                 deptServices: 'Bone density, Breast imaging/Mammography, ultrasound, X-Ray',
 
             },
@@ -181,7 +148,6 @@ async function main() {
                 deptName: 'Radiology, MRI/CT scan',
                 buildingId: 1,
                 deptPhone: '617-732-9821',
-                nodeId: "NODE017",
                 deptServices: 'CT scan, MRI, X-Ray',
             },
             {
@@ -189,7 +155,6 @@ async function main() {
                 deptName: 'Rehabilitation Services',
                 buildingId: 1,
                 deptPhone: '617-732-9525',
-                nodeId: "NODE018",
                 deptServices: 'Orthopedic, sports, neurologic and vestibular Physical Therapy, Mens and Womens pelvic floor Physical Therapy. Hand/Occupational Therapy Speech Language Pathology',
             },
             {
@@ -197,7 +162,6 @@ async function main() {
                 deptName: 'Blood Draw / Phlebotomy',
                 buildingId: 2,
                 deptPhone: 'N/A',
-                nodeId: "NODE019",
                 deptServices: 'Blood Draw / Phlebotomy',
             },
             {
@@ -205,7 +169,6 @@ async function main() {
                 deptName: 'Pharmacy',
                 buildingId: 2,
                 deptPhone: 'N/A',
-                nodeId: "NODE020",
                 deptServices: 'Pharmacy',
             },
             {
@@ -213,7 +176,6 @@ async function main() {
                 deptName: 'Radiology',
                 buildingId: 2,
                 deptPhone: 'Via Fax: 508-718-4026',
-                nodeId: "NODE021",
                 deptServices: 'magnetic resonance imaging (MRI), computed tomography (CT), single photon emission computed tomography (SPECT) imaging, ultrasound, digital mammography, x-ray, bone densitometry. Available twice a week: arthrograms, magnetic resonance (MR) arthrograms, computed tomography (CT) arthrograms, diagnostic and therapeutic joint injections',
             },
             {
@@ -221,7 +183,6 @@ async function main() {
                 deptName: 'Cardiovascular Services',
                 buildingId: 2,
                 deptPhone: '1-866-378-9164',
-                nodeId: "NODE022",
                 deptServices: 'Transthoracic echocardiography, Holter monitoring, Electrocardiogram (ECG), Exercise tolerance testing, Exercise stress echocardiography, Vascular and arterial studies',
             },
             {
@@ -229,7 +190,6 @@ async function main() {
                 deptName: 'Urology',
                 buildingId: 2,
                 deptPhone: '1-866-378-9164',
-                nodeId: "NODE023",
                 deptServices: 'diagnostic cystoscopy (cysto), retrograde pyelogram, transurethral resection of bladder tumor, cold knife urethrotomy, bladder stone removal, fulguration, bladder biopsy, ureteroscopy, chemotherapy and formalin instillation, laser lithotripsy, electrohydraulic lithotripsy (EHL), urethral or bladder neck contracture dilation, circumcision, suprapubic tube (catheter) change, ureteral stent placement and removal, prostate needle biopsy, varicocelectomy, hydrocelectomy, vasectomy, testicular biopsy, orchiectomy, SPARC™ procedures',
             },
             {
@@ -237,7 +197,6 @@ async function main() {
                 deptName: 'Urgent Care Center',
                 buildingId: 2,
                 deptPhone: '508-718-4400',
-                nodeId: "NODE024",
                 deptServices: 'Urgent Care',
             },
             {
@@ -245,7 +204,6 @@ async function main() {
                 deptName: 'Orthopedics',
                 buildingId: 2,
                 deptPhone: '1-866-378-9164',
-                nodeId: "NODE025",
                 deptServices: 'Hand and Upper Extremity, Arthroplasty, Pediatric Trauma, Physiatry, Podiatry',
             },
             {
@@ -253,7 +211,6 @@ async function main() {
                 deptName: 'Rehabilitation Services',
                 buildingId: 2,
                 deptPhone: ' 1-866-378-9164',
-                nodeId: "NODE026",
                 deptServices: 'Cardiac Rehab, Occupational Therapy(Hand Therapy, Upper Extremity), Physical Therapy, Speech - Language, Clinical Lab, Surgi-Care',
             },
             {
@@ -261,7 +218,6 @@ async function main() {
                 deptName: 'Surgical Specialties',
                 buildingId: 2,
                 deptPhone: 'N/A',
-                nodeId: "NODE027",
                 deptServices: 'Audiology, ENT, General and Gastrointestinal Surgery, Plastic Surgery, Thoracic Surgery, Vascular Surgery, Weight Management and Wellness',
             },
             {
@@ -269,7 +225,6 @@ async function main() {
                 deptName: 'Sports Medicine Center',
                 buildingId: 2,
                 deptPhone: '1-866-378-9164',
-                nodeId: "NODE028",
                 deptServices: 'arm, elbow and hand disorders, athletic injuries, spine disorders, foot and ankle problems, hip and knee disorders, shoulder issues, joint replacement, musculoskeletal oncology',
             },
             {
@@ -277,7 +232,6 @@ async function main() {
                 deptName: 'X-Ray Suite',
                 buildingId: 2,
                 deptPhone: 'N/A',
-                nodeId: "NODE029",
                 deptServices: 'X-Ray',
             },
             {
@@ -285,7 +239,6 @@ async function main() {
                 deptName: 'Electromyography (EMG)',
                 buildingId: 2,
                 deptPhone: 'N/A',
-                nodeId: "NODE030",
                 deptServices: 'Electromyography (EMG)',
             },
             {
@@ -293,7 +246,6 @@ async function main() {
                 deptName: 'Nutrition',
                 buildingId: 2,
                 deptPhone: 'N/A',
-                nodeId: "NODE031",
                 deptServices: 'Nutrition',
             },
             {
@@ -301,7 +253,6 @@ async function main() {
                 deptName: 'Pain Medicine',
                 buildingId: 2,
                 deptPhone: '1-866-378-9164',
-                nodeId: "NODE032",
                 deptServices: 'diagnosis and treatment of spine-related low-back and neck pain, complex regional pain syndrome, post-herpetic neuralgia (shingles), other neuropathic syndromes, chronic pelvic pain, chronic pain in young adults, comprehensive evaluation for patients with cancer-related pain, headaches, arthritis',
             },
             {
@@ -309,7 +260,6 @@ async function main() {
                 deptName: 'Physiatry',
                 buildingId: 2,
                 deptPhone: 'N/A',
-                nodeId: "NODE033",
                 deptServices: 'interventional spine procedures, electrodiagnostic medicine consultations and alternative therapies such as medical acupuncture',
             },
             {
@@ -317,7 +267,6 @@ async function main() {
                 deptName: 'Plumonary Function Testing',
                 buildingId: 2,
                 deptPhone: 'N/A',
-                nodeId:"NODE034",
                 deptServices: 'Plumonary Function Testing',
             },
             {
@@ -325,7 +274,6 @@ async function main() {
                 deptName: 'Day Surgery Center',
                 buildingId: 2,
                 deptPhone: 'N/A',
-                nodeId: "NODE035",
                 deptServices: 'Day Surgery Center',
             },
             {
@@ -333,7 +281,6 @@ async function main() {
                 deptName: 'Mass General Hospital for Children',
                 buildingId: 3,
                 deptPhone: '888-644-3248',
-                nodeId: "NODE036",
                 deptServices: 'Mass General Hospital for Children',
             },
             {
@@ -341,7 +288,6 @@ async function main() {
                 deptName: 'Spaulding Outpatient Center for Children',
                 buildingId: 3,
                 deptPhone: '(857) 307-3202',
-                nodeId: "NODE037",
                 deptServices: 'Spaulding Outpatient Center for Children',
             },
             {
@@ -349,7 +295,6 @@ async function main() {
                 deptName: 'Multi Specialty Clinic',
                 buildingId: 3,
                 deptPhone: '1-866-378-9164',
-                nodeId: "NODE038",
                 deptServices: "Allergy, Cardiac Arrhythmia, Dermatology, Endocrinology, Gastroenterology, Kidney (Renal) Medicine, Neurology, Neurosurgery, Ophthalmology, Optometry, Pulmonology, Rheumatology, Vein Care Services, Women's Health",
             },
             {
@@ -357,7 +302,6 @@ async function main() {
                 deptName: 'Patient Financial Services',
                 buildingId: 3,
                 deptPhone: 'N/A',
-                nodeId: "NODE039",
                 deptServices: 'Patient Financial Services',
             },
             {
@@ -365,7 +309,6 @@ async function main() {
                 deptName: 'Blood Draw / Phlebotomy',
                 buildingId: 3,
                 deptPhone: 'N/A',
-                nodeId: "NODE040",
                 deptServices: 'Blood Draw / Phlebotomy',
             },
             {
@@ -373,7 +316,6 @@ async function main() {
                 deptName: 'Community Room',
                 buildingId: 3,
                 deptPhone: 'N/A',
-                nodeId: "NODE041",
                 deptServices: 'Community Room',
             },
             {
@@ -381,7 +323,6 @@ async function main() {
                 deptName: 'Primary Care',
                 buildingId: 3,
                 deptPhone: '(508) 718-4050',
-                nodeId: "NODE042",
                 deptServices: 'Primary Care',
             },
         ],
@@ -733,7 +674,7 @@ async function main() {
 
     const createManyServiceReqs = await client.serviceRequest.createMany({
         data: [
-            /* 
+            /*
                                                  yyyy:mm:dd  hh:mm:ss */
 
             {
@@ -770,10 +711,9 @@ async function main() {
         ],
         skipDuplicates: true,
     });
+    //const baseNodesAndEdges = await exportNodesAndEdges();
 
-
-
-    console.log({ createManyBuildings , createManyDepartments,createManyLocations, createManyEmployees , createManyServiceReqs});
+    console.log({ createManyDepartments, createManyBuildings , createManyLocations, createManyEmployees , createManyServiceReqs});
 }
 
 
