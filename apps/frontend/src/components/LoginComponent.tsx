@@ -45,7 +45,7 @@ const LoginComponent = () => {
                 if (res.data.password == enteredPassword) {
                     setLoggedIn(true);
                     sessionStorage.setItem('loggedIn', JSON.stringify(true));
-                    window.location.href = '/Home';
+                    window.location.href = '/MapPage';
                 } else {
                     setWrongPassword(true);
                 }
