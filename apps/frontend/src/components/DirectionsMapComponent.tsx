@@ -7,6 +7,7 @@ import ChestnutHillMapComponent from './ChestnutHillMapComponent.tsx';
 import { cleanedUpBFS, bfs } from '../../../backend/src/Algorithms/BFS.ts';
 import TravelModeComponent from "@/components/TravelModeComponent.tsx";
 import {setDragLock} from "framer-motion";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu.tsx";
 
 const Buildings = [
     "20 Patriot Place",
@@ -88,6 +89,8 @@ const DirectionsMapComponent = () => {
     const calculateRoute = () => {
         if (!directionsRenderer || !directionsService) return;
 
+
+        //bro minh what is this???
         let actualLocation = toLocation;
         if(toLocation === '22 Patriot Place'){
             actualLocation = "20 Patriot Place";
@@ -203,13 +206,22 @@ const DirectionsMapComponent = () => {
                         />
                     </div>
                     {/*Choose hospital buildings*/}
-                    <SelectElement className="mb-4"
-                                  label={"To:"}
-                                  id={"toLocation"}
-                                  value={toLocation}
-                                  onChange={e=> setToLocation(e.target.value)}
-                                  options={Buildings}
-                    />
+                    <DropdownMenu>
+                        <DropdownMenuTrigger className="mb-4 inline-flex items-center justify-between rounded-md border bg-white px-4 py-2 text-sm shadow-sm hover:bg-gray-50">
+                            {toLocation}
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-56">
+                            {Buildings.map((building) => (
+                                <DropdownMenuItem
+                                    key={building}
+                                    onSelect={() => setToLocation(building)}
+                                    className={toLocation === building ? "font-semibold bg-accent/20" : ""}
+                                >
+                                    {building}
+                                </DropdownMenuItem>
+                            ))}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                     <div className="mt-5">
                         <TravelModeComponent selectedMode={travelMode} onChange={handleTravelModeChange}
                         />
@@ -235,7 +247,7 @@ const DirectionsMapComponent = () => {
                                 </div>
                             </div>
                     )}
-                    
+
                     <div className="mt-2">
                         <MGBButton
                             onClick={() => handleHere()}
