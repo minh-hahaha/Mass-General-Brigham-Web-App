@@ -64,7 +64,6 @@ function App() {
                                     element={<SanitationRequestPage />}
                                 />
                         <Route path="/SanitationRequest" element={<SanitationRequestPage />} />
-                        <Route path="/SanitationRequestDisplayPage" element={<SanitationRequestDisplayPage />} />
 
                             </Routes>
                         </main>
