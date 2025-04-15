@@ -1,5 +1,5 @@
-// @ts-ignore
 import prisma from '../bin/prisma-client';
+// @ts-ignore
 import fs from 'fs';
 // @ts-ignore
 import path from 'path';

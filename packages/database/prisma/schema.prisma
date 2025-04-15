@@ -78,8 +78,9 @@ model Department {
   members       Employee[]
   locations     Location[]
   building      Building   @relation(fields: [buildingId], references: [buildingId])
-  nodeId        String?    @unique
-  nodeReception Node?      @relation(fields: [nodeId], references: [nodeId], name:"DepartmentNode")
+  nodeId        String?        @unique
+  nodeReception Node?      @relation(fields: [nodeId], references: [id], name:"DepartmentNode")
+
 }
 
 model Location {
@@ -103,7 +104,7 @@ model Building {
 model Node {
   // ignore id
   // id         Int     @id @default(autoincrement())
-  nodeId      String  @id
+  id      String  @id
   x           Decimal
   y           Decimal
   floor       String
@@ -121,8 +122,8 @@ model Edge {
   id       Int    @id @default(autoincrement())
   from     String
   to       String
-  nodeTo   Node   @relation("NodeToEdgeTo", fields: [to], references: [nodeId])
-  nodeFrom Node   @relation("NodeToEdgeFrom", fields: [from], references: [nodeId])
+  nodeTo   Node   @relation("NodeToEdgeTo", fields: [to], references: [id])
+  nodeFrom Node   @relation("NodeToEdgeFrom", fields: [from], references: [id])
 }
 
 model Sanitation {
