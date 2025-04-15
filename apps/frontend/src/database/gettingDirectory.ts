@@ -8,11 +8,7 @@ export interface DepartmentRequest {
     deptName: string;
     buildingId: number;
     deptPhone: string;
-    // node: {
-    //     nodeId: number;
-    //     xcoord: number;
-    //     ycoord: number;
-    // }
+
 }
 
 export interface DirectoryRequestName {

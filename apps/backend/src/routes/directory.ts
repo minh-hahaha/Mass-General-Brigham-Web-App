@@ -125,6 +125,7 @@ router.get('/names', async function (req: Request, res: Response) {
                 deptName: true,
             },
         });
+        res.json(DIRECTORY_NAMES);
     } catch (error) {
         console.error(`NO DIRECTORY_NAMES: ${error}`);
         res.sendStatus(404);
