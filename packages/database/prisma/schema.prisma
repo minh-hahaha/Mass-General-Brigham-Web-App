@@ -104,9 +104,10 @@ model Node {
 
 model Edge {
   // making prisma happy lol
-  id       Int    @id @unique @default(autoincrement())
-  from     String
-  to       String
-  nodeTo   Node   @relation("NodeToEdgeTo", fields: [to], references: [nodeID])
-  nodeFrom Node   @relation("NodeToEdgeFrom", fields: [from], references: [nodeID])
+  id        Int    @id @default(autoincrement())
+  fromAndTo String @unique
+  from      String
+  to        String
+  nodeTo    Node   @relation("NodeToEdgeTo", fields: [to], references: [nodeID])
+  nodeFrom  Node   @relation("NodeToEdgeFrom", fields: [from], references: [nodeID])
 }
