@@ -4,9 +4,12 @@ import SelectElement from '../elements/SelectElement.tsx';
 import InputElement from '../elements/InputElement.tsx';
 import { Map, useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
 import ChestnutHillMapComponent from './ChestnutHillMapComponent.tsx';
-import { cleanedUpBFS, bfs } from '../../../backend/src/Algorithms/BFS.ts';
+import { bfs } from '../../../backend/src/Algorithms/BFS.ts';
 import TravelModeComponent from "@/components/TravelModeComponent.tsx";
 import {setDragLock} from "framer-motion";
+import {myNode} from "../../../backend/src/Algorithms/classes.ts";
+import axios from 'axios';
+import {ROUTES} from "common/src/constants.ts";
 
 const Buildings = [
     "20 Patriot Place",
@@ -151,23 +154,55 @@ const DirectionsMapComponent = () => {
 
     const svg = '/ChestnutHillMap.svg';
 
+    async function FindPath(start: myNode, end: myNode) {
+        const data = JSON.stringify({start, end})
+        console.log(data);
+        const res = await axios.post(ROUTES.BFSGRAPH, data, {
+            headers: {'Content-Type': 'application/json'}
+        })
+        const nodes : myNode[] = res.data
+        console.log(nodes)
+        return nodes;
+
+    }
+
     const HospitalMap = () => {
-        const [path, setPaths] = useState<string[][]>([]);
+        const [path, setPaths] = useState<myNode[]>([]);
+
         // useEffect(() => {
         //     const getMyPaths = async () => {
+        //         const lotA : myNode = {id: "1",
+        //             shortName: 'A',
+        //             xPixel: 384.23,
+        //             yPixel: 441.85,
+        //             floor: 1,
+        //             nodeType: 'Parking Lot',
+        //             building: 'Main Building',
+        //             longName: 'Parking Lot A'
+        //             }
+        //         const reception: myNode = {
+        //             id: "7",
+        //             shortName: 'G',
+        //             xPixel: 617.38,
+        //             yPixel: 700.03,
+        //             floor: 1,
+        //             nodeType: 'Reception',
+        //             building: 'Main Building',
+        //             longName: 'Reception'
+        //         }
         //         if (parkA) {
-        //             const result = await cleanedUpBFS('A', 'G');
+        //             const result = await FindPath(lotA, reception);
         //             console.log('ParkA   ' + result);
         //
         //             setPaths(result);
-        //         } else if (parkB) {
-        //             const result = await cleanedUpBFS('J', 'G');
-        //             console.log('ParkB   ' + result);
-        //             setPaths(result);
-        //         } else if (parkC) {
-        //             const result = await cleanedUpBFS('L', 'G');
-        //             console.log('ParkC   ' + result);
-        //             setPaths(result);
+                // } else if (parkB) {
+                //     const result = await cleanedUpBFS('J', 'G');
+                //     console.log('ParkB   ' + result);
+                //     setPaths(result);
+                // } else if (parkC) {
+                //     const result = await cleanedUpBFS('L', 'G');
+                //     console.log('ParkC   ' + result);
+                //     setPaths(result);
         //         } else {
         //             setPaths([]);
         //         }

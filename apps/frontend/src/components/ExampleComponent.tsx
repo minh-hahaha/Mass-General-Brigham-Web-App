@@ -55,7 +55,6 @@ const ExampleComponent = () => {
                 time: new Date(),
                 score: score,
             });
-
             const res = await axios.post(ROUTES.SCORE, data, {
                 headers: {
                     'Content-Type': 'application/json',
