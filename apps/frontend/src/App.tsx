@@ -8,7 +8,8 @@ import ServiceRequestPage from './routes/ServiceRequestPage.tsx';
 import ServiceRequestDisplayPage from './routes/ServiceRequestDisplayPage.tsx';
 import DirectoryDisplayPage from './routes/DirectoryDisplayPage.tsx';
 import ImportExportDirectoryPage from './routes/ImportExportDirectoryPage.tsx';
-import SanitationRequestPage from './components/SanitationRequestComponent.tsx'
+import SanitationRequestPage from './components/SanitationRequestComponent.tsx';
+import SanitationRequestDisplayPage from './routes/SanitationRequestDisplayPage.tsx';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
                         <Route path="/ImportExportDirectory" element={<ImportExportDirectoryPage />} />
                         <Route path="/DirectoryDisplay" element={<DirectoryDisplayPage />} />
                         <Route path="/SanitationRequest" element={<SanitationRequestPage />} />
+                        <Route path="/SanitationRequestDisplayPage" element={<SanitationRequestDisplayPage />} />
 
                     </Routes>
                 </div>

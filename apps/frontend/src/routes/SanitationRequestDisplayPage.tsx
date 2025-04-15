@@ -12,7 +12,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 
-const ServiceRequestDisplayPage = () => {
+const SanitationRequestDisplayPage = () => {
     const loggedIn = sessionStorage.getItem('loggedIn');
     if (!loggedIn) {window.location.href = '/';}
 
@@ -87,4 +87,4 @@ const ServiceRequestDisplayPage = () => {
     );
 };
 
-export default ServiceRequestDisplayPage;
+export default SanitationRequestDisplayPage;
