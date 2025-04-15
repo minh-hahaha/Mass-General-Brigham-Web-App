@@ -26,7 +26,7 @@ export default function HospitalSVGEditor({ svgMapUrl, currentFloor, buildingId 
     const [nodes, setNodes] = useState<NodeData[]>([]);
     const [edges, setEdges] = useState<Edge[]>([]);
     const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
-    const [nodeType, setNodeType] = useState('intersection');
+    const [nodeType, setNodeType] = useState('Hallway');
     const [nodeName, setNodeName] = useState('');
     const [roomNumber, setRoomNumber] = useState('');
     const svgRef = useRef<SVGSVGElement>(null);
@@ -39,7 +39,7 @@ export default function HospitalSVGEditor({ svgMapUrl, currentFloor, buildingId 
 
     // Generate custom ID
     const generateCustomId = () => {
-        const prefix = "CH";
+        const prefix = "20PP";
         const floorPart = currentFloor;
         const typePart = nodeType.charAt(0).toUpperCase() + nodeType.slice(1);
         const roomPart = roomNumber || `${nodes.length + 1}`;

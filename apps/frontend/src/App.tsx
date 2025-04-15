@@ -10,6 +10,7 @@ import ImportExportDirectoryPage from './routes/ImportExportDirectoryPage.tsx';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { ShadSidebar } from '@/components/ui/shadsidebar.tsx';
 import {MapPage} from "@/routes/MapPage.tsx";
+import MapEditorPage from "@/routes/MapEditorPage.tsx";
 
 function App() {
     return (
@@ -45,6 +46,10 @@ function App() {
                                 <Route
                                 path="/MapPage"
                                 element={<MapPage />}
+                                />
+                                <Route
+                                path="/MapEditor"
+                                element={<MapEditorPage />}
                                 />
                             </Routes>
                         </main>

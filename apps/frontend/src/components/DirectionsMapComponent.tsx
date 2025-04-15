@@ -5,11 +5,11 @@ import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google
 import ChestnutHillMapComponent from './ChestnutHillMapComponent.tsx';
 import TravelModeComponent from "@/components/TravelModeComponent.tsx";
 import OverlayComponent from "@/components/svgOverlay.tsx";
-import DrawNodes from "@/components/DrawNodes.tsx";
 import ViewPath from "@/components/ViewPath.tsx";
-import {sampleNodes, sampleEdges} from "@/components/SampleNodesEdges.tsx";
+import {sampleNodes, sampleEdges, testNodes, testEdges} from "@/components/SampleNodesEdges.tsx";
 
-const samplePath =["CH1Door9", "CH1Hallway8", "CH1Hallway13", "CH1Hallway14", "CH1Hallway15", "CH1Door16", "CH1Room102"];
+const samplePath =["CH1Door1,", "CH1Hallway2", "CH1Hallway3", "CH1Door4", "CH1Room130"];
+const testPath =["CH1Intersection1", "CH1Intersection2", "CH1Intersection3"];
 
 const Buildings = [
     "20 Patriot Place",
@@ -146,10 +146,8 @@ const DirectionsMapComponent = () => {
 
     const handleHere = () => {
         setShowHospital(prevState => !prevState);
-        //setParking(true);
     };
 
-    const svg = '/ChestnutHillMap.svg';
 
     const HospitalMap = () => {
         const [path, setPaths] = useState<string[][]>([]);
@@ -174,14 +172,14 @@ const DirectionsMapComponent = () => {
         //     };
         //     getMyPaths();
         // }, [parkA, parkB, parkC]);
-
-
-
-        return (
-            <div>
-                <ChestnutHillMapComponent svgPath={svg} nodeConnections={path} />
-            </div>
-        );
+        //
+        //
+        //
+        // return (
+        //     <div>
+        //         <ChestnutHillMapComponent svgPath={svg} nodeConnections={path} />
+        //     </div>
+        // );
     };
 
     return (
@@ -213,7 +211,7 @@ const DirectionsMapComponent = () => {
                                    placeholder={"Select Hospital Building"}
                     />
                     </div>
-                    {/*Choose hospital department*/}
+                    {/*Choose hospital department ===== WORK HERE =====*/}
                     <div className="mt-4">
                         <SelectElement
                             label={"Department"}
@@ -283,10 +281,21 @@ const DirectionsMapComponent = () => {
 
             <div className="basis-5/6 relative">
                 {showHospital ? (
-                    <div>
-                        <ViewPath svgMapUrl="/ChestnutHillFloor1.svg" nodes={sampleNodes} edges={sampleEdges} path={samplePath}/>
-                    </div>
-                ) : (
+                        toLocation === Buildings[2] ? (
+                            <div>
+                                <ViewPath svgMapUrl="/ChestnutHillFloor1.svg" nodes={sampleNodes} edges={sampleEdges} path={samplePath}/>
+                            </div>
+                        ) : (toLocation === Buildings[0] ? (
+                                <div>
+                                    <ViewPath svgMapUrl="/20PPFloor1.svg" nodes={testNodes} edges={testEdges} path={testPath}/>
+                                </div>
+                            ) : (
+                                <div>
+                                    <ViewPath svgMapUrl="/20PPFloor2.svg" nodes={testNodes} edges={testEdges} path={testPath}/>
+                                </div>
+                            )
+
+                        )) :  (
                     <Map
                         style={{ width: '100%', height: '92vh' }}
                         defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
@@ -294,7 +303,6 @@ const DirectionsMapComponent = () => {
                         defaultZoom={15}
                         renderingType={RenderingType.RASTER}
                         mapTypeControl={false}
-
                     >
                         <OverlayComponent bounds={ChestnutParkingBounds} imageSrc={ChestnutParkingSVG} visible={true}/>
                     </Map>

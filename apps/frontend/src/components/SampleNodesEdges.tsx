@@ -192,4 +192,50 @@ const sampleEdges = [
   { from: "CH1Door16", to: "CH1Room102" }
 ];
 
-export { sampleNodes, sampleEdges };
+const testNodes =
+  [
+    {
+      "id": "CH1Intersection1",
+      "x": 117.68840356413492,
+      "y": 833.1602979902173,
+      "floor": "1",
+      "buildingId": "2",
+      "nodeType": "intersection",
+      "name": "Node 1",
+      "roomNumber": ""
+    },
+    {
+      "id": "CH1Intersection2",
+      "x": 207.4078083080394,
+      "y": 835.3135563204133,
+      "floor": "1",
+      "buildingId": "2",
+      "nodeType": "intersection",
+      "name": "Node 2",
+      "roomNumber": ""
+    },
+    {
+      "id": "CH1Intersection3",
+      "x": 331.57947009709,
+      "y": 836.7490532455894,
+      "floor": "1",
+      "buildingId": "2",
+      "nodeType": "intersection",
+      "name": "Node 3",
+      "roomNumber": ""
+    }
+  ]
+
+
+const testEdges = [
+  {
+    "from": "CH1Intersection1",
+    "to": "CH1Intersection2"
+  },
+  {
+    "from": "CH1Intersection2",
+    "to": "CH1Intersection3"
+  }
+]
+
+export { sampleNodes, sampleEdges , testNodes, testEdges};
