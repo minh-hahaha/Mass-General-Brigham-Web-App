@@ -1,5 +1,6 @@
 import PrismaClient from '../bin/prisma-client';
 // @ts-ignore
+import prisma from '../bin/prisma-client';
 import fs from 'fs';
 // @ts-ignore
 import path from 'path';
@@ -20,12 +21,12 @@ export async function exportNodesAndEdges(): Promise<void> {
 
         try {
             // extract nodes from all buildings
-            await PrismaClient.node.createMany({
+            await prisma.node.createMany({
                 data: nodes,
                 skipDuplicates: true,
             });
             // extract edges from all buildings
-            await PrismaClient.edge.createMany({
+            await prisma.edge.createMany({
                 data: edges.map((e: { from: any; to: any }) => ({
                     from: e.from,
                     to: e.to,
@@ -36,7 +37,7 @@ export async function exportNodesAndEdges(): Promise<void> {
         } catch (error) {
             console.log('Error with extracting JSON data: ' + error);
         } finally {
-            await PrismaClient.$disconnect();
+            await prisma.$disconnect();
         }
     }
 }

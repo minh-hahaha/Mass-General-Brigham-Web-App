@@ -75,6 +75,12 @@ const Navbar = () => {
                             <LinkHover>
                                 <Link to="/DirectoryDisplay">Directory Display</Link>
                             </LinkHover>
+                            <LinkHover>
+                                <Link to="/SanitationRequest">Sanitation Request</Link>
+                            </LinkHover>
+                            <LinkHover>
+                                <Link to="/SanitationRequestDisplayPage">Sanitation Request Display</Link>
+                            </LinkHover>
                         </>
                     )}
                 </ul>

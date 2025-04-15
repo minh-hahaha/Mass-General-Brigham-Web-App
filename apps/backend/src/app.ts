@@ -2,8 +2,6 @@ import createError, { HttpError } from 'http-errors';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-import healthcheckRouter from './routes/healthcheck';
-import highscoreRouter from './routes/score.ts';
 import assignedRouter from './routes/assigned.ts';
 import employeeRouter from './routes/employee.ts';
 import servicereqsRouter from './routes/servicereqs.ts';
@@ -11,6 +9,8 @@ import validateRouter from './routes/validate.ts';
 import patientTransportRouter from './routes/patienttransport.ts';
 import directoryRouter from './routes/directory.ts';
 import graphRouter from './routes/bfsRoutes.ts';
+import sanitationRouter from './routes/sanitation.ts';
+import translationRouter from './routes/translationrequest.ts';
 
 import { ROUTES } from 'common/src/constants';
 
@@ -39,12 +39,13 @@ app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
 
 app.use(ROUTES.VALIDATE, validateRouter);
 app.use(ROUTES.PATIENTTRANSPORT, patientTransportRouter);
+app.use(ROUTES.SANITATION, sanitationRouter);
 
 app.use(ROUTES.DIRECTORY, directoryRouter);
 app.use(ROUTES.DIRECTORY_CSV, directoryRouter);
 
 app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
-
+app.use(ROUTES.TRANSLATIONREQUEST, translationRouter);
 app.use(ROUTES.BFSGRAPH, graphRouter);
 
 /**

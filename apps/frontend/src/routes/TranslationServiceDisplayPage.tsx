@@ -1,31 +1,24 @@
 import { useEffect, useState } from 'react';
-import { GetTransportRequest } from '@/database/transportRequest.ts';
-import { GetSanitationRequest,incomingSanitationRequest } from '@/database/sanitationRequest.ts';
-import { incomingRequest } from '@/database/transportRequest.ts';
-import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
+import { GetTranslatorRequest, incomingTranslationRequest } from '@/database/translationRequest.ts';
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
 
-const ServiceRequestDisplayPage = () => {
+const TranslationServiceDisplayPage = () => {
     const loggedIn = sessionStorage.getItem('loggedIn');
-    if (!loggedIn) {window.location.href = '/';}
+    if (!loggedIn) {
+        window.location.href = '/';
+    }
 
     const [loading, setLoading] = useState(true);
-    const [requests, setRequests] = useState<incomingRequest[]>([]);
+    const [requests, setRequests] = useState<incomingTranslationRequest[]>([]);
 
     useEffect(() => {
         async function fetchReqs() {
-            const data = await GetTransportRequest();
+            const data = await GetTranslatorRequest();
             console.log(data);
             setRequests(data);
             setLoading(false);
         }
+
         fetchReqs();
     }, []);
 
@@ -35,7 +28,6 @@ const ServiceRequestDisplayPage = () => {
     if (requests == null) {
         return <p>No requests found!</p>;
     }
-
     return (
         <div className="flex justify-center mt-10">
             <div className="w-full max-w-6xl border border-gray-300 rounded-2xl shadow-md overflow-auto p-4 bg-white">
@@ -43,35 +35,36 @@ const ServiceRequestDisplayPage = () => {
                     <TableHeader>
                         <TableRow>
                             <TableHead>Request ID</TableHead>
-                            <TableHead>Patient ID</TableHead>
+                            <TableHead>Language Required</TableHead>
+                            <TableHead>Meeting Type</TableHead>
+                            <TableHead>Meeting Link</TableHead>
                             <TableHead>Patient Name</TableHead>
                             <TableHead>Priority</TableHead>
                             <TableHead>Status</TableHead>
-                            <TableHead>Pick Up Location</TableHead>
                             <TableHead>Request Date</TableHead>
                             <TableHead>Service Type</TableHead>
-                            <TableHead>Transport Type</TableHead>
+
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {requests.map((req) => (
                             <TableRow>
-                                <TableCell>{req.request_id}</TableCell>
-                                <TableCell>{req.patientTransport.patient_id}</TableCell>
-                                <TableCell>{req.patientTransport.patient_name}</TableCell>
+                                <TableCell>{req.requestId}</TableCell>
+                                <TableCell>{req.translationRequest.language}</TableCell>
+                                <TableCell>{req.translationRequest.typeMeeting}</TableCell>
+                                <TableCell>{req.translationRequest.meetingLink}</TableCell>
+                                <TableCell>{req.translationRequest.patientName}</TableCell>
                                 <TableCell>{req.priority}</TableCell>
                                 <TableCell>{req.status}</TableCell>
-                                <TableCell>{req.patientTransport.pickup_location}</TableCell>
-                                <TableCell>{req.request_date}</TableCell>
-                                <TableCell>{req.service_type}</TableCell>
-                                <TableCell>{req.transport_type}</TableCell>
+                                <TableCell>{req.requestDate.split('T')[0]}</TableCell>
+                                <TableCell>{req.serviceType}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </div>
         </div>
-    );
+    )
 };
 
-export default ServiceRequestDisplayPage;
+export default TranslationServiceDisplayPage;
