@@ -1,7 +1,7 @@
 {
     "nodes": [
         {
-            "nodeID": "CH1Door1",
+            "nodeId": "CH1Door1",
             "x": 694.6909401633523,
             "y": 164.93491432883522,
             "floor": "1",
@@ -11,7 +11,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "CH1Hallway2",
+            "nodeId": "CH1Hallway2",
             "x": 691.61376953125,
             "y": 220.32351407137782,
             "floor": "1",
@@ -21,7 +21,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "CH1Hallway3",
+            "nodeId": "CH1Hallway3",
             "x": 611.607998934659,
             "y": 220.32351407137782,
             "floor": "1",
@@ -31,7 +31,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "CH1Door4",
+            "nodeId": "CH1Door4",
             "x": 567.941725078947,
             "y": 256.8053823918629,
             "floor": "1",
@@ -41,7 +41,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "CH1Room130",
+            "nodeId": "CH1Room130",
             "x": 528.8599611031434,
             "y": 284.5968690890998,
             "floor": "1",
@@ -51,7 +51,7 @@
             "roomNumber": "130"
         },
         {
-            "nodeID": "CH1Hallway6",
+            "nodeId": "CH1Hallway6",
             "x": 697.2382535268328,
             "y": 327.2574852914409,
             "floor": "1",
@@ -61,7 +61,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "CH1Hallway7",
+            "nodeId": "CH1Hallway7",
             "x": 694.0856490565776,
             "y": 519.5658463536005,
             "floor": "1",
@@ -71,7 +71,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "CH1Hallway8",
+            "nodeId": "CH1Hallway8",
             "x": 826.4947146740392,
             "y": 519.5658463536005,
             "floor": "1",
@@ -81,7 +81,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "CH1Door9",
+            "nodeId": "CH1Door9",
             "x": 976.7684757928967,
             "y": 519.5658463536005,
             "floor": "1",
@@ -91,7 +91,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "CH1Hallway10",
+            "nodeId": "CH1Hallway10",
             "x": 927.3777924359943,
             "y": 518.5150097785404,
             "floor": "1",
@@ -101,7 +101,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "CH1Door11",
+            "nodeId": "CH1Door11",
             "x": 927.3777924359943,
             "y": 477.53124641029837,
             "floor": "1",
@@ -111,7 +111,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "CH1Room100",
+            "nodeId": "CH1Room100",
             "x": 907.4113290394032,
             "y": 438.6492130392214,
             "floor": "1",
@@ -121,7 +121,7 @@
             "roomNumber": "100"
         },
         {
-            "nodeID": "CH1Hallway13",
+            "nodeId": "CH1Hallway13",
             "x": 829.312357406388,
             "y": 713.7271936932048,
             "floor": "1",
@@ -131,7 +131,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "CH1Hallway14",
+            "nodeId": "CH1Hallway14",
             "x": 828.2614829332979,
             "y": 827.2206514381504,
             "floor": "1",
@@ -141,7 +141,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "CH1Hallway15",
+            "nodeId": "CH1Hallway15",
             "x": 612.8340729533072,
             "y": 830.3732369593906,
             "floor": "1",
@@ -151,7 +151,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "CH1Door16",
+            "nodeId": "CH1Door16",
             "x": 611.7831984802172,
             "y": 812.5085225089797,
             "floor": "1",
@@ -161,7 +161,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "CH1Room102",
+            "nodeId": "CH1Room102",
             "x": 662.2247373611947,
             "y": 757.8635425826869,
             "floor": "1",

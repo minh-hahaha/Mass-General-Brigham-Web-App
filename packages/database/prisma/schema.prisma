@@ -80,8 +80,8 @@ model Department {
   members      Employee[]
   locations    Location[]
   building     Building   @relation(fields: [buildingId], references: [buildingId])
-  nodeId       String        @unique
-  nodeReception Node      @relation(fields: [nodeId], references: [nodeId], name:"DepartmentNode")
+  nodeId       String?        @unique
+  nodeReception Node?      @relation(fields: [nodeId], references: [nodeId], name:"DepartmentNode")
 }
 
 model Location {

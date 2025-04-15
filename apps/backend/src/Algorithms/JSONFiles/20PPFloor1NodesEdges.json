@@ -1,7 +1,7 @@
 {
     "nodes": [
         {
-            "nodeID": "20PP1Hallway1",
+            "nodeId": "20PP1Hallway1",
             "x": 36.05386907404119,
             "y": 844.9837979403409,
             "floor": "1",
@@ -11,7 +11,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "20PP1Hallway2",
+            "nodeId": "20PP1Hallway2",
             "x": 159.13964011452413,
             "y": 841.9066273082385,
             "floor": "1",
@@ -21,7 +21,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "20PP1Hallway3",
+            "nodeId": "20PP1Hallway3",
             "x": 397.61832497336644,
             "y": 844.9837979403409,
             "floor": "1",
@@ -31,7 +31,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "20PP1Hallway4",
+            "nodeId": "20PP1Hallway4",
             "x": 554.5526677911931,
             "y": 848.0609130859374,
             "floor": "1",
@@ -41,7 +41,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "20PP1Hallway5",
+            "nodeId": "20PP1Hallway5",
             "x": 757.6441539417613,
             "y": 840.3680419921874,
             "floor": "1",
@@ -51,7 +51,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "20PP1Hallway6",
+            "nodeId": "20PP1Hallway6",
             "x": 157.6010686700994,
             "y": 678.8179709694601,
             "floor": "1",
@@ -61,7 +61,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "20PP1Hallway7",
+            "nodeId": "20PP1Hallway7",
             "x": 159.13964011452413,
             "y": 700.357998934659,
             "floor": "1",
@@ -71,7 +71,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "20PP1Hallway8",
+            "nodeId": "20PP1Hallway8",
             "x": 159.13964011452413,
             "y": 480.34218528053975,
             "floor": "1",
@@ -81,7 +81,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "20PP1Hallway9",
+            "nodeId": "20PP1Hallway9",
             "x": 186.83393998579544,
             "y": 478.8035999644886,
             "floor": "1",
@@ -91,7 +91,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "20PP1Hallway10",
+            "nodeId": "20PP1Hallway10",
             "x": 183.756797096946,
             "y": 251.09494295987213,
             "floor": "1",
@@ -101,7 +101,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "20PP1Door110",
+            "nodeId": "20PP1Door110",
             "x": 144.60145196429457,
             "y": 659.522229853329,
             "floor": "1",
@@ -111,7 +111,7 @@
             "roomNumber": "110"
         },
         {
-            "nodeID": "20PP1Door130",
+            "nodeId": "20PP1Door130",
             "x": 172.05469676087725,
             "y": 694.819259508925,
             "floor": "1",
@@ -121,7 +121,7 @@
             "roomNumber": "130"
         },
         {
-            "nodeID": "20PP1Door120",
+            "nodeId": "20PP1Door120",
             "x": 399.9817433889308,
             "y": 815.4082698690123,
             "floor": "1",
@@ -131,7 +131,7 @@
             "roomNumber": "120"
         },
         {
-            "nodeID": "20PP1Door150",
+            "nodeId": "20PP1Door150",
             "x": 551.6589691604896,
             "y": 827.1748775523067,
             "floor": "1",
@@ -141,7 +141,7 @@
             "roomNumber": "150"
         },
         {
-            "nodeID": "20PP1Elevator15",
+            "nodeId": "20PP1Elevator15",
             "x": 755.5457242200915,
             "y": 809.8804431300981,
             "floor": "1",
@@ -151,7 +151,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "20PP1Stairs16",
+            "nodeId": "20PP1Stairs16",
             "x": 157.81453401650654,
             "y": 200.63763087046195,
             "floor": "1",
@@ -161,7 +161,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "20PP1Stairs17",
+            "nodeId": "20PP1Stairs17",
             "x": 294.27387810374694,
             "y": 797.8022482258273,
             "floor": "1",
@@ -171,7 +171,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "20PP1Stairs18",
+            "nodeId": "20PP1Stairs18",
             "x": 790.8897995857998,
             "y": 853.3547632869961,
             "floor": "1",
@@ -181,7 +181,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "20PP1Hallway19",
+            "nodeId": "20PP1Hallway19",
             "x": 167.9125924850658,
             "y": 246.38313528016872,
             "floor": "1",
@@ -191,7 +191,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "20PP1Hallway20",
+            "nodeId": "20PP1Hallway20",
             "x": 169.38330573732205,
             "y": 201.28137676076994,
             "floor": "1",
@@ -201,7 +201,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "20PP1Room120",
+            "nodeId": "20PP1Room120",
             "x": 410.76557131509605,
             "y": 770.8858434240327,
             "floor": "1",
@@ -211,7 +211,7 @@
             "roomNumber": "120"
         },
         {
-            "nodeID": "20PP1Room150",
+            "nodeId": "20PP1Room150",
             "x": 555.7110704491706,
             "y": 783.3194889114704,
             "floor": "1",
@@ -221,7 +221,7 @@
             "roomNumber": "150"
         },
         {
-            "nodeID": "20PP1Room130",
+            "nodeId": "20PP1Room130",
             "x": 262.8338718092188,
             "y": 682.1795569935435,
             "floor": "1",
@@ -231,7 +231,7 @@
             "roomNumber": "130"
         },
         {
-            "nodeID": "20PP1Room110",
+            "nodeId": "20PP1Room110",
             "x": 101.41540943482703,
             "y": 630.3310120381092,
             "floor": "1",
@@ -241,7 +241,7 @@
             "roomNumber": "110"
         },
         {
-            "nodeID": "20PP1Hallway25",
+            "nodeId": "20PP1Hallway25",
             "x": 295.37087763170666,
             "y": 842.1661407051636,
             "floor": "1",

@@ -193,8 +193,6 @@ const DirectionsMapComponent = () => {
                 }
                 if (parkA) {
                     const result = await FindPath(door1, room102);
-                    console.log('ParkA   ' + result);
-
                     setPaths(result);
                 // } else if (parkB) {
                 //     const result = await cleanedUpBFS('J', 'G');
@@ -209,6 +207,7 @@ const DirectionsMapComponent = () => {
                 }
             };
             getMyPaths();
+            // console.log(path);
         }, [parkA, parkB, parkC]);
 
 

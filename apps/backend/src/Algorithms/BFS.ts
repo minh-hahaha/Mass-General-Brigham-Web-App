@@ -18,7 +18,7 @@ export async function loadMyGraph(): Promise<Graph> {
 
     for (const aNode of nodes) {
         const node = graph.addNode(
-            aNode.nodeID,
+            aNode.nodeId,
             Number(aNode.x),
             Number(aNode.y),
             aNode.floor,
@@ -27,7 +27,7 @@ export async function loadMyGraph(): Promise<Graph> {
             aNode.name,
             aNode.roomNumber
         );
-        nodeMap.set(aNode.nodeID, node);
+        nodeMap.set(aNode.nodeId, node);
     }
 
     for (const aEdge of edges) {
