@@ -7,6 +7,7 @@ import ServiceRequestPage from './routes/TransportationRequestPage.tsx';
 import ServiceRequestDisplayPage from './routes/ServiceRequestDisplayPage.tsx';
 import DirectoryDisplayPage from './routes/DirectoryDisplayPage.tsx';
 import ImportExportDirectoryPage from './routes/ImportExportDirectoryPage.tsx';
+import TranslationServiceRequestPage from './routes/TranslationServiceRequestPage.tsx';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { ShadSidebar } from '@/components/ui/shadsidebar.tsx';
 import {MapPage} from "@/routes/MapPage.tsx";
@@ -43,9 +44,15 @@ function App() {
                                     element={<DirectoryDisplayPage />}
                                 />
                                 <Route
-                                path="/MapPage"
-                                element={<MapPage />}
+                                  path="/MapPage"
+                                  element={<MapPage />}
                                 />
+                                
+                                <Route 
+                                  path="/TranslationServiceRequestPage" 
+                                  element={<TranslationServiceRequestPage />} 
+                                 />
+
                             </Routes>
                         </main>
                     </div>
