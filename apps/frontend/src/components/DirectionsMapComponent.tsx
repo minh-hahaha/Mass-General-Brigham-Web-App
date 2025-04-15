@@ -214,8 +214,11 @@ const DirectionsMapComponent = () => {
 
 
         return (
+            // <div>
+            //      <ChestnutHillMapComponent svgPath={svg} nodeConnections={path} />
+            // </div>
             <div>
-                <ChestnutHillMapComponent svgPath={svg} nodeConnections={path} />
+
             </div>
         );
     };
