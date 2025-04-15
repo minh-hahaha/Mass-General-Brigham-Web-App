@@ -98,7 +98,7 @@ const SanitationRequestPage = () => {
                             </h3>
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Requester ID</label>
+                                    <label className="w-1/4">Employee ID</label>
                                     <input
                                         type="number"
                                         id="employee_id"
@@ -107,18 +107,6 @@ const SanitationRequestPage = () => {
                                         required
                                         min="0"
                                         placeholder="Enter Employee ID"
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    />
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Time of Request</label>
-                                    <input
-                                        type="text"
-                                        id="request_time"
-                                        value={request_time}
-                                        onChange={(e) => setRequest_time(e.target.value)}
-                                        required
-                                        placeholder="Time of Request"
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
                                 </div>

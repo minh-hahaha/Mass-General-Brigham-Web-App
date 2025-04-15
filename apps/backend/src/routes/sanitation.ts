@@ -54,7 +54,6 @@ router.post('/', async (req: Request, res: Response) => {
             //creates entry for service request
             const serviceRequest = await prisma.serviceRequest.create({
                 data: {
-
                     priority: req.body.priority,
                     status: req.body.status,
                     comments: req.body.notes,
@@ -73,22 +72,18 @@ router.post('/', async (req: Request, res: Response) => {
                 data: {
                     servReq_id: serviceRequest.request_id,
                     sanitationType: req.body.sanitationType,
-                    recurring:req.body.recurring,
-                    hazardLevel:req.body.hazardLevel,
-                    disposalRequired:req.body.disposalRequired,
-                    completeBy:req.body.completeBy,
-
-
+                    recurring: req.body.recurring,
+                    hazardLevel: req.body.hazardLevel,
+                    disposalRequired: req.body.disposalRequired,
+                    completeBy: req.body.completeBy,
                 },
                 select: {
                     servReq_id: true,
-                    sanitationType:true,
-                    recurring:true,
-                    hazardLevel:true,
-                    disposalRequired:true,
-                    completeBy:true,
-
-
+                    sanitationType: true,
+                    recurring: true,
+                    hazardLevel: true,
+                    disposalRequired: true,
+                    completeBy: true,
                 },
             });
 
