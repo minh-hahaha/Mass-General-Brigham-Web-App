@@ -14,25 +14,38 @@ interface SelectElementProps {
 }
 
 
-const SelectElement : React.FC<SelectElementProps>  = ({label, id, value, onChange, required, options, placeholder}) => {
+const SelectElement: React.FC<SelectElementProps> = ({
+                                                         label,
+                                                         id,
+                                                         value,
+                                                         onChange,
+                                                         required,
+                                                         options,
+                                                         placeholder,
+                                                         className = ''
+                                                     }) => {
     return (
-            <div className="flex items-center gap-2">
-                <label className="w-1/3 pr-1">{label}</label>
-                <select
-                    id={id}
-                    value={value}
-                    onChange={onChange}
-                    required={required}
-                    className="w-53 px-3 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                >
-                    <option value="">{placeholder}</option>
-                    {options.map((option,index ) => (
-                        <option key={index} value={option}>{option}</option>
-                    ))}
-                </select>
-            </div>
+        <div className="flex flex-col space-y-1 w-full">
+            <label htmlFor={id} className="text-sm font-medium text-white">
+                {label}
+            </label>
+            <select
+                id={id}
+                value={value}
+                onChange={onChange}
+                required={required}
+                className={`w-full px-3 py-2 border-2 border-white rounded-md focus:outline-none focus:ring-2 focus:ring-white ${className}`}
+            >
+                <option value="">{placeholder}</option>
+                {options.map((option, index) => (
+                    <option key={index} value={option}>
+                        {option}
+                    </option>
+                ))}
+            </select>
+        </div>
     );
-}
+};
 
 
 
