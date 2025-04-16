@@ -232,6 +232,8 @@ const DirectionsMapComponent = () => {
     const calculateRoute = () => {
         if (!directionsRenderer || !directionsService) return;
 
+        clearAllRoutes();
+
         directionsRenderer.setMap(map);
 
         let actualLocation = toLocation;
@@ -298,18 +300,36 @@ const DirectionsMapComponent = () => {
 
     const handleParkA = () => {
         clearParking();
-        setLot('CH_A');
-        calculateDoorRoute(lotAToDoor, 'A');
+        if (toLocation === '20 Patriot Place' || toLocation === '22 Patriot Place') {
+            setLot('PP_A');
+            calculateDoorRoute(PPlotAToDoor, 'A');
+        }
+        else {
+            setLot('CH_A');
+            calculateDoorRoute(CHlotAToDoor, 'A');
+        }
     };
     const handleParkB = () => {
         clearParking();
-        setLot('CH_B');
-        calculateDoorRoute(lotBToDoor, 'B');
+        if (toLocation === '20 Patriot Place' || toLocation === '22 Patriot Place') {
+            setLot('PP_B');
+            calculateDoorRoute(PPlotBToDoor, 'B');
+        }
+        else {
+            setLot('CH_B');
+            calculateDoorRoute(CHlotBToDoor, 'B');
+        }
     };
     const handleParkC = () => {
-        clearParking();
-        setLot('CH_C');
-        calculateDoorRoute(lotCToDoor, 'C');
+        if (toLocation === '20 Patriot Place' || toLocation === '22 Patriot Place') {
+            setLot('PP_C');
+            calculateDoorRoute(PPlotCToDoor, 'C');
+        }
+        else {
+            setLot('CH_C');
+            calculateDoorRoute(CHlotCToDoor, 'C');
+        }
+
     };
 
     const clearParking = () => {
@@ -321,7 +341,7 @@ const DirectionsMapComponent = () => {
     };
 
     // 42.32641353922122, -71.14992135383609
-    const lotAToDoor = [
+    const CHlotAToDoor = [
         { lat: 42.32641975362307, lng: -71.14992617744028 },
         { lat: 42.32643660922756, lng: -71.14959023076334 },
         { lat: 42.3262859001328, lng: -71.14956609088263 },
@@ -329,19 +349,46 @@ const DirectionsMapComponent = () => {
         { lat: 42.32624227374853, lng: -71.14946819025536 },
     ];
 
-    const lotBToDoor = [
+    const CHlotBToDoor = [
         { lat: 42.32607681544678, lng: -71.14907388066334 }, //start
         { lat: 42.3260046767077, lng: -71.149101323287 }, //midpoint
         { lat: 42.32598889634749, lng: -71.14922329050336 }, //end
     ];
 
-    const lotCToDoor = [
+    const CHlotCToDoor = [
         { lat: 42.325598573871204, lng: -71.14972535132611 },
         { lat: 42.32569574268002, lng: -71.14973071574414 },
         { lat: 42.325747301578836, lng: -71.14911648987977 },
         { lat: 42.32602095964217, lng: -71.14910844325274 },
         { lat: 42.32601501056652, lng: -71.14923182486741 },
     ];
+
+    const PPlotAToDoor = [
+        {lat: 42.092230101663034, lng: -71.26654974313286},
+        {lat: 42.092437193904246, lng: -71.2663789656559},
+        {lat: 42.092529921554245, lng: -71.26643519726416},
+        {lat: 42.09254692160871, lng: -71.2663643870908}
+    ];
+
+    const PPlotBToDoor = [
+        {lat: 42.09156940188613, lng: -71.26626478897806},
+        {lat: 42.091537059036156, lng: -71.26643705096096},
+        {lat: 42.091736661535094, lng: -71.26646938725148},
+        {lat: 42.09188594087752, lng: -71.2665364424713},
+        {lat: 42.09200337371333, lng: -71.26673492592202},
+        {lat: 42.092444748869866, lng: -71.26637970586039},
+        {lat: 42.092529921554245, lng: -71.26643519726416},
+        {lat: 42.09254692160871, lng: -71.2663643870908}
+    ];
+
+    const PPlotCToDoor = [
+        {lat: 42.09075833907194, lng: -71.26693167274473},
+        {lat: 42.091206506804454, lng: -71.26714263577942},
+        {lat: 42.09129859567236, lng: -71.26737014493447},
+        {lat: 42.091780525233865, lng: -71.26712608965906},
+        {lat: 42.09251722577942, lng: -71.26652629276056},
+        {lat: 42.09254692160871, lng: -71.2663643870908}
+    ]
 
     const customLineRef = useRef<google.maps.Polyline | null>(null);
     const customMarkersRef = useRef<google.maps.Marker[]>([]);
@@ -435,7 +482,7 @@ const DirectionsMapComponent = () => {
                                     <MapPlus />
                                 </div>
                                 {/* Line */}
-                                <div className="h-24 border-l-2 border-dashed border-white" />
+                                <div className="h-7 border-l-2 border-dashed border-white" />
                                 {/* Pin icon */}
                                 <div className="text-white p-1.5 text-xl">
                                     <MapPin />
@@ -444,7 +491,7 @@ const DirectionsMapComponent = () => {
 
                             {/* Form Inputs */}
                             <div className="flex-1 space-y-3">
-                                <div className="mb-10">
+                                <div className="mb-6">
                                     <label
                                         htmlFor="fromLocation"
                                         className="block text-sm font-medium mb-1"
@@ -461,9 +508,6 @@ const DirectionsMapComponent = () => {
                                         placeholder="Choose a starting point..."
                                         className="w-full p-2 border border-white rounded-md bg-white text-mgbblue placeholder:text-mgbblue focus:ring-2 focus:ring-white"
                                     />
-                                </div>
-
-                                <div>
                                     <SelectElement
                                         label="To:"
                                         id="toLocation"
@@ -473,6 +517,9 @@ const DirectionsMapComponent = () => {
                                         placeholder="Select Hospital"
                                         className="bg-white text-mgbblue"
                                     />
+                                </div>
+
+                                <div>
                                     <SelectElement
                                         label="Dept."
                                         id="toDirectory"
