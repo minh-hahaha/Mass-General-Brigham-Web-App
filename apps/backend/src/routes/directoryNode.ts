@@ -4,7 +4,7 @@ import PrismaClient from '../bin/prisma-client';
 const router: Router = express.Router();
 
 router.get('/', async function (req: Request, res: Response) {
-    const departmentId = parseInt(req.params.departmentId);
+    const departmentId = parseInt(req.params.deptId);
     const department = await PrismaClient.department.findUnique({
         where: { deptId: departmentId },
         include: { nodeReception: true }, // Include the associated node

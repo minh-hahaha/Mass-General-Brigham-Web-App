@@ -4,23 +4,30 @@ import axios from 'axios';
 
 export interface sanitationRequest {
     //Service Request fields
-    /*request_id:          number;*/
-    status:              'Unassigned' | 'Assigned' | 'Working' | 'Other';
-    priority:            'Unassigned' | 'Low' | 'Medium' | 'High' | 'Emergency';
-    request_time:        string;
+    employee_name:              string;
+    status:                     'Unassigned' | 'Assigned' | 'Working' | 'Other';
+    priority:                   'Unassigned' | 'Low' | 'Medium' | 'High' | 'Emergency';
+    request_time:                string;
+    location_id:                 string;
+
 
     //Optional fields
-    location_id:         string;
-    comments:            string;
-    request_date:        string;
-    employee_id:         number;
+    comments:                   string;
+    request_date:                string;
+    employee_id:                 number;
+    requester_department:         string;
+    requester_roomnum: string;
+
 
     //Sanitation fields
-    sanitationType:      string;
-    recurring:           boolean;
-    hazardLevel:         'None' | 'Sharp' | 'Biohazard';
-    disposalRequired:    boolean;
-    completeBy:          string;
+    sanitation_location_id:     string;
+    sanitation_department_id:   string;
+    sanitation_roomNumber:      number;
+    sanitationType:             string;
+    recurring:                  boolean;
+    hazardLevel:                'None' | 'Sharp' | 'Biohazard';
+    disposalRequired:           boolean;
+    completeBy:                 string;
 }
 
 export interface incomingSanitationRequest {
@@ -28,7 +35,7 @@ export interface incomingSanitationRequest {
     employeeId: number;
     locationId: number;
     sanitation: {
-        servReq_id:          number;
+        servReqId:          number;
         sanitationType:      string;
         recurring:           boolean;
         hazardLevel:         string

@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LogoBar from './components/LogoBar.tsx';
 import LoginPage from './routes/LoginPage.tsx';
 import HomePage from './routes/HomePage.tsx';
+import TransportationRequestPage from './routes/TransportationRequestPage.tsx';
 import ServiceRequestDisplayPage from './routes/ServiceRequestDisplayPage.tsx';
 import DirectoryDisplayPage from './routes/DirectoryDisplayPage.tsx';
 import ImportExportDirectoryPage from './routes/ImportExportDirectoryPage.tsx';
@@ -11,8 +12,10 @@ import TransportRequestPage from "./routes/TransportationRequestPage.tsx";
 import TranslationServiceRequestPage from './routes/TranslationServiceRequestPage.tsx';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { ShadSidebar } from '@/components/ui/shadsidebar.tsx';
-import { MapPage } from '@/routes/MapPage.tsx';
-import MapEditorPage from '@/routes/MapEditorPage.tsx';
+import {MapPage} from "@/routes/MapPage.tsx";
+import MapEditorPage from "@/routes/MapEditorPage.tsx";
+import SanitationRequestDisplayPage from "@/routes/SanitationRequestDisplayPage.tsx";
+import ServiceRequestSelectPage from "@/routes/ServiceRequestSelectPage.tsx";
 
 function App() {
     return (
@@ -45,8 +48,14 @@ function App() {
                                     path="/DirectoryDisplay"
                                     element={<DirectoryDisplayPage />}
                                 />
-                                <Route path="/MapPage" element={<MapPage />} />
-                                <Route path="/MapEditor" element={<MapEditorPage />} />
+                                <Route
+                                  path="/MapPage"
+                                  element={<MapPage />}
+                                />
+                                <Route
+                                path="/MapEditor"
+                                element={<MapEditorPage/>}
+                                />
 
                                 <Route
                                     path="/TranslationServiceRequestPage"
@@ -56,6 +65,17 @@ function App() {
                                 <Route
                                     path="/SanitationRequest"
                                     element={<SanitationRequestPage />}
+                                />
+                        <Route path="/SanitationRequest" element={<SanitationRequestPage />} />
+                        <Route path="/SanitationRequestDisplayPage" element={<SanitationRequestDisplayPage />} />
+
+                                <Route
+                                    path="/TransportationRequestPage"
+                                    element={<TransportationRequestPage />}
+                                />
+                                <Route
+                                    path="/ServiceRequestSelectPage"
+                                    element={<ServiceRequestSelectPage />}
                                 />
                             </Routes>
                         </main>

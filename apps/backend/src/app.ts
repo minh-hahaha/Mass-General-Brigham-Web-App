@@ -11,6 +11,7 @@ import directoryRouter from './routes/directory.ts';
 import graphRouter from './routes/bfsRoutes.ts';
 import sanitationRouter from './routes/sanitation.ts';
 import translationRouter from './routes/translationrequest.ts';
+import directoryNodeRouter from './routes/directoryNode.ts';
 
 import { ROUTES } from 'common/src/constants';
 
@@ -43,6 +44,9 @@ app.use(ROUTES.SANITATION, sanitationRouter);
 
 app.use(ROUTES.DIRECTORY, directoryRouter);
 app.use(ROUTES.DIRECTORY_CSV, directoryRouter);
+app.use(ROUTES.DIRECTORY_NAMES, directoryRouter);
+app.use(ROUTES.DIRECTORY_NODE, directoryNodeRouter);
+app.use(ROUTES.DIRECTORY_BUILDING, directoryRouter);
 
 app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
 app.use(ROUTES.TRANSLATIONREQUEST, translationRouter);

@@ -69,25 +69,30 @@ const directoryItems = [
 
 const forms = [
     {
-        title: 'Transportation Request',
-        url: '/TransportationRequestPage',
-        icon: Ambulance,
+        title: 'Service Requests',
+        url: './ServiceRequestSelectPage',
+        icon: Tablet,
     },
-    {
-        title: 'Translator Request',
-        url: '/TranslationServiceRequestPage',
-        icon: BookA,
-    },
-    {
-        title: 'Sanitation Request',
-        url: '/SanitationRequest',
-        icon: SprayCan,
-    },
-    {
-        title: 'Maintenance Request',
-        url: '/', //todo: add url,
-        icon: Hammer,
-    },
+    // {
+    //     title: 'Transportation Request',
+    //     url: '/TransportationRequestPage',
+    //     icon: Ambulance,
+    // },
+    // {
+    //     title: 'Translator Request',
+    //     url: '/TranslationServiceRequestPage',
+    //     icon: BookA,
+    // },
+    // {
+    //     title: 'Sanitation Request',
+    //     url: '/SanitationRequest',
+    //     icon: SprayCan,
+    // },
+    // {
+    //     title: 'Maintenance Request',
+    //     url: '/', //todo: add url,
+    //     icon: Hammer,
+    // },
     {
         title: 'Requests Display Page',
         url: '/ServiceRequestDisplay',
