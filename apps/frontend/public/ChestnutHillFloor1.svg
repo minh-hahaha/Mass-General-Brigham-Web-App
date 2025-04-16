@@ -26,6 +26,15 @@
       }
 
       .cls-9 {
+        font-size: 40.4px;
+        letter-spacing: -.03em;
+      }
+
+      .cls-9, .cls-10, .cls-11, .cls-12, .cls-13 {
+        font-family: Verdana, Verdana;
+      }
+
+      .cls-14 {
         fill: #e4e4e4;
       }
 
@@ -51,19 +60,15 @@
         font-size: 19.77px;
       }
 
-      .cls-10, .cls-11, .cls-12, .cls-13 {
-        font-family: Verdana, Verdana;
-      }
-
       .cls-11 {
         font-size: 48px;
       }
 
-      .cls-14 {
+      .cls-15 {
         letter-spacing: .4em;
       }
 
-      .cls-15 {
+      .cls-16 {
         fill: #f9e3ff;
       }
 
@@ -77,20 +82,16 @@
         letter-spacing: -.03em;
       }
 
-      .cls-16 {
+      .cls-17 {
         letter-spacing: -.11em;
       }
 
-      .cls-17 {
+      .cls-18 {
         letter-spacing: -.08em;
       }
 
-      .cls-18 {
-        letter-spacing: -.06em;
-      }
-
       .cls-19 {
-        letter-spacing: -.03em;
+        letter-spacing: -.06em;
       }
 
       .cls-20 {
@@ -122,6 +123,10 @@
       }
 
       .cls-27 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-28 {
         letter-spacing: -.04em;
       }
     </style>
@@ -129,9 +134,9 @@
   <g id="Background">
     <polygon class="cls-1" points="1747.54 793 1748.15 347.42 1505.73 347.42 1505.73 219.64 37.76 216.5 37.76 934.15 396.37 934.15 396.37 1643.87 613.5 1645.72 613.5 1632.75 663.33 1633.25 664.7 792.5 1747.54 793"/>
     <polygon class="cls-2" points="2940.53 2198.5 2594.72 2198.5 2596.07 1767.5 2940.53 1767.5 2940.53 2198.5"/>
-    <polygon class="cls-15" points="2289.83 211.02 2949.84 211.02 2947.94 1078.48 2695.14 1078.48 2695.14 956.23 2294.77 957.59 2289.83 211.02"/>
+    <polygon class="cls-16" points="2289.83 211.02 2949.84 211.02 2947.94 1078.48 2695.14 1078.48 2695.14 956.23 2294.77 957.59 2289.83 211.02"/>
     <polyline class="cls-2" points="1990.79 1628.12 2303.15 1628.75 2302.8 1606 2527.75 1606 2523.98 2131.37 1862.05 2131.37 1862.05 2011.37 1904.06 2011.37 1901.48 1855.87 1990.79 1855.87"/>
-    <polygon class="cls-9" points="1509.66 211.02 1509.66 345.59 1748.15 347.42 1750.83 790.5 1996.49 785.75 2002.51 1087.06 2018.39 1087.06 2016.91 1339.24 1886.43 1338.44 1886.12 1456.44 2033.07 1457.56 2033.22 1496.87 2132.92 1496.87 2165.89 1290.94 2191.18 1290.94 2244.91 1252.86 2244.91 1248.12 2410.67 1248.12 2464.27 1248.12 2481.33 1250.49 2495 1260.12 2511.45 1270.9 2522.03 1287.7 2523.86 1307.62 2523.75 1325.38 2511.45 1341.5 2493.47 1361.5 2448.3 1368.87 2310.08 1367.18 2310.08 1434.54 2309.8 1444.65 2529 1443 2523.98 2131.37 1422.14 2136.25 1422.14 1883.47 397.47 1883.47 396.37 934.15 291.2 932.25 289.86 1067.13 208.54 1072.38 208.54 1145.87 241.42 1147.81 265.49 1149.87 291.96 1155.56 309.85 1173.46 330.69 1203.44 326.55 1231.69 309.85 1257.21 272.61 1273.12 202.79 1273.12 208.27 1332.13 331.2 1332.13 331.2 1954.5 1354.14 1954.5 1354.14 2201.5 2594.72 2198.5 2601.29 1345.41 2949.71 1341.5 2947.94 1078.48 2589.15 1082.48 2592.12 957.59 2294.77 957.59 2289.83 211.02 1509.66 211.02"/>
+    <polygon class="cls-14" points="1509.66 211.02 1509.66 345.59 1748.15 347.42 1750.83 790.5 1996.49 785.75 2002.51 1087.06 2018.39 1087.06 2016.91 1339.24 1886.43 1338.44 1886.12 1456.44 2033.07 1457.56 2033.22 1496.87 2132.92 1496.87 2165.89 1290.94 2191.18 1290.94 2244.91 1252.86 2244.91 1248.12 2410.67 1248.12 2464.27 1248.12 2481.33 1250.49 2495 1260.12 2511.45 1270.9 2522.03 1287.7 2523.86 1307.62 2523.75 1325.38 2511.45 1341.5 2493.47 1361.5 2448.3 1368.87 2310.08 1367.18 2310.08 1434.54 2309.8 1444.65 2529 1443 2523.98 2131.37 1422.14 2136.25 1422.14 1883.47 397.47 1883.47 396.37 934.15 291.2 932.25 289.86 1067.13 208.54 1072.38 208.54 1145.87 241.42 1147.81 265.49 1149.87 291.96 1155.56 309.85 1173.46 330.69 1203.44 326.55 1231.69 309.85 1257.21 272.61 1273.12 202.79 1273.12 208.27 1332.13 331.2 1332.13 331.2 1954.5 1354.14 1954.5 1354.14 2201.5 2594.72 2198.5 2601.29 1345.41 2949.71 1341.5 2947.94 1078.48 2589.15 1082.48 2592.12 957.59 2294.77 957.59 2289.83 211.02 1509.66 211.02"/>
   </g>
   <g id="A-WALL">
     <g id="LINE">
@@ -2298,7 +2303,7 @@
       <polyline class="cls-6" points="2523.53 1477.5 2523.53 1478.5 2529.01 1478.5 2529 1443"/>
     </g>
     <g id="ARC-17" data-name="ARC">
-      <path class="cls-6" d="M2276.56,1057.13c-35.98.66-64.56,27.84-63.84,60.69.72,32.39,29.68,58.3,65.15,58.3"/>
+      <path class="cls-6" d="M2276.56,1057.13c-35.98.66-64.56,27.84-63.84,60.69s29.68,58.3,65.15,58.3"/>
     </g>
     <g id="LINE-684" data-name="LINE">
       <line class="cls-6" x1="2320.44" y1="1057.13" x2="2276.56" y2="1057.13"/>
@@ -7421,7 +7426,7 @@
   </g>
   <g id="A-AREA-IDEN">
     <g id="ATTRIB">
-      <text class="cls-11" transform="translate(2426.31 603.45) scale(1.1 1)"><tspan class="cls-22" x="0" y="0">100 - LABOR</tspan><tspan class="cls-17" x="297.49" y="0">A</tspan><tspan class="cls-24" x="326.29" y="0">T</tspan><tspan class="cls-20" x="353.49" y="0">O</tspan><tspan class="cls-26" x="390.08" y="0">R</tspan><tspan class="cls-22" x="421.78" y="0">Y</tspan></text>
+      <text class="cls-11" transform="translate(2379.08 604.17) scale(1.1 1)"><tspan class="cls-22" x="0" y="0">100 - LABOR</tspan><tspan class="cls-18" x="297.49" y="0">A</tspan><tspan class="cls-24" x="326.29" y="0">T</tspan><tspan class="cls-20" x="353.49" y="0">O</tspan><tspan class="cls-26" x="390.07" y="0">R</tspan><tspan class="cls-20" x="421.78" y="0">Y</tspan></text>
     </g>
     <g id="ATTRIB-2" data-name="ATTRIB">
       <text class="cls-12" transform="translate(301.95 1257.21) scale(1.1 1)"><tspan x="0" y="0" xml:space="preserve">               </tspan></text>
@@ -7436,19 +7441,19 @@
       <text class="cls-12" transform="translate(323.12 1431.29) scale(1.1 1)"><tspan x="0" y="0" xml:space="preserve">               </tspan></text>
     </g>
     <g id="TEXT-2" data-name="TEXT">
-      <text class="cls-10" transform="translate(1288.16 1224.87) scale(1.1 1)"><tspan class="cls-19" x="0" y="0">COU</tspan><tspan class="cls-25" x="42.36" y="0">R</tspan><tspan class="cls-21" x="55.04" y="0">T</tspan><tspan class="cls-18" x="66.73" y="0">Y</tspan><tspan class="cls-23" x="77.63" y="0">ARD</tspan></text>
+      <text class="cls-10" transform="translate(1288.16 1224.87) scale(1.1 1)"><tspan class="cls-21" x="0" y="0">COU</tspan><tspan class="cls-25" x="42.36" y="0">R</tspan><tspan class="cls-21" x="55.04" y="0">T</tspan><tspan class="cls-19" x="66.73" y="0">Y</tspan><tspan class="cls-23" x="77.63" y="0">ARD</tspan></text>
     </g>
     <g id="ATTRIB-6" data-name="ATTRIB">
       <text class="cls-13" transform="translate(1870.86 2063.74) scale(1.1 1)"><tspan x="0" y="0" xml:space="preserve">RECEPTION      </tspan></text>
     </g>
     <g id="ATTRIB-7" data-name="ATTRIB">
-      <text class="cls-11" transform="translate(2042.76 1784.12) scale(1.1 1)"><tspan class="cls-22" x="0" y="0">102 - RADIO</tspan><tspan class="cls-26" x="295.05" y="0">L</tspan><tspan class="cls-20" x="320.1" y="0">OGY</tspan><tspan class="cls-14" x="0" y="57.6">	</tspan><tspan class="cls-20" x="36" y="57.6" xml:space="preserve">  MRI/CT SCAN</tspan></text>
+      <text class="cls-11" transform="translate(2042.76 1784.12) scale(1.1 1)"><tspan class="cls-22" x="0" y="0">102 - RADIO</tspan><tspan class="cls-26" x="295.05" y="0">L</tspan><tspan class="cls-20" x="320.1" y="0">OGY</tspan><tspan class="cls-15" x="0" y="57.6">	</tspan><tspan class="cls-20" x="36" y="57.6" xml:space="preserve">  MRI/CT SCAN</tspan></text>
     </g>
     <g id="ATTRIB-8" data-name="ATTRIB">
-      <text class="cls-13" transform="translate(1512.95 540.1) scale(1.1 1)"><tspan x="0" y="0" xml:space="preserve">RECEPTION      </tspan></text>
+      <text class="cls-9" transform="translate(1495.41 686.91) scale(.98 1)"><tspan x="0" y="0" xml:space="preserve">RECEPTION      </tspan></text>
     </g>
     <g id="ATTRIB-9" data-name="ATTRIB">
-      <text class="cls-11" transform="translate(594.39 428.02) scale(1.1 1)"><tspan class="cls-20" x="0" y="0">130 - MU</tspan><tspan class="cls-16" x="213.08" y="0">L</tspan><tspan class="cls-20" x="234.61" y="0">T</tspan><tspan class="cls-27" x="262.99" y="0">I</tspan><tspan class="cls-26" x="281.29" y="0">-</tspan><tspan class="cls-20" x="301.42" y="0">SPECIA</tspan><tspan class="cls-16" x="472.86" y="0">L</tspan><tspan class="cls-20" x="494.4" y="0">TY </tspan><tspan class="cls-20"><tspan x="201.96" y="57.6">CLINIC</tspan></tspan></text>
+      <text class="cls-11" transform="translate(594.39 428.02) scale(1.1 1)"><tspan class="cls-20" x="0" y="0">130 - MU</tspan><tspan class="cls-17" x="213.08" y="0">L</tspan><tspan class="cls-20" x="234.61" y="0">T</tspan><tspan class="cls-28" x="262.99" y="0">I</tspan><tspan class="cls-27" x="281.29" y="0">-</tspan><tspan class="cls-20" x="301.42" y="0">SPECIA</tspan><tspan class="cls-17" x="472.86" y="0">L</tspan><tspan class="cls-20" x="494.4" y="0">TY </tspan><tspan class="cls-20"><tspan x="201.96" y="57.6">CLINIC</tspan></tspan></text>
     </g>
     <g id="ATTRIB-10" data-name="ATTRIB">
       <text class="cls-13" transform="translate(2547.59 904.17) scale(1.1 1)"><tspan x="0" y="0" xml:space="preserve">RECEPTION      </tspan></text>

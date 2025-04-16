@@ -1,0 +1,198 @@
+{
+    "nodes": [
+        {
+            "id": "20PPFloor3Elevator1",
+            "x": 254.3825010948603,
+            "y": 814.2913257905279,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Elevator",
+            "name": "Node 1",
+            "roomNumber": ""
+        },
+        {
+            "id": "20PPFloor3Hallway2",
+            "x": 253.8825793023842,
+            "y": 847.2863338985738,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Hallway",
+            "name": "Node 2",
+            "roomNumber": ""
+        },
+        {
+            "id": "20PPFloor3Hallway3",
+            "x": 335.3702446672386,
+            "y": 843.7868643707789,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Hallway",
+            "name": "Node 3",
+            "roomNumber": ""
+        },
+        {
+            "id": "20PPFloor3Hallway4",
+            "x": 336.87001570482096,
+            "y": 874.7821626683038,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Hallway",
+            "name": "Node 4",
+            "roomNumber": ""
+        },
+        {
+            "id": "20PPFloor3Hallway5",
+            "x": 829.0175298934504,
+            "y": 871.4786703168128,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Hallway",
+            "name": "Node 5",
+            "roomNumber": ""
+        },
+        {
+            "id": "20PPFloor3Elevator6",
+            "x": 827.5177701761762,
+            "y": 822.9860130600043,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Elevator",
+            "name": "Node 6",
+            "roomNumber": ""
+        },
+        {
+            "id": "20PPFloor3Stairs7",
+            "x": 919.0039053514772,
+            "y": 869.9788879589222,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Stairs",
+            "name": "Node 7",
+            "roomNumber": ""
+        },
+        {
+            "id": "20PPFloor3Door8",
+            "x": 365.1637337604469,
+            "y": 835.6620866994913,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Door",
+            "name": "ReceptionDoor",
+            "roomNumber": ""
+        },
+        {
+            "id": "20PPFloor3Room9",
+            "x": 400.1584403587055,
+            "y": 800.1674639689107,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Room",
+            "name": "Reception",
+            "roomNumber": ""
+        },
+        {
+            "id": "20PPFloor3Stairs10",
+            "x": 332.66865310503124,
+            "y": 810.6658725522958,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Stairs",
+            "name": "Node 10",
+            "roomNumber": ""
+        },
+        {
+            "id": "20PPFloor3Hallway11",
+            "x": 167.90565795898436,
+            "y": 851.197607421875,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Hallway",
+            "name": "Node 11",
+            "roomNumber": ""
+        },
+        {
+            "id": "20PPFloor3Hallway12",
+            "x": 161.97573852539062,
+            "y": 710.4967987060547,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Hallway",
+            "name": "Node 12",
+            "roomNumber": ""
+        },
+        {
+            "id": "20PPFloor3Door13",
+            "x": 147.91590576171876,
+            "y": 712.75771484375,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Door",
+            "name": "Reception",
+            "roomNumber": ""
+        },
+        {
+            "id": "20PPFloor3Room14",
+            "x": 77.56549873352051,
+            "y": 643.2159362792969,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Room",
+            "name": "Reception",
+            "roomNumber": ""
+        }
+    ],
+    "edges": [
+        {
+            "from": "20PPFloor3Elevator1",
+            "to": "20PPFloor3Hallway2"
+        },
+        {
+            "from": "20PPFloor3Hallway2",
+            "to": "20PPFloor3Hallway3"
+        },
+        {
+            "from": "20PPFloor3Hallway3",
+            "to": "20PPFloor3Stairs10"
+        },
+        {
+            "from": "20PPFloor3Hallway3",
+            "to": "20PPFloor3Door8"
+        },
+        {
+            "from": "20PPFloor3Door8",
+            "to": "20PPFloor3Room9"
+        },
+        {
+            "from": "20PPFloor3Hallway3",
+            "to": "20PPFloor3Hallway4"
+        },
+        {
+            "from": "20PPFloor3Hallway4",
+            "to": "20PPFloor3Hallway5"
+        },
+        {
+            "from": "20PPFloor3Hallway5",
+            "to": "20PPFloor3Elevator6"
+        },
+        {
+            "from": "20PPFloor3Stairs7",
+            "to": "20PPFloor3Hallway5"
+        },
+        {
+            "from": "20PPFloor3Room14",
+            "to": "20PPFloor3Door13"
+        },
+        {
+            "from": "20PPFloor3Door13",
+            "to": "20PPFloor3Hallway12"
+        },
+        {
+            "from": "20PPFloor3Hallway12",
+            "to": "20PPFloor3Hallway11"
+        },
+        {
+            "from": "20PPFloor3Hallway11",
+            "to": "20PPFloor3Hallway2"
+        }
+    ]
+}
