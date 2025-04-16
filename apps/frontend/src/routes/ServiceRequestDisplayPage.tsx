@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react"
 import {
     Carousel,
     CarouselContent,
@@ -14,16 +14,6 @@ import TableSanitationRequest from "@/components/TableSanitationRequest"
 import TableTransportRequest from "@/components/TableTransportRequest"
 import TableTranslationRequest from "@/components/TableTranslatorRequest"
 import { cn } from "@/lib/utils"
-
-// Define color variables here
-const colors = {
-    highlight: "mgblue", // Blue highlight color
-    textPrimary: "mgblue", // Blue text color
-    textSecondary: "mgblue", // Secondary text color (light blue)
-    textHover: "mgblue", // Darker blue for hover
-    background: "mgblue", // White background color
-    border: "mgblue", // Light blue border
-}
 
 const tableTabs = [
     { label: "All", Component: TableAllRequest },
@@ -45,23 +35,14 @@ export default function RequestTablesCarousel() {
         return () => api.off("select", onSelect)
     }, [api])
 
-    const tabCount = tableTabs.length
-
     return (
         <div className="w-full px-6 pt-10">
             <div className="flex justify-center mb-6">
-                <div
-                    className="relative flex w-full max-w-xl overflow-hidden rounded-xl bg-white border border-blue-200 shadow-inner"
-                    style={{ backgroundColor: colors.background, borderColor: colors.border }}
-                >
+                <div className="relative flex w-full max-w-xl overflow-hidden rounded-xl bg-white border border-mgbblue shadow-inner">
                     {/* Highlight */}
                     <div
-                        className="absolute top-0 left-0 h-full w-1/5 rounded-xl transition-transform duration-300 ease-in-out"
-                        style={{
-                            transform: `translateX(${selectedIndex * 100}%)`,
-                            backgroundColor: colors.highlight,
-                            zIndex: 0,
-                        }}
+                        className="absolute top-0 left-0 h-full w-1/5 rounded-xl transition-transform duration-300 ease-in-out bg-mgbblue"
+                        style={{ transform: `translateX(${selectedIndex * 100}%)`, zIndex: 0 }}
                     />
                     {tableTabs.map((tab, index) => (
                         <button
@@ -71,11 +52,8 @@ export default function RequestTablesCarousel() {
                                 "flex-1 z-10 px-4 py-3 text-sm font-medium transition-colors duration-200",
                                 selectedIndex === index
                                     ? "text-white"
-                                    : `text-[${colors.textPrimary}] hover:text-[${colors.textHover}]`
+                                    : "text-mgbblue hover:text-mgbblue/80"
                             )}
-                            style={{
-                                color: selectedIndex === index ? "white" : colors.textPrimary,
-                            }}
                         >
                             {tab.label}
                         </button>
