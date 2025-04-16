@@ -47,7 +47,7 @@ export default function ServiceRequestSelectPage() {
                         <img
                             src={req.icon}
                             alt={`${req.label} icon`}
-                            className="w-24 h-24 mb-4"
+                            className="w-50 h-50 mb-4"
                         />
                         {req.label}
                     </motion.div>
@@ -66,7 +66,7 @@ export default function ServiceRequestSelectPage() {
                         <img
                             src={req.icon}
                             alt={`${req.label} icon`}
-                            className="w-24 h-24 mb-4"
+                            className="w-50 h-50 mb-4"
                         />
                         {req.label}
                     </motion.div>
