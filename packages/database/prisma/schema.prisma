@@ -31,10 +31,10 @@ model ServiceRequest {
   requestId               Int       @id @default(autoincrement())
   assignedId              Employee? @relation(fields: [employeeId], references: [employeeId])
   employeeId              Int?
-  employee_name           String?
+  employeeName           String?
   //this is to satisfy the 9 commandments until we get proper intgration between the locations in the database and the forms
-  requester_department_id String?
-  requester_room_number   String?
+  requesterDepartmentId String?
+  requesterRoomNumber   String?
 
   requestDate      DateTime?         @default(now()) @db.Date
   status           String
@@ -47,9 +47,20 @@ model ServiceRequest {
   requestTime      DateTime?         @default(now()) @db.Time
 
   translationRequest TranslationRequest?
-  sanitation         Sanitation?       @relation(name: "ServiceSanitation")
+  sanitation         Sanitation?         @relation(name: "ServiceSanitation")
+  maintenanceRequest MaintenanceRequest? @relation(name: "MaintenanceRequest")
 }
 
+model MaintenanceRequest {
+  servMaintenanceId     Int            @id
+  maintenanceType        String
+  maintenanceDescription String
+  maintenanceHospital    String
+  maintenanceLocation    String
+  maintenanceTime        DateTime
+  // employee_name           String
+  servRequestId          ServiceRequest @relation(name: "MaintenanceRequest", fields: [servMaintenanceId], references: [requestId])
+}
 
 //TODO: FIX LOCATION FIELDS
 model PatientTransport {
@@ -63,16 +74,16 @@ model PatientTransport {
 }
 
 model TranslationRequest {
-  serviceReqId    Int            @id
-  servRequestId   ServiceRequest @relation(fields: [serviceReqId], references: [requestId])
-  patientName     String
-  language        String
-  duration        Float
-  typeMeeting     String
-  date            DateTime
-  meetingLink     String
-  location        String
-  department      String          //fix it later - Jake
+  serviceReqId  Int            @id
+  servRequestId ServiceRequest @relation(fields: [serviceReqId], references: [requestId])
+  patientName   String
+  language      String
+  duration      Float
+  typeMeeting   String
+  date          DateTime
+  meetingLink   String
+  location      String
+  department    String //fix it later - Jake
 }
 
 model Department {
@@ -84,20 +95,19 @@ model Department {
   members       Employee[]
   locations     Location[]
   building      Building   @relation(fields: [buildingId], references: [buildingId])
-  nodeId        String?    @unique
-  nodeReception Node?      @relation(fields: [nodeId], references: [id], name:"DepartmentNode")
-
+  nodeId        String?
+  node          Node?      @relation(fields: [nodeId], references: [id])
 }
 
 model Location {
-  locId         Int         @id @default(autoincrement())
-  department    Department? @relation(fields: [departmentId], references: [deptId])
-  departmentId  Int?
-  locType       String
-  roomNum       Int?         @unique
-  floor         Int
-  nodeId        String?      @unique
-  nodeLocation  Node?        @relation(fields: [nodeId], references: [id], name:"LocationNode")
+  locId        Int         @id @default(autoincrement())
+  department   Department? @relation(fields: [departmentId], references: [deptId])
+  departmentId Int?
+  locType      String
+  roomNum      Int?        @unique
+  floor        Int
+  nodeId       String?     @unique
+  nodeLocation Node?       @relation(fields: [nodeId], references: [id], name: "LocationNode")
 
   // making prisma happy here
   serviceRequests ServiceRequest[] @relation("ServiceLocation") // unused relation
@@ -112,7 +122,7 @@ model Building {
 model Node {
   // ignore id
   // id         Int     @id @default(autoincrement())
-  id      String  @id
+  id          String  @id
   x           Decimal
   y           Decimal
   floor       String
@@ -122,7 +132,7 @@ model Node {
   roomNumber  String?
   edgesFrom   Edge[]  @relation("NodeToEdgeFrom")
   edgesTo     Edge[]  @relation("NodeToEdgeTo")
-  department  Department? @relation(name:"DepartmentNode")
+  departments Department[]
   location    Location? @relation(name:"LocationNode")
 }
 
@@ -137,13 +147,13 @@ model Edge {
 
 model Sanitation {
   servReqId                Int            @id
-  sanitation_location_id   String
-  sanitation_department_id String
-  sanitation_room_number   Int
+  sanitationLocationId   String
+  sanitationDepartmentId String
+  sanitationRoomNumber Int
   sanitationType           String
   recurring                Boolean
   hazardLevel              String
   disposalRequired         Boolean
   completeBy               DateTime       @default(now()) @db.Time
-  servRequest_id           ServiceRequest @relation(name: "ServiceSanitation", fields: [servReqId], references: [requestId])
+  servRequestId           ServiceRequest @relation(name: "ServiceSanitation", fields: [servReqId], references: [requestId])
 }

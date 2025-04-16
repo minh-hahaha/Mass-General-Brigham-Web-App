@@ -932,6 +932,14 @@
         {
             "from": "20PPFloor3Elevator6",
             "to": "20PPFloor4Elevator2"
+        },
+        {
+            "from": "20PPFloor2Elevator1",
+            "to": "20PPFloor3Elevator1"
+        },
+        {
+            "from": "20PPFloor2Elevator9",
+            "to": "20PPFloor3Elevator6"
         }
     ]
 }

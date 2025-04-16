@@ -12,6 +12,7 @@ import graphRouter from './routes/bfsRoutes.ts';
 import sanitationRouter from './routes/sanitation.ts';
 import translationRouter from './routes/translationrequest.ts';
 import directoryNodeRouter from './routes/directoryNode.ts';
+import maintenanceRouter from './routes/maintenancerequest.ts';
 
 import { ROUTES } from 'common/src/constants';
 
@@ -50,6 +51,7 @@ app.use(ROUTES.DIRECTORY_BUILDING, directoryRouter);
 
 app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
 app.use(ROUTES.TRANSLATIONREQUEST, translationRouter);
+app.use(ROUTES.MAINTENANCEREQUEST, maintenanceRouter);
 app.use(ROUTES.BFSGRAPH, graphRouter);
 
 /**

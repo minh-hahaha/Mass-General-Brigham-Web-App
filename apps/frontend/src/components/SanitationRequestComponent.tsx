@@ -110,6 +110,7 @@ const SanitationRequestPage = () => {
             {/* make the form left side */}
             <div className="flex flex-col items-center border border-[#d3d5d7] bg-white rounded-2xl shadow-xl p-8 w-full max-w-[700px] mt-10 mb-10">
                 <h1 className="text-[30px] font-bold mb-6">Sanitation Request</h1>
+                <h2 className="text-[15px] font-semibold mb-6">Yael Whitson and Jack Morris</h2>
                 <div>
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>

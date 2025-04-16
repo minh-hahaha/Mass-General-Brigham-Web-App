@@ -1,39 +1,39 @@
 {
     "nodes": [
         {
-            "id": "20PP2Elevator1",
-            "x": 249.20754699707032,
-            "y": 853.4300659179687,
+            "id": "20PPFloor2Elevator1",
+            "x": 254.72187389026988,
+            "y": 838.8962624289773,
             "floor": "2",
             "buildingId": "2",
             "nodeType": "Elevator",
-            "name": "Node 1",
+            "name": "Elevator 1",
             "roomNumber": ""
         },
         {
-            "id": "20PP2Hallway2",
-            "x": 250.75525665283203,
-            "y": 897.7961059570313,
+            "id": "20PPFloor2Stairs2",
+            "x": 335.58441162109375,
+            "y": 837.671064897017,
+            "floor": "2",
+            "buildingId": "2",
+            "nodeType": "Stairs",
+            "name": "Stairs 1",
+            "roomNumber": ""
+        },
+        {
+            "id": "20PPFloor2Hallway3",
+            "x": 263.29820112748575,
+            "y": 868.3008367365056,
             "floor": "2",
             "buildingId": "2",
             "nodeType": "Hallway",
-            "name": "Node 2",
-            "roomNumber": ""
-        },
-        {
-            "id": "20PP2Door3",
-            "x": 340.5126708984375,
-            "y": 888.3621459960938,
-            "floor": "2",
-            "buildingId": "2",
-            "nodeType": "Door",
             "name": "Node 3",
             "roomNumber": ""
         },
         {
-            "id": "20PP2Hallway4",
-            "x": 435.12183837890626,
-            "y": 881.8931457519532,
+            "id": "20PPFloor2Hallway4",
+            "x": 347.8363037109375,
+            "y": 868.3008367365056,
             "floor": "2",
             "buildingId": "2",
             "nodeType": "Hallway",
@@ -41,29 +41,29 @@
             "roomNumber": ""
         },
         {
-            "id": "20PP2Room220/210",
-            "x": 436.7390869140625,
-            "y": 816.1249481201172,
+            "id": "20PPFloor2Hallway5",
+            "x": 415.2217518199574,
+            "y": 856.048916903409,
             "floor": "2",
             "buildingId": "2",
-            "nodeType": "Room",
-            "name": "220 Reception",
-            "roomNumber": "220/210"
+            "nodeType": "Hallway",
+            "name": "Node 5",
+            "roomNumber": ""
         },
         {
-            "id": "20PP2Elevator6",
-            "x": 875.9362814941408,
-            "y": 870.6278052978516,
+            "id": "20PPFloor2Hallway6",
+            "x": 891.8206232244318,
+            "y": 891.5794233842329,
             "floor": "2",
             "buildingId": "2",
-            "nodeType": "Elevator",
+            "nodeType": "Hallway",
             "name": "Node 6",
             "roomNumber": ""
         },
         {
-            "id": "20PP2Hallway7",
-            "x": 842.3432872314454,
-            "y": 875.8461223144532,
+            "id": "20PPFloor2Hallway7",
+            "x": 852.6145796342329,
+            "y": 856.048916903409,
             "floor": "2",
             "buildingId": "2",
             "nodeType": "Hallway",
@@ -71,68 +71,72 @@
             "roomNumber": ""
         },
         {
-            "id": "20PP2Hallway8",
-            "x": 533.9328833007813,
-            "y": 872.637510131836,
+            "id": "20PPFloor2Room8",
+            "x": 438.50036621093744,
+            "y": 802.1405584161931,
             "floor": "2",
             "buildingId": "2",
-            "nodeType": "Hallway",
-            "name": "Node 8",
+            "nodeType": "Room",
+            "name": "Reception",
             "roomNumber": ""
         },
         {
-            "id": "20PP2Stairs9",
-            "x": 331.06307220458984,
-            "y": 851.9200988769531,
+            "id": "20PPFloor2Elevator9",
+            "x": 897.9465553977273,
+            "y": 852.3733243075284,
             "floor": "2",
             "buildingId": "2",
-            "nodeType": "Stairs",
-            "name": "Node 9",
+            "nodeType": "Elevator",
+            "name": "Elevator 2",
             "roomNumber": ""
         },
         {
-            "id": "20PP2Stairs10",
-            "x": 90.83557739257813,
-            "y": 94.7713134765625,
+            "id": "20PPFloor2Stairs10",
+            "x": 949.4045188210226,
+            "y": 889.1290283203124,
             "floor": "2",
             "buildingId": "2",
             "nodeType": "Stairs",
-            "name": "Node 10",
+            "name": "Stairs 2",
             "roomNumber": ""
         }
     ],
     "edges": [
         {
-            "from": "20PP2Room220/210",
-            "to": "20PP2Hallway4"
+            "from": "20PPFloor2Elevator1",
+            "to": "20PPFloor2Hallway3"
         },
         {
-            "from": "20PP2Hallway4",
-            "to": "20PP2Door3"
+            "from": "20PPFloor2Hallway3",
+            "to": "20PPFloor2Hallway4"
         },
         {
-            "from": "20PP2Hallway4",
-            "to": "20PP2Hallway8"
+            "from": "20PPFloor2Stairs2",
+            "to": "20PPFloor2Hallway4"
         },
         {
-            "from": "20PP2Door3",
-            "to": "20PP2Hallway2"
+            "from": "20PPFloor2Hallway4",
+            "to": "20PPFloor2Hallway5"
         },
         {
-            "from": "20PP2Hallway2",
-            "to": "20PP2Elevator1"
+            "from": "20PPFloor2Hallway5",
+            "to": "20PPFloor2Room8"
         },
         {
-            "from": "20PP2Hallway8",
-            "to": "20PP2Hallway7"
+            "from": "20PPFloor2Hallway5",
+            "to": "20PPFloor2Hallway7"
         },
         {
-            "from": "20PP2Hallway7",
-            "to": "20PP2Elevator6"
+            "from": "20PPFloor2Elevator9",
+            "to": "20PPFloor2Hallway7"
         },
         {
-            "from": "20PP2Door3",
-            "to": "20PP2Stairs9"
+            "from": "20PPFloor2Stairs10",
+            "to": "20PPFloor2Hallway6"
+        },
+        {
+            "from": "20PPFloor2Hallway6",
+            "to": "20PPFloor2Hallway7"
         }
     ]
 }
