@@ -1,46 +1,52 @@
+import { Car, Train, Footprints } from 'lucide-react';
 import React from 'react';
-import InputElement from '../elements/InputElement.tsx';
 
-type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING' | null;
+type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
+
+const travelIcons = {
+    DRIVING: <Car className="w-6 h-6" />,
+    TRANSIT: <Train className="w-6 h-6" />,
+    WALKING: <Footprints className="w-6 h-6" />
+};
 
 const TRAVEL_MODES = [
     { id: 'DRIVING', label: 'Driving' },
-    { id: 'TRANSIT', label: 'Public Transit' },
-    { id: 'WALKING', label: 'Walking' },
+    { id: 'TRANSIT', label: 'Transit' },
+    { id: 'WALKING', label: 'Walking' }
 ];
 
 interface TravelModeProps {
-    selectedMode?: TravelModeType;
+    selectedMode: TravelModeType;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-// A radio button group with custom arrangement
 const TravelModeComponent = ({ selectedMode, onChange }: TravelModeProps) => {
     return (
-        <div className="mb-4">
-            <p className="font-medium mb-2">Travel Mode:</p>
-            <div className="flex flex-wrap gap-6">
+        <div className="mb-6">
+            <p className="text-sm font-semibold text-mgbblue mb-3">Choose Travel Mode</p>
+            <div className="flex gap-4">
                 {TRAVEL_MODES.map((mode) => (
-                    <div key={mode.id} className="flex flex-col items-center text-center w-20">
-                        {/* We create a hidden InputElement just for the input part */}
-                        <div className="mb-1">
-                            <input
-                                type="radio"
-                                id={`mode-${mode.id}`}
-                                name="travelMode"
-                                value={mode.id}
-                                checked={selectedMode === mode.id}
-                                onChange={onChange}
-                                className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
-                        <label
-                            htmlFor={`mode-${mode.id}`}
-                            className="text-sm font-medium text-gray-700 cursor-pointer"
-                        >
-                            {mode.label}
-                        </label>
-                    </div>
+                    <label
+                        key={mode.id}
+                        htmlFor={`mode-${mode.id}`}
+                        className={`p-3 rounded-lg border ${
+                            selectedMode === mode.id
+                                ? 'bg-mgbblue text-white'
+                                : 'bg-white text-mgbblue border-mgbblue'
+                        } flex flex-col items-center gap-1 cursor-pointer shadow-sm transition-all hover:bg-mgbblue hover:text-white`}
+                    >
+                        <input
+                            type="radio"
+                            id={`mode-${mode.id}`}
+                            name="travelMode"
+                            value={mode.id}
+                            checked={selectedMode === mode.id}
+                            onChange={onChange}
+                            className="hidden"
+                        />
+                        {travelIcons[mode.id as TravelModeType]}
+                        <span className="text-xs">{mode.label}</span>
+                    </label>
                 ))}
             </div>
         </div>
