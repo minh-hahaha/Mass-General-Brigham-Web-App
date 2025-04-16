@@ -1,5 +1,11 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+// Import your icons - update these paths to match your actual asset locations
+import transportationIcon from '../assets/icons/transportation.png';
+import medicalDeviceIcon from '../assets/icons/medicaldevice.png';
+import maintenanceIcon from '../assets/icons/maintenance.png';
+import sanitationIcon from '../assets/icons/sanitation.png';
+import translationIcon from '../assets/icons/translation.png';
 
 export default function ServiceRequestSelectPage() {
     const navigate = useNavigate();
@@ -14,19 +20,18 @@ export default function ServiceRequestSelectPage() {
         }
     };
 
-    const cardStyle = "bg-white border border-gray-200 rounded-xl h-80 w-64 p-4 flex items-center justify-center text-lg font-semibold shadow-md hover:shadow-lg transition-transform";
+    const cardStyle = "bg-white border border-gray-200 rounded-xl h-80 w-64 p-4 flex flex-col items-center justify-center gap-4 text-lg font-semibold shadow-md hover:shadow-lg transition-transform";
 
-
-    // TODO: EDIT PAGES TO GO WITH REQUESTS PAGES
+    // Updated with icon properties
     const firstRowRequests = [
-        { label: 'Transportation', path: '/TransportationRequestPage' },
-        { label: 'Medical Device', path: '/MedicalDevicePage' },
-        { label: 'Maintenance', path: '/MaintenancePage' },
+        { label: 'Transportation', path: '/TransportationRequestPage', icon: transportationIcon },
+        { label: 'Medical Device', path: '/MedicalDevicePage', icon: medicalDeviceIcon },
+        { label: 'Maintenance', path: '/MaintenancePage', icon: maintenanceIcon },
     ];
 
     const secondRowRequests = [
-        { label: 'Sanitation', path: '/SanitationRequest' },
-        { label: 'Translation', path: '/TranslationServiceRequestPage' },
+        { label: 'Sanitation', path: '/SanitationRequest', icon: sanitationIcon },
+        { label: 'Translation', path: '/TranslationServiceRequestPage', icon: translationIcon },
     ];
 
     return (
@@ -40,6 +45,11 @@ export default function ServiceRequestSelectPage() {
                         {...animationProps}
                         className={cardStyle}
                     >
+                        <img
+                            src={req.icon}
+                            alt={`${req.label} icon`}
+                            className="w-24 h-24 mb-4"
+                        />
                         {req.label}
                     </motion.div>
                 ))}
@@ -54,6 +64,11 @@ export default function ServiceRequestSelectPage() {
                         {...animationProps}
                         className={cardStyle}
                     >
+                        <img
+                            src={req.icon}
+                            alt={`${req.label} icon`}
+                            className="w-24 h-24 mb-4"
+                        />
                         {req.label}
                     </motion.div>
                 ))}
