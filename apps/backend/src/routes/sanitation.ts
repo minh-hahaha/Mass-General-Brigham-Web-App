@@ -59,9 +59,9 @@ router.post('/', async (req: Request, res: Response) => {
                     comments: req.body.notes,
                     serviceType: 'Sanitation',
                     //9 commandments
-                    employee_name: req.body.employee_name,
-                    requester_room_number: req.body.requester_room_number,
-                    requester_department_id: req.body.requester_department_id,
+                    employeeName: req.body.employeeName,
+                    requesterRoomNumber: req.body.requesterRoomNumber,
+                    requesterDepartmentId: req.body.requesterDepartmentId,
 
                     //optional fields
                     //location_id: req.body.locationId ?? null,
@@ -80,9 +80,9 @@ router.post('/', async (req: Request, res: Response) => {
                     hazardLevel: req.body.hazardLevel,
                     disposalRequired: req.body.disposalRequired,
 
-                    sanitation_department_id: req.body.sanitation_department_id,
-                    sanitation_location_id: req.body.sanitation_location_id,
-                    sanitation_room_number: req.body.sanitation_room_number,
+                    sanitationDepartmentId: req.body.sanitationDepartmentId,
+                    sanitationLocationId: req.body.sanitationLocationId,
+                    sanitationRoomNumber: req.body.sanitationRoomNumber,
                     //completeBy: req.body.completeBy,
                 },
                 select: {

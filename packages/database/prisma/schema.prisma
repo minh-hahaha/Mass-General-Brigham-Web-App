@@ -52,14 +52,14 @@ model ServiceRequest {
 }
 
 model MaintenanceRequest {
-  servMaintenance_id      Int            @id
-  maintenance_type        String
-  maintenance_description String
-  maintenance_hospital    String
-  maintenance_location    String
-  maintenance_time        DateTime
+  servMaintenanceId     Int            @id
+  maintenanceId        String
+  maintenanceDescription String
+  maintenanceHospital    String
+  maintenanceLocation    String
+  maintenanceTime        DateTime
   // employee_name           String
-  servRequest_id          ServiceRequest @relation(name: "MaintenanceRequest", fields: [servMaintenance_id], references: [requestId])
+  servRequestId          ServiceRequest @relation(name: "MaintenanceRequest", fields: [servMaintenanceId], references: [requestId])
 }
 
 //TODO: FIX LOCATION FIELDS
@@ -147,13 +147,13 @@ model Edge {
 
 model Sanitation {
   servReqId                Int            @id
-  sanitation_location_id   String
-  sanitation_department_id String
-  sanitation_room_number   Int
+  sanitationLocationId   String
+  sanitationDepartmentId String
+  sanitationRoomNum   Int
   sanitationType           String
   recurring                Boolean
   hazardLevel              String
   disposalRequired         Boolean
   completeBy               DateTime       @default(now()) @db.Time
-  servRequest_id           ServiceRequest @relation(name: "ServiceSanitation", fields: [servReqId], references: [requestId])
+  servRequestId           ServiceRequest @relation(name: "ServiceSanitation", fields: [servReqId], references: [requestId])
 }
