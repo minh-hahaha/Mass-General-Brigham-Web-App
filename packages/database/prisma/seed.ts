@@ -28,6 +28,10 @@ async function main() {
         ],
         skipDuplicates: true,
     });
+
+    //NODE FIRST
+
+    //Department
     const createManyDepartments = await client.department.createMany({
         data: [
             {
@@ -119,7 +123,7 @@ async function main() {
                 deptName: 'Osher Clinical Center for Integrative Health',
                 buildingId: 1,
                 deptPhone: '617-732-9700',
-                deptServices: 'Acupuncture, health coaching, chiropractic, craniosacral therapy, integrative medicine, structural massage & movement therapies, neurology (movement disorders and headache), echocardiography, and pulmonary. Educational courses: Integrative wellness courses are also offered.',
+                deptServices: 'Acupuncture, health coaching, chiropractic, craniosacral therapy, integrative medicine, structural massage and movement therapies, neurology (movement disorders and headache), echocardiography, and pulmonary. Educational courses: Integrative wellness courses are also offered.',
             },
             {
                 deptId: 14,
@@ -333,6 +337,7 @@ async function main() {
             {
                 locType: 'hallway',
                 floor: 0,
+                departmentId: 1,
             },
             {
                 locType: 'suite',
@@ -465,6 +470,7 @@ async function main() {
                 roomNum: null,
                 floor: 1,
                 departmentId: 20,
+                // nodeId:  :D
             },
             {
                 locType: 'department',
