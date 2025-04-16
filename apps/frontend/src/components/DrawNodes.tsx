@@ -23,7 +23,7 @@ interface Props {
     prefix: string;
 }
 
-export default function HospitalSVGEditor({ svgMapUrl, currentFloor, buildingId }: Props) {
+export default function HospitalSVGEditor({ svgMapUrl, currentFloor, buildingId, prefix }: Props) {
     const [nodes, setNodes] = useState<NodeData[]>([]);
     const [edges, setEdges] = useState<Edge[]>([]);
     const [history, setHistory] = useState<{nodes: NodeData[], edges: Edge[]}[]>([]);
@@ -41,7 +41,6 @@ export default function HospitalSVGEditor({ svgMapUrl, currentFloor, buildingId 
 
     // Generate custom ID
     const generateCustomId = () => {
-        const prefix = "20PP";
         const floorPart = "Floor" + currentFloor;
         const typePart = nodeType.charAt(0).toUpperCase() + nodeType.slice(1);
         const roomPart = roomNumber || `${nodes.length + 1}`;
