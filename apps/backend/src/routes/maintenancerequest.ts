@@ -38,19 +38,19 @@ router.post('/', async (req: Request, res: Response) => {
                     priority: req.body.priority,
                     locationId: req.body.locationId || 1,
                     serviceType: 'Maintenance Request',
-                    employee_name: req.body.employeeName,
+                    employeeName: req.body.employeeName,
                 },
             });
 
             //create entry for maintenance request table
             const maintenanceRequest = await prisma.maintenanceRequest.create({
                 data: {
-                    servMaintenance_id: serviceRequest.requestId,
-                    maintenance_type: req.body.maintenanceType,
-                    maintenance_description: req.body.maintenanceDescription,
-                    maintenance_hospital: req.body.maintenanceHospital,
-                    maintenance_location: req.body.maintenanceLocation,
-                    maintenance_time: new Date(req.body.maintenanceTime) ?? null,
+                    servMaintenanceId: serviceRequest.requestId,
+                    maintenanceType: req.body.maintenanceType,
+                    maintenanceDescription: req.body.maintenanceDescription,
+                    maintenanceHospital: req.body.maintenanceHospital,
+                    maintenanceLocation: req.body.maintenanceLocation,
+                    maintenanceTime: new Date(req.body.maintenanceTime) ?? null,
                 },
             });
 
