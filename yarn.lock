@@ -2245,6 +2245,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/js-cookie@npm:^3":
+  version: 3.0.6
+  resolution: "@types/js-cookie@npm:3.0.6"
+  checksum: 10c0/173afaf5ea9d86c22395b9d2a00b6adb0006dcfef165d6dcb0395cdc32f5a5dcf9c3c60f97194119963a15849b8f85121e1ae730b03e40bc0c29b84396ba22f9
+  languageName: node
+  linkType: hard
+
 "@types/json-schema@npm:*, @types/json-schema@npm:^7.0.15":
   version: 7.0.15
   resolution: "@types/json-schema@npm:7.0.15"
@@ -4651,6 +4658,7 @@ __metadata:
     "@radix-ui/react-slot": "npm:^1.2.0"
     "@radix-ui/react-tooltip": "npm:^1.2.0"
     "@tailwindcss/vite": "npm:^4.0.17"
+    "@types/js-cookie": "npm:^3"
     "@types/node": "npm:*"
     "@types/prop-types": "npm:^15.7.5"
     "@types/react": "npm:^19.1.0"
@@ -4674,6 +4682,7 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^5.2.0"
     eslint-plugin-react-refresh: "npm:^0.4.19"
     framer-motion: "npm:^12.6.3"
+    js-cookie: "npm:^3.0.5"
     lib-utils-ts: "npm:^0.0.0-test"
     localforage: "npm:^1.10.0"
     lucide-react: "npm:^0.487.0"
@@ -5271,6 +5280,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"js-cookie@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "js-cookie@npm:3.0.5"
+  checksum: 10c0/04a0e560407b4489daac3a63e231d35f4e86f78bff9d792011391b49c59f721b513411cd75714c418049c8dc9750b20fcddad1ca5a2ca616c3aca4874cce5b3a
+  languageName: node
+  linkType: hard
+
 "js-tokens@npm:^3.0.0 || ^4.0.0, js-tokens@npm:^4.0.0":
   version: 4.0.0
   resolution: "js-tokens@npm:4.0.0"
@@ -5298,6 +5314,13 @@ __metadata:
   bin:
     js-yaml: bin/js-yaml.js
   checksum: 10c0/184a24b4eaacfce40ad9074c64fd42ac83cf74d8c8cd137718d456ced75051229e5061b8633c3366b8aada17945a7a356b337828c19da92b51ae62126575018f
+  languageName: node
+  linkType: hard
+
+"js.cookie@npm:^0.0.4":
+  version: 0.0.4
+  resolution: "js.cookie@npm:0.0.4"
+  checksum: 10c0/ddc2da7bfedea0268770d6f1aabea7e2dc25516daeeaef2a42f004a15a3d97468e00108303a67e1a85043796fb190185d17978e49320e7720d0b7a61cf3c74ee
   languageName: node
   linkType: hard
 
@@ -7357,6 +7380,7 @@ __metadata:
     "@radix-ui/react-navigation-menu": "npm:^1.2.6"
     "@radix-ui/react-slot": "npm:^1.2.0"
     "@tailwindcss/vite": "npm:^4.1.3"
+    "@types/js-cookie": "npm:^3"
     "@types/node": "npm:^22.13.13"
     "@types/react": "npm:^19"
     "@types/react-dom": "npm:^19"
@@ -7375,6 +7399,8 @@ __metadata:
     eslint-config-custom: "workspace:*"
     framer-motion: "npm:^12.6.3"
     husky: "npm:^9.1.7"
+    js-cookie: "npm:^3.0.5"
+    js.cookie: "npm:^0.0.4"
     lib-utils-ts: "npm:^0.0.0-test"
     lucide-react: "npm:^0.487.0"
     prettier: "npm:^3.5.3"
