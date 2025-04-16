@@ -1,9 +1,9 @@
-
 // floor type
 interface Floor {
     id: string;
     label: string;
     building: string;
+    buildingName?: string; // Add optional building name
 }
 
 interface FloorSelectorProps {
@@ -13,40 +13,41 @@ interface FloorSelectorProps {
 }
 
 const FloorSelector = ({floors, currentFloorId, onChange}: FloorSelectorProps) => {
-    // Group floors by building
-    const buildingGroups = floors.reduce((groups: Record<string, Floor[]>, floor) => {
-        if (!groups[floor.building]) {
-            groups[floor.building] = [];
-        }
-        groups[floor.building].push(floor);
-        return groups;
-    }, {});
+    // Find current floor and building
+    const currentFloor = floors.find(floor => floor.id === currentFloorId);
+    const currentBuilding = currentFloor?.building;
+
+    // Filter floors to only show floors from the current building
+    const relevantFloors = floors.filter(floor => floor.building === currentBuilding);
+
+    // Get building name from the first floor that has it
+    const buildingName = relevantFloors[0]?.buildingName || `Building ${currentBuilding}`;
+
+    // Only render if we have floors to show from the current building
+    if (!relevantFloors.length) return null;
 
     return (
         <div className="absolute bottom-6 left-6 p-3 bg-white rounded-md shadow-md z-10">
-            {Object.entries(buildingGroups).map(([building, buildingFloors]) => (
-                <div key={building} className="mb-2">
-                    <div className="text-sm font-medium text-gray-700 mb-1">{building}</div>
-                    <div className="flex flex-row space-x-2">
-                        {buildingFloors.map((floor) => (
-                            <button
-                                key={floor.id}
-                                className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                                    currentFloorId === floor.id
-                                        ? 'bg-blue-600 text-white'
-                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                }`}
-                                onClick={() => onChange(floor.id)}
-                            >
-                                {floor.label}
-                            </button>
-                        ))}
-                    </div>
+            <div className="mb-2">
+                <div className="text-sm font-medium text-gray-700 mb-1">{buildingName}</div>
+                <div className="flex flex-col space-x-2">
+                    {relevantFloors.map((floor) => (
+                        <button
+                            key={floor.id}
+                            className={`w-10 h-10 rounded-full flex mt-3 items-center justify-center ${
+                                currentFloorId === floor.id
+                                    ? 'bg-mgbblue text-white'
+                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            }`}
+                            onClick={() => onChange(floor.id)}
+                        >
+                            {floor.label}
+                        </button>
+                    ))}
                 </div>
-            ))}
+            </div>
         </div>
     );
 }
 
 export default FloorSelector;
-
