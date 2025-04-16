@@ -19,6 +19,7 @@ export interface TranslationRequestData {
     meetingLink: string;
     status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
     notes: string;
+    department: string;
 }
 
 const TranslationServiceRequestPage = () => {
@@ -34,6 +35,7 @@ const TranslationServiceRequestPage = () => {
     const [meetingLink, setMeetingLink] = useState('');
     const [status, setStatus] = useState('');
     const [notes, setNotes] = useState('');
+    const [department, setDepartment] = useState('');
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -51,6 +53,7 @@ const TranslationServiceRequestPage = () => {
             meetingLink: meetingLink,
             status: status as 'Pending' | 'In Progress' | 'Completed' | 'Cancelled',
             notes: notes,
+            department: department,
         };
 
         SubmitTranslatorRequest(newRequest);
@@ -70,6 +73,7 @@ const TranslationServiceRequestPage = () => {
         setMeetingLink('');
         setStatus('');
         setNotes('');
+        setDepartment('');
     };
 
     return (
@@ -236,6 +240,20 @@ const TranslationServiceRequestPage = () => {
                                         value={location}
                                         onChange={(e) => setLocation(e.target.value)}
                                     />
+                                <div
+                                    className="flex items-center gap-2"
+                                >
+                                    <InputElement
+                                        id="department"
+                                        name="department"
+                                        label="Department: "
+                                        placeholder="Please enter the Department: "
+                                        required={true}
+                                        type="text"
+                                        value={department}
+                                        onChange={(e) => setDepartment(e.target.value)}
+                                    />
+                                </div>
                                     <SelectElement
                                         options={[
                                             'Pending',
