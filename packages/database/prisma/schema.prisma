@@ -47,7 +47,8 @@ model ServiceRequest {
   requestTime      DateTime?         @default(now()) @db.Time
 
   translationRequest TranslationRequest?
-  sanitation         Sanitation?       @relation(name: "ServiceSanitation")
+  sanitation         Sanitation?         @relation(name: "ServiceSanitation")
+  maintenanceRequest MaintenanceRequest? @relation(name: "MaintenanceRequest")
 }
 
 model MaintenanceRequest {
@@ -57,7 +58,7 @@ model MaintenanceRequest {
   maintenance_hospital    String
   maintenance_location    String
   maintenance_time        DateTime
-  employee_name           String
+  // employee_name           String
   servRequest_id          ServiceRequest @relation(name: "MaintenanceRequest", fields: [servMaintenance_id], references: [requestId])
 }
 
@@ -73,16 +74,16 @@ model PatientTransport {
 }
 
 model TranslationRequest {
-  serviceReqId    Int            @id
-  servRequestId   ServiceRequest @relation(fields: [serviceReqId], references: [requestId])
-  patientName     String
-  language        String
-  duration        Float
-  typeMeeting     String
-  date            DateTime
-  meetingLink     String
-  location        String
-  department      String          //fix it later - Jake
+  serviceReqId  Int            @id
+  servRequestId ServiceRequest @relation(fields: [serviceReqId], references: [requestId])
+  patientName   String
+  language      String
+  duration      Float
+  typeMeeting   String
+  date          DateTime
+  meetingLink   String
+  location      String
+  department    String //fix it later - Jake
 }
 
 model Department {
@@ -95,19 +96,18 @@ model Department {
   locations     Location[]
   building      Building   @relation(fields: [buildingId], references: [buildingId])
   nodeId        String?    @unique
-  nodeReception Node?      @relation(fields: [nodeId], references: [id], name:"DepartmentNode")
-
+  nodeReception Node?      @relation(fields: [nodeId], references: [id], name: "DepartmentNode")
 }
 
 model Location {
-  locId         Int         @id @default(autoincrement())
-  department    Department? @relation(fields: [departmentId], references: [deptId])
-  departmentId  Int?
-  locType       String
-  roomNum       Int?         @unique
-  floor         Int
-  nodeId        String?      @unique
-  nodeLocation  Node?        @relation(fields: [nodeId], references: [id], name:"LocationNode")
+  locId        Int         @id @default(autoincrement())
+  department   Department? @relation(fields: [departmentId], references: [deptId])
+  departmentId Int?
+  locType      String
+  roomNum      Int?        @unique
+  floor        Int
+  nodeId       String?     @unique
+  nodeLocation Node?       @relation(fields: [nodeId], references: [id], name: "LocationNode")
 
   // making prisma happy here
   serviceRequests ServiceRequest[] @relation("ServiceLocation") // unused relation
@@ -122,18 +122,18 @@ model Building {
 model Node {
   // ignore id
   // id         Int     @id @default(autoincrement())
-  id      String  @id
-  x           Decimal
-  y           Decimal
-  floor       String
-  buildingId  String
-  nodeType    String
-  name        String
-  roomNumber  String?
-  edgesFrom   Edge[]  @relation("NodeToEdgeFrom")
-  edgesTo     Edge[]  @relation("NodeToEdgeTo")
-  department  Department? @relation(name:"DepartmentNode")
-  location    Location? @relation(name:"LocationNode")
+  id         String      @id
+  x          Decimal
+  y          Decimal
+  floor      String
+  buildingId String
+  nodeType   String
+  name       String
+  roomNumber String?
+  edgesFrom  Edge[]      @relation("NodeToEdgeFrom")
+  edgesTo    Edge[]      @relation("NodeToEdgeTo")
+  department Department? @relation(name: "DepartmentNode")
+  location   Location?   @relation(name: "LocationNode")
 }
 
 model Edge {

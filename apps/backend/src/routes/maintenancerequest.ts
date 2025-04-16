@@ -38,6 +38,7 @@ router.post('/', async (req: Request, res: Response) => {
                     priority: req.body.priority,
                     locationId: req.body.locationId || 1,
                     serviceType: 'Maintenance Request',
+                    employee_name: req.body.employeeName,
                 },
             });
 
@@ -50,7 +51,6 @@ router.post('/', async (req: Request, res: Response) => {
                     maintenance_hospital: req.body.maintenanceHospital,
                     maintenance_location: req.body.maintenanceLocation,
                     maintenance_time: new Date(req.body.maintenanceTime) ?? null,
-                    employee_name: req.body.employeeName,
                 },
             });
 

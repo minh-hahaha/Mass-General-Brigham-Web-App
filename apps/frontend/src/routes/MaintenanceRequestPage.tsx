@@ -48,7 +48,7 @@ const MaintenanceRequestPage = () => {
             requestDate: formattedRequestDate,
             employeeName,
             notes,
-            locationId
+            locationId,
         };
 
         SubmitMaintenanceRequest(newRequest);
@@ -92,19 +92,20 @@ const MaintenanceRequestPage = () => {
                             </h3>
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center gap-2">
-                                    <InputElement
+                                    <label className="w-1/4">Maintenance Type</label>
+                                    <input
                                         id="maintenanceType"
                                         name="maintenanceType"
-                                        label="Maintenance Type: "
                                         placeholder="Enter maintenance type"
-                                        required={true}
+                                        required
                                         type="text"
                                         value={maintenanceType}
                                         onChange={(e) => setMaintenanceType(e.target.value)}
+                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4" htmlFor="maintenanceDescription">Issue Description</label>
+                                    <label className="w-1/4">Issue Description</label>
                                     <textarea
                                         id="maintenanceDescription"
                                         placeholder="Describe the issue"
@@ -124,61 +125,85 @@ const MaintenanceRequestPage = () => {
                             </h3>
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center gap-2">
-                                    <SelectElement
-                                        options={['Low', 'Medium', 'High', 'Emergency']}
+                                    <label className="w-1/4">Priority</label>
+                                    <select
                                         id="priority"
-                                        label="Priority: "
-                                        placeholder="Select priority level"
-                                        required={true}
                                         value={priority}
-                                        onChange={(e) => setPriority(e.target.value as maintenanceRequest['priority'])}
-                                    />
+                                        onChange={(e) => setPriority(e.target.value as 'Low' | 'Medium' | 'High' | 'Emergency')}
+                                        required
+                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                    >
+                                        <option value="">Select priority level</option>
+                                        {['Low', 'Medium', 'High', 'Emergency'].map((option) => (
+                                            <option key={option} value={option}>
+                                                {option}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
+
                                 <div className="flex items-center gap-2">
-                                    <SelectElement
-                                        options={hospitalLocations}
+                                    <label className="w-1/4">Hospital</label>
+                                    <select
                                         id="maintenanceHospital"
-                                        label="Hospital: "
-                                        placeholder="Select hospital location"
-                                        required={true}
                                         value={maintenanceHospital}
                                         onChange={(e) => setMaintenanceHospital(e.target.value)}
-                                    />
+                                        required
+                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                    >
+                                        <option value="">Select hospital location</option>
+                                        {hospitalLocations.map((option) => (
+                                            <option key={option} value={option}>
+                                                {option}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
+
                                 <div className="flex items-center gap-2">
-                                    <InputElement
+                                    <label className="w-1/4">Department</label>
+                                    <input
                                         id="maintenanceLocation"
                                         name="maintenanceLocation"
-                                        label="Department: "
                                         placeholder="Enter department/location"
-                                        required={true}
+                                        required
                                         type="text"
                                         value={maintenanceLocation}
                                         onChange={(e) => setMaintenanceLocation(e.target.value)}
+                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
                                 </div>
+
                                 <div className="flex items-center gap-2">
-                                    <InputElement
+                                    <label className="w-1/4">Maintenance Time</label>
+                                    <input
                                         id="maintenanceTime"
                                         name="maintenanceTime"
-                                        label="Maintenance Time: "
                                         placeholder="Select date and time"
-                                        required={true}
+                                        required
                                         type="datetime-local"
                                         value={maintenanceTime}
                                         onChange={(e) => setMaintenanceTime(e.target.value)}
+                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
                                 </div>
+
                                 <div className="flex items-center gap-2">
-                                    <SelectElement
-                                        options={['Pending', 'In Progress', 'Completed', 'Canceled']}
+                                    <label className="w-1/4">Status</label>
+                                    <select
                                         id="status"
-                                        label="Status: "
-                                        placeholder="Select status"
-                                        required={true}
                                         value={status}
                                         onChange={(e) => setStatus(e.target.value as 'Pending' | 'In Progress' | 'Completed' | 'Canceled')}
-                                    />
+                                        required
+                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                    >
+                                        <option value="">Select status</option>
+                                        {['Pending', 'In Progress', 'Completed', 'Canceled'].map((option) => (
+                                            <option key={option} value={option}>
+                                                {option}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -189,43 +214,49 @@ const MaintenanceRequestPage = () => {
                             </h3>
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center gap-2">
-                                    <InputElement
+                                    <label className="w-1/4">Employee ID</label>
+                                    <input
                                         id="employeeId"
                                         name="employeeId"
-                                        label="Employee ID: "
                                         placeholder="Enter employee ID"
-                                        required={true}
+                                        required
                                         type="number"
                                         value={employeeId}
                                         onChange={(e) => setEmployeeId(Number(e.target.value))}
+                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
                                 </div>
+
                                 <div className="flex items-center gap-2">
-                                    <InputElement
+                                    <label className="w-1/4">Request Date</label>
+                                    <input
                                         id="requestDate"
                                         name="requestDate"
-                                        label="Request Date: "
                                         placeholder="Select request date"
-                                        required={true}
+                                        required
                                         type="date"
                                         value={requestDate}
                                         onChange={(e) => setRequestDate(e.target.value)}
+                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
                                 </div>
+
                                 <div className="flex items-center gap-2">
-                                    <InputElement
+                                    <label className="w-1/4">Employee Name</label>
+                                    <input
                                         id="employeeName"
                                         name="employeeName"
-                                        label="Employee Name: "
                                         placeholder="Enter employee name"
-                                        required={true}
+                                        required
                                         type="text"
                                         value={employeeName}
                                         onChange={(e) => setEmployeeName(e.target.value)}
+                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
                                 </div>
+
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4" htmlFor="notes">Additional Notes</label>
+                                    <label className="w-1/4">Additional Notes</label>
                                     <textarea
                                         id="notes"
                                         placeholder="Enter any additional notes"
@@ -235,6 +266,7 @@ const MaintenanceRequestPage = () => {
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     ></textarea>
                                 </div>
+
                                 <input
                                     type="hidden"
                                     id="locationId"
