@@ -108,7 +108,7 @@ const DirectionsMapComponent = () => {
     const handleDeptChange = () => {
 
         const selectedName = currentDirectoryName;
-        const dept = directoryList.find((dept) => {dept.deptName === selectedName; });
+        const dept = directoryList.find((dept) => dept.deptName === selectedName );
 
         //checks null
         if (dept){
