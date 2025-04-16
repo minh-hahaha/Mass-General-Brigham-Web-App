@@ -70,6 +70,16 @@ model TranslationRequest {
   department      String          //fix it later - Jake
 }
 
+model Sanitation {
+  servReqId        Int            @id
+  sanitationType   String
+  recurring        Boolean
+  hazardLevel      String
+  disposalRequired Boolean
+  completeBy       DateTime       @default(now()) @db.Time
+  servRequest_id   ServiceRequest @relation(name: "ServiceSanitation", fields: [servReqId], references: [requestId])
+}
+
 model Department {
   deptId        Int        @id @default(autoincrement())
   deptServices  String
@@ -130,12 +140,4 @@ model Edge {
   nodeFrom Node   @relation("NodeToEdgeFrom", fields: [from], references: [id])
 }
 
-model Sanitation {
-  servReqId        Int            @id
-  sanitationType   String
-  recurring        Boolean
-  hazardLevel      String
-  disposalRequired Boolean
-  completeBy       DateTime       @default(now()) @db.Time
-  servRequest_id   ServiceRequest @relation(name: "ServiceSanitation", fields: [servReqId], references: [requestId])
-}
+
