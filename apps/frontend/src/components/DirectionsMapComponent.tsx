@@ -28,13 +28,13 @@ const nullNode : myNode = {
 }
 
 const start : myNode = {
-    id: "22PPFloor3Elevator1",
-    x: 562.5431410733905,
-    y: 630.6622737119537,
-    floor: "3",
-    buildingId: "3",
-    nodeType: "Elevator",
-    name: "Node 1",
+    id: "20PPFloor1Door1",
+    x: 54.04440366094416,
+    y: 838.0104833982157,
+    floor: "1",
+    buildingId: "2",
+    nodeType: "Door",
+    name: "Door",
     roomNumber: ""
 }
 
