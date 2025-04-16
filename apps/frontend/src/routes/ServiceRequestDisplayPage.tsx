@@ -17,12 +17,12 @@ import { cn } from "@/lib/utils"
 
 // Define color variables here
 const colors = {
-    highlight: "#3B82F6", // Blue highlight color
-    textPrimary: "#1D4ED8", // Blue text color
-    textSecondary: "#64748B", // Secondary text color (light blue)
-    textHover: "#2563EB", // Darker blue for hover
-    background: "#FFFFFF", // White background color
-    border: "#BFDBFE", // Light blue border
+    highlight: "mgblue", // Blue highlight color
+    textPrimary: "mgblue", // Blue text color
+    textSecondary: "mgblue", // Secondary text color (light blue)
+    textHover: "mgblue", // Darker blue for hover
+    background: "mgblue", // White background color
+    border: "mgblue", // Light blue border
 }
 
 const tableTabs = [
