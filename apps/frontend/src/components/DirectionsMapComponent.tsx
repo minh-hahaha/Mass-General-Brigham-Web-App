@@ -1,31 +1,40 @@
 import React, { useState, useEffect, useRef, useMemo, ChangeEvent } from 'react';
-import MGBButton from '../elements/MGBButton.tsx';
 import SelectElement from '../elements/SelectElement.tsx';
 import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google-maps';
-import TravelModeComponent from '@/components/TravelModeComponent.tsx';
-import OverlayComponent from '@/components/svgOverlay.tsx';
-import ViewPath from '@/components/ViewPath.tsx';
+import TravelModeComponent from "@/components/TravelModeComponent.tsx";
+import OverlayComponent from "@/components/svgOverlay.tsx";
+import HospitalMapComponent from "@/components/HospitalMapComponent";
+
+import {myNode} from "../../../backend/src/Algorithms/classes.ts";
+
 import { MapPin, MapPlus } from 'lucide-react';
 
-import { myNode } from '../../../backend/src/Algorithms/classes.ts';
-import axios from 'axios';
-import { ROUTES } from 'common/src/constants.ts';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu.tsx';
 import {
     DirectoryRequestByBuilding,
     DirectoryRequestName,
     getDirectory,
-    getDirectoryNames,
-} from '@/database/gettingDirectory.ts';
-import { GetTransportRequest, incomingRequest } from '@/database/transportRequest.ts';
-import { getDepartmentNode } from '@/database/getDepartmentNode.ts';
+    getDirectoryNames
+} from "@/database/gettingDirectory.ts";
+import {GetNode} from "@/database/getDepartmentNode.ts";
 
-const Buildings = ['Chestnut Hill - 850 Boylston Street', '20 Patriot Place', '22 Patriot Place'];
+
+const Buildings = [
+    "Chestnut Hill - 850 Boylston Street",
+    "20 Patriot Place",
+    "22 Patriot Place"
+]
+
+const BuildingIDMap: Record<string, string> = {
+    "Chestnut Hill - 850 Boylston Street": "1",
+    "20 Patriot Place": "2",
+    "22 Patriot Place": "3"
+}
+
+const DefaultFloors:Record<string, string> = {
+    "1": "CH-1",
+    "2": "20PP-1",
+    "3": "22PP-3",
+}
 
 type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
 
@@ -35,6 +44,59 @@ const ChestnutParkingBounds = {
 };
 
 const ChestnutParkingSVG = '/ChestnutParking.svg';
+
+const nullNode : myNode = {
+    id: "",
+    x: 0,
+    y: 0,
+    floor: "0",
+    buildingId: "0",
+    nodeType: "0",
+    name: "",
+    roomNumber: "0"
+}
+const CHDoorA : myNode = {
+    id: "CHFloor1Door8",
+    x: 694.0946366710934,
+    y: 209.91282960575376,
+    floor: "1",
+    buildingId: "1",
+    nodeType: "Door",
+    name: "EntranceA",
+    roomNumber: ""
+}
+const CHDoorBC : myNode = {
+    id: "CHFloor1Door15",
+    x: 953.0376994960379,
+    y: 517.9228102091384,
+    floor: "1",
+    buildingId: "1",
+    nodeType: "Door",
+    name: "EntranceBC",
+    roomNumber: ""
+}
+const PP20 : myNode = {
+    id: "20PPFloor1Door1",
+    x: 54.04440366094416,
+    y: 838.0104833982157,
+    floor: "1",
+    buildingId: "2",
+    nodeType: "Door",
+    name: "Door",
+    roomNumber: ""
+}
+const PP22 : myNode = {
+    id: "22PPFloor3Elevator1",
+    x: 562.5431410733905,
+    y: 630.6622737119537,
+    floor: "3",
+    buildingId: "3",
+    nodeType: "Elevator",
+    name: "Node 1",
+    roomNumber: ""
+}
+
+
 
 const DirectionsMapComponent = () => {
     const map = useMap();
@@ -48,12 +110,15 @@ const DirectionsMapComponent = () => {
     const [duration, setDuration] = useState('');
     const [showRouteInfo, setShowRouteInfo] = useState(false);
     const [directoryList, setDirectoryList] = useState<DirectoryRequestByBuilding[]>([]);
-    const [currentDirectoryName, setCurrentDirectoryName] = useState<string>('');
 
-    const [toDirectory, setToDirectory] = useState<DirectoryRequestByBuilding | null>(null);
-    const [toDirectoryNode, setToDirectoryNode] = useState<
-        DirectoryRequestByBuilding['node'] | null
-    >(null);
+    const [currentDirectoryName, setCurrentDirectoryName] = useState('');
+
+    const [toDirectoryNodeId, setToDirectoryNodeId] = useState('');
+    const [fromNode, setFromNode] = useState<myNode>(nullNode);
+    const [toDirectoryNode, setToDirectoryNode] = useState<myNode>(nullNode);
+
+    const [selectedBuildingId, setSelectedBuildingId] = useState('');
+
     const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
     const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
 
@@ -62,16 +127,12 @@ const DirectionsMapComponent = () => {
     useEffect(() => {
         if (!routesLibrary || !map) return;
         setDirectionsService(new routesLibrary.DirectionsService());
-        setDirectionsRenderer(
-            new routesLibrary.DirectionsRenderer({
-                map,
-            })
-        );
+        setDirectionsRenderer(new routesLibrary.DirectionsRenderer({ map }));
     }, [map, routesLibrary]);
 
     // refs for autocomplete
     const fromLocationRef = useRef(null);
-
+    // autocomplete
     useEffect(() => {
         if (!placesLibrary || !fromLocationRef.current) return;
 
@@ -89,8 +150,10 @@ const DirectionsMapComponent = () => {
                 setFromLocation(place.formatted_address);
             }
         });
-    }, [placesLibrary]); // autocomplete
+    }, [placesLibrary]);
 
+    // API CALLS
+    // get directory list
     useEffect(() => {
         const fetchDirectoryList = async () => {
             try {
@@ -104,17 +167,50 @@ const DirectionsMapComponent = () => {
         console.log('Updated Directory list');
     }, [buildingID]);
 
-    const handleDeptChange = () => {
-        const selectedName = currentDirectoryName;
-        const dept = directoryList.find((dept) => dept.deptName === selectedName);
+    // get the end department nodeId
+    useEffect(() => {
+        const handleDeptChange = () => {
+            console.log("currentDirectoryName - ", currentDirectoryName)
+            const dept = directoryList.find((dept) => dept.deptName === currentDirectoryName );
+            console.log("dept - " + dept);
 
-        //checks null
-        if (dept) {
-            setToDirectoryNode(dept.node);
-        } else {
-            setToDirectoryNode(null);
+            //checks null
+            if (dept){
+                setToDirectoryNodeId(dept.nodeId);
+                console.log(dept.nodeId);
+            } else {
+                setToDirectoryNode(nullNode);
+            }
         }
-    };
+        handleDeptChange();
+    } ,[currentDirectoryName]);
+
+    // get end node using nodeId
+    useEffect(() => {
+        const fetchNode = async () => {
+            try {
+                const data = await GetNode(toDirectoryNodeId);
+                setToDirectoryNode(data);
+            } catch (error) {
+                console.error("Error fetching building names:", error);
+            }
+
+        };
+        fetchNode();
+        console.log("Got Department Node")
+
+    }, [toDirectoryNodeId]);
+
+
+    useEffect(() => {
+        if (toLocation){
+            const id = BuildingIDMap[toLocation]||"";
+            setSelectedBuildingId(id)
+        }
+        else{
+            setSelectedBuildingId("");
+        }
+    }, [toLocation]);
 
     // find directions
     const handleFindDirections = (e: React.FormEvent<HTMLFormElement>) => {
@@ -143,8 +239,7 @@ const DirectionsMapComponent = () => {
             actualLocation = '42.09253421464256, -71.26638758014579';
         }
 
-        const googleTravelMode =
-            google.maps.TravelMode[travelMode as keyof typeof google.maps.TravelMode];
+        const googleTravelMode = google.maps.TravelMode[travelMode as keyof typeof google.maps.TravelMode];
         directionsService
             .route({
                 origin: fromLocation,
@@ -169,19 +264,51 @@ const DirectionsMapComponent = () => {
     const [parking, setParking] = useState(true);
     const [showHospital, setShowHospital] = useState(false);
 
+    const handleChangeToLocation = (e: ChangeEvent<HTMLSelectElement>) => {
+        const newLocation = e.target.value;
+        const previousLocation = toLocation;
+
+        // Update the location state
+        setToLocation(newLocation);
+
+        // Set the building ID for directory lookup
+        const buildingIndex = Buildings.indexOf(newLocation);
+        setBuildingID(buildingIndex+1);
+
+        // Only reset department data if the building changed
+        if (previousLocation !== newLocation && previousLocation !== '') {
+            setToDirectoryNodeId('');
+            setToDirectoryNode(nullNode);
+        }
+    }
+
+    useEffect(() => {
+        if (toLocation === Buildings[0] ){setFromNode(CHDoorA)}
+        else if(toLocation === Buildings[1] ){setFromNode(PP20)}
+        else if(toLocation === Buildings[2]){setFromNode(PP22)}
+    }, [toLocation]);
+
+    useEffect(() => {
+        if(lot === 'CH_A' ){
+            setFromNode(CHDoorA)
+        }
+        else if(lot === 'CH_B' || lot === 'CH_C'){setFromNode(CHDoorBC)}
+        else {setFromNode(CHDoorA)} //for bus and walking travel mode
+    }, [lot]);
+
     const handleParkA = () => {
         clearParking();
-        setLot('A');
+        setLot('CH_A');
         calculateDoorRoute(lotAToDoor, 'A');
     };
     const handleParkB = () => {
         clearParking();
-        setLot('B');
+        setLot('CH_B');
         calculateDoorRoute(lotBToDoor, 'B');
     };
     const handleParkC = () => {
         clearParking();
-        setLot('C');
+        setLot('CH_C');
         calculateDoorRoute(lotCToDoor, 'C');
     };
 
@@ -190,7 +317,7 @@ const DirectionsMapComponent = () => {
     };
 
     const handleHere = () => {
-        setShowHospital((prevState) => !prevState);
+        setShowHospital(prevState => !prevState);
     };
 
     // 42.32641353922122, -71.14992135383609
@@ -291,89 +418,11 @@ const DirectionsMapComponent = () => {
         }, 100);
     }
 
-    async function FindPath(start: myNode, end: myNode) {
-        const data = JSON.stringify({ start, end });
-        console.log(data);
-        const res = await axios.post(ROUTES.BFSGRAPH, data, {
-            headers: { 'Content-Type': 'application/json' },
-        });
-        const nodes: myNode[] = res.data;
-        console.log(nodes);
-        return nodes;
-    }
-    // toLocation === Buildings[2] ? (
-    //     <div>
-    //         <HospitalMap/>
-    //     </div>
-    // ) : (toLocation === Buildings[0] ? (
-    //         <div>
-    //             {/*<ViewPath svgMapUrl="/20PPFloor1.svg" nodes={testNodes} path={testPath}/>*/}
-    //         </div>
-    //     ) : (
-    //         <div>
-    //             {/*<ViewPath svgMapUrl="/20PPFloor2.svg" nodes={testNodes}  path={testPath}/>*/}
-    //         </div>
-    //     )
-    //
-    // )
-    const [deptNode, setDeptNode] = useState<myNode>();
-
-    /*
-    useEffect(() => {
-        async function fetchDeptNode() {
-            const data = await getDepartmentNode();
-            console.log(data);
-            setDeptNode(data);
-        }
-        fetchDeptNode();
-    }, [])
-     */
-
-    const HospitalMap = () => {
-        const [bfsPath, setBFSPath] = useState<myNode[]>([]);
-
-        useEffect(() => {
-            const getMyPaths = async () => {
-                const door1: myNode = {
-                    id: '20PPFloor1Door2',
-                    x: 55.25522849727386,
-                    y: 839.8053213627713,
-                    floor: '1',
-                    buildingId: '2',
-                    nodeType: 'Hallway',
-                    name: 'Node 1',
-                    roomNumber: '',
-                };
-                const room102: myNode = {
-                    id: '20PPFloor1Room120',
-                    x: 409.4296614277226,
-                    y: 766.2121368495918,
-                    floor: '1',
-                    buildingId: '1',
-                    nodeType: 'Hallway',
-                    name: 'Node 8',
-                    roomNumber: '',
-                };
-
-                const result = await FindPath(door1, room102);
-                setBFSPath(result);
-            };
-            getMyPaths();
-            // console.log(path);
-        }, [showHospital]);
-
-        return (
-            <div>
-                <ViewPath svgMapUrl="/ChestnutHillFloor1.svg" path={bfsPath} />
-            </div>
-        );
-    };
-
+    const initialFloorId = selectedBuildingId ? DefaultFloors[selectedBuildingId] : "";
     return (
         <div className="flex flex-row h-screen">
             {/* LEFT PANEL */}
             <aside className="basis-1/4 bg-white p-6 shadow-md overflow-y-auto border-r border-gray-200">
-
                 <form onSubmit={handleFindDirections} className="space-y-6">
                     {/* Blue Box Section */}
                     <div className="bg-mgbblue text-white py-5 pr-6 pl-8 rounded-lg">
@@ -415,24 +464,24 @@ const DirectionsMapComponent = () => {
                                 </div>
 
                                 <div>
-                                <SelectElement
-                                    label="To:"
-                                    id="toLocation"
-                                    value={toLocation}
-                                    onChange={(e) => setToLocation(e.target.value)}
-                                    options={Buildings}
-                                    placeholder="Select Hospital"
-                                    className="bg-white text-mgbblue"
-                                />
-                                <SelectElement
-                                    label="Dept."
-                                    id="department"
-                                    value={toLocation}
-                                    onChange={(e) => setToLocation(e.target.value)}
-                                    options={Buildings}
-                                    placeholder="Select Department"
-                                    className="bg-white text-mgbblue"
-                                />
+                                    <SelectElement
+                                        label="To:"
+                                        id="toLocation"
+                                        value={toLocation}
+                                        onChange={(e) => handleChangeToLocation(e)}
+                                        options={Buildings}
+                                        placeholder="Select Hospital"
+                                        className="bg-white text-mgbblue"
+                                    />
+                                    <SelectElement
+                                        label="Dept."
+                                        id="toDirectory"
+                                        value={currentDirectoryName}
+                                        onChange={(e) => setCurrentDirectoryName(e.target.value)}
+                                        options={directoryList.map((dept) => (dept.deptName))}
+                                        placeholder="Select Department"
+                                        className="bg-white text-mgbblue"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -482,23 +531,34 @@ const DirectionsMapComponent = () => {
 
                 {/* I'm Inside Button */}
                 <div className="mt-6">
+                    {toLocation ?
                     <button
                         onClick={() => handleHere()}
                         className="w-full bg-mgbblue text-white py-2 rounded-md hover:bg-mgbblue/90 transition"
                     >
-                        {showHospital ? 'Show Google Map' : "I'm Inside!"}
-                    </button>
+                        {showHospital? 'Show Google Map' : "I'm Here!"}
+                    </button> : <></>
+
+                    }
                 </div>
             </aside>
 
             {/* MAP AREA */}
             <main className="basis-3/4 relative">
-                {showHospital ? (
-                    <HospitalMap />
+                {showHospital && (toDirectoryNode !== nullNode) ? (
+                    <div>
+                        <HospitalMapComponent
+                            startNode={fromNode}
+                            endNode={toDirectoryNode}
+                            initialFloorId={initialFloorId}
+                            selectedBuildingId = {selectedBuildingId}
+                        />
+                    </div>
                 ) : (
                     <Map
                         style={{ width: '100%', height: '100%' }}
                         defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
+                        // MGB at Chestnut hill 42.325988270594415, -71.1495669288061
                         defaultZoom={15}
                         renderingType={RenderingType.RASTER}
                         mapTypeControl={false}

@@ -159,6 +159,14 @@ router.get('/byBuilding', async function (req: Request, res: Response) {
 
 router.get('/node', async function (req: Request, res: Response) {
     try {
+        let nodeId: string = req.query.nodeId as string;
+
+        const NODE_DATA = await PrismaClient.node.findFirst({
+            where: {
+                id: nodeId,
+            },
+        });
+        res.send(NODE_DATA);
     } catch (error) {
         console.error(`NO NODES FOR THIS LOCATION: ${error}`);
         res.sendStatus(404);
