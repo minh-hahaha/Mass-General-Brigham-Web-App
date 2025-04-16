@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-// Import your icons - update these paths to match your actual asset locations
 import transportationIcon from '../assets/icons/transportation.png';
 import medicalDeviceIcon from '../assets/icons/medicaldevice.png';
 import maintenanceIcon from '../assets/icons/maintenance.png';
