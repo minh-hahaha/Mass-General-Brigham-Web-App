@@ -80,7 +80,7 @@ model Department {
   locations     Location[]
   building      Building   @relation(fields: [buildingId], references: [buildingId])
   nodeId        String?
-  node          Node? @relation(fields: [nodeId], references: [id])
+  node          Node?      @relation(fields: [nodeId], references: [id])
 }
 
 model Location {

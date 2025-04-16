@@ -14,6 +14,7 @@ import {
     getDirectory,
     getDirectoryNames
 } from "@/database/gettingDirectory.ts";
+import {GetNode} from "@/database/getDepartmentNode.ts";
 
 const nullNode : myNode = {
     id: "",
@@ -27,13 +28,13 @@ const nullNode : myNode = {
 }
 
 const start : myNode = {
-    id: "CHFloor1Door8",
-    x: 694.0946366710934,
-    y: 209.91282960575376,
-    floor: "1",
-    buildingId: "1",
-    nodeType: "Door",
-    name: "EntranceA",
+    id: "22PPFloor3Elevator1",
+    x: 562.5431410733905,
+    y: 630.6622737119537,
+    floor: "3",
+    buildingId: "3",
+    nodeType: "Elevator",
+    name: "Node 1",
     roomNumber: ""
 }
 
@@ -67,8 +68,10 @@ const DirectionsMapComponent = () => {
     const [duration, setDuration] = useState('');
     const [showRouteInfo, setShowRouteInfo] = useState(false);
     const [directoryList, setDirectoryList] = useState<DirectoryRequestByBuilding[]>([]);
-    const [currentDirectoryName, setCurrentDirectoryName] = useState<string>('');
 
+    const [currentDirectoryName, setCurrentDirectoryName] = useState('');
+
+    const [toDirectoryNodeId, setToDirectoryNodeId] = useState('');
     const [toDirectoryNode, setToDirectoryNode] = useState<myNode>(nullNode);
 
 
@@ -107,6 +110,7 @@ const DirectionsMapComponent = () => {
 
     }, [placesLibrary]);
 
+    // get directory list
     useEffect(() => {
         const fetchDirectoryList = async () => {
             try {
@@ -122,17 +126,41 @@ const DirectionsMapComponent = () => {
 
     }, [buildingID]);
 
-    const handleDeptChange = () => {
-        const selectedName = currentDirectoryName;
-        const dept = directoryList.find((dept) => dept.deptName === selectedName );
+    useEffect(() => {
+        const handleDeptChange = () => {
+            console.log("currentDirectoryName - ", currentDirectoryName)
+            // const selectedName = currentDirectoryName;
+            //  console.log("selectedName - ", selectedName);
+            const dept = directoryList.find((dept) => dept.deptName === currentDirectoryName );
+            console.log("dept - " + dept);
 
-        //checks null
-        if (dept){
-            setToDirectoryNode(dept.node);
-        } else {
-            setToDirectoryNode(nullNode);
+            //checks null
+            if (dept){
+                setToDirectoryNodeId(dept.nodeId);
+                console.log(dept.nodeId);
+            } else {
+                setToDirectoryNode(nullNode);
+            }
         }
-    }
+        handleDeptChange();
+    } ,[currentDirectoryName]);
+
+
+    useEffect(() => {
+        const fetchNode = async () => {
+            try {
+                const data = await GetNode(toDirectoryNodeId);
+                setToDirectoryNode(data);
+            } catch (error) {
+                console.error("Error fetching building names:", error);
+            }
+
+        };
+        fetchNode();
+        console.log("Got Department Node")
+
+    }, [toDirectoryNodeId]);
+
 
     // find directions
     const handleFindDirections = (e: React.FormEvent<HTMLFormElement>) => {
@@ -241,9 +269,10 @@ const DirectionsMapComponent = () => {
                             id={"toDirectory"}
                             value={currentDirectoryName}
                             onChange={(e) => {
-                                setCurrentDirectoryName(e.target.value);
-                                handleDeptChange();
-                            }}
+                                setCurrentDirectoryName(e.target.value)
+                            }
+
+                            }
                             options={directoryList.map((dept) => (dept.deptName))}
                             placeholder={"Select Department"}
                         />

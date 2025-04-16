@@ -41,7 +41,7 @@ async function FindPath(start: myNode, end: myNode) {
 
 // interface for prop
 interface Props {
-    startNode: myNode;
+    startNode: myNode | null;
     endNode: myNode | null;
 }
 

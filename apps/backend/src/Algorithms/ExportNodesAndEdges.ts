@@ -9,9 +9,10 @@ declare const __dirname: string;
 export async function exportNodesAndEdges(): Promise<void> {
     // Paths to JSON files
     const CHPath = path.resolve(__dirname, 'JSONFiles', 'CHNodesEdges.json');
-    const PP20thPath = path.resolve(__dirname, 'JSONFiles', '20PPFloor1NodesEdges.json');
+    const PP20thPath = path.resolve(__dirname, 'JSONFiles', '20PPAllNodesEdges.json');
+    const PP22thPath = path.resolve(__dirname, 'JSONFiles', '22PPAllNodesEdges.json');
 
-    const buildings = [CHPath, PP20thPath];
+    const buildings = [CHPath, PP20thPath, PP22thPath];
 
     // go through buildings
     for (const building of buildings) {

@@ -1,4 +1,5 @@
 import { ROUTES } from 'common/src/constants';
+import {myNode} from "../../../backend/src/Algorithms/classes.ts";
 
 import axios from 'axios';
 
@@ -20,16 +21,7 @@ export interface DirectoryRequestByBuilding {
     deptName: string;
     buildingId: number;
     deptPhone: string;
-    node: {
-        id: string;
-        x: number;
-        y: number;
-        floor: string;
-        nodeType: string;
-        buildingId: string;
-        name: string;
-        roomNumber: string | null;
-    }
+    nodeId: string;
 
 }
 
@@ -61,4 +53,5 @@ export async function getDirectory(bID: number): Promise<DirectoryRequestByBuild
     return response.data;
 
 };
+
 

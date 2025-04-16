@@ -156,7 +156,7 @@ async function main() {
                 buildingId: 1,
                 deptPhone: '617-732-9821',
                 deptServices: 'CT scan, MRI, X-Ray',
-                nodeId: "CHFloor1Room100",
+                nodeId: "CHFloor1Room102",
             },
             {
                 deptId: 18,
