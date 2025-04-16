@@ -1,0 +1,240 @@
+{
+"nodes": [
+{
+"id": "CH1Door1",
+"x": 694.6909401633523,
+"y": 164.93491432883522,
+"floor": "1",
+"buildingId": "1",
+"nodeType": "Door",
+"name": "Exit1",
+"roomNumber": ""
+},
+{
+"id": "CH1Hallway2",
+"x": 691.61376953125,
+"y": 220.32351407137782,
+"floor": "1",
+"buildingId": "1",
+"nodeType": "Hallway",
+"name": "Node 2",
+"roomNumber": ""
+},
+{
+"id": "CH1Hallway3",
+"x": 611.607998934659,
+"y": 220.32351407137782,
+"floor": "1",
+"buildingId": "1",
+"nodeType": "Hallway",
+"name": "Node 3",
+"roomNumber": ""
+},
+{
+"id": "CH1Door4",
+"x": 567.941725078947,
+"y": 256.8053823918629,
+"floor": "1",
+"buildingId": "1",
+"nodeType": "Door",
+"name": "Node 4",
+"roomNumber": ""
+},
+{
+"id": "CH1Room130",
+"x": 528.8599611031434,
+"y": 284.5968690890998,
+"floor": "1",
+"buildingId": "1",
+"nodeType": "Room",
+"name": "Multi-Specialty Clinic 130",
+"roomNumber": "130"
+},
+{
+"id": "CH1Hallway6",
+"x": 697.2382535268328,
+"y": 327.2574852914409,
+"floor": "1",
+"buildingId": "1",
+"nodeType": "Hallway",
+"name": "Node 6",
+"roomNumber": ""
+},
+{
+"id": "CH1Hallway7",
+"x": 694.0856490565776,
+"y": 519.5658463536005,
+"floor": "1",
+"buildingId": "1",
+"nodeType": "Hallway",
+"name": "Node 7",
+"roomNumber": ""
+},
+{
+"id": "CH1Hallway8",
+"x": 826.4947146740392,
+"y": 519.5658463536005,
+"floor": "1",
+"buildingId": "1",
+"nodeType": "Hallway",
+"name": "Node 8",
+"roomNumber": ""
+},
+{
+"id": "CH1Door9",
+"x": 976.7684757928967,
+"y": 519.5658463536005,
+"floor": "1",
+"buildingId": "1",
+"nodeType": "Door",
+"name": "Node 9",
+"roomNumber": ""
+},
+{
+"id": "CH1Hallway10",
+"x": 927.3777924359943,
+"y": 518.5150097785404,
+"floor": "1",
+"buildingId": "1",
+"nodeType": "Hallway",
+"name": "Node 10",
+"roomNumber": ""
+},
+{
+"id": "CH1Door11",
+"x": 927.3777924359943,
+"y": 477.53124641029837,
+"floor": "1",
+"buildingId": "1",
+"nodeType": "Door",
+"name": "Node 11",
+"roomNumber": ""
+},
+{
+"id": "CH1Room100",
+"x": 907.4113290394032,
+"y": 438.6492130392214,
+"floor": "1",
+"buildingId": "1",
+"nodeType": "Room",
+"name": "Laboratory 100",
+"roomNumber": "100"
+},
+{
+"id": "CH1Hallway13",
+"x": 829.312357406388,
+"y": 713.7271936932048,
+"floor": "1",
+"buildingId": "1",
+"nodeType": "Hallway",
+"name": "Node 13",
+"roomNumber": ""
+},
+{
+"id": "CH1Hallway14",
+"x": 828.2614829332979,
+"y": 827.2206514381504,
+"floor": "1",
+"buildingId": "1",
+"nodeType": "Hallway",
+"name": "Node 14",
+"roomNumber": ""
+},
+{
+"id": "CH1Hallway15",
+"x": 612.8340729533072,
+"y": 830.3732369593906,
+"floor": "1",
+"buildingId": "1",
+"nodeType": "Hallway",
+"name": "Node 15",
+"roomNumber": ""
+},
+{
+"id": "CH1Door16",
+"x": 611.7831984802172,
+"y": 812.5085225089797,
+"floor": "1",
+"buildingId": "1",
+"nodeType": "Door",
+"name": "Node 16",
+"roomNumber": ""
+},
+{
+"id": "CH1Room102",
+"x": 662.2247373611947,
+"y": 757.8635425826869,
+"floor": "1",
+"buildingId": "1",
+"nodeType": "Room",
+"name": "Radiology, MR/CT Scan 102",
+"roomNumber": "102"
+}
+],
+"edges": [
+{
+"from": "CH1Door1",
+"to": "CH1Hallway2"
+},
+{
+"from": "CH1Hallway2",
+"to": "CH1Hallway3"
+},
+{
+"from": "CH1Hallway3",
+"to": "CH1Door4"
+},
+{
+"from": "CH1Door4",
+"to": "CH1Room130"
+},
+{
+"from": "CH1Hallway2",
+"to": "CH1Hallway6"
+},
+{
+"from": "CH1Hallway7",
+"to": "CH1Hallway6"
+},
+{
+"from": "CH1Hallway7",
+"to": "CH1Hallway8"
+},
+{
+"from": "CH1Hallway8",
+"to": "CH1Hallway10"
+},
+{
+"from": "CH1Hallway10",
+"to": "CH1Door9"
+},
+{
+"from": "CH1Hallway10",
+"to": "CH1Door11"
+},
+{
+"from": "CH1Door11",
+"to": "CH1Room100"
+},
+{
+"from": "CH1Hallway8",
+"to": "CH1Hallway13"
+},
+{
+"from": "CH1Hallway13",
+"to": "CH1Hallway14"
+},
+{
+"from": "CH1Hallway14",
+"to": "CH1Hallway15"
+},
+{
+"from": "CH1Hallway15",
+"to": "CH1Door16"
+},
+{
+"from": "CH1Door16",
+"to": "CH1Room102"
+}
+]
+}

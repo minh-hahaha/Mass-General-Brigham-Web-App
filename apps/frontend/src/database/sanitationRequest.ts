@@ -7,13 +7,13 @@ export interface sanitationRequest {
     /*request_id:          number;*/
     status:              'Unassigned' | 'Assigned' | 'Working' | 'Other';
     priority:            'Unassigned' | 'Low' | 'Medium' | 'High' | 'Emergency';
-    request_time:        string;
+    requestTime:        string;
 
     //Optional fields
-    location_id:         string;
+    locationId:         string;
     comments:            string;
-    request_date:        string;
-    employee_id:         number;
+    requestDate:        string;
+    employeeId:         number;
 
     //Sanitation fields
     sanitationType:      string;
@@ -25,10 +25,10 @@ export interface sanitationRequest {
 
 export interface incomingSanitationRequest {
     comments: string;
-    employee_id: number;
-    location_id: number;
+    employeeId: number;
+    locationId: number;
     sanitation: {
-        servReq_id:          number;
+        servReqId:          number;
         sanitationType:      string;
         recurring:           boolean;
         hazardLevel:         string
@@ -36,12 +36,12 @@ export interface incomingSanitationRequest {
         completeBy:          number;
     }
     priority: 'Low' | 'Medium' | 'High';
-    request_date: string;
-    request_id: number;
-    request_time: number;
-    service_type: string;
+    requestDate: string;
+    requestId: number;
+    requestTime: number;
+    serviceType: string;
     status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
-    transport_type: string;
+    transportType: string;
 }
 
 

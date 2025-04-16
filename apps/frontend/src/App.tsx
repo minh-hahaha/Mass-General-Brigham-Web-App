@@ -1,20 +1,18 @@
-    import React from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LogoBar from './components/LogoBar.tsx';
 import LoginPage from './routes/LoginPage.tsx';
 import HomePage from './routes/HomePage.tsx';
-import ServiceRequestPage from './routes/TransportationRequestPage.tsx';
 import ServiceRequestDisplayPage from './routes/ServiceRequestDisplayPage.tsx';
 import DirectoryDisplayPage from './routes/DirectoryDisplayPage.tsx';
 import ImportExportDirectoryPage from './routes/ImportExportDirectoryPage.tsx';
 import SanitationRequestPage from './components/SanitationRequestComponent.tsx';
-import SanitationRequestDisplayPage from './routes/SanitationRequestDisplayPage.tsx';
-
+import TransportRequestPage from "./routes/TransportationRequestPage.tsx";
 import TranslationServiceRequestPage from './routes/TranslationServiceRequestPage.tsx';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { ShadSidebar } from '@/components/ui/shadsidebar.tsx';
 import {MapPage} from "@/routes/MapPage.tsx";
-    import TranslationServiceDisplayPage from "@/routes/TranslationServiceDisplayPage.tsx";
+import MapEditorPage from "@/routes/MapEditorPage.tsx";
 
 function App() {
     return (
@@ -32,8 +30,8 @@ function App() {
                                 <Route path="/Login" element={<LoginPage />} />
                                 <Route path="/Home" element={<HomePage />} />
                                 <Route
-                                    path="/ServiceRequestPage"
-                                    element={<ServiceRequestPage />}
+                                    path="/TransportationRequestPage"
+                                    element={<TransportRequestPage />}
                                 />
                                 <Route
                                     path="/ServiceRequestDisplay"
@@ -51,17 +49,21 @@ function App() {
                                   path="/MapPage"
                                   element={<MapPage />}
                                 />
+                                <Route
+                                path="/MapEditor"
+                                element={<MapEditorPage/>}
+                                />
 
                                 <Route
-                                  path="/TranslationServiceRequestPage"
-                                  element={<TranslationServiceRequestPage />}
-                                 />
+                                    path="/TranslationServiceRequestPage"
+                                    element={<TranslationServiceRequestPage />}
+                                />
+
                                 <Route
-                                    path="/TranslationServiceDisplayPage"
-                                    element={<TranslationServiceDisplayPage />}
+                                    path="/SanitationRequest"
+                                    element={<SanitationRequestPage />}
                                 />
                         <Route path="/SanitationRequest" element={<SanitationRequestPage />} />
-                        <Route path="/SanitationRequestDisplayPage" element={<SanitationRequestDisplayPage />} />
 
                             </Routes>
                         </main>

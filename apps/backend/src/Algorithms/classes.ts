@@ -1,5 +1,5 @@
 export class myNode {
-    nodeID: string;
+    id: string;
     x: number;
     y: number;
     floor: string;
@@ -18,7 +18,7 @@ export class myNode {
         name: string,
         roomNumber: string | null
     ) {
-        this.nodeID = nodeID;
+        this.id = nodeID;
         this.x = x;
         this.y = y;
         this.floor = floor;
@@ -28,37 +28,6 @@ export class myNode {
         this.roomNumber = roomNumber;
     }
 }
-
-// export class myNode {
-//     nodeid: string;
-//     x: number;
-//     y: number;
-//     floor: number;
-//     nodeType: string;
-//     building: string;
-//     longName: string;
-//     shortName: string;
-//
-//     constructor(
-//         id: string,
-//         x: number,
-//         y: number,
-//         floor: number,
-//         nodeType: string,
-//         building: string,
-//         longName: string,
-//         shortName: string
-//     ) {
-//         this.id = id;
-//         this.x = x;
-//         this.y = y;
-//         this.floor = floor;
-//         this.nodeType = nodeType;
-//         this.building = building;
-//         this.longName = longName;
-//         this.shortName = shortName;
-//     }
-// }
 
 class myEdge {
     id: number;
@@ -105,6 +74,6 @@ export class Graph {
     }
 
     getNode(id: string): myNode | undefined {
-        return this.nodes.find((node) => node.nodeID === id);
+        return this.nodes.find((node) => node.id === id);
     }
 }

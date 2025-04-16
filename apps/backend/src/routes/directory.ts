@@ -28,22 +28,26 @@ export enum FILTER_OPTIONS {
 }
 
 const DIRECTORY_SORT_OPTIONS: object[] = [];
-DIRECTORY_SORT_OPTIONS.push({ dep_id: 'asc' });
-DIRECTORY_SORT_OPTIONS.push({ dep_id: 'desc' });
-DIRECTORY_SORT_OPTIONS.push({ dep_name: 'asc' });
-DIRECTORY_SORT_OPTIONS.push({ dep_name: 'desc' });
-DIRECTORY_SORT_OPTIONS.push({ building_id: 'asc' });
-DIRECTORY_SORT_OPTIONS.push({ building_id: 'desc' });
+DIRECTORY_SORT_OPTIONS.push({ deptId: 'asc' });
+DIRECTORY_SORT_OPTIONS.push({ deptId: 'desc' });
+DIRECTORY_SORT_OPTIONS.push({ deptName: 'asc' });
+DIRECTORY_SORT_OPTIONS.push({ deptName: 'desc' });
+DIRECTORY_SORT_OPTIONS.push({ buildingId: 'asc' });
+DIRECTORY_SORT_OPTIONS.push({ buildingId: 'desc' });
 DIRECTORY_SORT_OPTIONS.push({ floor: 'asc' });
 DIRECTORY_SORT_OPTIONS.push({ floor: 'desc' });
 
 const DIRECTORY_FILTER_OPTIONS: object[] = [];
-DIRECTORY_FILTER_OPTIONS.push({ dep_id: true });
-DIRECTORY_FILTER_OPTIONS.push({ dep_services: true });
-DIRECTORY_FILTER_OPTIONS.push({ dep_name: true });
-DIRECTORY_FILTER_OPTIONS.push({ building_id: true });
-DIRECTORY_FILTER_OPTIONS.push({ dep_phone: true });
+DIRECTORY_FILTER_OPTIONS.push({ deptId: true });
+DIRECTORY_FILTER_OPTIONS.push({ deptServices: true });
+DIRECTORY_FILTER_OPTIONS.push({ deptName: true });
+DIRECTORY_FILTER_OPTIONS.push({ buildingId: true });
+DIRECTORY_FILTER_OPTIONS.push({ deptPhone: true });
 DIRECTORY_FILTER_OPTIONS.push(Object.assign({}, ...DIRECTORY_FILTER_OPTIONS));
+
+export interface DirectoryRequestName {
+    dep_name: string;
+}
 
 // GET Send Data
 router.get('/', async function (req: Request, res: Response) {
@@ -100,8 +104,11 @@ router.get('/', async function (req: Request, res: Response) {
         }
         args.select = { ...args.select, locations: true };
         //Attempt to pull from directory
-        const DIRECTORY = await PrismaClient.department.findMany(args);
-        //console.log(DIRECTORY);
+        const DIRECTORY = await PrismaClient.department.findMany({
+            include: {
+                locations: true,
+            },
+        });
         res.send(DIRECTORY);
     } catch (error) {
         // Log any failures
@@ -110,6 +117,45 @@ router.get('/', async function (req: Request, res: Response) {
         return; // Don't try to send duplicate statuses
     }
 });
+
+router.get('/names', async function (req: Request, res: Response) {
+    try {
+        const DIRECTORY_NAMES = await PrismaClient.department.findMany({
+            select: {
+                deptName: true,
+            },
+        });
+        res.json(DIRECTORY_NAMES);
+    } catch (error) {
+        console.error(`NO DIRECTORY_NAMES: ${error}`);
+        res.sendStatus(404);
+        return;
+    }
+});
+
+// router.get('/nameSearch', async function (req: Request, res: Response) {
+//     try {
+//         const depName = req.query.dep_name as string;
+//
+//         const departments = await PrismaClient.department.findMany({
+//             where: {
+//                 deptName: depName,
+//             }
+//             include: {
+//                 locations: {
+//                     include: {
+//                         : true,
+//                     },
+//                 },
+//             },
+//         });
+//
+//         res.status(200).json(departments);
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// });
 
 // GET Send CSV
 router.get('/csv', async function (req: Request, res: Response) {

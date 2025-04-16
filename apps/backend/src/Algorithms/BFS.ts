@@ -5,8 +5,6 @@ import { exportNodesAndEdges } from './ExportNodesAndEdges.ts';
 export async function loadMyGraph(): Promise<Graph> {
     // get the nodes and edges from the database
 
-    await exportNodesAndEdges();
-
     const nodes = await PrismaClient.node.findMany({});
     const edges = await PrismaClient.edge.findMany({});
 
@@ -18,7 +16,7 @@ export async function loadMyGraph(): Promise<Graph> {
 
     for (const aNode of nodes) {
         const node = graph.addNode(
-            aNode.nodeId,
+            aNode.id,
             Number(aNode.x),
             Number(aNode.y),
             aNode.floor,
@@ -27,7 +25,7 @@ export async function loadMyGraph(): Promise<Graph> {
             aNode.name,
             aNode.roomNumber
         );
-        nodeMap.set(aNode.nodeId, node);
+        nodeMap.set(aNode.id, node);
     }
 
     for (const aEdge of edges) {
@@ -38,7 +36,6 @@ export async function loadMyGraph(): Promise<Graph> {
             graph.addEdge(from, to, aEdge.id);
         }
     }
-
     return graph;
 }
 
@@ -63,7 +60,7 @@ export async function bfs(
     // Initalizing the queue
     queue.push({ node: starterNode, path: [starterNode] });
 
-    visited.add(starterNode.nodeID);
+    visited.add(starterNode.id);
 
     while (queue.length > 0) {
         //pop the first item in the list
@@ -74,41 +71,25 @@ export async function bfs(
         const currentPath = current.path;
 
         // checking if we found the target node
-        if (currentNode.nodeID === targetNode.nodeID) {
+        if (currentNode.id === targetNode.id) {
             return currentPath;
         }
 
         //adding to visited, and updating queues to add the neighbours
         for (const edge of graph.edges) {
-            if (edge.from.nodeID === currentNode.nodeID) {
+            if (edge.from.id === currentNode.id) {
                 const neighbour = edge.to;
-                if (!visited.has(neighbour.nodeID)) {
-                    visited.add(neighbour.nodeID);
+                if (!visited.has(neighbour.id)) {
+                    visited.add(neighbour.id);
                     queue.push({ node: neighbour, path: [...currentPath, neighbour] });
                 }
-            } else if (edge.to.nodeID === currentNode.nodeID) {
+            } else if (edge.to.id === currentNode.id) {
                 const neighbour = edge.from;
-                if (!visited.has(neighbour.nodeID)) {
-                    visited.add(neighbour.nodeID);
+                if (!visited.has(neighbour.id)) {
+                    visited.add(neighbour.id);
                     queue.push({ node: neighbour, path: [...currentPath, neighbour] });
                 }
             }
         }
     }
 }
-
-// export async function cleanedUpBFS(startPoint: string, endPoint: string): Promise<string[][]> {
-//     const bfsResult = await bfs(startPoint, endPoint);
-//
-//     const results: string[][] = [];
-//
-//     if (bfsResult) {
-//         for (let i = 0, lenBFS = bfsResult.length - 1; i < lenBFS; i++) {
-//             results.push([bfsResult[i].nodeID, bfsResult[i + 1].nodeID]);
-//         }
-//     }
-//
-//     return results;
-// }
-
-// const test = cleanedUpBFS('1', '19');
