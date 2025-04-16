@@ -21,6 +21,7 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} packages/database/prisma/seed.ts"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3",
     "@types/node": "^22.13.13",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -53,6 +54,8 @@
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.6.3",
+    "js-cookie": "^3.0.5",
+    "js.cookie": "^0.0.4",
     "lib-utils-ts": "^0.0.0-test",
     "lucide-react": "^0.487.0",
     "prisma": "^6.5.0",
