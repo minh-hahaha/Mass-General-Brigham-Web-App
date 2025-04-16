@@ -31,10 +31,10 @@ model ServiceRequest {
   requestId               Int       @id @default(autoincrement())
   assignedId              Employee? @relation(fields: [employeeId], references: [employeeId])
   employeeId              Int?
-  employee_name           String?
+  employeeName           String?
   //this is to satisfy the 9 commandments until we get proper intgration between the locations in the database and the forms
-  requester_department_id String?
-  requester_room_number   String?
+  requesterDepartmentId String?
+  requesterRoomNumber   String?
 
   requestDate      DateTime?         @default(now()) @db.Date
   status           String
@@ -53,7 +53,7 @@ model ServiceRequest {
 
 model MaintenanceRequest {
   servMaintenanceId     Int            @id
-  maintenanceId        String
+  maintenanceType        String
   maintenanceDescription String
   maintenanceHospital    String
   maintenanceLocation    String
@@ -149,7 +149,7 @@ model Sanitation {
   servReqId                Int            @id
   sanitationLocationId   String
   sanitationDepartmentId String
-  sanitationRoomNum   Int
+  sanitationRoomNumber Int
   sanitationType           String
   recurring                Boolean
   hazardLevel              String

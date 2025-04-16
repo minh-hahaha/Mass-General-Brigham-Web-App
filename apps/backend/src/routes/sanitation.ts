@@ -58,6 +58,7 @@ router.post('/', async (req: Request, res: Response) => {
                     status: req.body.status,
                     comments: req.body.notes,
                     serviceType: 'Sanitation',
+
                     //9 commandments
                     employeeName: req.body.employeeName,
                     requesterRoomNumber: req.body.requesterRoomNumber,
