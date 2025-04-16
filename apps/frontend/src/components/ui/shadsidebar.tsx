@@ -27,6 +27,7 @@ import {
     SidebarMenuSub,
     SidebarMenuSubItem,
     SidebarMenuSubButton,
+    SidebarHeader,
 } from '@/components/ui/sidebar';
 import {
     DropdownMenu,
@@ -131,6 +132,9 @@ export function ShadSidebar() {
 
     return (
         <Sidebar className="pt-16">
+            <div className="bg-white shadow-md rounded-xl p-3 mx-3 mt-3 border-1">
+                <SidebarHeader className="text-2xl font-light text-center text-mgbblue">Welcome {currentUser.substring(0, currentUser.indexOf(' '))}</SidebarHeader>
+            </div>
             <SidebarContent className="flex flex-col justify-between">
                 <SidebarGroup className="gap-3">
                     <SidebarGroupContent>

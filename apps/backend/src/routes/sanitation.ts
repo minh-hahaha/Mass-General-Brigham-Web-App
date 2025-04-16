@@ -63,7 +63,6 @@ router.post('/', async (req: Request, res: Response) => {
                     requester_room_number: req.body.requester_room_number,
                     requester_department_id: req.body.requester_department_id,
 
-
                     //optional fields
                     //location_id: req.body.locationId ?? null,
                     employeeId: req.body.employeeId ?? null, // change to user id in the future?
@@ -82,7 +81,7 @@ router.post('/', async (req: Request, res: Response) => {
                     disposalRequired: req.body.disposalRequired,
 
                     sanitation_department_id: req.body.sanitation_department_id,
-                    sanitation_location_id:req.body.sanitation_location_id,
+                    sanitation_location_id: req.body.sanitation_location_id,
                     sanitation_room_number: req.body.sanitation_room_number,
                     //completeBy: req.body.completeBy,
                 },

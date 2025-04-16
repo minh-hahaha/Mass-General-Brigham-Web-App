@@ -16,15 +16,16 @@ export async function exportNodesAndEdges(): Promise<void> {
     const PP22thFloor3 = path.resolve(__dirname, 'JSONFiles', '22PPFloor3NodesEdges.json');
     const PP22thFloor4 = path.resolve(__dirname, 'JSONFiles', '22PPFloor4NodesEdges.json');
 
-
-    const buildings = [CHFloor1,
+    const buildings = [
+        CHFloor1,
         PP20thFloor1,
         PP20thFloor2,
         PP20thFloor3,
         PP20thFloor1,
         PP20thFloor4,
         PP22thFloor3,
-        PP22thFloor4];
+        PP22thFloor4,
+    ];
 
     // go through buildings
     for (const building of buildings) {
