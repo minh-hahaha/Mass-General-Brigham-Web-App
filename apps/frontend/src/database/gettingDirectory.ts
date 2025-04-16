@@ -21,7 +21,7 @@ export interface DirectoryRequestByBuilding {
     buildingId: number;
     deptPhone: string;
     node: {
-        nodeId: number;
+        id: string;
         x: number;
         y: number;
         floor: string;

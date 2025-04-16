@@ -4,41 +4,37 @@ import SelectElement from '../elements/SelectElement.tsx';
 import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google-maps';
 import TravelModeComponent from "@/components/TravelModeComponent.tsx";
 import OverlayComponent from "@/components/svgOverlay.tsx";
-import ViewPath from "@/components/ViewPath.tsx";
 import HospitalMapComponent from "@/components/HospitalMapComponent";
 
 import {myNode} from "../../../backend/src/Algorithms/classes.ts";
-import axios from 'axios';
-import {ROUTES} from "common/src/constants.ts";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu.tsx";
+
 import {
     DirectoryRequestByBuilding,
     DirectoryRequestName,
     getDirectory,
     getDirectoryNames
 } from "@/database/gettingDirectory.ts";
-import {GetTransportRequest, incomingRequest} from "@/database/transportRequest.ts";
-import {getDepartmentNode} from "@/database/getDepartmentNode.ts";
+
+const nullNode : myNode = {
+    id: "",
+    x: 0,
+    y: 0,
+    floor: "0",
+    buildingId: "0",
+    nodeType: "0",
+    name: "",
+    roomNumber: "0"
+}
 
 const start : myNode = {
-    id: "CHFloor1Room130",
-    x: 525.6661826660298,
-    y: 293.65126703249217,
-    floor: "1",
-    buildingId: "1",
-    nodeType: "Room",
-    name: "Reception",
-    roomNumber: "130"
-}
-const end: myNode = {
-    id: "CHFloor1Door130",
-    x: 566.5838276146786,
-    y: 257.491496294312,
+    id: "CHFloor1Door8",
+    x: 694.0946366710934,
+    y: 209.91282960575376,
     floor: "1",
     buildingId: "1",
     nodeType: "Door",
-    name: "Reception Door",
-    roomNumber: "130"
+    name: "EntranceA",
+    roomNumber: ""
 }
 
 const Buildings = [
@@ -73,8 +69,9 @@ const DirectionsMapComponent = () => {
     const [directoryList, setDirectoryList] = useState<DirectoryRequestByBuilding[]>([]);
     const [currentDirectoryName, setCurrentDirectoryName] = useState<string>('');
 
-    const [toDirectory, setToDirectory] = useState<DirectoryRequestByBuilding | null>(null);
-    const [toDirectoryNode, setToDirectoryNode] = useState<DirectoryRequestByBuilding["node"] | null >(null);
+    const [toDirectoryNode, setToDirectoryNode] = useState<myNode>(nullNode);
+
+
     const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
     const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
 
@@ -89,8 +86,7 @@ const DirectionsMapComponent = () => {
 
     // refs for autocomplete
     const fromLocationRef = useRef(null);
-    // const toLocationRef = useRef(null);
-
+    // autocomplete
     useEffect(() => {
         if (!placesLibrary || !fromLocationRef.current) return;
 
@@ -109,7 +105,7 @@ const DirectionsMapComponent = () => {
             }
         });
 
-    }, [placesLibrary]); // autocomplete
+    }, [placesLibrary]);
 
     useEffect(() => {
         const fetchDirectoryList = async () => {
@@ -127,7 +123,6 @@ const DirectionsMapComponent = () => {
     }, [buildingID]);
 
     const handleDeptChange = () => {
-
         const selectedName = currentDirectoryName;
         const dept = directoryList.find((dept) => dept.deptName === selectedName );
 
@@ -135,7 +130,7 @@ const DirectionsMapComponent = () => {
         if (dept){
             setToDirectoryNode(dept.node);
         } else {
-            setToDirectoryNode(null);
+            setToDirectoryNode(nullNode);
         }
     }
 
@@ -205,71 +200,6 @@ const DirectionsMapComponent = () => {
         setShowHospital(prevState => !prevState);
     };
 
-
-    async function FindPath(start: myNode, end: myNode) {
-        const data = JSON.stringify({start, end})
-        console.log(data);
-        const res = await axios.post(ROUTES.BFSGRAPH, data, {
-            headers: {'Content-Type': 'application/json'}
-        })
-        const nodes : myNode[] = res.data
-        console.log("Path is " + nodes)
-        return nodes;
-    }
-    // const [deptNode, setDeptNode] = useState<myNode>();
-    //
-    // useEffect(() => {
-    //     async function fetchDeptNode() {
-    //         const data = await getDepartmentNode();
-    //         console.log(data);
-    //         setDeptNode(data);
-    //     }
-    //     fetchDeptNode();
-    // }, []);
-
-
-
-    // const HospitalMap = () => {
-    //     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
-    //
-    //     useEffect(() => {
-    //         const getMyPaths = async () => {
-    //             const door1 : myNode = {
-    //                 id: "20PPFloor1Door2",
-    //                 x: 55.25522849727386,
-    //                 y: 839.8053213627713,
-    //                 floor: "1",
-    //                 buildingId: "2",
-    //                 nodeType: "Hallway",
-    //                 name: "Node 1",
-    //                 roomNumber: ""
-    //             }
-    //             const room102: myNode = {
-    //                 id: "20PPFloor1Room120",
-    //                 x:  409.4296614277226,
-    //                 y: 766.2121368495918,
-    //                 floor: "1",
-    //                 buildingId: "1",
-    //                 nodeType: "Hallway",
-    //                 name: "Node 8",
-    //                 roomNumber: ""
-    //             }
-    //
-    //                 const result = await FindPath(door1, room102);
-    //                 setBFSPath(result);
-    //
-    //         };
-    //         getMyPaths();
-    //         // console.log(path);
-    //     }, [showHospital]);
-    //
-    //     return (
-    //         <div>
-    //             <ViewPath svgMapUrl="/20PPFloor1.svg" path={bfsPath}/>
-    //         </div>
-    //
-    //     );
-    // };
 
     return (
         <div className="flex flex-row">
@@ -364,7 +294,7 @@ const DirectionsMapComponent = () => {
             <div className="basis-5/6 relative">
                 {showHospital ? (
                         <div>
-                            <HospitalMapComponent startNode={start} endNode={end}/>
+                            <HospitalMapComponent startNode={start} endNode={toDirectoryNode}/>
                         </div>) :  (
                     <Map
                         style={{ width: '100%', height: '92vh' }}

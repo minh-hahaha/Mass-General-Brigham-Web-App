@@ -42,11 +42,11 @@ async function FindPath(start: myNode, end: myNode) {
 // interface for prop
 interface Props {
     startNode: myNode;
-    endNode: myNode;
+    endNode: myNode | null;
 }
 
 const HospitalMapComponent = ({startNode, endNode}:Props) => {
-
+    if (!startNode || !endNode) return;
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
     useEffect(() => {
         const getMyPaths = async () => {
