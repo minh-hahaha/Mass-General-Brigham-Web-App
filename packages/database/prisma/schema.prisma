@@ -67,6 +67,7 @@ model TranslationRequest {
   date            DateTime
   meetingLink     String
   location        String
+  department      String          //fix it later - Jake
 }
 
 model Department {
