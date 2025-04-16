@@ -10,13 +10,21 @@ import ViewPath from "@/components/ViewPath.tsx";
 import {myNode} from "../../../backend/src/Algorithms/classes.ts";
 import axios from 'axios';
 import {ROUTES} from "common/src/constants.ts";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu.tsx";
+import {
+    DirectoryRequestByBuilding,
+    DirectoryRequestName,
+    getDirectory,
+    getDirectoryNames
+} from "@/database/gettingDirectory.ts";
 import {GetTransportRequest, incomingRequest} from "@/database/transportRequest.ts";
 import {getDepartmentNode} from "@/database/getDepartmentNode.ts";
 
 const Buildings = [
+    "Chestnut Hill - 850 Boylston Street",
     "20 Patriot Place",
     "22 Patriot Place",
-    "Chestnut Hill - 850 Boylston Street",
+
 ];
 
 type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING' | null;
@@ -40,15 +48,20 @@ const DirectionsMapComponent = () => {
     const [distance, setDistance] = useState('');
     const [duration, setDuration] = useState('');
     const [showRouteInfo, setShowRouteInfo] = useState(false);
+    const [directoryList, setDirectoryList] = useState<DirectoryRequestByBuilding[]>([]);
+    const [currentDirectoryName, setCurrentDirectoryName] = useState<string>('');
 
-
+    const [toDirectory, setToDirectory] = useState<DirectoryRequestByBuilding | null>(null);
+    const [toDirectoryNode, setToDirectoryNode] = useState<DirectoryRequestByBuilding["node"] | null >(null);
     const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
-    const [directionsRenderer, setDefaultRenderer] = useState<google.maps.DirectionsRenderer>();
+    const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
+
+    const [buildingID, setBuildingID] = useState<number>(0);
 
     useEffect(() => {
         if (!routesLibrary || !map) return;
         setDirectionsService(new routesLibrary.DirectionsService());
-        setDefaultRenderer(new routesLibrary.DirectionsRenderer({
+        setDirectionsRenderer(new routesLibrary.DirectionsRenderer({
             map,
         }));
     }, [map, routesLibrary]);
@@ -75,6 +88,34 @@ const DirectionsMapComponent = () => {
         });
 
     }, [placesLibrary]); // autocomplete
+
+    useEffect(() => {
+        const fetchDirectoryList = async () => {
+            try {
+                const data = await getDirectory(buildingID);
+                setDirectoryList(data);
+            } catch (error) {
+                console.error("Error fetching building names:", error);
+            }
+
+        };
+        fetchDirectoryList();
+        console.log("Updated Directory list")
+
+    }, [buildingID]);
+
+    const handleDeptChange = () => {
+
+        const selectedName = currentDirectoryName;
+        const dept = directoryList.find((dept) => dept.deptName === selectedName );
+
+        //checks null
+        if (dept){
+            setToDirectoryNode(dept.node);
+        } else {
+            setToDirectoryNode(null);
+        }
+    }
 
     // find directions
     const handleFindDirections = (e: React.FormEvent<HTMLFormElement>) => {
@@ -269,6 +310,7 @@ const DirectionsMapComponent = () => {
     // )
     const [deptNode, setDeptNode] = useState<myNode>();
 
+    /*
     useEffect(() => {
         async function fetchDeptNode() {
             const data = await getDepartmentNode();
@@ -276,7 +318,8 @@ const DirectionsMapComponent = () => {
             setDeptNode(data);
         }
         fetchDeptNode();
-    }, []);
+    }, [])
+     */
 
 
     const HospitalMap = () => {
@@ -285,28 +328,28 @@ const DirectionsMapComponent = () => {
         useEffect(() => {
             const getMyPaths = async () => {
                 const door1 : myNode = {
-                    id: "CH1Door1",
-                    x: 694.6909401633523,
-                    y: 164.93491432883522,
+                    id: "20PPFloor1Door2",
+                    x: 55.25522849727386,
+                    y: 839.8053213627713,
+                    floor: "1",
+                    buildingId: "2",
+                    nodeType: "Hallway",
+                    name: "Node 1",
+                    roomNumber: ""
+                }
+                const room102: myNode = {
+                    id: "20PPFloor1Room120",
+                    x:  409.4296614277226,
+                    y: 766.2121368495918,
                     floor: "1",
                     buildingId: "1",
-                    nodeType: "Door",
-                    name: "Exit1",
+                    nodeType: "Hallway",
+                    name: "Node 8",
                     roomNumber: ""
-                    }
-                const room102: myNode = {
-                        id: "CH1Room130",
-                        x: 528.8599611031434,
-                        y: 284.5968690890998,
-                        floor: "1",
-                        buildingId: "1",
-                        nodeType: "Room",
-                        name: "Multi-Specialty Clinic 130",
-                        roomNumber: "130"
-                    }
+                }
 
-                    const result = await FindPath(door1, room102);
-                    setBFSPath(result);
+                const result = await FindPath(door1, room102);
+                setBFSPath(result);
 
             };
             getMyPaths();
