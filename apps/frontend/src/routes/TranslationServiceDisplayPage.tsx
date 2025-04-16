@@ -42,7 +42,8 @@ const TranslationServiceDisplayPage = () => {
                             <TableHead>Priority</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Request Date</TableHead>
-                            <TableHead>Service Type</TableHead>
+                            <TableHead>Location</TableHead>
+                            <TableHead>Department</TableHead>
 
                         </TableRow>
                     </TableHeader>
@@ -57,7 +58,8 @@ const TranslationServiceDisplayPage = () => {
                                 <TableCell>{req.priority}</TableCell>
                                 <TableCell>{req.status}</TableCell>
                                 <TableCell>{req.requestDate.split('T')[0]}</TableCell>
-                                <TableCell>{req.serviceType}</TableCell>
+                                <TableCell>{req.translationRequest.location}</TableCell>
+                                <TableCell>{req.translationRequest.department}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
