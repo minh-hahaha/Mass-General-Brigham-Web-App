@@ -27,6 +27,14 @@ const SanitationRequestPage = () => {
     const [hazardLevel, setHazardLevel] = useState<sanitationRequest['hazardLevel']>('None');
     const [disposalRequired, setDisposalRequired] = useState(false);
     const [completeBy, setCompleteBy] = useState(new Date().toISOString().split('T')[0]);
+    const [sanitation_location_id, setSanitation_location_id] = useState('');
+    const [sanitation_department_id, setSanitation_department_id] = useState('');
+    const [sanitation_roomNumber, setSanitation_roomNumber ] = useState(0);
+    const [employee_name, setEmployee_name]=useState('');
+
+    //until we get locations working as a singular dropdown
+    const [requester_department, setRequester_department] = useState('');
+    const[requester_roomnum, setRequester_roomnum] = useState('');
 
     const [submittedRequest, setSubmittedRequest] = useState<sanitationRequest | null>(null);
     const [showConfirmation, setShowConfirmation] = useState(false);
@@ -52,6 +60,8 @@ const SanitationRequestPage = () => {
             sanitation_department_id,
             sanitation_roomNumber,
             employee_name,
+            requester_department,
+            requester_roomnum,
 
         } //for Jack: I stopped here. There seems to be something off with the type declarations here
 
@@ -79,6 +89,8 @@ const SanitationRequestPage = () => {
         setSanitation_department_id('');
         setSanitation_roomNumber(0);
         setEmployee_name('');
+        setRequester_department('');
+        setRequester_roomnum('');
     };
 
     // //Data is sent to the backend
@@ -111,8 +123,8 @@ const SanitationRequestPage = () => {
                                     <input
                                         type="text"
                                         id="employee_name"
-                                        // value={employee_name}
-                                        // onChange={(e) => setEmployee_name(e.target.value)}
+                                        value={employee_name}
+                                        onChange={(e) => setEmployee_name(e.target.value)}
                                         required
                                         placeholder="Enter your name"
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -151,8 +163,8 @@ const SanitationRequestPage = () => {
                                         <label className="w-1/4">Location</label>
                                         <select
                                             id="sanitationLocation"
-                                            // value={sanitation_location_id}
-                                            // onChange={(e) => setSanitation_Location_id(e.target.value)}
+                                            value={sanitation_location_id}
+                                            onChange={(e) => setSanitation_location_id(e.target.value)}
                                             required
                                             className="w-70 px-3 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                         >
@@ -170,8 +182,8 @@ const SanitationRequestPage = () => {
                                             <input
                                                 type="text"
                                                 id="sanitation_departmentId"
-                                                // value={sanitation_department_id}
-                                                // onChange={(e) => setSanitation_Department_id(e.target.value)}
+                                                value={sanitation_department_id}
+                                                onChange={(e) => setSanitation_department_id(e.target.value)}
                                                 required
                                                 placeholder='Department to be sanitized'
                                                 className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -184,8 +196,8 @@ const SanitationRequestPage = () => {
                                             <input
                                                 type="number"
                                                 id="sanitation_roomNumber"
-                                                // value={sanitation_roomNumber}
-                                                // onChange={(e) => setSanitation_roomNumber(e.target.value)}
+                                                value={sanitation_roomNumber}
+                                                onChange={(e) => setSanitation_roomNumber(Number(e.target.value))}
                                                 required
                                                 min="0"
                                                 placeholder="Enter room number"
@@ -308,8 +320,8 @@ const SanitationRequestPage = () => {
                                             <input
                                                 type="text"
                                                 id="departmentId"
-                                                // value={departmentID}
-                                                // onChange={(e) => setDepartmentId(e.target.value)}
+                                                value={requester_department}
+                                                onChange={(e) => setRequester_department(e.target.value)}
                                                 required
                                                 placeholder='Enter Department name'
                                                 className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -322,8 +334,8 @@ const SanitationRequestPage = () => {
                                             <input
                                                 type="number"
                                                 id="roomNumber"
-                                                // value={roomNumber}
-                                                // onChange={(e) => setRoomNumber(e.target.value)}
+                                                value={requester_roomnum}
+                                                onChange={(e) => setRequester_roomnum(e.target.value)}
                                                 required
                                                 min="0"
                                                 placeholder="Enter room number"

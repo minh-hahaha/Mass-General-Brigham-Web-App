@@ -10,10 +10,14 @@ export interface sanitationRequest {
     request_time:                string;
     location_id:                 string;
 
+
     //Optional fields
     comments:                   string;
     request_date:                string;
     employee_id:                 number;
+    requester_department:         string;
+    requester_roomnum: string;
+
 
     //Sanitation fields
     sanitation_location_id:     string;
