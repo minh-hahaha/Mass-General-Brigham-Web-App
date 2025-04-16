@@ -13,6 +13,27 @@ import {ROUTES} from "common/src/constants.ts";
 import {DirectoryRequestName, getDirectoryNames} from "@/database/gettingDirectory.ts";
 import {getDepartmentNode} from "@/database/getDepartmentNode.ts";
 
+const start : myNode = {
+    id: "CHFloor1Room130",
+    x: 525.6661826660298,
+    y: 293.65126703249217,
+    floor: "1",
+    buildingId: "1",
+    nodeType: "Room",
+    name: "Reception",
+    roomNumber: "130"
+}
+const end: myNode = {
+    id: "CHFloor1Door130",
+    x: 566.5838276146786,
+    y: 257.491496294312,
+    floor: "1",
+    buildingId: "1",
+    nodeType: "Door",
+    name: "Reception Door",
+    roomNumber: "130"
+}
+
 const Buildings = [
     "20 Patriot Place",
     "22 Patriot Place",
@@ -178,68 +199,49 @@ const DirectionsMapComponent = () => {
     //     fetchDeptNode();
     // }, []);
 
-    const start : myNode = {
-        id: "CHFloor1Room130",
-        x: 525.6661826660298,
-        y: 293.65126703249217,
-        floor: "1",
-        buildingId: "1",
-        nodeType: "Room",
-        name: "Reception",
-        roomNumber: "130"
-    }
-    const end: myNode = {
-        id: "CHFloor1Hallway130",
-        x: 525.6661826660298,
-        y: 258.4430646721662,
-        floor: "1",
-        buildingId: "1",
-        nodeType: "Hallway",
-        name: "ReceptionHall",
-        roomNumber: "130"
-    }
 
-    const HospitalMap = () => {
-        const [bfsPath, setBFSPath] = useState<myNode[]>([]);
 
-        useEffect(() => {
-            const getMyPaths = async () => {
-                const door1 : myNode = {
-                    id: "20PPFloor1Door2",
-                    x: 55.25522849727386,
-                    y: 839.8053213627713,
-                    floor: "1",
-                    buildingId: "2",
-                    nodeType: "Hallway",
-                    name: "Node 1",
-                    roomNumber: ""
-                }
-                const room102: myNode = {
-                    id: "20PPFloor1Room120",
-                    x:  409.4296614277226,
-                    y: 766.2121368495918,
-                    floor: "1",
-                    buildingId: "1",
-                    nodeType: "Hallway",
-                    name: "Node 8",
-                    roomNumber: ""
-                }
-
-                    const result = await FindPath(door1, room102);
-                    setBFSPath(result);
-
-            };
-            getMyPaths();
-            // console.log(path);
-        }, [showHospital]);
-
-        return (
-            <div>
-                <ViewPath svgMapUrl="/20PPFloor1.svg" path={bfsPath}/>
-            </div>
-
-        );
-    };
+    // const HospitalMap = () => {
+    //     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
+    //
+    //     useEffect(() => {
+    //         const getMyPaths = async () => {
+    //             const door1 : myNode = {
+    //                 id: "20PPFloor1Door2",
+    //                 x: 55.25522849727386,
+    //                 y: 839.8053213627713,
+    //                 floor: "1",
+    //                 buildingId: "2",
+    //                 nodeType: "Hallway",
+    //                 name: "Node 1",
+    //                 roomNumber: ""
+    //             }
+    //             const room102: myNode = {
+    //                 id: "20PPFloor1Room120",
+    //                 x:  409.4296614277226,
+    //                 y: 766.2121368495918,
+    //                 floor: "1",
+    //                 buildingId: "1",
+    //                 nodeType: "Hallway",
+    //                 name: "Node 8",
+    //                 roomNumber: ""
+    //             }
+    //
+    //                 const result = await FindPath(door1, room102);
+    //                 setBFSPath(result);
+    //
+    //         };
+    //         getMyPaths();
+    //         // console.log(path);
+    //     }, [showHospital]);
+    //
+    //     return (
+    //         <div>
+    //             <ViewPath svgMapUrl="/20PPFloor1.svg" path={bfsPath}/>
+    //         </div>
+    //
+    //     );
+    // };
 
     return (
         <div className="flex flex-row">
