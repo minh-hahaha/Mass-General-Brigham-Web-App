@@ -14,6 +14,8 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import { ShadSidebar } from '@/components/ui/shadsidebar.tsx';
 import {MapPage} from "@/routes/MapPage.tsx";
 import MapEditorPage from "@/routes/MapEditorPage.tsx";
+import SanitationRequestDisplayPage from "@/routes/SanitationRequestDisplayPage.tsx";
+import ServiceRequestSelectPage from "@/routes/ServiceRequestSelectPage.tsx";
 
 function App() {
     return (
@@ -70,6 +72,10 @@ function App() {
                                 <Route
                                     path="/TransportationRequestPage"
                                     element={<TransportationRequestPage />}
+                                />
+                                <Route
+                                    path="/ServiceRequestSelectPage"
+                                    element={<ServiceRequestSelectPage />}
                                 />
                             </Routes>
                         </main>
