@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import {myNode} from "../../../backend/src/Algorithms/classes.ts";
+import { myNode } from "../../../backend/src/Algorithms/classes.ts";
 
 interface Edge {
     from: string;
@@ -10,8 +10,6 @@ interface Props {
     svgMapUrl: string;
     currentFloor?: string;
     buildingId?: string;
-    // nodes: myNode[];
-    // edges: Edge[];
     // The path is an ordered array of node IDs representing the BFS pathfinding result
     path: myNode[];
     // Optional start and end destinations for display purposes
@@ -19,10 +17,10 @@ interface Props {
     endLocation?: string;
 }
 
-export default function HospitalPathViewer({
-                                               svgMapUrl,
-                                               path = [],
-                                           }: Props) {
+export default function ViewPath({
+                                     svgMapUrl,
+                                     path = [],
+                                 }: Props) {
     const svgRef = useRef<SVGSVGElement>(null);
 
     // Zoom and pan state
@@ -32,17 +30,19 @@ export default function HospitalPathViewer({
     const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
     const [pathEdges, setPathEdges] = useState<Edge[]>([]);
 
-
     // Create edges based on the path
     useEffect(() => {
         if (path.length < 2) return;
 
         const newPathEdges: Edge[] = [];
         for (let i = 0; i < path.length - 1; i++) {
-            newPathEdges.push({
-                from: path[i].id,
-                to: path[i + 1].id
-            });
+            // Only create edges between nodes on the same floor
+            if (path[i].floor === path[i + 1].floor) {
+                newPathEdges.push({
+                    from: path[i].id,
+                    to: path[i + 1].id
+                });
+            }
         }
 
         setPathEdges(newPathEdges);
@@ -94,47 +94,78 @@ export default function HospitalPathViewer({
         };
     }, []);
 
-    // // Check if a node is part of the path
-    // const isNodeInPath = (nodeId: string): boolean => {
-    //     return pathNodeIds.includes(nodeId);
-    // };
-
-    // Check if a node is endpoints
+    // Check if a node is an endpoint (start or end of path)
     const isEndpoint = (nodeId: string): boolean => {
         return (path.length > 0 && (nodeId === path[0].id || nodeId === path[path.length - 1].id));
     };
 
+    // Find connection points between floors - nodes where the path goes to a different floor
+    const getFloorTransitionNodes = (): myNode[] => {
+        if (path.length < 2) return [];
+
+        const transitionNodes: myNode[] = [];
+
+        for (let i = 0; i < path.length - 1; i++) {
+            if (path[i].floor !== path[i + 1].floor) {
+                // This node connects to a different floor
+                transitionNodes.push(path[i]);
+            }
+        }
+        return transitionNodes;
+    };
+
+    const floorTransitionNodes = getFloorTransitionNodes();
+
     // Get node color based on its role in the path
-    const getNodeColor = (nodeId: string): string => {
-        if (isEndpoint(nodeId)) return 'red';
+    const getNodeColor = (node: myNode): string => {
+        if (isEndpoint(node.id)) return 'red';
+
+        // Check if it's a floor transition node
+        if (floorTransitionNodes.some(n => n.id === node.id)) {
+            return 'green'; // Floor transitions are green
+        }
+
         return 'blue';
     };
 
-    // // We can now use the path nodes directly since they are already myNode objects
-    // const pathNodes = React.useMemo(() => {
-    //     // Return the path nodes directly since they're already myNode objects
-    //     return path;
-    // }, [path]);
+    // Get node label
+    const getNodeLabel = (node: myNode): string => {
+        if (node.id === path[0]?.id) return "Start";
+        if (node.id === path[path.length - 1]?.id) return "End";
 
+        // For transition nodes, show which floor it connects to
+        const transitionNode = floorTransitionNodes.find(n => n.id === node.id);
+        if (transitionNode) {
+            // Find the connected node on different floor
+            const connectedNodeIndex = path.findIndex(n => n.id === transitionNode.id);
+            if (connectedNodeIndex >= 0 && connectedNodeIndex < path.length - 1) {
+                const nextNode = path[connectedNodeIndex + 1];
+                if (nextNode.floor !== transitionNode.floor) {
+                    return `To Floor ${nextNode.floor}`;
+                }
+            }
+        }
+
+        return node.name || node.id;
+    };
 
     return (
         <div className="flex flex-col items-start">
-
             <div className="relative w-full">
-                    <div className="absolute top-2 left-2 p-2 bg-white rounded-lg shadow-md">
-                        <div className="text-sm text-gray-600 mb-2">
-                            Use mouse wheel to zoom. Hold Shift or Alt + drag (or middle mouse button) to pan the map.
-                        </div>
-                        <button
-                            onClick={() => {
-                                setScale(1);
-                                setPosition({ x: 0, y: 0 });
-                            }}
-                            className="bg-gray-200 px-3 py-1 rounded"
-                        >
-                            Reset View
-                        </button>
+                <div className="absolute top-2 left-2 p-2 bg-white rounded-lg shadow-md">
+                    <div className="text-sm text-gray-600 mb-2">
+                        Use mouse wheel to zoom. Hold Shift or Alt + drag (or middle mouse button) to pan the map.
                     </div>
+                    <button
+                        onClick={() => {
+                            setScale(1);
+                            setPosition({ x: 0, y: 0 });
+                        }}
+                        className="bg-gray-200 px-3 py-1 rounded"
+                    >
+                        Reset View
+                    </button>
+                </div>
 
                 <svg
                     ref={svgRef}
@@ -175,10 +206,12 @@ export default function HospitalPathViewer({
                             );
                         })}
 
-                        {/* Draw only nodes that are in the path */}
+                        {/* Draw nodes that are in the path */}
                         {path.map((node) => {
                             const isEndpointNode = isEndpoint(node.id);
-                            const nodeSize = isEndpointNode ? 10 : 8;
+                            const isTransitionNode = floorTransitionNodes.some(n => n.id === node.id);
+                            const nodeSize = isEndpointNode ? 10 : (isTransitionNode ? 9 : 8);
+                            const nodeColor = getNodeColor(node);
 
                             return (
                                 <g key={node.id}>
@@ -186,20 +219,21 @@ export default function HospitalPathViewer({
                                         cx={node.x}
                                         cy={node.y}
                                         r={nodeSize / scale}
-                                        fill={getNodeColor(node.id)}
+                                        fill={nodeColor}
                                         stroke="white"
                                         strokeWidth={2 / scale}
                                     >
                                     </circle>
-                                    {isEndpointNode && (
+                                    {/* Show labels for important nodes */}
+                                    {(isEndpointNode || isTransitionNode) && (
                                         <text
                                             x={node.x + (12 / scale)}
                                             y={node.y + (5 / scale)}
-                                            fontSize={20 / scale}
+                                            fontSize={16 / scale}
                                             fontWeight="bold"
                                             fill="black"
                                         >
-                                            {node.id === path[0].id ? "Start" : "End"}
+                                            {getNodeLabel(node)}
                                         </text>
                                     )}
                                 </g>
