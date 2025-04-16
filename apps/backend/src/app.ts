@@ -37,7 +37,6 @@ app.use(cookieParser()); // Cookie parser
 
 app.use(ROUTES.ASSIGNED, assignedRouter);
 app.use(ROUTES.EMPLOYEE, employeeRouter);
-app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
 
 app.use(ROUTES.VALIDATE, validateRouter);
 app.use(ROUTES.PATIENTTRANSPORT, patientTransportRouter);

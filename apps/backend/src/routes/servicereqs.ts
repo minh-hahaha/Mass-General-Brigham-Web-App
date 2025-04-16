@@ -1,5 +1,4 @@
 import express, { Router, Request, Response } from 'express';
-import { Prisma } from 'database';
 import PrismaClient from '../bin/prisma-client';
 import { dataToCSV, readCSV } from '../CSVImportExport.ts';
 import * as console from 'node:console';
@@ -20,7 +19,7 @@ router.get('/', async function (req: Request, res: Response) {
         res.send(SERVICE_REQS_LIST); //sends http request
     } catch (error) {
         // Log any failures
-        console.error(`NO Service Reqs: ${error}`);
+        console.error(`No Service Reqs: ${error}`);
         res.sendStatus(204); // Send error
         return; // Don't try to send duplicate statuses
     }
