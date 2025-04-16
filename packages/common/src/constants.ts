@@ -22,5 +22,8 @@ export const ROUTES = {
     BFSGRAPH: '/api/graph/traverse',
     MAINTENANCEREQUEST: '/api/maintenance',
 
+    NODES: '/api/map/nodes',
+    EDGES: '/api/map/edges',
+
 
 }
