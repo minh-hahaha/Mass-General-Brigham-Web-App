@@ -28,23 +28,33 @@ model Employee {
 }
 
 model ServiceRequest {
-  requestId          Int               @id @default(autoincrement())
-  assignedId         Employee?         @relation(fields: [employeeId], references: [employeeId])
+  requestId          Int                 @id @default(autoincrement())
+  assignedId         Employee?           @relation(fields: [employeeId], references: [employeeId])
   employeeId         Int?
-  requestDate        DateTime?         @default(now()) @db.Date
+  requestDate        DateTime?           @default(now()) @db.Date
   status             String
   comments           String?
   priority           String
-  location           Location?         @relation(name: "ServiceLocation", fields: [locationId], references: [locId])
+  location           Location?           @relation(name: "ServiceLocation", fields: [locationId], references: [locId])
   locationId         Int?
   serviceType        String
-  patientTransport   PatientTransport? @relation(name: "ServicePatientTransport")
-  requestTime        DateTime?         @default(now()) @db.Time
-
+  patientTransport   PatientTransport?   @relation(name: "ServicePatientTransport")
+  requestTime        DateTime?           @default(now()) @db.Time
+  maintenanceRequest MaintenanceRequest? @relation(name: "MaintenanceRequest")
   translationRequest TranslationRequest?
-  sanitation         Sanitation?       @relation(name: "ServiceSanitation")
+  sanitation         Sanitation?         @relation(name: "ServiceSanitation")
 }
 
+model MaintenanceRequest {
+  servMaintenance_id      Int            @id
+  maintenance_type        String
+  maintenance_description String
+  maintenance_hospital    String
+  maintenance_location    String
+  maintenance_time        DateTime
+  employee_name           String
+  servRequest_id          ServiceRequest @relation(name: "MaintenanceRequest", fields: [servMaintenance_id], references: [requestId])
+}
 
 //TODO: FIX LOCATION FIELDS
 model PatientTransport {
@@ -58,15 +68,15 @@ model PatientTransport {
 }
 
 model TranslationRequest {
-  serviceReqId    Int            @id
-  servRequestId   ServiceRequest @relation(fields: [serviceReqId], references: [requestId])
-  patientName     String
-  language        String
-  duration        Float
-  typeMeeting     String
-  date            DateTime
-  meetingLink     String
-  location        String
+  serviceReqId  Int            @id
+  servRequestId ServiceRequest @relation(fields: [serviceReqId], references: [requestId])
+  patientName   String
+  language      String
+  duration      Float
+  typeMeeting   String
+  date          DateTime
+  meetingLink   String
+  location      String
 }
 
 model Department {
@@ -78,43 +88,42 @@ model Department {
   members       Employee[]
   locations     Location[]
   building      Building   @relation(fields: [buildingId], references: [buildingId])
-  nodeId        String?        @unique
-  nodeReception Node?      @relation(fields: [nodeId], references: [id], name:"DepartmentNode")
-
+  nodeId        String?    @unique
+  nodeReception Node?      @relation(fields: [nodeId], references: [id], name: "DepartmentNode")
 }
 
 model Location {
-  locId         Int         @id @default(autoincrement())
-  department    Department? @relation(fields: [departmentId], references: [deptId])
-  departmentId  Int?
-  locType       String
-  roomNum       Int?        @unique
-  floor         Int
+  locId        Int         @id @default(autoincrement())
+  department   Department? @relation(fields: [departmentId], references: [deptId])
+  departmentId Int?
+  locType      String
+  roomNum      Int?        @unique
+  floor        Int
 
   // making prisma happy here
   serviceRequests ServiceRequest[] @relation("ServiceLocation") // unused relation
 }
 
 model Building {
-  buildingId    Int          @id @default(autoincrement())
-  buildingName  String
-  departments   Department[]
+  buildingId   Int          @id @default(autoincrement())
+  buildingName String
+  departments  Department[]
 }
 
 model Node {
   // ignore id
   // id         Int     @id @default(autoincrement())
-  id      String  @id
-  x           Decimal
-  y           Decimal
-  floor       String
-  buildingId  String
-  nodeType    String
-  name        String
-  roomNumber  String?
-  edgesFrom   Edge[]  @relation("NodeToEdgeFrom")
-  edgesTo     Edge[]  @relation("NodeToEdgeTo")
-  department  Department? @relation(name:"DepartmentNode")
+  id         String      @id
+  x          Decimal
+  y          Decimal
+  floor      String
+  buildingId String
+  nodeType   String
+  name       String
+  roomNumber String?
+  edgesFrom  Edge[]      @relation("NodeToEdgeFrom")
+  edgesTo    Edge[]      @relation("NodeToEdgeTo")
+  department Department? @relation(name: "DepartmentNode")
 }
 
 model Edge {

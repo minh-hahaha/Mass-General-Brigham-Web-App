@@ -13,6 +13,7 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import { ShadSidebar } from '@/components/ui/shadsidebar.tsx';
 import {MapPage} from "@/routes/MapPage.tsx";
 import MapEditorPage from "@/routes/MapEditorPage.tsx";
+import MaintenanceRequestPage from "@/routes/MaintenanceRequestPage.tsx";
 
 function App() {
     return (
@@ -63,8 +64,11 @@ function App() {
                                     path="/SanitationRequest"
                                     element={<SanitationRequestPage />}
                                 />
-                        <Route path="/SanitationRequest" element={<SanitationRequestPage />} />
 
+                                <Route
+                                    path="/MaintenanceRequestPage"
+                                    element={<MaintenanceRequestPage />}
+                                />
                             </Routes>
                         </main>
                     </div>
