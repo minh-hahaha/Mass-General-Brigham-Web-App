@@ -28,6 +28,10 @@ async function main() {
         ],
         skipDuplicates: true,
     });
+
+    //NODE FIRST
+
+    //Department
     const createManyDepartments = await client.department.createMany({
         data: [
             {
@@ -333,6 +337,7 @@ async function main() {
             {
                 locType: 'hallway',
                 floor: 0,
+                departmentId: 1,
             },
             {
                 locType: 'suite',
@@ -465,6 +470,7 @@ async function main() {
                 roomNum: null,
                 floor: 1,
                 departmentId: 20,
+                // nodeId:  :D
             },
             {
                 locType: 'department',
