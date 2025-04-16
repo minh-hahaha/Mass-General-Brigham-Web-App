@@ -19,7 +19,7 @@ const Buildings = [
     "Chestnut Hill - 850 Boylston Street",
 ];
 
-type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
+type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING' | null;
 
 const ChestnutParkingBounds = {
     southWest: { lat: 42.32546535760605, lng: -71.15029519348985}, // Bottom-left corner
@@ -35,7 +35,7 @@ const DirectionsMapComponent = () => {
     const placesLibrary = useMapsLibrary('places');
     const [fromLocation, setFromLocation] = useState('');
     const [toLocation, setToLocation] = useState('');
-    const [travelMode, setTravelMode] = useState<TravelModeType>('DRIVING');
+    const [travelMode, setTravelMode] = useState<TravelModeType>(null);
     const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>([]);
     const [distance, setDistance] = useState('');
     const [duration, setDuration] = useState('');
@@ -43,12 +43,14 @@ const DirectionsMapComponent = () => {
 
 
     const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
-    const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
+    const [directionsRenderer, setDefaultRenderer] = useState<google.maps.DirectionsRenderer>();
 
     useEffect(() => {
         if (!routesLibrary || !map) return;
         setDirectionsService(new routesLibrary.DirectionsService());
-        setDirectionsRenderer(new routesLibrary.DirectionsRenderer({ map }));
+        setDefaultRenderer(new routesLibrary.DirectionsRenderer({
+            map,
+        }));
     }, [map, routesLibrary]);
 
     // refs for autocomplete
@@ -83,11 +85,18 @@ const DirectionsMapComponent = () => {
     // change travel mode
     const handleTravelModeChange = (e: ChangeEvent<HTMLInputElement>) => {
         setTravelMode(e.target.value as TravelModeType);
+        if (e.target.value === 'DRIVING') {
+            setParking(true);
+        } else {
+            setParking(false);
+        }
     }
 
     // draw route
     const calculateRoute = () => {
         if (!directionsRenderer || !directionsService) return;
+
+        directionsRenderer.setMap(map);
 
         let actualLocation = toLocation;
         if(toLocation === '20 Patriot Place' || toLocation === "22 Patriot Place") {
@@ -116,27 +125,121 @@ const DirectionsMapComponent = () => {
             });
     };
 
-    const [parkA, setParkA] = useState(false);
-    const [parkB, setParkB] = useState(false);
-    const [parkC, setParkC] = useState(false);
+    const [lot, setLot] = useState('');
     const [parking, setParking] = useState(false);
     const [showHospital, setShowHospital] = useState(false);
 
     const handleParkA = () => {
         clearParking();
-        setParkA(true);
-        setShowHospital(true);
+        setLot('A');
+        calculateDoorRoute(lotAToDoor, 'A');
+    };
+    const handleParkB = () => {
+        clearParking();
+        setLot('B');
+        calculateDoorRoute(lotBToDoor, 'B')
+    };
+    const handleParkC = () => {
+        clearParking();
+        setLot('C');
+        calculateDoorRoute(lotCToDoor, 'C')
     };
 
     const clearParking = () => {
-        setParkA(false);
-        setParkB(false);
-        setParkC(false);
+        setLot('');
     };
 
     const handleHere = () => {
         setShowHospital(prevState => !prevState);
     };
+
+    // 42.32641353922122, -71.14992135383609
+    const lotAToDoor = [
+        {lat: 42.32641975362307, lng: -71.14992617744028},
+        {lat: 42.32643660922756, lng: -71.14959023076334},
+        {lat: 42.3262859001328, lng: -71.14956609088263},
+        {lat: 42.326275985048134, lng: -71.14951647001675},
+        {lat: 42.32624227374853, lng: -71.14946819025536}
+    ]
+
+    const lotBToDoor = [
+        {lat: 42.32607681544678, lng: -71.14907388066334}, //start
+        {lat: 42.3260046767077, lng: -71.149101323287}, //midpoint
+        {lat: 42.32598889634749, lng: -71.14922329050336} //end
+    ]
+
+    const lotCToDoor = [
+        {lat: 42.325598573871204, lng: -71.14972535132611},
+        {lat: 42.32569574268002, lng: -71.14973071574414},
+        {lat: 42.325747301578836, lng: -71.14911648987977},
+        {lat: 42.32602095964217, lng: -71.14910844325274},
+        {lat: 42.32601501056652, lng: -71.14923182486741}
+    ]
+
+
+    const customLineRef = useRef<google.maps.Polyline | null>(null);
+    const customMarkersRef = useRef<google.maps.Marker[]>([]);
+    const animationRef = useRef<number | null>(null);
+
+    function clearAllRoutes() {
+        // Clear default Google route
+        directionsRenderer?.setMap(null);
+
+        // Clear custom micro route polyline
+        if (customLineRef.current) {
+            customLineRef.current.setMap(null);
+            customLineRef.current = null;
+        }
+
+        // Clear custom markers
+        customMarkersRef.current.forEach(marker => marker.setMap(null));
+        customMarkersRef.current = [];
+
+        // Clear dash animation
+        if (animationRef.current !== null) {
+            clearInterval(animationRef.current);
+            animationRef.current = null;
+        }
+    }
+
+    function calculateDoorRoute(pathPoints: google.maps.LatLngLiteral[], label: string) {
+        if (!map) return;
+        clearAllRoutes();
+
+        // Fit map to route
+        const bounds = new google.maps.LatLngBounds();
+        pathPoints.forEach(p => bounds.extend(p));
+        map.fitBounds(bounds, 100);
+
+        // Add markers
+        const startMarker = new google.maps.Marker({ position: pathPoints[0], map, label });
+        const endMarker = new google.maps.Marker({ position: pathPoints[pathPoints.length - 1], map, label: 'D' });
+        customMarkersRef.current = [startMarker, endMarker];
+
+        // Add polyline
+        const line = new google.maps.Polyline({
+            path: pathPoints,
+            map,
+            strokeOpacity: 0,
+            icons: [{
+                icon: { path: "M 0,-1 0,1", strokeOpacity: 1, strokeColor: "#4285F4", scale: 4 },
+                offset: "0",
+                repeat: "25px",
+            }],
+        });
+
+        customLineRef.current = line;
+
+        let count = 0;
+        animationRef.current = window.setInterval(() => {
+            count = (count + 1) % 200;
+            const icons = line.get("icons");
+            if (icons && icons.length > 0) {
+                icons[0].offset = `${count / 2}%`;
+                line.set("icons", icons);
+            }
+        }, 100);
+    }
 
 
     async function FindPath(start: myNode, end: myNode) {
@@ -276,15 +379,6 @@ const DirectionsMapComponent = () => {
                     </div>
 
                 </form>
-                <div className="mt-2">
-                    <MGBButton
-                        onClick={() => handleHere()}
-                        variant={'primary'}
-                        disabled={undefined}
-                    >
-                        {showHospital ? 'Show Google Map' : "I'm Here!"}
-                    </MGBButton>
-                </div>
 
                 {parking && (
                     <div className="flex flex-col gap-2 mt-5">
@@ -296,8 +390,31 @@ const DirectionsMapComponent = () => {
                         >
                             Lot A
                         </MGBButton>
+                        <MGBButton
+                            onClick={() => handleParkB()}
+                            variant={'primary'}
+                            disabled={!parking}
+                        >
+                            Lot B
+                        </MGBButton>
+                        <MGBButton
+                            onClick={() => handleParkC()}
+                            variant={'primary'}
+                            disabled={!parking}
+                        >
+                            Lot C
+                        </MGBButton>
                     </div>
                 )}
+                <div className="mt-5">
+                    <MGBButton
+                        onClick={() => handleHere()}
+                        variant={'primary'}
+                        disabled={undefined}
+                    >
+                        {showHospital ? 'Show Google Map' : "I'm Inside!"}
+                    </MGBButton>
+                </div>
             </div>
 
             <div className="basis-5/6 relative">

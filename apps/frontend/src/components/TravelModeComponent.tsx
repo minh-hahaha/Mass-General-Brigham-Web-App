@@ -1,7 +1,7 @@
 import React from 'react';
 import InputElement from '../elements/InputElement.tsx';
 
-type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
+type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING' | null;
 
 const TRAVEL_MODES = [
     { id: 'DRIVING', label: 'Driving' },
@@ -10,7 +10,7 @@ const TRAVEL_MODES = [
 ];
 
 interface TravelModeProps {
-    selectedMode: TravelModeType;
+    selectedMode?: TravelModeType;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
