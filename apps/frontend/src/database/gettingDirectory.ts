@@ -14,6 +14,31 @@ export interface DepartmentRequest {
 export interface DirectoryRequestName {
     deptName: string;
 }
+
+export interface DirectoryRequestByBuilding {
+    deptId: number;
+    deptServices: string;
+    deptName: string;
+    buildingId: number;
+    deptPhone: string;
+    node: {
+        nodeId: number;
+        x: number;
+        y: number;
+        floor: string;
+        nodeType: string;
+        buildingId: string;
+        name: string;
+        roomNumber: string | null;
+    }
+
+}
+
+const params = {
+    params: {
+        buildingId: 1,
+    }
+}
 export async function GetDirectory(): Promise<DepartmentRequest[]> {
     const response = await axios.get<DepartmentRequest[]>(ROUTES.DIRECTORY);
     return response.data;
@@ -23,3 +48,15 @@ export async function getDirectoryNames(): Promise<DirectoryRequestName[]> {
     const response = await axios.get<DirectoryRequestName[]>(ROUTES.DIRECTORY_NAMES);
     return response.data;
 }
+
+export async function getDirectory(bID: number): Promise<DirectoryRequestByBuilding[]> {
+    const params = {
+        params: {
+            buildingFilter: bID,
+        }
+    }
+    const response = await axios.get<DirectoryRequestByBuilding[]>(ROUTES.DIRECTORY_BUILDING, params)
+    return response.data;
+
+};
+

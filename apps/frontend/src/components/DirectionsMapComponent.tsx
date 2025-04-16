@@ -11,15 +11,22 @@ import {myNode} from "../../../backend/src/Algorithms/classes.ts";
 import axios from 'axios';
 import {ROUTES} from "common/src/constants.ts";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu.tsx";
-import {DirectoryRequestName, getDirectoryNames} from "@/database/gettingDirectory.ts";
+import {
+    DirectoryRequestByBuilding,
+    DirectoryRequestName,
+    getDirectory,
+    getDirectoryNames
+} from "@/database/gettingDirectory.ts";
 import {GetTransportRequest, incomingRequest} from "@/database/transportRequest.ts";
 import {getDepartmentNode} from "@/database/getDepartmentNode.ts";
 
 const Buildings = [
+    "Chestnut Hill - 850 Boylston Street",
     "20 Patriot Place",
     "22 Patriot Place",
-    "Chestnut Hill - 850 Boylston Street",
+
 ];
+
 
 type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
 
@@ -42,10 +49,16 @@ const DirectionsMapComponent = () => {
     const [distance, setDistance] = useState('');
     const [duration, setDuration] = useState('');
     const [showRouteInfo, setShowRouteInfo] = useState(false);
-    const [directoryName, setDirectoryName] = useState<DirectoryRequestName[]>([]);
+    const [directoryList, setDirectoryList] = useState<DirectoryRequestByBuilding[]>([]);
+    const [currentDirectoryName, setCurrentDirectoryName] = useState<string>('');
 
+    const [toDirectory, setToDirectory] = useState<DirectoryRequestByBuilding | null>(null);
+    const [toDirectoryNode, setToDirectoryNode] = useState<DirectoryRequestByBuilding["node"] | null >(null);
     const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
     const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
+
+
+    const [buildingID, setBuildingID] = useState<number>(0);
 
     useEffect(() => {
         if (!routesLibrary || !map) return;
@@ -78,19 +91,32 @@ const DirectionsMapComponent = () => {
     }, [placesLibrary]); // autocomplete
 
     useEffect(() => {
-        const fetchDirectoryNames = async () => {
+        const fetchDirectoryList = async () => {
             try {
-                const data = await getDirectoryNames();
-                console.log(data);
-                setDirectoryName(data);
+                const data = await getDirectory(buildingID);
+                setDirectoryList(data);
             } catch (error) {
                 console.error("Error fetching building names:", error);
             }
 
         };
-        fetchDirectoryNames();
-        console.log(directoryName);
-    }, []);
+        fetchDirectoryList();
+        console.log("Updated Directory list")
+
+    }, [buildingID]);
+
+    const handleDeptChange = () => {
+
+        const selectedName = currentDirectoryName;
+        const dept = directoryList.find((dept) => {dept.deptName === selectedName; });
+
+        //checks null
+        if (dept){
+            setToDirectoryNode(dept.node);
+        } else {
+            setToDirectoryNode(null);
+        }
+    }
 
     // find directions
     const handleFindDirections = (e: React.FormEvent<HTMLFormElement>) => {
@@ -244,29 +270,32 @@ const DirectionsMapComponent = () => {
                     {/*Choose hospital buildings*/}
                     <div className="mt-4">
                     <SelectElement
-                                   label={"To:"}
-                                   id={"toLocation"}
-                                   value={toLocation}
-                                   onChange={e=> setToLocation(e.target.value)}
-                                   options={Buildings}
-                                   placeholder={"Select Hospital Building"}
+                       label={"To:"}
+                       id={"toLocation"}
+                       value={toLocation}
+                       onChange={(e) => {
+                           setBuildingID(e.target.selectedIndex)
+                           setToLocation(e.target.value);
+                       }}
+                       options={Buildings}
+                       placeholder={"Select Hospital Building"}
                     />
                     </div>
                     {/*Choose hospital department ===== WORK HERE =====*/}
                     <div className="mb-4">
-                        <label htmlFor="toLocation" className="block text-sm font-medium text-gray-700 mb-1">
-                            To:
-                        </label>
+                        <label htmlFor="toDirectory" className="block text-sm font-medium text-gray-700 mb-1"/>
                         <SelectElement
                             label={"Department"}
-                            id={"toLocation"}
-                            value={toLocation}
-                            onChange={(e) => setToLocation(e.target.value)}
-                            options={directoryName.map((dept) => {
-                                return dept.deptName
-                            })}
+                            id={"toDirectory"}
+                            value={currentDirectoryName}
+                            onChange={(e) => {
+                                setCurrentDirectoryName(e.target.value);
+                                handleDeptChange();
+                            }}
+                            options={directoryList.map((dept) => (dept.deptName))}
                             placeholder={"Select Department"}
                         />
+
                     </div>
 
                     <div className="mt-5">

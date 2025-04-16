@@ -45,10 +45,6 @@ DIRECTORY_FILTER_OPTIONS.push({ buildingId: true });
 DIRECTORY_FILTER_OPTIONS.push({ deptPhone: true });
 DIRECTORY_FILTER_OPTIONS.push(Object.assign({}, ...DIRECTORY_FILTER_OPTIONS));
 
-export interface DirectoryRequestName {
-    dep_name: string;
-}
-
 // GET Send Data
 router.get('/', async function (req: Request, res: Response) {
     // Get from url
@@ -133,29 +129,36 @@ router.get('/names', async function (req: Request, res: Response) {
     }
 });
 
-// router.get('/nameSearch', async function (req: Request, res: Response) {
-//     try {
-//         const depName = req.query.dep_name as string;
-//
-//         const departments = await PrismaClient.department.findMany({
-//             where: {
-//                 deptName: depName,
-//             }
-//             include: {
-//                 locations: {
-//                     include: {
-//                         : true,
-//                     },
-//                 },
-//             },
-//         });
-//
-//         res.status(200).json(departments);
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ error: 'Internal Server Error' });
-//     }
-// });
+router.get('/byBuilding', async function (req: Request, res: Response) {
+    try {
+        console.log(req.query.buildingFilter);
+        let buildingFilter: number = Number(req.query.buildingFilter as string);
+
+        console.log(buildingFilter);
+
+        const DIRECTORY_NAMES = await PrismaClient.department.findMany({
+            where: {
+                buildingId: {
+                    equals: buildingFilter,
+                },
+            },
+        });
+        res.json(DIRECTORY_NAMES);
+    } catch (error) {
+        console.error(`NO DIRECTORIES IN THIS BUILDING: ${error}`);
+        res.sendStatus(404);
+        return;
+    }
+});
+
+router.get('/node', async function (req: Request, res: Response) {
+    try {
+    } catch (error) {
+        console.error(`NO NODES FOR THIS LOCATION: ${error}`);
+        res.sendStatus(404);
+        return;
+    }
+});
 
 // GET Send CSV
 router.get('/csv', async function (req: Request, res: Response) {
