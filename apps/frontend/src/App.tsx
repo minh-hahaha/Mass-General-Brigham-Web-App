@@ -17,10 +17,13 @@ import MapEditorPage from "@/routes/MapEditorPage.tsx";
 import SanitationRequestDisplayPage from "@/routes/SanitationRequestDisplayPage.tsx";
 import ServiceRequestSelectPage from "@/routes/ServiceRequestSelectPage.tsx";
 import MaintenanceRequestPage from "@/routes/MaintenanceRequestPage.tsx";
+import Cookies from "js-cookie";
 
 function App() {
+    const defaultOpen = Cookies.get("sidebar_state") === 'true';
+
     return (
-        <SidebarProvider defaultOpen={false}>
+        <SidebarProvider defaultOpen={defaultOpen}>
             <div className="h-dvh flex flex-col w-full max-w-full">
                 <div className="h-16 sticky top-0 z-50 bg-white shadow-md">
                     <LogoBar />
