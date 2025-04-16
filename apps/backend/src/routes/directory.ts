@@ -221,6 +221,7 @@ router.post('/csv', async function (req: Request, res: Response) {
                 deptName: data.deptName,
                 buildingId: data.buildingId,
                 deptPhone: data.deptPhone,
+                nodeId: data.nodeId,
             };
             const dataToUpsertLocation = {
                 locId: data.locId,
@@ -228,7 +229,6 @@ router.post('/csv', async function (req: Request, res: Response) {
                 locType: data.locType,
                 roomNum: data.roomNum,
                 floor: data.floor,
-                nodeId: data.nodeId,
             };
             if (overwrite === 'Overwrite') {
                 console.log('Overwriting');
