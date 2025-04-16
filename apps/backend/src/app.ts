@@ -13,7 +13,6 @@ import sanitationRouter from './routes/sanitation.ts';
 import translationRouter from './routes/translationrequest.ts';
 import directoryNodeRouter from './routes/directoryNode.ts';
 
-
 import { ROUTES } from 'common/src/constants';
 
 const app: Express = express(); // Setup the backend
@@ -52,7 +51,6 @@ app.use(ROUTES.DIRECTORY_BUILDING, directoryRouter);
 app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
 app.use(ROUTES.TRANSLATIONREQUEST, translationRouter);
 app.use(ROUTES.BFSGRAPH, graphRouter);
-
 
 /**
  * Catch all 404 errors, and forward them to the error handler
