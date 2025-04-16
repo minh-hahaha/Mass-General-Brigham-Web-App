@@ -3,10 +3,10 @@ import { ROUTES } from 'common/src/constants';
 import axios from 'axios';
 
 
-export async function ImportCSV(request:FormData) {
+export async function ImportCSV(request:FormData, overwrite:('Overwrite' | 'Update')) {
     try{
         console.log(request.get('file'));
-        await axios.post(ROUTES.DIRECTORY_CSV, request.get('file'));
+        await axios.post(ROUTES.DIRECTORY_CSV, request.get('file'), { params: {overwrite: overwrite} });
         console.log('Import CSV Successfully');
     } catch (error) {
         console.log("Error Importing CSV");
