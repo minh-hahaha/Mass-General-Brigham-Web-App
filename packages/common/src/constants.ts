@@ -20,6 +20,7 @@ export const ROUTES = {
     // BFSGRAPH: '/api/graph',
 
     BFSGRAPH: '/api/graph/traverse',
+    MAINTENANCEREQUEST: '/api/maintenance',
 
 
 }

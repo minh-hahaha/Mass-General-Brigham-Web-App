@@ -59,6 +59,11 @@ router.post('/', async (req: Request, res: Response) => {
                     comments: req.body.notes,
                     serviceType: 'Sanitation',
 
+                    //9 commandments
+                    employeeName: req.body.employeeName,
+                    requesterRoomNumber: req.body.requesterRoomNumber,
+                    requesterDepartmentId: req.body.requesterDepartmentId,
+
                     //optional fields
                     //location_id: req.body.locationId ?? null,
                     employeeId: req.body.employeeId ?? null, // change to user id in the future?
@@ -75,6 +80,10 @@ router.post('/', async (req: Request, res: Response) => {
                     recurring: req.body.recurring,
                     hazardLevel: req.body.hazardLevel,
                     disposalRequired: req.body.disposalRequired,
+
+                    sanitationDepartmentId: req.body.sanitationDepartmentId,
+                    sanitationLocationId: req.body.sanitationLocationId,
+                    sanitationRoomNumber: req.body.sanitationRoomNumber,
                     //completeBy: req.body.completeBy,
                 },
                 select: {

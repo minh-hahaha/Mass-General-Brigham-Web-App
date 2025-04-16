@@ -16,6 +16,7 @@ import {MapPage} from "@/routes/MapPage.tsx";
 import MapEditorPage from "@/routes/MapEditorPage.tsx";
 import SanitationRequestDisplayPage from "@/routes/SanitationRequestDisplayPage.tsx";
 import ServiceRequestSelectPage from "@/routes/ServiceRequestSelectPage.tsx";
+import MaintenanceRequestPage from "@/routes/MaintenanceRequestPage.tsx";
 
 function App() {
     return (
@@ -69,6 +70,10 @@ function App() {
                         <Route path="/SanitationRequest" element={<SanitationRequestPage />} />
                         <Route path="/SanitationRequestDisplayPage" element={<SanitationRequestDisplayPage />} />
 
+                                <Route
+                                    path="/MaintenancePage"
+                                    element={<MaintenanceRequestPage />}
+                                />
                                 <Route
                                     path="/TransportationRequestPage"
                                     element={<TransportationRequestPage />}
