@@ -4,13 +4,23 @@ export const ROUTES = {
     EMPLOYEE: '/api/employee',
     SERVICEREQUESTS: '/api/servicereqs',
     VALIDATE: '/api/validate',
+
+    ///Requests
     PATIENTTRANSPORT: '/api/patienttransport',
     TRANSLATIONREQUEST: '/api/translation',
+    SANITATION: '/api/sanitation',
+
+    //Directory
     DIRECTORY: '/api/directory',
     DIRECTORY_CSV: '/api/directory/csv',
     DIRECTORY_NAMES: '/api/directory/names',
-    // BFSGRAPH: '/api/graph',
-    SANITATION: '/api/sanitation',
-    BFSGRAPH: '/api/graph/traverse',
     DIRECTORY_NODE: '/api/directory/node',
+    DIRECTORY_BUILDING: '/api/directory/byBuilding',
+
+    // BFSGRAPH: '/api/graph',
+
+    BFSGRAPH: '/api/graph/traverse',
+
+    LOCATION: '/api/location',
+    LOCATION_DEPARTMENT: '/api/location/byDepartment',
 }

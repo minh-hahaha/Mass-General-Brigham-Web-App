@@ -78,7 +78,7 @@ model Department {
   members       Employee[]
   locations     Location[]
   building      Building   @relation(fields: [buildingId], references: [buildingId])
-  nodeId        String?        @unique
+  nodeId        String?    @unique
   nodeReception Node?      @relation(fields: [nodeId], references: [id], name:"DepartmentNode")
 
 }
@@ -88,8 +88,10 @@ model Location {
   department    Department? @relation(fields: [departmentId], references: [deptId])
   departmentId  Int?
   locType       String
-  roomNum       Int?        @unique
+  roomNum       Int?         @unique
   floor         Int
+  nodeId        String?      @unique
+  nodeLocation  Node?        @relation(fields: [nodeId], references: [id], name:"LocationNode")
 
   // making prisma happy here
   serviceRequests ServiceRequest[] @relation("ServiceLocation") // unused relation
@@ -115,6 +117,7 @@ model Node {
   edgesFrom   Edge[]  @relation("NodeToEdgeFrom")
   edgesTo     Edge[]  @relation("NodeToEdgeTo")
   department  Department? @relation(name:"DepartmentNode")
+  location    Location? @relation(name:"LocationNode")
 }
 
 model Edge {
