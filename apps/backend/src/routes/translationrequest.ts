@@ -54,6 +54,7 @@ router.post('/', async (req: Request, res: Response) => {
                     date: new Date(req.body.date),
                     meetingLink: req.body.meetingLink,
                     location: req.body.location,
+                    department: req.body.department,
                 },
             });
 
