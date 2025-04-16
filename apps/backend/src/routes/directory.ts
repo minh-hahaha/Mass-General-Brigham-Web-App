@@ -187,6 +187,7 @@ router.get('/csv', async function (req: Request, res: Response) {
                 roomNum: location.roomNum,
                 locId: location.locId,
                 locType: location.locType,
+                nodeId: location.nodeId,
             }))
         );
         await dataToCSV(flattenedDirectories);
@@ -206,8 +207,8 @@ router.get('/csv', async function (req: Request, res: Response) {
 
 router.post('/csv', async function (req: Request, res: Response) {
     const overwrite = req.query.overwrite as string;
-    const [test, test2] = Object.entries(req.body);
-    const csvData = CSVtoData(test[0].toString());
+    const [data, empty] = Object.entries(req.body);
+    const csvData = CSVtoData(data[0].toString());
     try {
         if (overwrite === 'Overwrite') {
             await PrismaClient.department.deleteMany();
@@ -220,7 +221,6 @@ router.post('/csv', async function (req: Request, res: Response) {
                 deptName: data.deptName,
                 buildingId: data.buildingId,
                 deptPhone: data.deptPhone,
-                nodeId: data.nodeId,
             };
             const dataToUpsertLocation = {
                 locId: data.locId,
@@ -228,6 +228,7 @@ router.post('/csv', async function (req: Request, res: Response) {
                 locType: data.locType,
                 roomNum: data.roomNum,
                 floor: data.floor,
+                nodeId: data.nodeId,
             };
             if (overwrite === 'Overwrite') {
                 console.log('Overwriting');
