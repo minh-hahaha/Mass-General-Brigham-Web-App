@@ -9,6 +9,7 @@ export const ROUTES = {
     PATIENTTRANSPORT: '/api/patienttransport',
     TRANSLATIONREQUEST: '/api/translation',
     SANITATION: '/api/sanitation',
+    MAINTENANCEREQUEST: '/api/maintenance',
 
     //Directory
     DIRECTORY: '/api/directory',
@@ -17,10 +18,10 @@ export const ROUTES = {
     DIRECTORY_NODE: '/api/directory/node',
     DIRECTORY_BUILDING: '/api/directory/byBuilding',
 
-    // BFSGRAPH: '/api/graph',
-
+    //Algorithms
     BFSGRAPH: '/api/graph/traverse',
-    MAINTENANCEREQUEST: '/api/maintenance',
+    NODE: '/api/node',
+    EDGE: '/api/edge',
 
     NODES: '/api/map/nodes',
     EDGES: '/api/map/edges',
