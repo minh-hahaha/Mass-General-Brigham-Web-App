@@ -18,27 +18,32 @@ export async function dataToCSV(data: Record<string, any>[]) {
                 continue;
             }
             if (typeof value === 'string') {
-                let newVal = value.replaceAll('\"', '\"\"');
-                if (value.includes(',')) {
+                // Any data with double quotes, commas or CRLF (\n\r) need to be encased in double quotes
+                let newVal = value.replaceAll('"', '""');
+                if (
+                    value.includes(',') ||
+                    value.includes('\n') ||
+                    value.includes('\r') ||
+                    value.includes('\r\n')
+                ) {
                     newVal = '"' + newVal + '"';
                 }
                 csvData.push(newVal);
             } else {
-                csvData.push(value);
+                if (value === null) {
+                    csvData.push('null');
+                } else {
+                    csvData.push(value);
+                }
             }
         }
-        dataToWrite += csvData.toString() + '\n';
+        dataToWrite += csvData.toString() + '\r\n';
         row = data.pop();
     }
 
     // Write all data to data.csv
-    fs.writeFile('data.csv', headers + '\n' + dataToWrite, (err) => {
-        if (err) {
-            console.error(err);
-        } else {
-            console.log('Successfully created file');
-        }
-    });
+    await fs.promises.writeFile('data.csv', headers + '\r\n' + dataToWrite);
+    console.log('Successfully wrote file');
 }
 
 export async function readCSV(pathToFile: string): Promise<Record<string, any>[]> {
@@ -55,9 +60,11 @@ export async function readCSV(pathToFile: string): Promise<Record<string, any>[]
 
 export function CSVtoData(data: string): Record<string, any>[] {
     let splitData: string[] = [];
-    if (data.includes('\r')) {
-        splitData = data.split('\r');
+    // Windows Line Splitting
+    if (data.includes('\r\n')) {
+        splitData = data.split('\r\n');
     } else {
+        // macOS Unix Linux Line Splitting
         splitData = data.split('\n');
     }
     let headerFields = splitData[0].split(',');
@@ -81,11 +88,12 @@ export function CSVtoData(data: string): Record<string, any>[] {
             }
 
             // Check if the current value is a date
-            const date = new Date(value);
-            if (!isNaN(date.getTime())) {
-                obj[headerFields[j]] = date.toISOString();
-                continue;
-            }
+            // Shouldn't need this cause it just gets turned back to a string anyway
+            // const date = new Date(value);
+            // if (!isNaN(date.getTime())) {
+            //     obj[headerFields[j]] = date.toISOString();
+            //     continue;
+            // }
 
             // Check if the value is null
             if (value === 'null') {
