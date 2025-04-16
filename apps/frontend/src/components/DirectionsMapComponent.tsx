@@ -5,14 +5,12 @@ import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google
 import TravelModeComponent from "@/components/TravelModeComponent.tsx";
 import OverlayComponent from "@/components/svgOverlay.tsx";
 import ViewPath from "@/components/ViewPath.tsx";
-
+import HospitalMapComponent from "@/components/HospitalMapComponent";
 
 import {myNode} from "../../../backend/src/Algorithms/classes.ts";
 import axios from 'axios';
 import {ROUTES} from "common/src/constants.ts";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu.tsx";
 import {DirectoryRequestName, getDirectoryNames} from "@/database/gettingDirectory.ts";
-import {GetTransportRequest, incomingRequest} from "@/database/transportRequest.ts";
 import {getDepartmentNode} from "@/database/getDepartmentNode.ts";
 
 const Buildings = [
@@ -180,6 +178,26 @@ const DirectionsMapComponent = () => {
     //     fetchDeptNode();
     // }, []);
 
+    const start : myNode = {
+        id: "CHFloor1Room130",
+        x: 525.6661826660298,
+        y: 293.65126703249217,
+        floor: "1",
+        buildingId: "1",
+        nodeType: "Room",
+        name: "Reception",
+        roomNumber: "130"
+    }
+    const end: myNode = {
+        id: "CHFloor1Hallway130",
+        x: 525.6661826660298,
+        y: 258.4430646721662,
+        floor: "1",
+        buildingId: "1",
+        nodeType: "Hallway",
+        name: "ReceptionHall",
+        roomNumber: "130"
+    }
 
     const HospitalMap = () => {
         const [bfsPath, setBFSPath] = useState<myNode[]>([]);
@@ -313,7 +331,7 @@ const DirectionsMapComponent = () => {
             <div className="basis-5/6 relative">
                 {showHospital ? (
                         <div>
-                            <HospitalMap />
+                            <HospitalMapComponent startNode={start} endNode={end}/>
                         </div>) :  (
                     <Map
                         style={{ width: '100%', height: '92vh' }}

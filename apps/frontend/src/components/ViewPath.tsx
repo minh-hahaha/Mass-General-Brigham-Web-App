@@ -19,8 +19,9 @@ interface Props {
     endLocation?: string;
 }
 
-export default function HospitalPathViewer({
+export default function ViewPath({
                                                svgMapUrl,
+                                               currentFloor,
                                                path = [],
                                            }: Props) {
     const svgRef = useRef<SVGSVGElement>(null);
