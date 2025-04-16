@@ -1,4 +1,5 @@
 import client from '../../../apps/backend/src/bin/prisma-client.ts'
+import { exportNodesAndEdges } from '../../../apps/backend/src/Algorithms/ExportNodesAndEdges.ts'
 
 
 // Create the prisma client, this automatically connects to the database
@@ -673,7 +674,7 @@ async function main() {
 
     const createManyServiceReqs = await client.serviceRequest.createMany({
         data: [
-            /* 
+            /*
                                                  yyyy:mm:dd  hh:mm:ss */
 
             {
@@ -710,10 +711,9 @@ async function main() {
         ],
         skipDuplicates: true,
     });
+    const baseNodesAndEdges = await exportNodesAndEdges();
 
-
-
-    console.log({ createManyBuildings , createManyDepartments,createManyLocations, createManyEmployees , createManyServiceReqs});
+    console.log({ createManyDepartments, createManyBuildings , createManyLocations, createManyEmployees , createManyServiceReqs});
 }
 
 
