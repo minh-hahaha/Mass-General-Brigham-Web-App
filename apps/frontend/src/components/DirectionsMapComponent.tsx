@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useMemo, ChangeEvent } from 'react';
-import MGBButton from '../elements/MGBButton.tsx';
 import SelectElement from '../elements/SelectElement.tsx';
 import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google-maps';
 import TravelModeComponent from "@/components/TravelModeComponent.tsx";
@@ -8,17 +7,8 @@ import HospitalMapComponent from "@/components/HospitalMapComponent";
 
 import {myNode} from "../../../backend/src/Algorithms/classes.ts";
 
-import ViewPath from '@/components/ViewPath.tsx';
 import { MapPin, MapPlus } from 'lucide-react';
 
-import axios from 'axios';
-import { ROUTES } from 'common/src/constants.ts';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu.tsx';
 import {
     DirectoryRequestByBuilding,
     DirectoryRequestName,
