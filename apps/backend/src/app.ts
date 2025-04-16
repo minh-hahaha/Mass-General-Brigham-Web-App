@@ -47,6 +47,7 @@ app.use(ROUTES.DIRECTORY, directoryRouter);
 app.use(ROUTES.DIRECTORY_CSV, directoryRouter);
 app.use(ROUTES.DIRECTORY_NAMES, directoryRouter);
 app.use(ROUTES.DIRECTORY_NODE, directoryNodeRouter);
+app.use(ROUTES.DIRECTORY_BUILDING, directoryRouter);
 
 app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
 app.use(ROUTES.TRANSLATIONREQUEST, translationRouter);

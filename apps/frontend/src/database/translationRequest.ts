@@ -11,6 +11,8 @@ export interface incomingTranslationRequest {
         patientName: string;
         typeMeeting: string;
         meetingLink: string;
+        department: string;
+        location: string;
     }
     priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     requestDate: string;

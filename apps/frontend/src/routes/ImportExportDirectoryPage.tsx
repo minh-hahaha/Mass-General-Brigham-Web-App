@@ -1,12 +1,16 @@
 import {ChangeEvent, useState} from 'react';
 import {ImportCSV, ExportCSV} from "../database/csvImportExport.ts";
 import MGBButton from "../elements/MGBButton.tsx";
+import InputElement from "@/elements/InputElement.tsx";
+import SelectElement from "@/elements/SelectElement.tsx";
+import {Label} from "@/components/ui/label.tsx";
 
 const ImportExportDirectoryPage = () => {
     const loggedIn = sessionStorage.getItem('loggedIn');
     if (!loggedIn) {window.location.href = '/';}
 
     const [file, setFile] = useState<File | null>(null);
+    const [uploadType, setUploadType] = useState<('Overwrite' | 'Update')>('Update');
     const [upload, setUpload] = useState(false);
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +37,7 @@ const ImportExportDirectoryPage = () => {
         console.log("Sending file:", file.name, file.type, file.size);
 
         try {
-            await ImportCSV(formData);
+            await ImportCSV(formData, uploadType);
             // Clear file after successful upload
             setFile(null);
             if (document.getElementById('fileInput') as HTMLInputElement) {
@@ -81,11 +85,12 @@ const ImportExportDirectoryPage = () => {
                 <div className="flex justify-end space-x-4 mt-4">
                     <MGBButton onClick={handleFileUpload} variant={'primary'} disabled={false}>Upload!</MGBButton>
                     <MGBButton onClick={handleExport} variant={'primary'} disabled={false}>Export!</MGBButton>
-                    {upload ? (
-                        <p>Upload Successfully</p>
-                    ) : (
-                        <></>
-                    )}
+                    <SelectElement placeholder={'Select an upload type'} options={['Update', 'Overwrite']} label={"Upload Type"} id={'upload-type'} value={uploadType} onChange={e => setUploadType(e.target.value as ('Overwrite' | 'Update'))} />
+                </div>
+                <div hidden={!upload}>
+                    <div className="bg-mgbblue text-white px-4 py-2 rounded-md mt-2 text-sm font-semibold text-center shadow">
+                        Uploaded Successfully!
+                    </div>
                 </div>
             </div>
         </div>
