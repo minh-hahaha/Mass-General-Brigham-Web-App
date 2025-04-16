@@ -3,18 +3,21 @@ import { ROUTES } from 'common/src/constants';
 import axios from 'axios';
 
 export interface DepartmentRequest {
-    dep_id: number;
-    dep_services: string;
-    dep_name: string;
-    building_id: number;
-    dep_phone: string;
+    deptId: number;
+    deptServices: string;
+    deptName: string;
+    buildingId: number;
+    deptPhone: string;
 }
 
 export interface DirectoryRequestName {
-    dep_name: string;
+    deptName: string;
 }
 export async function GetDirectory(): Promise<DepartmentRequest[]> {
-    const response = await axios.get<DepartmentRequest[]>(ROUTES.DIRECTORY);
+    const response = await axios.get<DepartmentRequest[]>(ROUTES.DIRECTORY, {
+        // Defines sorting by deptId (0), and selecting all fields (5)
+        params: { sortOptions: [0], filterOptions: [5]} //TODO: be able to use the enum on backend so it isn't hardcoded
+    });
     return response.data;
 }
 
