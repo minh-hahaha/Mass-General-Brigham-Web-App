@@ -102,7 +102,7 @@ const SanitationRequestPage = () => {
         setShowConfirmation(false);
     };
 
-    const mgbLocations = ['Chestnut Hill', 'Patriot Place'];
+    const mgbLocations = ['Chestnut Hill', '20 Patriot Place', '22 Patriot Place'];
 
     return (
         // flex row container

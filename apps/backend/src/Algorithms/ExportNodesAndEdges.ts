@@ -8,24 +8,11 @@ declare const __dirname: string;
 
 export async function exportNodesAndEdges(): Promise<void> {
     // Paths to JSON files
-    const CHFloor1 = path.resolve(__dirname, 'JSONFiles', 'CHNodesEdges.json');
-    const PP20thFloor1 = path.resolve(__dirname, 'JSONFiles', '20PPFloor1NodesEdges.json');
-    const PP20thFloor2 = path.resolve(__dirname, 'JSONFiles', '20PPFloor2NodesEdges.json');
-    const PP20thFloor3 = path.resolve(__dirname, 'JSONFiles', '20PPFloor3NodesEdges.json');
-    const PP20thFloor4 = path.resolve(__dirname, 'JSONFiles', '20PPFloor4NodesEdges.json');
-    const PP22thFloor3 = path.resolve(__dirname, 'JSONFiles', '22PPFloor3NodesEdges.json');
-    const PP22thFloor4 = path.resolve(__dirname, 'JSONFiles', '22PPFloor4NodesEdges.json');
+    const CHPath = path.resolve(__dirname, 'JSONFiles', 'CHNodesEdges.json');
+    const PP20thPath = path.resolve(__dirname, 'JSONFiles', '20PPAllNodesEdges.json');
+    const PP22thPath = path.resolve(__dirname, 'JSONFiles', '22PPAllNodesEdges.json');
 
-    const buildings = [
-        CHFloor1,
-        PP20thFloor1,
-        PP20thFloor2,
-        PP20thFloor3,
-        PP20thFloor1,
-        PP20thFloor4,
-        PP22thFloor3,
-        PP22thFloor4,
-    ];
+    const buildings = [CHPath, PP20thPath, PP22thPath];
 
     // go through buildings
     for (const building of buildings) {
