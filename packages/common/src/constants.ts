@@ -21,6 +21,5 @@ export const ROUTES = {
 
     BFSGRAPH: '/api/graph/traverse',
 
-    LOCATION: '/api/location',
-    LOCATION_DEPARTMENT: '/api/location/byDepartment',
+
 }

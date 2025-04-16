@@ -12,7 +12,7 @@ import graphRouter from './routes/bfsRoutes.ts';
 import sanitationRouter from './routes/sanitation.ts';
 import translationRouter from './routes/translationrequest.ts';
 import directoryNodeRouter from './routes/directoryNode.ts';
-import locationRouter from './routes/location.ts';
+
 
 import { ROUTES } from 'common/src/constants';
 
@@ -53,7 +53,7 @@ app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
 app.use(ROUTES.TRANSLATIONREQUEST, translationRouter);
 app.use(ROUTES.BFSGRAPH, graphRouter);
 
-app.use(ROUTES.LOCATION_DEPARTMENT, locationRouter);
+
 /**
  * Catch all 404 errors, and forward them to the error handler
  */
