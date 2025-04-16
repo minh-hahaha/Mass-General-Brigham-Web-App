@@ -32,10 +32,6 @@ export default function HospitalPathViewer({
     const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
     const [pathEdges, setPathEdges] = useState<Edge[]>([]);
 
-    // extract path node ID
-    const pathNodeIds = React.useMemo(() => {
-        return path.map(node => node.id);
-    }, [path]);
 
     // Create edges based on the path
     useEffect(() => {

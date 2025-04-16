@@ -3,7 +3,25 @@ import axios from 'axios';
 
 import {myNode} from "../../../backend/src/Algorithms/classes.ts";
 
-export async function getDepartmentNode(): Promise<myNode> {
-    const response = await axios.get<myNode>(ROUTES.DIRECTORY_NODE);
+interface DepartmentNode {
+    deptId: number;
+    deptServices: string;
+    deptName: string;
+    buildingId: number;
+    deptPhone: string;
+    node: {
+        nodeId: number;
+        x: number;
+        y: number;
+        floor: string;
+        nodeType: string;
+        buildingId: string;
+        name: string;
+        roomNumber: string | null;
+    }
+}
+
+export async function getDepartmentNode(): Promise<DepartmentNode> {
+    const response = await axios.get<DepartmentNode>(ROUTES.DIRECTORY_NODE);
     return response.data;
 }
