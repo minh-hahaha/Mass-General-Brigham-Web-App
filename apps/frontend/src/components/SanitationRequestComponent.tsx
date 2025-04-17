@@ -115,12 +115,12 @@ const SanitationRequestPage = () => {
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
                             <h3 className="text-xl font-semibold mb-4">
-                                <b>Employee Information</b>
+                                <b>Requester Information</b>
                             </h3>
 
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Employee Name</label>
+                                    <label className="w-1/4">Requester Name</label>
                                     <input
                                         type="text"
                                         id="employee_name"
@@ -134,8 +134,8 @@ const SanitationRequestPage = () => {
                             </div>
 
                             <div className="flex flex-col gap-2">
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Employee ID</label>
+                                <div className="flex items-center gap-2 mt-1">
+                                    <label className="w-1/4">Requester ID</label>
                                     <input
                                         type="number"
                                         id="employee_id"
@@ -146,6 +146,59 @@ const SanitationRequestPage = () => {
                                         placeholder="Enter Employee ID"
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
+                                </div>
+                                <div className="flex flex-col gap-2 border-2 border-mgbblue rounded-md p-4">
+                                    <h1 className="text-l font-semibold mb-2 text-center">
+                                        <b>Requester Location</b>
+                                    </h1>
+                                    <div className="flex flex-col pt-2">
+                                        <div className="flex items-center gap-2">
+                                            <label className="w-1/4">Location</label>
+                                            <select
+                                                id="pickupLocation"
+                                                value={location_id}
+                                                onChange={(e) => setLocation_id(e.target.value)}
+                                                required
+                                                className="w-70 px-3 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                            >
+                                                <option value="">Select Location</option>
+                                                {mgbLocations.map((location) => (
+                                                    <option key={`pickup-${location}`} value={location}>
+                                                        {location}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div className="flex flex-col pt-2">
+                                            <div className="flex items-center gap-2">
+                                                <label className="w-1/4">Department</label>
+                                                <input
+                                                    type="text"
+                                                    id="departmentId"
+                                                    value={requester_department}
+                                                    onChange={(e) => setRequester_department(e.target.value)}
+                                                    required
+                                                    placeholder='Enter Department name'
+                                                    className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col pt-2">
+                                            <div className="flex items-center gap-2">
+                                                <label className="w-1/4">Room Number</label>
+                                                <input
+                                                    type="number"
+                                                    id="roomNumber"
+                                                    value={requester_roomnum}
+                                                    onChange={(e) => setRequester_roomnum(e.target.value)}
+                                                    required
+                                                    min="0"
+                                                    placeholder="Enter room number"
+                                                    className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -289,65 +342,7 @@ const SanitationRequestPage = () => {
                         </div>
 
                         <div>
-                            <h3 className="text-xl font-semibold mb-4">
-                                <b>Request Information</b>
-                            </h3>
-
-                            <div className="flex flex-col gap-2 border-2 border-mgbblue rounded-md p-4">
-                                <h1 className="text-l font-semibold mb-2 text-center">
-                                    <b>Requester Location</b>
-                                </h1>
-                                <div className="flex flex-col pt-2">
-                                    <div className="flex items-center gap-2">
-                                        <label className="w-1/4">Location</label>
-                                        <select
-                                            id="pickupLocation"
-                                            value={location_id}
-                                            onChange={(e) => setLocation_id(e.target.value)}
-                                            required
-                                            className="w-70 px-3 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                        >
-                                            <option value="">Select Location</option>
-                                            {mgbLocations.map((location) => (
-                                                <option key={`pickup-${location}`} value={location}>
-                                                    {location}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <div className="flex flex-col pt-2">
-                                        <div className="flex items-center gap-2">
-                                            <label className="w-1/4">Department</label>
-                                            <input
-                                                type="text"
-                                                id="departmentId"
-                                                value={requester_department}
-                                                onChange={(e) => setRequester_department(e.target.value)}
-                                                required
-                                                placeholder='Enter Department name'
-                                                className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col pt-2">
-                                        <div className="flex items-center gap-2">
-                                            <label className="w-1/4">Room Number</label>
-                                            <input
-                                                type="number"
-                                                id="roomNumber"
-                                                value={requester_roomnum}
-                                                onChange={(e) => setRequester_roomnum(e.target.value)}
-                                                required
-                                                min="0"
-                                                placeholder="Enter room number"
-                                                className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="flex flex-col pt-2">
+                            <div className="flex flex-col">
                                 <div className="flex items-center gap-2">
                                     <label className="w-1/4">Sanitation Type</label>
                                     <input
@@ -378,24 +373,26 @@ const SanitationRequestPage = () => {
                             </div>
 
                         </div>
-                        <div>
+                        <div className="flex flex-row gap-5 justify-center">
                             <label>
                                 Recurring:
-                                <input type="checkbox" id="recurring"  onChange={(e) => setRecurring(Boolean(e.target.value))} />
+                                <input className="ml-1" type="checkbox" id="recurring"  onChange={(e) => setRecurring(Boolean(e.target.value))} />
+                            </label>
+                            <label>
                                 Disposal Required:
-                                <input type="checkbox" id="disposalRequired"  onChange={(e) => setDisposalRequired(Boolean(e.target.value))} />
+                                <input className="ml-1" type="checkbox" id="disposalRequired"  onChange={(e) => setDisposalRequired(Boolean(e.target.value))} />
                             </label>
 
                         </div>
 
                         <div>
                             <h3 className="text-xl font-semibold mb-4">
-                                <b>Medical Information</b>
+                                <b>Additional Information</b>
                             </h3>
 
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Special Instructions</label>
+                                    <label className="w-1/4">Additional Instructions</label>
                                     <textarea
                                         id="comments"
                                         value={comments}
