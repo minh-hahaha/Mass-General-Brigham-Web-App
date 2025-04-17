@@ -87,15 +87,15 @@ const TranslationServiceRequestPage = () => {
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
                             <h3 className="text-xl font-semibold mb-4">
-                                <b>Employee Information</b>
+                                <b>Requester Information</b>
                             </h3>
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center gap-2">
                                     <InputElement
                                         id="employeeName"
                                         name="employeeName"
-                                        label="Employee Name: "
-                                        placeholder="Please enter an Employee Name"
+                                        label="Requester Name: "
+                                        placeholder="Please enter a requester name"
                                         required={true}
                                         type="text"
                                         value={employeeName}
@@ -107,8 +107,8 @@ const TranslationServiceRequestPage = () => {
                                     <InputElement
                                         id="employeeId"
                                         name="employeeId"
-                                        label="Employee ID: "
-                                        placeholder="Please enter the Employee ID"
+                                        label="Requester ID: "
+                                        placeholder="Please enter the requester ID"
                                         required={true}
                                         type="text"
                                         value={employeeId}
@@ -128,7 +128,7 @@ const TranslationServiceRequestPage = () => {
                                         id="patientName"
                                         name="patientName"
                                         label="Patient Name: "
-                                        placeholder="Please enter the Patient Name"
+                                        placeholder="Please enter the patient name"
                                         required={true}
                                         type="text"
                                         value={patientName}
@@ -156,16 +156,30 @@ const TranslationServiceRequestPage = () => {
                                 <b>Translator Information</b>
                             </h3>
                             <div className="flex flex-col gap-2">
-
-                                    <SelectElement
-                                        options={['Low', 'Medium', 'High', 'Emergency']}
-                                        id="priority"
-                                        label="Priority:  "
-                                        placeholder="Please select the Priority level"
-                                        required={true}
-                                        value={priority}
-                                        onChange={(e) => setPriority(e.target.value)}
-                                    />
+                                <div className="flex flex-col pt-2">
+                                    <div className="flex items-center gap-2">
+                                        <label className="w-1/4">Priority</label>
+                                        <select
+                                            id="priority"
+                                            value={priority}
+                                            onChange={(e) => setPriority(e.target.value)}
+                                            required
+                                            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                        >
+                                            <option value="">Select Priority</option>
+                                            {['Low', 'Medium', 'High', 'Emergency'].map(
+                                                (priority) => (
+                                                    <option
+                                                        key={`pri-${priority}`}
+                                                        value={priority}
+                                                    >
+                                                        {priority}
+                                                    </option>
+                                                )
+                                            )}
+                                        </select>
+                                    </div>
+                                </div>
 
                                 <div className="flex items-center gap-2">
                                     <InputElement
@@ -200,16 +214,30 @@ const TranslationServiceRequestPage = () => {
                                 <b>Meeting Information</b>
                             </h3>
                             <div className="flex flex-col gap-2">
-
-                                    <SelectElement
-                                        options={['Remote (Online)', 'On-site (In-Person)']}
-                                        id="typeMeeting"
-                                        label="Meeting Type:  "
-                                        placeholder="Please select the Meeting Type"
-                                        required={true}
-                                        value={typeMeeting}
-                                        onChange={(e) => setTypeMeeting(e.target.value)}
-                                    />
+                                <div className="flex flex-col pt-2">
+                                    <div className="flex items-center gap-2">
+                                        <label className="w-1/4">Meeting Type</label>
+                                        <select
+                                            id="typeMeeting"
+                                            value={typeMeeting}
+                                            onChange={(e) => setTypeMeeting(e.target.value)}
+                                            required
+                                            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                        >
+                                            <option value="">Select Type Meeting</option>
+                                            {['Remote (Online)', 'On-site (In-Person)'].map(
+                                                (type) => (
+                                                    <option
+                                                        key={`type-${type}`}
+                                                        value={type}
+                                                    >
+                                                        {type}
+                                                    </option>
+                                                )
+                                            )}
+                                        </select>
+                                    </div>
+                                </div>
 
                                 <div
                                     className="flex items-center gap-2"
@@ -227,49 +255,73 @@ const TranslationServiceRequestPage = () => {
                                     />
                                 </div>
 
-                                    <SelectElement
-                                        options={[
-                                            'Chestnut Hill',
-                                            '20 Patriot Place',
-                                            '22 Patriot Place',
-                                        ]}
-                                        id="location"
-                                        label="Location:  "
-                                        placeholder="Please select the Location"
-                                        required={true}
-                                        value={location}
-                                        onChange={(e) => setLocation(e.target.value)}
-                                    />
-                                <div
-                                    className="flex items-center gap-2"
-                                >
+                                <div className="flex flex-col pt-2">
+                                    <div className="flex items-center gap-2">
+                                        <label className="w-1/4">Location</label>
+                                        <select
+                                            id="location"
+                                            value={location}
+                                            onChange={(e) => setLocation(e.target.value)}
+                                            required
+                                            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                        >
+                                            <option value="">Select Location</option>
+                                            {['Chestnut Hill', '20 Patriot Place', '22 Patriot Place'].map(
+                                                (location) => (
+                                                    <option
+                                                        key={`location-${location}`}
+                                                        value={location}
+                                                    >
+                                                        {location}
+                                                    </option>
+                                                )
+                                            )}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-2">
                                     <InputElement
                                         id="department"
                                         name="department"
                                         label="Department: "
-                                        placeholder="Please enter the Department: "
+                                        placeholder="Please enter the department"
                                         required={true}
                                         type="text"
                                         value={department}
                                         onChange={(e) => setDepartment(e.target.value)}
                                     />
                                 </div>
-                                    <SelectElement
-                                        options={[
-                                            'Pending',
-                                            'In Progress',
-                                            'Completed',
-                                            'Cancelled',
-                                        ]}
-                                        id="status"
-                                        label="Status:  "
-                                        placeholder="Please select the Status of the Request"
-                                        required={true}
-                                        value={status}
-                                        onChange={(e) => setStatus(e.target.value)}
-                                    />
+                                <div className="flex flex-col pt-2">
+                                    <div className="flex items-center gap-2">
+                                        <label className="w-1/4">Status</label>
+                                        <select
+                                            id="status"
+                                            value={priority}
+                                            onChange={(e) => setStatus(e.target.value)}
+                                            required
+                                            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                        >
+                                            <option value="">Select Status</option>
+                                            {['Pending', 'In Progress', 'Completed', 'Cancelled'].map(
+                                                (status) => (
+                                                    <option
+                                                        key={`status-${status}`}
+                                                        value={status}
+                                                    >
+                                                        {status}
+                                                    </option>
+                                                )
+                                            )}
+                                        </select>
+                                    </div>
+                                </div>
+                                <h3 className="text-xl font-semibold mb-4 mt-3">
+                                    <b>Additional Information</b>
+                                </h3>
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4" htmlFor={'notes'}>Additional Notes</label>
+                                    <label className="w-1/4" htmlFor={'notes'}>
+                                        Additional Notes
+                                    </label>
                                     <textarea
                                         id="notes"
                                         placeholder="Additional Notes"

@@ -8,7 +8,9 @@ import SelectElement from '@/elements/SelectElement.tsx';
 // Component definition
 const MaintenanceRequestPage = () => {
     const loggedIn = sessionStorage.getItem('loggedIn');
-    if (!loggedIn) {window.location.href = '/';}
+    if (!loggedIn) {
+        window.location.href = '/';
+    }
 
     // Maintenance Information
     const [maintenanceType, setMaintenanceType] = useState('');
@@ -19,7 +21,9 @@ const MaintenanceRequestPage = () => {
     const [maintenanceHospital, setMaintenanceHospital] = useState('');
     const [maintenanceLocation, setMaintenanceLocation] = useState('');
     const [maintenanceTime, setMaintenanceTime] = useState('');
-    const [status, setStatus] = useState<'Pending' | 'In Progress' | 'Completed' | 'Canceled'>('Pending');
+    const [status, setStatus] = useState<'Pending' | 'In Progress' | 'Completed' | 'Canceled'>(
+        'Pending'
+    );
 
     // Requester Information
     const [employeeId, setEmployeeId] = useState(0);
@@ -85,6 +89,52 @@ const MaintenanceRequestPage = () => {
             <div className="flex flex-col items-center border border-[#d3d5d7] bg-white rounded-2xl shadow-xl p-8 w-full max-w-[700px] mt-10 mb-10">
                 <h1 className="text-[30px] font-bold mb-6">Maintenance Request</h1>
                 <h2 className="text-[15px] font-semibold mb-6">Max Jeronimo and Haotian Liu</h2>
+                <div className="flex flex-col gap-2 mb-6">
+                    <h3 className="text-xl font-semibold mb-4">
+                        <b>Requester Information</b>
+                    </h3>
+                    <div className="flex items-center gap-2">
+                        <label className="w-1/4">Requester ID</label>
+                        <input
+                            id="employeeId"
+                            name="employeeId"
+                            placeholder="Enter employee ID"
+                            required
+                            type="number"
+                            value={employeeId}
+                            onChange={(e) => setEmployeeId(Number(e.target.value))}
+                            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                        />
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                        <label className="w-1/4">Request Date</label>
+                        <input
+                            id="requestDate"
+                            name="requestDate"
+                            placeholder="Select request date"
+                            required
+                            type="date"
+                            value={requestDate}
+                            onChange={(e) => setRequestDate(e.target.value)}
+                            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                        />
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                        <label className="w-1/4">Requester Name</label>
+                        <input
+                            id="employeeName"
+                            name="employeeName"
+                            placeholder="Enter employee name"
+                            required
+                            type="text"
+                            value={employeeName}
+                            onChange={(e) => setEmployeeName(e.target.value)}
+                            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                        />
+                    </div>
+                </div>
                 <div>
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
@@ -130,7 +180,15 @@ const MaintenanceRequestPage = () => {
                                     <select
                                         id="priority"
                                         value={priority}
-                                        onChange={(e) => setPriority(e.target.value as 'Low' | 'Medium' | 'High' | 'Emergency')}
+                                        onChange={(e) =>
+                                            setPriority(
+                                                e.target.value as
+                                                    | 'Low'
+                                                    | 'Medium'
+                                                    | 'High'
+                                                    | 'Emergency'
+                                            )
+                                        }
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >
@@ -194,16 +252,26 @@ const MaintenanceRequestPage = () => {
                                     <select
                                         id="status"
                                         value={status}
-                                        onChange={(e) => setStatus(e.target.value as 'Pending' | 'In Progress' | 'Completed' | 'Canceled')}
+                                        onChange={(e) =>
+                                            setStatus(
+                                                e.target.value as
+                                                    | 'Pending'
+                                                    | 'In Progress'
+                                                    | 'Completed'
+                                                    | 'Canceled'
+                                            )
+                                        }
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >
                                         <option value="">Select status</option>
-                                        {['Pending', 'In Progress', 'Completed', 'Canceled'].map((option) => (
-                                            <option key={option} value={option}>
-                                                {option}
-                                            </option>
-                                        ))}
+                                        {['Pending', 'In Progress', 'Completed', 'Canceled'].map(
+                                            (option) => (
+                                                <option key={option} value={option}>
+                                                    {option}
+                                                </option>
+                                            )
+                                        )}
                                     </select>
                                 </div>
                             </div>
@@ -211,51 +279,9 @@ const MaintenanceRequestPage = () => {
 
                         <div>
                             <h3 className="text-xl font-semibold mb-4">
-                                <b>Requester Information</b>
+                                <b>Additional Information</b>
                             </h3>
                             <div className="flex flex-col gap-2">
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Employee ID</label>
-                                    <input
-                                        id="employeeId"
-                                        name="employeeId"
-                                        placeholder="Enter employee ID"
-                                        required
-                                        type="number"
-                                        value={employeeId}
-                                        onChange={(e) => setEmployeeId(Number(e.target.value))}
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    />
-                                </div>
-
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Request Date</label>
-                                    <input
-                                        id="requestDate"
-                                        name="requestDate"
-                                        placeholder="Select request date"
-                                        required
-                                        type="date"
-                                        value={requestDate}
-                                        onChange={(e) => setRequestDate(e.target.value)}
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    />
-                                </div>
-
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Employee Name</label>
-                                    <input
-                                        id="employeeName"
-                                        name="employeeName"
-                                        placeholder="Enter employee name"
-                                        required
-                                        type="text"
-                                        value={employeeName}
-                                        onChange={(e) => setEmployeeName(e.target.value)}
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    />
-                                </div>
-
                                 <div className="flex items-center gap-2">
                                     <label className="w-1/4">Additional Notes</label>
                                     <textarea
@@ -289,9 +315,7 @@ const MaintenanceRequestPage = () => {
 
                             {showConfirmation && (
                                 <div className="inline-block">
-                                    <ConfirmMessageComponent
-                                        onClose={handleConfirmationClose}
-                                    />
+                                    <ConfirmMessageComponent onClose={handleConfirmationClose} />
                                 </div>
                             )}
                             <MGBButton
