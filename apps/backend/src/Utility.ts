@@ -14,7 +14,7 @@ export function buildQuery(options: QueryBuilder) {
     const args = {
         select: {},
         take: options.maxQuery,
-        orderBy: Object.assign({}, ...options.sortOptions),
+        orderBy: options.sortOptions,
     };
     args.select = Object.assign({}, ...options.filterOptions);
     return args;

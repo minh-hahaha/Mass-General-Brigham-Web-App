@@ -9,6 +9,8 @@ export interface DepartmentRequest {
     deptName: string;
     buildingId: number;
     deptPhone: string;
+    building: { buildingName: string };
+    locations: [{floor: number}];
 }
 
 export interface DirectoryRequestName {
@@ -30,10 +32,14 @@ const params = {
         buildingId: 1,
     }
 }
-export async function GetDirectory(): Promise<DepartmentRequest[]> {
+export async function GetDirectory(nameSort: string, bldgSort: string, floorSort: string): Promise<DepartmentRequest[]> {
+    // TEMP
+    const nameOption = nameSort === 'Ascending' ? 0 : 1;
+    const bldgOption = bldgSort === 'Ascending' ? 2 : 3;
+    const floorOption = bldgSort === 'Ascending' ? 4 : 5;
     const response = await axios.get<DepartmentRequest[]>(ROUTES.DIRECTORY, {
         // Defines sorting by deptId (0), and selecting all fields (5)
-        params: { sortOptions: [0], filterOptions: [5]} //TODO: be able to use the enum on backend so it isn't hardcoded
+        params: { sortOptions: [nameOption], filterOptions: [5]} //TODO: be able to use the enum on backend so it isn't hardcoded
     });
     return response.data;
 }

@@ -8,8 +8,6 @@ import { buildQuery, QueryBuilder } from '../Utility.ts';
 const router: Router = express.Router();
 
 export enum SORT_OPTIONS {
-    DEP_ID_ASC,
-    DEP_ID_DSC,
     DEP_NAME_ASC,
     DEP_NAME_DSC,
     BLDG_ID_ASC,
@@ -28,8 +26,6 @@ export enum FILTER_OPTIONS {
 }
 
 const DIRECTORY_SORT_OPTIONS: object[] = [];
-DIRECTORY_SORT_OPTIONS.push({ deptId: 'asc' });
-DIRECTORY_SORT_OPTIONS.push({ deptId: 'desc' });
 DIRECTORY_SORT_OPTIONS.push({ deptName: 'asc' });
 DIRECTORY_SORT_OPTIONS.push({ deptName: 'desc' });
 DIRECTORY_SORT_OPTIONS.push({ buildingId: 'asc' });
@@ -86,30 +82,21 @@ router.get('/', async function (req: Request, res: Response) {
         // Create the query args from queryOptions
         const args = buildQuery(queryOptions);
         // Include the locations table
-        const locationArgs = {
-            locations: {},
+        args.select = {
+            locations: {
+                orderBy: { floor: 'asc' },
+                select: { floor: true },
+            },
+            building: {
+                select: { buildingName: true },
+            },
+            ...args.select,
         };
-        if (
-            sortOptions.includes(SORT_OPTIONS.FLOOR_ASC) ||
-            sortOptions.includes(SORT_OPTIONS.FLOOR_DSC)
-        ) {
-            locationArgs.locations = Object.assign(
-                {},
-                ...sortOptions
-                    .filter(
-                        (option) =>
-                            option === SORT_OPTIONS.FLOOR_ASC || option === SORT_OPTIONS.FLOOR_DSC
-                    )
-                    .map((option) => DIRECTORY_SORT_OPTIONS[option])
-            );
-        }
-        args.select = { ...args.select, locations: true };
         console.log(args);
         //Attempt to pull from directory
 
         const DIRECTORY = await PrismaClient.department.findMany(args);
         console.log(DIRECTORY);
-        //console.log(DIRECTORY);
 
         res.send(DIRECTORY);
     } catch (error) {
