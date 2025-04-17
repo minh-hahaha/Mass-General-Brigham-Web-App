@@ -16,6 +16,7 @@ interface transportRequest {
     status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
     notes: string;
     requesterId: number;
+    requesterName: string;
     requestDate: string;
     assignedToId: number;
 }
@@ -37,6 +38,7 @@ const TransportRequestPage = () => {
     const [status, setStatus] = useState<transportRequest['status']>('Pending');
     const [notes, setNotes] = useState('');
     const [requesterId, setRequesterId] = useState(0);
+    const [requesterName, setRequesterName] = useState('');
     const [requestDate, setRequestDate] = useState(new Date().toISOString().split('T')[0]);
     const [assignedToId, setAssignedToId] = useState(0);
 
@@ -58,6 +60,7 @@ const TransportRequestPage = () => {
             status,
             notes,
             requesterId,
+            requesterName,
             requestDate,
             assignedToId,
         };
@@ -104,6 +107,38 @@ const TransportRequestPage = () => {
                 <h1 className="text-[30px] font-bold mb-6">Patient Transportation Request</h1>
                 <div>
                     <form onSubmit={handleSubmit} className="space-y-6">
+                        <div>
+                            <h3 className="text-xl font-semibold mb-4">
+                                <b>Requester Information</b>
+                            </h3>
+                            <div className="flex flex-col pt-2">
+                                <div className="flex items-center gap-2">
+                                    <InputElement label={"Requester Id"} type={"number"} id={"requesterId"} value={requesterId}
+                                                  onChange={e => setRequesterId(Number(e.target.value))}
+                                                  required={true}
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex flex-col pt-2">
+                                <div className="flex items-center gap-2">
+                                    <InputElement label={"Requester Name"} type={"text"} id={"requesterName"} value={requesterName}
+                                                  onChange={e => setRequesterName(e.target.value)}
+                                                  required={true}
+                                                  placeholder={"Requester Name"}
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex flex-col pt-2">
+                                <div className="flex items-center gap-2">
+                                    <InputElement label={"Request Date"} type={"date"} id={requestDate} value={requestDate}
+                                                  onChange={e => setRequestDate(e.target.value.toString().split('T')[0])}
+                                                  required={true}
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex flex-col pt-2">
+                            </div>
+                        </div>
                         <div>
                             <h3 className="text-xl font-semibold mb-4">
                                 <b>Patient Information</b>
@@ -265,42 +300,12 @@ const TransportRequestPage = () => {
 
                         <div>
                             <h3 className="text-xl font-semibold mb-4">
-                                <b>Requester Information</b>
-                            </h3>
-                            <div className="flex flex-col pt-2">
-                                <div className="flex items-center gap-2">
-                                    <InputElement label={"Requester Id"} type={"number"} id={"requesterId"} value={requesterId}
-                                                  onChange={e => setRequesterId(Number(e.target.value))}
-                                                  required={true}
-                                    />
-                                </div>
-                            </div>
-                            <div className="flex flex-col pt-2">
-                                <div className="flex items-center gap-2">
-                                    <InputElement label={"Request Date"} type={"date"} id={requestDate} value={requestDate}
-                                                  onChange={e => setRequestDate(e.target.value.toString().split('T')[0])}
-                                                  required={true}
-                                    />
-                                </div>
-                            </div>
-                            <div className="flex flex-col pt-2">
-                                <div className="flex items-center gap-2">
-                                    <InputElement label={"Employee ID"} type={"number"} id={"assignedToId"} value={assignedToId}
-                                                  onChange={e => setAssignedToId(Number(e.target.value))}
-                                                  required={true}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <h3 className="text-xl font-semibold mb-4">
-                                <b>Medical Information</b>
+                                <b>Additional Information</b>
                             </h3>
 
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Special Instructions</label>
+                                    <label className="w-1/4">Additional Comments</label>
                                     <textarea
                                         id="medicalNotes"
                                         value={notes}

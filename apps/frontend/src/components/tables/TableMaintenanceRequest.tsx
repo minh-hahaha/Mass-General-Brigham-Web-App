@@ -39,12 +39,16 @@ const TableMaintenanceRequest = () => {
     }
 
     // Empty state
-    if (requests == null || requests.length === 0) {
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <p className="text-xl font-medium">No requests found!</p>
-            </div>
-        );
+    // if (requests == null || requests.length === 0) {
+    //     return (
+    //         <div className="flex justify-center items-center h-screen">
+    //             <p className="text-xl font-medium">No requests found!</p>
+    //         </div>
+    //     );
+    // }
+
+    if (requests == null) {
+        return <p>No requests found!</p>;
     }
 
     // Format date for display

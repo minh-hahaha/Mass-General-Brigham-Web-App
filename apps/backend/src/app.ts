@@ -13,6 +13,8 @@ import sanitationRouter from './routes/sanitation.ts';
 import translationRouter from './routes/translationrequest.ts';
 import directoryNodeRouter from './routes/directoryNode.ts';
 import maintenanceRouter from './routes/maintenancerequest.ts';
+import nodeRouter from './routes/node.ts';
+import edgeRouter from './routes/edge.ts';
 
 import { ROUTES } from 'common/src/constants';
 
@@ -39,19 +41,25 @@ app.use(ROUTES.ASSIGNED, assignedRouter);
 app.use(ROUTES.EMPLOYEE, employeeRouter);
 
 app.use(ROUTES.VALIDATE, validateRouter);
-app.use(ROUTES.PATIENTTRANSPORT, patientTransportRouter);
 app.use(ROUTES.SANITATION, sanitationRouter);
 
+//Directory
 app.use(ROUTES.DIRECTORY, directoryRouter);
 app.use(ROUTES.DIRECTORY_CSV, directoryRouter);
 app.use(ROUTES.DIRECTORY_NAMES, directoryRouter);
 app.use(ROUTES.DIRECTORY_NODE, directoryNodeRouter);
 app.use(ROUTES.DIRECTORY_BUILDING, directoryRouter);
 
+//Service Requests
 app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
 app.use(ROUTES.TRANSLATIONREQUEST, translationRouter);
 app.use(ROUTES.MAINTENANCEREQUEST, maintenanceRouter);
+app.use(ROUTES.PATIENTTRANSPORT, patientTransportRouter);
+
+//Algorithms
 app.use(ROUTES.BFSGRAPH, graphRouter);
+app.use(ROUTES.NODE, nodeRouter);
+app.use(ROUTES.EDGE, edgeRouter);
 
 /**
  * Catch all 404 errors, and forward them to the error handler

@@ -285,18 +285,26 @@ const DirectionsMapComponent = () => {
     }
 
     useEffect(() => {
-        if (toLocation === Buildings[0] ){setFromNode(CHDoorA)}
-        else if(toLocation === Buildings[1] ){setFromNode(PP20)}
-        else if(toLocation === Buildings[2]){setFromNode(PP22)}
-    }, [toLocation]);
-
-    useEffect(() => {
-        if(lot === 'CH_A' ){
-            setFromNode(CHDoorA)
+        if (toLocation === Buildings[0]){
+            setFromNode(CHDoorA) // default
+            if (lot === 'CH_A'){
+                setFromNode(CHDoorA)
+            }
+            else if(lot === 'CH_B' || lot === 'CH_C'){
+                setFromNode(CHDoorBC)
+            }
         }
-        else if(lot === 'CH_B' || lot === 'CH_C'){setFromNode(CHDoorBC)}
-        else {setFromNode(CHDoorA)} //for bus and walking travel mode
-    }, [lot]);
+        else if(toLocation === Buildings[1] ){
+            setFromNode(PP20)
+            if(lot === 'PP_A' || lot === 'PP_B'|| lot === 'PP_C'){setFromNode(PP20)}
+        }
+        else if(toLocation === Buildings[2]){
+            setFromNode(PP22)
+            if(lot === 'PP_A' || lot === 'PP_B'|| lot === 'PP_C'){setFromNode(PP22)}
+        }
+    }, [toLocation, lot]);
+
+
 
     const handleParkA = () => {
         clearParking();
