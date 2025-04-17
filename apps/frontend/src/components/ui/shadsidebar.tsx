@@ -48,8 +48,8 @@ const navItems = [
         icon: MapPin,
     },
     {
-        title: 'Map Editor',
-        url: '/MapEditor',
+        title: 'Map View',
+        url: '/MapView',
         icon: PencilLine,
     },
 ];
