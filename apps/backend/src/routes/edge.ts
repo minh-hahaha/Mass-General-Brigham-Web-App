@@ -11,7 +11,6 @@ router.get('/', async (req: Request, res: Response) => {
                 nodeFrom: true,
             },
         });
-        console.log(EDGES);
         res.status(200).json(EDGES);
     } catch (error) {
         console.error(error);
