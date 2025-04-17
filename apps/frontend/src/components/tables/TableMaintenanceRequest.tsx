@@ -7,7 +7,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from '@/components/ui/table';
+} from '@/components/ui/table.tsx';
 
 const TableMaintenanceRequest = () => {
     // Check if user is logged in, redirect to home if not

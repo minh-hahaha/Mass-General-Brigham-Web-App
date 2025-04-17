@@ -8,11 +8,11 @@ import {
     type CarouselApi,
 } from "@/components/ui/carousel"
 
-import TableAllRequest from "@/components/TableServiceRequest"
-import TableMaintenanceRequest from "@/components/TableMaintenanceRequest"
-import TableSanitationRequest from "@/components/TableSanitationRequest"
-import TableTransportRequest from "@/components/TableTransportRequest"
-import TableTranslationRequest from "@/components/TableTranslatorRequest"
+import TableAllRequest from "@/components/tables/TableServiceRequest.tsx"
+import TableMaintenanceRequest from "@/components/tables/TableMaintenanceRequest.tsx"
+import TableSanitationRequest from "@/components/tables/TableSanitationRequest.tsx"
+import TableTransportRequest from "@/components/tables/TableTransportRequest.tsx"
+import TableTranslationRequest from "@/components/tables/TableTranslatorRequest.tsx"
 import { cn } from "@/lib/utils"
 
 const tableTabs = [
