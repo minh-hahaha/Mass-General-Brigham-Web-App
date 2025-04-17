@@ -23,8 +23,5 @@ export const ROUTES = {
     NODE: '/api/node',
     EDGE: '/api/edge',
 
-    NODES: '/api/map/nodes',
-    EDGES: '/api/map/edges',
-
 
 }

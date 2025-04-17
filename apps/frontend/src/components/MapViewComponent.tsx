@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import FloorSelector from "@/components/FloorSelector.tsx";
+import EditorFloorSelector from "@/components/EditorFloorSelector.tsx";
 import { ROUTES } from "common/src/constants.ts";
 import MapView from "./MapView.tsx";
 import {myNode} from "../../../backend/src/Algorithms/classes.ts";
 
-
 // Edge type to represent connections between nodes
 interface Edge {
-    id: string;
-    startNodeId: string;
-    endNodeId: string;
-    // Add any other properties your edges have
+    id: number;
+    from: string; // node id
+    to: string; // node id
+    nodeFrom: myNode; // node from
+    nodeTo: myNode; // node to
+
 }
 
 // Floor type (same as in your example)
@@ -60,9 +61,9 @@ const MapViewComponent = ({ initialFloorId = "CH-1", selectedBuildingId }: Props
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     // Get the current floor information
-    const currentFloor = availableFloors.find(f => f.id === currentFloorId) || availableFloors[0];
-    const currentBuildingId = currentFloor.building;
-    const currentFloorNumber = currentFloor.label;
+    const currentFloor = availableFloors.find(f => f.id === currentFloorId) || availableFloors[0]; // a Floor interface
+    const currentBuildingId = currentFloor.building; // building id string
+    const currentFloorNumber = currentFloor.label; // floor number string
 
     // Filter nodes for the current floor
     const currentFloorNodes = nodes.filter(
@@ -71,18 +72,19 @@ const MapViewComponent = ({ initialFloorId = "CH-1", selectedBuildingId }: Props
 
     // Filter edges that connect nodes on the current floor
     const currentFloorEdges = edges.filter(edge => {
-        const startNode = nodes.find(node => node.id === edge.startNodeId);
-        const endNode = nodes.find(node => node.id === edge.endNodeId);
-
+        const startNode = edge.nodeFrom;
+        const endNode = edge.nodeTo;
         return (
-            startNode &&
-            endNode &&
             startNode.buildingId === currentBuildingId &&
             startNode.floor === currentFloorNumber &&
             endNode.buildingId === currentBuildingId &&
-            endNode.floor === currentFloorNumber
+            endNode.floor === currentFloorNumber &&
+            startNode &&
+            endNode
         );
     });
+
+    console.log(currentFloorEdges);
 
     // Fetch nodes and edges from your database
     useEffect(() => {
@@ -90,19 +92,21 @@ const MapViewComponent = ({ initialFloorId = "CH-1", selectedBuildingId }: Props
             setIsLoading(true);
             try {
                 // Fetch nodes
-                const nodesResponse = await axios.get(ROUTES.NODES);
-                setNodes(nodesResponse.data);
+                const nodesRes = await axios.get(ROUTES.NODE);
+                setNodes(nodesRes.data);
+                console.log("nodes ", nodesRes.data);
 
                 // Fetch edges
-                const edgesResponse = await axios.get(ROUTES.EDGES);
-                setEdges(edgesResponse.data);
+                const edgesRes = await axios.get(ROUTES.EDGE);
+                setEdges(edgesRes.data);
+                console.log("edges from database - " , edgesRes.data);
+
             } catch (error) {
                 console.error("Error fetching nodes and edges:", error);
             } finally {
                 setIsLoading(false);
             }
         };
-
         fetchNodesAndEdges();
     }, []);
 
@@ -118,6 +122,7 @@ const MapViewComponent = ({ initialFloorId = "CH-1", selectedBuildingId }: Props
                 setCurrentFloorId(firstFloorOfBuilding.id);
             }
         }
+        console.log("selected building ", selectedBuildingId);
     }, [selectedBuildingId]);
 
     // Handle floor change
@@ -142,7 +147,7 @@ const MapViewComponent = ({ initialFloorId = "CH-1", selectedBuildingId }: Props
                     />
 
                     {/* Floor selector */}
-                    <FloorSelector
+                    <EditorFloorSelector
                         floors={availableFloors}
                         currentFloorId={currentFloorId}
                         onChange={handleFloorChange}

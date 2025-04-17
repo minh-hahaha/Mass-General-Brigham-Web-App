@@ -3,7 +3,7 @@ import MapViewComponent from "@/components/MapViewComponent.tsx"
 const MapViewPage = () => {
     return (
         <div>
-            <MapViewComponent />
+            <MapViewComponent selectedBuildingId={"1"}/>
         </div>
 
     );
