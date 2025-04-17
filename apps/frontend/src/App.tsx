@@ -13,7 +13,7 @@ import TranslationServiceRequestPage from './routes/TranslationServiceRequestPag
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { ShadSidebar } from '@/components/ui/shadsidebar.tsx';
 import {MapPage} from "@/routes/MapPage.tsx";
-import MapEditorPage from "@/routes/MapEditorPage.tsx";
+import MapViewPage from "@/routes/MapViewPage.tsx";
 import SanitationRequestDisplayPage from "@/routes/SanitationRequestDisplayPage.tsx";
 import ServiceRequestSelectPage from "@/routes/ServiceRequestSelectPage.tsx";
 import MaintenanceRequestPage from "@/routes/MaintenanceRequestPage.tsx";
@@ -57,8 +57,8 @@ function App() {
                                   element={<MapPage />}
                                 />
                                 <Route
-                                path="/MapEditor"
-                                element={<MapEditorPage/>}
+                                path="/MapView"
+                                element={<MapViewPage/>}
                                 />
 
                                 <Route
