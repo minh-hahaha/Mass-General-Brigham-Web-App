@@ -10,6 +10,7 @@ export const ROUTES = {
     TRANSLATIONREQUEST: '/api/translation',
     SANITATION: '/api/sanitation',
     MAINTENANCEREQUEST: '/api/maintenance',
+    MEDICALDEVICEREQUEST: '/api/medicaldevice',
 
     //Directory
     DIRECTORY: '/api/directory',
