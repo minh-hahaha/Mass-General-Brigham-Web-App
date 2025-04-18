@@ -9,7 +9,27 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import SelectElement from '@/elements/SelectElement.tsx';
+import TableAllRequest from "@/components/tables/TableServiceRequest.tsx";
+import TableMaintenanceRequest from "@/components/tables/TableMaintenanceRequest.tsx";
+import TableSanitationRequest from "@/components/tables/TableSanitationRequest.tsx";
+import TableTransportRequest from "@/components/tables/TableTransportRequest.tsx";
+import TableTranslationRequest from "@/components/tables/TableTranslatorRequest.tsx";
+import CarouselComponent from "@/components/CarouselComponent.tsx";
 
+
+const tableTabs = [
+    { label: "All", component: TableAllRequest },
+    { label: "Chestnut Hill", component: TableMaintenanceRequest },
+    { label: "20 Patriot Place", component: TableSanitationRequest },
+    { label: "22 Patriot Place", component: TableTransportRequest },
+]
+
+const DirectoryDisplayPage1 = () => {
+
+    <CarouselComponent tableTabs={tableTabs}></CarouselComponent>
+}
+
+export default DirectoryDisplayPage1;
 const DirectoryDisplayPage = () => {
     const [data, setData] = useState<DepartmentRequest[]>([]);
     const [nameSort, setNameSort] = useState<string>('Ascending');
@@ -95,4 +115,4 @@ const DirectoryDisplayPage = () => {
     );
 };
 
-export default DirectoryDisplayPage;
+//export default DirectoryDisplayPage;
