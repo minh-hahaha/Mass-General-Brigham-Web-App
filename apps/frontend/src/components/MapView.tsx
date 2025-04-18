@@ -1,22 +1,22 @@
 import { useState, useEffect, useRef} from "react";
 
 
-import {myNode} from "common/src/classes/classes.ts";
+import {minhEdges, myNode} from "common/src/classes/classes.ts";
 
 // Edge type to represent connections between nodes
-interface Edge {
-    edgeId: number;
-    from: string;
-    to: string;
-    nodeFrom: Node;
-    nodeTo: Node;
-}
+// export interface EdgeWithNodes {
+//     edgeId: number;
+//     from: string;
+//     to: string;
+//     nodeFrom: Node;
+//     nodeTo: Node;
+// }
 
 
 interface MapViewProps {
     svgMapUrl: string;
     nodes: myNode[];
-    edges: Edge[];
+    edges: minhEdges[];
     buildingId: string;
     onNodeClick?: (node: myNode) => void;
 }
@@ -70,7 +70,7 @@ const MapView = ({
     };
 
     // Get edge style based on type
-    const getEdgeStyle = (edge: Edge) => {
+    const getEdgeStyle = (edge: minhEdges) => {
         return { stroke: "blue", strokeWidth: 5 };
 
     };

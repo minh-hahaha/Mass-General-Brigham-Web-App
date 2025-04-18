@@ -42,3 +42,25 @@ export class myEdge {
         this.to = to;
     }
 }
+
+export class minhEdges {
+    edgeId: number;
+    from: string;
+    to: string;
+    nodeFrom: myNode;
+    nodeTo: myNode;
+
+    constructor (
+        edgeId: number,
+        from: string,
+        to: string,
+        nodeFrom: myNode,
+        nodeTo: myNode,
+    )  {
+        this.edgeId = edgeId;
+        this.from = from;
+        this.to = to;
+        this.nodeFrom = nodeFrom;
+        this.nodeTo = nodeTo;
+    }
+}
