@@ -87,8 +87,8 @@ function createTextPath(traversalResult: myNode[] | undefined | null): string[] 
     // Loop through each node in the list
     for (let i = 0; i < traversalResult.length; i++) {
         // Get the current and next node
-        let currentNode = traversalResult[i];
-        let nextNode = traversalResult[i + 1];
+        const currentNode = traversalResult[i];
+        const nextNode = traversalResult[i + 1];
         // If there is no next node, we have reached the destination
         if (!nextNode) {
             directions.push(`You have arrived at ${currentNode.name}`);
