@@ -1,7 +1,7 @@
 {
     "nodes": [
         {
-            "id": "20PPFloor2Elevator1",
+            "nodeId": "20PPFloor2Elevator1",
             "x": 254.72187389026988,
             "y": 838.8962624289773,
             "floor": "2",
@@ -11,7 +11,7 @@
             "roomNumber": ""
         },
         {
-            "id": "20PPFloor2Stairs2",
+            "nodeId": "20PPFloor2Stairs2",
             "x": 335.58441162109375,
             "y": 837.671064897017,
             "floor": "2",
@@ -21,7 +21,7 @@
             "roomNumber": ""
         },
         {
-            "id": "20PPFloor2Hallway3",
+            "nodeId": "20PPFloor2Hallway3",
             "x": 263.29820112748575,
             "y": 868.3008367365056,
             "floor": "2",
@@ -31,7 +31,7 @@
             "roomNumber": ""
         },
         {
-            "id": "20PPFloor2Hallway4",
+            "nodeId": "20PPFloor2Hallway4",
             "x": 347.8363037109375,
             "y": 868.3008367365056,
             "floor": "2",
@@ -41,7 +41,7 @@
             "roomNumber": ""
         },
         {
-            "id": "20PPFloor2Hallway5",
+            "nodeId": "20PPFloor2Hallway5",
             "x": 415.2217518199574,
             "y": 856.048916903409,
             "floor": "2",
@@ -51,7 +51,7 @@
             "roomNumber": ""
         },
         {
-            "id": "20PPFloor2Hallway6",
+            "nodeId": "20PPFloor2Hallway6",
             "x": 891.8206232244318,
             "y": 891.5794233842329,
             "floor": "2",
@@ -61,7 +61,7 @@
             "roomNumber": ""
         },
         {
-            "id": "20PPFloor2Hallway7",
+            "nodeId": "20PPFloor2Hallway7",
             "x": 852.6145796342329,
             "y": 856.048916903409,
             "floor": "2",
@@ -71,7 +71,7 @@
             "roomNumber": ""
         },
         {
-            "id": "20PPFloor2Room8",
+            "nodeId": "20PPFloor2Room8",
             "x": 438.50036621093744,
             "y": 802.1405584161931,
             "floor": "2",
@@ -81,7 +81,7 @@
             "roomNumber": ""
         },
         {
-            "id": "20PPFloor2Elevator9",
+            "nodeId": "20PPFloor2Elevator9",
             "x": 897.9465553977273,
             "y": 852.3733243075284,
             "floor": "2",
@@ -91,7 +91,7 @@
             "roomNumber": ""
         },
         {
-            "id": "20PPFloor2Stairs10",
+            "nodeId": "20PPFloor2Stairs10",
             "x": 949.4045188210226,
             "y": 889.1290283203124,
             "floor": "2",
