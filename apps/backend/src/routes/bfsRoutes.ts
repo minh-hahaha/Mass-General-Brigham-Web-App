@@ -118,11 +118,11 @@ function determineDirection(angle: number): string {
 }
 
 function getNumberSuffix(num: string): string {
-    if (num.endsWith('1') && num === '11') {
+    if (num.endsWith('1') && num !== '11') {
         return 'st';
-    } else if (num.endsWith('2') && num === '12') {
+    } else if (num.endsWith('2') && num !== '12') {
         return 'nd';
-    } else if (num.endsWith('3') && num === '13') {
+    } else if (num.endsWith('3') && num !== '13') {
         return 'rd';
     } else {
         return 'th';
