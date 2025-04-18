@@ -42,16 +42,16 @@ export async function dfs(
         //adding to visited, and updating queues to add the neighbours
         for (const edge of graph.edges) {
             let neighbour = null;
-            if (edge.from.id === currentNode.id) {
+            if (edge.from.nodeId === currentNode.nodeId) {
                 neighbour = edge.to;
 
-            } else if (edge.to.id === currentNode.id) {
+            } else if (edge.to.nodeId === currentNode.nodeId) {
                 neighbour = edge.from;
 
             }
 
-            if(neighbour && !visited.has(neighbour.id)) {
-                visited.add(neighbour.id);
+            if(neighbour && !visited.has(neighbour.nodeId)) {
+                visited.add(neighbour.nodeId);
                 queue.push({ node: neighbour, path: [...currentPath, neighbour] });
             }
         }
