@@ -1,4 +1,5 @@
-import {myEdge, myNode} from "common/src/classes/classes.ts";
+import { myEdge, myNode } from 'common/src/classes/classes.ts';
+export { myNode, myEdge };
 
 export class Graph {
     /* need to create the graph for traversal */
