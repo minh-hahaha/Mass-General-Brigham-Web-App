@@ -1,5 +1,5 @@
 import { ROUTES } from 'common/src/constants';
-import {myNode} from "../../../backend/src/Algorithms/classes.ts";
+import { myNode } from '../../../backend/src/Algorithms/classes.ts';
 
 import axios from 'axios';
 
@@ -10,7 +10,7 @@ export interface DepartmentRequest {
     buildingId: number;
     deptPhone: string;
     building: { buildingName: string };
-    locations: [{floor: number}];
+    locations: [{ floor: number }];
 }
 
 export interface DirectoryRequestName {
@@ -24,22 +24,46 @@ export interface DirectoryRequestByBuilding {
     buildingId: number;
     deptPhone: string;
     nodeId: string;
-
 }
 
 const params = {
     params: {
         buildingId: 1,
-    }
-}
-export async function GetDirectory(nameSort: string, bldgSort: string, floorSort: string): Promise<DepartmentRequest[]> {
+    },
+};
+
+export async function GetDirectory(
+    nameSort: string,
+    bldgSort: string,
+    buildingFilter: string
+): Promise<DepartmentRequest[]> {
     // TEMP
-    const nameOption = nameSort === 'Ascending' ? 0 : 1;
-    const bldgOption = bldgSort === 'Ascending' ? 2 : 3;
-    const floorOption = bldgSort === 'Ascending' ? 4 : 5;
+    const sortOptions = [];
+    if(bldgSort !== ''){
+        sortOptions.push(bldgSort === 'Ascending' ? 4 : 5);
+    }
+    if(nameSort !== ''){
+        sortOptions.push(nameSort === 'Ascending' ? 0 : 1);
+    }
+    let buildingOption = undefined;
+    switch (buildingFilter) {
+        case 'Chestnut Hill':
+            buildingOption = 0;
+            break;
+        case '20 Patriot Place':
+            buildingOption = 1;
+            break;
+        case '22 Patriot Place':
+            buildingOption = 2;
+            break;
+        case 'Patriot Place':
+            buildingOption = 3;
+    }
     const response = await axios.get<DepartmentRequest[]>(ROUTES.DIRECTORY, {
-        // Defines sorting by deptId (0), and selecting all fields (5)
-        params: { sortOptions: [nameOption], filterOptions: [5]} //TODO: be able to use the enum on backend so it isn't hardcoded
+        params: {
+            sortOptions: sortOptions,
+            filterOptions: (buildingOption !== undefined) ? [buildingOption] : [],
+        }, //TODO: be able to use the enum on backend so it isn't hardcoded
     });
     return response.data;
 }
@@ -53,11 +77,11 @@ export async function getDirectory(bID: number): Promise<DirectoryRequestByBuild
     const params = {
         params: {
             buildingFilter: bID,
-        }
-    }
-    const response = await axios.get<DirectoryRequestByBuilding[]>(ROUTES.DIRECTORY_BUILDING, params)
+        },
+    };
+    const response = await axios.get<DirectoryRequestByBuilding[]>(
+        ROUTES.DIRECTORY_BUILDING,
+        params
+    );
     return response.data;
-
-};
-
-
+}
