@@ -15,10 +15,12 @@ class Vector {
         return this.x * other.x + this.y * other.y;
     }
 
-    signedAngleTo(other: Vector): number {
+    angleTo(other: Vector): number {
         const dot = this.dot(other);
         const cross = this.x * other.y - this.y * other.x;
-        return Math.atan2(cross, dot); // Signed angle in radians
+        // Return angle in degrees
+        // Using degrees instead of radians bc it's easier to compare bigger numbers than decimals
+        return Math.atan2(cross, dot) * 180 / Math.PI;
     }
 }
 
@@ -62,8 +64,7 @@ function createTextPath(traversalResult: myNode[] | undefined | null) {
         // Get the direction the user will be facing
         const newDirection = new Vector(dx, dy);
         // Get the angle between the user's current facing and the next node's facing
-        // Using degrees instead of radians bc it's easier to compare bigger numbers than decimals
-        const angle = currentDirection.signedAngleTo(newDirection) * 180 / Math.PI;
+        const angle = currentDirection.angleTo(newDirection);
         // Make the user's current direction the new direction
         currentDirection = newDirection;
         // If the next node is an elevator or stairs, the user will be changing floors
