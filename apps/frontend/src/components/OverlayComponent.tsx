@@ -10,7 +10,7 @@ interface ParkingOverlayProps {
     visible: boolean;
 }
 
-const ParkingOverlayComponent: React.FC<ParkingOverlayProps> = ({
+const OverlayComponent: React.FC<ParkingOverlayProps> = ({
                                                                     bounds,
                                                                     imageSrc,
                                                                     visible,
@@ -49,4 +49,4 @@ const ParkingOverlayComponent: React.FC<ParkingOverlayProps> = ({
     return null;
 };
 
-export default ParkingOverlayComponent;
+export default OverlayComponent;
