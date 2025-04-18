@@ -5,7 +5,7 @@ import {myNode} from "common/src/classes/classes.ts";
 
 // Edge type to represent connections between nodes
 interface Edge {
-    id: number;
+    edgeId: number;
     from: string;
     to: string;
     nodeFrom: Node;
@@ -186,8 +186,8 @@ const MapView = ({
 
                         {/* Draw edges */}
                         {edges.map(edge => {
-                            const startNode = nodes.find(node => node.id === edge.from);
-                            const endNode = nodes.find(node => node.id === edge.to);
+                            const startNode = nodes.find(node => node.nodeId === edge.from);
+                            const endNode = nodes.find(node => node.nodeId === edge.to);
 
                             if (!startNode || !endNode) return null;
 
@@ -195,7 +195,7 @@ const MapView = ({
 
                             return (
                                 <line
-                                    key={edge.id}
+                                    key={edge.edgeId}
                                     x1={startNode.x}
                                     y1={startNode.y}
                                     x2={endNode.x}
@@ -214,7 +214,7 @@ const MapView = ({
 
                             return (
                                 <g
-                                    key={node.id}
+                                    key={node.nodeId}
                                     onClick={() => handleNodeClick(node)}
                                     style={{ cursor: 'pointer' }}
                                 >
