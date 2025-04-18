@@ -26,7 +26,7 @@ export async function dfs(
     // Initalizing the queue
     queue.push({ node: starterNode, path: [starterNode] });
 
-    visited.add(starterNode.id);
+    visited.add(starterNode.nodeId);
 
     while (queue.length > 0) {
         //pop the first item in the list
@@ -37,7 +37,7 @@ export async function dfs(
         const currentPath = current.path;
 
         // checking if we found the target node
-        if (currentNode.id === targetNode.id) {
+        if (currentNode.nodeId === targetNode.nodeId) {
             return currentPath;
         }
 

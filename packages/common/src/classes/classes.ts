@@ -1,5 +1,5 @@
 export class myNode {
-    id: string;
+    nodeId: string;
     x: number;
     y: number;
     floor: string;
@@ -9,7 +9,7 @@ export class myNode {
     roomNumber: string | null;
 
     constructor(
-        nodeID: string,
+        nodeId: string,
         x: number,
         y: number,
         floor: string,
@@ -18,7 +18,7 @@ export class myNode {
         name: string,
         roomNumber: string | null
     ) {
-        this.id = nodeID;
+        this.nodeId = nodeId;
         this.x = x;
         this.y = y;
         this.floor = floor;
@@ -30,14 +30,14 @@ export class myNode {
 }
 
 export class myEdge {
-    id: number;
+    edgeId: number;
     from: myNode;
     to: myNode;
 
-    constructor(id: number, from: myNode, to: myNode) {
+    constructor(edgeId: number, from: myNode, to: myNode) {
         /* Do i need the neighbors */
 
-        this.id = id;
+        this.edgeId = edgeId;
         this.from = from;
         this.to = to;
     }
