@@ -18,7 +18,7 @@ export async function loadMyGraph(): Promise<Graph> {
 
     for (const aNode of nodes) {
         const node = graph.addNode(
-            aNode.id,
+            aNode.nodeId,
             Number(aNode.x),
             Number(aNode.y),
             aNode.floor,
@@ -27,7 +27,7 @@ export async function loadMyGraph(): Promise<Graph> {
             aNode.name,
             aNode.roomNumber
         );
-        nodeMap.set(aNode.id, node);
+        nodeMap.set(aNode.nodeId, node);
     }
 
     for (const aEdge of edges) {
@@ -35,7 +35,7 @@ export async function loadMyGraph(): Promise<Graph> {
         const to = nodeMap.get(aEdge.to);
 
         if (from && to) {
-            graph.addEdge(from, to, aEdge.id);
+            graph.addEdge(from, to, aEdge.edgeId);
         }
     }
     return graph;
@@ -62,7 +62,7 @@ export async function bfs(
     // Initalizing the queue
     queue.push({ node: starterNode, path: [starterNode] });
 
-    visited.add(starterNode.id);
+    visited.add(starterNode.nodeId);
 
     while (queue.length > 0) {
         //pop the first item in the list
@@ -73,22 +73,22 @@ export async function bfs(
         const currentPath = current.path;
 
         // checking if we found the target node
-        if (currentNode.id === targetNode.id) {
+        if (currentNode.nodeId === targetNode.nodeId) {
             return currentPath;
         }
 
         //adding to visited, and updating queues to add the neighbours
         for (const edge of graph.edges) {
-            if (edge.from.id === currentNode.id) {
+            if (edge.from.nodeId === currentNode.nodeId) {
                 const neighbour = edge.to;
-                if (!visited.has(neighbour.id)) {
-                    visited.add(neighbour.id);
+                if (!visited.has(neighbour.nodeId)) {
+                    visited.add(neighbour.nodeId);
                     queue.push({ node: neighbour, path: [...currentPath, neighbour] });
                 }
-            } else if (edge.to.id === currentNode.id) {
+            } else if (edge.to.nodeId === currentNode.nodeId) {
                 const neighbour = edge.from;
-                if (!visited.has(neighbour.id)) {
-                    visited.add(neighbour.id);
+                if (!visited.has(neighbour.nodeId)) {
+                    visited.add(neighbour.nodeId);
                     queue.push({ node: neighbour, path: [...currentPath, neighbour] });
                 }
             }

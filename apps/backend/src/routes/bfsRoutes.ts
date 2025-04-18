@@ -50,7 +50,7 @@ function createTextPath(traversalResult: myNode[] | undefined | null) {
         { key: '20PP', dir: new Vector(traversalResult[0].x + 50, 0) },
         { key: '22PP', dir: new Vector(0, traversalResult[0].y + 50) },
     ];
-    const startDir = StartDirs.find((value) => traversalResult[0].id.includes(value.key));
+    const startDir = StartDirs.find((value) => traversalResult[0].nodeId.includes(value.key));
     let currentDirection;
     if (!startDir) {
         currentDirection = new Vector(0, 0);
@@ -101,7 +101,7 @@ function createTextPath(traversalResult: myNode[] | undefined | null) {
             (traversingFloors && nextNode.nodeType !== 'Elevator' && nextNode.nodeType !== 'Stairs')
         ) {
             console.log(
-                `From the ${currentNode.id} ${determineDirection(angle)} until you reach the ${nextNode.id}`
+                `From the ${currentNode.nodeId} ${determineDirection(angle)} until you reach the ${nextNode.nodeId}`
             );
         }
     }
