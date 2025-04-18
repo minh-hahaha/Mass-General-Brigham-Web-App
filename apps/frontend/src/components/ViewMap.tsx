@@ -1,20 +1,22 @@
 import { useState, useEffect, useRef} from "react";
-import {myNode} from "../../../backend/src/Algorithms/classes.ts";
+
+
+import {minhEdges, myNode} from "common/src/classes/classes.ts";
 
 // Edge type to represent connections between nodes
-interface Edge {
-    id: number;
-    from: string;
-    to: string;
-    nodeFrom: Node;
-    nodeTo: Node;
-}
+// export interface EdgeWithNodes {
+//     edgeId: number;
+//     from: string;
+//     to: string;
+//     nodeFrom: Node;
+//     nodeTo: Node;
+// }
 
 
 interface MapViewProps {
     svgMapUrl: string;
     nodes: myNode[];
-    edges: Edge[];
+    edges: minhEdges[];
     buildingId: string;
     onNodeClick?: (node: myNode) => void;
 }
@@ -68,7 +70,7 @@ const ViewMap = ({
     };
 
     // Get edge style based on type
-    const getEdgeStyle = (edge: Edge) => {
+    const getEdgeStyle = (edge: minhEdges) => {
         return { stroke: "blue", strokeWidth: 5 };
 
     };
@@ -78,6 +80,7 @@ const ViewMap = ({
         if (onNodeClick) {
             onNodeClick(node);
         }
+        console.log(node);
     };
 
     // Zoom and pan state (matching ViewPath component)
@@ -183,8 +186,8 @@ const ViewMap = ({
 
                         {/* Draw edges */}
                         {edges.map(edge => {
-                            const startNode = nodes.find(node => node.id === edge.from);
-                            const endNode = nodes.find(node => node.id === edge.to);
+                            const startNode = nodes.find(node => node.nodeId === edge.from);
+                            const endNode = nodes.find(node => node.nodeId === edge.to);
 
                             if (!startNode || !endNode) return null;
 
@@ -192,7 +195,7 @@ const ViewMap = ({
 
                             return (
                                 <line
-                                    key={edge.id}
+                                    key={edge.edgeId}
                                     x1={startNode.x}
                                     y1={startNode.y}
                                     x2={endNode.x}
@@ -211,7 +214,7 @@ const ViewMap = ({
 
                             return (
                                 <g
-                                    key={node.id}
+                                    key={node.nodeId}
                                     onClick={() => handleNodeClick(node)}
                                     style={{ cursor: 'pointer' }}
                                 >

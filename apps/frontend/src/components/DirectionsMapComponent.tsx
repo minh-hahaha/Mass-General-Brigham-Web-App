@@ -5,8 +5,6 @@ import TravelModeComponent from "@/components/TravelModeComponent.tsx";
 import OverlayComponent from "@/components/OverlayComponent.tsx";
 import HospitalMapComponent from "@/components/HospitalMapComponent";
 
-import {myNode} from "../../../backend/src/Algorithms/classes.ts";
-
 import { MapPin, MapPlus } from 'lucide-react';
 
 import {
@@ -16,6 +14,8 @@ import {
     getDirectoryNames
 } from "@/database/gettingDirectory.ts";
 import {GetNode} from "@/database/getDepartmentNode.ts";
+
+import {myNode} from "common/src/classes/classes.ts";
 
 
 const Buildings = [
@@ -46,7 +46,7 @@ const ChestnutParkingBounds = {
 const ChestnutParkingSVG = '/ChestnutParking.svg';
 
 const nullNode : myNode = {
-    id: "",
+    nodeId: "",
     x: 0,
     y: 0,
     floor: "0",
@@ -56,7 +56,7 @@ const nullNode : myNode = {
     roomNumber: "0"
 }
 const CHDoorA : myNode = {
-    id: "CHFloor1Door8",
+    nodeId: "CHFloor1Door8",
     x: 694.0946366710934,
     y: 209.91282960575376,
     floor: "1",
@@ -66,7 +66,7 @@ const CHDoorA : myNode = {
     roomNumber: ""
 }
 const CHDoorBC : myNode = {
-    id: "CHFloor1Door15",
+    nodeId: "CHFloor1Door15",
     x: 953.0376994960379,
     y: 517.9228102091384,
     floor: "1",
@@ -76,7 +76,7 @@ const CHDoorBC : myNode = {
     roomNumber: ""
 }
 const PP20 : myNode = {
-    id: "20PPFloor1Door1",
+    nodeId: "20PPFloor1Door1",
     x: 54.04440366094416,
     y: 838.0104833982157,
     floor: "1",
@@ -86,7 +86,7 @@ const PP20 : myNode = {
     roomNumber: ""
 }
 const PP22 : myNode = {
-    id: "22PPFloor3Elevator1",
+    nodeId: "22PPFloor3Elevator1",
     x: 562.5431410733905,
     y: 630.6622737119537,
     floor: "3",
@@ -123,6 +123,8 @@ const DirectionsMapComponent = () => {
     const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
 
     const [buildingID, setBuildingID] = useState<number>(0);
+
+    const [textDirections, setTextDirections] = useState<string>('');
 
     useEffect(() => {
         if (!routesLibrary || !map) return;
@@ -258,6 +260,11 @@ const DirectionsMapComponent = () => {
                     setDistance(leg.distance?.text || 'N/A');
                     setDuration(leg.duration?.text || 'N/A');
                     setShowRouteInfo(true);
+                    // TEXT DIRECTIONS
+                    const htmlStr: string = leg.steps
+                        .map(direction => `${direction.instructions} and continue for ${direction.distance ? direction.distance.text : ''}`)
+                        .toString();
+                    setTextDirections(htmlStr.replace(/,/g, '<br><br>'));
                 }
             });
     };
@@ -343,6 +350,7 @@ const DirectionsMapComponent = () => {
     const clearParking = () => {
         setLot('');
     };
+
 
     const handleHere = () => {
         setShowHospital(prevState => !prevState);
@@ -593,6 +601,10 @@ const DirectionsMapComponent = () => {
                     </button> : <></>
 
                     }
+                </div>
+                <div id={"text-directions"} dangerouslySetInnerHTML={{ __html: textDirections }} />
+                <div>
+
                 </div>
             </aside>
 

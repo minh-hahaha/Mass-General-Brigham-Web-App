@@ -2,18 +2,19 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import EditorFloorSelector from "@/components/EditorFloorSelector.tsx";
 import { ROUTES } from "common/src/constants.ts";
+
+import {myNode, minhEdges} from "common/src/classes/classes.ts";
 import ViewMap from "./ViewMap.tsx";
-import {myNode} from "../../../backend/src/Algorithms/classes.ts";
 
 // Edge type to represent connections between nodes
-interface Edge {
-    id: number;
-    from: string; // node id
-    to: string; // node id
-    nodeFrom: myNode; // node from
-    nodeTo: myNode; // node to
-
-}
+// interface EdgeWithNodes {
+//     edgeId: number;
+//     from: string; // node id
+//     to: string; // node id
+//     nodeFrom: myNode; // node from
+//     nodeTo: myNode; // node to
+//
+// }
 
 // Floor type (same as in your example)
 interface Floor {
@@ -56,7 +57,7 @@ interface Props {
 const MapViewComponent = ({ initialFloorId = "CH-1", selectedBuildingId }: Props) => {
     // State for nodes and edges
     const [nodes, setNodes] = useState<myNode[]>([]);
-    const [edges, setEdges] = useState<Edge[]>([]);
+    const [edges, setEdges] = useState<minhEdges[]>([]);
     const [currentFloorId, setCurrentFloorId] = useState<string>(initialFloorId);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 

@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { myNode } from "../../../backend/src/Algorithms/classes.ts";
+
+
+import {myNode} from "common/src/classes/classes.ts";
 
 interface Edge {
     from: string;

@@ -1,0 +1,45 @@
+deptId,deptServices,deptName,buildingId,deptPhone,nodeId,floor,roomNum,locId,locType
+1,"Allergy (environmental, food, medication and venoms), asthma, anaphylaxis, angioedema, sinusitis, and immunodeficiencyy",Allergy and Clinical Immunology,1,617-732-9850,null,5,540,3,suite
+1,"Allergy (environmental, food, medication and venoms), asthma, anaphylaxis, angioedema, sinusitis, and immunodeficiencyy",Allergy and Clinical Immunology,1,617-732-9850,null,3,301,2,suite
+1,"Allergy (environmental, food, medication and venoms), asthma, anaphylaxis, angioedema, sinusitis, and immunodeficiencyy",Allergy and Clinical Immunology,1,617-732-9850,null,0,null,1,hallway
+2,Backup childcare for employees,"Backup Child Care Center (Monday-Friday, 8am-4:30pm)",1,617-732-9543,null,2,210,4,suite
+3,Medical and surgical dermatology,Brigham Dermatology Associates (BDA),1,617-732-9080,null,3,317,5,suite
+4,"Gynecology, obstetrics",Brigham Obstetrics and Gynecology Group (BPG),1,617-732-9100,null,5,575,6,suite
+5,Adult primary care,Brigham Physicians Group,1,617-732-9900,null,5,530,8,suite
+5,Adult primary care,Brigham Physicians Group,1,617-732-9900,null,4,428,7,suite
+6,"Psychiatry, psychology, social work",Brigham Psychiatric Specialties,1,617-732-9811,null,3,303,9,suite
+7,Multidisciplinary pain management,Center for Pain Medicine,1,617-732-9060,null,3,320,10,suite
+8,"Crohns disease, inflammatory bowel disease, infusion services, microscopic colitis, pulmonary, rheumatology, ulcerative colitis",Crohns and Colitis Center,1,617-732-6389,null,2,201,11,suite
+9,"Bacterial overgrowth breath test, colonoscopy, H.Pylori breath test, lactose malabsorbtion breath test, upper endoscopy",Endoscopy Center,1,617-732-7426,null,2,202,12,suite
+10,"Cardiology, dermatology, (cosmetic, medical, and surgical), endocrinology, gastroenterology, gynecology, hematology, infectious diseases, mental health (social work), general neurology, nutrition, primary care, pulmonary, renal, rheumatology, sleep medicine, Womens Health (Menopause and Midlife Clinic, Obstetric Internal Medicine)",Gretchen S. and Edward A.Fish Center for Womens Health,1,617-732-9300,null,4,402,13,suite
+11,"Blood work, lab services","Laboratory (Monday-Friday 7am-6:30pm, Saturday 9am-1pm, excluding holidays)",1,617-732-9841,null,1,100,14,suite
+12,"Orthopedic surgery, Vascular surgery, Contact Dermatitis and Occupational Dermatology Program, Pain Medicine and Travel Medicine",Multi-Specialty Clinic,1,617-732-9500,null,1,130,15,suite
+13,"Acupuncture, health coaching, chiropractic, craniosacral therapy, integrative medicine, structural massage and movement therapies, neurology (movement disorders and headache), echocardiography, and pulmonary. Educational courses: Integrative wellness courses are also offered.",Osher Clinical Center for Integrative Health,1,617-732-9700,null,4,422,16,suite
+14,Patient financial counseling,Patient Financial Services,1,617-732-9677,null,2,204,17,suite
+16,"Bone density, Breast imaging/Mammography, ultrasound, X-Ray",Radiology,1,617-732-9801,null,5,560,19,suite
+17,"CT scan, MRI, X-Ray","Radiology, MRI/CT scan",1,617-732-9821,null,1,102,20,suite
+18,"Orthopedic, sports, neurologic and vestibular Physical Therapy, Mens and Womens pelvic floor Physical Therapy. Hand/Occupational Therapy Speech Language Pathology",Rehabilitation Services,1,617-732-9525,null,2,200,21,suite
+19,Blood Draw / Phlebotomy,Blood Draw / Phlebotomy,2,N/A,null,1,null,22,department
+20,Pharmacy,Pharmacy,2,N/A,null,1,null,23,department
+21,"magnetic resonance imaging (MRI), computed tomography (CT), single photon emission computed tomography (SPECT) imaging, ultrasound, digital mammography, x-ray, bone densitometry. Available twice a week: arthrograms, magnetic resonance (MR) arthrograms, computed tomography (CT) arthrograms, diagnostic and therapeutic joint injections",Radiology,2,Via Fax: 508-718-4026,null,1,null,24,department
+22,"Transthoracic echocardiography, Holter monitoring, Electrocardiogram (ECG), Exercise tolerance testing, Exercise stress echocardiography, Vascular and arterial studies",Cardiovascular Services,2,1-866-378-9164,null,1,null,25,department
+23,"diagnostic cystoscopy (cysto), retrograde pyelogram, transurethral resection of bladder tumor, cold knife urethrotomy, bladder stone removal, fulguration, bladder biopsy, ureteroscopy, chemotherapy and formalin instillation, laser lithotripsy, electrohydraulic lithotripsy (EHL), urethral or bladder neck contracture dilation, circumcision, suprapubic tube (catheter) change, ureteral stent placement and removal, prostate needle biopsy, varicocelectomy, hydrocelectomy, vasectomy, testicular biopsy, orchiectomy, SPARC™ procedures",Urology,2,1-866-378-9164,null,1,null,26,department
+24,Urgent Care,Urgent Care Center,2,508-718-4400,null,1,null,27,department
+25,"Hand and Upper Extremity, Arthroplasty, Pediatric Trauma, Physiatry, Podiatry",Orthopedics,2,1-866-378-9164,null,2,null,28,department
+26,"Cardiac Rehab, Occupational Therapy(Hand Therapy, Upper Extremity), Physical Therapy, Speech - Language, Clinical Lab, Surgi-Care",Rehabilitation Services,2, 1-866-378-9164,null,2,null,29,department
+27,"Audiology, ENT, General and Gastrointestinal Surgery, Plastic Surgery, Thoracic Surgery, Vascular Surgery, Weight Management and Wellness",Surgical Specialties,2,N/A,null,3,null,30,department
+28,"arm, elbow and hand disorders, athletic injuries, spine disorders, foot and ankle problems, hip and knee disorders, shoulder issues, joint replacement, musculoskeletal oncology",Sports Medicine Center,2,1-866-378-9164,null,3,null,31,department
+29,X-Ray,X-Ray Suite,2,N/A,null,3,null,32,department
+30,Electromyography (EMG),Electromyography (EMG),2,N/A,null,4,null,33,department
+31,Nutrition,Nutrition,2,N/A,null,4,null,34,department
+32,"diagnosis and treatment of spine-related low-back and neck pain, complex regional pain syndrome, post-herpetic neuralgia (shingles), other neuropathic syndromes, chronic pelvic pain, chronic pain in young adults, comprehensive evaluation for patients with cancer-related pain, headaches, arthritis",Pain Medicine,2,1-866-378-9164,null,4,null,35,department
+33,"interventional spine procedures, electrodiagnostic medicine consultations and alternative therapies such as medical acupuncture",Physiatry,2,N/A,null,4,null,36,department
+34,Plumonary Function Testing,Plumonary Function Testing,2,N/A,null,4,null,37,department
+35,Day Surgery Center,Day Surgery Center,2,N/A,null,4,null,38,department
+36,Mass General Hospital for Children,Mass General Hospital for Children,3,888-644-3248,null,1,null,39,department
+37,Spaulding Outpatient Center for Children,Spaulding Outpatient Center for Children,3,(857) 307-3202,null,1,null,40,department
+38,"Allergy, Cardiac Arrhythmia, Dermatology, Endocrinology, Gastroenterology, Kidney (Renal) Medicine, Neurology, Neurosurgery, Ophthalmology, Optometry, Pulmonology, Rheumatology, Vein Care Services, Women's Health",Multi Specialty Clinic,3,1-866-378-9164,null,3,null,41,department
+39,Patient Financial Services,Patient Financial Services,3,N/A,null,3,null,42,department
+40,Blood Draw / Phlebotomy,Blood Draw / Phlebotomy,3,N/A,null,4,null,43,department
+41,Community Room,Community Room,3,N/A,null,4,null,44,department
+42,Primary Care,Primary Care,3,(508) 718-4050,null,4,null,45,department
