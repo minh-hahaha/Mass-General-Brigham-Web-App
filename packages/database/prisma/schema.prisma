@@ -57,9 +57,8 @@ model MedicalDeviceRequest {
   servRequestId      ServiceRequest @relation(name: "MedicalDeviceRequest", fields: [servReqId], references: [requestId])
   device             String
   deviceReasoning    String
-  deviceSerialNumber String?
+  deviceSerialNumber String
   deviceModel        String?
-  date               DateTime
   location           String
   department         String
 }
