@@ -8,6 +8,7 @@ export class myNode {
     name: string;
     roomNumber: string | null;
 
+
     constructor(
         nodeID: string,
         x: number,
