@@ -1,7 +1,9 @@
 import { ROUTES } from 'common/src/constants';
-import { myNode } from '../../../backend/src/Algorithms/classes.ts';
+import {myNode} from "../../../backend/src/Algorithms/classes.ts";
 
 import axios from 'axios';
+
+import {myNode} from "common/src/classes/classes.ts";
 
 export interface DepartmentRequest {
     deptId: number;
@@ -24,6 +26,7 @@ export interface DirectoryRequestByBuilding {
     buildingId: number;
     deptPhone: string;
     nodeId: string;
+
 }
 
 const params = {
