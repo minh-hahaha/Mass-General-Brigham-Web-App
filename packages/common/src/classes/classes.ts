@@ -9,6 +9,7 @@ export class myNode {
     roomNumber: string | null;
 
 
+
     constructor(
         nodeID: string,
         x: number,
