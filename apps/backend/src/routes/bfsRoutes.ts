@@ -20,7 +20,7 @@ class Vector {
         const cross = this.x * other.y - this.y * other.x;
         // Return angle in degrees
         // Using degrees instead of radians bc it's easier to compare bigger numbers than decimals
-        return Math.atan2(cross, dot) * 180 / Math.PI;
+        return (Math.atan2(cross, dot) * 180) / Math.PI;
     }
 }
 
@@ -44,8 +44,20 @@ function createTextPath(traversalResult: myNode[] | undefined | null) {
     }
 
     // Initial facing direction. TODO: need to be able to figure out direction for the first node
-    // Currently starts facing south
-    let currentDirection = new Vector(0, traversalResult[0].y + 50);
+    // Currently hardcoded for each location
+    const StartDirs = [
+        { key: 'CH', dir: new Vector(0, traversalResult[0].y + 50) },
+        { key: '20PP', dir: new Vector(traversalResult[0].x + 50, 0) },
+        { key: '22PP', dir: new Vector(0, traversalResult[0].y + 50) },
+    ];
+    const startDir = StartDirs.find((value) => traversalResult[0].id.includes(value.key));
+    let currentDirection;
+    if (!startDir) {
+        currentDirection = new Vector(0, 0);
+    } else {
+        console.log('StartDir:', startDir.key);
+        currentDirection = startDir.dir;
+    }
     // Traversing floors: when the user is taking the elevator or stairs
     let traversingFloors = false;
     // Loop through each node in the list
@@ -72,7 +84,11 @@ function createTextPath(traversalResult: myNode[] | undefined | null) {
             traversingFloors = true;
             // If the next node is not an elevator or stairs, and the user should be traversing floors,
             // we have arrived at the next walkable node
-        } else if (traversingFloors && (nextNode.nodeType !== 'Elevator' && nextNode.nodeType !== 'Stairs')) {
+        } else if (
+            traversingFloors &&
+            nextNode.nodeType !== 'Elevator' &&
+            nextNode.nodeType !== 'Stairs'
+        ) {
             traversingFloors = false;
             // Instruct the user to take the elevator to the nth floor
             console.log(
@@ -80,7 +96,10 @@ function createTextPath(traversalResult: myNode[] | undefined | null) {
             );
         }
         // The default instructions if not traversing floors or if getting off the elevator/stairs
-        if (!traversingFloors || (traversingFloors && (nextNode.nodeType !== 'Elevator' && nextNode.nodeType !== 'Stairs'))) {
+        if (
+            !traversingFloors ||
+            (traversingFloors && nextNode.nodeType !== 'Elevator' && nextNode.nodeType !== 'Stairs')
+        ) {
             console.log(
                 `From the ${currentNode.id} ${determineDirection(angle)} until you reach the ${nextNode.id}`
             );
