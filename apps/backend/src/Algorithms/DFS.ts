@@ -1,9 +1,4 @@
-import PrismaClient from '../bin/prisma-client';
-import { Graph } from './classes.ts';
-import { exportNodesAndEdges } from './ExportNodesAndEdges.ts';
-import { loadMyGraph } from './BFS.ts';
-
-
+import {loadMyGraph} from "./loadGraph.ts";
 
 
 import { myNode } from 'common/src/classes/classes.ts';
@@ -46,6 +41,19 @@ export async function dfs(
 
         //adding to visited, and updating queues to add the neighbours
         for (const edge of graph.edges) {
+            let neighbour = null;
+            if (edge.from.id === currentNode.id) {
+                neighbour = edge.to;
+
+            } else if (edge.to.id === currentNode.id) {
+                neighbour = edge.from;
+
+            }
+
+            if(neighbour && !visited.has(neighbour.id)) {
+                visited.add(neighbour.id);
+                queue.push({ node: neighbour, path: [...currentPath, neighbour] });
+            }
         }
     }
 }
