@@ -5,8 +5,9 @@ import {MedicalDeviceRequestData} from "@/routes/MedicalDeviceServiceRequestPage
 export interface incomingMedicalDeviceRequest {
     comments: string;
     employeeId: number;
+    employeeName: string;
     locationId: number;
-    translationRequest: {
+    medicalRequest: {
         device: string;
         deviceReasoning: string;
         deviceSerialNumber: string;
