@@ -28,5 +28,5 @@ export async function SubmitMedicalDeviceRequest(request: MedicalDeviceRequestDa
 }
 
 export async function GetMedicalDeviceRequest() {
-    return (await axios.get<incomingMedicalDeviceRequest>(ROUTES.MEDICALDEVICEREQUEST)).data;
+    return (await axios.get<incomingMedicalDeviceRequest[]>(ROUTES.MEDICALDEVICEREQUEST)).data;
 }
