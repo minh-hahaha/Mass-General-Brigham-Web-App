@@ -78,6 +78,7 @@ const MapView = ({
         if (onNodeClick) {
             onNodeClick(node);
         }
+        console.log(node);
     };
 
     // Zoom and pan state (matching ViewPath component)
