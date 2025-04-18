@@ -41,9 +41,8 @@ const MedicalDeviceRequestDisplayPage = () => {
                     <TableRow>
                         <TableHead>Request ID</TableHead>
                         <TableHead>Medical Device</TableHead>
+                        <TableHead>Medical Device Serial Number</TableHead>
                         <TableHead>Location</TableHead>
-                        <TableHead>Hospital</TableHead>
-                        <TableHead>Time Needed</TableHead>
                         <TableHead>Employee Name</TableHead>
                         <TableHead>Priority</TableHead>
                         <TableHead>Status</TableHead>
@@ -51,23 +50,23 @@ const MedicalDeviceRequestDisplayPage = () => {
                         <TableHead>Department</TableHead>
                     </TableRow>
                 </TableHeader>
-                // TODO: put data in table cells
-                {/*<TableBody>*/}
-                {/*                    /!*{requests.map((req) (*!/*/}
-                {/*                        <TableRow>*/}
-                {/*                        <TableCell>{req.requestId}</TableCell>*/}
-                {/*                        <TableCell>{req.medicalDeviceRequest.medicalDevice</TableCell>*/}
-                {/*                        <TableCell></TableCell>*/}
-                {/*                        <TableCell></TableCell>*/}
-                {/*                        <TableCell></TableCell>*/}
-                {/*                        <TableCell></TableCell>*/}
-                {/*                        <TableCell></TableCell>*/}
-                {/*                        <TableCell></TableCell>*/}
-                {/*                        <TableCell></TableCell>*/}
-                {/*                        <TableCell></TableCell>*/}
-                {/*                        </TableRow>*/}
-                {/*                        ))}*/}
-                {/*                </TableBody>*/}
+                <TableBody>
+                    {requests.map((req) => (
+                        <TableRow>
+                            <TableCell>{req.requestId}</TableCell>
+                            <TableCell>{req.medicalRequest.device}</TableCell>
+                            <TableCell>{req.medicalRequest.deviceSerialNumber}</TableCell>
+                            <TableCell>{req.medicalRequest.deviceModel}</TableCell>
+                            <TableCell>{req.medicalRequest.location}</TableCell>
+                            <TableCell>{req.medicalRequest.department}</TableCell>
+                            <TableCell>{req.employeeName}</TableCell>
+                            <TableCell>{req.priority}</TableCell>
+                            <TableCell>{req.medicalRequest.date}</TableCell>
+                            <TableCell>{req.status}</TableCell>
+                            <TableCell>{req.requestDate}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
             </Table>
         </div>
     )
