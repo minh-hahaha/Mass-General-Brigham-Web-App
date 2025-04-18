@@ -124,6 +124,8 @@ const DirectionsMapComponent = () => {
 
     const [buildingID, setBuildingID] = useState<number>(0);
 
+    const [textDirections, setTextDirections] = useState<string>('');
+
     useEffect(() => {
         if (!routesLibrary || !map) return;
         setDirectionsService(new routesLibrary.DirectionsService());
@@ -258,6 +260,11 @@ const DirectionsMapComponent = () => {
                     setDistance(leg.distance?.text || 'N/A');
                     setDuration(leg.duration?.text || 'N/A');
                     setShowRouteInfo(true);
+                    // TEXT DIRECTIONS
+                    const htmlStr: string = leg.steps
+                        .map(direction => `${direction.instructions} and continue for ${direction.distance ? direction.distance.text : ''}`)
+                        .toString();
+                    setTextDirections(htmlStr.replace(/,/g, '<br><br>'));
                 }
             });
     };
@@ -343,6 +350,7 @@ const DirectionsMapComponent = () => {
     const clearParking = () => {
         setLot('');
     };
+
 
     const handleHere = () => {
         setShowHospital(prevState => !prevState);
@@ -595,6 +603,10 @@ const DirectionsMapComponent = () => {
                     </button> : <></>
 
                     }
+                </div>
+                <div id={"text-directions"} dangerouslySetInnerHTML={{ __html: textDirections }} />
+                <div>
+
                 </div>
             </aside>
 
