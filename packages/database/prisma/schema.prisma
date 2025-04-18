@@ -55,7 +55,6 @@ model MaintenanceRequest {
   maintenanceHospital    String
   maintenanceLocation    String
   maintenanceTime        DateTime
-  // employee_name           String
   servRequestId          ServiceRequest @relation(name: "MaintenanceRequest", fields: [servMaintenanceId], references: [requestId])
 }
 
@@ -90,7 +89,6 @@ model Department {
   buildingId    Int
   deptPhone     String
   members       Employee[]
-  locations     Location[]
   building      Building   @relation(fields: [buildingId], references: [buildingId])
   nodeId        String?
   node          Node?      @relation(fields: [nodeId], references: [nodeId])
@@ -116,7 +114,6 @@ model Node {
   edgesFrom   Edge[]  @relation("NodeToEdgeFrom")
   edgesTo     Edge[]  @relation("NodeToEdgeTo")
   departments Department[]
-  location    Location? @relation(name:"LocationNode")
 }
 
 model Edge {
