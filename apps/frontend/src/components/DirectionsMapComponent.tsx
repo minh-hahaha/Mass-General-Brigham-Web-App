@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo, ChangeEvent } from 'react'
 import SelectElement from '../elements/SelectElement.tsx';
 import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google-maps';
 import TravelModeComponent from "@/components/TravelModeComponent.tsx";
-import OverlayComponent from "@/components/svgOverlay.tsx";
+import OverlayComponent from "@/components/OverlayComponent.tsx";
 import HospitalMapComponent from "@/components/HospitalMapComponent";
 
 import {myNode} from "../../../backend/src/Algorithms/classes.ts";
@@ -569,10 +569,8 @@ const DirectionsMapComponent = () => {
                                 <button
                                     key={lot}
                                     onClick={() =>
-                                        lot === 'A'
-                                            ? handleParkA()
-                                            : lot === 'B'
-                                                ? handleParkB()
+                                        lot === 'A' ? handleParkA()
+                                            : lot === 'B' ? handleParkB()
                                                 : handleParkC()
                                     }
                                     className="bg-white text-mgbblue border border-mgbblue py-1 rounded-md hover:bg-mgbblue hover:text-white transition"

@@ -145,13 +145,11 @@ const HospitalMapComponent = ({startNode, endNode, initialFloorId = "CH-1", sele
                         buildingId={currentBuildingId}
                     />
 
-                    {/* select floor - only show if not in "path only" mode */}
-
-                        <FloorSelector
-                            floors={availableFloors}
-                            currentFloorId={currentFloorId}
-                            onChange={handleFloorChange}
-                        />
+                    <FloorSelector
+                        floors={availableFloors}
+                        currentFloorId={currentFloorId}
+                        onChange={handleFloorChange}
+                    />
                 </>
             )}
         </div>
