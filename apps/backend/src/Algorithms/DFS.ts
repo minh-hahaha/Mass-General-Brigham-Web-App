@@ -1,6 +1,5 @@
 import {loadMyGraph} from "./loadGraph.ts";
 
-
 import { myNode } from 'common/src/classes/classes.ts';
 
 export async function dfs(
