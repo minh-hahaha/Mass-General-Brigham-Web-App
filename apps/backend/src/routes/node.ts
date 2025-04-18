@@ -3,8 +3,6 @@ import PrismaClient from '../bin/prisma-client';
 
 const router: Router = express.Router();
 
-
-
 router.get('/', async (req: Request, res: Response) => {
     try {
         const NODES = await PrismaClient.node.findMany({});
@@ -16,9 +14,7 @@ router.get('/', async (req: Request, res: Response) => {
     }
 });
 
-
 router.post('/', async (req: Request, res: Response) => {
-
     const tempNode = {
         nodeId: req.body.nodeId,
         x: req.body.x,
@@ -28,24 +24,23 @@ router.post('/', async (req: Request, res: Response) => {
         nodeType: req.body.nodeType,
         name: req.body.name,
         roomNumber: req.body.roomNumber,
-        departments: req.body.departments
-    }
+        departments: req.body.departments,
+    };
 
-    try{
+    try {
         const NODES_UPDATE = await PrismaClient.node.upsert({
             where: {
-                nodeId: tempNode.nodeId
+                nodeId: tempNode.nodeId,
             },
             update: tempNode,
-            create: tempNode
-        })
+            create: tempNode,
+        });
         res.status(200).json(NODES_UPDATE);
-    } catch (error){
+    } catch (error) {
         console.error(error);
         res.status(400).json({ error: 'Failed to update nodes' });
     }
-})
-
+});
 
 router.delete('/:id', async (req: Request, res: Response) => {
     const nodeId = req.params.nodeId;
@@ -53,8 +48,8 @@ router.delete('/:id', async (req: Request, res: Response) => {
     try {
         await PrismaClient.node.delete({
             where: {
-                nodeId: nodeId
-            }
+                nodeId: nodeId,
+            },
         });
         res.status(200).json({ message: `Node ${nodeId} deleted successfully.` });
     } catch (error) {
@@ -62,6 +57,5 @@ router.delete('/:id', async (req: Request, res: Response) => {
         res.status(400).json({ error: `Failed to delete node ${nodeId}` });
     }
 });
-
 
 export default router;
