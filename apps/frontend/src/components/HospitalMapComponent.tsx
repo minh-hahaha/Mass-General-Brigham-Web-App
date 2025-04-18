@@ -1,9 +1,10 @@
-import {myNode} from "../../../backend/src/Algorithms/classes.ts";
 import ViewPath from "@/components/ViewPath.tsx";
 import FloorSelector from "@/components/FloorSelector.tsx";
 import {useState, useEffect} from "react";
 import {ROUTES} from "common/src/constants.ts";
 import axios from "axios";
+
+import {myNode} from "common/src/classes/classes.ts";
 
 
 const BuildingNames: Record<string, string> = {

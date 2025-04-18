@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef} from "react";
-import {myNode} from "../../../backend/src/Algorithms/classes.ts";
+
+
+import {myNode} from "common/src/classes/classes.ts";
 
 // Edge type to represent connections between nodes
 interface Edge {
