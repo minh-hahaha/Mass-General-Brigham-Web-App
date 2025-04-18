@@ -5,8 +5,6 @@ import TravelModeComponent from "@/components/TravelModeComponent.tsx";
 import OverlayComponent from "@/components/svgOverlay.tsx";
 import HospitalMapComponent from "@/components/HospitalMapComponent";
 
-import {myNode} from "../../../backend/src/Algorithms/classes.ts";
-
 import { MapPin, MapPlus } from 'lucide-react';
 
 import {
@@ -16,6 +14,8 @@ import {
     getDirectoryNames
 } from "@/database/gettingDirectory.ts";
 import {GetNode} from "@/database/getDepartmentNode.ts";
+
+import {myNode} from "common/src/classes/classes.ts";
 
 
 const Buildings = [

@@ -38,6 +38,6 @@ export async function submitServiceRequest(request: serviceRequest) {
 }
 
 // GET request to fetch all maintenance requests
-export async function getServiceRequest(request: incomingServiceRequest) {
+export async function getServiceRequest() {
     return (await axios.get<incomingServiceRequest[]>(ROUTES.SERVICEREQUESTS)).data;
 }

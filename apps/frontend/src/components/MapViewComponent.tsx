@@ -3,7 +3,9 @@ import axios from "axios";
 import EditorFloorSelector from "@/components/EditorFloorSelector.tsx";
 import { ROUTES } from "common/src/constants.ts";
 import MapView from "./MapView.tsx";
-import {myNode} from "../../../backend/src/Algorithms/classes.ts";
+
+
+import {myNode} from "common/src/classes/classes.ts";
 
 // Edge type to represent connections between nodes
 interface Edge {
