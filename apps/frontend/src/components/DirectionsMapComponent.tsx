@@ -46,7 +46,7 @@ const ChestnutParkingBounds = {
 const ChestnutParkingSVG = '/ChestnutParking.svg';
 
 const nullNode : myNode = {
-    id: "",
+    nodeId: "",
     x: 0,
     y: 0,
     floor: "0",
@@ -56,7 +56,7 @@ const nullNode : myNode = {
     roomNumber: "0"
 }
 const CHDoorA : myNode = {
-    id: "CHFloor1Door8",
+    nodeId: "CHFloor1Door8",
     x: 694.0946366710934,
     y: 209.91282960575376,
     floor: "1",
@@ -66,7 +66,7 @@ const CHDoorA : myNode = {
     roomNumber: ""
 }
 const CHDoorBC : myNode = {
-    id: "CHFloor1Door15",
+    nodeId: "CHFloor1Door15",
     x: 953.0376994960379,
     y: 517.9228102091384,
     floor: "1",
@@ -76,7 +76,7 @@ const CHDoorBC : myNode = {
     roomNumber: ""
 }
 const PP20 : myNode = {
-    id: "20PPFloor1Door1",
+    nodeId: "20PPFloor1Door1",
     x: 54.04440366094416,
     y: 838.0104833982157,
     floor: "1",
@@ -86,7 +86,7 @@ const PP20 : myNode = {
     roomNumber: ""
 }
 const PP22 : myNode = {
-    id: "22PPFloor3Elevator1",
+    nodeId: "22PPFloor3Elevator1",
     x: 562.5431410733905,
     y: 630.6622737119537,
     floor: "3",
