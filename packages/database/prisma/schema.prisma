@@ -28,10 +28,10 @@ model Employee {
 }
 
 model ServiceRequest {
-  requestId               Int       @id @default(autoincrement())
-  assignedId              Employee? @relation(fields: [employeeId], references: [employeeId])
-  employeeId              Int?
-  employeeName           String?
+  requestId             Int       @id @default(autoincrement())
+  assignedId            Employee? @relation(fields: [employeeId], references: [employeeId])
+  employeeId            Int?
+  employeeName          String?
   //this is to satisfy the 9 commandments until we get proper intgration between the locations in the database and the forms
   requesterDepartmentId String?
   requesterRoomNumber   String?
@@ -46,13 +46,26 @@ model ServiceRequest {
   patientTransport PatientTransport? @relation(name: "ServicePatientTransport")
   requestTime      DateTime?         @default(now()) @db.Time
 
-  translationRequest TranslationRequest?
-  sanitation         Sanitation?         @relation(name: "ServiceSanitation")
-  maintenanceRequest MaintenanceRequest? @relation(name: "MaintenanceRequest")
+  translationRequest   TranslationRequest?
+  sanitation           Sanitation?           @relation(name: "ServiceSanitation")
+  maintenanceRequest   MaintenanceRequest?   @relation(name: "MaintenanceRequest")
+  medicalDeviceRequest MedicalDeviceRequest? @relation(name: "MedicalDeviceRequest")
+}
+
+model MedicalDeviceRequest {
+  servReqId          Int            @id
+  servRequestId      ServiceRequest @relation(name: "MedicalDeviceRequest", fields: [servReqId], references: [requestId])
+  device             String
+  deviceReasoning    String
+  deviceSerialNumber String?
+  deviceModel        String?
+  date               DateTime
+  location           String
+  department         String
 }
 
 model MaintenanceRequest {
-  servMaintenanceId     Int            @id
+  servMaintenanceId      Int            @id
   maintenanceType        String
   maintenanceDescription String
   maintenanceHospital    String
@@ -87,16 +100,16 @@ model TranslationRequest {
 }
 
 model Department {
-  deptId        Int        @id @default(autoincrement())
-  deptServices  String
-  deptName      String
-  buildingId    Int
-  deptPhone     String
-  members       Employee[]
-  locations     Location[]
-  building      Building   @relation(fields: [buildingId], references: [buildingId])
-  nodeId        String?
-  node          Node?      @relation(fields: [nodeId], references: [id])
+  deptId       Int        @id @default(autoincrement())
+  deptServices String
+  deptName     String
+  buildingId   Int
+  deptPhone    String
+  members      Employee[]
+  locations    Location[]
+  building     Building   @relation(fields: [buildingId], references: [buildingId])
+  nodeId       String?
+  node         Node?      @relation(fields: [nodeId], references: [id])
 }
 
 model Location {
@@ -122,7 +135,7 @@ model Building {
 model Node {
   // ignore id
   // id         Int     @id @default(autoincrement())
-  id          String  @id
+  id          String       @id
   x           Decimal
   y           Decimal
   floor       String
@@ -130,10 +143,10 @@ model Node {
   nodeType    String
   name        String
   roomNumber  String?
-  edgesFrom   Edge[]  @relation("NodeToEdgeFrom")
-  edgesTo     Edge[]  @relation("NodeToEdgeTo")
+  edgesFrom   Edge[]       @relation("NodeToEdgeFrom")
+  edgesTo     Edge[]       @relation("NodeToEdgeTo")
   departments Department[]
-  location    Location? @relation(name:"LocationNode")
+  location    Location?    @relation(name: "LocationNode")
 }
 
 model Edge {
@@ -146,14 +159,14 @@ model Edge {
 }
 
 model Sanitation {
-  servReqId                Int            @id
+  servReqId              Int            @id
   sanitationLocationId   String
   sanitationDepartmentId String
-  sanitationRoomNumber Int
-  sanitationType           String
-  recurring                Boolean
-  hazardLevel              String
-  disposalRequired         Boolean
-  completeBy               DateTime       @default(now()) @db.Time
-  servRequestId           ServiceRequest @relation(name: "ServiceSanitation", fields: [servReqId], references: [requestId])
+  sanitationRoomNumber   Int
+  sanitationType         String
+  recurring              Boolean
+  hazardLevel            String
+  disposalRequired       Boolean
+  completeBy             DateTime       @default(now()) @db.Time
+  servRequestId          ServiceRequest @relation(name: "ServiceSanitation", fields: [servReqId], references: [requestId])
 }
