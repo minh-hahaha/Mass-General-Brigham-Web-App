@@ -85,6 +85,14 @@ function App() {
                                     path="/ServiceRequestSelectPage"
                                     element={<ServiceRequestSelectPage />}
                                 />
+                                <Route
+                                    path={"/MedicalDeviceRequestPage"}
+                                    element={<MedicalDeviceServiceRequestPage/>}
+                                />
+                                <Route
+                                    path={"/MedicalDeviceDisplayPage"}
+                                    element={<MedicalDeviceServiceDisplayPage/>}
+                                />
                             </Routes>
                         </main>
                     </div>
