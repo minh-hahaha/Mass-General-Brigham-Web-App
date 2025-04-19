@@ -33,12 +33,14 @@ export interface MedicalDeviceRequestData {
     requestDate: string;
     priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     location: location;
+    device: string;
     date: string;
-    medicalDevices: MedicalDeviceType
+    deviceModel?: string;
+    deviceSerialNumber?: string;
+    deviceReasoning: string;
     quantity: number;
-    reasoning: string;
-    status: status
-    notes: string;
+    status: status;
+    notes?: string;
     department: string;
 }
 
@@ -50,9 +52,11 @@ const MedicalDeviceServiceRequestPage = () => {
     const [priority, setPriority] = useState<MedicalDeviceRequestData['priority']>('Low');
     const [location, setLocation] =
         useState<MedicalDeviceRequestData['location']>('Chestnut Hill');
-    const [date, setDate] = useState(new Date().toISOString());
-    const [medicalDevices, setMedicalDevice] = useState<MedicalDeviceRequestData['medicalDevices']>('ECG Monitor');
-    const [quantity, setQuantity] = useState(0);
+    const [device, setMedicalDevice] = useState<MedicalDeviceRequestData['device']>('ECG Monitor');
+    const [deviceModel, setDeviceModel] = useState('');
+    const [deviceSerialNumber, setDeviceSerialNumber] = useState('');
+    const [quantity, setQuantity] = useState(1);
+    const [date, setDate] = useState('');
     const [reasoning, setReasoning] = useState('');
     const [status, setStatus] = useState<MedicalDeviceRequestData['status']>('Pending');
     const [notes, setNotes] = useState('');
@@ -61,38 +65,42 @@ const MedicalDeviceServiceRequestPage = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const formattedRequestDate = new Date(requestDate).toISOString();
+        const formattedDate = new Date(date + ':00Z').toISOString();
 
         const newRequest: MedicalDeviceRequestData = {
             employeeName: employeeName,
             employeeId: employeeId,
-            requestDate: formattedRequestDate,
+            requestDate: requestDate,
+            date: formattedDate,
             priority: priority as 'Low' | 'Medium' | 'High' | 'Emergency',
             location: location as 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place',
-            date: date,
-            medicalDevices: medicalDevices as 'ECG Monitor' | 'Vital Signs Monitor' | 'Pulse Oximeter' |
+            device: device as 'ECG Monitor' | 'Vital Signs Monitor' | 'Pulse Oximeter' |
                 'Infusion Pump' | 'Syringe Pump' | 'Defibrillator' |
                 'Ventilator' | 'Nebulizer' | 'Anesthesia Machine' |
                 'Wheelchair' | 'IV Stand' | 'Suction Machine' |
                 'Warming Blanket System' | 'Oxygen Concentrator' | 'Portable Suction Unit' | 'Crash Cart',
+            deviceModel: deviceModel,
+            deviceSerialNumber: deviceSerialNumber,
             quantity: quantity,
-            reasoning: reasoning,
+            deviceReasoning: reasoning,
             status: status as 'Pending' | 'In Progress' | 'Completed' | 'Cancelled',
             notes: notes,
             department: department,
         }
         SubmitMedicalDeviceRequest(newRequest);
-        handleReset();
+        // handleReset();
     };
 
     const handleReset = () => {
         setEmployeeName('');
         setEmployeeId(0);
-        setRequestDate('');
+        setRequestDate(new Date().toISOString().split('T')[0]);
+        setDate(new Date().toISOString().split('T')[0]);
         setPriority('Low');
         setLocation('Chestnut Hill');
-        setDate(new Date().toISOString().split('T')[0]);
         setMedicalDevice('ECG Monitor');
+        setDeviceModel('');
+        setDeviceSerialNumber('');
         setQuantity(0);
         setReasoning('');
         setStatus('Pending');
@@ -141,9 +149,8 @@ const MedicalDeviceServiceRequestPage = () => {
                                         label={"Request Date "}
                                         type={"datetime-local"}
                                         id={"date"}
-                                        placeholder={"Ch"}
                                         value={requestDate}
-                                        onChange={(e) => setEmployeeName(e.target.value)}
+                                        onChange={(e) => setRequestDate(e.target.value)}
                                         required={true}
                                     />
                                 </div>
@@ -160,7 +167,7 @@ const MedicalDeviceServiceRequestPage = () => {
                                         <label className="w-1/4">Medical Device</label>
                                         <select
                                             id={"device"}
-                                            value={medicalDevices}
+                                            value={device}
                                             onChange={(e) => setMedicalDevice(e.target.value as MedicalDeviceType)}
                                             required={true}
                                             className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -199,6 +206,32 @@ const MedicalDeviceServiceRequestPage = () => {
 
                                 <div className="flex flex-col gap-2">
                                     <div className="flex items-center gap-2">
+                                        <InputElement
+                                            id="deviceModel"
+                                            name="deviceModel"
+                                            label="Device Model"
+                                            type="text"
+                                            value={deviceModel}
+                                            onChange={(e) => setDeviceModel(e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col gap-2">
+                                    <div className="flex items-center gap-2">
+                                        <InputElement
+                                            id="deviceSerialNumber"
+                                            name="deviceSerialNumber"
+                                            label="Serial Number"
+                                            type="text"
+                                            value={deviceSerialNumber}
+                                            onChange={(e) => setDeviceSerialNumber(e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col gap-2">
+                                    <div className="flex items-center gap-2">
                                         <label className="w-1/4" htmlFor={'reasoning'}>
                                             Explanation
                                         </label>
@@ -207,6 +240,7 @@ const MedicalDeviceServiceRequestPage = () => {
                                             value={reasoning}
                                             onChange={(e) => setReasoning(e.target.value)}
                                             cols={3}
+                                            required
                                             className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                         />
                                     </div>

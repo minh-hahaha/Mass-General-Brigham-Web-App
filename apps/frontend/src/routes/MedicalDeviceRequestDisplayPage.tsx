@@ -42,6 +42,7 @@ const MedicalDeviceRequestDisplayPage = () => {
                         <TableHead>Request ID</TableHead>
                         <TableHead>Medical Device</TableHead>
                         <TableHead>Medical Device Serial Number</TableHead>
+                        <TableHead>Reasoning</TableHead>
                         <TableHead>Location</TableHead>
                         <TableHead>Employee Name</TableHead>
                         <TableHead>Priority</TableHead>
@@ -56,7 +57,7 @@ const MedicalDeviceRequestDisplayPage = () => {
                             <TableCell>{req.requestId}</TableCell>
                             <TableCell>{req.medicalRequest.device}</TableCell>
                             <TableCell>{req.medicalRequest.deviceSerialNumber}</TableCell>
-                            <TableCell>{req.medicalRequest.deviceModel}</TableCell>
+                            <TableCell>{req.medicalRequest.deviceReasoning}</TableCell>
                             <TableCell>{req.medicalRequest.location}</TableCell>
                             <TableCell>{req.medicalRequest.department}</TableCell>
                             <TableCell>{req.employeeName}</TableCell>
