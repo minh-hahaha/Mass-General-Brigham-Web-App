@@ -8,8 +8,8 @@ import clsx from 'clsx';
 import { myNode } from '../../../backend/src/Algorithms/classes.ts';
 import axios from 'axios';
 import { MapPin, Circle, Hospital } from 'lucide-react';
-import { FaRegClock } from "react-icons/fa";
-import { MdOutlineMyLocation } from "react-icons/md";
+import { FaRegClock } from 'react-icons/fa';
+import { MdOutlineMyLocation } from 'react-icons/md';
 import { ROUTES } from 'common/src/constants.ts';
 import {
     DirectoryRequestByBuilding,
@@ -18,7 +18,7 @@ import {
     getDirectoryNames,
 } from '@/database/gettingDirectory.ts';
 import { GetNode } from '@/database/getDepartmentNode.ts';
-import {GetRecentOrigins, RecentOrigin} from "@/database/recentOrigins.ts";
+import { GetRecentOrigins, RecentOrigin } from '@/database/recentOrigins.ts';
 
 const Buildings = ['Chestnut Hill - 850 Boylston Street', '20 Patriot Place', '22 Patriot Place'];
 
@@ -120,11 +120,12 @@ const DirectionsMapComponent = () => {
     const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
 
     const [buildingID, setBuildingID] = useState<number>(0);
+    const [textDirections, setTextDirections] = useState<string>('');
 
     useEffect(() => {
         const fetchOrigins = async () => {
             const data: RecentOrigin[] = await GetRecentOrigins();
-            console.log(data);
+            console.log('Origins: ' + data);
             setRecentOrigins(data);
         };
         fetchOrigins();
@@ -214,6 +215,12 @@ const DirectionsMapComponent = () => {
         }
     }, [toLocation]);
 
+    useEffect(() => {
+        if (toLocation && fromLocation) {
+            handleFindDirections();
+        }
+    }, [toLocation]);
+
     // find directions
     const handleFindDirections = async () => {
         calculateRoute();
@@ -268,6 +275,14 @@ const DirectionsMapComponent = () => {
                     setDistance(leg.distance?.text || 'N/A');
                     setDuration(leg.duration?.text || 'N/A');
                     setShowRouteInfo(true);
+
+                    const htmlStr: string = leg.steps
+                        .map(
+                            (direction) =>
+                                `${direction.instructions} and continue for ${direction.distance ? direction.distance.text : ''}`
+                        )
+                        .toString();
+                    setTextDirections(htmlStr.replace(/,/g, '<br><br>'));
                 }
             });
     };
@@ -483,7 +498,7 @@ const DirectionsMapComponent = () => {
     return (
         <div className="relative w-screen h-screen">
             {/* LEFT PANEL */}
-            <aside className="absolute top-6 left-6 z-10 w-[400px] max-h-[90vh] bg-white p-6 shadow-xl rounded-lg overflow-hidden flex flex-col">
+            <aside className="absolute top-6 left-6 z-10 w-[400px] max-h-[80vh] bg-white p-6 shadow-xl rounded-lg overflow-hidden flex flex-col">
                 <form>
                     {/* Blue Box Section */}
                     <div className="py-5 pr-6 pl-4 rounded-lg -mt-6">
@@ -598,22 +613,42 @@ const DirectionsMapComponent = () => {
                     </button>
                 </div>
                 <div className="w-110 border-[0.5px] border-codGray mt-5 -ml-10" />
-                <div className="flex flex-col justify-center items-center overflow-y-auto mt-4 px-2 pb-4" style={{ maxHeight: '200px' }}>
-                    <ul className="w-full flex flex-col items-center space-y-2">
-                        <li className="flex items-center w-100 px-6 py-2 rounded-md transition-colors hover:bg-gray-200 cursor-pointer">
-                            <MdOutlineMyLocation className="text-mgbblue mr-4 min-w-[20px]" size={18} />
-                            <span className="text-codGray mx-3">Current Location</span>
-                        </li>
-                        {recentOrigins.map((origin, index) => (
-                            <li
-                                key={index}
-                                className="flex items-center w-100 px-6 py-2 rounded-md transition-colors hover:bg-gray-200 cursor-pointer"
-                            >
-                                <FaRegClock className="text-mgbblue mr-4 min-w-[20px]" size={18} />
-                                <span className="text-codGray mx-3">{origin.location.match(".+?(?=[ \\d]{5})")}</span>
-                            </li>
-                        ))}
-                    </ul>
+                <div className="overflow-y-auto mt-4 px-2 pb-4 flex-grow">
+                    {!toLocation ? (
+                        <div
+                            className="flex flex-col justify-center items-center overflow-y-auto mt-1 px-2 pb-4"
+                            style={{ maxHeight: '200px' }}
+                        >
+                            <ul className="w-full flex flex-col items-center space-y-2">
+                                <li className="flex items-center w-100 px-6 py-2 rounded-md transition-colors hover:bg-gray-200 cursor-pointer">
+                                    <MdOutlineMyLocation
+                                        className="text-mgbblue ml-3 mr-4 min-w-[20px]"
+                                        size={18}
+                                    />
+                                    <span className="text-codGray mx-3">Current Location</span>
+                                </li>
+                                {recentOrigins.map((origin, index) => (
+                                    <li
+                                        key={index}
+                                        className="flex items-center w-100 px-6 py-2 rounded-md transition-colors hover:bg-gray-200 cursor-pointer"
+                                    >
+                                        <FaRegClock
+                                            className="text-mgbblue ml-3 mr-4 min-w-[20px]"
+                                            size={18}
+                                        />
+                                        <span className="text-codGray mx-3">
+                                            {origin.location.match('.+?(?=[ \\d]{5})')}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ) : (
+                        <div
+                            id={'text-directions'}
+                            dangerouslySetInnerHTML={{ __html: textDirections }}
+                        />
+                    )}
                 </div>
             </aside>
 
