@@ -7,15 +7,15 @@ import {
     CarouselPrevious
 } from "@/components/ui/carousel.tsx";
 import {cn} from "@/lib/utils.ts";
-import {ChangeEvent, Component, useEffect, useState} from "react";
+import { ReactNode, useEffect, useState } from 'react';
 
 
 // An interface that defines the props the component accepts
 interface CarouselProps {
-    tableTabs: {label: string, component: () => JSX.Element}[];
+    tableTabs: {label: string, component: () => ReactNode}[];
 }
 
-const CarouselComponent: React.FC<CarouselProps> = ({tableTabs}) => {
+const CarouselMenu: React.FC<CarouselProps> = ({tableTabs}) => {
     const [api, setApi] = useState<CarouselApi | null>(null)
     const [selectedIndex, setSelectedIndex] = useState(0)
 
@@ -24,7 +24,7 @@ const CarouselComponent: React.FC<CarouselProps> = ({tableTabs}) => {
         const onSelect = () => setSelectedIndex(api.selectedScrollSnap())
         api.on("select", onSelect)
         onSelect()
-        return () => api.off("select", onSelect)
+        return () =>{ api.off("select", onSelect) }
     }, [api]);
 
 
@@ -34,8 +34,12 @@ const CarouselComponent: React.FC<CarouselProps> = ({tableTabs}) => {
                 <div className="relative flex w-full max-w-xl overflow-hidden rounded-xl bg-white border border-mgbblue shadow-inner">
                     {/* Highlight */}
                     <div
-                        className="absolute top-0 left-0 h-full w-1/5 rounded-xl transition-transform duration-300 ease-in-out bg-mgbblue"
-                        style={{ transform: `translateX(${selectedIndex * 100}%)`, zIndex: 0 }}
+                        className="absolute top-0 left-0 h-full rounded-xl transition-transform duration-300 ease-in-out bg-mgbblue"
+                        style={{
+                            width: `${100 / tableTabs.length}%`,
+                            transform: `translateX(${selectedIndex * 100}%)`,
+                            zIndex: 0,
+                        }}
                     />
                     {tableTabs.map((tab, index) => (
                         <button
@@ -69,4 +73,4 @@ const CarouselComponent: React.FC<CarouselProps> = ({tableTabs}) => {
     )
 }
 
-export default CarouselComponent;
+export default CarouselMenu;
