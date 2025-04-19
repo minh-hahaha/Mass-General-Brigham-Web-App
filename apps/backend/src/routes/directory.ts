@@ -13,8 +13,6 @@ DIRECTORY_SORT_OPTIONS.push({ buildingId: 'asc' });
 DIRECTORY_SORT_OPTIONS.push({ buildingId: 'desc' });
 DIRECTORY_SORT_OPTIONS.push({ building: { buildingName: 'asc' } });
 DIRECTORY_SORT_OPTIONS.push({ building: { buildingName: 'desc' } });
-DIRECTORY_SORT_OPTIONS.push({ locations: { some: { floor: 'asc' } } });
-DIRECTORY_SORT_OPTIONS.push({ locations: { some: { floor: 'desc' } } });
 
 const DIRECTORY_FILTER_OPTIONS: object[] = [];
 DIRECTORY_FILTER_OPTIONS.push({ building: { buildingName: 'Chestnut Hill' } });
@@ -49,15 +47,15 @@ router.get('/', async function (req: Request, res: Response) {
         const args = {
             include: {
                 building: { select: { buildingName: true } },
-                locations: { select: { floor: true } },
+                node: { select: { floor: true } },
             },
             where: Object.assign({}, ...filters),
             orderBy: sorts,
         };
-        console.log(args);
+        //console.log(args);
         //Attempt to pull from directory
         const DIRECTORY = await PrismaClient.department.findMany(args);
-        //console.log(DIRECTORY);
+        console.log(DIRECTORY);
         res.send(DIRECTORY);
     } catch (error) {
         // Log any failures

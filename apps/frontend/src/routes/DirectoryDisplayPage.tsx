@@ -43,7 +43,7 @@ const DirectoryTable: React.FC<DirectoryTableProps> = ({data}) => {
                                 </TableCell>
                                 <TableCell>{department.building.buildingName}</TableCell>
                                 <TableCell>
-                                    {department.locations.map((loc) => loc.floor).toString()}
+                                    {department.node ? department.node.floor : 'no node'}
                                 </TableCell>
                                 <TableCell>{department.deptPhone}</TableCell>
                             </TableRow>
