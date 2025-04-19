@@ -90,8 +90,7 @@ model Department {
   deptPhone     String
   members       Employee[]
   building      Building   @relation(fields: [buildingId], references: [buildingId])
-  nodeId        String?
-  node          Node?      @relation(fields: [nodeId], references: [nodeId])
+  departmentNodes      Node      @relation(name: "departmentNodes")
 }
 
 model Building {
@@ -111,9 +110,10 @@ model Node {
   nodeType    String
   name        String
   roomNumber  String?
-  edgesFrom   Edge[]  @relation("NodeToEdgeFrom")
-  edgesTo     Edge[]  @relation("NodeToEdgeTo")
-  departments Department[]
+  edgesFrom   Edge[]        @relation("NodeToEdgeFrom")
+  edgesTo     Edge[]        @relation("NodeToEdgeTo")
+  departmentId Department
+  departments Department[]  @relation("departmentNode")
 }
 
 model Edge {
