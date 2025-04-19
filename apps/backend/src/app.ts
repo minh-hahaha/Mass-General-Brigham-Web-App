@@ -13,6 +13,7 @@ import sanitationRouter from './routes/sanitation.ts';
 import translationRouter from './routes/translationrequest.ts';
 import directoryNodeRouter from './routes/directoryNode.ts';
 import maintenanceRouter from './routes/maintenancerequest.ts';
+import medicalDeviceRouter from './routes/medicaldevicerequest.ts';
 import nodeRouter from './routes/node.ts';
 import edgeRouter from './routes/edge.ts';
 
@@ -55,6 +56,7 @@ app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
 app.use(ROUTES.TRANSLATIONREQUEST, translationRouter);
 app.use(ROUTES.MAINTENANCEREQUEST, maintenanceRouter);
 app.use(ROUTES.PATIENTTRANSPORT, patientTransportRouter);
+app.use(ROUTES.MEDICALDEVICEREQUEST, medicalDeviceRouter);
 
 //Algorithms
 app.use(ROUTES.BFSGRAPH, graphRouter);
