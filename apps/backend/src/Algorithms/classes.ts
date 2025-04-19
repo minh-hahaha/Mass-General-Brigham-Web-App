@@ -32,6 +32,6 @@ export class Graph {
     }
 
     getNode(id: string): myNode | undefined {
-        return this.nodes.find((node) => node.id === id);
+        return this.nodes.find((node) => node.nodeId === id);
     }
 }

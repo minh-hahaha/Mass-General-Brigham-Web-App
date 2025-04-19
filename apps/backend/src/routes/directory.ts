@@ -110,7 +110,7 @@ router.get('/node', async function (req: Request, res: Response) {
 
         const NODE_DATA = await PrismaClient.node.findFirst({
             where: {
-                id: nodeId,
+                nodeId: nodeId,
             },
         });
         res.send(NODE_DATA);

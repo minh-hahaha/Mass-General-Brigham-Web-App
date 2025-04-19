@@ -3,7 +3,7 @@ import axios from 'axios';
 
 
 export interface NodeResponse {
-    id: string
+    nodeId: string
     x: number,
     y: number,
     floor: string,
@@ -15,7 +15,16 @@ export interface NodeResponse {
 
 
 
-// GET request to fetch all maintenance requests
+// GET request to fetch all Nodes
 export async function getNodes() {
     return (await axios.get<NodeResponse[]>(ROUTES.NODE)).data;
 }
+
+export async function createNode(): Promise<NodeResponse> {
+    return (await axios.post<NodeResponse>(ROUTES.NODE)).data;
+}
+
+export async function deleteNode(id: string): Promise<void> {
+    return (await axios.delete(ROUTES.NODE)).data;
+}
+
