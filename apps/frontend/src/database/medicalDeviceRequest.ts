@@ -18,6 +18,7 @@ export interface incomingMedicalDeviceRequest {
     }
     priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     requestDate: string;
+    date: string;
     requestId: number;
     requestTime: number;
     serviceType: string;

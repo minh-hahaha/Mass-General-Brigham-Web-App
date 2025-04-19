@@ -7,12 +7,12 @@ router.get('/', async (req: Request, res: Response) => {
     try {
         const requests = await PrismaClient.serviceRequest.findMany({
             where: {
-                serviceType: 'Medical Device'
+                serviceType: 'Medical Device',
             },
             include: {
                 medicalDeviceRequest: true,
-            }
-        })
+            },
+        });
 
         res.status(200).json(requests);
     } catch (error) {
@@ -45,19 +45,19 @@ router.post('/', async (req: Request, res: Response) => {
                 data: {
                     servReqId: serviceRequest.requestId,
                     device: req.body.device,
-                    deviceReasoning: req.body.reasoning,
+                    deviceReasoning: req.body.deviceReasoning ?? '', // fallback to empty string if undefined
                     deviceSerialNumber: req.body.deviceSerialNumber,
                     deviceModel: req.body.model,
-                    date: new Date(req.body.date),
+                    date: new Date(req.body.requestDate),
                     location: req.body.location,
                     department: req.body.department,
                 },
             });
-            return {serviceRequest, medicalDeviceRequest};
-        })
+            return { serviceRequest, medicalDeviceRequest };
+        });
         res.status(201).json(result);
     } catch (error) {
-    console.error(error);
+        console.error(error);
         res.status(500).json({ error: 'Something went wrong' });
     }
 });
