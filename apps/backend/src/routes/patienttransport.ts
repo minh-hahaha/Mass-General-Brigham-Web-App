@@ -38,8 +38,7 @@ router.post('/', async (req: Request, res: Response) => {
                     comments: req.body.notes,
                     serviceType: 'Patient Transport',
 
-                    //optional fields
-                    locationId: req.body.locationId ?? null,
+                    //optional field
                     employeeId: req.body.employeeId ?? null, // change to user id in the future?
                     requestDate: new Date(pickupDate) ?? null,
                     requestTime: new Date(req.body.pickupTime) ?? null,
