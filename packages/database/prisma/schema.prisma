@@ -99,16 +99,16 @@ model TranslationRequest {
 }
 
 model Department {
-  deptId       Int        @id @default(autoincrement())
-  deptServices String
-  deptName     String
-  buildingId   Int
-  deptPhone    String
-  members      Employee[]
-  locations    Location[]
-  building     Building   @relation(fields: [buildingId], references: [buildingId])
-  nodeId       String?
-  node         Node?      @relation(fields: [nodeId], references: [id])
+  deptId        Int        @id @default(autoincrement())
+  deptServices  String
+  deptName      String
+  buildingId    Int
+  deptPhone     String
+  members       Employee[]
+  locations     Location[]
+  building      Building   @relation(fields: [buildingId], references: [buildingId])
+  nodeId        String?
+  node          Node?      @relation(fields: [nodeId], references: [nodeId])
 }
 
 model Location {
@@ -119,7 +119,7 @@ model Location {
   roomNum      Int?        @unique
   floor        Int
   nodeId       String?     @unique
-  nodeLocation Node?       @relation(fields: [nodeId], references: [id], name: "LocationNode")
+  nodeLocation Node?       @relation(fields: [nodeId], references: [nodeId], name: "LocationNode")
 
   // making prisma happy here
   serviceRequests ServiceRequest[] @relation("ServiceLocation") // unused relation
@@ -134,7 +134,7 @@ model Building {
 model Node {
   // ignore id
   // id         Int     @id @default(autoincrement())
-  id          String       @id
+  nodeId          String  @id //TODO: i'll fix it later
   x           Decimal
   y           Decimal
   floor       String
@@ -150,11 +150,11 @@ model Node {
 
 model Edge {
   // making prisma happy lol
-  id       Int    @id @default(autoincrement())
+  edgeId    Int    @id @default(autoincrement())
   from     String
   to       String
-  nodeTo   Node   @relation("NodeToEdgeTo", fields: [to], references: [id])
-  nodeFrom Node   @relation("NodeToEdgeFrom", fields: [from], references: [id])
+  nodeTo   Node   @relation("NodeToEdgeTo", fields: [to], references: [nodeId])
+  nodeFrom Node   @relation("NodeToEdgeFrom", fields: [from], references: [nodeId])
 }
 
 model Sanitation {

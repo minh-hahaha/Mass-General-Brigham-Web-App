@@ -59,7 +59,7 @@ function App() {
                                   element={<MapPage />}
                                 />
                                 <Route
-                                path="/MapView"
+                                path="/ViewMap"
                                 element={<MapViewPage/>}
                                 />
 

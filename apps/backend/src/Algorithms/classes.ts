@@ -1,47 +1,5 @@
-export class myNode {
-    id: string;
-    x: number;
-    y: number;
-    floor: string;
-    nodeType: string;
-    buildingId: string;
-    name: string;
-    roomNumber: string | null;
-
-    constructor(
-        nodeID: string,
-        x: number,
-        y: number,
-        floor: string,
-        nodeType: string,
-        buildingId: string,
-        name: string,
-        roomNumber: string | null
-    ) {
-        this.id = nodeID;
-        this.x = x;
-        this.y = y;
-        this.floor = floor;
-        this.nodeType = nodeType;
-        this.buildingId = buildingId;
-        this.name = name;
-        this.roomNumber = roomNumber;
-    }
-}
-
-class myEdge {
-    id: number;
-    from: myNode;
-    to: myNode;
-
-    constructor(id: number, from: myNode, to: myNode) {
-        /* Do i need the neighbors */
-
-        this.id = id;
-        this.from = from;
-        this.to = to;
-    }
-}
+import { myEdge, myNode } from 'common/src/classes/classes.ts';
+export { myNode, myEdge };
 
 export class Graph {
     /* need to create the graph for traversal */
@@ -74,6 +32,6 @@ export class Graph {
     }
 
     getNode(id: string): myNode | undefined {
-        return this.nodes.find((node) => node.id === id);
+        return this.nodes.find((node) => node.nodeId === id);
     }
 }

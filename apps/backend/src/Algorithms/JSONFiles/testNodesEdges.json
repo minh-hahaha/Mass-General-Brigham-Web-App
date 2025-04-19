@@ -1,7 +1,7 @@
 {
     "nodes": [
         {
-            "nodeID": "A",
+            "nodeId": "A",
             "x": 384.23,
             "y": 441.85,
             "floor": "1",
@@ -11,7 +11,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "B",
+            "nodeId": "B",
             "x": 383.76,
             "y": 494.05,
             "floor": "1",
@@ -21,7 +21,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "C",
+            "nodeId": "C",
             "x": 548.14,
             "y": 495.39,
             "floor": "1",
@@ -31,7 +31,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "D",
+            "nodeId": "D",
             "x": 550.39,
             "y": 533.14,
             "floor": "1",
@@ -41,7 +41,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "E",
+            "nodeId": "E",
             "x": 548.11,
             "y": 621.48,
             "floor": "1",
@@ -51,7 +51,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "F",
+            "nodeId": "F",
             "x": 550.03,
             "y": 696.97,
             "floor": "1",
@@ -61,7 +61,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "G",
+            "nodeId": "G",
             "x": 617.38,
             "y": 700.03,
             "floor": "1",
@@ -71,7 +71,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "H",
+            "nodeId": "H",
             "x": 662.56,
             "y": 699.77,
             "floor": "1",
@@ -81,7 +81,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "I",
+            "nodeId": "I",
             "x": 757.31,
             "y": 497.1,
             "floor": "1",
@@ -91,7 +91,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "J",
+            "nodeId": "J",
             "x": 748.1,
             "y": 697.96,
             "floor": "1",
@@ -101,7 +101,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "K",
+            "nodeId": "K",
             "x": 740.05,
             "y": 851.66,
             "floor": "1",
@@ -111,7 +111,7 @@
             "roomNumber": ""
         },
         {
-            "nodeID": "L",
+            "nodeId": "L",
             "x": 434.9,
             "y": 858.91,
             "floor": "1",
