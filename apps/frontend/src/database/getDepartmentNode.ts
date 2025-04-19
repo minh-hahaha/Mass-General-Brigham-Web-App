@@ -1,7 +1,8 @@
 import {ROUTES} from "common/src/constants.ts";
 import axios from 'axios';
 
-import {myNode} from "../../../backend/src/Algorithms/classes.ts";
+
+import {myNode} from "common/src/classes/classes.ts";
 
 
 export async function GetNode(nodeId: string): Promise<myNode> {

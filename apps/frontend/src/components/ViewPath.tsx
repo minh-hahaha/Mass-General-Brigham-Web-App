@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { myNode } from "../../../backend/src/Algorithms/classes.ts";
+
+
+import {myNode} from "common/src/classes/classes.ts";
 
 interface Edge {
     from: string;
@@ -96,7 +98,9 @@ export default function ViewPath({
 
     // Check if a node is an endpoint (start or end of path)
     const isEndpoint = (nodeId: string): boolean => {
-        return (path.length > 0 && (nodeId === path[0].id || nodeId === path[path.length - 1].id));
+        return (path.length > 0
+            &&
+            (nodeId === path[0].id || nodeId === path[path.length - 1].id));
     };
 
     // Find connection points between floors - nodes where the path goes to a different floor
@@ -116,7 +120,7 @@ export default function ViewPath({
 
     const floorTransitionNodes = getFloorTransitionNodes();
 
-    // Get node color based on its role in the path
+    // Get node color
     const getNodeColor = (node: myNode): string => {
         if (isEndpoint(node.id)) return 'red';
 

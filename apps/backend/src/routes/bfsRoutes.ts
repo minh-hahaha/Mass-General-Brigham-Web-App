@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { bfs } from '../Algorithms/BFS.ts';
+import { myNode } from '../Algorithms/classes.ts';
 
 const expressRouter = express.Router();
 
