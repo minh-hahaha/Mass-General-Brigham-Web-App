@@ -92,7 +92,7 @@ function App() {
                                     element={<MedicalDeviceServiceRequestPage/>}
                                 />
                                 <Route
-                                    path={"/MedicalDeviceDisplayPage"}
+                                    path={"/MedicalDevicePage"}
                                     element={<MedicalDeviceServiceDisplayPage/>}
                                 />
                             </Routes>

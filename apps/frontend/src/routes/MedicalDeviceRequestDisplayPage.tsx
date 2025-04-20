@@ -13,10 +13,15 @@ const MedicalDeviceRequestDisplayPage = () => {
 
     useEffect(() => {
         async function fetchReqs() {
-            const data = await GetMedicalDeviceRequest();
-            console.log(data);
-            setRequests(data);
-            setLoading(false);
+            try {
+                const data = await GetMedicalDeviceRequest();
+                console.log("📦 Fetched medical device requests:", data); // ✅ RIGHT HERE
+                setRequests(data);
+            } catch (err) {
+                console.error("❌ Failed to fetch requests:", err); // ✅ AND HERE
+            } finally {
+                setLoading(false);
+            }
         }
 
         fetchReqs();
@@ -36,39 +41,40 @@ const MedicalDeviceRequestDisplayPage = () => {
 
     return (
         <div className="flex justify-center mt-10">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Request ID</TableHead>
-                        <TableHead>Medical Device</TableHead>
-                        <TableHead>Medical Device Serial Number</TableHead>
-                        <TableHead>Reasoning</TableHead>
-                        <TableHead>Location</TableHead>
-                        <TableHead>Employee Name</TableHead>
-                        <TableHead>Priority</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Request Date</TableHead>
-                        <TableHead>Department</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {requests.map((req) => (
+            <div className="w-full max-w-6xl border border-gray-300 rounded-2xl shadow-md overflow-auto p-4 bg-white">
+                <Table>
+                    <TableHeader>
                         <TableRow>
-                            <TableCell>{req.requestId}</TableCell>
-                            <TableCell>{req.medicalRequest.device}</TableCell>
-                            <TableCell>{req.medicalRequest.deviceSerialNumber}</TableCell>
-                            <TableCell>{req.medicalRequest.deviceReasoning}</TableCell>
-                            <TableCell>{req.medicalRequest.location}</TableCell>
-                            <TableCell>{req.medicalRequest.department}</TableCell>
-                            <TableCell>{req.employeeName}</TableCell>
-                            <TableCell>{req.priority}</TableCell>
-                            <TableCell>{req.medicalRequest.date}</TableCell>
-                            <TableCell>{req.status}</TableCell>
-                            <TableCell>{req.requestDate}</TableCell>
+                            <TableHead>Request ID</TableHead>
+                            <TableHead>Medical Device</TableHead>
+                            <TableHead>Medical Device Serial Number</TableHead>
+                            <TableHead>Explanation</TableHead>
+                            <TableHead>Location</TableHead>
+                            <TableHead>Employee Name</TableHead>
+                            <TableHead>Priority</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Request Date</TableHead>
+                            <TableHead>Department</TableHead>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+                    </TableHeader>
+                    <TableBody>
+                        {requests.map((req) => (
+                            <TableRow>
+                                <TableCell>{req.requestId}</TableCell>
+                                <TableCell>{req.medicalDeviceRequest.device}</TableCell>
+                                <TableCell>{req.medicalDeviceRequest.deviceSerialNumber}</TableCell>
+                                <TableCell>{req.medicalDeviceRequest.deviceReasoning}</TableCell>
+                                <TableCell>{req.medicalDeviceRequest.location}</TableCell>
+                                <TableCell>{req.employeeName}</TableCell>
+                                <TableCell>{req.priority}</TableCell>
+                                <TableCell>{req.status}</TableCell>
+                                <TableCell>{req.requestDate}</TableCell>
+                                <TableCell>{req.medicalDeviceRequest.department}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </div>
         </div>
     )
 }

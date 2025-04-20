@@ -7,7 +7,7 @@ export interface incomingMedicalDeviceRequest {
     employeeId: number;
     employeeName: string;
     locationId: number;
-    medicalRequest: {
+    medicalDeviceRequest: {
         device: string;
         deviceReasoning: string;
         deviceSerialNumber: string;
