@@ -40,7 +40,7 @@ router.post('/', async (req: Request, res: Response) => {
                 },
             });
 
-            //create entry for patient transport table
+            //create entry for medical device table
             const medicalDeviceRequest = await prisma.medicalDeviceRequest.create({
                 data: {
                     servReqId: serviceRequest.requestId,
@@ -48,7 +48,6 @@ router.post('/', async (req: Request, res: Response) => {
                     deviceReasoning: req.body.deviceReasoning ?? '', // fallback to empty string if undefined
                     deviceSerialNumber: req.body.deviceSerialNumber,
                     deviceModel: req.body.model,
-                    date: new Date(req.body.requestDate),
                     location: req.body.location,
                     department: req.body.department,
                 },
