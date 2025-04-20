@@ -649,7 +649,7 @@ const DirectionsMapComponent = () => {
                     </button>
                 </div>
                 <div className="w-110 border-[0.5px] border-codGray mt-5 -ml-10" />
-                <div className="overflow-y-auto mt-4 pb-4 flex-grow">
+                <div className="overflow-y-auto mt-4 flex-grow">
                     {!toLocation ? (
                         <div className="max-h-[200px] overflow-y-auto w-full mt-1">
                             <ul className="w-full flex flex-col space-y-2">
