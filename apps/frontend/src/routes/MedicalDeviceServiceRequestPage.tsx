@@ -70,7 +70,7 @@ const MedicalDeviceServiceRequestPage = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
+
         const newRequest: MedicalDeviceRequestData = {
             employeeName: employeeName,
             employeeId: employeeId,
@@ -92,7 +92,7 @@ const MedicalDeviceServiceRequestPage = () => {
         }
         SubmitMedicalDeviceRequest(newRequest);
         setShowConfirmation(true);
-        // handleReset();
+        handleReset();
     };
 
     const handleConfirmationClose = () => {
