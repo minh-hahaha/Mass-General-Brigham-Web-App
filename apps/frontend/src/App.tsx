@@ -18,6 +18,7 @@ import SanitationRequestDisplayPage from "@/routes/SanitationRequestDisplayPage.
 import ServiceRequestSelectPage from "@/routes/ServiceRequestSelectPage.tsx";
 import MaintenanceRequestPage from "@/routes/MaintenanceRequestPage.tsx";
 import Cookies from "js-cookie";
+import TestNodeEditor from '@/routes/TestNodeEditor.tsx';
 
 function App() {
     const defaultOpen = Cookies.get("sidebar_state") === 'true';
@@ -51,6 +52,10 @@ function App() {
                                 <Route
                                     path="/DirectoryDisplay"
                                     element={<DirectoryDisplayPage />}
+                                />
+                                <Route
+                                    path="/Test"
+                                    element={<TestNodeEditor />}
                                 />
                                 <Route
                                   path="/MapPage"
