@@ -15,10 +15,10 @@ const MedicalDeviceRequestDisplayPage = () => {
         async function fetchReqs() {
             try {
                 const data = await GetMedicalDeviceRequest();
-                console.log("📦 Fetched medical device requests:", data); // ✅ RIGHT HERE
+                console.log("Fetched medical device requests:", data); // RIGHT HERE
                 setRequests(data);
             } catch (err) {
-                console.error("❌ Failed to fetch requests:", err); // ✅ AND HERE
+                console.error("Failed to fetch requests:", err); // AND HERE
             } finally {
                 setLoading(false);
             }
@@ -68,7 +68,7 @@ const MedicalDeviceRequestDisplayPage = () => {
                                 <TableCell>{req.employeeName}</TableCell>
                                 <TableCell>{req.priority}</TableCell>
                                 <TableCell>{req.status}</TableCell>
-                                <TableCell>{req.requestDate}</TableCell>
+                                <TableCell>{formatDate(req.requestDate)}</TableCell>
                                 <TableCell>{req.medicalDeviceRequest.department}</TableCell>
                             </TableRow>
                         ))}

@@ -34,7 +34,6 @@ export interface MedicalDeviceRequestData {
     priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     location: location;
     device: string;
-    date: string;
     deviceModel?: string;
     deviceSerialNumber?: string;
     deviceReasoning: string;
@@ -46,6 +45,11 @@ export interface MedicalDeviceRequestData {
 
 // Medical Device Component Definition
 const MedicalDeviceServiceRequestPage = () => {
+    const loggedIn = sessionStorage.getItem('loggedIn');
+    if (!loggedIn) {
+        window.location.href = '/';
+    }
+
     const [employeeName, setEmployeeName] = useState('');
     const [employeeId, setEmployeeId] = useState<number>(0);
     const [requestDate, setRequestDate] = useState('');
@@ -62,6 +66,8 @@ const MedicalDeviceServiceRequestPage = () => {
     const [notes, setNotes] = useState('');
     const [department, setDepartment] = useState('');
 
+    const [showConfirmation, setShowConfirmation] = useState(false);
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -71,7 +77,6 @@ const MedicalDeviceServiceRequestPage = () => {
             employeeName: employeeName,
             employeeId: employeeId,
             requestDate: requestDate,
-            date: formattedDate,
             priority: priority as 'Low' | 'Medium' | 'High' | 'Emergency',
             location: location as 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place',
             device: device as 'ECG Monitor' | 'Vital Signs Monitor' | 'Pulse Oximeter' |
@@ -88,7 +93,12 @@ const MedicalDeviceServiceRequestPage = () => {
             department: department,
         }
         SubmitMedicalDeviceRequest(newRequest);
+        setShowConfirmation(true);
         // handleReset();
+    };
+
+    const handleConfirmationClose = () => {
+        setShowConfirmation(false);
     };
 
     const handleReset = () => {
@@ -330,26 +340,29 @@ const MedicalDeviceServiceRequestPage = () => {
                                 className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                             />
                         </div>
-                        <div>
-                            <div className="flex flex-col gap-2">
-                                <div className="flex items-center justify-center space-x-4">
-                                    <MGBButton
-                                        onClick={() => handleSubmit}
-                                        variant={'primary'}
-                                        disabled={false}
-                                    >
-                                        Submit Request
-                                    </MGBButton>
 
-                                    <MGBButton
-                                        onClick={() => handleReset()}
-                                        variant={'secondary'}
-                                        disabled={false}
-                                    >
-                                        Clear Form
-                                    </MGBButton>
+                        {/* submit button and confirmation message */}
+                        <div className="flex items-center justify-center space-x-4">
+                            <MGBButton
+                                onClick={() => handleSubmit}
+                                variant={'primary'}
+                                disabled={false}
+                            >
+                                Submit Request
+                            </MGBButton>
+
+                            {showConfirmation && (
+                                <div className="inline-block">
+                                    <ConfirmMessageComponent onClose={handleConfirmationClose} />
                                 </div>
-                            </div>
+                            )}
+                            <MGBButton
+                                onClick={() => handleReset()}
+                                variant={'secondary'}
+                                disabled={false}
+                            >
+                                Clear Form
+                            </MGBButton>
                         </div>
                     </form>
                 </div>

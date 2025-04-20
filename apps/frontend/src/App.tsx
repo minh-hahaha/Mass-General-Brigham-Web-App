@@ -88,11 +88,11 @@ function App() {
                                     element={<ServiceRequestSelectPage />}
                                 />
                                 <Route
-                                    path={"/MedicalDeviceRequestPage"}
+                                    path={"/MedicalDevicePage"}
                                     element={<MedicalDeviceServiceRequestPage/>}
                                 />
                                 <Route
-                                    path={"/MedicalDevicePage"}
+                                    path={"/MedicalDeviceDisplayPage"}
                                     element={<MedicalDeviceServiceDisplayPage/>}
                                 />
                             </Routes>

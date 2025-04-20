@@ -23,7 +23,6 @@ router.get('/', async (req: Request, res: Response) => {
 
 router.post('/', async (req: Request, res: Response) => {
     console.log(req.body);
-    const tempDate = new Date(req.body.date);
 
     try {
         const result = await PrismaClient.$transaction(async (prisma) => {
@@ -31,7 +30,7 @@ router.post('/', async (req: Request, res: Response) => {
             const serviceRequest = await prisma.serviceRequest.create({
                 data: {
                     employeeId: req.body.employeeId,
-                    requestDate: tempDate,
+                    requestDate: new Date(req.body.requestDate).toISOString(), // Convert to full ISO string
                     status: req.body.status,
                     comments: req.body.notes,
                     priority: req.body.priority,
