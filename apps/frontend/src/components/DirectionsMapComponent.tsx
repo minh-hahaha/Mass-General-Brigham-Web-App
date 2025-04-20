@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef, useMemo, ChangeEvent } from 'react'
 import SelectElement from '../elements/SelectElement.tsx';
 import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google-maps';
 import TravelModeComponent from '@/components/TravelModeComponent.tsx';
-import OverlayComponent from '@/components/svgOverlay.tsx';
+import OverlayComponent from '@/components/OverlayComponent.tsx';
 import HospitalMapComponent from '@/components/HospitalMapComponent';
 import clsx from 'clsx';
-import { myNode } from '../../../backend/src/Algorithms/classes.ts';
+import { myNode } from 'common/src/classes/classes.ts';
 import axios from 'axios';
-import { MapPin, Circle, Hospital } from 'lucide-react';
 import { FaRegClock } from 'react-icons/fa';
+import { MapPin, Circle, Hospital } from 'lucide-react';
 import { MdOutlineMyLocation } from 'react-icons/md';
 import { ROUTES } from 'common/src/constants.ts';
 import {
@@ -44,7 +44,7 @@ const ChestnutParkingBounds = {
 const ChestnutParkingSVG = '/ChestnutParking.svg';
 
 const nullNode: myNode = {
-    id: '',
+    nodeId: '',
     x: 0,
     y: 0,
     floor: '0',
@@ -54,7 +54,7 @@ const nullNode: myNode = {
     roomNumber: '0',
 };
 const CHDoorA: myNode = {
-    id: 'CHFloor1Door8',
+    nodeId: 'CHFloor1Door8',
     x: 694.0946366710934,
     y: 209.91282960575376,
     floor: '1',
@@ -64,7 +64,7 @@ const CHDoorA: myNode = {
     roomNumber: '',
 };
 const CHDoorBC: myNode = {
-    id: 'CHFloor1Door15',
+    nodeId: 'CHFloor1Door15',
     x: 953.0376994960379,
     y: 517.9228102091384,
     floor: '1',
@@ -74,7 +74,7 @@ const CHDoorBC: myNode = {
     roomNumber: '',
 };
 const PP20: myNode = {
-    id: '20PPFloor1Door1',
+    nodeId: '20PPFloor1Door1',
     x: 54.04440366094416,
     y: 838.0104833982157,
     floor: '1',
@@ -84,7 +84,7 @@ const PP20: myNode = {
     roomNumber: '',
 };
 const PP22: myNode = {
-    id: '22PPFloor3Elevator1',
+    nodeId: '22PPFloor3Elevator1',
     x: 562.5431410733905,
     y: 630.6622737119537,
     floor: '3',
@@ -494,6 +494,42 @@ const DirectionsMapComponent = () => {
         }, 100);
     }
 
+    const handleUseCurrentLocation = () => {
+        if (!navigator.geolocation) {
+            alert('Geolocation is not supported by your browser');
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const { latitude, longitude } = position.coords;
+                const latLng = `${latitude}, ${longitude}`;
+                setFromLocation(latLng); // this triggers map routing
+
+                // Optional: reverse geocode to get a human-readable address
+                try {
+                    const geocoder = new google.maps.Geocoder();
+                    geocoder.geocode(
+                        { location: { lat: latitude, lng: longitude } },
+                        (results, status) => {
+                            if (status === 'OK' && results && results[0]) {
+                                setFromLocation(results[0].formatted_address);
+                            } else {
+                                console.warn('Geocoder failed: ', status);
+                            }
+                        }
+                    );
+                } catch (error) {
+                    console.error('Reverse geocoding failed', error);
+                }
+            },
+            (error) => {
+                console.error('Error retrieving location:', error);
+                alert('Unable to retrieve your location.');
+            }
+        );
+    };
+
     const initialFloorId = selectedBuildingId ? DefaultFloors[selectedBuildingId] : '';
     return (
         <div className="relative w-screen h-screen">
@@ -562,7 +598,7 @@ const DirectionsMapComponent = () => {
                                             className="bg-white text-codGray border border-mgbblue flex-1"
                                         />
                                     </div>
-                                    <div className="ml-13 mt-4">
+                                    <div className="ml-15 mt-4">
                                         {/* Travel Mode */}
                                         <TravelModeComponent
                                             selectedMode={travelMode}
@@ -613,16 +649,15 @@ const DirectionsMapComponent = () => {
                     </button>
                 </div>
                 <div className="w-110 border-[0.5px] border-codGray mt-5 -ml-10" />
-                <div className="overflow-y-auto mt-4 px-2 pb-4 flex-grow">
+                <div className="overflow-y-auto mt-4 pb-4 flex-grow">
                     {!toLocation ? (
-                        <div
-                            className="flex flex-col justify-center items-center overflow-y-auto mt-1 px-2 pb-4"
-                            style={{ maxHeight: '200px' }}
-                        >
-                            <ul className="w-full flex flex-col items-center space-y-2">
-                                <li className="flex items-center w-100 px-6 py-2 rounded-md transition-colors hover:bg-gray-200 cursor-pointer">
+                        <div className="max-h-[200px] overflow-y-auto w-full mt-1">
+                            <ul className="w-full flex flex-col space-y-2">
+                                <li className="flex items-center w-100 py-2 rounded-md transition-colors hover:bg-gray-200 cursor-pointer"
+                                    onClick={handleUseCurrentLocation}
+                                >
                                     <MdOutlineMyLocation
-                                        className="text-mgbblue ml-3 mr-4 min-w-[20px]"
+                                        className="text-mgbblue min-w-[20px]"
                                         size={18}
                                     />
                                     <span className="text-codGray mx-3">Current Location</span>
@@ -630,10 +665,11 @@ const DirectionsMapComponent = () => {
                                 {recentOrigins.map((origin, index) => (
                                     <li
                                         key={index}
-                                        className="flex items-center w-100 px-6 py-2 rounded-md transition-colors hover:bg-gray-200 cursor-pointer"
+                                        className="flex items-center w-100 py-2 rounded-md transition-colors hover:bg-gray-200 cursor-pointer"
+                                        onClick={() => setFromLocation(origin.location)}
                                     >
                                         <FaRegClock
-                                            className="text-mgbblue ml-3 mr-4 min-w-[20px]"
+                                            className="text-mgbblue min-w-[20px]"
                                             size={18}
                                         />
                                         <span className="text-codGray mx-3">

@@ -23,34 +23,31 @@ router.get('/', async function (req: Request, res: Response) {
 
 router.post('/', async (req: Request, res: Response) => {
     const { id, location } = req.body;
+
     try {
-        const result = await PrismaClient.$transaction(async (prisma) => {
-            const existing = await PrismaClient.recentOrigins.findFirst({
-                where: {
-                    location: {
-                        equals: location,
-                        mode: 'insensitive',
-                    },
+        const existing = await PrismaClient.recentOrigins.findFirst({
+            where: {
+                location: {
+                    equals: location,
+                    mode: 'insensitive',
                 },
-            });
-
-            if (existing) {
-                return res.status(409).json({ message: 'Location already exists' });
-            }
-
-            const newOrigin = await PrismaClient.recentOrigins.create({
-                data: {
-                    id,
-                    location: location,
-                },
-            });
-
-            res.status(201).json(newOrigin);
+            },
         });
-        res.status(201).json(result);
+
+        if (existing) {
+            res.status(409).json({ message: 'Location already exists' });
+            return;
+        }
+
+        const newOrigin = await PrismaClient.recentOrigins.create({
+            data: { id, location },
+        });
+
+        res.status(201).json(newOrigin);
     } catch (error) {
-        console.error(error);
+        console.error('Error in POST /api/recentorigins:', error);
         res.status(500).json({ error: 'Something went wrong' });
+        return;
     }
 });
 
