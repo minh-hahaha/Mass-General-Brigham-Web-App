@@ -1,6 +1,7 @@
 import NodeEditorComponent from '@/components/NodeEditorComponent.tsx';
 import { APIProvider, Map, RenderingType } from '@vis.gl/react-google-maps';
 import OverlayComponent from '@/components/OverlayComponent.tsx';
+import MGBButton from '@/elements/MGBButton.tsx';
 
 const TestNodeEditor = () => {
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;

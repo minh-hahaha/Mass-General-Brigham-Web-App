@@ -1,122 +1,223 @@
-import { ControlPosition, useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
+import { useMap } from '@vis.gl/react-google-maps';
 import { useEffect, useRef, useState } from 'react';
-import { Button } from '@/components/ui/button.tsx';
 import { myEdge, myNode } from 'common/src/classes/classes.ts';
+import MGBButton from '@/elements/MGBButton.tsx';
 
 interface MapNode {
     node: myNode,
-    mapNode: google.maps.Circle
+    drawnNode: google.maps.Circle
 }
 
 interface MapEdge {
     edge: myEdge;
     to: MapNode;
     from: MapNode;
-    mapEdge: google.maps.Polyline;
+    drawnEdge: google.maps.Polyline;
 }
 
-const NodeEditorComponent = () => {
+const NodeEditorComponent = ()  => {
 
     const map = useMap();
-    const [mode, setMode] = useState<'Node' | 'Edge' | null>(null);
-    const [clickedNode, setClickedNode] = useState<MapNode | null>(null);
-    const clickedNodeRef = useRef<MapNode | null>(null);
-    const mapEdgesRef = useRef<MapEdge[] | null>(null);
-    const mapNodesRef = useRef<MapNode[] | null>(null);
+    const [mode, setMode] = useState<'Node' | null>(null);
+    const modeRef = useRef(mode);
+    const [clickedNode, setClickedNode] = useState<string | null>(null);
+    const clickedNodeRef = useRef(clickedNode);
+    const [clickedEdge, setClickedEdge] = useState<number | null>(null);
+    const clickedEdgeRef = useRef(clickedEdge);
     const [mapEdges, setMapEdges] = useState<MapEdge[]>([]);
+    const mapEdgesRef = useRef(mapEdges);
     const [mapNodes, setMapNodes] = useState<MapNode[]>([]);
+    const mapNodesRef = useRef(mapNodes);
+    let tempNodeID = 0;
+    let tempEdgeID = 1;
 
-    function updateNode(node: MapNode | null) {
-        if(clickedNodeRef.current) {
-            clickedNodeRef.current.mapNode.set('strokeWeight', 0);
-        }
-        setClickedNode(node);
-        if(node){
-            node.mapNode.set('strokeWeight', 5);
-        }
+
+    function incrementTempNodeID(): number {
+        return tempNodeID++;
+    }
+
+    function incrementTempEdgeID(): number {
+        return tempEdgeID++;
     }
 
     useEffect(() => {
-        clickedNodeRef.current = clickedNode;
-    }, [clickedNode]);
+        modeRef.current = mode;
+    }, [mode]);
     useEffect(() => {
         mapEdgesRef.current = mapEdges;
     }, [mapEdges]);
     useEffect(() => {
         mapNodesRef.current = mapNodes;
-    }, [clickedNode]);
-
-    document.addEventListener('keypress', (e) => {
-
-        if(e.key === 'Enter') {
-            setMode('Node');
-        }else if(e.key === 'z' && clickedNodeRef.current) {
-           mapEdgesRef.current?.forEach(edge => {
-               if(edge.from.node.nodeId === clickedNodeRef.current?.node.nodeId || edge.to.node.nodeId === clickedNodeRef.current?.node.nodeId) {
-                   edge.mapEdge.setMap(null);
-               }
-           });
-           const newEdges = mapEdgesRef.current?.filter(edge => (edge.from.node.nodeId !== clickedNodeRef.current?.node.nodeId || edge.to.node.nodeId !== clickedNodeRef.current?.node.nodeId));
-           setMapEdges(newEdges ? newEdges : []);
-           clickedNodeRef.current.mapNode.setMap(null);
-           const newNodes = mapNodesRef.current?.filter(node => node.node.nodeId !== clickedNodeRef.current?.node.nodeId);
-           setMapNodes(newNodes ? newNodes : []);
-
-           setClickedNode(null);
-        }else{
-            setMode(null);
-        }
-    })
+    }, [mapNodes]);
     useEffect(() => {
-        
+        clickedNodeRef.current = clickedNode;
+    }, [clickedNode]);
+    useEffect(() => {
+        clickedEdgeRef.current = clickedEdge;
+    }, [clickedEdge]);
+
+    function createNode(position: google.maps.LatLng | null) {
+        if(!position)
+            return;
+        const mapNode: MapNode = {
+            node: new myNode(incrementTempNodeID().toString(), position.lat(), position.lng(), '1', 'IDK', '1', "Node", null),
+            drawnNode: new google.maps.Circle({
+                center: position,
+                radius: 1,
+                clickable: true,
+                map: map,
+                fillOpacity: 1,
+                strokeWeight: 0,
+                strokeColor: '#ffde00',
+                fillColor: '#002aff',
+            })
+        }
+        google.maps.event.addListener(mapNode.drawnNode, 'click', (e: google.maps.MapMouseEvent) => clickNode(mapNode.node.nodeId))
+        setMapNodes(prev => [...prev, mapNode]);
+    }
+
+    function createEdge(startNode: MapNode, endNode: MapNode){
+        const startPos = startNode.drawnNode.getCenter();
+        const endPos = endNode.drawnNode.getCenter();
+        if(!startPos || !endPos){
+            return;
+        }
+        if(mapEdgesRef.current.find(edge => (edge.edge.to.nodeId === startNode.node.nodeId && edge.edge.from.nodeId === endNode.node.nodeId) || (edge.edge.to.nodeId === endNode.node.nodeId && edge.edge.from.nodeId === startNode.node.nodeId))){
+            return;
+        }
+        const mapEdge: MapEdge = {
+            edge: new myEdge(incrementTempEdgeID(), startNode.node, endNode.node),
+            to: startNode,
+            from: endNode,
+            drawnEdge: new google.maps.Polyline({
+                path: [startPos, endPos],
+                map,
+                strokeColor: '#002aff',
+                strokeWeight: 5,
+                clickable: true,
+                zIndex: -1,
+            })
+        }
+        google.maps.event.addListener(mapEdge.drawnEdge, 'click', (e: google.maps.MapMouseEvent) => clickEdge(mapEdge.edge.edgeId))
+        setMapEdges(prev => [...prev, mapEdge]);
+    }
+
+    function removeSelectedNode(){
+        const selectedNode = mapNodes.find(node => node.node.nodeId === clickedNode);
+        if(selectedNode){
+            removeEdgesFromNode(selectedNode);
+            selectedNode.drawnNode.setMap(null);
+            setMapNodes(mapNodes.filter(mapNode => mapNode.node.nodeId !== clickedNode));
+            setClickedNode(null);
+        }
+    }
+
+    function removeSelectedEdge(){
+        const selectedEdge = mapEdges.find(edge => edge.edge.edgeId === clickedEdge);
+        if(selectedEdge){
+            selectedEdge.drawnEdge.setMap(null);
+            setMapEdges(mapEdges.filter(mapEdge => mapEdge.edge.edgeId !== clickedEdge));
+            setClickedEdge(null);
+        }
+    }
+
+    function removeEdgesFromNode(node: MapNode) {
+        const edgesToRemove: number[] = [];
+        mapEdges.forEach(edge => {
+            if(edge.from.node.nodeId === node.node.nodeId || edge.to.node.nodeId === node.node.nodeId) {
+                edgesToRemove.push(edge.edge.edgeId);
+                edge.drawnEdge.setMap(null);
+            }
+        })
+        setMapEdges(mapEdges.filter(edge => !edgesToRemove.includes(edge.edge.edgeId)));
+    }
+
+    function clickNode(nodeId: string) {
+        const currentNode = mapNodesRef.current.find(node => node.node.nodeId === clickedNodeRef.current);
+        const newCurrent = mapNodesRef.current.find(node => node.node.nodeId === nodeId);
+        if(currentNode){
+            currentNode.drawnNode.set('strokeWeight', 0);
+            if(newCurrent){
+                createEdge(currentNode, newCurrent);
+                setClickedNode(null)
+                return;
+            }
+        }
+        if(newCurrent){
+            newCurrent.drawnNode.set('strokeWeight', 5);
+            setClickedNode(nodeId);
+        }
+    }
+
+    //TODO: make it so you cant select a node and an edge
+
+    function clickEdge(edgeID: number){
+        const currentEdge = mapEdgesRef.current.find(edge => edge.edge.edgeId === clickedEdgeRef.current);
+        const newCurrent = mapEdgesRef.current.find(edge => edge.edge.edgeId === edgeID);
+        if(currentEdge){
+            currentEdge.drawnEdge.set('strokeColor', '#002aff');
+        }
+        if(newCurrent){
+            newCurrent.drawnEdge.set('strokeColor', '#ffde00');
+            setClickedEdge(edgeID);
+        }
+    }
+
+    useEffect(() => {
         if(!map)
             return;
-        const listeners: google.maps.MapsEventListener[] = [];
-        if(mode == 'Node') {
-            listeners.push(map.addListener('click', (e) => {
-                const drawnNode = new google.maps.Circle({
-                    center: e.latLng,
-                    radius: 1,
-                    clickable: true,
-                    map: map,
-                    fillOpacity: 1,
-                    strokeWeight: 0,
-                    strokeColor: '#ffde00',
-                    fillColor: '#002aff',
-                });
-                const node: myNode = new myNode('IDK', drawnNode.getCenter().lat(), drawnNode.getCenter().lng(), '1', 'IDK', '1', "IDK", null);
-                const mapNode = {node: node, mapNode: drawnNode};
-                setMapNodes([...mapNodes, mapNode]);
-                drawnNode.addListener('click', (e) => {
-                    const currentNode = clickedNodeRef.current;
-                    if(currentNode){
-                        const path: google.maps.LatLngLiteral[] = [currentNode.mapNode.getCenter(), drawnNode.getCenter()];
-                        const drawnEdge: google.maps.Polyline = new google.maps.Polyline({
-                            path,
-                            map,
-                            strokeColor: '#002aff',
-                            strokeWeight: 5,
-                            clickable: false
-                        })
-                        const edge = new myEdge(99, currentNode.node, node);
-                        const mapEdge = {edge: edge, from: currentNode, to: mapNode, mapEdge: drawnEdge};
-                        setMapEdges([...mapEdges, mapEdge]);
-                        updateNode(null);
-                    }else{
-                        updateNode(mapNode);
-                    }
-                })
-            }))
-        }
+        const listener = google.maps.event.addListener(map, 'click', (e: google.maps.MapMouseEvent) => {
+            if(modeRef.current === 'Node'){
+                createNode(e.latLng)
+            }
+        })
+        return () => {google.maps.event.removeListener(listener)}
+    }, [map]);
 
-        return () => {
-            listeners.forEach(listener => { listener.remove()})
-        }
-        
-    }, [map, mode]);
-    
     return (
         <>
+        <div className="absolute bottom-18 left-8 p-4 bg-white rounded-xl shadow-lg text-sm text-gray-800 max-w-sm space-y-1 z-10">
+            <h3 className="font-bold text-base mb-1 text-mgbblue">Modes</h3>
+            <p>
+                <MGBButton
+                    onClick={() => {
+                        setMode(null);
+                        setClickedNode('');
+                    }}
+                    children={"Navigate"}
+                    variant={'primary'}
+                    disabled={false}
+                ></MGBButton>
+            </p>
+            <p>
+                <MGBButton
+                    onClick={() => {
+                        setMode("Node");
+                    }}
+                    children={"Add Node"}
+                    variant={'primary'}
+                    disabled={false}
+                ></MGBButton>
+            </p>
+            <p>
+                <MGBButton
+                    onClick={() => removeSelectedNode()}
+                    children={"Remove Node"}
+                    variant={clickedNode ? 'primary' : 'secondary'}
+                    disabled={clickedNode === null}
+                ></MGBButton>
+            </p>
+            <p>
+                <MGBButton
+                    onClick={() => {
+                        removeSelectedEdge();
+                    }}
+                    children={"Remove Edge"}
+                    variant={clickedEdge ? 'primary' : 'secondary'}
+                    disabled={clickedEdge === null}
+                ></MGBButton>
+            </p>
+        </div>
         </>
     )
 }
