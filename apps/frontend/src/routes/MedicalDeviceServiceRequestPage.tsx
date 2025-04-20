@@ -70,9 +70,7 @@ const MedicalDeviceServiceRequestPage = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        const formattedDate = new Date(date + ':00Z').toISOString();
-
+        
         const newRequest: MedicalDeviceRequestData = {
             employeeName: employeeName,
             employeeId: employeeId,
