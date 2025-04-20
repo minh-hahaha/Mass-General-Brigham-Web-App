@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo, ChangeEvent } from 'react'
 import SelectElement from '../elements/SelectElement.tsx';
 import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google-maps';
 import TravelModeComponent from "@/components/TravelModeComponent.tsx";
-import OverlayComponent from "@/components/svgOverlay.tsx";
+import OverlayComponent from "@/components/OverlayMapComponent.tsx";
 import HospitalMapComponent from "@/components/HospitalMapComponent";
 
 import { MapPin, MapPlus } from 'lucide-react';
@@ -38,12 +38,18 @@ const DefaultFloors:Record<string, string> = {
 
 type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
 
-const ChestnutParkingBounds = {
-    southWest: { lat: 42.32546535760605, lng: -71.15029519348985 }, // Bottom-left corner
-    northEast: { lat: 42.32659860801865, lng: -71.14889438933609 }, // Top-right corner
+const ChestnutHillBounds = {
+    southWest: { lat: 42.32543670863917, lng: -71.15022693442262 }, // Bottom-left corner
+    northEast: { lat: 42.32649756743757, lng: -71.14898211823991 }, // Top-right corner
 };
 
-const ChestnutParkingSVG = '/ChestnutParking.svg';
+const PatriotPlaceBounds = {
+    southWest: { lat: 42.09086272947439, lng: -71.26758215417115 }, // Bottom-left corner
+    northEast: { lat: 42.09342690806031, lng: -71.26501767235642 }, // Top-right corner
+};
+
+const CH01 = '/CH01.png';
+const PP01 = '/20PP01.png';
 
 const nullNode : myNode = {
     nodeId: "",
@@ -631,8 +637,13 @@ const DirectionsMapComponent = () => {
                         mapTypeControl={false}
                     >
                         <OverlayComponent
-                            bounds={ChestnutParkingBounds}
-                            imageSrc={ChestnutParkingSVG}
+                            bounds={ChestnutHillBounds}
+                            imageSrc={CH01}
+                            visible={true}
+                        />
+                        <OverlayComponent
+                            bounds={PatriotPlaceBounds}
+                            imageSrc={PP01}
                             visible={true}
                         />
                     </Map>
