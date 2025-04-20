@@ -60,7 +60,6 @@ const MedicalDeviceServiceRequestPage = () => {
     const [deviceModel, setDeviceModel] = useState('');
     const [deviceSerialNumber, setDeviceSerialNumber] = useState('');
     const [quantity, setQuantity] = useState(1);
-    const [date, setDate] = useState('');
     const [reasoning, setReasoning] = useState('');
     const [status, setStatus] = useState<MedicalDeviceRequestData['status']>('Pending');
     const [notes, setNotes] = useState('');
@@ -103,7 +102,6 @@ const MedicalDeviceServiceRequestPage = () => {
         setEmployeeName('');
         setEmployeeId(0);
         setRequestDate(new Date().toISOString().split('T')[0]);
-        setDate(new Date().toISOString().split('T')[0]);
         setPriority('Low');
         setLocation('Chestnut Hill');
         setMedicalDevice('ECG Monitor');
