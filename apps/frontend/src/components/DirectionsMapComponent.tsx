@@ -691,7 +691,7 @@ const DirectionsMapComponent = () => {
                         mapId={"73fda600718f172c"}
                     >
                         <HospitalMapComponent
-                            startNodeId={"1"}
+                            startNodeId={"CHFloor1Door8"}
                             endNodeId={toDirectoryNodeId}
                         />
                     </Map>

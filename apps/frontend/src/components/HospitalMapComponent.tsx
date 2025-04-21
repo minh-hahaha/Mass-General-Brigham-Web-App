@@ -213,6 +213,9 @@ const HospitalMapComponent = ({startNodeId, endNodeId}:Props) => {
     const [endNode, setEndNode] = useState<myNode>();
     const [currentFloorId, setCurrentFloorId] = useState<string>();
 
+    console.log(startNodeId);
+    console.log(endNodeId);
+
     // get node using nodeId
     useEffect(() => {
         const fetchNode = async () => {
@@ -227,12 +230,16 @@ const HospitalMapComponent = ({startNodeId, endNodeId}:Props) => {
         };
         fetchNode();
         console.log('Got Department Node');
-    }, []);
+    }, [startNodeId, endNodeId]);
+
+    console.log(startNode);
+    console.log(endNode);
 
     // Find path and text directions
     useEffect(() => {
         const getMyPaths = async () => {
             if (startNode && endNode) {
+                console.log("true");
                 try {
                     const result = await FindPath(startNode, endNode);
                     console.log("Path found:", result);
@@ -310,7 +317,7 @@ const HospitalMapComponent = ({startNodeId, endNodeId}:Props) => {
         <div className="relative w-full h-full">
             <OverlayComponent
                 bounds={ChestnutHillBounds}
-                imageSrc={currentFloor.svgPath}
+                imageSrc={availableFloors[0].svgPath}
             />
             <OverlayComponent
                 bounds={PatriotPlaceBounds}
