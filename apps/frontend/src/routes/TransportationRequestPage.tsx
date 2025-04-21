@@ -7,7 +7,7 @@ import { SubmitTransportRequest } from '../database/transportRequest.ts';
 interface transportRequest {
     patientId: number;
     patientName: string;
-    transportType: 'Ambulance' | 'Helicopter' | 'Other';
+    transportType: 'Ambulance' | 'Helicopter' | 'Medical Van' | 'Other';
     priority: 'Low' | 'Medium' | 'High';
     pickupLocation: string;
     dropOffLocation: string;
