@@ -125,25 +125,25 @@ router.get('/csv', async function (req: Request, res: Response) {
     try {
         //Attempt to pull from directory
         const DIRECTORY = await PrismaClient.department.findMany({
-            include: {
-                locations: true,
-            },
+            // include: {
+            //     locations: true,
+            // },
             orderBy: {
                 deptId: 'desc',
             },
         });
         // Take the joined Location fields and flatten them for CSV parsing {xx:xx, yy:yy, zz:{aa:aa, bb:bb}} => {xx:xx, yy:yy, aa:aa, bb:bb}
-        const flattenedDirectories = DIRECTORY.flatMap((directory) =>
-            directory.locations.map((location) => ({
-                ...directory,
-                floor: location.floor,
-                roomNum: location.roomNum,
-                locId: location.locId,
-                locType: location.locType,
-                nodeId: location.nodeId,
-            }))
-        );
-        await dataToCSV(flattenedDirectories);
+        // const flattenedDirectories = DIRECTORY.flatMap((directory) =>
+        //     directory.locations.map((location) => ({
+        //         ...directory,
+        //         floor: location.floor,
+        //         roomNum: location.roomNum,
+        //         locId: location.locId,
+        //         locType: location.locType,
+        //         nodeId: location.nodeId,
+        //     }))
+        // );
+        // await dataToCSV(flattenedDirectories);
         // Uses the first key as the name of the file EX: dep_id.csv
         const fileName = Object.keys(DIRECTORY[0])[0].toString();
         res.sendFile('data.csv', {
@@ -165,7 +165,7 @@ router.post('/csv', async function (req: Request, res: Response) {
     try {
         if (overwrite === 'Overwrite') {
             await PrismaClient.department.deleteMany();
-            await PrismaClient.location.deleteMany();
+            // await PrismaClient.location.deleteMany();
         }
         for (let data of csvData) {
             const dataToUpsertDirectory = {
@@ -189,10 +189,10 @@ router.post('/csv', async function (req: Request, res: Response) {
                     data: dataToUpsertDirectory,
                     skipDuplicates: true, // Will occur when a department is in two locations
                 });
-                await PrismaClient.location.createMany({
-                    data: dataToUpsertLocation,
-                    skipDuplicates: true, // This shouldn't happen but just in case
-                });
+                // await PrismaClient.location.createMany({
+                //     data: dataToUpsertLocation,
+                //     skipDuplicates: true, // This shouldn't happen but just in case
+                // });
             } else {
                 console.log('updating');
                 await PrismaClient.department.upsert({
@@ -200,11 +200,11 @@ router.post('/csv', async function (req: Request, res: Response) {
                     update: dataToUpsertDirectory,
                     create: dataToUpsertDirectory,
                 });
-                await PrismaClient.location.upsert({
-                    where: { locId: data.locId },
-                    update: dataToUpsertLocation,
-                    create: dataToUpsertLocation,
-                });
+                // await PrismaClient.location.upsert({
+                //     where: { locId: data.locId },
+                //     update: dataToUpsertLocation,
+                //     create: dataToUpsertLocation,
+                // });
             }
         }
         res.sendStatus(200);
