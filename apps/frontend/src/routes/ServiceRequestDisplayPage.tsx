@@ -13,6 +13,7 @@ import TableMaintenanceRequest from "@/components/tables/TableMaintenanceRequest
 import TableSanitationRequest from "@/components/tables/TableSanitationRequest.tsx"
 import TableTransportRequest from "@/components/tables/TableTransportRequest.tsx"
 import TableTranslationRequest from "@/components/tables/TableTranslatorRequest.tsx"
+import TableMedicalDeviceRequest from "@/components/tables/TableMedicalDeviceRequest.tsx"
 import { cn } from "@/lib/utils"
 
 const tableTabs = [
@@ -21,6 +22,7 @@ const tableTabs = [
     { label: "Sanitation", Component: TableSanitationRequest },
     { label: "Transport", Component: TableTransportRequest },
     { label: "Translation", Component: TableTranslationRequest },
+    { label: "Medical Device", Component: TableMedicalDeviceRequest },
 ]
 
 export default function RequestTablesCarousel() {
@@ -38,10 +40,10 @@ export default function RequestTablesCarousel() {
     return (
         <div className="w-full px-6 pt-10">
             <div className="flex justify-center mb-6">
-                <div className="relative flex w-full max-w-xl overflow-hidden rounded-xl bg-white border border-mgbblue shadow-inner">
+                <div className="relative flex w-full overflow-hidden rounded-xl bg-white border border-mgbblue shadow-inner">
                     {/* Highlight */}
                     <div
-                        className="absolute top-0 left-0 h-full w-1/5 rounded-xl transition-transform duration-300 ease-in-out bg-mgbblue"
+                        className="absolute top-0 left-0 h-full w-1/6 rounded-xl transition-transform duration-300 ease-in-out bg-mgbblue"
                         style={{ transform: `translateX(${selectedIndex * 100}%)`, zIndex: 0 }}
                     />
                     {tableTabs.map((tab, index) => (
@@ -49,7 +51,7 @@ export default function RequestTablesCarousel() {
                             key={tab.label}
                             onClick={() => api?.scrollTo(index)}
                             className={cn(
-                                "flex-1 z-10 px-4 py-3 text-sm font-medium transition-colors duration-200",
+                                "w-1/6 text-center z-10 px-4 py-3 text-sm font-medium transition-colors duration-200",
                                 selectedIndex === index
                                     ? "text-white"
                                     : "text-mgbblue hover:text-mgbblue/80"
@@ -61,6 +63,7 @@ export default function RequestTablesCarousel() {
                 </div>
             </div>
 
+            <div className="relative px-8">
             <Carousel setApi={setApi} className="w-full">
                 <CarouselContent>
                     {tableTabs.map((tab, index) => (
@@ -72,6 +75,7 @@ export default function RequestTablesCarousel() {
                 <CarouselPrevious />
                 <CarouselNext />
             </Carousel>
+            </div>
         </div>
     )
 }
