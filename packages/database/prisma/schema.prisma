@@ -46,6 +46,7 @@ model ServiceRequest {
   translationRequest TranslationRequest?
   sanitation         Sanitation?         @relation(name: "ServiceSanitation")
   maintenanceRequest MaintenanceRequest? @relation(name: "MaintenanceRequest")
+  medicalDeviceRequest MedicalDeviceRequest? @relation("MedicalDeviceRequest")
 }
 
 model MaintenanceRequest {
@@ -57,6 +58,17 @@ model MaintenanceRequest {
   maintenanceTime        DateTime
   // employee_name           String
   servRequestId          ServiceRequest @relation(name: "MaintenanceRequest", fields: [servMaintenanceId], references: [requestId])
+}
+
+model MedicalDeviceRequest {
+  servReqId          Int            @id
+  servRequestId      ServiceRequest @relation(name: "MedicalDeviceRequest", fields: [servReqId], references: [requestId])
+  device             String
+  deviceReasoning    String
+  deviceSerialNumber String
+  deviceModel        String?
+  location           String
+  department         String
 }
 
 //TODO: FIX LOCATION FIELDS
@@ -112,8 +124,8 @@ model Node {
   roomNumber  String?
   edgesFrom   Edge[]  @relation("NodeToEdgeFrom")
   edgesTo     Edge[]  @relation("NodeToEdgeTo")
-  departments Department[]
-  location    Location? @relation(name:"LocationNode")
+  departments Department[] @relation("departmentNodes")
+
 }
 
 model Edge {

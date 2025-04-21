@@ -133,18 +133,18 @@ router.get('/csv', async function (req: Request, res: Response) {
         });
         // Take the joined Node fields and flatten them for CSV parsing {xx:xx, yy:yy, zz:{aa:aa, bb:bb}} => {xx:xx, yy:yy, aa:aa, bb:bb}
         // const flattenedDirectories = DIRECTORY.flatMap(() => {} );
-            // directory.departmentNodes.map((node) => ({
-            //     ...directory,
-            //     nodeId: node.nodeId,
-            //     x: node.x,
-            //     y: node.y,
-            //     floor: node.floor,
-            //     buildingId: node.buildingId,
-            //     nodeType: node.nodeType,
-            //     name: node.name,
-            //     roomNumber: node.roomNumber,
-            //     departmentId: node.departmentId,
-            // }))
+        // directory.departmentNodes.map((node) => ({
+        //     ...directory,
+        //     nodeId: node.nodeId,
+        //     x: node.x,
+        //     y: node.y,
+        //     floor: node.floor,
+        //     buildingId: node.buildingId,
+        //     nodeType: node.nodeType,
+        //     name: node.name,
+        //     roomNumber: node.roomNumber,
+        //     departmentId: node.departmentId,
+        // }))
 
         await dataToCSV(DIRECTORY); //the big boy
         // Uses the first key as the name of the file EX: dep_id.csv
@@ -188,8 +188,8 @@ router.post('/csv', async function (req: Request, res: Response) {
                 nodeType: data.nodeType,
                 name: data.name,
                 roomNumber: data.roomNumber,
-                departments: data.deptId ?? null
-            }
+                departments: data.deptId ?? null,
+            };
             if (overwrite === 'Overwrite') {
                 console.log('Overwriting');
                 await PrismaClient.department.createMany({
@@ -200,7 +200,7 @@ router.post('/csv', async function (req: Request, res: Response) {
                 await PrismaClient.node.createMany({
                     data: dataToUpsertNode,
                     skipDuplicates: true,
-                })
+                });
             } else {
                 console.log('updating');
                 await PrismaClient.department.upsert({
@@ -209,10 +209,10 @@ router.post('/csv', async function (req: Request, res: Response) {
                     create: dataToUpsertDirectory,
                 });
                 await PrismaClient.node.upsert({
-                    where: {nodeId: data.nodeId},
+                    where: { nodeId: data.nodeId },
                     update: dataToUpsertNode,
                     create: dataToUpsertNode,
-                })
+                });
             }
         }
         res.sendStatus(200);

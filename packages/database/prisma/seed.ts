@@ -111,7 +111,7 @@ async function main() {
                 buildingId: 1,
                 deptPhone: '617-732-9841',
                 deptServices: 'Blood work, lab services',
-                // nodeId: "CHFloor1Room100",
+                nodeId: "CHFloor1Room100",
             },
             {
                 deptId: 12,
@@ -119,7 +119,7 @@ async function main() {
                 buildingId: 1,
                 deptPhone: '617-732-9500',
                 deptServices: 'Orthopedic surgery, Vascular surgery, Contact Dermatitis and Occupational Dermatology Program, Pain Medicine and Travel Medicine',
-                // nodeId: "CHFloor1Room130"
+                nodeId: "CHFloor1Room130"
             },
             {
                 deptId: 13,
@@ -156,7 +156,7 @@ async function main() {
                 buildingId: 1,
                 deptPhone: '617-732-9821',
                 deptServices: 'CT scan, MRI, X-Ray',
-                // nodeId: "CHFloor1Room102",
+                nodeId: "CHFloor1Room102",
             },
             {
                 deptId: 18,
@@ -171,7 +171,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'Blood Draw / Phlebotomy',
-                // nodeId: "20PPFloor1Room130"
+                nodeId: "20PPFloor1Room130"
             },
             {
                 deptId: 20,
@@ -179,7 +179,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'Pharmacy',
-                // nodeId: "20PPFloor1Room130"
+                nodeId: "20PPFloor1Room130"
             },
             {
                 deptId: 21,
@@ -187,7 +187,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'Via Fax: 508-718-4026',
                 deptServices: 'magnetic resonance imaging (MRI), computed tomography (CT), single photon emission computed tomography (SPECT) imaging, ultrasound, digital mammography, x-ray, bone densitometry. Available twice a week: arthrograms, magnetic resonance (MR) arthrograms, computed tomography (CT) arthrograms, diagnostic and therapeutic joint injections',
-                // nodeId: "20PPFloor1Room110"
+                nodeId: "20PPFloor1Room110"
             },
             {
                 deptId: 22,
@@ -195,7 +195,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: '1-866-378-9164',
                 deptServices: 'Transthoracic echocardiography, Holter monitoring, Electrocardiogram (ECG), Exercise tolerance testing, Exercise stress echocardiography, Vascular and arterial studies',
-                // nodeId: "20PPFloor1Room150"
+                nodeId: "20PPFloor1Room150"
             },
             {
                 deptId: 23,
@@ -203,7 +203,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: '1-866-378-9164',
                 deptServices: 'diagnostic cystoscopy (cysto), retrograde pyelogram, transurethral resection of bladder tumor, cold knife urethrotomy, bladder stone removal, fulguration, bladder biopsy, ureteroscopy, chemotherapy and formalin instillation, laser lithotripsy, electrohydraulic lithotripsy (EHL), urethral or bladder neck contracture dilation, circumcision, suprapubic tube (catheter) change, ureteral stent placement and removal, prostate needle biopsy, varicocelectomy, hydrocelectomy, vasectomy, testicular biopsy, orchiectomy, SPARC™ procedures',
-                // nodeId: "20PPFloor1Room110"
+                nodeId: "20PPFloor1Room110"
             },
             {
                 deptId: 24,
@@ -211,7 +211,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: '508-718-4400',
                 deptServices: 'Urgent Care',
-                // nodeId: "20PPFloor1Room120",
+                nodeId: "20PPFloor1Room120",
             },
             {
                 deptId: 25,
@@ -219,7 +219,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: '1-866-378-9164',
                 deptServices: 'Hand and Upper Extremity, Arthroplasty, Pediatric Trauma, Physiatry, Podiatry',
-                // nodeId: "20PPFloor2Room8"
+                nodeId: "20PPFloor2Room8"
             },
             {
                 deptId: 26,
@@ -227,7 +227,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: ' 1-866-378-9164',
                 deptServices: 'Cardiac Rehab, Occupational Therapy(Hand Therapy, Upper Extremity), Physical Therapy, Speech - Language, Clinical Lab, Surgi-Care',
-                // nodeId: "20PPFloor2Room8"
+                nodeId: "20PPFloor2Room8"
             },
             {
                 deptId: 27,
@@ -235,7 +235,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'Audiology, ENT, General and Gastrointestinal Surgery, Plastic Surgery, Thoracic Surgery, Vascular Surgery, Weight Management and Wellness',
-                // nodeId: "20PPFloor3Room9"
+                nodeId: "20PPFloor3Room9"
             },
             {
                 deptId: 28,
@@ -243,7 +243,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: '1-866-378-9164',
                 deptServices: 'arm, elbow and hand disorders, athletic injuries, spine disorders, foot and ankle problems, hip and knee disorders, shoulder issues, joint replacement, musculoskeletal oncology',
-                // nodeId: "20PPFloor3Room14"
+                nodeId: "20PPFloor3Room14"
             },
             {
                 deptId: 29,
@@ -251,7 +251,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'X-Ray',
-                // nodeId: "20PPFloor3Room14"
+                nodeId: "20PPFloor3Room14"
             },
             {
                 deptId: 30,
@@ -259,7 +259,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'Electromyography (EMG)',
-                // nodeId: "20PPFloor4Room5"
+                nodeId: "20PPFloor4Room5"
             },
             {
                 deptId: 31,
@@ -267,7 +267,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'Nutrition',
-                // nodeId: "20PPFloor4Room5"
+                nodeId: "20PPFloor4Room5"
 
             },
             {
@@ -276,7 +276,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: '1-866-378-9164',
                 deptServices: 'diagnosis and treatment of spine-related low-back and neck pain, complex regional pain syndrome, post-herpetic neuralgia (shingles), other neuropathic syndromes, chronic pelvic pain, chronic pain in young adults, comprehensive evaluation for patients with cancer-related pain, headaches, arthritis',
-                // nodeId: "20PPFloor4Room5"
+                nodeId: "20PPFloor4Room5"
             },
             {
                 deptId: 33,
@@ -284,7 +284,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'interventional spine procedures, electrodiagnostic medicine consultations and alternative therapies such as medical acupuncture',
-                // nodeId: "20PPFloor4Room5"
+                nodeId: "20PPFloor4Room5"
             },
             {
                 deptId: 34,
@@ -292,7 +292,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'Plumonary Function Testing',
-                // nodeId: "20PPFloor4Room5"
+                nodeId: "20PPFloor4Room5"
 
             },
             {
@@ -301,7 +301,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'Day Surgery Center',
-                // nodeId: "20PPFloor4Room5"
+                nodeId: "20PPFloor4Room5"
 
             },
             {
@@ -324,7 +324,7 @@ async function main() {
                 buildingId: 3,
                 deptPhone: '1-866-378-9164',
                 deptServices: "Allergy, Cardiac Arrhythmia, Dermatology, Endocrinology, Gastroenterology, Kidney (Renal) Medicine, Neurology, Neurosurgery, Ophthalmology, Optometry, Pulmonology, Rheumatology, Vein Care Services, Women's Health",
-                // nodeId: "22PPFloor3Room3"
+                nodeId: "22PPFloor3Room3"
             },
             {
                 deptId: 39,
@@ -332,7 +332,7 @@ async function main() {
                 buildingId: 3,
                 deptPhone: 'N/A',
                 deptServices: 'Patient Financial Services',
-                // nodeId: "22PPFloor3Room3"
+                nodeId: "22PPFloor3Room3"
             },
             {
                 deptId: 40,
@@ -340,7 +340,7 @@ async function main() {
                 buildingId: 3,
                 deptPhone: 'N/A',
                 deptServices: 'Blood Draw / Phlebotomy',
-                // nodeId: "22PPFloor4Room10"
+                nodeId: "22PPFloor4Room10"
             },
             {
                 deptId: 41,
@@ -348,7 +348,7 @@ async function main() {
                 buildingId: 3,
                 deptPhone: 'N/A',
                 deptServices: 'Community Room',
-                // nodeId: "22PPFloor4Room9"
+                nodeId: "22PPFloor4Room9"
 
             },
             {
@@ -357,7 +357,7 @@ async function main() {
                 buildingId: 3,
                 deptPhone: '(508) 718-4050',
                 deptServices: 'Primary Care',
-                // nodeId: "22PPFloor4Room9"
+                nodeId: "22PPFloor4Room9"
 
             },
         ],
