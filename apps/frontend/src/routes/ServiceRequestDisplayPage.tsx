@@ -15,8 +15,10 @@ import TableTransportRequest from "@/components/tables/TableTransportRequest.tsx
 import TableTranslationRequest from "@/components/tables/TableTranslatorRequest.tsx"
 import TableMedicalDeviceRequest from "@/components/tables/TableMedicalDeviceRequest.tsx"
 import { cn } from "@/lib/utils"
+import CarouselMenu from '@/components/CarouselMenu.tsx';
 
 const tableTabs = [
+
     { label: "All", Component: TableAllRequest },
     { label: "Maintenance", Component: TableMaintenanceRequest },
     { label: "Sanitation", Component: TableSanitationRequest },
@@ -78,4 +80,8 @@ export default function RequestTablesCarousel() {
             </div>
         </div>
     )
+
+export default function RequestTablesCarousel() {
+    return (<CarouselMenu tableTabs={tableTabs}/>)
+
 }
