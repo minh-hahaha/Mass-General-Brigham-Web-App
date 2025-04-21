@@ -19,6 +19,8 @@ import {
 import { GetNode } from '@/database/getDepartmentNode.ts';
 import { GetRecentOrigins, RecentOrigin } from '@/database/recentOrigins.ts';
 
+import AlgorithmSelector from "@/components/AlgorithmSelector.tsx";
+
 const Buildings = ['Chestnut Hill - 850 Boylston Street', '20 Patriot Place', '22 Patriot Place'];
 
 const BuildingIDMap: Record<string, string> = {
@@ -125,6 +127,7 @@ const DirectionsMapComponent = () => {
 
     const [buildingID, setBuildingID] = useState<number>(0);
     const [textDirections, setTextDirections] = useState<string>('');
+    const [selectedAlgorithm, setSelectedAlgorithm] = useState('bfs');
 
     useEffect(() => {
         const fetchOrigins = async () => {
@@ -223,6 +226,10 @@ const DirectionsMapComponent = () => {
         } catch (error) {
             console.error(error);
         }
+    };
+
+    const handleAlgorithmChange = (algorithm: string) => {
+        setSelectedAlgorithm(algorithm);
     };
 
     // change travel mode
@@ -638,6 +645,15 @@ const DirectionsMapComponent = () => {
                     >
                         {showHospital ? 'Show Google Map' : "I'm Here!"}
                     </button>
+                </div>
+
+                <div className="mt-6">
+                    {toLocation &&
+                        <AlgorithmSelector
+                            selectedAlgorithm={selectedAlgorithm}
+                            onChange={handleAlgorithmChange}
+                        />
+                    }
                 </div>
                 <div className="w-110 border-[0.5px] border-codGray mt-5 -ml-10" />
                 <div className="overflow-y-auto mt-4 flex-grow">
