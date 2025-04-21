@@ -1,4 +1,4 @@
-import {useMap} from "@vis.gl/react-google-maps";
+import {useMap, AdvancedMarker} from "@vis.gl/react-google-maps";
 
 interface Props {
     coordinates: (google.maps.LatLng | google.maps.LatLngLiteral)[],
@@ -17,9 +17,18 @@ const DisplayPathComponent = ({ coordinates }: Props) => {
     });
 
     flightPath.setMap(map);
-    return(
-        <></>
-    )
+
+
+    return (
+        <>
+            {coordinates.map((coord, index) => (
+                <AdvancedMarker
+                    key={`marker-${index}`}
+                    position={coord}
+                />
+            ))}
+        </>
+    );
 };
 
 export default DisplayPathComponent;

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, ChangeEvent } from 'react';
 import SelectElement from '../elements/SelectElement.tsx';
 import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google-maps';
-import OverlayComponent from "@/components/OverlayMapComponent.tsx";
 import TravelModeComponent from '@/components/TravelModeComponent.tsx';
 import HospitalMapComponent from '@/components/HospitalMapComponent';
 import clsx from 'clsx';
@@ -118,7 +117,6 @@ const DirectionsMapComponent = () => {
 
     const [toDirectoryNodeId, setToDirectoryNodeId] = useState('');
     const [fromNode, setFromNode] = useState<myNode>(nullNode);
-    const [toDirectoryNode, setToDirectoryNode] = useState<myNode>(nullNode);
 
     const [selectedBuildingId, setSelectedBuildingId] = useState('');
 
@@ -192,25 +190,12 @@ const DirectionsMapComponent = () => {
                 setToDirectoryNodeId(dept.nodeId);
                 console.log(dept.nodeId);
             } else {
-                setToDirectoryNode(nullNode);
+                setToDirectoryNodeId("");
             }
         };
         handleDeptChange();
     }, [currentDirectoryName]);
 
-    // get end node using nodeId
-    useEffect(() => {
-        const fetchNode = async () => {
-            try {
-                const data = await GetNode(toDirectoryNodeId);
-                setToDirectoryNode(data);
-            } catch (error) {
-                console.error('Error fetching node:', error);
-            }
-        };
-        fetchNode();
-        console.log('Got Department Node');
-    }, [toDirectoryNodeId]);
 
     useEffect(() => {
         if (toLocation) {
@@ -703,13 +688,12 @@ const DirectionsMapComponent = () => {
                         defaultZoom={15}
                         renderingType={RenderingType.RASTER}
                         mapTypeControl={false}
+                        mapId={"73fda600718f172c"}
                     >
-                        <div>
-                            <HospitalMapComponent
-                                startNodeId={"1"}
-                                endNodeId={"1"}
-                            />
-                        </div>
+                        <HospitalMapComponent
+                            startNodeId={"1"}
+                            endNodeId={toDirectoryNodeId}
+                        />
                     </Map>
 
 

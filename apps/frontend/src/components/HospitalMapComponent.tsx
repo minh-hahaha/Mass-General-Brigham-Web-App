@@ -30,8 +30,8 @@ const ChestnutHillBounds = {
 };
 
 const PatriotPlaceBounds = {
-    southWest: { lat: 42.09086272947439, lng: -71.26758215417115 }, // Bottom-left corner
-    northEast: { lat: 42.09342690806031, lng: -71.26501767235642 }, // Top-right corner
+    southWest: { lat: 42.09086272947439, lng: -71.2675430325 }, // Bottom-left corner
+    northEast: { lat: 42.09342690806031, lng: -71.2649785507 }, // Top-right corner
 };
 
 
@@ -55,7 +55,7 @@ const availableFloors: Floor[] = [
     { id: "20PP-4", floor: "4", buildingId: "2", buildingName: "20 Patriot Place",svgPath: "/20PP04.svg" },
 
     // 22 Patriot Place
-    { id: "22PP-3", floor: "1", buildingId: "3",buildingName: "22 Patriot Place", svgPath: "/22PP01.svg" },
+    { id: "22PP-1", floor: "1", buildingId: "3",buildingName: "22 Patriot Place", svgPath: "/22PP01.svg" },
     { id: "22PP-3", floor: "3", buildingId: "3",buildingName: "22 Patriot Place", svgPath: "/22PP03.svg" },
     { id: "22PP-4", floor: "4", buildingId: "3", buildingName: "22 Patriot Place",svgPath: "/20PP04.svg" },
 
@@ -190,6 +190,7 @@ async function FindPath(start: myNode, end: myNode) {
         headers: {'Content-Type': 'application/json'}
     })
     const nodes : myNode[] = res.data
+    // console.log("PATH" + nodes)
     return nodes;
 }
 
@@ -265,33 +266,30 @@ const HospitalMapComponent = ({startNodeId, endNodeId}:Props) => {
         }
     }, [bfsPath, startNode]);
 
-    // getting current
-    // const currentFloor = availableFloors.find(f => f.id === currentFloorId) || availableFloors[-1];
-    // const currentBuildingId = currentFloor.buildingId;
-    // const currentFloorNumber = currentFloor.floor;
-    // const currentFloorPath = bfsPath.filter(
-    //     node => node.buildingId === currentBuildingId && node.floor === currentFloorNumber
-    // );
+    // Handle floor change
+    const handleFloorChange = (floorId: string) => {
+        setCurrentFloorId(floorId);
+    };
 
+    // Add this function to get the current floor data
+    const getCurrentFloorData = () => {
+        const currentFloor = availableFloors.find(f => f.id === currentFloorId) || availableFloors[0];
+        const currentBuildingId = currentFloor?.buildingId;
+        const currentFloorNumber = currentFloor?.floor;
 
-    // find first floor to show that floor
-    // useEffect(() => {
-    //     if (selectedBuildingId) {
-    //         // Find the first floor of the selected building
-    //         const firstFloorOfBuilding = availableFloors.find(
-    //             floor => floor.building === selectedBuildingId
-    //         );
-    //
-    //         if (firstFloorOfBuilding) {
-    //             setCurrentFloorId(firstFloorOfBuilding.id);
-    //         }
-    //     }
-    // }, [selectedBuildingId]);
+        // Filter path nodes for the current floor only
+        const currentFloorPath = bfsPath.filter(
+            node => node.buildingId === currentBuildingId && node.floor === currentFloorNumber
+        );
 
-    // // Handle floor change
-    // const handleFloorChange = (floorId: string) => {
-    //     setCurrentFloorId(floorId);
-    // };
+        return {
+            currentFloor,
+            currentFloorPath
+        };
+    };
+
+// Update the rendering part to use the current floor's SVG
+    const { currentFloor, currentFloorPath } = getCurrentFloorData();
 
     // coordinates to test
     const coords = [ { lat: 42.32641975362307, lng: -71.14992617744028 },
@@ -301,23 +299,27 @@ const HospitalMapComponent = ({startNodeId, endNodeId}:Props) => {
         { lat: 42.32624227374853, lng: -71.14946819025536 },]
 
     return (
+        <>
+        <div>
+            <FloorSelector
+                floors={availableFloors}
+                currentFloorId={currentFloorId}
+                onChange={handleFloorChange}
+            />
+        </div>
         <div className="relative w-full h-full">
             <OverlayComponent
                 bounds={ChestnutHillBounds}
-                imageSrc={availableFloors[0].svgPath}
+                imageSrc={currentFloor.svgPath}
             />
             <OverlayComponent
                 bounds={PatriotPlaceBounds}
-                imageSrc={PP01}
+                imageSrc={currentFloor.svgPath}
             />
             {/*<DisplayPathComponent coordinates={GetPolylinePath(currentFloorPath)} />*/}
             <DisplayPathComponent coordinates={coords} />
-                    {/*<FloorSelector*/}
-                    {/*    floors={availableFloors}*/}
-                    {/*    currentFloorId={currentFloorId}*/}
-                    {/*    onChange={handleFloorChange}*/}
-                    {/*/>*/}
         </div>
+        </>
     );
 };
 

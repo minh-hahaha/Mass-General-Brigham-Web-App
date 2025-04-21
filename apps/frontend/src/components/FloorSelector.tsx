@@ -1,54 +1,62 @@
-// floor type
+// components/FloorSelector.tsx
+import React from "react";
+
 interface Floor {
     id: string;
     floor: string;
     buildingId: string;
-    buildingName: string; // for display
+    buildingName: string;
     svgPath: string;
 }
 
 interface FloorSelectorProps {
     floors: Floor[];
-    currentFloorId: string;
+    currentFloorId: string | undefined;
     onChange: (floorId: string) => void;
 }
 
-const FloorSelector = ({floors, currentFloorId, onChange}: FloorSelectorProps) => {
-    // Find current floor and building
-    const currentFloor = floors.find(floor => floor.id === currentFloorId);
-    const currentBuilding = currentFloor?.buildingId;
+const FloorSelector: React.FC<FloorSelectorProps> = ({
+                                                         floors,
+                                                         currentFloorId,
+                                                         onChange
+                                                     }) => {
+    // Group floors by building
+    const floorsByBuilding: Record<string, Floor[]> = {};
 
-    // Filter floors to only show floors from the current building
-    const relevantFloors = floors.filter(floor => floor.buildingId === currentBuilding);
-
-    // Get building name from the first floor that has it
-    const buildingName = relevantFloors[0]?.buildingName || `Building ${currentBuilding}`;
-
-    // Only render if we have floors to show from the current building
-    if (!relevantFloors.length) return null;
+    floors.forEach(floor => {
+        if (!floorsByBuilding[floor.buildingId]) {
+            floorsByBuilding[floor.buildingId] = [];
+        }
+        floorsByBuilding[floor.buildingId].push(floor);
+    });
 
     return (
-        <div className="absolute bottom-6 left-6 p-3 bg-white rounded-md shadow-md z-10">
-            <div className="mb-2">
-                <div className="text-sm font-medium text-gray-700 mb-1">{buildingName}</div>
-                <div className="flex flex-col space-x-2">
-                    {relevantFloors.map((floor) => (
-                        <button
-                            key={floor.id}
-                            className={`w-10 h-10 rounded-full flex mt-3 items-center justify-center ${
-                                currentFloorId === floor.id
-                                    ? 'bg-mgbblue text-white'
-                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                            }`}
-                            onClick={() => onChange(floor.id)}
-                        >
-                            {floor.floor}
-                        </button>
-                    ))}
+        <div className="absolute top left z-10 bg-white rounded-lg shadow-lg p-2 flex flex-col space-y-4">
+            {Object.entries(floorsByBuilding).map(([buildingId, buildingFloors]) => (
+                <div key={buildingId} className="flex flex-col items-center">
+                    <h3 className="text-sm font-semibold mb-2">
+                        {buildingFloors[0]?.buildingName || `Building ${buildingId}`}
+                    </h3>
+                    <div className="flex flex-col-reverse space-y-reverse space-y-2">
+                        {buildingFloors
+                            .sort((a, b) => Number(a.floor) - Number(b.floor))
+                            .map(floor => (
+                                <button
+                                    key={floor.id}
+                                    className={`w-10 h-10 rounded-full flex items-center justify-center
+                    ${currentFloorId === floor.id
+                                        ? 'bg-blue-500 text-white'
+                                        : 'bg-gray-200 hover:bg-gray-300'}`}
+                                    onClick={() => onChange(floor.id)}
+                                >
+                                    {floor.floor}
+                                </button>
+                            ))}
+                    </div>
                 </div>
-            </div>
+            ))}
         </div>
     );
-}
+};
 
 export default FloorSelector;
