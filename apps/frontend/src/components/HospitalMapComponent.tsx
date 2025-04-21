@@ -5,6 +5,8 @@ import {ROUTES} from "common/src/constants.ts";
 import axios from "axios";
 
 import {myNode} from "common/src/classes/classes.ts";
+import OverlayComponent from "@/components/OverlayMapComponent.tsx";
+import {GetNode} from "@/database/getDepartmentNode.ts";
 
 
 const BuildingNames: Record<string, string> = {
@@ -13,29 +15,52 @@ const BuildingNames: Record<string, string> = {
     "3": "22 Patriot Place"
 }
 
+const CH01 = '/CH01.svg';
+const PP01 = '/20PP01.svg';
+const PP02 = '/20PP02.svg';
+const PP03 = '/20PP03.svg';
+const PP04 = '/20PP04.svg';
+const PP2201 = '/22PP01.svg';
+const PP2203 = '/22PP03.svg';
+const PP2204 = '/22PP04.svg';
+
+const ChestnutHillBounds = {
+    southWest: { lat: 42.32543670863917, lng: -71.15022693442262 }, // Bottom-left corner
+    northEast: { lat: 42.32649756743757, lng: -71.14898211823991 }, // Top-right corner
+};
+
+const PatriotPlaceBounds = {
+    southWest: { lat: 42.09086272947439, lng: -71.26758215417115 }, // Bottom-left corner
+    northEast: { lat: 42.09342690806031, lng: -71.26501767235642 }, // Top-right corner
+};
+
+
 // floor type
 interface Floor {
     id: string;
-    label: string;
-    building: string;
-    buildingName: string; // for dislay
+    floor: string;
+    buildingId: string;
+    buildingName: string; // for display
     svgPath: string;
 }
 
 // All available floors across buildings
 const availableFloors: Floor[] = [
+    // Chestnut Hill
+    { id: "CH-1", floor: "1", buildingId: "1", buildingName: "Chestnut Hill",svgPath: "/ChestnutHillFloor1.svg" },
     // 20 Patriot Place
-    { id: "20PP-1", label: "1", building: "2", buildingName: "20 Patriot Place", svgPath: "/20PPFloor1.svg" },
-    { id: "20PP-2", label: "2", building: "2", buildingName: "20 Patriot Place",svgPath: "/20PPFloor2.svg" },
-    { id: "20PP-3", label: "3", building: "2", buildingName: "20 Patriot Place",svgPath: "/20PPFloor3.svg" },
-    { id: "20PP-4", label: "4", building: "2", buildingName: "20 Patriot Place",svgPath: "/20PPFloor4.svg" },
+    { id: "20PP-1", floor: "1", buildingId: "2", buildingName: "20 Patriot Place", svgPath: "/20PPFloor1.svg" },
+    { id: "20PP-2", floor: "2", buildingId: "2", buildingName: "20 Patriot Place",svgPath: "/20PPFloor2.svg" },
+    { id: "20PP-3", floor: "3", buildingId: "2", buildingName: "20 Patriot Place",svgPath: "/20PPFloor3.svg" },
+    { id: "20PP-4", floor: "4", buildingId: "2", buildingName: "20 Patriot Place",svgPath: "/20PPFloor4.svg" },
 
     // 22 Patriot Place
-    { id: "22PP-3", label: "3", building: "3",buildingName: "22 Patriot Place", svgPath: "/22PPFloor3.svg" },
-    { id: "22PP-4", label: "4", building: "3", buildingName: "22 Patriot Place",svgPath: "/22PPFloor4.svg" },
+    { id: "22PP-3", floor: "3", buildingId: "3",buildingName: "22 Patriot Place", svgPath: "/22PPFloor3.svg" },
+    { id: "22PP-4", floor: "4", buildingId: "3", buildingName: "22 Patriot Place",svgPath: "/22PPFloor4.svg" },
 
-    // Chestnut Hill
-    { id: "CH-1", label: "1", building: "1", buildingName: "Chestnut Hill",svgPath: "/ChestnutHillFloor1.svg" },
+    // parking
+    { id: "CH-A", floor: "0", buildingId: "1", buildingName: "Chestnut Hill",svgPath: "" },
+
 ];
 
 
@@ -169,38 +194,48 @@ async function FindPath(start: myNode, end: myNode) {
 
 // interface for prop
 interface Props {
-    startNode?: myNode | null;
-    endNode?: myNode | null;
-    initialFloorId?: string;
-    selectedBuildingId?:string;
-
+    startNodeId: string;
+    endNodeId: string;
 }
 
-const HospitalMapComponent = ({startNode, endNode, initialFloorId = "CH-1", selectedBuildingId}:Props) => {
-
+const HospitalMapComponent = ({startNodeId, endNodeId}:Props) => {
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
-    const [currentFloorId, setCurrentFloorId] = useState<string>(initialFloorId);
-    const [isPathLoading, setIsPathLoading] = useState<boolean>(false);
+    const [startNode, setStartNode] = useState<myNode>();
+    const [endNode, setEndNode] = useState<myNode>();
+    const [currentFloorId, setCurrentFloorId] = useState<string>();
 
-    // find
+    // get node using nodeId
+    useEffect(() => {
+        const fetchNode = async () => {
+            try {
+                const start = await GetNode(startNodeId);
+                setStartNode(start);
+                const end = await GetNode(endNodeId);
+                setEndNode(end);
+            } catch (error) {
+                console.error('Error fetching building names:', error);
+            }
+        };
+        fetchNode();
+        console.log('Got Department Node');
+    }, []);
+
+    // Find path and text directions
     useEffect(() => {
         const getMyPaths = async () => {
             if (startNode && endNode) {
-                setIsPathLoading(true);
                 try {
                     const result = await FindPath(startNode, endNode);
-                    console.log("bfs path found:", result);
+                    console.log("Path found:", result);
                     setBFSPath(result);
                     const textDirection = createTextPath(result);
-                    const t = document.getElementById('text-directions');
-                    if(t) {
-                        t.innerHTML = textDirection.toString().replace(/,/g, '<br><br>');
+                    const text = document.getElementById('text-directions');
+                    if(text) {
+                        text.innerHTML = textDirection.toString().replace(/,/g, '<br><br>');
                     }
                 } catch (error) {
                     console.error("Error finding path:", error);
                     setBFSPath([]);
-                } finally {
-                    setIsPathLoading(false);
                 }
             } else {
                 // Clear path if no start/end nodes
@@ -214,7 +249,7 @@ const HospitalMapComponent = ({startNode, endNode, initialFloorId = "CH-1", sele
     useEffect(() => {
         if (bfsPath.length > 0 && startNode) {
             const startFloor = availableFloors.find(
-                f => f.building === startNode.buildingId && f.label === startNode.floor
+                f => f.buildingId === startNode.buildingId && f.floor === startNode.floor
             );
             if (startFloor) {
                 setCurrentFloorId(startFloor.id);
@@ -224,18 +259,15 @@ const HospitalMapComponent = ({startNode, endNode, initialFloorId = "CH-1", sele
 
     // getting current
     const currentFloor = availableFloors.find(f => f.id === currentFloorId) || availableFloors[-1];
-    const currentBuildingId = currentFloor.building;
-    const currentFloorNumber = currentFloor.label;
-    const currentFloorPath = bfsPath.filter(
-        node => node.buildingId === currentBuildingId && node.floor === currentFloorNumber
-    );
+    // const currentBuildingId = currentFloor.building;
+    //const currentFloorNumber = currentFloor.label;
+    // const currentFloorPath = bfsPath.filter(
+    //     node => node.buildingId === currentBuildingId && node.floor === currentFloorNumber
+    // );
 
-    console.log("same floor " + currentFloorPath);
+    // console.log("same floor " + currentFloorPath);
 
-    // Get the SVG map URL for the current floor
-    const currentSvgMapUrl = currentFloor.svgPath;
-
-
+    // find first floor to show that floor
     useEffect(() => {
         if (selectedBuildingId) {
             // Find the first floor of the selected building
@@ -257,28 +289,22 @@ const HospitalMapComponent = ({startNode, endNode, initialFloorId = "CH-1", sele
 
     return (
         <div className="relative w-full h-full">
-            {isPathLoading ? (
-                <div className="flex items-center justify-center h-full">
-                    <div className="text-xl">Loading path...</div>
-                </div>
-            ) : (
-                <>
-                    {/* show node on that specific floor */}
-                    <ViewPath
-                        svgMapUrl={currentSvgMapUrl}
-                        path={currentFloorPath}
-                        buildingId={currentBuildingId}
+                    <OverlayComponent
+                        bounds={ChestnutHillBounds}
+                        imageSrc={availableFloors[0].svgPath}
                     />
-
+                    <OverlayComponent
+                        bounds={PatriotPlaceBounds}
+                        imageSrc={PP01}
+                    />
                     <FloorSelector
                         floors={availableFloors}
                         currentFloorId={currentFloorId}
                         onChange={handleFloorChange}
                     />
-                </>
-            )}
         </div>
     );
 };
+
 
 export default HospitalMapComponent;

@@ -1,9 +1,10 @@
 // floor type
 interface Floor {
     id: string;
-    label: string;
-    building: string;
-    buildingName?: string; // Add optional building name
+    floor: string;
+    buildingId: string;
+    buildingName: string; // for display
+    svgPath: string;
 }
 
 interface FloorSelectorProps {
@@ -15,10 +16,10 @@ interface FloorSelectorProps {
 const FloorSelector = ({floors, currentFloorId, onChange}: FloorSelectorProps) => {
     // Find current floor and building
     const currentFloor = floors.find(floor => floor.id === currentFloorId);
-    const currentBuilding = currentFloor?.building;
+    const currentBuilding = currentFloor?.buildingId;
 
     // Filter floors to only show floors from the current building
-    const relevantFloors = floors.filter(floor => floor.building === currentBuilding);
+    const relevantFloors = floors.filter(floor => floor.buildingId === currentBuilding);
 
     // Get building name from the first floor that has it
     const buildingName = relevantFloors[0]?.buildingName || `Building ${currentBuilding}`;
@@ -41,7 +42,7 @@ const FloorSelector = ({floors, currentFloorId, onChange}: FloorSelectorProps) =
                             }`}
                             onClick={() => onChange(floor.id)}
                         >
-                            {floor.label}
+                            {floor.floor}
                         </button>
                     ))}
                 </div>

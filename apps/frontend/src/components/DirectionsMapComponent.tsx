@@ -3,7 +3,6 @@ import SelectElement from '../elements/SelectElement.tsx';
 import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google-maps';
 import OverlayComponent from "@/components/OverlayMapComponent.tsx";
 import TravelModeComponent from '@/components/TravelModeComponent.tsx';
-import OverlayComponent from '@/components/OverlayComponent.tsx';
 import HospitalMapComponent from '@/components/HospitalMapComponent';
 import clsx from 'clsx';
 import { myNode } from 'common/src/classes/classes.ts';
@@ -47,8 +46,8 @@ const PatriotPlaceBounds = {
     northEast: { lat: 42.09342690806031, lng: -71.26501767235642 }, // Top-right corner
 };
 
-const CH01 = '/CH01.png';
-const PP01 = '/20PP01.png';
+const CH01 = '/CH01.svg';
+const PP01 = '/20PP01.svg';
 
 const nullNode: myNode = {
     nodeId: '',
@@ -206,7 +205,7 @@ const DirectionsMapComponent = () => {
                 const data = await GetNode(toDirectoryNodeId);
                 setToDirectoryNode(data);
             } catch (error) {
-                console.error('Error fetching building names:', error);
+                console.error('Error fetching node:', error);
             }
         };
         fetchNode();
@@ -226,7 +225,7 @@ const DirectionsMapComponent = () => {
         if (toLocation && fromLocation) {
             handleFindDirections();
         }
-    }, [toLocation]);
+    }, [fromLocation, toLocation]);
 
     // find directions
     const handleFindDirections = async () => {
@@ -309,11 +308,11 @@ const DirectionsMapComponent = () => {
         const buildingIndex = Buildings.indexOf(newLocation);
         setBuildingID(buildingIndex + 1);
 
-        // Only reset department data if the building changed
-        if (previousLocation !== newLocation && previousLocation !== '') {
-            setToDirectoryNodeId('');
-            setToDirectoryNode(nullNode);
-        }
+        // // Only reset department data if the building changed
+        // if (previousLocation !== newLocation && previousLocation !== '') {
+        //     setToDirectoryNodeId('');
+        //     setToDirectoryNode(nullNode);
+        // }
         handleFindDirections();
     };
 
@@ -633,8 +632,8 @@ const DirectionsMapComponent = () => {
                                         lot === 'A'
                                             ? handleParkA()
                                             : lot === 'B'
-                                              ? handleParkB()
-                                              : handleParkC()
+                                                ? handleParkB()
+                                                : handleParkC()
                                     }
                                     className="bg-white text-codGray border border-mgbblue py-1 rounded-sm hover:bg-mgbblue hover:text-white transition"
                                 >
@@ -697,16 +696,6 @@ const DirectionsMapComponent = () => {
 
             {/* MAP AREA */}
             <main className="absolute inset-0 z-0">
-                {showHospital && toDirectoryNode !== nullNode ? (
-                    <div>
-                        <HospitalMapComponent
-                            startNode={fromNode}
-                            endNode={toDirectoryNode}
-                            initialFloorId={initialFloorId}
-                            selectedBuildingId={selectedBuildingId}
-                        />
-                    </div>
-                ) : (
                     <Map
                         style={{ width: '100%', height: '100%' }}
                         defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
@@ -715,18 +704,17 @@ const DirectionsMapComponent = () => {
                         renderingType={RenderingType.RASTER}
                         mapTypeControl={false}
                     >
-                        <OverlayComponent
-                            bounds={ChestnutHillBounds}
-                            imageSrc={CH01}
-                            visible={true}
-                        />
-                        <OverlayComponent
-                            bounds={PatriotPlaceBounds}
-                            imageSrc={PP01}
-                            visible={true}
-                        />
+                        <div>
+                            <HospitalMapComponent
+
+                                // startNode={fromNode}
+                                // endNode={toDirectoryNode}
+                                // initialFloorId={initialFloorId}
+                                // selectedBuildingId={selectedBuildingId}
+                            />
+                        </div>
                     </Map>
-                )}
+
 
                 {/* Route Info Box */}
                 {showRouteInfo && !showHospital && (
