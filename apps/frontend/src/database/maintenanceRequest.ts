@@ -8,7 +8,7 @@ export interface maintenanceRequest {
 
     // Maintenance Details
     priority: 'Low' | 'Medium' | 'High' | 'Emergency';
-    maintenanceHospital: string;
+    maintenanceHospital: 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital'
     maintenanceLocation: string;
     maintenanceTime: string;
     status: 'Pending' | 'In Progress' | 'Completed' | 'Canceled';
@@ -25,20 +25,20 @@ export interface incomingMaintenanceRequest {
     requestId: number;
     employeeId: number;
     requestDate: string;
-    status: string;
+    status: 'Pending' | 'In Progress' | 'Completed' | 'Canceled';
     comments: string;
-    priority: string;
+    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     locationId: number;
     serviceType: string;
     requestTime: number;
+    employeeName: string;
     maintenanceRequest: {
-        servMaintenance_id: number;
-        maintenance_type: string;
-        maintenance_description: string;
-        maintenance_hospital: string;
-        maintenance_location: string;
-        maintenance_time: string;
-        employee_name: string;
+        servMaintenanceId: number;
+        maintenanceType: string;
+        maintenanceDescription: string;
+        maintenanceHospital: 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital'
+        maintenanceLocation: string;
+        maintenanceTime: string;
     }
 }
 

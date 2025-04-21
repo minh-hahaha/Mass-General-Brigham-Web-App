@@ -18,7 +18,7 @@ const MaintenanceRequestPage = () => {
 
     // Maintenance Details
     const [priority, setPriority] = useState<'Low' | 'Medium' | 'High' | 'Emergency'>('Low');
-    const [maintenanceHospital, setMaintenanceHospital] = useState('');
+    const [maintenanceHospital, setMaintenanceHospital] = useState<'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital'>('Chestnut Hill')
     const [maintenanceLocation, setMaintenanceLocation] = useState('');
     const [maintenanceTime, setMaintenanceTime] = useState('');
     const [status, setStatus] = useState<'Pending' | 'In Progress' | 'Completed' | 'Canceled'>(
@@ -65,7 +65,7 @@ const MaintenanceRequestPage = () => {
         setMaintenanceType('');
         setMaintenanceDescription('');
         setPriority('Low');
-        setMaintenanceHospital('');
+        setMaintenanceHospital('Chestnut Hill');
         setMaintenanceLocation('');
         setMaintenanceTime('');
         setStatus('Pending');
@@ -206,7 +206,7 @@ const MaintenanceRequestPage = () => {
                                     <select
                                         id="maintenanceHospital"
                                         value={maintenanceHospital}
-                                        onChange={(e) => setMaintenanceHospital(e.target.value)}
+                                        onChange={(e) => setMaintenanceHospital(e.target.value as maintenanceRequest['maintenanceHospital'])}
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >
