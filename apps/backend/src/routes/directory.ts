@@ -132,21 +132,21 @@ router.get('/csv', async function (req: Request, res: Response) {
             },
         });
         // Take the joined Node fields and flatten them for CSV parsing {xx:xx, yy:yy, zz:{aa:aa, bb:bb}} => {xx:xx, yy:yy, aa:aa, bb:bb}
-        const flattenedDirectories = DIRECTORY.flatMap((directory) =>
-            directory.departmentNodes.map((node) => ({
-                ...directory,
-                nodeId: node.nodeId,
-                x: node.x,
-                y: node.y,
-                floor: node.floor,
-                buildingId: node.buildingId,
-                nodeType: node.nodeType,
-                name: node.name,
-                roomNumber: node.roomNumber,
-                departmentId: node.departmentId,
-            }))
-        );
-        await dataToCSV(flattenedDirectories);
+        // const flattenedDirectories = DIRECTORY.flatMap(() => {} );
+            // directory.departmentNodes.map((node) => ({
+            //     ...directory,
+            //     nodeId: node.nodeId,
+            //     x: node.x,
+            //     y: node.y,
+            //     floor: node.floor,
+            //     buildingId: node.buildingId,
+            //     nodeType: node.nodeType,
+            //     name: node.name,
+            //     roomNumber: node.roomNumber,
+            //     departmentId: node.departmentId,
+            // }))
+
+        await dataToCSV(DIRECTORY); //the big boy
         // Uses the first key as the name of the file EX: dep_id.csv
         const fileName = Object.keys(DIRECTORY[0])[0].toString();
         res.sendFile('data.csv', {

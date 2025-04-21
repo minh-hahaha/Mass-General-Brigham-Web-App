@@ -90,7 +90,8 @@ model Department {
   deptPhone     String
   members       Employee[]
   building      Building   @relation(fields: [buildingId], references: [buildingId])
-  departmentNodes      Node[]      @relation(name: "departmentNodes")
+  nodeId        String?
+  departmentNodes  Node? @relation(name: "departmentNodes", fields: [nodeId], references: [nodeId])
 }
 
 model Building {
@@ -100,19 +101,19 @@ model Building {
 }
 
 model Node {
-  nodeId       String   @id
-  x            Decimal
-  y            Decimal
-  floor        String
-  buildingId   String
-  nodeType     String
-  name         String
-  roomNumber   String?
-  departmentId Int?
-  department   Department? @relation(name: "departmentNodes", fields: [departmentId], references: [deptId])
-  edgesFrom    Edge[]    @relation("NodeToEdgeFrom")
-  edgesTo      Edge[]    @relation("NodeToEdgeTo")
+  nodeId          String  @id //TODO: i'll fix it later
+  x           Decimal
+  y           Decimal
+  floor       String
+  buildingId  String
+  nodeType    String
+  name        String
+  roomNumber  String?
+  edgesFrom   Edge[]       @relation("NodeToEdgeFrom")
+  edgesTo     Edge[]       @relation("NodeToEdgeTo")
+  department Department[] @relation("departmentNodes")
 }
+
 model Edge {
   // making prisma happy lol
   edgeId    Int    @id @default(autoincrement())
