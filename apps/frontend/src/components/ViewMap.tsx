@@ -21,7 +21,7 @@ interface MapViewProps {
     onNodeClick?: (node: myNode) => void;
 }
 
-const MapView = ({
+const ViewMap = ({
                                   svgMapUrl,
                                   nodes,
                                   edges,
@@ -236,4 +236,4 @@ const MapView = ({
     );
 };
 
-export default MapView;
+export default ViewMap;
