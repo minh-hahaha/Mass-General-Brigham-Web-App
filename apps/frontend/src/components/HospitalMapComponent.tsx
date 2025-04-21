@@ -227,7 +227,7 @@ const HospitalMapComponent = ({startNodeId, endNodeId}:Props) => {
         };
         fetchNode();
         console.log('Got Department Node');
-    }, []);
+    }, [startNodeId, endNodeId]);
 
     // Find path and text directions
     useEffect(() => {

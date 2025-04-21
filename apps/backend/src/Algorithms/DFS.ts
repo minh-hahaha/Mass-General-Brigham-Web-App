@@ -1,4 +1,4 @@
-import {loadMyGraph} from "./loadGraph.ts";
+import { loadMyGraph } from './loadGraph.ts';
 
 import { myNode } from 'common/src/classes/classes.ts';
 
@@ -43,13 +43,11 @@ export async function dfs(
             let neighbour = null;
             if (edge.from.nodeId === currentNode.nodeId) {
                 neighbour = edge.to;
-
             } else if (edge.to.nodeId === currentNode.nodeId) {
                 neighbour = edge.from;
-
             }
 
-            if(neighbour && !visited.has(neighbour.nodeId)) {
+            if (neighbour && !visited.has(neighbour.nodeId)) {
                 visited.add(neighbour.nodeId);
                 queue.push({ node: neighbour, path: [...currentPath, neighbour] });
             }
