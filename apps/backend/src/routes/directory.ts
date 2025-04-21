@@ -2,7 +2,6 @@ import express, { Router, Request, Response } from 'express';
 import PrismaClient from '../bin/prisma-client';
 import { CSVtoData, dataToCSV, readCSV } from '../CSVImportExport.ts';
 import * as path from 'node:path';
-import fs from 'node:fs';
 
 const router: Router = express.Router();
 
@@ -47,7 +46,7 @@ router.get('/', async function (req: Request, res: Response) {
         const args = {
             include: {
                 building: { select: { buildingName: true } },
-                node: { select: { floor: true } },
+                departmentNodes: { select: { floor: true } },
             },
             where: Object.assign({}, ...filters),
             orderBy: sorts,
