@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useMemo, ChangeEvent } from 'react'
 import SelectElement from '../elements/SelectElement.tsx';
 import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google-maps';
 import TravelModeComponent from '@/components/TravelModeComponent.tsx';
-import OverlayComponent from '@/components/OverlayComponent.tsx';
 import HospitalMapComponent from '@/components/HospitalMapComponent';
 import clsx from 'clsx';
 import { myNode } from 'common/src/classes/classes.ts';
@@ -36,12 +35,18 @@ const DefaultFloors: Record<string, string> = {
 
 type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
 
-const ChestnutParkingBounds = {
-    southWest: { lat: 42.32546535760605, lng: -71.15029519348985 }, // Bottom-left corner
-    northEast: { lat: 42.32659860801865, lng: -71.14889438933609 }, // Top-right corner
+const ChestnutHillBounds = {
+    southWest: { lat: 42.32543670863917, lng: -71.15022693442262 }, // Bottom-left corner
+    northEast: { lat: 42.32649756743757, lng: -71.14898211823991 }, // Top-right corner
 };
 
-const ChestnutParkingSVG = '/ChestnutParking.svg';
+const PatriotPlaceBounds = {
+    southWest: { lat: 42.09086272947439, lng: -71.26758215417115 }, // Bottom-left corner
+    northEast: { lat: 42.09342690806031, lng: -71.26501767235642 }, // Top-right corner
+};
+
+const CH01 = '/CH01.svg';
+const PP01 = '/20PP01.svg';
 
 const nullNode: myNode = {
     nodeId: '',
@@ -112,7 +117,6 @@ const DirectionsMapComponent = () => {
 
     const [toDirectoryNodeId, setToDirectoryNodeId] = useState('');
     const [fromNode, setFromNode] = useState<myNode>(nullNode);
-    const [toDirectoryNode, setToDirectoryNode] = useState<myNode>(nullNode);
 
     const [selectedBuildingId, setSelectedBuildingId] = useState('');
 
@@ -186,25 +190,12 @@ const DirectionsMapComponent = () => {
                 setToDirectoryNodeId(dept.nodeId);
                 console.log(dept.nodeId);
             } else {
-                setToDirectoryNode(nullNode);
+                setToDirectoryNodeId("");
             }
         };
         handleDeptChange();
     }, [currentDirectoryName]);
 
-    // get end node using nodeId
-    useEffect(() => {
-        const fetchNode = async () => {
-            try {
-                const data = await GetNode(toDirectoryNodeId);
-                setToDirectoryNode(data);
-            } catch (error) {
-                console.error('Error fetching building names:', error);
-            }
-        };
-        fetchNode();
-        console.log('Got Department Node');
-    }, [toDirectoryNodeId]);
 
     useEffect(() => {
         if (toLocation) {
@@ -219,7 +210,7 @@ const DirectionsMapComponent = () => {
         if (toLocation && fromLocation) {
             handleFindDirections();
         }
-    }, [toLocation]);
+    }, [fromLocation, toLocation]);
 
     // find directions
     const handleFindDirections = async () => {
@@ -302,11 +293,11 @@ const DirectionsMapComponent = () => {
         const buildingIndex = Buildings.indexOf(newLocation);
         setBuildingID(buildingIndex + 1);
 
-        // Only reset department data if the building changed
-        if (previousLocation !== newLocation && previousLocation !== '') {
-            setToDirectoryNodeId('');
-            setToDirectoryNode(nullNode);
-        }
+        // // Only reset department data if the building changed
+        // if (previousLocation !== newLocation && previousLocation !== '') {
+        //     setToDirectoryNodeId('');
+        //     setToDirectoryNode(nullNode);
+        // }
         handleFindDirections();
     };
 
@@ -626,8 +617,8 @@ const DirectionsMapComponent = () => {
                                         lot === 'A'
                                             ? handleParkA()
                                             : lot === 'B'
-                                              ? handleParkB()
-                                              : handleParkC()
+                                                ? handleParkB()
+                                                : handleParkC()
                                     }
                                     className="bg-white text-codGray border border-mgbblue py-1 rounded-sm hover:bg-mgbblue hover:text-white transition"
                                 >
@@ -690,16 +681,6 @@ const DirectionsMapComponent = () => {
 
             {/* MAP AREA */}
             <main className="absolute inset-0 z-0">
-                {showHospital && toDirectoryNode !== nullNode ? (
-                    <div>
-                        <HospitalMapComponent
-                            startNode={fromNode}
-                            endNode={toDirectoryNode}
-                            initialFloorId={initialFloorId}
-                            selectedBuildingId={selectedBuildingId}
-                        />
-                    </div>
-                ) : (
                     <Map
                         style={{ width: '100%', height: '100%' }}
                         defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
@@ -707,14 +688,14 @@ const DirectionsMapComponent = () => {
                         defaultZoom={15}
                         renderingType={RenderingType.RASTER}
                         mapTypeControl={false}
+                        mapId={"73fda600718f172c"}
                     >
-                        <OverlayComponent
-                            bounds={ChestnutParkingBounds}
-                            imageSrc={ChestnutParkingSVG}
-                            visible={true}
+                        <HospitalMapComponent
+                            startNodeId={"1"}
+                            endNodeId={toDirectoryNodeId}
                         />
                     </Map>
-                )}
+
 
                 {/* Route Info Box */}
                 {showRouteInfo && !showHospital && (
