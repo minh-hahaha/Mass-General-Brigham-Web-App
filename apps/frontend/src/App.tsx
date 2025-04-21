@@ -10,6 +10,8 @@ import ImportExportDirectoryPage from './routes/ImportExportDirectoryPage.tsx';
 import SanitationRequestPage from './components/SanitationRequestComponent.tsx';
 import TransportRequestPage from "./routes/TransportationRequestPage.tsx";
 import TranslationServiceRequestPage from './routes/TranslationServiceRequestPage.tsx';
+import MedicalDeviceServiceRequestPage from './routes/MedicalDeviceServiceRequestPage.tsx'
+import MedicalDeviceServiceDisplayPage from './routes/MedicalDeviceRequestDisplayPage.tsx'
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { ShadSidebar } from '@/components/ui/shadsidebar.tsx';
 import {MapPage} from "@/routes/MapPage.tsx";
@@ -84,6 +86,14 @@ function App() {
                                 <Route
                                     path="/ServiceRequestSelectPage"
                                     element={<ServiceRequestSelectPage />}
+                                />
+                                <Route
+                                    path={"/MedicalDevicePage"}
+                                    element={<MedicalDeviceServiceRequestPage/>}
+                                />
+                                <Route
+                                    path={"/MedicalDeviceDisplayPage"}
+                                    element={<MedicalDeviceServiceDisplayPage/>}
                                 />
                             </Routes>
                         </main>
