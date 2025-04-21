@@ -141,3 +141,6 @@
     }
 }
 
+html, body {
+    @apply overflow-hidden h-full;
+}

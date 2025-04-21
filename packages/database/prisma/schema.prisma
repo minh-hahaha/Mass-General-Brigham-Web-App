@@ -137,3 +137,8 @@ model Sanitation {
   completeBy               DateTime       @default(now()) @db.Time
   servRequestId            ServiceRequest @relation(name: "ServiceSanitation", fields: [servReqId], references: [requestId])
 }
+
+model RecentOrigins {
+  id                      Int @id @default(autoincrement())
+  location                String
+}

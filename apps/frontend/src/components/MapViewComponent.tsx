@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import EditorFloorSelector from "@/components/EditorFloorSelector.tsx";
 import { ROUTES } from "common/src/constants.ts";
-import MapView from "./MapView.tsx";
 
 import {myNode, minhEdges} from "common/src/classes/classes.ts";
+import ViewMap from "./ViewMap.tsx";
 
 // Edge type to represent connections between nodes
 // interface EdgeWithNodes {
@@ -140,7 +140,7 @@ const MapViewComponent = ({ initialFloorId = "CH-1", selectedBuildingId }: Props
             ) : (
                 <>
                     {/* Display the network visualization */}
-                    <MapView
+                    <ViewMap
                         svgMapUrl={currentFloor.svgPath}
                         nodes={currentFloorNodes}
                         edges={currentFloorEdges}

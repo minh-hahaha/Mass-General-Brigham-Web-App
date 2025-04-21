@@ -6,7 +6,7 @@ export const MapPage = () => {
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
     return (
-        <div>
+        <div className="relative w-full h-full overflow-hidden">
             <APIProvider apiKey={API_KEY} libraries={['places','routes']}>
                 <DirectionsMapComponent/>
             </APIProvider>

@@ -3,48 +3,27 @@ import PrismaClient from '../bin/prisma-client';
 import { CSVtoData, dataToCSV, readCSV } from '../CSVImportExport.ts';
 import * as path from 'node:path';
 import fs from 'node:fs';
-import { buildQuery, QueryBuilder } from '../Utility.ts';
-import node from './node.ts';
 
 const router: Router = express.Router();
 
-export enum SORT_OPTIONS {
-    DEP_ID_ASC,
-    DEP_ID_DSC,
-    DEP_NAME_ASC,
-    DEP_NAME_DSC,
-    BLDG_ID_ASC,
-    BLDG_ID_DSC,
-    FLOOR_ASC,
-    FLOOR_DSC,
-}
-
-export enum FILTER_OPTIONS {
-    INCLUDE_DEP_ID,
-    INCLUDE_SERVICES,
-    INCLUDE_NAME,
-    INCLUDE_BLDG_ID,
-    INCLUDE_PHONE,
-    INCLUDE_ALL,
-}
-
 const DIRECTORY_SORT_OPTIONS: object[] = [];
-DIRECTORY_SORT_OPTIONS.push({ deptId: 'asc' });
-DIRECTORY_SORT_OPTIONS.push({ deptId: 'desc' });
 DIRECTORY_SORT_OPTIONS.push({ deptName: 'asc' });
 DIRECTORY_SORT_OPTIONS.push({ deptName: 'desc' });
 DIRECTORY_SORT_OPTIONS.push({ buildingId: 'asc' });
 DIRECTORY_SORT_OPTIONS.push({ buildingId: 'desc' });
-DIRECTORY_SORT_OPTIONS.push({ floor: 'asc' });
-DIRECTORY_SORT_OPTIONS.push({ floor: 'desc' });
+DIRECTORY_SORT_OPTIONS.push({ building: { buildingName: 'asc' } });
+DIRECTORY_SORT_OPTIONS.push({ building: { buildingName: 'desc' } });
 
 const DIRECTORY_FILTER_OPTIONS: object[] = [];
-DIRECTORY_FILTER_OPTIONS.push({ deptId: true });
-DIRECTORY_FILTER_OPTIONS.push({ deptServices: true });
-DIRECTORY_FILTER_OPTIONS.push({ deptName: true });
-DIRECTORY_FILTER_OPTIONS.push({ buildingId: true });
-DIRECTORY_FILTER_OPTIONS.push({ deptPhone: true });
-DIRECTORY_FILTER_OPTIONS.push(Object.assign({}, ...DIRECTORY_FILTER_OPTIONS));
+DIRECTORY_FILTER_OPTIONS.push({ building: { buildingName: 'Chestnut Hill' } });
+DIRECTORY_FILTER_OPTIONS.push({ building: { buildingName: '20 Patriot Place' } });
+DIRECTORY_FILTER_OPTIONS.push({ building: { buildingName: '22 Patriot Place' } });
+DIRECTORY_FILTER_OPTIONS.push({
+    OR: [
+        { building: { buildingName: '20 Patriot Place' } },
+        { building: { buildingName: '22 Patriot Place' } },
+    ],
+});
 
 // GET Send Data
 router.get('/', async function (req: Request, res: Response) {
@@ -52,66 +31,31 @@ router.get('/', async function (req: Request, res: Response) {
     // should be in the format: http://localhost:3000/api/directory?sortOptions=[]&filterOptions=[]&maxQuery=anyNumber
     // Attempt to get directory
     try {
-        let queryOptions: QueryBuilder;
-        let sortOptions: number[] = [];
-        let filterOptions: number[] = [FILTER_OPTIONS.INCLUDE_ALL];
-        let maxQuery: number | undefined = undefined;
-        try {
-            sortOptions = Array.isArray(req.query.sortOptions)
-                ? req.query.sortOptions.map(Number)
-                : [];
-            filterOptions = Array.isArray(req.query.filterOptions)
-                ? req.query.filterOptions.map(Number)
-                : [];
-            maxQuery = Number(req.query.maxQuery as string);
-            // Try to create query options from url data
-            queryOptions = {
-                sortOptions: sortOptions
-                    .filter(
-                        (option) =>
-                            option !== SORT_OPTIONS.FLOOR_ASC && option !== SORT_OPTIONS.FLOOR_DSC
-                    )
-                    .map((option) => DIRECTORY_SORT_OPTIONS[option]),
-                filterOptions: filterOptions.map((option) => DIRECTORY_FILTER_OPTIONS[option]),
-                maxQuery: Number.isNaN(maxQuery) ? undefined : maxQuery,
-            };
-        } catch (error) {
-            // If that fails, use default queryOptions set above
-            queryOptions = {
-                sortOptions: sortOptions.map((option) => DIRECTORY_SORT_OPTIONS[option]),
-                filterOptions: filterOptions.map((option) => DIRECTORY_FILTER_OPTIONS[option]),
-                maxQuery: maxQuery,
-            };
-        }
-        console.log(queryOptions);
-        // Create the query args from queryOptions
-        const args = buildQuery(queryOptions);
-        // Include the locations table
-        const locationArgs = {
-            locations: {},
-        };
-        if (
-            sortOptions.includes(SORT_OPTIONS.FLOOR_ASC) ||
-            sortOptions.includes(SORT_OPTIONS.FLOOR_DSC)
-        ) {
-            locationArgs.locations = Object.assign(
-                {},
-                ...sortOptions
-                    .filter(
-                        (option) =>
-                            option === SORT_OPTIONS.FLOOR_ASC || option === SORT_OPTIONS.FLOOR_DSC
-                    )
-                    .map((option) => DIRECTORY_SORT_OPTIONS[option])
-            );
-        }
-        args.select = { ...args.select, locations: true };
-        console.log(args);
-        //Attempt to pull from directory
+        // Convert the array from the request query to an array of numbers
+        const sortOptions = Array.isArray(req.query.sortOptions)
+            ? req.query.sortOptions.map(Number)
+            : [];
+        // Convert the array from the request query to an array of numbers
+        const filterOptions = Array.isArray(req.query.filterOptions)
+            ? req.query.filterOptions.map(Number)
+            : [];
 
+        // Convert the array of nums to the array of sorting options to use in the query
+        const sorts = sortOptions.map((sortOption) => DIRECTORY_SORT_OPTIONS[sortOption]);
+        // Convert the array of nums to the array of filtering options to use in the query
+        const filters = filterOptions.map((filterOption) => DIRECTORY_FILTER_OPTIONS[filterOption]);
+        const args = {
+            include: {
+                building: { select: { buildingName: true } },
+                node: { select: { floor: true } },
+            },
+            where: Object.assign({}, ...filters),
+            orderBy: sorts,
+        };
+        //console.log(args);
+        //Attempt to pull from directory
         const DIRECTORY = await PrismaClient.department.findMany(args);
         console.log(DIRECTORY);
-        //console.log(DIRECTORY);
-
         res.send(DIRECTORY);
     } catch (error) {
         // Log any failures
@@ -182,40 +126,23 @@ router.get('/csv', async function (req: Request, res: Response) {
         //Attempt to pull from directory
         const DIRECTORY = await PrismaClient.department.findMany({
             include: {
-                node: true,
+                locations: true,
             },
             orderBy: {
                 deptId: 'desc',
             },
         });
         // Take the joined Location fields and flatten them for CSV parsing {xx:xx, yy:yy, zz:{aa:aa, bb:bb}} => {xx:xx, yy:yy, aa:aa, bb:bb}
-        // const flattenedDirectories = DIRECTORY.flatMap((directory) =>
-        //     // directory.locations.map((location) => ({
-        //     //     ...directory,
-        //     //     floor: location.floor,
-        //     //     roomNum: location.roomNum,
-        //     //     locId: location.locId,
-        //     //     locType: location.locType,
-        //     //     nodeId: location.nodeId,
-        //     // }))
-        // );
-
-        //TODO: FIX THIS PLEASE
-        //this don't work :(
-        // "flat map don't exist error"
         const flattenedDirectories = DIRECTORY.flatMap((directory) =>
-            directory.departmentNodes.map((node) => ({
+            directory.locations.map((location) => ({
                 ...directory,
-                x: node.x,
-                y: node.y,
-                floor: node.floor,
-                buildingId: node.buildingId,
-                nodeType: node.nodeType,
-                name: node.name,
-                roomNumber: node.roomNumber,
+                floor: location.floor,
+                roomNum: location.roomNum,
+                locId: location.locId,
+                locType: location.locType,
+                nodeId: location.nodeId,
             }))
         );
-
         await dataToCSV(flattenedDirectories);
         // Uses the first key as the name of the file EX: dep_id.csv
         const fileName = Object.keys(DIRECTORY[0])[0].toString();
@@ -238,7 +165,7 @@ router.post('/csv', async function (req: Request, res: Response) {
     try {
         if (overwrite === 'Overwrite') {
             await PrismaClient.department.deleteMany();
-            await PrismaClient.node.deleteMany();
+            await PrismaClient.location.deleteMany();
         }
         for (let data of csvData) {
             const dataToUpsertDirectory = {
@@ -256,24 +183,14 @@ router.post('/csv', async function (req: Request, res: Response) {
                 roomNum: data.roomNum,
                 floor: data.floor,
             };
-            const dataToUpsertNode = {
-                nodeId: data.nodeId,
-                x: data.x,
-                y: data.y,
-                floor: data.floor,
-                buildingId: data.buildingId,
-                nodeType: data.nodeType,
-                name: data.name,
-                roomNumber: data.roomNumber,
-            };
             if (overwrite === 'Overwrite') {
                 console.log('Overwriting');
                 await PrismaClient.department.createMany({
                     data: dataToUpsertDirectory,
                     skipDuplicates: true, // Will occur when a department is in two locations
                 });
-                await PrismaClient.node.createMany({
-                    data: dataToUpsertNode,
+                await PrismaClient.location.createMany({
+                    data: dataToUpsertLocation,
                     skipDuplicates: true, // This shouldn't happen but just in case
                 });
             } else {
@@ -283,18 +200,10 @@ router.post('/csv', async function (req: Request, res: Response) {
                     update: dataToUpsertDirectory,
                     create: dataToUpsertDirectory,
                 });
-
-                // await PrismaClient.location.upsert({
-                //     where: { locId: data.locId },
-                //     update: dataToUpsertLocation,
-                //     create: dataToUpsertLocation,
-                // });
-
-                // here cant be nullible
-                await PrismaClient.node.createMany({
-                    where: { nodeId: data.nodeId },
-                    update: dataToUpsertNode,
-                    create: dataToUpsertNode,
+                await PrismaClient.location.upsert({
+                    where: { locId: data.locId },
+                    update: dataToUpsertLocation,
+                    create: dataToUpsertLocation,
                 });
             }
         }
