@@ -42,7 +42,7 @@ model ServiceRequest {
   serviceType             String
 
   //Requests
-  patientTransport PatientTransport? @relation(name: "ServicePatientTransport")
+  patientTransport   PatientTransport? @relation(name: "ServicePatientTransport")
   translationRequest TranslationRequest?
   sanitation         Sanitation?         @relation(name: "ServiceSanitation")
   maintenanceRequest MaintenanceRequest? @relation(name: "MaintenanceRequest")
@@ -90,7 +90,7 @@ model Department {
   deptPhone     String
   members       Employee[]
   building      Building   @relation(fields: [buildingId], references: [buildingId])
-  departmentNodes      Node      @relation(name: "departmentNodes")
+  departmentNodes      Node[]      @relation(name: "departmentNodes")
 }
 
 model Building {
@@ -100,22 +100,19 @@ model Building {
 }
 
 model Node {
-  // ignore id
-  // id         Int     @id @default(autoincrement())
-  nodeId          String  @id //TODO: i'll fix it later
-  x           Decimal
-  y           Decimal
-  floor       String
-  buildingId  String
-  nodeType    String
-  name        String
-  roomNumber  String?
-  edgesFrom   Edge[]        @relation("NodeToEdgeFrom")
-  edgesTo     Edge[]        @relation("NodeToEdgeTo")
-  departmentId Department
-  departments Department[]  @relation("departmentNode")
+  nodeId       String   @id
+  x            Decimal
+  y            Decimal
+  floor        String
+  buildingId   String
+  nodeType     String
+  name         String
+  roomNumber   String?
+  departmentId Int?
+  department   Department? @relation(name: "departmentNodes", fields: [departmentId], references: [deptId])
+  edgesFrom    Edge[]    @relation("NodeToEdgeFrom")
+  edgesTo      Edge[]    @relation("NodeToEdgeTo")
 }
-
 model Edge {
   // making prisma happy lol
   edgeId    Int    @id @default(autoincrement())
