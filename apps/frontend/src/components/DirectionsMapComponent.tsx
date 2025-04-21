@@ -706,11 +706,8 @@ const DirectionsMapComponent = () => {
                     >
                         <div>
                             <HospitalMapComponent
-
-                                // startNode={fromNode}
-                                // endNode={toDirectoryNode}
-                                // initialFloorId={initialFloorId}
-                                // selectedBuildingId={selectedBuildingId}
+                                startNodeId={"1"}
+                                endNodeId={"1"}
                             />
                         </div>
                     </Map>
