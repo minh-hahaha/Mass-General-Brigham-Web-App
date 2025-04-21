@@ -22,7 +22,6 @@ export interface DirectoryRequestByBuilding {
     buildingId: number;
     deptPhone: string;
     nodeId: string;
-
 }
 
 const params = {
@@ -38,10 +37,10 @@ export async function GetDirectory(
 ): Promise<DepartmentRequest[]> {
     // TEMP
     const sortOptions = [];
-    if(bldgSort !== ''){
+    if (bldgSort !== '') {
         sortOptions.push(bldgSort === 'Ascending' ? 4 : 5);
     }
-    if(nameSort !== ''){
+    if (nameSort !== '') {
         sortOptions.push(nameSort === 'Ascending' ? 0 : 1);
     }
     let buildingOption = undefined;
@@ -61,7 +60,7 @@ export async function GetDirectory(
     const response = await axios.get<DepartmentRequest[]>(ROUTES.DIRECTORY, {
         params: {
             sortOptions: sortOptions,
-            filterOptions: (buildingOption !== undefined) ? [buildingOption] : [],
+            filterOptions: buildingOption !== undefined ? [buildingOption] : [],
         }, //TODO: be able to use the enum on backend so it isn't hardcoded
     });
     return response.data;
@@ -76,11 +75,14 @@ export async function getDirectory(bID: number): Promise<DirectoryRequestByBuild
     const params = {
         params: {
             buildingFilter: bID,
+            sortBy: 'deptName',
+            orderBy: 'asc',
         },
     };
     const response = await axios.get<DirectoryRequestByBuilding[]>(
         ROUTES.DIRECTORY_BUILDING,
         params
     );
-    return response.data;
+
+    return response.data.sort((a, b) => a.deptName.localeCompare(b.deptName));
 }
