@@ -1,10 +1,12 @@
-import ViewPath from "@/components/ViewPath.tsx";
 import FloorSelector from "@/components/FloorSelector.tsx";
 import {useState, useEffect} from "react";
 import {ROUTES} from "common/src/constants.ts";
 import axios from "axios";
 
 import {myNode} from "common/src/classes/classes.ts";
+import OverlayComponent from "@/components/OverlayMapComponent.tsx";
+import {GetNode} from "@/database/getDepartmentNode.ts";
+import DisplayPathComponent from "@/components/DisplayPathComponent.tsx";
 
 
 const BuildingNames: Record<string, string> = {
@@ -13,29 +15,53 @@ const BuildingNames: Record<string, string> = {
     "3": "22 Patriot Place"
 }
 
+const CH01 = '/CH01.svg';
+const PP01 = '/20PP01.svg';
+const PP02 = '/20PP02.svg';
+const PP03 = '/20PP03.svg';
+const PP04 = '/20PP04.svg';
+const PP2201 = '/22PP01.svg';
+const PP2203 = '/22PP03.svg';
+const PP2204 = '/22PP04.svg';
+
+const ChestnutHillBounds = {
+    southWest: { lat: 42.32543670863917, lng: -71.15022693442262 }, // Bottom-left corner
+    northEast: { lat: 42.32649756743757, lng: -71.14898211823991 }, // Top-right corner
+};
+
+const PatriotPlaceBounds = {
+    southWest: { lat: 42.09086272947439, lng: -71.2675430325 }, // Bottom-left corner
+    northEast: { lat: 42.09342690806031, lng: -71.2649785507 }, // Top-right corner
+};
+
+
 // floor type
 interface Floor {
     id: string;
-    label: string;
-    building: string;
-    buildingName: string; // for dislay
+    floor: string;
+    buildingId: string;
+    buildingName: string; // for display
     svgPath: string;
 }
 
 // All available floors across buildings
 const availableFloors: Floor[] = [
+    // Chestnut Hill
+    { id: "CH-1", floor: "1", buildingId: "1", buildingName: "Chestnut Hill",svgPath: "/CH01.svg" },
     // 20 Patriot Place
-    { id: "20PP-1", label: "1", building: "2", buildingName: "20 Patriot Place", svgPath: "/20PPFloor1.svg" },
-    { id: "20PP-2", label: "2", building: "2", buildingName: "20 Patriot Place",svgPath: "/20PPFloor2.svg" },
-    { id: "20PP-3", label: "3", building: "2", buildingName: "20 Patriot Place",svgPath: "/20PPFloor3.svg" },
-    { id: "20PP-4", label: "4", building: "2", buildingName: "20 Patriot Place",svgPath: "/20PPFloor4.svg" },
+    { id: "20PP-1", floor: "1", buildingId: "2", buildingName: "20 Patriot Place", svgPath: "/20PP01.svg" },
+    { id: "20PP-2", floor: "2", buildingId: "2", buildingName: "20 Patriot Place",svgPath: "/20PP02.svg" },
+    { id: "20PP-3", floor: "3", buildingId: "2", buildingName: "20 Patriot Place",svgPath: "/20PP03.svg" },
+    { id: "20PP-4", floor: "4", buildingId: "2", buildingName: "20 Patriot Place",svgPath: "/20PP04.svg" },
 
     // 22 Patriot Place
-    { id: "22PP-3", label: "3", building: "3",buildingName: "22 Patriot Place", svgPath: "/22PPFloor3.svg" },
-    { id: "22PP-4", label: "4", building: "3", buildingName: "22 Patriot Place",svgPath: "/22PPFloor4.svg" },
+    { id: "22PP-1", floor: "1", buildingId: "3",buildingName: "22 Patriot Place", svgPath: "/22PP01.svg" },
+    { id: "22PP-3", floor: "3", buildingId: "3",buildingName: "22 Patriot Place", svgPath: "/22PP03.svg" },
+    { id: "22PP-4", floor: "4", buildingId: "3", buildingName: "22 Patriot Place",svgPath: "/20PP04.svg" },
 
-    // Chestnut Hill
-    { id: "CH-1", label: "1", building: "1", buildingName: "Chestnut Hill",svgPath: "/ChestnutHillFloor1.svg" },
+    // parking
+    { id: "CH-A", floor: "0", buildingId: "1", buildingName: "Chestnut Hill",svgPath: "" },
+
 ];
 
 
@@ -164,43 +190,61 @@ async function FindPath(start: myNode, end: myNode) {
         headers: {'Content-Type': 'application/json'}
     })
     const nodes : myNode[] = res.data
+    // console.log("PATH" + nodes)
     return nodes;
+}
+
+function GetPolylinePath(path: myNode[]): {lat: number; lng: number}[] {
+    return path.map(node => ({
+        lat: node.y,
+        lng: node.x,
+    }))
 }
 
 // interface for prop
 interface Props {
-    startNode?: myNode | null;
-    endNode?: myNode | null;
-    initialFloorId?: string;
-    selectedBuildingId?:string;
-
+    startNodeId: string;
+    endNodeId: string;
 }
 
-const HospitalMapComponent = ({startNode, endNode, initialFloorId = "CH-1", selectedBuildingId}:Props) => {
-
+const HospitalMapComponent = ({startNodeId, endNodeId}:Props) => {
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
-    const [currentFloorId, setCurrentFloorId] = useState<string>(initialFloorId);
-    const [isPathLoading, setIsPathLoading] = useState<boolean>(false);
+    const [startNode, setStartNode] = useState<myNode>();
+    const [endNode, setEndNode] = useState<myNode>();
+    const [currentFloorId, setCurrentFloorId] = useState<string>();
 
-    // find
+    // get node using nodeId
+    useEffect(() => {
+        const fetchNode = async () => {
+            try {
+                const start = await GetNode(startNodeId);
+                setStartNode(start);
+                const end = await GetNode(endNodeId);
+                setEndNode(end);
+            } catch (error) {
+                console.error('Error fetching building names:', error);
+            }
+        };
+        fetchNode();
+        console.log('Got Department Node');
+    }, []);
+
+    // Find path and text directions
     useEffect(() => {
         const getMyPaths = async () => {
             if (startNode && endNode) {
-                setIsPathLoading(true);
                 try {
                     const result = await FindPath(startNode, endNode);
-                    console.log("bfs path found:", result);
+                    console.log("Path found:", result);
                     setBFSPath(result);
                     const textDirection = createTextPath(result);
-                    const t = document.getElementById('text-directions');
-                    if(t) {
-                        t.innerHTML = textDirection.toString().replace(/,/g, '<br><br>');
+                    const text = document.getElementById('text-directions');
+                    if(text) {
+                        text.innerHTML = textDirection.toString().replace(/,/g, '<br><br>');
                     }
                 } catch (error) {
                     console.error("Error finding path:", error);
                     setBFSPath([]);
-                } finally {
-                    setIsPathLoading(false);
                 }
             } else {
                 // Clear path if no start/end nodes
@@ -210,11 +254,11 @@ const HospitalMapComponent = ({startNode, endNode, initialFloorId = "CH-1", sele
         getMyPaths();
     }, [startNode, endNode]);
 
-    // auto-select floor of start node when path is found
+    // auto-select floor id for start node
     useEffect(() => {
         if (bfsPath.length > 0 && startNode) {
             const startFloor = availableFloors.find(
-                f => f.building === startNode.buildingId && f.label === startNode.floor
+                f => f.buildingId === startNode.buildingId && f.floor === startNode.floor
             );
             if (startFloor) {
                 setCurrentFloorId(startFloor.id);
@@ -222,63 +266,62 @@ const HospitalMapComponent = ({startNode, endNode, initialFloorId = "CH-1", sele
         }
     }, [bfsPath, startNode]);
 
-    // getting current
-    const currentFloor = availableFloors.find(f => f.id === currentFloorId) || availableFloors[-1];
-    const currentBuildingId = currentFloor.building;
-    const currentFloorNumber = currentFloor.label;
-    const currentFloorPath = bfsPath.filter(
-        node => node.buildingId === currentBuildingId && node.floor === currentFloorNumber
-    );
-
-    console.log("same floor " + currentFloorPath);
-
-    // Get the SVG map URL for the current floor
-    const currentSvgMapUrl = currentFloor.svgPath;
-
-
-    useEffect(() => {
-        if (selectedBuildingId) {
-            // Find the first floor of the selected building
-            const firstFloorOfBuilding = availableFloors.find(
-                floor => floor.building === selectedBuildingId
-            );
-
-            if (firstFloorOfBuilding) {
-                setCurrentFloorId(firstFloorOfBuilding.id);
-            }
-        }
-    }, [selectedBuildingId]);
-
     // Handle floor change
     const handleFloorChange = (floorId: string) => {
         setCurrentFloorId(floorId);
     };
 
+    // Add this function to get the current floor data
+    const getCurrentFloorData = () => {
+        const currentFloor = availableFloors.find(f => f.id === currentFloorId) || availableFloors[0];
+        const currentBuildingId = currentFloor?.buildingId;
+        const currentFloorNumber = currentFloor?.floor;
+
+        // Filter path nodes for the current floor only
+        const currentFloorPath = bfsPath.filter(
+            node => node.buildingId === currentBuildingId && node.floor === currentFloorNumber
+        );
+
+        return {
+            currentFloor,
+            currentFloorPath
+        };
+    };
+
+// Update the rendering part to use the current floor's SVG
+    const { currentFloor, currentFloorPath } = getCurrentFloorData();
+
+    // coordinates to test
+    const coords = [ { lat: 42.32641975362307, lng: -71.14992617744028 },
+        { lat: 42.32643660922756, lng: -71.14959023076334 },
+        { lat: 42.3262859001328, lng: -71.14956609088263 },
+        { lat: 42.326275985048134, lng: -71.14951647001675 },
+        { lat: 42.32624227374853, lng: -71.14946819025536 },]
 
     return (
-        <div className="relative w-full h-full">
-            {isPathLoading ? (
-                <div className="flex items-center justify-center h-full">
-                    <div className="text-xl">Loading path...</div>
-                </div>
-            ) : (
-                <>
-                    {/* show node on that specific floor */}
-                    <ViewPath
-                        svgMapUrl={currentSvgMapUrl}
-                        path={currentFloorPath}
-                        buildingId={currentBuildingId}
-                    />
-
-                    <FloorSelector
-                        floors={availableFloors}
-                        currentFloorId={currentFloorId}
-                        onChange={handleFloorChange}
-                    />
-                </>
-            )}
+        <>
+        <div>
+            <FloorSelector
+                floors={availableFloors}
+                currentFloorId={currentFloorId}
+                onChange={handleFloorChange}
+            />
         </div>
+        <div className="relative w-full h-full">
+            <OverlayComponent
+                bounds={ChestnutHillBounds}
+                imageSrc={currentFloor.svgPath}
+            />
+            <OverlayComponent
+                bounds={PatriotPlaceBounds}
+                imageSrc={currentFloor.svgPath}
+            />
+            {/*<DisplayPathComponent coordinates={GetPolylinePath(currentFloorPath)} />*/}
+            <DisplayPathComponent coordinates={coords} />
+        </div>
+        </>
     );
 };
+
 
 export default HospitalMapComponent;

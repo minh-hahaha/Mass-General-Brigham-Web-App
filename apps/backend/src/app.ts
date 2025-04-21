@@ -15,6 +15,7 @@ import directoryNodeRouter from './routes/directoryNode.ts';
 import maintenanceRouter from './routes/maintenancerequest.ts';
 import nodeRouter from './routes/node.ts';
 import edgeRouter from './routes/edge.ts';
+import originRouter from './routes/recentorigins.ts';
 
 import { ROUTES } from 'common/src/constants';
 
@@ -60,6 +61,8 @@ app.use(ROUTES.PATIENTTRANSPORT, patientTransportRouter);
 app.use(ROUTES.BFSGRAPH, graphRouter);
 app.use(ROUTES.NODE, nodeRouter);
 app.use(ROUTES.EDGE, edgeRouter);
+
+app.use(ROUTES.RECENT_ORIGINS, originRouter);
 
 /**
  * Catch all 404 errors, and forward them to the error handler

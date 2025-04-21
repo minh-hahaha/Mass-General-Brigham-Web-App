@@ -41,8 +41,8 @@ export default function ViewPath({
             // Only create edges between nodes on the same floor
             if (path[i].floor === path[i + 1].floor) {
                 newPathEdges.push({
-                    from: path[i].id,
-                    to: path[i + 1].id
+                    from: path[i].nodeId,
+                    to: path[i + 1].nodeId
                 });
             }
         }
@@ -100,7 +100,7 @@ export default function ViewPath({
     const isEndpoint = (nodeId: string): boolean => {
         return (path.length > 0
             &&
-            (nodeId === path[0].id || nodeId === path[path.length - 1].id));
+            (nodeId === path[0].nodeId || nodeId === path[path.length - 1].nodeId));
     };
 
     // Find connection points between floors - nodes where the path goes to a different floor
@@ -122,10 +122,10 @@ export default function ViewPath({
 
     // Get node color
     const getNodeColor = (node: myNode): string => {
-        if (isEndpoint(node.id)) return 'red';
+        if (isEndpoint(node.nodeId)) return 'red';
 
         // Check if it's a floor transition node
-        if (floorTransitionNodes.some(n => n.id === node.id)) {
+        if (floorTransitionNodes.some(n => n.nodeId === node.nodeId)) {
             return 'green'; // Floor transitions are green
         }
 
@@ -134,14 +134,14 @@ export default function ViewPath({
 
     // Get node label
     const getNodeLabel = (node: myNode): string => {
-        if (node.id === path[0]?.id) return "Start";
-        if (node.id === path[path.length - 1]?.id) return "End";
+        if (node.nodeId === path[0]?.nodeId) return "Start";
+        if (node.nodeId === path[path.length - 1]?.nodeId) return "End";
 
         // For transition nodes, show which floor it connects to
-        const transitionNode = floorTransitionNodes.find(n => n.id === node.id);
+        const transitionNode = floorTransitionNodes.find(n => n.nodeId === node.nodeId);
         if (transitionNode) {
             // Find the connected node on different floor
-            const connectedNodeIndex = path.findIndex(n => n.id === transitionNode.id);
+            const connectedNodeIndex = path.findIndex(n => n.nodeId === transitionNode.nodeId);
             if (connectedNodeIndex >= 0 && connectedNodeIndex < path.length - 1) {
                 const nextNode = path[connectedNodeIndex + 1];
                 if (nextNode.floor !== transitionNode.floor) {
@@ -150,7 +150,7 @@ export default function ViewPath({
             }
         }
 
-        return node.name || node.id;
+        return node.name || node.nodeId;
     };
 
     return (
@@ -191,8 +191,8 @@ export default function ViewPath({
 
                         {/* Draw path edges */}
                         {pathEdges.map((edge, i) => {
-                            const fromNode = path.find(n => n.id === edge.from);
-                            const toNode = path.find(n => n.id === edge.to);
+                            const fromNode = path.find(n => n.nodeId === edge.from);
+                            const toNode = path.find(n => n.nodeId === edge.to);
                             if (!fromNode || !toNode) return null;
 
                             return (
@@ -212,13 +212,13 @@ export default function ViewPath({
 
                         {/* Draw nodes that are in the path */}
                         {path.map((node) => {
-                            const isEndpointNode = isEndpoint(node.id);
-                            const isTransitionNode = floorTransitionNodes.some(n => n.id === node.id);
+                            const isEndpointNode = isEndpoint(node.nodeId);
+                            const isTransitionNode = floorTransitionNodes.some(n => n.nodeId === node.nodeId);
                             const nodeSize = isEndpointNode ? 10 : (isTransitionNode ? 9 : 8);
                             const nodeColor = getNodeColor(node);
 
                             return (
-                                <g key={node.id}>
+                                <g key={node.nodeId}>
                                     <circle
                                         cx={node.x}
                                         cy={node.y}
