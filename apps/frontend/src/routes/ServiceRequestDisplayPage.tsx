@@ -28,12 +28,16 @@ export default function RequestTablesCarousel() {
     const [selectedIndex, setSelectedIndex] = useState(0)
 
     useEffect(() => {
-        if (!api) return
-        const onSelect = () => setSelectedIndex(api.selectedScrollSnap())
-        api.on("select", onSelect)
-        onSelect()
-        return () => api.off("select", onSelect)
-    }, [api])
+        if (!api) return; // return nothing if api isn't ready
+
+        const onSelect = () => setSelectedIndex(api.selectedScrollSnap());
+        api.on("select", onSelect);
+        onSelect();
+
+        return () => {
+            api.off("select", onSelect);
+        };
+    }, [api]);
 
     return (
         <div className="w-full px-6 pt-10">

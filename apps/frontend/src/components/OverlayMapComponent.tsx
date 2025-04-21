@@ -10,7 +10,11 @@ interface ParkingOverlayProps {
     visible: boolean;
 }
 
+<<<<<<<< HEAD:apps/frontend/src/components/OverlayMapComponent.tsx
 const OverlayMapComponent: React.FC<ParkingOverlayProps> = ({
+========
+const OverlayComponent: React.FC<ParkingOverlayProps> = ({
+>>>>>>>> main:apps/frontend/src/components/OverlayComponent.tsx
                                                                     bounds,
                                                                     imageSrc,
                                                                     visible,
@@ -49,4 +53,8 @@ const OverlayMapComponent: React.FC<ParkingOverlayProps> = ({
     return null;
 };
 
+<<<<<<<< HEAD:apps/frontend/src/components/OverlayMapComponent.tsx
 export default OverlayMapComponent;
+========
+export default OverlayComponent;
+>>>>>>>> main:apps/frontend/src/components/OverlayComponent.tsx
