@@ -2,6 +2,8 @@ import { useMap } from '@vis.gl/react-google-maps';
 import { useEffect, useRef, useState } from 'react';
 import { myEdge, myNode } from 'common/src/classes/classes.ts';
 import MGBButton from '@/elements/MGBButton.tsx';
+import { createNode, NodeResponse } from '@/database/getNode.ts';
+import { createEdge, EdgeResponse } from '@/database/getEdges.ts';
 
 interface MapNode {
     node: myNode,
@@ -18,7 +20,7 @@ interface MapEdge {
 const NodeEditorComponent = ()  => {
 
     const map = useMap();
-    const [mode, setMode] = useState<'Node' | null>(null);
+    const [mode, setMode] = useState<'Node' | 'Edge' | null>(null);
     const modeRef = useRef(mode);
     const [clickedNode, setClickedNode] = useState<string | null>(null);
     const clickedNodeRef = useRef(clickedNode);
@@ -29,7 +31,7 @@ const NodeEditorComponent = ()  => {
     const [mapNodes, setMapNodes] = useState<MapNode[]>([]);
     const mapNodesRef = useRef(mapNodes);
     let tempNodeID = 0;
-    let tempEdgeID = 1;
+    const tempEdgeIDRef = useRef(0);
 
 
     function incrementTempNodeID(): number {
@@ -37,7 +39,7 @@ const NodeEditorComponent = ()  => {
     }
 
     function incrementTempEdgeID(): number {
-        return tempEdgeID++;
+        return tempEdgeIDRef.current++;
     }
 
     useEffect(() => {
@@ -56,7 +58,7 @@ const NodeEditorComponent = ()  => {
         clickedEdgeRef.current = clickedEdge;
     }, [clickedEdge]);
 
-    function createNode(position: google.maps.LatLng | null) {
+    function createMapNode(position: google.maps.LatLng | null) {
         if(!position)
             return;
         const mapNode: MapNode = {
@@ -76,7 +78,7 @@ const NodeEditorComponent = ()  => {
         setMapNodes(prev => [...prev, mapNode]);
     }
 
-    function createEdge(startNode: MapNode, endNode: MapNode){
+    function createMapEdge(startNode: MapNode, endNode: MapNode){
         const startPos = startNode.drawnNode.getCenter();
         const endPos = endNode.drawnNode.getCenter();
         if(!startPos || !endPos){
@@ -87,8 +89,8 @@ const NodeEditorComponent = ()  => {
         }
         const mapEdge: MapEdge = {
             edge: new myEdge(incrementTempEdgeID(), startNode.node, endNode.node),
-            to: startNode,
-            from: endNode,
+            to: endNode,
+            from: startNode,
             drawnEdge: new google.maps.Polyline({
                 path: [startPos, endPos],
                 map,
@@ -137,8 +139,8 @@ const NodeEditorComponent = ()  => {
         const newCurrent = mapNodesRef.current.find(node => node.node.nodeId === nodeId);
         if(currentNode){
             currentNode.drawnNode.set('strokeWeight', 0);
-            if(newCurrent){
-                createEdge(currentNode, newCurrent);
+            if(newCurrent && modeRef.current === 'Edge'){
+                createMapEdge(currentNode, newCurrent);
                 setClickedNode(null)
                 return;
             }
@@ -163,12 +165,38 @@ const NodeEditorComponent = ()  => {
         }
     }
 
+    async function saveNodesAndEdges(){
+        for (const node of mapNodes) {
+            const sendNode: NodeResponse = {
+                nodeId: node.node.nodeId,
+                x: node.node.x,
+                y: node.node.y,
+                floor: node.node.floor,
+                buildingId: node.node.buildingId,
+                nodeType: node.node.nodeType,
+                name: node.node.name,
+                roomNumber: node.node.roomNumber,
+            };
+            await createNode(sendNode);
+        }
+        for (let i = 0; i < mapEdges.length; i++) {
+            const edge = mapEdges[i];
+            console.log(edge);
+            const sendEdge: EdgeResponse = {
+                edgeId: null, // Let the database auto generate any drawn for the first time nodes
+                to: edge.edge.to.nodeId,
+                from: edge.edge.from.nodeId,
+            };
+            await createEdge(sendEdge);
+        }
+    }
+
     useEffect(() => {
         if(!map)
             return;
         const listener = google.maps.event.addListener(map, 'click', (e: google.maps.MapMouseEvent) => {
             if(modeRef.current === 'Node'){
-                createNode(e.latLng)
+                createMapNode(e.latLng)
             }
         })
         return () => {google.maps.event.removeListener(listener)}
@@ -201,6 +229,16 @@ const NodeEditorComponent = ()  => {
             </p>
             <p>
                 <MGBButton
+                    onClick={() => {
+                        setMode("Edge");
+                    }}
+                    children={"Add Edge"}
+                    variant={'primary'}
+                    disabled={false}
+                ></MGBButton>
+            </p>
+            <p>
+                <MGBButton
                     onClick={() => removeSelectedNode()}
                     children={"Remove Node"}
                     variant={clickedNode ? 'primary' : 'secondary'}
@@ -215,6 +253,16 @@ const NodeEditorComponent = ()  => {
                     children={"Remove Edge"}
                     variant={clickedEdge ? 'primary' : 'secondary'}
                     disabled={clickedEdge === null}
+                ></MGBButton>
+            </p>
+            <p>
+                <MGBButton
+                    onClick={() => {
+                        saveNodesAndEdges();
+                    }}
+                    children={"Save Nodes and Edges"}
+                    variant={'primary'}
+                    disabled={false}
                 ></MGBButton>
             </p>
         </div>

@@ -21,18 +21,27 @@ router.get('/', async (req: Request, res: Response) => {
 router.post('/', async (req: Request, res: Response) => {
     const tempEdge = {
         edgeId: req.body.edgeId,
-        from: req.body.to,
+        from: req.body.from,
         to: req.body.to,
     };
 
     try {
-        const EDGE_UPDATE = await PrismaClient.edge.upsert({
-            where: {
-                edgeId: tempEdge.edgeId,
-            },
-            update: tempEdge,
-            create: tempEdge,
-        });
+        if (tempEdge.edgeId) {
+            const EDGE_UPDATE = await PrismaClient.edge.upsert({
+                where: {
+                    edgeId: tempEdge.edgeId,
+                },
+                update: tempEdge,
+                create: tempEdge,
+            });
+        } else {
+            await PrismaClient.edge.create({
+                data: {
+                    from: tempEdge.from,
+                    to: tempEdge.to,
+                },
+            });
+        }
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to upsert edge' });

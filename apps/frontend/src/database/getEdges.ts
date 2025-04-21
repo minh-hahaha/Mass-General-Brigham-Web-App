@@ -2,7 +2,7 @@ import { ROUTES } from 'common/src/constants';
 import axios from 'axios';
 
 export interface EdgeResponse {
-    edgeId: number,
+    edgeId: number | null,
     from: string,
     to: string,
 }
@@ -12,8 +12,8 @@ export async function getEdges() {
     return (await axios.get<EdgeResponse[]>(ROUTES.EDGE)).data;
 }
 
-export async function createEdge(){
-    return (await axios.post(ROUTES.EDGE)).data;
+export async function createEdge(edgeResponse: EdgeResponse){
+    return (await axios.post(ROUTES.EDGE, edgeResponse)).data;
 }
 
 export async function deleteEdge(id: string){
