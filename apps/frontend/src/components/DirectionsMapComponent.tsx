@@ -531,7 +531,10 @@ const DirectionsMapComponent = () => {
     }
     const speakDirections = async () => {
         const message = Array.isArray(textDirections) ? textDirections.join(' ') : textDirections;
-        const messageString=htmlToPlainText(message);
+        let messageString=htmlToPlainText(message);
+        if (messageString.length==0) {
+            messageString="Empty of Directions, select a from, and, too location in order to receive directions.";
+        }
         const response = await fetch('http://localhost:5001/api/tts', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
