@@ -31,10 +31,10 @@ const FloorSelector: React.FC<FloorSelectorProps> = ({
     });
 
     return (
-        <div className="absolute top left z-10 bg-white rounded-lg shadow-lg p-2 flex flex-col space-y-4">
+        <div className="z-10 bg-white rounded-lg p-1 flex flex-col">
             {Object.entries(floorsByBuilding).map(([buildingId, buildingFloors]) => (
                 <div key={buildingId} className="flex flex-col items-center">
-                    <h3 className="text-sm font-semibold mb-2">
+                    <h3 className="text-sm font-semibold mb-2 text-codGray">
                         {buildingFloors[0]?.buildingName || `Building ${buildingId}`}
                     </h3>
                     <div className="flex flex-col-reverse space-y-reverse space-y-2">
@@ -45,8 +45,8 @@ const FloorSelector: React.FC<FloorSelectorProps> = ({
                                     key={floor.id}
                                     className={`w-10 h-10 rounded-full flex items-center justify-center
                     ${currentFloorId === floor.id
-                                        ? 'bg-blue-500 text-white'
-                                        : 'bg-gray-200 hover:bg-gray-300'}`}
+                                        ? 'bg-mgbblue text-white'
+                                        : 'bg-mgbblue hover:bg-fountainBlue'}`}
                                     onClick={() => onChange(floor.id)}
                                 >
                                     {floor.floor}
