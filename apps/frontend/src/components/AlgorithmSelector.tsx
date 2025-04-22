@@ -8,7 +8,7 @@ interface AlgorithmSelectorProps {
 const AlgorithmSelector = ({ selectedAlgorithm, onChange }: AlgorithmSelectorProps) => {
     return (
         <div className="flex items-center gap-2">
-            <label className="w-1/4">Algorithm</label>
+            <label className="w-1/4">Algorithm: </label>
             <select
                 value={selectedAlgorithm}
                 onChange={(e) => onChange(e.target.value)}
