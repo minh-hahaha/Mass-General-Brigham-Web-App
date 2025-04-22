@@ -9,7 +9,7 @@ const expressRouter = express.Router();
 expressRouter.post('/', async function (req: Request, res: Response) {
     try {
         const { start: startNode, end: targetNode, strategy: currentStratergy } = req.body;
-        console.log('strat ' + currentStratergy);
+        //console.log('strat ' + currentStratergy);
         const AlgoContext = new AlgorithmContext(new BFS());
 
         let pathFindingStrategy: pathfindingStrategy | null = null;
