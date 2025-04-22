@@ -228,36 +228,58 @@ const NodeEditorComponent = () => {
     }
 
     function clickNode(nodeId: string) {
-        const currentNode = mapNodesRef.current.find((node) => node.node.nodeId === nodeId);
-        const connectingNode = mapNodesRef.current.find((node) => node.node.nodeId === clickedNodeRef.current);
-        if (currentNode) {
+        const toNode = mapNodesRef.current.find((node) => node.node.nodeId === nodeId);
+        const fromNode = mapNodesRef.current.find((node) => node.node.nodeId === clickedNodeRef.current);
+        if (toNode) {
             setClickedNode(nodeId);
-            setNodeType(currentNode.node.nodeType as NodeType);
-            setNodeName(currentNode.node.name);
-            setRoomNumber(currentNode.node.roomNumber);
-            if(connectingNode) {
-                const edge = mapEdgesRef.current.find(edge => edge.from.node.nodeId === currentNode.node.nodeId || edge.to.node.nodeId === currentNode.node.nodeId);
+            setNodeType(toNode.node.nodeType as NodeType);
+            setNodeName(toNode.node.name);
+            setRoomNumber(toNode.node.roomNumber);
+            if(fromNode) {
+                const edge = mapEdgesRef.current.find(edge => edge.from.node.nodeId === fromNode.node.nodeId || edge.to.node.nodeId === fromNode.node.nodeId);
                 if(edge){
-                    const indexOf = edge.drawnEdge.getPath().getArray().indexOf(currentNode.drawnNode.getPosition() as google.maps.LatLng);
-                    if(indexOf === 0 || indexOf === edge.drawnEdge.getPath().getArray().length) {
-                        const path = [];
-                        for (const ll of edge.drawnEdge.getPath().getArray()) {
-                            if (ll === (currentNode.drawnNode.getPosition() as google.maps.LatLng)) {
-                                path.push(ll);
-                                path.push(connectingNode.drawnNode.getPosition() as google.maps.LatLng);
-                                continue;
+                    console.log("edge exists")
+                    const indexOf = edge.drawnEdge.getPath().getArray().indexOf(fromNode.drawnNode.getPosition() as google.maps.LatLng);
+                    if(indexOf === 0 || indexOf === edge.drawnEdge.getPath().getArray().length - 1) {
+                        console.log("0 or end")
+                        let path: google.maps.LatLng[] = [];
+                        const iEdge = mapEdgesRef.current.find(edge => edge.from.node.nodeId === toNode.node.nodeId);
+                        if(indexOf === 0){
+                            console.log("0")
+                            if(iEdge){
+                                console.log("iEdge exists")
+                                path = iEdge.drawnEdge.getPath().getArray();
+                                path = path.reverse();
+                                path = path.concat(edge.drawnEdge.getPath().getArray());
+                            }else{
+                                path = [toNode.drawnNode.getPosition() as google.maps.LatLng];
+                                path = path.concat(edge.drawnEdge.getPath().getArray());
                             }
-                            path.push(ll);
+                        }else{
+                            console.log("end")
+                            if(iEdge) {
+                                console.log("iEdge exists")
+                                path = edge.drawnEdge.getPath().getArray();
+                                console.log(path);
+                                path = path.concat(iEdge.drawnEdge.getPath().getArray());
+                                console.log(path);
+                            }else{
+                                path = path = edge.drawnEdge.getPath().getArray();
+                                path = path.concat(toNode.drawnNode.getPosition() as google.maps.LatLng);
+                            }
                         }
                         edge.drawnEdge.setPath(path);
-                        createMapEdge(currentNode, connectingNode, edge.drawnEdge);
+                        // for every node on iEdge path, set to edge's polyline
+                        createMapEdge(toNode, fromNode, edge.drawnEdge);
                     }else{
-                        const newLine = new google.maps.Polyline({
-                            zIndex: 0,
-                            path: [currentNode.drawnNode.getPosition() as google.maps.LatLng, connectingNode.drawnNode.getPosition() as google.maps.LatLng],
-                            map: map
-                        });
-                        createMapEdge(currentNode, connectingNode, newLine);
+                        console.log("bad")
+                        // TODO: fix later
+                        // const newLine = new google.maps.Polyline({
+                        //     zIndex: 0,
+                        //     path: [currentNode.drawnNode.getPosition() as google.maps.LatLng, connectingNode.drawnNode.getPosition() as google.maps.LatLng],
+                        //     map: map
+                        // });
+                        // createMapEdge(currentNode, connectingNode, newLine);
                     }
                 }
                 setClickedNode(null);
