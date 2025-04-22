@@ -20,7 +20,8 @@ export const ROUTES = {
     DIRECTORY_BUILDING: '/api/directory/byBuilding',
 
     //Algorithms
-    BFSGRAPH: '/api/graph/traverse',
+    FINDPATH: '/api/graph/traverse',
+
     NODE: '/api/node',
     EDGE: '/api/edge',
 

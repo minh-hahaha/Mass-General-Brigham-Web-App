@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo, ChangeEvent } from 'react';
+import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
 import SelectElement from '../elements/SelectElement.tsx';
 import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google-maps';
 import TravelModeComponent from '@/components/TravelModeComponent.tsx';
@@ -10,17 +10,14 @@ import { FaRegClock } from 'react-icons/fa';
 import { MapPin, Circle, Hospital } from 'lucide-react';
 import { MdOutlineMyLocation } from 'react-icons/md';
 import { ROUTES } from 'common/src/constants.ts';
-import { FaChevronUp } from "react-icons/fa6";
-import { FaChevronDown } from "react-icons/fa6";
+
 import {
     DirectoryRequestByBuilding,
-    DirectoryRequestName,
     getDirectory,
-    getDirectoryNames,
 } from '@/database/gettingDirectory.ts';
-import { GetNode } from '@/database/getDepartmentNode.ts';
 import { GetRecentOrigins, RecentOrigin } from '@/database/recentOrigins.ts';
-import FloorSelector from "@/components/FloorSelector.tsx";
+
+import AlgorithmSelector from '@/components/AlgorithmSelector.tsx';
 
 const Buildings = ['Chestnut Hill - 850 Boylston Street', '20 Patriot Place', '22 Patriot Place'];
 
@@ -30,26 +27,8 @@ const BuildingIDMap: Record<string, string> = {
     '22 Patriot Place': '3',
 };
 
-const DefaultFloors: Record<string, string> = {
-    '1': 'CH-1',
-    '2': '20PP-1',
-    '3': '22PP-3',
-};
-
 type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
 
-const ChestnutHillBounds = {
-    southWest: { lat: 42.32543670863917, lng: -71.15022693442262 }, // Bottom-left corner
-    northEast: { lat: 42.32649756743757, lng: -71.14898211823991 }, // Top-right corner
-};
-
-const PatriotPlaceBounds = {
-    southWest: { lat: 42.09086272947439, lng: -71.26758215417115 }, // Bottom-left corner
-    northEast: { lat: 42.09342690806031, lng: -71.26501767235642 }, // Top-right corner
-};
-
-const CH01 = '/CH01.svg';
-const PP01 = '/20PP01.svg';
 
 const nullNode: myNode = {
     nodeId: '',
@@ -128,8 +107,24 @@ const DirectionsMapComponent = () => {
 
     const [buildingID, setBuildingID] = useState<number>(0);
     const [textDirections, setTextDirections] = useState<string>('');
+    const [selectedAlgorithm, setSelectedAlgorithm] = useState('BFS');
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
-    const [showFloorSelect, setShowFloorSelect] = useState(false);
+
+    useEffect(() => {
+        const checkAdmin = () => {
+            console.log(sessionStorage.getItem('position'))
+            if (sessionStorage.getItem('position') === "WebAdmin") {
+                setIsAdmin(true);
+                console.log('admin', isAdmin);
+                return;
+            }
+            setIsAdmin(false);
+            console.log('admin', isAdmin);
+            return;
+        };
+        checkAdmin();
+    }, []);
 
     useEffect(() => {
         const fetchOrigins = async () => {
@@ -181,7 +176,7 @@ const DirectionsMapComponent = () => {
         };
         fetchDirectoryList();
         console.log('Updated Directory list');
-    }, [buildingID]);
+    }, [buildingID, toLocation]);
 
     // get the end department nodeId
     useEffect(() => {
@@ -201,6 +196,7 @@ const DirectionsMapComponent = () => {
         handleDeptChange();
     }, [currentDirectoryName]);
 
+
     useEffect(() => {
         if (toLocation) {
             const id = BuildingIDMap[toLocation] || '';
@@ -216,6 +212,19 @@ const DirectionsMapComponent = () => {
         }
     }, [fromLocation, toLocation]);
 
+
+    const handleChangeToLocation = (e: ChangeEvent<HTMLSelectElement>) => {
+        const newLocation = e.target.value;
+
+        // Update the location state
+        setToLocation(newLocation);
+
+        // Set the building ID for directory lookup
+        const buildingIndex = Buildings.indexOf(newLocation);
+        setBuildingID(buildingIndex + 1);
+
+    };
+
     // find directions
     const handleFindDirections = async () => {
         calculateRoute();
@@ -227,6 +236,10 @@ const DirectionsMapComponent = () => {
         } catch (error) {
             console.error(error);
         }
+    };
+
+    const handleAlgorithmChange = (algorithm: string) => {
+        setSelectedAlgorithm(algorithm);
     };
 
     // change travel mode
@@ -286,24 +299,6 @@ const DirectionsMapComponent = () => {
     const [parking, setParking] = useState(true);
     const [showHospital, setShowHospital] = useState(false);
 
-    const handleChangeToLocation = (e: ChangeEvent<HTMLSelectElement>) => {
-        const newLocation = e.target.value;
-        const previousLocation = toLocation;
-
-        // Update the location state
-        setToLocation(newLocation);
-
-        // Set the building ID for directory lookup
-        const buildingIndex = Buildings.indexOf(newLocation);
-        setBuildingID(buildingIndex + 1);
-
-        // // Only reset department data if the building changed
-        // if (previousLocation !== newLocation && previousLocation !== '') {
-        //     setToDirectoryNodeId('');
-        //     setToDirectoryNode(nullNode);
-        // }
-        handleFindDirections();
-    };
 
     useEffect(() => {
         if (toLocation === Buildings[0]) {
@@ -525,55 +520,14 @@ const DirectionsMapComponent = () => {
         );
     };
 
-    interface Floor {
-        id: string;
-        floor: string;
-        buildingId: string;
-        buildingName: string; // for display
-        svgPath: string;
-    }
 
-    const availableFloors: Floor[] = [
-        // Chestnut Hill
-        { id: "CH-1", floor: "1", buildingId: "1", buildingName: "Chestnut Hill",svgPath: "/CH01.svg" },
-        // 20 Patriot Place
-        { id: "20PP-1", floor: "1", buildingId: "2", buildingName: "20 Patriot Place", svgPath: "/20PP01.svg" },
-        { id: "20PP-2", floor: "2", buildingId: "2", buildingName: "20 Patriot Place",svgPath: "/20PP02.svg" },
-        { id: "20PP-3", floor: "3", buildingId: "2", buildingName: "20 Patriot Place",svgPath: "/20PP03.svg" },
-        { id: "20PP-4", floor: "4", buildingId: "2", buildingName: "20 Patriot Place",svgPath: "/20PP04.svg" },
 
-        // 22 Patriot Place
-        { id: "22PP-1", floor: "1", buildingId: "3",buildingName: "22 Patriot Place", svgPath: "/22PP01.svg" },
-        { id: "22PP-3", floor: "3", buildingId: "3",buildingName: "22 Patriot Place", svgPath: "/22PP03.svg" },
-        { id: "22PP-4", floor: "4", buildingId: "3", buildingName: "22 Patriot Place",svgPath: "/20PP04.svg" },
 
-        // parking
-        { id: "CH-A", floor: "0", buildingId: "1", buildingName: "Chestnut Hill",svgPath: "" },
-
-    ];
-    const [currentFloorId, setCurrentFloorId] = useState<string>();
-
-    const handleFloorChange = (floorId: string) => {
-        setCurrentFloorId(floorId);
-    };
-
-    const initialFloorId = selectedBuildingId ? DefaultFloors[selectedBuildingId] : '';
     return (
         <div className="flex w-screen h-screen">
             {/* LEFT PANEL */}
             <div className="relative">
-                <div
-                    className="absolute top-8 -right-14 bg-mgbblue text-white p-2 rounded-r-md cursor-pointer z-20"
-                    onClick={() => setShowFloorSelect((prev) => !prev)}
-                >
-                    {showFloorSelect ? <FaChevronUp size={16} /> : <FaChevronDown size={16} />}
-                    {/* Floor Selector Dropdown (below tab) */}
-                    {showFloorSelect && (
-                        <div className="absolute top-8 -right-17 z-10 bg-white rounded-r-md p-2">
-                            <FloorSelector floors={availableFloors} currentFloorId={currentFloorId} onChange={handleFloorChange} />
-                        </div>
-                    )}
-                </div>
+
                 <aside className="relative top-6 left-6 z-10 w-[400px] max-h-[75vh] bg-white p-6 shadow-xl rounded-lg overflow-hidden flex flex-col">
                     <form>
                         {/* Blue Box Section */}
@@ -688,6 +642,14 @@ const DirectionsMapComponent = () => {
                             {showHospital ? 'Show Google Map' : "I'm Here!"}
                         </button>
                     </div>
+                    <div className="mt-6">
+                        {toLocation && isAdmin && (
+                            <AlgorithmSelector
+                                selectedAlgorithm={selectedAlgorithm}
+                                onChange={handleAlgorithmChange}
+                            />
+                        )}
+                    </div>
                     <div className="w-110 border-[0.5px] border-codGray mt-5 -ml-10" />
                     <div className="overflow-y-auto mt-4 flex-grow">
                         {!toLocation ? (
@@ -728,10 +690,71 @@ const DirectionsMapComponent = () => {
                         )}
                     </div>
                 </aside>
+
             </div>
+                {/* I'm Here Button */}
+                <div className={clsx(parking ? 'mt-6' : '-mt-2.5')}>
+                    <button
+                        disabled={lot === ''}
+                        onClick={() => handleHere()}
+                        className="w-full bg-mgbblue text-white py-2 rounded-sm hover:bg-mgbblue/90 transition disabled:opacity-50"
+                    >
+                        {showHospital ? 'Show Google Map' : "I'm Here!"}
+                    </button>
+                </div>
+
+                <div className="mt-6">
+                    {toLocation && isAdmin && (
+                        <AlgorithmSelector
+                            selectedAlgorithm={selectedAlgorithm}
+                            onChange={handleAlgorithmChange}
+                        />
+                    )}
+                </div>
+
+                <div className="w-110 border-[0.5px] border-codGray mt-5 -ml-10" />
+                <div className="overflow-y-auto mt-4 flex-grow">
+                    {!toLocation ? (
+                        <div className="max-h-[200px] overflow-y-auto w-full mt-1">
+                            <ul className="w-full flex flex-col space-y-2">
+                                <li
+                                    className="flex items-center w-100 py-2 rounded-md transition-colors hover:bg-gray-200 cursor-pointer"
+                                    onClick={handleUseCurrentLocation}
+                                >
+                                    <MdOutlineMyLocation
+                                        className="text-mgbblue min-w-[20px]"
+                                        size={18}
+                                    />
+                                    <span className="text-codGray mx-3">Current Location</span>
+                                </li>
+                                {recentOrigins.map((origin, index) => (
+                                    <li
+                                        key={index}
+                                        className="flex items-center w-100 py-2 rounded-md transition-colors hover:bg-gray-200 cursor-pointer"
+                                        onClick={() => setFromLocation(origin.location)}
+                                    >
+                                        <FaRegClock
+                                            className="text-mgbblue min-w-[20px]"
+                                            size={18}
+                                        />
+                                        <span className="text-codGray mx-3">
+                                            {origin.location.match('.+?(?=[ \\d]{5})')}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ) : (
+                        <div
+                            id={'text-directions'}
+                            dangerouslySetInnerHTML={{ __html: textDirections }}
+                        />
+                    )}
+                </div>
 
             {/* MAP AREA */}
             <main className="absolute inset-0 z-0">
+
                 <Map
                     style={{ width: '100%', height: '100%' }}
                     defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
@@ -741,7 +764,10 @@ const DirectionsMapComponent = () => {
                     mapTypeControl={false}
                     mapId={'73fda600718f172c'}
                 >
-                    <HospitalMapComponent startNodeId={'1'} endNodeId={toDirectoryNodeId} />
+                    <HospitalMapComponent 
+                      startNodeId={'CHFloor1Door8'} 
+                      endNodeId={toDirectoryNodeId} 
+                      selectedAlgorithm={selectedAlgorithm} />
                 </Map>
 
                 {/* Route Info Box */}
