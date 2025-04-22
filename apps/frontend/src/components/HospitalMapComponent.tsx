@@ -16,13 +16,10 @@ const BuildingNames: Record<string, string> = {
 }
 
 const CH01 = '/CH01.svg';
-const PP01 = '/20PP01.svg';
+const PP01 = '/PP01.svg';
 const PP02 = '/20PP02.svg';
 const PP03 = '/20PP03.svg';
 const PP04 = '/20PP04.svg';
-const PP2201 = '/22PP01.svg';
-const PP2203 = '/22PP03.svg';
-const PP2204 = '/22PP04.svg';
 
 const ChestnutHillBounds = {
     southWest: { lat: 42.32543670863917, lng: -71.15022693442262 }, // Bottom-left corner
@@ -321,7 +318,7 @@ const HospitalMapComponent = ({startNodeId, endNodeId}:Props) => {
             />
             <OverlayComponent
                 bounds={PatriotPlaceBounds}
-                imageSrc={currentFloor.svgPath}
+                imageSrc={PP01}
             />
             {/*<DisplayPathComponent coordinates={GetPolylinePath(currentFloorPath)} />*/}
             <DisplayPathComponent coordinates={coords} />
