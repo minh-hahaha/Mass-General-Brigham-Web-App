@@ -305,7 +305,7 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm}:Props)
                 imageSrc={patriotPlaceFloor.svgPath}
             />
             {/*<DisplayPathComponent coordinates={GetPolylinePath(currentFloorPath)} />*/}
-            <DisplayPathComponent coordinates={coords} />
+            {/*<DisplayPathComponent coordinates={coords} />*/}
         </div>
         </>
     );
