@@ -34,7 +34,7 @@ const SelectElement: React.FC<SelectElementProps> = ({
                 value={value}
                 onChange={onChange}
                 required={required}
-                className={`w-full px-3 py-2 border-2 border-white rounded-md focus:outline-none focus:ring-2 focus:ring-white ${className}`}
+                className={`px-3 py-2 rounded-sm focus:outline-none focus:ring-2 focus:ring-white ${className}`}
             >
                 <option value="">{placeholder}</option>
                 {options.map((option, index) => (

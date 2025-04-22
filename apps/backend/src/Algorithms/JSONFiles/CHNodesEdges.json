@@ -1,7 +1,7 @@
 {
     "nodes": [
         {
-            "id": "CHFloor1Room130",
+            "nodeId": "CHFloor1Room130",
             "x": 525.6661826660298,
             "y": 293.65126703249217,
             "floor": "1",
@@ -11,7 +11,7 @@
             "roomNumber": "130"
         },
         {
-            "id": "CHFloor1Hallway130",
+            "nodeId": "CHFloor1Hallway130",
             "x": 525.6661826660298,
             "y": 258.4430646721662,
             "floor": "1",
@@ -21,7 +21,7 @@
             "roomNumber": "130"
         },
         {
-            "id": "CHFloor1Door130",
+            "nodeId": "CHFloor1Door130",
             "x": 566.5838276146786,
             "y": 257.491496294312,
             "floor": "1",
@@ -31,7 +31,7 @@
             "roomNumber": "130"
         },
         {
-            "id": "CHFloor1Hallway4",
+            "nodeId": "CHFloor1Hallway4",
             "x": 580.8574286986193,
             "y": 257.01570671851863,
             "floor": "1",
@@ -41,7 +41,7 @@
             "roomNumber": ""
         },
         {
-            "id": "CHFloor1Hallway5",
+            "nodeId": "CHFloor1Hallway5",
             "x": 585.1395133332945,
             "y": 363.5919037248157,
             "floor": "1",
@@ -51,7 +51,7 @@
             "roomNumber": ""
         },
         {
-            "id": "CHFloor1Hallway6",
+            "nodeId": "CHFloor1Hallway6",
             "x": 608.4530517149141,
             "y": 257.01570671851863,
             "floor": "1",
@@ -61,7 +61,7 @@
             "roomNumber": ""
         },
         {
-            "id": "CHFloor1Hallway7",
+            "nodeId": "CHFloor1Hallway7",
             "x": 607.9772621391207,
             "y": 211.34018755940133,
             "floor": "1",
@@ -71,7 +71,7 @@
             "roomNumber": ""
         },
         {
-            "id": "CHFloor1Door8",
+            "nodeId": "CHFloor1Door8",
             "x": 694.0946366710934,
             "y": 209.91282960575376,
             "floor": "1",
@@ -81,7 +81,7 @@
             "roomNumber": ""
         },
         {
-            "id": "CHFloor1Hallway9",
+            "nodeId": "CHFloor1Hallway9",
             "x": 689.0436953884648,
             "y": 365.03544382471665,
             "floor": "1",
@@ -91,7 +91,7 @@
             "roomNumber": ""
         },
         {
-            "id": "CHFloor1Hallway10",
+            "nodeId": "CHFloor1Hallway10",
             "x": 696.1804959304351,
             "y": 513.95664373331,
             "floor": "1",
@@ -101,7 +101,7 @@
             "roomNumber": ""
         },
         {
-            "id": "CHFloor1Hallway11",
+            "nodeId": "CHFloor1Hallway11",
             "x": 823.6522825276423,
             "y": 511.4330800426527,
             "floor": "1",
@@ -111,7 +111,7 @@
             "roomNumber": ""
         },
         {
-            "id": "CHFloor1Hallway12",
+            "nodeId": "CHFloor1Hallway12",
             "x": 924.5437842092279,
             "y": 509.5603898550615,
             "floor": "1",
@@ -121,7 +121,7 @@
             "roomNumber": ""
         },
         {
-            "id": "CHFloor1Hallway100",
+            "nodeId": "CHFloor1Hallway100",
             "x": 921.3712431924289,
             "y": 446.2798052667202,
             "floor": "1",
@@ -131,7 +131,7 @@
             "roomNumber": "100"
         },
         {
-            "id": "CHFloor1Room100",
+            "nodeId": "CHFloor1Room100",
             "x": 903.1543267193464,
             "y": 431.8158969714481,
             "floor": "1",
@@ -141,7 +141,7 @@
             "roomNumber": "100"
         },
         {
-            "id": "CHFloor1Door15",
+            "nodeId": "CHFloor1Door15",
             "x": 953.0376994960379,
             "y": 517.9228102091384,
             "floor": "1",
@@ -151,7 +151,7 @@
             "roomNumber": ""
         },
         {
-            "id": "CHFloor1Hallway16",
+            "nodeId": "CHFloor1Hallway16",
             "x": 828.3168993093698,
             "y": 823.9953828136511,
             "floor": "1",
@@ -161,7 +161,7 @@
             "roomNumber": ""
         },
         {
-            "id": "CHFloor1Door102",
+            "nodeId": "CHFloor1Door102",
             "x": 613.7590180201549,
             "y": 825.392304972914,
             "floor": "1",
@@ -171,7 +171,7 @@
             "roomNumber": "102"
         },
         {
-            "id": "CHFloor1Hallway102",
+            "nodeId": "CHFloor1Hallway102",
             "x": 628.9841982556825,
             "y": 778.7652066622098,
             "floor": "1",
@@ -181,7 +181,7 @@
             "roomNumber": "102"
         },
         {
-            "id": "CHFloor1Room102",
+            "nodeId": "CHFloor1Room102",
             "x": 661.8134742845066,
             "y": 758.3063841878856,
             "floor": "1",
@@ -191,7 +191,7 @@
             "roomNumber": "102"
         },
         {
-            "id": "CHFloor1Door100",
+            "nodeId": "CHFloor1Door100",
             "x": 926.8711547851562,
             "y": 475.4897888183594,
             "floor": "1",

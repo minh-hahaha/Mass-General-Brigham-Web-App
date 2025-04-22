@@ -1,53 +1,72 @@
-// floor type
+// components/FloorSelector.tsx
+import React from "react";
+
 interface Floor {
     id: string;
-    label: string;
-    building: string;
-    buildingName?: string; // Add optional building name
+    floor: string;
+    buildingId: string;
+    buildingName: string;
+    svgPath: string;
 }
 
+// All available floors across buildings
+const availableFloors: Floor[] = [
+    // Chestnut Hill
+    { id: "CH-1", floor: "1", buildingId: "1", buildingName: "Chestnut Hill",svgPath: "/CH01.svg" },
+    // 20 Patriot Place
+    { id: "PP-1", floor: "1", buildingId: "2", buildingName: "Patriot Place", svgPath: "/PP01.svg" },
+    { id: "PP-2", floor: "2", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP02.svg" },
+    { id: "PP-3", floor: "3", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP03.svg" },
+    { id: "PP-4", floor: "4", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP04.svg" },
+];
+
+
 interface FloorSelectorProps {
-    floors: Floor[];
-    currentFloorId: string;
+    currentFloorId: string | undefined;
     onChange: (floorId: string) => void;
 }
 
-const FloorSelector = ({floors, currentFloorId, onChange}: FloorSelectorProps) => {
-    // Find current floor and building
-    const currentFloor = floors.find(floor => floor.id === currentFloorId);
-    const currentBuilding = currentFloor?.building;
+const FloorSelector: React.FC<FloorSelectorProps> = ({
+                                                         currentFloorId,
+                                                         onChange
+                                                     }) => {
+    // Group floors by building
+    const floorsByBuilding: Record<string, Floor[]> = {};
 
-    // Filter floors to only show floors from the current building
-    const relevantFloors = floors.filter(floor => floor.building === currentBuilding);
-
-    // Get building name from the first floor that has it
-    const buildingName = relevantFloors[0]?.buildingName || `Building ${currentBuilding}`;
-
-    // Only render if we have floors to show from the current building
-    if (!relevantFloors.length) return null;
+    availableFloors.forEach(floor => {
+        if (!floorsByBuilding[floor.buildingId]) {
+            floorsByBuilding[floor.buildingId] = [];
+        }
+        floorsByBuilding[floor.buildingId].push(floor);
+    });
 
     return (
-        <div className="absolute bottom-6 left-6 p-3 bg-white rounded-md shadow-md z-10">
-            <div className="mb-2">
-                <div className="text-sm font-medium text-gray-700 mb-1">{buildingName}</div>
-                <div className="flex flex-col space-x-2">
-                    {relevantFloors.map((floor) => (
-                        <button
-                            key={floor.id}
-                            className={`w-10 h-10 rounded-full flex mt-3 items-center justify-center ${
-                                currentFloorId === floor.id
-                                    ? 'bg-mgbblue text-white'
-                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                            }`}
-                            onClick={() => onChange(floor.id)}
-                        >
-                            {floor.label}
-                        </button>
-                    ))}
+        <div className="z-10 bg-white rounded-lg p-4 flex flex-col">
+            {Object.entries(floorsByBuilding).map(([buildingId, buildingFloors]) => (
+                <div key={buildingId} className="flex flex-col">
+                    <h3 className="text-sm font-semibold mb-2 text-codGray">
+                        {buildingFloors[0]?.buildingName || `Building ${buildingId}`}
+                    </h3>
+                    <div className="flex flex-col space-y-2">
+                        {buildingFloors
+                            .sort((a, b) => Number(a.floor) - Number(b.floor))
+                            .map(floor => (
+                                <button
+                                    key={floor.id}
+                                    className={`w-10 h-10 rounded-full flex items-center justify-center
+                                        ${currentFloorId === floor.id
+                                        ? 'bg-mgbblue text-white'
+                                        : 'bg-mgbblue hover:bg-fountainBlue'}`}
+                                    onClick={() => onChange(floor.id)}
+                                >
+                                    {floor.floor}
+                                </button>
+                            ))}
+                    </div>
                 </div>
-            </div>
+            ))}
         </div>
     );
-}
+};
 
 export default FloorSelector;
