@@ -29,24 +29,9 @@ const TableMaintenanceRequest = () => {
         fetchReqs();
     }, []);
 
-    // Loading state
     if (loading) {
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <p className="text-xl font-medium">Loading Requests...</p>
-            </div>
-        );
+        return <p>Loading Requests...</p>;
     }
-
-    // Empty state
-    // if (requests == null || requests.length === 0) {
-    //     return (
-    //         <div className="flex justify-center items-center h-screen">
-    //             <p className="text-xl font-medium">No requests found!</p>
-    //         </div>
-    //     );
-    // }
-
     if (requests == null) {
         return <p>No requests found!</p>;
     }

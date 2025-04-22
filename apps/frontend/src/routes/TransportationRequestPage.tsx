@@ -8,7 +8,7 @@ interface transportRequest {
     patientId: number;
     patientName: string;
     transportType: 'Ambulance' | 'Helicopter' | 'Medical Van' | 'Other';
-    priority: 'Low' | 'Medium' | 'High';
+    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     pickupLocation: string;
     dropOffLocation: string;
     pickupDate: string;
@@ -207,9 +207,10 @@ const TransportRequestPage = () => {
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >
-                                        <option value="Routine">Routine</option>
-                                        <option value="Urgent">Urgent</option>
-                                        <option value="Emergency">Emergency</option>
+                                        <option value="Low">Low</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="High">High</option>
+                                        <option value="Emergency">High</option>
                                     </select>
                                 </div>
                             </div>

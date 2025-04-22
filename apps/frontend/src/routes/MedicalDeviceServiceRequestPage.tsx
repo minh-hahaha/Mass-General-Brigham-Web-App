@@ -178,7 +178,7 @@ const MedicalDeviceServiceRequestPage = () => {
                                             required={true}
                                             className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                         >
-                                            <option value="" disabled>Select Device</option>
+                                            <option value="">Select Device</option>
                                             {['ECG Monitor', 'Vital Signs Monitor', 'Pulse Oximeter', 'Infusion Pump', 'Syringe Pump',
                                                 'Defibrillator', 'Ventilator', 'Nebulizer', 'Anesthesia Machine',
                                                 'Wheelchair', 'IV Stand', 'Suction Machine', 'Warming Blanket System',
@@ -267,7 +267,7 @@ const MedicalDeviceServiceRequestPage = () => {
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >
-                                        <option value="" disabled>Select Location</option>
+                                        <option value="">Select Location</option>
                                         {['Chestnut Hill', '20 Patriot Place', '22 Patriot Place'].map(
                                             (location) => (
                                                 <option
@@ -304,7 +304,7 @@ const MedicalDeviceServiceRequestPage = () => {
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >
-                                        <option value="" disabled>Select Status</option>
+                                        <option value="">Select Status</option>
                                         {['Pending', 'In Progress', 'Completed', 'Cancelled'].map(
                                             (status) => (
                                                 <option

@@ -27,7 +27,7 @@ const MaintenanceRequestPage = () => {
 
     // Requester Information
     const [employeeId, setEmployeeId] = useState(0);
-    const [requestDate, setRequestDate] = useState(new Date().toISOString().split('T')[0]);
+    const [requestDate, setRequestDate] = useState(new Date().toISOString());
     const [employeeName, setEmployeeName] = useState('');
     const [notes, setNotes] = useState('');
     const [locationId, setLocationId] = useState(1);

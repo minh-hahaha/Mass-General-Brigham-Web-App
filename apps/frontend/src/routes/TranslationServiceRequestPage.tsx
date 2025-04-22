@@ -296,22 +296,17 @@ const TranslationServiceRequestPage = () => {
                                         <label className="w-1/4">Status</label>
                                         <select
                                             id="status"
-                                            value={priority}
+                                            value={status} // <-- changed from priority to status
                                             onChange={(e) => setStatus(e.target.value)}
                                             required
                                             className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                         >
                                             <option value="">Select Status</option>
-                                            {['Pending', 'In Progress', 'Completed', 'Cancelled'].map(
-                                                (status) => (
-                                                    <option
-                                                        key={`status-${status}`}
-                                                        value={status}
-                                                    >
-                                                        {status}
-                                                    </option>
-                                                )
-                                            )}
+                                            {['Pending', 'In Progress', 'Completed', 'Cancelled'].map((status) => (
+                                                <option key={`status-${status}`} value={status}>
+                                                    {status}
+                                                </option>
+                                            ))}
                                         </select>
                                     </div>
                                 </div>
