@@ -269,8 +269,8 @@ const NodeEditorComponent = () => {
                             }
                         }
                         edge.drawnEdge.setPath(path);
-                        // for every node on iEdge path, set to edge's polyline
-                        createMapEdge(toNode, fromNode, edge.drawnEdge);
+                        // TODO: for every node on iEdge path, set to edge's polyline
+                        createMapEdge(fromNode, toNode, edge.drawnEdge);
                     }else{
                         console.log("bad")
                         // TODO: fix later
@@ -323,6 +323,7 @@ const NodeEditorComponent = () => {
             };
             await createEdge(sendEdge);
         }
+        setClickedNode(null);
     }
 
     useEffect(() => {
