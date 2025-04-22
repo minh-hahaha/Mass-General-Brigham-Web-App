@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo, ChangeEvent } from 'react';
+import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
 import SelectElement from '../elements/SelectElement.tsx';
 import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google-maps';
 import TravelModeComponent from '@/components/TravelModeComponent.tsx';
@@ -10,17 +10,12 @@ import { FaRegClock } from 'react-icons/fa';
 import { MapPin, Circle, Hospital } from 'lucide-react';
 import { MdOutlineMyLocation } from 'react-icons/md';
 import { ROUTES } from 'common/src/constants.ts';
-import { FaChevronUp } from "react-icons/fa6";
-import { FaChevronDown } from "react-icons/fa6";
+
 import {
     DirectoryRequestByBuilding,
-    DirectoryRequestName,
     getDirectory,
-    getDirectoryNames,
 } from '@/database/gettingDirectory.ts';
-import { GetNode } from '@/database/getDepartmentNode.ts';
 import { GetRecentOrigins, RecentOrigin } from '@/database/recentOrigins.ts';
-import FloorSelector from "@/components/FloorSelector.tsx";
 
 import AlgorithmSelector from '@/components/AlgorithmSelector.tsx';
 
@@ -32,26 +27,8 @@ const BuildingIDMap: Record<string, string> = {
     '22 Patriot Place': '3',
 };
 
-const DefaultFloors: Record<string, string> = {
-    '1': 'CH-1',
-    '2': '20PP-1',
-    '3': '22PP-3',
-};
-
 type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
 
-const ChestnutHillBounds = {
-    southWest: { lat: 42.32543670863917, lng: -71.15022693442262 }, // Bottom-left corner
-    northEast: { lat: 42.32649756743757, lng: -71.14898211823991 }, // Top-right corner
-};
-
-const PatriotPlaceBounds = {
-    southWest: { lat: 42.09086272947439, lng: -71.26758215417115 }, // Bottom-left corner
-    northEast: { lat: 42.09342690806031, lng: -71.26501767235642 }, // Top-right corner
-};
-
-const CH01 = '/CH01.svg';
-const PP01 = '/20PP01.svg';
 
 const nullNode: myNode = {
     nodeId: '',
@@ -148,8 +125,6 @@ const DirectionsMapComponent = () => {
         };
         checkAdmin();
     }, []);
-
-    const [showFloorSelect, setShowFloorSelect] = useState(false);
 
     useEffect(() => {
         const fetchOrigins = async () => {
@@ -313,7 +288,6 @@ const DirectionsMapComponent = () => {
 
     const handleChangeToLocation = (e: ChangeEvent<HTMLSelectElement>) => {
         const newLocation = e.target.value;
-        const previousLocation = toLocation;
 
         // Update the location state
         setToLocation(newLocation);
@@ -550,55 +524,14 @@ const DirectionsMapComponent = () => {
         );
     };
 
-    interface Floor {
-        id: string;
-        floor: string;
-        buildingId: string;
-        buildingName: string; // for display
-        svgPath: string;
-    }
 
-    const availableFloors: Floor[] = [
-        // Chestnut Hill
-        { id: "CH-1", floor: "1", buildingId: "1", buildingName: "Chestnut Hill",svgPath: "/CH01.svg" },
-        // 20 Patriot Place
-        { id: "20PP-1", floor: "1", buildingId: "2", buildingName: "20 Patriot Place", svgPath: "/20PP01.svg" },
-        { id: "20PP-2", floor: "2", buildingId: "2", buildingName: "20 Patriot Place",svgPath: "/20PP02.svg" },
-        { id: "20PP-3", floor: "3", buildingId: "2", buildingName: "20 Patriot Place",svgPath: "/20PP03.svg" },
-        { id: "20PP-4", floor: "4", buildingId: "2", buildingName: "20 Patriot Place",svgPath: "/20PP04.svg" },
 
-        // 22 Patriot Place
-        { id: "22PP-1", floor: "1", buildingId: "3",buildingName: "22 Patriot Place", svgPath: "/22PP01.svg" },
-        { id: "22PP-3", floor: "3", buildingId: "3",buildingName: "22 Patriot Place", svgPath: "/22PP03.svg" },
-        { id: "22PP-4", floor: "4", buildingId: "3", buildingName: "22 Patriot Place",svgPath: "/20PP04.svg" },
 
-        // parking
-        { id: "CH-A", floor: "0", buildingId: "1", buildingName: "Chestnut Hill",svgPath: "" },
-
-    ];
-    const [currentFloorId, setCurrentFloorId] = useState<string>();
-
-    const handleFloorChange = (floorId: string) => {
-        setCurrentFloorId(floorId);
-    };
-
-    const initialFloorId = selectedBuildingId ? DefaultFloors[selectedBuildingId] : '';
     return (
         <div className="flex w-screen h-screen">
             {/* LEFT PANEL */}
             <div className="relative">
-                <div
-                    className="absolute top-8 -right-14 bg-mgbblue text-white p-2 rounded-r-md cursor-pointer z-20"
-                    onClick={() => setShowFloorSelect((prev) => !prev)}
-                >
-                    {showFloorSelect ? <FaChevronUp size={16} /> : <FaChevronDown size={16} />}
-                    {/* Floor Selector Dropdown (below tab) */}
-                    {showFloorSelect && (
-                        <div className="absolute top-8 -right-17 z-10 bg-white rounded-r-md p-2">
-                            <FloorSelector floors={availableFloors} currentFloorId={currentFloorId} onChange={handleFloorChange} />
-                        </div>
-                    )}
-                </div>
+
                 <aside className="relative top-6 left-6 z-10 w-[400px] max-h-[75vh] bg-white p-6 shadow-xl rounded-lg overflow-hidden flex flex-col">
                     <form>
                         {/* Blue Box Section */}
@@ -761,6 +694,7 @@ const DirectionsMapComponent = () => {
                         )}
                     </div>
                 </aside>
+
             </div>
                 {/* I'm Here Button */}
                 <div className={clsx(parking ? 'mt-6' : '-mt-2.5')}>
@@ -824,6 +758,7 @@ const DirectionsMapComponent = () => {
 
             {/* MAP AREA */}
             <main className="absolute inset-0 z-0">
+
                 <Map
                     style={{ width: '100%', height: '100%' }}
                     defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
@@ -833,7 +768,10 @@ const DirectionsMapComponent = () => {
                     mapTypeControl={false}
                     mapId={'73fda600718f172c'}
                 >
-                    <HospitalMapComponent startNodeId={'CHFloor1Door8'} endNodeId={toDirectoryNodeId} selectedAlgorithm={selectedAlgorithm} />
+                    <HospitalMapComponent 
+                      startNodeId={'CHFloor1Door8'} 
+                      endNodeId={toDirectoryNodeId} 
+                      selectedAlgorithm={selectedAlgorithm} />
                 </Map>
 
                 {/* Route Info Box */}

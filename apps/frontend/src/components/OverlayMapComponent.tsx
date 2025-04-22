@@ -1,5 +1,5 @@
-import React from 'react';
-import { useMap } from '@vis.gl/react-google-maps';
+import {useEffect, useRef} from 'react';
+import { useMap} from '@vis.gl/react-google-maps';
 
 interface OverlayProps {
     bounds: {
@@ -11,8 +11,10 @@ interface OverlayProps {
 
 const OverlayMapComponent = ({bounds, imageSrc}: OverlayProps ) => {
     const map = useMap();
+    const overlayRef = useRef<google.maps.OverlayView | null>(null);
 
 
+    useEffect(() => {
         if (!map) return;
 
         // bounds with coordinates
@@ -104,12 +106,20 @@ const OverlayMapComponent = ({bounds, imageSrc}: OverlayProps ) => {
         const overlay = new HospitalOverlay(overlayBounds, imageSrc);
 
         overlay.setMap(map);
+        overlayRef.current = overlay;
+
+
+        return () => {
+            if (overlayRef.current) {
+                overlayRef.current.setMap(null);
+                overlayRef.current = null;
+            }
+        };
+    }, [map, bounds, imageSrc]);
 
 
 
-    return(
-        <></>
-    )
+    return null;
 }
 
 export default OverlayMapComponent;
