@@ -8,7 +8,7 @@ import servicereqsRouter from './routes/servicereqs.ts';
 import validateRouter from './routes/validate.ts';
 import patientTransportRouter from './routes/patienttransport.ts';
 import directoryRouter from './routes/directory.ts';
-import graphRouter from './routes/bfsRoutes.ts';
+import graphRouter from './routes/findPathRoute.ts';
 import sanitationRouter from './routes/sanitation.ts';
 import translationRouter from './routes/translationrequest.ts';
 import directoryNodeRouter from './routes/directoryNode.ts';
@@ -60,7 +60,7 @@ app.use(ROUTES.PATIENTTRANSPORT, patientTransportRouter);
 app.use(ROUTES.MEDICALDEVICEREQUEST, medicalDeviceRouter);
 
 //Algorithms
-app.use(ROUTES.BFSGRAPH, graphRouter);
+app.use(ROUTES.FINDPATH, graphRouter);
 app.use(ROUTES.NODE, nodeRouter);
 app.use(ROUTES.EDGE, edgeRouter);
 

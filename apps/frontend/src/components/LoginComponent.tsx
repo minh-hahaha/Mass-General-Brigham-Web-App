@@ -45,6 +45,7 @@ const LoginComponent = () => {
                 if (res.data.password == enteredPassword) {
                     setLoggedIn(true);
                     sessionStorage.setItem('loggedIn', JSON.stringify(true));
+                    sessionStorage.setItem('position',res.data.position);
                     sessionStorage.setItem('currentUser', res.data.firstName + ' ' + res.data.lastName);
                     window.location.href = '/MapPage';
                 } else {
