@@ -35,7 +35,7 @@ router.post('/', async (req: Request, res: Response) => {
         });
 
         if (existing) {
-            res.status(409).json({ message: 'Location already exists' });
+            res.status(409).json({ message: 'Location already exists' }); // ANDREW WHAT THE HELL MAN
             return;
         }
 
