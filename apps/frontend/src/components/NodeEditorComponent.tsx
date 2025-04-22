@@ -236,69 +236,79 @@ const NodeEditorComponent = () => {
             setNodeName(toNode.node.name);
             setRoomNumber(toNode.node.roomNumber);
             if(fromNode) {
-                const edge = mapEdgesRef.current.find(edge => edge.from.node.nodeId === fromNode.node.nodeId || edge.to.node.nodeId === fromNode.node.nodeId);
-                if(edge){
-                    console.log("edge exists")
-                    const indexOf = edge.drawnEdge.getPath().getArray().indexOf(fromNode.drawnNode.getPosition() as google.maps.LatLng);
-                    if(indexOf === 0 || indexOf === edge.drawnEdge.getPath().getArray().length - 1) {
-                        console.log("0 or end")
-                        let path: google.maps.LatLng[] = [];
-                        const iEdge = mapEdgesRef.current.find(edge => edge.from.node.nodeId === toNode.node.nodeId);
-                        if(indexOf === 0){
-                            console.log("0")
-                            if(iEdge){
-                                console.log("iEdge exists")
-                                path = iEdge.drawnEdge.getPath().getArray();
-                                path = path.reverse();
-                                path = path.concat(edge.drawnEdge.getPath().getArray());
-                            }else{
-                                path = [toNode.drawnNode.getPosition() as google.maps.LatLng];
-                                path = path.concat(edge.drawnEdge.getPath().getArray());
-                            }
-                        }else{
-                            console.log("end")
-                            if(iEdge) {
-                                console.log("iEdge exists")
-                                path = edge.drawnEdge.getPath().getArray();
-                                console.log(path);
-                                path = path.concat(iEdge.drawnEdge.getPath().getArray());
-                                console.log(path);
-                            }else{
-                                path = path = edge.drawnEdge.getPath().getArray();
-                                path = path.concat(toNode.drawnNode.getPosition() as google.maps.LatLng);
-                            }
+                const fromEdge = mapEdgesRef.current.find(edge => edge.from.node.nodeId === fromNode.node.nodeId || edge.to.node.nodeId === fromNode.node.nodeId);
+                const toEdge = mapEdgesRef.current.find(edge => edge.from.node.nodeId === toNode.node.nodeId || edge.to.node.nodeId === toNode.node.nodeId);
+                if(fromEdge){
+                    if(toEdge){
+                        const indexOfToNode = toEdge.drawnEdge.getPath().getArray().indexOf(toNode.drawnNode.getPosition() as google.maps.LatLng);
+                        const indexOfFromNode = fromEdge.drawnEdge.getPath().getArray().indexOf(fromNode.drawnNode.getPosition() as google.maps.LatLng);
+                        console.log(indexOfFromNode, indexOfToNode);
+                        if(indexOfToNode === 0 && indexOfFromNode === fromEdge.drawnEdge.getPath().getArray().length - 1) {
+                            // Connecting lines end to start together
+                            console.log("End to Front")
+                            handleEndToFront(fromEdge, toEdge);
+                            createMapEdge(fromNode, toNode, toEdge.drawnEdge);
+                        }else {
+                            // Branch off w/ two edges
+                            console.log("Branching from line w/ edge")
+                            handleBranchEdge(fromNode, toEdge);
                         }
-                        edge.drawnEdge.setPath(path);
-                        // TODO: for every node on iEdge path, set to edge's polyline
-                        createMapEdge(fromNode, toNode, edge.drawnEdge);
                     }else{
-                        const newLine = new google.maps.Polyline({
-                            zIndex: 0,
-                            path: [fromNode.drawnNode.getPosition() as google.maps.LatLng, toNode.drawnNode.getPosition() as google.maps.LatLng],
-                            map: map
-                        });
-                        createMapEdge(fromNode, toNode, newLine);
+                        // Branch off w/ node
+                        console.log("Branching from line w/ node")
+                        handleBranchNode(fromNode, toNode);
                     }
                 }else{
-                    // There is no edge to be found (just a marker)
-                    const iEdge = mapEdgesRef.current.find(edge => edge.from.node.nodeId === toNode.node.nodeId);
-                    // The other marker also does not have an edge this will be a singular marker to marker edge
-                    if(!iEdge){
-                        const line = new google.maps.Polyline({
-                            map: map,
-                            path: [fromNode.drawnNode.getPosition() as google.maps.LatLng, toNode.drawnNode.getPosition() as google.maps.LatLng]
-                        })
-                        createMapEdge(fromNode, toNode, line);
-                    }else{
-                        // Singular marker to line of nodes
-                       const path =  [fromNode.drawnNode.getPosition() as google.maps.LatLng].concat(iEdge.drawnEdge.getPath().getArray());
-                       iEdge.drawnEdge.setPath(path);
-                       createMapEdge(fromNode, toNode, iEdge.drawnEdge);
-                    }
+                    // Node to node
+                    console.log("Connecting node to node")
+                    handleNodeToNode(fromNode, toNode);
                 }
                 setClickedNode(null);
             }
         }
+    }
+
+
+    function handleBranchEdge(fromNode: MapNode, toEdge: MapEdge) {
+        const line = new google.maps.Polyline({
+            map: map,
+            path: [fromNode.drawnNode.getPosition() as google.maps.LatLng].concat(toEdge.drawnEdge.getPath().getArray()),
+            zIndex: -1
+        })
+        toEdge.drawnEdge.setMap(null);
+        toEdge.drawnEdge = line;
+        createMapEdge(fromNode, toEdge.from, line);
+
+    }
+
+    function handleBranchNode(fromNode: MapNode, toNode: MapNode) {
+        const line = new google.maps.Polyline({
+            map: map,
+            path: [fromNode.drawnNode.getPosition() as google.maps.LatLng, toNode.drawnNode.getPosition() as google.maps.LatLng],
+            zIndex: -1
+        })
+        createMapEdge(fromNode, toNode, line);
+    }
+
+    function handleEndToFront(fromEdge: MapEdge, toEdge: MapEdge) {
+        const path = fromEdge.drawnEdge.getPath().getArray().concat(toEdge.drawnEdge.getPath().getArray());
+        fromEdge.drawnEdge.setMap(null);
+        toEdge.drawnEdge.setMap(null);
+        const newLine = new google.maps.Polyline({
+            path: path,
+            map: map,
+            zIndex: -1,
+        });
+        fromEdge.drawnEdge = newLine;
+        toEdge.drawnEdge = newLine;
+    }
+
+    function handleNodeToNode(fromNode: MapNode, toNode: MapNode) {
+        const line = new google.maps.Polyline({
+            map: map,
+            path: [fromNode.drawnNode.getPosition() as google.maps.LatLng, toNode.drawnNode.getPosition() as google.maps.LatLng]
+        });
+        createMapEdge(fromNode, toNode, line);
     }
 
     // function clickEdge(edgeID: number) {
