@@ -10,7 +10,7 @@ import { FaRegClock } from 'react-icons/fa';
 import { MapPin, Circle, Hospital } from 'lucide-react';
 import { MdOutlineMyLocation } from 'react-icons/md';
 import { ROUTES } from 'common/src/constants.ts';
-
+import {CHlotAToDoor, CHlotBToDoor, CHlotCToDoor, PPlotAToDoor, PPlotBToDoor, PPlotCToDoor}  from '../assets/parkingCoords.tsx'
 import {
     DirectoryRequestByBuilding,
     getDirectory,
@@ -18,6 +18,7 @@ import {
 import { GetRecentOrigins, RecentOrigin } from '@/database/recentOrigins.ts';
 
 import AlgorithmSelector from '@/components/AlgorithmSelector.tsx';
+import DisplayPathComponent from "@/components/DisplayPathComponent.tsx";
 
 const Buildings = ['Chestnut Hill - 850 Boylston Street', '20 Patriot Place', '22 Patriot Place'];
 
@@ -196,7 +197,7 @@ const DirectionsMapComponent = () => {
         handleDeptChange();
     }, [currentDirectoryName]);
 
-
+    // set selected building id as it changes
     useEffect(() => {
         if (toLocation) {
             const id = BuildingIDMap[toLocation] || '';
@@ -206,6 +207,7 @@ const DirectionsMapComponent = () => {
         }
     }, [toLocation]);
 
+    // find new direction when from and to location change
     useEffect(() => {
         if (toLocation && fromLocation) {
             handleFindDirections();
@@ -261,8 +263,8 @@ const DirectionsMapComponent = () => {
         directionsRenderer.setMap(map);
 
         let actualLocation = toLocation;
-        if (toLocation === '20 Patriot Place' || toLocation === '22 Patriot Place') {
-            actualLocation = '42.09253421464256, -71.26638758014579';
+        if (toLocation === '22 Patriot Place') {
+            actualLocation = '42.09270331851456, -71.26657257866988';
         }
 
         const googleTravelMode =
@@ -300,27 +302,7 @@ const DirectionsMapComponent = () => {
     const [showHospital, setShowHospital] = useState(false);
 
 
-    useEffect(() => {
-        if (toLocation === Buildings[0]) {
-            setFromNode(CHDoorA); // default
-            if (lot === 'CH_A') {
-                setFromNode(CHDoorA);
-            } else if (lot === 'CH_B' || lot === 'CH_C') {
-                setFromNode(CHDoorBC);
-            }
-        } else if (toLocation === Buildings[1]) {
-            setFromNode(PP20);
-            if (lot === 'PP_A' || lot === 'PP_B' || lot === 'PP_C') {
-                setFromNode(PP20);
-            }
-        } else if (toLocation === Buildings[2]) {
-            setFromNode(PP22);
-            if (lot === 'PP_A' || lot === 'PP_B' || lot === 'PP_C') {
-                setFromNode(PP22);
-            }
-        }
-    }, [toLocation, lot]);
-
+    // drop off to parking
     const handleParkA = () => {
         clearParking();
         if (toLocation === '20 Patriot Place' || toLocation === '22 Patriot Place') {
@@ -360,54 +342,7 @@ const DirectionsMapComponent = () => {
     };
 
     // 42.32641353922122, -71.14992135383609
-    const CHlotAToDoor = [
-        { lat: 42.32641975362307, lng: -71.14992617744028 },
-        { lat: 42.32643660922756, lng: -71.14959023076334 },
-        { lat: 42.3262859001328, lng: -71.14956609088263 },
-        { lat: 42.326275985048134, lng: -71.14951647001675 },
-        { lat: 42.32624227374853, lng: -71.14946819025536 },
-    ];
 
-    const CHlotBToDoor = [
-        { lat: 42.32607681544678, lng: -71.14907388066334 }, //start
-        { lat: 42.3260046767077, lng: -71.149101323287 }, //midpoint
-        { lat: 42.32598889634749, lng: -71.14922329050336 }, //end
-    ];
-
-    const CHlotCToDoor = [
-        { lat: 42.325598573871204, lng: -71.14972535132611 },
-        { lat: 42.32569574268002, lng: -71.14973071574414 },
-        { lat: 42.325747301578836, lng: -71.14911648987977 },
-        { lat: 42.32602095964217, lng: -71.14910844325274 },
-        { lat: 42.32601501056652, lng: -71.14923182486741 },
-    ];
-
-    const PPlotAToDoor = [
-        { lat: 42.092230101663034, lng: -71.26654974313286 },
-        { lat: 42.092437193904246, lng: -71.2663789656559 },
-        { lat: 42.092529921554245, lng: -71.26643519726416 },
-        { lat: 42.09254692160871, lng: -71.2663643870908 },
-    ];
-
-    const PPlotBToDoor = [
-        { lat: 42.09156940188613, lng: -71.26626478897806 },
-        { lat: 42.091537059036156, lng: -71.26643705096096 },
-        { lat: 42.091736661535094, lng: -71.26646938725148 },
-        { lat: 42.09188594087752, lng: -71.2665364424713 },
-        { lat: 42.09200337371333, lng: -71.26673492592202 },
-        { lat: 42.092444748869866, lng: -71.26637970586039 },
-        { lat: 42.092529921554245, lng: -71.26643519726416 },
-        { lat: 42.09254692160871, lng: -71.2663643870908 },
-    ];
-
-    const PPlotCToDoor = [
-        { lat: 42.09075833907194, lng: -71.26693167274473 },
-        { lat: 42.091206506804454, lng: -71.26714263577942 },
-        { lat: 42.09129859567236, lng: -71.26737014493447 },
-        { lat: 42.091780525233865, lng: -71.26712608965906 },
-        { lat: 42.09251722577942, lng: -71.26652629276056 },
-        { lat: 42.09254692160871, lng: -71.2663643870908 },
-    ];
 
     const customLineRef = useRef<google.maps.Polyline | null>(null);
     const customMarkersRef = useRef<google.maps.Marker[]>([]);
@@ -691,65 +626,6 @@ const DirectionsMapComponent = () => {
                 </aside>
 
             </div>
-                {/* I'm Here Button */}
-                <div className={clsx(parking ? 'mt-6' : '-mt-2.5')}>
-                    <button
-                        disabled={lot === ''}
-                        onClick={() => handleHere()}
-                        className="w-full bg-mgbblue text-white py-2 rounded-sm hover:bg-mgbblue/90 transition disabled:opacity-50"
-                    >
-                        {showHospital ? 'Show Google Map' : "I'm Here!"}
-                    </button>
-                </div>
-
-                <div className="mt-6">
-                    {toLocation && isAdmin && (
-                        <AlgorithmSelector
-                            selectedAlgorithm={selectedAlgorithm}
-                            onChange={handleAlgorithmChange}
-                        />
-                    )}
-                </div>
-
-                <div className="w-110 border-[0.5px] border-codGray mt-5 -ml-10" />
-                <div className="overflow-y-auto mt-4 flex-grow">
-                    {!toLocation ? (
-                        <div className="max-h-[200px] overflow-y-auto w-full mt-1">
-                            <ul className="w-full flex flex-col space-y-2">
-                                <li
-                                    className="flex items-center w-100 py-2 rounded-md transition-colors hover:bg-gray-200 cursor-pointer"
-                                    onClick={handleUseCurrentLocation}
-                                >
-                                    <MdOutlineMyLocation
-                                        className="text-mgbblue min-w-[20px]"
-                                        size={18}
-                                    />
-                                    <span className="text-codGray mx-3">Current Location</span>
-                                </li>
-                                {recentOrigins.map((origin, index) => (
-                                    <li
-                                        key={index}
-                                        className="flex items-center w-100 py-2 rounded-md transition-colors hover:bg-gray-200 cursor-pointer"
-                                        onClick={() => setFromLocation(origin.location)}
-                                    >
-                                        <FaRegClock
-                                            className="text-mgbblue min-w-[20px]"
-                                            size={18}
-                                        />
-                                        <span className="text-codGray mx-3">
-                                            {origin.location.match('.+?(?=[ \\d]{5})')}
-                                        </span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    ) : (
-                        <div
-                            id={'text-directions'}
-                            dangerouslySetInnerHTML={{ __html: textDirections }}
-                        />
-                    )}
-                </div>
 
             {/* MAP AREA */}
             <main className="absolute inset-0 z-0">
