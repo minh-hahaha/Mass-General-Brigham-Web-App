@@ -30,7 +30,7 @@ const DisplayPathComponent = ({ coordinates }: Props) => {
                 >
                     <div style={{
                             position: 'relative',
-                            bottom: '-8px',  // Half the width of SVG
+                            bottom: '-8px',  // make node in middle of path
                         }}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
                             <circle cx="8" cy="8" r="7" fill="white" stroke="#FF0000" stroke-width="2"/>
