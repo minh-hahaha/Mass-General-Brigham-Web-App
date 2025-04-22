@@ -17,6 +17,8 @@ import {
 } from '@/database/gettingDirectory.ts';
 import { GetRecentOrigins, RecentOrigin } from '@/database/recentOrigins.ts';
 
+import AlgorithmSelector from '@/components/AlgorithmSelector.tsx';
+
 const Buildings = ['Chestnut Hill - 850 Boylston Street', '20 Patriot Place', '22 Patriot Place'];
 
 const BuildingIDMap: Record<string, string> = {
@@ -105,6 +107,24 @@ const DirectionsMapComponent = () => {
 
     const [buildingID, setBuildingID] = useState<number>(0);
     const [textDirections, setTextDirections] = useState<string>('');
+    const [selectedAlgorithm, setSelectedAlgorithm] = useState('BFS');
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
+
+    useEffect(() => {
+        const checkAdmin = () => {
+            console.log(sessionStorage.getItem('position'))
+            if (sessionStorage.getItem('position') === "WebAdmin") {
+                setIsAdmin(true);
+                console.log('admin', isAdmin);
+                return;
+            }
+            setIsAdmin(false);
+            console.log('admin', isAdmin);
+            return;
+        };
+        checkAdmin();
+    }, []);
 
     useEffect(() => {
         const fetchOrigins = async () => {
@@ -176,6 +196,7 @@ const DirectionsMapComponent = () => {
         handleDeptChange();
     }, [currentDirectoryName]);
 
+
     useEffect(() => {
         if (toLocation) {
             const id = BuildingIDMap[toLocation] || '';
@@ -202,6 +223,10 @@ const DirectionsMapComponent = () => {
         } catch (error) {
             console.error(error);
         }
+    };
+
+    const handleAlgorithmChange = (algorithm: string) => {
+        setSelectedAlgorithm(algorithm);
     };
 
     // change travel mode
@@ -621,6 +646,14 @@ const DirectionsMapComponent = () => {
                             {showHospital ? 'Show Google Map' : "I'm Here!"}
                         </button>
                     </div>
+                    <div className="mt-6">
+                        {toLocation && isAdmin && (
+                            <AlgorithmSelector
+                                selectedAlgorithm={selectedAlgorithm}
+                                onChange={handleAlgorithmChange}
+                            />
+                        )}
+                    </div>
                     <div className="w-110 border-[0.5px] border-codGray mt-5 -ml-10" />
                     <div className="overflow-y-auto mt-4 flex-grow">
                         {!toLocation ? (
@@ -663,23 +696,83 @@ const DirectionsMapComponent = () => {
                 </aside>
 
             </div>
+                {/* I'm Here Button */}
+                <div className={clsx(parking ? 'mt-6' : '-mt-2.5')}>
+                    <button
+                        disabled={lot === ''}
+                        onClick={() => handleHere()}
+                        className="w-full bg-mgbblue text-white py-2 rounded-sm hover:bg-mgbblue/90 transition disabled:opacity-50"
+                    >
+                        {showHospital ? 'Show Google Map' : "I'm Here!"}
+                    </button>
+                </div>
+
+                <div className="mt-6">
+                    {toLocation && isAdmin && (
+                        <AlgorithmSelector
+                            selectedAlgorithm={selectedAlgorithm}
+                            onChange={handleAlgorithmChange}
+                        />
+                    )}
+                </div>
+
+                <div className="w-110 border-[0.5px] border-codGray mt-5 -ml-10" />
+                <div className="overflow-y-auto mt-4 flex-grow">
+                    {!toLocation ? (
+                        <div className="max-h-[200px] overflow-y-auto w-full mt-1">
+                            <ul className="w-full flex flex-col space-y-2">
+                                <li
+                                    className="flex items-center w-100 py-2 rounded-md transition-colors hover:bg-gray-200 cursor-pointer"
+                                    onClick={handleUseCurrentLocation}
+                                >
+                                    <MdOutlineMyLocation
+                                        className="text-mgbblue min-w-[20px]"
+                                        size={18}
+                                    />
+                                    <span className="text-codGray mx-3">Current Location</span>
+                                </li>
+                                {recentOrigins.map((origin, index) => (
+                                    <li
+                                        key={index}
+                                        className="flex items-center w-100 py-2 rounded-md transition-colors hover:bg-gray-200 cursor-pointer"
+                                        onClick={() => setFromLocation(origin.location)}
+                                    >
+                                        <FaRegClock
+                                            className="text-mgbblue min-w-[20px]"
+                                            size={18}
+                                        />
+                                        <span className="text-codGray mx-3">
+                                            {origin.location.match('.+?(?=[ \\d]{5})')}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ) : (
+                        <div
+                            id={'text-directions'}
+                            dangerouslySetInnerHTML={{ __html: textDirections }}
+                        />
+                    )}
+                </div>
 
             {/* MAP AREA */}
             <main className="absolute inset-0 z-0">
-                    <Map
-                        style={{ width: '100%', height: '100%' }}
-                        defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
-                        // MGB at Chestnut hill 42.325988270594415, -71.1495669288061
-                        defaultZoom={15}
-                        renderingType={RenderingType.RASTER}
-                        mapTypeControl={false}
-                        mapId={"73fda600718f172c"}
-                    >
-                        <HospitalMapComponent
-                            startNodeId={"CHFloor1Door8"}
-                            endNodeId={toDirectoryNodeId}
-                        />
-                    </Map>
+
+                <Map
+                    style={{ width: '100%', height: '100%' }}
+                    defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
+                    // MGB at Chestnut hill 42.325988270594415, -71.1495669288061
+                    defaultZoom={15}
+                    renderingType={RenderingType.RASTER}
+                    mapTypeControl={false}
+                    mapId={'73fda600718f172c'}
+                >
+                    <HospitalMapComponent 
+                      startNodeId={'CHFloor1Door8'} 
+                      endNodeId={toDirectoryNodeId} 
+                      selectedAlgorithm={selectedAlgorithm} />
+                </Map>
 
                 {/* Route Info Box */}
                 {showRouteInfo && !showHospital && (

@@ -127,6 +127,7 @@ export function ShadSidebar() {
 
     function handleLogOut() {
         sessionStorage.removeItem('currentUser');
+        sessionStorage.removeItem('position');
         window.location.href = '/Login';
     }
 

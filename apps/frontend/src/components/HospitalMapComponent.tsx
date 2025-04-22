@@ -7,8 +7,9 @@ import {myNode} from "common/src/classes/classes.ts";
 import OverlayComponent from "@/components/OverlayMapComponent.tsx";
 import {GetNode} from "@/database/getDepartmentNode.ts";
 import DisplayPathComponent from "@/components/DisplayPathComponent.tsx";
-import { FaChevronUp } from "react-icons/fa6";
-import { FaChevronDown } from "react-icons/fa6";
+
+import selectedAlgorithm from "@/components/DirectionsMapComponent.tsx"
+
 
 const ChestnutHillBounds = {
     southWest: { lat: 42.32543670863917, lng: -71.15022693442262 }, // Bottom-left corner
@@ -161,10 +162,10 @@ function getNumberSuffix(num: string): string {
 
 
 
-async function FindPath(start: myNode, end: myNode) {
-    const data = JSON.stringify({start, end})
+async function FindPath(start: myNode, end: myNode, strategy: string) {
+    const data = JSON.stringify({start, end, strategy});
     console.log(data);
-    const res = await axios.post(ROUTES.BFSGRAPH, data, {
+    const res = await axios.post(ROUTES.FINDPATH, data, {
         headers: {'Content-Type': 'application/json'}
     })
     const nodes : myNode[] = res.data
@@ -183,10 +184,10 @@ function GetPolylinePath(path: myNode[]): {lat: number; lng: number}[] {
 interface Props {
     startNodeId: string;
     endNodeId: string;
-    // currentFloorId: string;
+    selectedAlgorithm: string;
 }
 
-const HospitalMapComponent = ({startNodeId, endNodeId}:Props) => {
+const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm}:Props) => {
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
     const [startNode, setStartNode] = useState<myNode>();
     const [endNode, setEndNode] = useState<myNode>();
@@ -212,15 +213,12 @@ const HospitalMapComponent = ({startNodeId, endNodeId}:Props) => {
         console.log('Got Department Node');
     }, [startNodeId, endNodeId]);
 
-    console.log(startNode);
-    console.log(endNode);
-
     // Find path and text directions
     useEffect(() => {
         const getMyPaths = async () => {
             if (startNode && endNode) {
                 try {
-                    const result = await FindPath(startNode, endNode);
+                    const result = await FindPath(startNode, endNode, selectedAlgorithm);
                     console.log("Path found:", result);
                     setBFSPath(result);
                     const textDirection = createTextPath(result);
@@ -238,7 +236,7 @@ const HospitalMapComponent = ({startNodeId, endNodeId}:Props) => {
             }
         };
         getMyPaths();
-    }, [startNode, endNode]);
+    }, [startNode, endNode,selectedAlgorithm]);
 
     // auto-select floor id for start node
     useEffect(() => {
