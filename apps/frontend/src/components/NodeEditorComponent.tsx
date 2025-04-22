@@ -279,6 +279,22 @@ const NodeEditorComponent = () => {
                         });
                         createMapEdge(fromNode, toNode, newLine);
                     }
+                }else{
+                    // There is no edge to be found (just a marker)
+                    const iEdge = mapEdgesRef.current.find(edge => edge.from.node.nodeId === toNode.node.nodeId);
+                    // The other marker also does not have an edge this will be a singular marker to marker edge
+                    if(!iEdge){
+                        const line = new google.maps.Polyline({
+                            map: map,
+                            path: [fromNode.drawnNode.getPosition() as google.maps.LatLng, toNode.drawnNode.getPosition() as google.maps.LatLng]
+                        })
+                        createMapEdge(fromNode, toNode, line);
+                    }else{
+                        // Singular marker to line of nodes
+                       const path =  [fromNode.drawnNode.getPosition() as google.maps.LatLng].concat(iEdge.drawnEdge.getPath().getArray());
+                       iEdge.drawnEdge.setPath(path);
+                       createMapEdge(fromNode, toNode, iEdge.drawnEdge);
+                    }
                 }
                 setClickedNode(null);
             }
