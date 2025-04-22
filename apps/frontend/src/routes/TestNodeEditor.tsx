@@ -1,7 +1,6 @@
 import NodeEditorComponent from '@/components/NodeEditorComponent.tsx';
 import { APIProvider, Map, RenderingType } from '@vis.gl/react-google-maps';
-import OverlayComponent from '@/components/OverlayComponent.tsx';
-import MGBButton from '@/elements/MGBButton.tsx';
+import OverlayMapComponent from "@/components/OverlayMapComponent.tsx";
 
 const TestNodeEditor = () => {
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
@@ -10,7 +9,7 @@ const TestNodeEditor = () => {
         northEast: { lat: 42.32659860801865, lng: -71.14889438933609 }, // Top-right corner
     };
 
-    const ChestnutParkingSVG = '/ChestnutParking.svg';
+    const ChestnutParkingSVG = '/CH01.svg';
     return (
         <div>
             <APIProvider apiKey={API_KEY} libraries={['maps', 'drawing']}>
@@ -23,10 +22,9 @@ const TestNodeEditor = () => {
                         renderingType={RenderingType.RASTER}
                         mapTypeControl={false}
                     >
-                        <OverlayComponent
+                        <OverlayMapComponent
                             bounds={ChestnutParkingBounds}
                             imageSrc={ChestnutParkingSVG}
-                            visible={true}
                         />
                         <NodeEditorComponent></NodeEditorComponent>
                     </Map>
