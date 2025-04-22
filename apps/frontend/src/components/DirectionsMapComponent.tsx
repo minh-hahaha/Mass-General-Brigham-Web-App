@@ -156,7 +156,7 @@ const DirectionsMapComponent = () => {
         };
         fetchDirectoryList();
         console.log('Updated Directory list');
-    }, [buildingID]);
+    }, [buildingID, toLocation]);
 
     // get the end department nodeId
     useEffect(() => {
@@ -190,6 +190,19 @@ const DirectionsMapComponent = () => {
             handleFindDirections();
         }
     }, [fromLocation, toLocation]);
+
+
+    const handleChangeToLocation = (e: ChangeEvent<HTMLSelectElement>) => {
+        const newLocation = e.target.value;
+
+        // Update the location state
+        setToLocation(newLocation);
+
+        // Set the building ID for directory lookup
+        const buildingIndex = Buildings.indexOf(newLocation);
+        setBuildingID(buildingIndex + 1);
+
+    };
 
     // find directions
     const handleFindDirections = async () => {
@@ -261,23 +274,6 @@ const DirectionsMapComponent = () => {
     const [parking, setParking] = useState(true);
     const [showHospital, setShowHospital] = useState(false);
 
-    const handleChangeToLocation = (e: ChangeEvent<HTMLSelectElement>) => {
-        const newLocation = e.target.value;
-
-        // Update the location state
-        setToLocation(newLocation);
-
-        // Set the building ID for directory lookup
-        const buildingIndex = Buildings.indexOf(newLocation);
-        setBuildingID(buildingIndex + 1);
-
-        // // Only reset department data if the building changed
-        // if (previousLocation !== newLocation && previousLocation !== '') {
-        //     setToDirectoryNodeId('');
-        //     setToDirectoryNode(nullNode);
-        // }
-        handleFindDirections();
-    };
 
     useEffect(() => {
         if (toLocation === Buildings[0]) {
