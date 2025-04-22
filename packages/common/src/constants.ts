@@ -10,6 +10,7 @@ export const ROUTES = {
     TRANSLATIONREQUEST: '/api/translation',
     SANITATION: '/api/sanitation',
     MAINTENANCEREQUEST: '/api/maintenance',
+    MEDICALDEVICEREQUEST: '/api/medicaldevice',
 
     //Directory
     DIRECTORY: '/api/directory',
@@ -19,9 +20,13 @@ export const ROUTES = {
     DIRECTORY_BUILDING: '/api/directory/byBuilding',
 
     //Algorithms
-    BFSGRAPH: '/api/graph/traverse',
+    FINDPATH: '/api/graph/traverse',
+
     NODE: '/api/node',
     EDGE: '/api/edge',
+
+    //Map page
+    RECENT_ORIGINS: '/api/recentorigins'
 
 
 }

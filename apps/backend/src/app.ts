@@ -8,13 +8,15 @@ import servicereqsRouter from './routes/servicereqs.ts';
 import validateRouter from './routes/validate.ts';
 import patientTransportRouter from './routes/patienttransport.ts';
 import directoryRouter from './routes/directory.ts';
-import graphRouter from './routes/bfsRoutes.ts';
+import graphRouter from './routes/findPathRoute.ts';
 import sanitationRouter from './routes/sanitation.ts';
 import translationRouter from './routes/translationrequest.ts';
 import directoryNodeRouter from './routes/directoryNode.ts';
 import maintenanceRouter from './routes/maintenancerequest.ts';
+import medicalDeviceRouter from './routes/medicaldevicerequest.ts';
 import nodeRouter from './routes/node.ts';
 import edgeRouter from './routes/edge.ts';
+import originRouter from './routes/recentorigins.ts';
 
 import { ROUTES } from 'common/src/constants';
 
@@ -55,11 +57,14 @@ app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
 app.use(ROUTES.TRANSLATIONREQUEST, translationRouter);
 app.use(ROUTES.MAINTENANCEREQUEST, maintenanceRouter);
 app.use(ROUTES.PATIENTTRANSPORT, patientTransportRouter);
+app.use(ROUTES.MEDICALDEVICEREQUEST, medicalDeviceRouter);
 
 //Algorithms
-app.use(ROUTES.BFSGRAPH, graphRouter);
+app.use(ROUTES.FINDPATH, graphRouter);
 app.use(ROUTES.NODE, nodeRouter);
 app.use(ROUTES.EDGE, edgeRouter);
+
+app.use(ROUTES.RECENT_ORIGINS, originRouter);
 
 /**
  * Catch all 404 errors, and forward them to the error handler
