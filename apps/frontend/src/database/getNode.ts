@@ -26,6 +26,11 @@ export async function createNode(nodeResponse: NodeResponse): Promise<NodeRespon
 }
 
 export async function deleteNode(id: string): Promise<void> {
-    return (await axios.delete(ROUTES.NODE)).data;
+    const params = {
+        params: {
+            nodeId: id,
+        }
+    }
+    return (await axios.delete(ROUTES.NODE, params)).data;
 }
 
