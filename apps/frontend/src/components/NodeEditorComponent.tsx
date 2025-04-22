@@ -272,14 +272,12 @@ const NodeEditorComponent = () => {
                         // TODO: for every node on iEdge path, set to edge's polyline
                         createMapEdge(fromNode, toNode, edge.drawnEdge);
                     }else{
-                        console.log("bad")
-                        // TODO: fix later
-                        // const newLine = new google.maps.Polyline({
-                        //     zIndex: 0,
-                        //     path: [currentNode.drawnNode.getPosition() as google.maps.LatLng, connectingNode.drawnNode.getPosition() as google.maps.LatLng],
-                        //     map: map
-                        // });
-                        // createMapEdge(currentNode, connectingNode, newLine);
+                        const newLine = new google.maps.Polyline({
+                            zIndex: 0,
+                            path: [fromNode.drawnNode.getPosition() as google.maps.LatLng, toNode.drawnNode.getPosition() as google.maps.LatLng],
+                            map: map
+                        });
+                        createMapEdge(fromNode, toNode, newLine);
                     }
                 }
                 setClickedNode(null);
