@@ -6,6 +6,7 @@ import {createNode, deleteNode, NodeResponse} from '@/database/getNode.ts';
 import {createEdge, deleteEdge, EdgeResponse} from '@/database/getEdges.ts';
 import SelectElement from '@/elements/SelectElement.tsx';
 import InputElement from "@/elements/InputElement.tsx";
+import * as async_hooks from "node:async_hooks";
 
 interface MapNode {
     node: myNode;
@@ -27,7 +28,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
     const map = useMap();
     const drawingLibrary = useMapsLibrary('drawing');
     let drawingManager: google.maps.drawing.DrawingManager;
-    const [mode, setMode] = useState<'Node' | 'Edge' | null>(null);
+    const [mode, setMode] = useState<'Node' | 'Edge'>('Node');
     const modeRef = useRef(mode);
     const [clickedNode, setClickedNode] = useState<string | null>(null);
     const clickedNodeRef = useRef(clickedNode);
@@ -47,7 +48,6 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
     const [nodeType, setNodeType] = useState<NodeType>('Stairs');
     const [roomNumber, setRoomNumber] = useState<string | null>(null);
     const [nodeName, setNodeName] = useState<string>('Node');
-
 
 
     function incrementTempNodeID(): number {
@@ -177,7 +177,6 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             from: startNode,
             drawnEdge: line
         };
-        //google.maps.event.addListener(mapEdge.drawnEdge, 'click', (e: google.maps.MapMouseEvent) => clickEdge(mapEdge.edge.edgeId))
         setMapEdges((prev) => [...prev, mapEdge]);
     }
 
@@ -187,12 +186,6 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             removeEdgesFromNode(selectedNode);
             selectedNode.drawnNode.setMap(null);
             setClickedNode(null);
-            //console.log(edgeInfo.removedEdge.toString());
-            //console.log(selectedNode.node.nodeId);
-            // await deleteEdge(edgeInfo.removedEdge.toString());
-            // // SET NEW EDGES
-            // await createDBEdge(edgeInfo.fromNode, edgeInfo.toNode);
-            // await deleteNode(selectedNode.node.nodeId);
             setMapNodes(mapNodes.filter((mapNode) => mapNode.node.nodeId !== clickedNode));
         }
     }
@@ -220,6 +213,8 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 edge.drawnEdge.setPath(cut(edge.drawnEdge.getPath().getArray(), node.drawnNode.getPosition() as google.maps.LatLng))
             }
         });
+        // Remove all edges with the node in it
+        setMapEdges(mapEdgesRef.current.filter(e => (e.edge.from.nodeId !== node.node.nodeId && e.edge.to.nodeId !== node.node.nodeId)));
     }
 
     function clickNode(nodeId: string) {
@@ -230,7 +225,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             setNodeType(toNode.node.nodeType as NodeType);
             setNodeName(toNode.node.name);
             setRoomNumber(toNode.node.roomNumber);
-            if(fromNode) {
+            if(fromNode && modeRef.current === 'Edge') {
                 const fromEdge = mapEdgesRef.current.find(edge => edge.from.node.nodeId === fromNode.node.nodeId || edge.to.node.nodeId === fromNode.node.nodeId);
                 const toEdge = mapEdgesRef.current.find(edge => edge.from.node.nodeId === toNode.node.nodeId || edge.to.node.nodeId === toNode.node.nodeId);
                 if(fromEdge){
@@ -306,30 +301,19 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         createMapEdge(fromNode, toNode, line);
     }
 
-    // function clickEdge(edgeID: number) {
-    //     const currentEdge = mapEdgesRef.current.find(
-    //         (edge) => edge.edge.edgeId === clickedEdgeRef.current
-    //     );
-    //     const newCurrent = mapEdgesRef.current.find((edge) => edge.edge.edgeId === edgeID);
-    //     if (currentEdge) {
-    //         currentEdge.drawnEdge.set('strokeColor', '#002aff');
-    //     }
-    //     if (newCurrent) {
-    //         newCurrent.drawnEdge.set('strokeColor', '#ffde00');
-    //         setClickedEdge(edgeID);
-    //     }
-    // }
-    const generateCustomId = () => {
+    const generateCustomId = (node: myNode) => {
         const floorPart = "Floor" + currentFloorId.charAt(currentFloorId.length - 1);
-        const typePart = nodeType.charAt(0).toUpperCase() + nodeType.slice(1);
-        const roomPart = roomNumber || `${mapNodes.length + 1}`;
+        const typePart = node.nodeType.charAt(0).toUpperCase() + node.nodeType.slice(1);
+        const roomPart = (node.roomNumber ? node.roomNumber : '') || `${mapNodes.length + 1}`;
         return `${currentFloorId.substring(0,2)}${floorPart}${typePart}${roomPart}`;
     };
 
     async function saveNodesAndEdges() {
+        const nodes = [];
         for (const node of mapNodes) {
+            node.node.nodeId = generateCustomId(node.node);
             const sendNode: NodeResponse = {
-                nodeId: generateCustomId(),
+                nodeId: node.node.nodeId,
                 x: node.node.x,
                 y: node.node.y,
                 floor: node.node.floor,
@@ -338,8 +322,9 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 name: node.node.name,
                 roomNumber: node.node.roomNumber,
             };
-            await createNode(sendNode);
+            nodes.push(sendNode);
         }
+        await createNode(nodes, true);
         for (const edge of mapEdges) {
             const sendEdge: EdgeResponse = {
                 edgeId: null, // Let the database auto generate any drawn for the first time nodes
@@ -397,13 +382,31 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                     variant={'primary'}
                     disabled={false}
                 ></MGBButton>
+            </div>
+            <div className={"absolute bottom-18 right-16 p-4 bg-white rounded-xl shadow-lg text-sm text-gray-800 max-w-sm space-y-1 z-10"}>
                 <div>
                 <MGBButton
-                    onClick={() => saveNodesAndEdges()}
-                    children={'Save Nodes and Edges'}
-                    variant={'primary'}
-                    disabled={false}
+                    onClick={() => {setMode('Node'); setClickedNode(null);}}
+                    children={'Edit Nodes'}
+                    variant={(mode === 'Node') ? 'secondary' : 'primary'}
+                    disabled={mode === 'Node'}
                 ></MGBButton>
+                </div>
+                <div>
+                <MGBButton
+                    onClick={() => {setMode('Edge'); setClickedNode(null);}}
+                    children={'Create Edges'}
+                    variant={(mode === 'Edge') ? 'secondary' : 'primary'}
+                    disabled={mode === 'Edge'}
+                ></MGBButton>
+                    </div>
+                <div>
+                    <MGBButton
+                        onClick={() => saveNodesAndEdges()}
+                        children={'Save Nodes and Edges'}
+                        variant={'primary'}
+                        disabled={false}
+                    ></MGBButton>
                 </div>
             </div>
         </>

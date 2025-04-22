@@ -15,31 +15,37 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 router.post('/', async (req: Request, res: Response) => {
-    const tempNode = {
-        nodeId: req.body.nodeId,
-        x: req.body.x,
-        y: req.body.y,
-        floor: req.body.floor,
-        buildingId: req.body.buildingId,
-        nodeType: req.body.nodeType,
-        name: req.body.name,
-        roomNumber: req.body.roomNumber,
-        departments: req.body.departments,
-    };
+    const data = req.body;
+    const overwrite = req.query.overwrite as string;
 
-    try {
-        const NODES_UPDATE = await PrismaClient.node.upsert({
-            where: {
-                nodeId: tempNode.nodeId,
-            },
-            update: tempNode,
-            create: tempNode,
-        });
-        res.status(200).json(NODES_UPDATE);
-    } catch (error) {
-        console.error(error);
-        res.status(400).json({ error: 'Failed to update nodes' });
+    if (overwrite == 'true') {
+        await PrismaClient.edge.deleteMany();
+        await PrismaClient.node.deleteMany();
     }
+    for (const node of data) {
+        const tempNode = {
+            nodeId: node.nodeId,
+            x: node.x,
+            y: node.y,
+            floor: node.floor,
+            buildingId: node.buildingId,
+            nodeType: node.nodeType,
+            name: node.name,
+            roomNumber: node.roomNumber,
+            departments: node.departments,
+        };
+
+        try {
+            const NODES_UPDATE = await PrismaClient.node.create({
+                data: tempNode,
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(400).json({ error: 'Failed to update nodes' });
+            return;
+        }
+    }
+    res.sendStatus(200);
 });
 
 router.delete('/', async (req: Request, res: Response) => {

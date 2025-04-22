@@ -21,9 +21,10 @@ export async function getNodes() {
     return (await axios.get<NodeResponse[]>(ROUTES.NODE)).data;
 }
 
-export async function createNode(nodeResponse: NodeResponse): Promise<NodeResponse> {
-    return (await axios.post<NodeResponse>(ROUTES.NODE, nodeResponse)).data;
+export async function createNode(nodeResponse: NodeResponse[], overwrite: boolean): Promise<NodeResponse> {
+    return (await axios.post<NodeResponse>(ROUTES.NODE, nodeResponse, { params: {overwrite: overwrite} })).data;
 }
+
 
 export async function deleteNode(id: string): Promise<void> {
     const params = {

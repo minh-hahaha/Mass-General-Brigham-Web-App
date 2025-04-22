@@ -38,7 +38,7 @@ const availableFloors: Floor[] = [
 
 const TestNodeEditor = () => {
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-    const [currentFloorId, setCurrentFloorId] = useState<string>("");
+    const [currentFloorId, setCurrentFloorId] = useState<string>("CH-1");
 
     const handleFloorChange = (floorId: string) => {
         setCurrentFloorId(floorId);
