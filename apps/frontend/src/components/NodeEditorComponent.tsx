@@ -177,15 +177,15 @@ const NodeEditorComponent = () => {
     async function removeSelectedNode() {
         const selectedNode = mapNodes.find((node) => node.node.nodeId === clickedNode);
         if (selectedNode) {
-            const edgeInfo = removeEdgesFromNode(selectedNode);
+            removeEdgesFromNode(selectedNode);
             selectedNode.drawnNode.setMap(null);
             setClickedNode(null);
-            console.log(edgeInfo.removedEdge.toString());
-            console.log(selectedNode.node.nodeId);
-            await deleteEdge(edgeInfo.removedEdge.toString());
-            // SET NEW EDGES
-            await createDBEdge(edgeInfo.fromNode, edgeInfo.toNode);
-            await deleteNode(selectedNode.node.nodeId);
+            //console.log(edgeInfo.removedEdge.toString());
+            //console.log(selectedNode.node.nodeId);
+            // await deleteEdge(edgeInfo.removedEdge.toString());
+            // // SET NEW EDGES
+            // await createDBEdge(edgeInfo.fromNode, edgeInfo.toNode);
+            // await deleteNode(selectedNode.node.nodeId);
             setMapNodes(mapNodes.filter((mapNode) => mapNode.node.nodeId !== clickedNode));
         }
     }
@@ -199,32 +199,20 @@ const NodeEditorComponent = () => {
         await createEdge(newEdge);
     }
 
-    // function removeSelectedEdge() {
-    //     const selectedEdge = mapEdges.find((edge) => edge.edge.edgeId === clickedEdge);
-    //     if (selectedEdge) {
-    //         selectedEdge.drawnEdge.setMap(null);
-    //         setMapEdges(mapEdges.filter((mapEdge) => mapEdge.edge.edgeId !== clickedEdge));
-    //         setClickedEdge(null);
-    //     }
-    // }
+    function cut(edges: google.maps.LatLng[], posToCut: google.maps.LatLng) {
+        const indexToCut = edges.findIndex(edge => edge === posToCut);
+        if(indexToCut !== -1) {
+            return edges.slice(0, indexToCut).concat(edges.slice(indexToCut + 1));
+        }
+        return edges;
+    }
 
-    function removeEdgesFromNode(node: MapNode): { removedEdge: number, fromNode: MapNode, toNode: MapNode } {
-        const edge = mapEdges.find(
-            (edge) =>
-                edge.from.node.nodeId === node.node.nodeId ||
-                edge.to.node.nodeId === node.node.nodeId
-        );
-        if (!edge) return {removedEdge: -1, fromNode: node, toNode:node};
-        edge.drawnEdge.setPath(
-            edge.drawnEdge
-                .getPath()
-                .getArray()
-                .filter((position) => position !== node.drawnNode.getPosition())
-        )
-        const nextEdge = mapEdges.find(iEdge =>
-            (iEdge.from.node.nodeId === edge.to.node.nodeId)
-        )
-        return {removedEdge: nextEdge ? nextEdge.edge.edgeId : edge.edge.edgeId, fromNode: edge.from, toNode: nextEdge ? nextEdge.to : edge.to};
+    function removeEdgesFromNode(node: MapNode) {
+        mapEdgesRef.current.forEach((edge) => {
+            if(edge.from.node.nodeId === node.node.nodeId || edge.to.node.nodeId === node.node.nodeId) {
+                edge.drawnEdge.setPath(cut(edge.drawnEdge.getPath().getArray(), node.drawnNode.getPosition() as google.maps.LatLng))
+            }
+        });
     }
 
     function clickNode(nodeId: string) {
