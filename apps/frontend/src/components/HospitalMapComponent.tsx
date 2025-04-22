@@ -8,7 +8,6 @@ import OverlayComponent from "@/components/OverlayMapComponent.tsx";
 import {GetNode} from "@/database/getDepartmentNode.ts";
 import DisplayPathComponent from "@/components/DisplayPathComponent.tsx";
 
-import selectedAlgorithm from "@/components/DirectionsMapComponent.tsx"
 
 
 const ChestnutHillBounds = {
@@ -192,7 +191,6 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm}:Props)
     const [startNode, setStartNode] = useState<myNode>();
     const [endNode, setEndNode] = useState<myNode>();
     const [currentFloorId, setCurrentFloorId] = useState<string>();
-    const [showFloorSelect, setShowFloorSelect] = useState(true);
 
     console.log(startNodeId);
     console.log(endNodeId);

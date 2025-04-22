@@ -599,7 +599,6 @@ const DirectionsMapComponent = () => {
                                                 onChange={handleTravelModeChange}
                                             />
                                         </div>
-                                        {/* Find Directions */}
                                     </div>
                                 </div>
                             </div>
