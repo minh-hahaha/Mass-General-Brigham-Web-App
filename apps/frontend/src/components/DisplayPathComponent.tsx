@@ -9,7 +9,7 @@ const DisplayPathComponent = ({ coordinates }: Props) => {
     const map = useMap();
     if (!map) return;
 
-    const flightPath = new google.maps.Polyline({
+    const path = new google.maps.Polyline({
         path: coordinates,
         geodesic: true,
         strokeColor: "#FF0000",
@@ -17,8 +17,7 @@ const DisplayPathComponent = ({ coordinates }: Props) => {
         strokeWeight: 2,
     });
 
-    flightPath.setMap(map);
-
+    path.setMap(map);
 
 
     return (
