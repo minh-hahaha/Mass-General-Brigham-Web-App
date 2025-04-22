@@ -16,12 +16,7 @@ echo "POSTGRES_URL: ${POSTGRES_URL}"
 yarn workspace database push
 
 # Data seed
-yarn prisma db seed
-
-# Build the frontend
-echo "Building frontend..."
-cd /app/apps/frontend
-yarn build
+npx prisma db seed
 
 # Start the backend server in the background
 echo "Starting backend..."
