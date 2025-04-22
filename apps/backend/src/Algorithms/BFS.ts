@@ -1,12 +1,9 @@
 import { loadMyGraph } from './loadGraph.ts';
 import { myNode } from 'common/src/classes/classes.ts';
-import {pathfindingStrategy} from "./PathfindingStrategy.ts";
+import { pathfindingStrategy } from './PathfindingStrategy.ts';
 
-class BFS implements pathfindingStrategy {
-    async findMyPath(
-        startPoint: myNode,
-        endPoint: myNode
-    ): Promise<myNode[] | null | undefined> {
+export class BFS implements pathfindingStrategy {
+    async findMyPath(startPoint: myNode, endPoint: myNode): Promise<myNode[] | null | undefined> {
         const graph = await loadMyGraph();
 
         const starterNode = startPoint;
@@ -57,6 +54,4 @@ class BFS implements pathfindingStrategy {
             }
         }
     }
-
-
 }

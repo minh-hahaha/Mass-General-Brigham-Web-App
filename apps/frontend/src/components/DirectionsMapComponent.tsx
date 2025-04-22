@@ -127,7 +127,7 @@ const DirectionsMapComponent = () => {
 
     const [buildingID, setBuildingID] = useState<number>(0);
     const [textDirections, setTextDirections] = useState<string>('');
-    const [selectedAlgorithm, setSelectedAlgorithm] = useState('bfs');
+    const [selectedAlgorithm, setSelectedAlgorithm] = useState('BFS');
 
     useEffect(() => {
         const fetchOrigins = async () => {
@@ -707,8 +707,9 @@ const DirectionsMapComponent = () => {
                         mapId={"73fda600718f172c"}
                     >
                         <HospitalMapComponent
-                            startNodeId={"1"}
+                            startNodeId={"CHFloor1Door8"}
                             endNodeId={toDirectoryNodeId}
+                            selectedAlgorithm={selectedAlgorithm}
                         />
                     </Map>
 

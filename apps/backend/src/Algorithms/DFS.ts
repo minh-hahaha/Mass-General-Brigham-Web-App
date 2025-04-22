@@ -1,15 +1,10 @@
 import { loadMyGraph } from './loadGraph.ts';
 
 import { myNode } from 'common/src/classes/classes.ts';
-import {pathfindingStrategy} from "./PathfindingStrategy.ts";
+import { pathfindingStrategy } from './PathfindingStrategy.ts';
 
-
-class DFS implements pathfindingStrategy {
-    async findMyPath(
-        startPoint: myNode,
-        endPoint: myNode
-    ): Promise<myNode[] | null | undefined> {
-
+export class DFS implements pathfindingStrategy {
+    async findMyPath(startPoint: myNode, endPoint: myNode): Promise<myNode[] | null | undefined> {
         //do i need to load this in another function "extracted" in the context class
         const graph = await loadMyGraph();
 
@@ -59,6 +54,4 @@ class DFS implements pathfindingStrategy {
             }
         }
     }
-
-
 }
