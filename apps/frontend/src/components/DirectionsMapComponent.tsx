@@ -10,6 +10,8 @@ import { FaRegClock } from 'react-icons/fa';
 import { MapPin, Circle, Hospital } from 'lucide-react';
 import { MdOutlineMyLocation } from 'react-icons/md';
 import { ROUTES } from 'common/src/constants.ts';
+import { FaChevronUp } from "react-icons/fa6";
+import { FaChevronDown } from "react-icons/fa6";
 import {
     DirectoryRequestByBuilding,
     DirectoryRequestName,
@@ -18,6 +20,7 @@ import {
 } from '@/database/gettingDirectory.ts';
 import { GetNode } from '@/database/getDepartmentNode.ts';
 import { GetRecentOrigins, RecentOrigin } from '@/database/recentOrigins.ts';
+import FloorSelector from "@/components/FloorSelector.tsx";
 
 import AlgorithmSelector from '@/components/AlgorithmSelector.tsx';
 
@@ -146,6 +149,8 @@ const DirectionsMapComponent = () => {
         checkAdmin();
     }, []);
 
+    const [showFloorSelect, setShowFloorSelect] = useState(false);
+
     useEffect(() => {
         const fetchOrigins = async () => {
             const data: RecentOrigin[] = await GetRecentOrigins();
@@ -215,6 +220,7 @@ const DirectionsMapComponent = () => {
         };
         handleDeptChange();
     }, [currentDirectoryName]);
+
 
     useEffect(() => {
         if (toLocation) {
@@ -544,114 +550,218 @@ const DirectionsMapComponent = () => {
         );
     };
 
+    interface Floor {
+        id: string;
+        floor: string;
+        buildingId: string;
+        buildingName: string; // for display
+        svgPath: string;
+    }
+
+    const availableFloors: Floor[] = [
+        // Chestnut Hill
+        { id: "CH-1", floor: "1", buildingId: "1", buildingName: "Chestnut Hill",svgPath: "/CH01.svg" },
+        // 20 Patriot Place
+        { id: "20PP-1", floor: "1", buildingId: "2", buildingName: "20 Patriot Place", svgPath: "/20PP01.svg" },
+        { id: "20PP-2", floor: "2", buildingId: "2", buildingName: "20 Patriot Place",svgPath: "/20PP02.svg" },
+        { id: "20PP-3", floor: "3", buildingId: "2", buildingName: "20 Patriot Place",svgPath: "/20PP03.svg" },
+        { id: "20PP-4", floor: "4", buildingId: "2", buildingName: "20 Patriot Place",svgPath: "/20PP04.svg" },
+
+        // 22 Patriot Place
+        { id: "22PP-1", floor: "1", buildingId: "3",buildingName: "22 Patriot Place", svgPath: "/22PP01.svg" },
+        { id: "22PP-3", floor: "3", buildingId: "3",buildingName: "22 Patriot Place", svgPath: "/22PP03.svg" },
+        { id: "22PP-4", floor: "4", buildingId: "3", buildingName: "22 Patriot Place",svgPath: "/20PP04.svg" },
+
+        // parking
+        { id: "CH-A", floor: "0", buildingId: "1", buildingName: "Chestnut Hill",svgPath: "" },
+
+    ];
+    const [currentFloorId, setCurrentFloorId] = useState<string>();
+
+    const handleFloorChange = (floorId: string) => {
+        setCurrentFloorId(floorId);
+    };
+
     const initialFloorId = selectedBuildingId ? DefaultFloors[selectedBuildingId] : '';
     return (
-        <div className="relative w-screen h-screen">
+        <div className="flex w-screen h-screen">
             {/* LEFT PANEL */}
-            <aside className="absolute top-6 left-6 z-10 w-[400px] max-h-[80vh] bg-white p-6 shadow-xl rounded-lg overflow-hidden flex flex-col">
-                <form>
-                    {/* Blue Box Section */}
-                    <div className="py-5 pr-6 pl-4 rounded-lg -mt-6">
-                        <h2 className="text-xl font-black text-codGray mb-6 text-center ml-4">
-                            Hospital Directions
-                        </h2>
-                        <div className="flex gap-4 relative -ml-6 -mt-7">
-                            {/* Breadcrumb Line + Icons */}
-                            <div className="flex flex-col items-center pt-1">
-                                {/* Map icon */}
-                                <div className="text-codGray p-1 text-xl mt-6">
-                                    <Circle size={18} />
-                                </div>
-                                {/* Line */}
-                                <div className="h-6 border-l-2 border-dotted border-codGray" />
-                                {/* Pin icon */}
-                                <div className="text-codGray p-1 text-xl">
-                                    <MapPin size={18} />
-                                </div>
-                            </div>
-
-                            {/* Form Inputs */}
-                            <div className="flex-1">
-                                <div className="mt-5">
-                                    <input
-                                        type="text"
-                                        id="fromLocation"
-                                        ref={fromLocationRef}
-                                        value={fromLocation}
-                                        onChange={(e) => setFromLocation(e.target.value)}
-                                        required
-                                        placeholder="Choose a starting point..."
-                                        className="w-70 p-2 border border-mgbblue rounded-sm bg-white text-codGray placeholder:text-codGray focus:ring-2 focus:ring-white"
-                                    />
-                                    <SelectElement
-                                        label="To:"
-                                        id="toLocation"
-                                        value={toLocation}
-                                        onChange={(e) => handleChangeToLocation(e)}
-                                        options={Buildings}
-                                        placeholder="Select destination"
-                                        className="bg-white text-codGray border border-mgbblue -mt-3 w-70"
-                                    />
+            <div className="relative">
+                <div
+                    className="absolute top-8 -right-14 bg-mgbblue text-white p-2 rounded-r-md cursor-pointer z-20"
+                    onClick={() => setShowFloorSelect((prev) => !prev)}
+                >
+                    {showFloorSelect ? <FaChevronUp size={16} /> : <FaChevronDown size={16} />}
+                    {/* Floor Selector Dropdown (below tab) */}
+                    {showFloorSelect && (
+                        <div className="absolute top-8 -right-17 z-10 bg-white rounded-r-md p-2">
+                            <FloorSelector floors={availableFloors} currentFloorId={currentFloorId} onChange={handleFloorChange} />
+                        </div>
+                    )}
+                </div>
+                <aside className="relative top-6 left-6 z-10 w-[400px] max-h-[75vh] bg-white p-6 shadow-xl rounded-lg overflow-hidden flex flex-col">
+                    <form>
+                        {/* Blue Box Section */}
+                        <div className="py-5 pr-6 pl-4 rounded-lg -mt-6">
+                            <h2 className="text-xl font-black text-codGray mb-6 text-center ml-4">
+                                Hospital Directions
+                            </h2>
+                            <div className="flex gap-4 relative -ml-6 -mt-7">
+                                {/* Breadcrumb Line + Icons */}
+                                <div className="flex flex-col items-center pt-1">
+                                    {/* Map icon */}
+                                    <div className="text-codGray p-1 text-xl mt-6">
+                                        <Circle size={18} />
+                                    </div>
+                                    {/* Line */}
+                                    <div className="h-6 border-l-2 border-dotted border-codGray" />
+                                    {/* Pin icon */}
+                                    <div className="text-codGray p-1 text-xl">
+                                        <MapPin size={18} />
+                                    </div>
                                 </div>
 
-                                <div className="mt-8 -ml-6">
-                                    <div className="flex items-center gap-2 ml-6 -mt-3 w-70">
-                                        <Hospital
-                                            className="text-codGray mt-1 -ml-9.5 mr-2"
-                                            size={22}
+                                {/* Form Inputs */}
+                                <div className="flex-1">
+                                    <div className="mt-5">
+                                        <input
+                                            type="text"
+                                            id="fromLocation"
+                                            ref={fromLocationRef}
+                                            value={fromLocation}
+                                            onChange={(e) => setFromLocation(e.target.value)}
+                                            required
+                                            placeholder="Choose a starting point..."
+                                            className="w-70 p-2 border border-mgbblue rounded-sm bg-white text-codGray placeholder:text-codGray focus:ring-2 focus:ring-white"
                                         />
                                         <SelectElement
-                                            label=""
-                                            id="toDirectory"
-                                            value={currentDirectoryName}
-                                            onChange={(e) =>
-                                                setCurrentDirectoryName(e.target.value)
-                                            }
-                                            options={directoryList.map((dept) => dept.deptName)}
-                                            placeholder="Select department"
-                                            className="bg-white text-codGray border border-mgbblue flex-1"
+                                            label="To:"
+                                            id="toLocation"
+                                            value={toLocation}
+                                            onChange={(e) => handleChangeToLocation(e)}
+                                            options={Buildings}
+                                            placeholder="Select destination"
+                                            className="bg-white text-codGray border border-mgbblue -mt-3 w-70"
                                         />
                                     </div>
-                                    <div className="ml-15 mt-4">
-                                        {/* Travel Mode */}
-                                        <TravelModeComponent
-                                            selectedMode={travelMode}
-                                            onChange={handleTravelModeChange}
-                                        />
+
+                                    <div className="mt-8 -ml-6">
+                                        <div className="flex items-center gap-2 ml-6 -mt-3 w-70">
+                                            <Hospital
+                                                className="text-codGray mt-1 -ml-9.5 mr-2"
+                                                size={22}
+                                            />
+                                            <SelectElement
+                                                label=""
+                                                id="toDirectory"
+                                                value={currentDirectoryName}
+                                                onChange={(e) =>
+                                                    setCurrentDirectoryName(e.target.value)
+                                                }
+                                                options={directoryList.map((dept) => dept.deptName)}
+                                                placeholder="Select department"
+                                                className="bg-white text-codGray border border-mgbblue flex-1"
+                                            />
+                                        </div>
+                                        <div className="ml-15 mt-4">
+                                            {/* Travel Mode */}
+                                            <TravelModeComponent
+                                                selectedMode={travelMode}
+                                                onChange={handleTravelModeChange}
+                                            />
+                                        </div>
+                                        {/* Find Directions */}
                                     </div>
-                                    {/* Find Directions */}
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
 
-                {/* Parking Lot Buttons */}
-                {parking && (
-                    <div className="-mt-5">
-                        <p className="mb-2 text-sm text-codGray text-center -ml-4 font-black">
-                            Where did you park?
-                        </p>
-                        <div className="grid grid-cols-3 gap-2">
-                            {['A', 'B', 'C'].map((lot) => (
-                                <button
-                                    key={lot}
-                                    onClick={() =>
-                                        lot === 'A'
-                                            ? handleParkA()
-                                            : lot === 'B'
-                                              ? handleParkB()
-                                              : handleParkC()
-                                    }
-                                    className="bg-white text-codGray border border-mgbblue py-1 rounded-sm hover:bg-mgbblue hover:text-white transition"
-                                >
-                                    Lot {lot}
-                                </button>
-                            ))}
+                    {/* Parking Lot Buttons */}
+                    {parking && (
+                        <div className="-mt-5">
+                            <p className="mb-2 text-sm text-codGray text-center -ml-4 font-black">
+                                Where did you park?
+                            </p>
+                            <div className="grid grid-cols-3 gap-2">
+                                {['A', 'B', 'C'].map((lot) => (
+                                    <button
+                                        key={lot}
+                                        onClick={() =>
+                                            lot === 'A'
+                                                ? handleParkA()
+                                                : lot === 'B'
+                                                  ? handleParkB()
+                                                  : handleParkC()
+                                        }
+                                        className="bg-white text-codGray border border-mgbblue py-1 rounded-sm hover:bg-mgbblue hover:text-white transition"
+                                    >
+                                        Lot {lot}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )}
 
+                    {/* I'm Here Button */}
+                    <div className={clsx(parking ? 'mt-6' : '-mt-2.5')}>
+                        <button
+                            disabled={lot === ''}
+                            onClick={() => handleHere()}
+                            className="w-full bg-mgbblue text-white py-2 rounded-sm hover:bg-mgbblue/90 transition disabled:opacity-50"
+                        >
+                            {showHospital ? 'Show Google Map' : "I'm Here!"}
+                        </button>
+                    </div>
+                    <div className="mt-6">
+                        {toLocation && isAdmin && (
+                            <AlgorithmSelector
+                                selectedAlgorithm={selectedAlgorithm}
+                                onChange={handleAlgorithmChange}
+                            />
+                        )}
+                    </div>
+                    <div className="w-110 border-[0.5px] border-codGray mt-5 -ml-10" />
+                    <div className="overflow-y-auto mt-4 flex-grow">
+                        {!toLocation ? (
+                            <div className="max-h-[200px] overflow-y-auto w-full mt-1">
+                                <ul className="w-full flex flex-col space-y-2">
+                                    <li
+                                        className="flex items-center w-full py-2 rounded-md transition-colors hover:bg-gray-200 cursor-pointer"
+                                        onClick={handleUseCurrentLocation}
+                                    >
+                                        <MdOutlineMyLocation
+                                            className="text-mgbblue min-w-[20px]"
+                                            size={18}
+                                        />
+                                        <span className="text-codGray mx-3">Current Location</span>
+                                    </li>
+                                    {recentOrigins.map((origin, index) => (
+                                        <li
+                                            key={index}
+                                            className="flex items-center w-100 py-2 rounded-md transition-colors hover:bg-gray-200 cursor-pointer"
+                                            onClick={() => setFromLocation(origin.location)}
+                                        >
+                                            <FaRegClock
+                                                className="text-mgbblue min-w-[20px]"
+                                                size={18}
+                                            />
+                                            <span className="text-codGray mx-3">
+                                                {origin.location.match('.+?(?=[ \\d]{5})')}
+                                            </span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ) : (
+                            <div
+                                id={'text-directions'}
+                                dangerouslySetInnerHTML={{ __html: textDirections }}
+                            />
+                        )}
+                    </div>
+                </aside>
+            </div>
                 {/* I'm Here Button */}
                 <div className={clsx(parking ? 'mt-6' : '-mt-2.5')}>
                     <button
@@ -711,7 +821,6 @@ const DirectionsMapComponent = () => {
                         />
                     )}
                 </div>
-            </aside>
 
             {/* MAP AREA */}
             <main className="absolute inset-0 z-0">
@@ -724,16 +833,12 @@ const DirectionsMapComponent = () => {
                     mapTypeControl={false}
                     mapId={'73fda600718f172c'}
                 >
-                    <HospitalMapComponent
-                        startNodeId={'CHFloor1Door8'}
-                        endNodeId={toDirectoryNodeId}
-                        selectedAlgorithm={selectedAlgorithm}
-                    />
+                    <HospitalMapComponent startNodeId={'CHFloor1Door8'} endNodeId={toDirectoryNodeId} selectedAlgorithm={selectedAlgorithm} />
                 </Map>
 
                 {/* Route Info Box */}
                 {showRouteInfo && !showHospital && (
-                    <div className="absolute bottom-6 left-6 p-4 bg-white rounded-xl shadow-lg text-sm text-gray-800 max-w-sm space-y-1">
+                    <div className="absolute bottom-3 left-6 p-4 bg-white rounded-xl shadow-lg text-sm text-gray-800 max-w-sm space-y-1">
                         <h3 className="font-bold text-base mb-1 text-mgbblue">Route Info</h3>
                         <p>
                             <span className="font-medium">Distance:</span> {distance}
