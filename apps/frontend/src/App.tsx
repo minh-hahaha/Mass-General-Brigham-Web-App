@@ -7,9 +7,11 @@ import TransportationRequestPage from './routes/TransportationRequestPage.tsx';
 import ServiceRequestDisplayPage from './routes/ServiceRequestDisplayPage.tsx';
 import DirectoryDisplayPage from './routes/DirectoryDisplayPage.tsx';
 import ImportExportDirectoryPage from './routes/ImportExportDirectoryPage.tsx';
-import SanitationRequestPage from './components/SanitationRequestComponent.tsx';
+import SanitationRequestPage from './routes/SanitationRequestComponent.tsx';
 import TransportRequestPage from "./routes/TransportationRequestPage.tsx";
 import TranslationServiceRequestPage from './routes/TranslationServiceRequestPage.tsx';
+import MedicalDeviceServiceRequestPage from './routes/MedicalDeviceServiceRequestPage.tsx'
+import MedicalDeviceServiceDisplayPage from './routes/MedicalDeviceRequestDisplayPage.tsx'
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { ShadSidebar } from '@/components/ui/shadsidebar.tsx';
 import {MapPage} from "@/routes/MapPage.tsx";
@@ -19,6 +21,7 @@ import ServiceRequestSelectPage from "@/routes/ServiceRequestSelectPage.tsx";
 import MaintenanceRequestPage from "@/routes/MaintenanceRequestPage.tsx";
 import AboutPage from './routes/AboutPage.tsx';
 import Cookies from "js-cookie";
+import TestNodeEditor from '@/routes/TestNodeEditor.tsx';
 
 function App() {
     const defaultOpen = Cookies.get("sidebar_state") === 'true';
@@ -54,11 +57,15 @@ function App() {
                                     element={<DirectoryDisplayPage />}
                                 />
                                 <Route
+                                    path="/Test"
+                                    element={<TestNodeEditor />}
+                                />
+                                <Route
                                   path="/MapPage"
                                   element={<MapPage />}
                                 />
                                 <Route
-                                path="/MapView"
+                                path="/ViewMap"
                                 element={<MapViewPage/>}
                                 />
 
@@ -87,8 +94,17 @@ function App() {
                                     element={<ServiceRequestSelectPage />}
                                 />
                                 <Route
+
                                     path="/AboutPage"
                                     element={<AboutPage />}
+                                />
+                                <Route  
+                                    path={"/MedicalDevicePage"}
+                                    element={<MedicalDeviceServiceRequestPage/>}
+                                />
+                                <Route
+                                    path={"/MedicalDeviceDisplayPage"}
+                                    element={<MedicalDeviceServiceDisplayPage/>}
                                 />
                             </Routes>
                         </main>

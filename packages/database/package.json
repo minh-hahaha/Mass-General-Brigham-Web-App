@@ -25,7 +25,7 @@
         "studio:wpi": "dotenv -e ${PROJECT_CWD}/.env.wpi prisma studio",
         "studio:prod": "dotenv -e ${PROJECT_CWD}/.env.prod prisma studio",
         "db:push": "dotenv -e ${PROJECT_CWD}/.env -- prisma db push",
-        "db:nuke": "dotenv -e ${PROJECT_CWD}/.env -- prisma db push --skip-generate --force-reset"
+        "db:nuke": "dotenv -e ${PROJECT_CWD}/.env -- prisma db push --force-reset --skip-generate && yarn workspace database generate"
     },
     "devDependencies": {
         "@yarnpkg/pnpify": "^4.0.0-rc.45",

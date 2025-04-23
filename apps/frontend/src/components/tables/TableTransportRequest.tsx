@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { GetTransportRequest } from '@/database/transportRequest.ts';
-import { GetSanitationRequest,incomingSanitationRequest } from '@/database/sanitationRequest.ts';
+import { GetSanitationRequest, incomingSanitationRequest } from '@/database/sanitationRequest.ts';
 import { incomingRequest } from '@/database/transportRequest.ts';
 import {
     Table,
@@ -36,6 +36,11 @@ const TableTransportRequest = () => {
         return <p>No requests found!</p>;
     }
 
+    // Format date for display
+    const formatDate = (dateString: string) => {
+        return dateString.split('T')[0];
+    };
+
     return (
         <div className="flex justify-center mt-10">
             <div className="w-full max-w-6xl border border-gray-300 rounded-2xl shadow-md overflow-auto p-4 bg-white">
@@ -62,9 +67,9 @@ const TableTransportRequest = () => {
                                 <TableCell>{req.priority}</TableCell>
                                 <TableCell>{req.status}</TableCell>
                                 <TableCell>{req.patientTransport.pickupLocation}</TableCell>
-                                <TableCell>{req.requestDate}</TableCell>
+                                <TableCell>{formatDate(req.requestDate)}</TableCell>
                                 <TableCell>{req.serviceType}</TableCell>
-                                <TableCell>{req.transportType}</TableCell>
+                                <TableCell>{req.patientTransport.transportType}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

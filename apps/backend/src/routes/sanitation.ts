@@ -84,7 +84,7 @@ router.post('/', async (req: Request, res: Response) => {
                     sanitationDepartmentId: req.body.sanitationDepartmentId,
                     sanitationLocationId: req.body.sanitationLocationId,
                     sanitationRoomNumber: req.body.sanitationRoomNumber,
-                    //completeBy: req.body.completeBy,
+                    completeBy: new Date(req.body.completeBy).toISOString(),
                 },
                 select: {
                     servReqId: true,
@@ -95,7 +95,7 @@ router.post('/', async (req: Request, res: Response) => {
                     completeBy: true,
                 },
             });
-
+            console.log(sanitation);
             return { serviceRequest, sanitation };
         });
 

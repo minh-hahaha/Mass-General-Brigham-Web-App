@@ -5,8 +5,8 @@ import axios from 'axios';
 export interface transportRequest {
     patientId: number;
     patientName: string;
-    transportType: 'Ambulance' | 'Helicopter' | 'Other';
-    priority: 'Low' | 'Medium' | 'High';
+    transportType: 'Ambulance' | 'Helicopter' | 'Medical Van' | 'Other';
+    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     pickupLocation: string;
     dropOffLocation: string;
     pickupDate: string;
@@ -27,14 +27,14 @@ export interface incomingRequest {
         patientName: string;
         pickupLocation: string;
         servReqId: number;
+        transportType: 'Ambulance' | 'Helicopter' | 'Medical Van' | 'Other';
     }
-    priority: 'Low' | 'Medium' | 'High';
+    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     requestDate: string;
     requestId: number;
     requestTime: number;
     serviceType: string;
     status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
-    transportType: string;
 }
 
 
