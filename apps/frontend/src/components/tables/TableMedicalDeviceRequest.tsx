@@ -3,27 +3,18 @@ import { GetMedicalDeviceRequest, incomingMedicalDeviceRequest } from '@/databas
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
 
 const MedicalDeviceRequestDisplayPage = () => {
-    const loggedIn = sessionStorage.getItem("loggedIn");
-    if (!loggedIn) {
-        window.location.href = '/';
-    }
+    const loggedIn = sessionStorage.getItem('loggedIn');
+    if (!loggedIn) {window.location.href = '/';}
 
     const [loading, setLoading] = useState(true);
     const [requests, setRequests] = useState<incomingMedicalDeviceRequest[]>([]);
 
     useEffect(() => {
         async function fetchReqs() {
-            try {
-                const data = await GetMedicalDeviceRequest();
-                console.log("Fetched medical device requests:", data); // RIGHT HERE
-                setRequests(data);
-            } catch (err) {
-                console.error("Failed to fetch requests:", err); // AND HERE
-            } finally {
-                setLoading(false);
-            }
+            const data = await GetMedicalDeviceRequest();
+            setRequests(data);
+            setLoading(false);
         }
-
         fetchReqs();
     }, []);
 
@@ -50,7 +41,6 @@ const MedicalDeviceRequestDisplayPage = () => {
                             <TableHead>Medical Device Serial Number</TableHead>
                             <TableHead>Explanation</TableHead>
                             <TableHead>Location</TableHead>
-                            <TableHead>Employee Name</TableHead>
                             <TableHead>Priority</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Request Date</TableHead>
@@ -63,9 +53,17 @@ const MedicalDeviceRequestDisplayPage = () => {
                                 <TableCell>{req.requestId}</TableCell>
                                 <TableCell>{req.medicalDeviceRequest.device}</TableCell>
                                 <TableCell>{req.medicalDeviceRequest.deviceSerialNumber}</TableCell>
-                                <TableCell>{req.medicalDeviceRequest.deviceReasoning}</TableCell>
+                                <TableCell>
+                                    {req.medicalDeviceRequest.deviceReasoning
+                                        ?.match(/.{1,30}/g)
+                                        ?.map((chunk, i) => (
+                                            <span key={i}>
+                                                {chunk}
+                                                <br />
+                                            </span>
+                                        ))}
+                                </TableCell>
                                 <TableCell>{req.medicalDeviceRequest.location}</TableCell>
-                                <TableCell>{req.employeeName}</TableCell>
                                 <TableCell>{req.priority}</TableCell>
                                 <TableCell>{req.status}</TableCell>
                                 <TableCell>{formatDate(req.requestDate)}</TableCell>

@@ -4,25 +4,25 @@ import axios from 'axios';
 
 export interface sanitationRequest {
     //Service Request fields
-    employee_name:              string;
-    status:                     'Unassigned' | 'Assigned' | 'Working' | 'Other';
-    priority:                   'Unassigned' | 'Low' | 'Medium' | 'High' | 'Emergency';
-    request_time:                string;
-    location_id:                 string;
+    employeeName:              string;
+    status:                     'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
+    priority:                   'Low' | 'Medium' | 'High';
+    requestTime:                string;
+    locationId:                 string;
 
 
     //Optional fields
     comments:                   string;
-    request_date:                string;
-    employee_id:                 number;
-    requester_department:         string;
-    requester_roomnum: string;
+    requestDate:                string;
+    employeeId:                 number;
+    requesterDepartmentId:         string;
+    requesterRoomNumber: string;
 
 
     //Sanitation fields
-    sanitation_location_id:     string;
-    sanitation_department_id:   string;
-    sanitation_roomNumber:      number;
+    sanitationLocationId:     string;
+    sanitationDepartmentId:   string;
+    sanitationRoomNumber:      number;
     sanitationType:             string;
     recurring:                  boolean;
     hazardLevel:                'None' | 'Sharp' | 'Biohazard';
@@ -38,9 +38,9 @@ export interface incomingSanitationRequest {
         servReqId:          number;
         sanitationType:      string;
         recurring:           boolean;
-        hazardLevel:         string
+        hazardLevel:         'None' | 'Sharp' | 'Biohazard';
         disposalRequired:    boolean;
-        completeBy:          number;
+        completeBy:          string;
     }
     priority: 'Low' | 'Medium' | 'High';
     requestDate: string;
@@ -50,7 +50,6 @@ export interface incomingSanitationRequest {
     status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
     transportType: string;
 }
-
 
 export async function SubmitSanitationRequest(request: sanitationRequest) {
     await axios.post(ROUTES.SANITATION, request);

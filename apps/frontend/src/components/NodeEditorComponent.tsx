@@ -98,6 +98,15 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
     }, [clickedEdge]);
 
     useEffect(() => {
+        console.log("Floor changed to:", currentFloorId);
+        mapNodes.forEach(node => node.drawnNode.setMap(null));
+        mapEdges.forEach(edge => edge.drawnEdge.setMap(null));
+        setMapNodes([]);
+        setMapEdges([]);
+
+    }, [currentFloorId]);
+
+    useEffect(() => {
         if(!clickedNode)
             return;
         const currentNode = mapNodes.find(node => node.node.nodeId === clickedNode);
@@ -347,6 +356,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
     async function saveNodesAndEdges() {
         const nodes: NodeResponse[] = [];
         const usedNodeIds = new Set<string>();
+        const currentFloor = availableFloors.find(f => f.id === currentFloorId);
 
         for (const node of mapNodes) {
             const baseId = generateCustomId(node.node);
@@ -360,7 +370,6 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
 
             node.node.nodeId = newId;
             node.node.floor = currentFloorId.charAt(currentFloorId.length - 1);
-            const currentFloor = availableFloors.find(f => f.id === currentFloorId);
             node.node.buildingId = currentFloor ? currentFloor.buildingId : "1";
             usedNodeIds.add(newId);
             const sendNode: NodeResponse = {
@@ -376,7 +385,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             nodes.push(sendNode);
         }
         // TODO: add floor field: delete all where floorID == x
-        await createNode(nodes, true);
+        await createNode(nodes, true, currentFloor ? currentFloor.floor : "1", currentFloor ? currentFloor.buildingId : "1");
         for (const edge of mapEdges) {
             const sendEdge: EdgeResponse = {
                 edgeId: null, // Let the database auto generate any drawn for the first time nodes

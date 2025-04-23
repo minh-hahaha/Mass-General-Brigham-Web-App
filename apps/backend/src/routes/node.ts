@@ -17,10 +17,26 @@ router.get('/', async (req: Request, res: Response) => {
 router.post('/', async (req: Request, res: Response) => {
     const data = req.body;
     const overwrite = req.query.overwrite as string;
+    const overwriteFloor = req.query.overwriteFloor as string;
+    const overwriteBuilding = req.query.overwriteBuilding as string;
 
     if (overwrite == 'true') {
-        await PrismaClient.edge.deleteMany();
-        await PrismaClient.node.deleteMany();
+        await PrismaClient.edge.deleteMany({
+            where: {
+                nodeTo: {
+                    is: {
+                        floor: overwriteFloor,
+                        buildingId: overwriteBuilding,
+                    },
+                },
+            },
+        });
+        await PrismaClient.node.deleteMany({
+            where: {
+                floor: overwriteFloor,
+                buildingId: overwriteBuilding,
+            },
+        });
     }
     for (const node of data) {
         const tempNode = {

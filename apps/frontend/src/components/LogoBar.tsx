@@ -17,7 +17,7 @@ import { cn } from '@/lib/utils.ts';
 const aboutItems = [
     {
         title: 'Meet the Developers',
-        href: '/',
+        href: '/AboutPage',
         description:
             'Meet the talented developers of Team C',
     },
