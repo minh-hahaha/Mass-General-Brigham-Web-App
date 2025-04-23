@@ -1,0 +1,101 @@
+import NodeEditorComponent from '@/components/NodeEditorComponent.tsx';
+import { APIProvider, Map, RenderingType } from '@vis.gl/react-google-maps';
+import OverlayComponent from "@/components/OverlayMapComponent.tsx";
+import FloorSelector from "@/components/FloorSelector.tsx";
+import {useState} from "react";
+
+
+const ChestnutHillBounds = {
+    southWest: { lat: 42.32543670863917, lng: -71.15022693442262 }, // Bottom-left corner
+    northEast: { lat: 42.32649756743757, lng: -71.14898211823991 }, // Top-right corner
+};
+
+const PatriotPlaceBounds = {
+    southWest: { lat: 42.09086272947439, lng: -71.2675430325 }, // Bottom-left corner
+    northEast: { lat: 42.09342690806031, lng: -71.2649785507 }, // Top-right corner
+};
+
+
+// floor type
+interface Floor {
+    id: string;
+    floor: string;
+    buildingId: string;
+    buildingName: string; // for display
+    svgPath: string;
+}
+
+// All available floors across buildings
+const availableFloors: Floor[] = [
+    // Chestnut Hill
+    { id: "CH-1", floor: "1", buildingId: "1", buildingName: "Chestnut Hill",svgPath: "/CH01.svg" },
+    // 20 Patriot Place
+    { id: "PP-1", floor: "1", buildingId: "2", buildingName: "Patriot Place", svgPath: "/PP01.svg" },
+    { id: "PP-2", floor: "2", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP02.svg" },
+    { id: "PP-3", floor: "3", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP03.svg" },
+    { id: "PP-4", floor: "4", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP04.svg" },
+];
+
+const TestNodeEditor = () => {
+    const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+    const [currentFloorId, setCurrentFloorId] = useState<string>("");
+
+    const handleFloorChange = (floorId: string) => {
+        setCurrentFloorId(floorId);
+    };
+
+    // seperate out current floor for PP and CH
+    // Get the current Patriot Place floor data
+    const getCurrentPatriotPlaceFloor = () => {
+        let floorId = currentFloorId;
+        if (!floorId?.startsWith('PP-')) {
+            floorId = "PP-1"; // Default to PP-1 if not a PP floor
+        }
+
+        // Find the floor data
+        return availableFloors.find(f => f.id === floorId) || availableFloors.find(f => f.id === "PP-1")!;
+    };
+
+    const getChestnutHillFloor = () => {
+        return availableFloors.find(f => f.id === "CH-1")!;
+    };
+
+
+    const chestnutHillFloor = getChestnutHillFloor();
+    const patriotPlaceFloor = getCurrentPatriotPlaceFloor();
+
+    return (
+        <div>
+            <APIProvider apiKey={API_KEY} libraries={['maps', 'drawing']}>
+                <div style={{ height: '100vh', width: '100%' }}>
+
+                    <Map
+                        style={{ width: '100%', height: '100%' }}
+                        defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
+                        // MGB at Chestnut hill 42.325988270594415, -71.1495669288061
+                        defaultZoom={15}
+                        renderingType={RenderingType.RASTER}
+                        mapTypeControl={false}
+                    >
+                        <OverlayComponent
+                            bounds={ChestnutHillBounds}
+                            imageSrc={chestnutHillFloor.svgPath}
+                        />
+                        <OverlayComponent
+                            bounds={PatriotPlaceBounds}
+                            imageSrc={patriotPlaceFloor.svgPath}
+                        />
+                        <div
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20"
+                        >
+                            <FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />
+                        </div>
+                        <NodeEditorComponent currentFloorId={currentFloorId}></NodeEditorComponent>
+                    </Map>
+                </div>
+            </APIProvider>
+        </div>
+    );
+}
+
+export default TestNodeEditor;

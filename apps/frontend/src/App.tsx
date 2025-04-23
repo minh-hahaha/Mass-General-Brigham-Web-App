@@ -7,7 +7,7 @@ import TransportationRequestPage from './routes/TransportationRequestPage.tsx';
 import ServiceRequestDisplayPage from './routes/ServiceRequestDisplayPage.tsx';
 import DirectoryDisplayPage from './routes/DirectoryDisplayPage.tsx';
 import ImportExportDirectoryPage from './routes/ImportExportDirectoryPage.tsx';
-import SanitationRequestPage from './components/SanitationRequestComponent.tsx';
+import SanitationRequestPage from './routes/SanitationRequestComponent.tsx';
 import TransportRequestPage from "./routes/TransportationRequestPage.tsx";
 import TranslationServiceRequestPage from './routes/TranslationServiceRequestPage.tsx';
 import MedicalDeviceServiceRequestPage from './routes/MedicalDeviceServiceRequestPage.tsx'
@@ -19,7 +19,9 @@ import MapViewPage from "@/routes/MapViewPage.tsx";
 import SanitationRequestDisplayPage from "@/routes/SanitationRequestDisplayPage.tsx";
 import ServiceRequestSelectPage from "@/routes/ServiceRequestSelectPage.tsx";
 import MaintenanceRequestPage from "@/routes/MaintenanceRequestPage.tsx";
+import AboutPage from './routes/AboutPage.tsx';
 import Cookies from "js-cookie";
+import TestNodeEditor from '@/routes/TestNodeEditor.tsx';
 
 function App() {
     const defaultOpen = Cookies.get("sidebar_state") === 'true';
@@ -55,6 +57,10 @@ function App() {
                                     element={<DirectoryDisplayPage />}
                                 />
                                 <Route
+                                    path="/Test"
+                                    element={<TestNodeEditor />}
+                                />
+                                <Route
                                   path="/MapPage"
                                   element={<MapPage />}
                                 />
@@ -88,6 +94,11 @@ function App() {
                                     element={<ServiceRequestSelectPage />}
                                 />
                                 <Route
+
+                                    path="/AboutPage"
+                                    element={<AboutPage />}
+                                />
+                                <Route  
                                     path={"/MedicalDevicePage"}
                                     element={<MedicalDeviceServiceRequestPage/>}
                                 />

@@ -48,8 +48,8 @@ const navItems = [
         icon: MapPin,
     },
     {
-        title: 'Map View',
-        url: '/MapView',
+        title: 'Map Editor',
+        url: '/Test',
         icon: PencilLine,
     },
 ];
@@ -127,6 +127,7 @@ export function ShadSidebar() {
 
     function handleLogOut() {
         sessionStorage.removeItem('currentUser');
+        sessionStorage.removeItem('position');
         window.location.href = '/Login';
     }
 

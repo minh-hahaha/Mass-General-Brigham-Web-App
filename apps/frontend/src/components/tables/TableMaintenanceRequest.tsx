@@ -29,24 +29,9 @@ const TableMaintenanceRequest = () => {
         fetchReqs();
     }, []);
 
-    // Loading state
     if (loading) {
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <p className="text-xl font-medium">Loading Requests...</p>
-            </div>
-        );
+        return <p>Loading Requests...</p>;
     }
-
-    // Empty state
-    // if (requests == null || requests.length === 0) {
-    //     return (
-    //         <div className="flex justify-center items-center h-screen">
-    //             <p className="text-xl font-medium">No requests found!</p>
-    //         </div>
-    //     );
-    // }
-
     if (requests == null) {
         return <p>No requests found!</p>;
     }
@@ -82,31 +67,13 @@ const TableMaintenanceRequest = () => {
                                     className="border-b hover:bg-gray-50"
                                 >
                                     <TableCell className="text-center py-3">{req.requestId}</TableCell>
-                                    <TableCell className="text-center py-3 truncate">{req.maintenanceRequest.maintenance_type}</TableCell>
-                                    <TableCell className="text-center py-3 truncate">{req.maintenanceRequest.maintenance_location}</TableCell>
-                                    <TableCell className="text-center py-3 truncate">{req.maintenanceRequest.maintenance_hospital}</TableCell>
-                                    <TableCell className="text-center py-3 truncate">{req.maintenanceRequest.maintenance_time}</TableCell>
-                                    <TableCell className="text-center py-3 truncate">{req.maintenanceRequest.employee_name}</TableCell>
-                                    <TableCell className="text-center py-3">
-                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                            req.priority === 'High' ? 'bg-red-100 text-red-800' :
-                                                req.priority === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
-                                                    req.priority === 'Emergency' ? 'bg-purple-100 text-purple-800' :
-                                                        'bg-green-100 text-green-800'
-                                        }`}>
-                                            {req.priority}
-                                        </span>
-                                    </TableCell>
-                                    <TableCell className="text-center py-3">
-                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                            req.status === 'Pending' ? 'bg-blue-100 text-blue-800' :
-                                                req.status === 'In Progress' ? 'bg-yellow-100 text-yellow-800' :
-                                                    req.status === 'Completed' ? 'bg-green-100 text-green-800' :
-                                                        'bg-gray-100 text-gray-800'
-                                        }`}>
-                                            {req.status}
-                                        </span>
-                                    </TableCell>
+                                    <TableCell className="text-center py-3 truncate">{req.maintenanceRequest.maintenanceType}</TableCell>
+                                    <TableCell className="text-center py-3 truncate">{req.maintenanceRequest.maintenanceLocation}</TableCell>
+                                    <TableCell className="text-center py-3 truncate">{req.maintenanceRequest.maintenanceHospital}</TableCell>
+                                    <TableCell className="text-center py-3 truncate">{req.maintenanceRequest.maintenanceTime?.split('T')[1]?.substring(0, 5)}</TableCell>
+                                    <TableCell className="text-center py-3 truncate">{req.employeeName}</TableCell>
+                                    <TableCell className="text-center py-3">{req.priority}</TableCell>
+                                    <TableCell className="text-center py-3">{req.status}</TableCell>
                                     <TableCell className="text-center py-3">{formatDate(req.requestDate)}</TableCell>
                                     <TableCell className="text-center py-3 truncate">{req.serviceType}</TableCell>
                                 </TableRow>

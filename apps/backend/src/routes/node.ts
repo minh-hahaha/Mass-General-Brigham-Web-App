@@ -42,13 +42,12 @@ router.post('/', async (req: Request, res: Response) => {
     }
 });
 
-router.delete('/:id', async (req: Request, res: Response) => {
-    const nodeId = req.params.nodeId;
-
+router.delete('/', async (req: Request, res: Response) => {
+    const nodeId = req.query.nodeId;
     try {
         await PrismaClient.node.delete({
             where: {
-                nodeId: nodeId,
+                nodeId: nodeId as string,
             },
         });
         res.status(200).json({ message: `Node ${nodeId} deleted successfully.` });
