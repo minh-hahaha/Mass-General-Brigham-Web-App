@@ -201,7 +201,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
     }
 
     function cut(edges: google.maps.LatLng[], posToCut: google.maps.LatLng) {
-        const indexToCut = edges.findIndex(edge => edge === posToCut);
+        const indexToCut = edges.findIndex(edge => edge.equals(posToCut));
         if(indexToCut !== -1) {
             const slice1 = edges.slice(0, indexToCut);
             const slice2 = edges.slice(indexToCut + 1);
@@ -338,6 +338,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             };
             nodes.push(sendNode);
         }
+        // TODO: add floor field: delete all where floorID == x
         await createNode(nodes, true);
         for (const edge of mapEdges) {
             const sendEdge: EdgeResponse = {
@@ -345,6 +346,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 to: edge.edge.to.nodeId,
                 from: edge.edge.from.nodeId,
             };
+            // TODO: add floor field: delete all where floorID == x same thing but more complicated
             await createEdge(sendEdge);
         }
         setClickedNode(null);
