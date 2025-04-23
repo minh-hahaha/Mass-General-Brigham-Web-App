@@ -3,10 +3,6 @@ import { GetTranslatorRequest, incomingTranslationRequest } from '@/database/tra
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
 
 const TableTranslatorRequest = () => {
-    const loggedIn = sessionStorage.getItem('loggedIn');
-    if (!loggedIn) {
-        window.location.href = '/';
-    }
 
     const [loading, setLoading] = useState(true);
     const [requests, setRequests] = useState<incomingTranslationRequest[]>([]);

@@ -12,7 +12,7 @@ import { ReactNode, useEffect, useState } from 'react';
 
 // An interface that defines the props the component accepts
 interface CarouselProps {
-    tableTabs: {label: string, component: () => ReactNode}[];
+    tableTabs: {label: string, component: React.FC}[];
 }
 
 const CarouselMenu: React.FC<CarouselProps> = ({tableTabs}) => {
@@ -30,8 +30,8 @@ const CarouselMenu: React.FC<CarouselProps> = ({tableTabs}) => {
 
     return (
         <div className="w-full px-6 pt-10">
-            <div className="flex justify-center mb-6">
-                <div className="relative flex w-full max-w-xl overflow-hidden rounded-xl bg-white border border-mgbblue shadow-inner">
+            <div className="flex justify-center mb-10">
+                <div className="relative flex w-full max-w-2xl overflow-hidden rounded-xl bg-white border border-mgbblue shadow-inner">
                     {/* Highlight */}
                     <div
                         className="absolute top-0 left-0 h-full rounded-xl transition-transform duration-300 ease-in-out bg-mgbblue"
@@ -60,11 +60,14 @@ const CarouselMenu: React.FC<CarouselProps> = ({tableTabs}) => {
 
             <Carousel setApi={setApi} className="w-full">
                 <CarouselContent>
-                    {tableTabs.map((tab, index) => (
-                        <CarouselItem key={index}>
-                            <tab.component />
-                        </CarouselItem>
-                    ))}
+                    {tableTabs.map((tab, index) => {
+                        const Component = tab.component;
+                        return (
+                            <CarouselItem key={index}>
+                                <Component />
+                            </CarouselItem>
+                        );
+                    })}
                 </CarouselContent>
                 <CarouselPrevious />
                 <CarouselNext />

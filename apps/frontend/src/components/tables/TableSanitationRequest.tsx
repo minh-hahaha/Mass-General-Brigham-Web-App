@@ -11,8 +11,6 @@ import {
 } from '@/components/ui/table.tsx';
 
 const TableSanitationRequest = () => {
-    const loggedIn = sessionStorage.getItem('loggedIn');
-    if (!loggedIn) {window.location.href = '/';}
 
     const [loading, setLoading] = useState(true);
     const [requests, setRequests] = useState<incomingSanitationRequest[]>([]);

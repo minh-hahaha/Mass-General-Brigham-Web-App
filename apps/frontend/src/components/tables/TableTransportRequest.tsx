@@ -13,8 +13,6 @@ import {
 } from '@/components/ui/table.tsx';
 
 const TableTransportRequest = () => {
-    const loggedIn = sessionStorage.getItem('loggedIn');
-    if (!loggedIn) {window.location.href = '/';}
 
     const [loading, setLoading] = useState(true);
     const [requests, setRequests] = useState<incomingRequest[]>([]);

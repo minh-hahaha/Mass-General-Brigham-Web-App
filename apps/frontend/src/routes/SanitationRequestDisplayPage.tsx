@@ -13,8 +13,6 @@ import {
 } from '@/components/ui/table';
 
 const SanitationRequestDisplayPage = () => {
-    const loggedIn = sessionStorage.getItem('loggedIn');
-    if (!loggedIn) {window.location.href = '/';}
 
     const [loading, setLoading] = useState(true);
     const [requests, setRequests] = useState<incomingSanitationRequest[]>([]);

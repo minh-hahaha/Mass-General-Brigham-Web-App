@@ -11,8 +11,6 @@ import {
 
 const MaintenanceRequestDisplayPage = () => {
     // Check if user is logged in, redirect to home if not
-    const loggedIn = sessionStorage.getItem('loggedIn');
-    if (!loggedIn) {window.location.href = '/';}
 
     // State management
     const [loading, setLoading] = useState(true);
