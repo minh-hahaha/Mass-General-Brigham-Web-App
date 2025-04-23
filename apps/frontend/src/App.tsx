@@ -19,6 +19,7 @@ import MapViewPage from "@/routes/MapViewPage.tsx";
 import SanitationRequestDisplayPage from "@/routes/SanitationRequestDisplayPage.tsx";
 import ServiceRequestSelectPage from "@/routes/ServiceRequestSelectPage.tsx";
 import MaintenanceRequestPage from "@/routes/MaintenanceRequestPage.tsx";
+import AboutPage from './routes/AboutPage.tsx';
 import Cookies from "js-cookie";
 import TestNodeEditor from '@/routes/TestNodeEditor.tsx';
 
@@ -91,6 +92,11 @@ function App() {
                                 <Route
                                     path="/ServiceRequestSelectPage"
                                     element={<ServiceRequestSelectPage />}
+                                />
+                                <Route
+
+                                    path="/AboutPage"
+                                    element={<AboutPage />}
                                 />
                                 <Route
                                     path={"/MedicalDevicePage"}
