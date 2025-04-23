@@ -217,7 +217,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 position: google.maps.ControlPosition.TOP_CENTER,
                 drawingModes: [
                     drawingLibrary.OverlayType.MARKER,
-                   // drawingLibrary.OverlayType.POLYLINE,
+                    drawingLibrary.OverlayType.POLYLINE,
                 ],
             },
             markerOptions: {
@@ -232,16 +232,17 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         drawingManager.setMap(map);
         google.maps.event.addListener(drawingManager, 'overlaycomplete', (event: google.maps.drawing.OverlayCompleteEvent) => {
             if (event.type === google.maps.drawing.OverlayType.POLYLINE) {
-                // const polyline = event.overlay as google.maps.Polyline;
-                // const path = polyline.getPath().getArray();
-                // const nodes = [];
-                // for (let i = 0; i < path.length; i++) {
-                //     nodes.push(createMapNode(undefined, path[i]));
-                //     if (i !== 0) {
-                //         createMapEdge(nodes[i - 1], nodes[i], polyline);
-                //     }
-                // }
-                // drawingManager.setDrawingMode(null);
+                const polyline = event.overlay as google.maps.Polyline;
+                const path = polyline.getPath().getArray();
+                const nodes = [];
+                for (let i = 0; i < path.length; i++) {
+                    nodes.push(createMapNode(undefined, path[i]));
+                    if (i !== 0) {
+                        createMapEdge(nodes[i - 1], nodes[i]);
+                    }
+                }
+                polyline.setMap(null);
+                drawingManager.setDrawingMode(null);
             }else if(event.type === google.maps.drawing.OverlayType.MARKER){
                 const marker = event.overlay as google.maps.Marker;
                 const position = marker.getPosition();
