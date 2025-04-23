@@ -577,7 +577,7 @@ const DirectoryDisplayPage = () => {
                     onClick={handleCloseImport}
                 >
                     <div
-                        className="absolute top-15 bg-white rounded-lg shadow-xl w-150 max-w-4xl overflow-hidden"
+                        className="absolute top-20 bg-white rounded-lg shadow-xl w-150 max-w-4xl overflow-hidden"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <button
