@@ -24,7 +24,7 @@ router.post('/', async (req: Request, res: Response) => {
         nodeType: req.body.nodeType,
         name: req.body.name,
         roomNumber: req.body.roomNumber,
-        departments: req.body.departments,
+        departments: req.body.departments ?? null,
     };
 
     try {
