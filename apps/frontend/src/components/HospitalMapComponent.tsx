@@ -213,6 +213,7 @@ function setDirections(directions: string) {
 let directions11: string[];
 function setDirections2(directions: string[]) {
     directions11 = directions;
+    console.log(directions11);
 }
 
 // interface for prop
@@ -270,12 +271,17 @@ const HospitalMapComponent = ({
                     const textDirection = createTextPath(result);
                     const text = document.getElementById('text-directions');
                     if (text) {
-                        setTextSpeech(text);
+                        //setTextSpeech(text);
+                        //console.log(text);
                         console.log(textDirection);
                         //console.log(textDirection.toString().replace(/,/g, '<br><br>'));
                         text.innerHTML = textDirection.toString().replace(/,/g, '<br><br>');
                         setDirections(text.innerHTML);
-                        setDirections2(textDirection.toString().split(','));
+                        console.log(text.innerHTML);
+                        setDirections2(text.innerHTML.split('<br><br>'));
+
+
+
                     }
                 } catch (error) {
                     console.error('Error finding path:', error);

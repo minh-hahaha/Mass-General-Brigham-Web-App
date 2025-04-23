@@ -50,6 +50,7 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Direc
     //     const audio = new Audio(audioUrl);  // Create audio object
     //     audio.play();
     // };
+
     let counter: number;
     counter=0;
     const [textMode, setTextMode] = useState("Mode: Transport Directions");
@@ -70,9 +71,10 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Direc
         }
     };
 
-    useEffect(() => {
-        setTextToDisplay(driveDirections);
-    }, [driveDirections]);
+     // useEffect(() => {
+     //     setTextToDisplay(driveDirections);
+     //     setTextToSpeak(drive22Directions);
+     // }, [driveDirections]);
 
 
     function htmlToPlainText(html: string): string {
@@ -82,6 +84,12 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Direc
     }
 
     const speakDirections = async () => {
+        // console.log(driveDirections);
+         console.log(walkDirections);
+        // console.log(drive22Directions);
+         console.log(walk22Directions);
+        // console.log(textToSpeak);
+        // console.log("textToSpeak");
         const message = textToSpeak[counter];//.isArray(textToSpeak) ? textToSpeak.join(' ') : textToSpeak;
         if(counter===textToSpeak.length){
             handleProgressReset()
@@ -103,6 +111,7 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Direc
 
         // Log audioBlob size to confirm it's a valid file
         console.log('Audio Blob size:', audioBlob.size);
+        console.log("111111111");
         console.log(textToSpeak);
         const audioUrl = URL.createObjectURL(audioBlob);  // Create a URL for the audio
         const audio = new Audio(audioUrl);  // Create audio object
