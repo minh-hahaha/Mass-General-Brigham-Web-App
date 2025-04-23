@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { GetSanitationRequest,incomingSanitationRequest } from '@/database/sanitationRequest.ts';
+import { GetSanitationRequest, incomingSanitationRequest } from '@/database/sanitationRequest.ts';
 import {
     Table,
     TableBody,
@@ -40,7 +40,6 @@ const TableSanitationRequest = () => {
                 <Table>
                     <TableHeader>
                         <TableRow>
-
                             {/*
                             completeBy: number
                             disposalRequired: boolean
@@ -48,9 +47,8 @@ const TableSanitationRequest = () => {
                             recurring: boolean
                             sanitationType: string*/}
                             <TableHead>Request ID</TableHead>
-                            <TableHead>Complete By</TableHead>
                             <TableHead>Disposal Required</TableHead>
-                            <TableHead>Hazard level</TableHead>
+                            <TableHead>Hazard Level</TableHead>
                             <TableHead>Recurring</TableHead>
                             <TableHead>Sanitation Type</TableHead>
                             <TableHead>Priority</TableHead>
@@ -64,16 +62,14 @@ const TableSanitationRequest = () => {
                         {requests.map((req) => (
                             <TableRow>
                                 <TableCell>{req.requestId}</TableCell>
-                                <TableCell>{req.sanitation.completeBy}</TableCell>
-                                <TableCell>{JSON.stringify(req.sanitation.disposalRequired)}</TableCell>
+                                <TableCell>{req.sanitation.disposalRequired ? 'Yes' : 'No'}</TableCell>
                                 <TableCell>{req.sanitation.hazardLevel}</TableCell>
-                                <TableCell>{JSON.stringify(req.sanitation.recurring)}</TableCell>
+                                <TableCell>{req.sanitation.recurring ? 'Yes' : 'No'}</TableCell>
                                 <TableCell>{req.sanitation.sanitationType}</TableCell>
                                 <TableCell>{req.priority}</TableCell>
                                 <TableCell>{req.status}</TableCell>
-                                <TableCell>{req.requestDate}</TableCell>
+                                <TableCell>{req.requestDate.split('T')[0]}</TableCell>
                                 <TableCell>{req.serviceType}</TableCell>
-
                             </TableRow>
                         ))}
                     </TableBody>
