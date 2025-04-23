@@ -2,8 +2,8 @@ import {useMap, useMapsLibrary} from '@vis.gl/react-google-maps';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { myEdge, myNode } from 'common/src/classes/classes.ts';
 import MGBButton from '@/elements/MGBButton.tsx';
-import {createNode, deleteNode, NodeResponse} from '@/database/getNode.ts';
-import {createEdge, deleteEdge, EdgeResponse} from '@/database/getEdges.ts';
+import {createNode, deleteNode, getNodes, NodeResponse} from '@/database/getNode.ts';
+import {createEdge, deleteEdge, EdgeResponse, getEdges} from '@/database/getEdges.ts';
 import SelectElement from '@/elements/SelectElement.tsx';
 import InputElement from "@/elements/InputElement.tsx";
 import * as async_hooks from "node:async_hooks";
@@ -97,14 +97,103 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         clickedEdgeRef.current = clickedEdge;
     }, [clickedEdge]);
 
-    useEffect(() => {
-        console.log("Floor changed to:", currentFloorId);
-        mapNodes.forEach(node => node.drawnNode.setMap(null));
-        mapEdges.forEach(edge => edge.drawnEdge.setMap(null));
-        setMapNodes([]);
-        setMapEdges([]);
+    // useEffect(() => {
+    //     console.log('Floor changed to:', currentFloorId);
+    //     const bldgData = availableFloors.find((f) => f.id === currentFloorId);
+    //     mapNodesRef.current.forEach((node) => node.drawnNode.setMap(null));
+    //     mapEdgesRef.current.forEach((edge) => edge.drawnEdge.setMap(null));
+    //     setMapEdges([]);
+    //     setMapNodes([]);
+    //     console.log("After erase:");
+    //     console.log(mapEdges);
+    //     console.log(mapNodes);
+    //     if (!bldgData) {
+    //         console.error('Building data not found');
+    //         return;
+    //     }
+    //     const newNodes: MapNode[] = [];
+    //     getNodes(bldgData.floor, bldgData.buildingId)
+    //         .then((nodeResponses) => {
+    //             nodeResponses.forEach((nodeResponse) => {
+    //                 newNodes.push(createMapNodeFromNodeResponse(nodeResponse));
+    //             });
+    //             console.log("New Nodes:")
+    //             console.log(newNodes);
+    //             setMapNodes(newNodes);
+    //         })
+    //         .then(() => {
+    //             getEdges(bldgData.floor, bldgData.buildingId).then((edgeResponses) => {
+    //                 edgeResponses.forEach((edgeResponse) => {
+    //                     const fromNode = newNodes.find(
+    //                         (node) => node.node.nodeId === edgeResponse.from
+    //                     );
+    //                     const toNode = newNodes.find(
+    //                         (node) => node.node.nodeId === edgeResponse.to
+    //                     );
+    //                     if (fromNode && toNode) {
+    //                         createMapEdge(fromNode, toNode);
+    //                     }
+    //                 });
+    //                 console.log("Edges")
+    //             });
+    //         })
+    // }, [currentFloorId]);
 
+    useEffect(() => {
+        // This useEffect is called twice on startup
+        // This stops the code from executing both time
+        let isCancelled = false;
+
+        console.log('Floor changed to:', currentFloorId);
+        const bldgData = availableFloors.find((f) => f.id === currentFloorId);
+
+        // Clear map visuals
+        mapNodesRef.current.forEach((node) => node.drawnNode.setMap(null));
+        mapEdgesRef.current.forEach((edge) => edge.drawnEdge.setMap(null));
+        setMapEdges([]);
+        setMapNodes([]);
+
+        if (!bldgData) {
+            console.error('Building data not found');
+            return;
+        }
+
+        const newNodes: MapNode[] = [];
+
+        getNodes(bldgData.floor, bldgData.buildingId)
+            .then((nodeResponses) => {
+                if (isCancelled) return;
+
+                nodeResponses.forEach((nodeResponse) => {
+                    newNodes.push(createMapNodeFromNodeResponse(nodeResponse));
+                });
+
+                setMapNodes(newNodes);
+
+                return getEdges(bldgData.floor, bldgData.buildingId);
+            })
+            .then((edgeResponses) => {
+                if (isCancelled || !edgeResponses) return;
+
+                edgeResponses.forEach((edgeResponse) => {
+                    const fromNode = newNodes.find(
+                        (node) => node.node.nodeId === edgeResponse.from
+                    );
+                    const toNode = newNodes.find(
+                        (node) => node.node.nodeId === edgeResponse.to
+                    );
+                    if (fromNode && toNode) {
+                        createMapEdge(fromNode, toNode);
+                    }
+                });
+            });
+
+        return () => {
+            // cancel ongoing async logic if effect re-runs
+            isCancelled = true;
+        };
     }, [currentFloorId]);
+
 
     useEffect(() => {
         if(!clickedNode)
@@ -160,6 +249,31 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         });
     }, [map]);
 
+    function createMapNodeFromNodeResponse(node: NodeResponse) {
+        const mapNode: MapNode = {
+            node: new myNode(
+                node.nodeId,
+                node.x,
+                node.y,
+                node.floor,
+                node.nodeType,
+                node.buildingId,
+                node.name,
+                node.roomNumber
+            ),
+            drawnNode: new google.maps.Marker({
+                position: new google.maps.LatLng(node.x, node.y),
+                clickable: true,
+                map: map,
+                zIndex: 1,
+            }),
+        }
+        google.maps.event.addListener(mapNode.drawnNode, 'click', (e: google.maps.MapMouseEvent) =>
+            clickNode(mapNode.node.nodeId)
+        );
+        return mapNode;
+    }
+
     function createMapNode(marker: google.maps.Marker | undefined, position: google.maps.LatLng): MapNode {
         const mapNode: MapNode = {
             node: new myNode(
@@ -190,6 +304,9 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         const startPos = startNode.drawnNode.getPosition();
         const endPos = endNode.drawnNode.getPosition();
         if (!startPos || !endPos) {
+            return;
+        }
+        if(startPos.equals(endPos)){
             return;
         }
         if (
@@ -384,7 +501,6 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             };
             nodes.push(sendNode);
         }
-        // TODO: add floor field: delete all where floorID == x
         await createNode(nodes, true, currentFloor ? currentFloor.floor : "1", currentFloor ? currentFloor.buildingId : "1");
         for (const edge of mapEdges) {
             const sendEdge: EdgeResponse = {

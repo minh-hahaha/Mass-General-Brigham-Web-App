@@ -4,8 +4,15 @@ import PrismaClient from '../bin/prisma-client';
 const router: Router = express.Router();
 
 router.get('/', async (req: Request, res: Response) => {
+    const building = req.query.fromBuilding as string;
+    const floor = req.query.fromFloor as string;
     try {
-        const NODES = await PrismaClient.node.findMany({});
+        const NODES = await PrismaClient.node.findMany({
+            where: {
+                floor: floor,
+                buildingId: building,
+            },
+        });
 
         res.status(200).json(NODES);
     } catch (error) {

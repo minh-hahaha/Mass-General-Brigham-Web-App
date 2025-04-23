@@ -17,8 +17,8 @@ export interface NodeResponse {
 
 
 // GET request to fetch all Nodes
-export async function getNodes() {
-    return (await axios.get<NodeResponse[]>(ROUTES.NODE)).data;
+export async function getNodes(fromFloor: string, fromBuilding: string) {
+    return (await axios.get<NodeResponse[]>(ROUTES.NODE, { params: {fromFloor: fromFloor, fromBuilding: fromBuilding} })).data;
 }
 
 export async function createNode(nodeResponse: NodeResponse[], overwrite: boolean, overwriteFloor: string, overwriteBuilding: string): Promise<NodeResponse> {
