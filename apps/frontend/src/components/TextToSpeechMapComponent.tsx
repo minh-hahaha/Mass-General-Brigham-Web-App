@@ -57,6 +57,7 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections}:State) => {
                         id="text-directions"
                         className="text-black w-full h-16 overflow-y-auto"
                         dangerouslySetInnerHTML={{ __html: textToSpeak }}
+
                     ></div>
 
                     <div className="flex space-x-2">
