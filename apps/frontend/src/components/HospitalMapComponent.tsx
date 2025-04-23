@@ -249,7 +249,7 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveD
                         //console.log(textDirection.toString().replace(/,/g, '<br><br>'));
                         text.innerHTML = textDirection.toString().replace(/,/g, '<br><br>');
                         setDirections(text.innerHTML);
-                        setDirections2(textDirection.toString().split(","));
+                        setDirections2(textDirection[0].split(","));
 
                     }
                 } catch (error) {
