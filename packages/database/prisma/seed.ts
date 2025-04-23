@@ -791,6 +791,8 @@ async function main() {
         ],
         skipDuplicates: true,
     });
+
+    //TODO: DELETE AFTER LOCATION IS REMOVED
     const createManyLocations = await client.location.createMany({
         data: [
             {
