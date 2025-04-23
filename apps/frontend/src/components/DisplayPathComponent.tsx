@@ -35,7 +35,7 @@ const DisplayPathComponent = ({ coordinates }: Props) => {
                         strokeColor: 'black',
                     },
                     offset: '30px',
-                    repeat: '75px'  // Show an arrow every 150 pixels
+                    repeat: '100px'  // Show an arrow every 150 pixels
                 }]
             });
 

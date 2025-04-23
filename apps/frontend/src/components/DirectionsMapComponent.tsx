@@ -20,12 +20,13 @@ import { GetRecentOrigins, RecentOrigin } from '@/database/recentOrigins.ts';
 import AlgorithmSelector from '@/components/AlgorithmSelector.tsx';
 import DisplayPathComponent from "@/components/DisplayPathComponent.tsx";
 
-const Buildings = ['Chestnut Hill - 850 Boylston Street', '20 Patriot Place', '22 Patriot Place'];
+const Buildings = ['Chestnut Hill - 850 Boylston Street', '20 Patriot Place', '22 Patriot Place', 'Faulkner Hospital'];
 
 const BuildingIDMap: Record<string, string> = {
     'Chestnut Hill - 850 Boylston Street': '1',
     '20 Patriot Place': '2',
     '22 Patriot Place': '3',
+    'Faulkner Hospital': '4',
 };
 
 type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
@@ -214,8 +215,10 @@ const DirectionsMapComponent = () => {
         setTravelMode(e.target.value as TravelModeType);
         if (e.target.value === 'DRIVING') {
             setParking(true);
+            clearParking();
         } else {
             setParking(false);
+            clearParking();
         }
     };
 
@@ -353,7 +356,6 @@ const DirectionsMapComponent = () => {
         setShowHospital((prevState) => !prevState);
     };
 
-    // 42.32641353922122, -71.14992135383609
 
 
     const customLineRef = useRef<google.maps.Polyline | null>(null);
