@@ -65,10 +65,10 @@ const DirectionsMapComponent = () => {
 
     const [currentDirectoryName, setCurrentDirectoryName] = useState('');
 
+    const [fromNodeId, setFromNodeId] = useState('');
     const [toDirectoryNodeId, setToDirectoryNodeId] = useState('');
-    const [fromNode, setFromNode] = useState<myNode>(nullNode);
 
-    const [selectedBuildingId, setSelectedBuildingId] = useState('');
+    // const [selectedBuildingId, setSelectedBuildingId] = useState('');
 
     const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
     const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
@@ -164,15 +164,15 @@ const DirectionsMapComponent = () => {
         handleDeptChange();
     }, [currentDirectoryName]);
 
-    // set selected building id as it changes
-    useEffect(() => {
-        if (toLocation) {
-            const id = BuildingIDMap[toLocation] || '';
-            setSelectedBuildingId(id);
-        } else {
-            setSelectedBuildingId('');
-        }
-    }, [toLocation]);
+    // // set selected building id as it changes
+    // useEffect(() => {
+    //     if (toLocation) {
+    //         const id = BuildingIDMap[toLocation] || '';
+    //         setSelectedBuildingId(id);
+    //     } else {
+    //         setSelectedBuildingId('');
+    //     }
+    // }, [toLocation]);
 
     // find new direction when from and to location change
     useEffect(() => {
@@ -320,13 +320,15 @@ const DirectionsMapComponent = () => {
         setDropOffToParkPath([]);
         if (toLocation === '20 Patriot Place' || toLocation === '22 Patriot Place') {
             setLot('PP_A');
+            setFromNodeId('') // TODO
         }
         else if (toLocation === '1153 Centre St'){
             setLot('FK_A');
+            setFromNodeId('') // TODO
         }
         else {
             setLot('CH_A');
-
+            setFromNodeId('') // TODO
         }
     };
     const handleParkB = () => {
@@ -334,8 +336,15 @@ const DirectionsMapComponent = () => {
         setDropOffToParkPath([]);
         if (toLocation === '20 Patriot Place' || toLocation === '22 Patriot Place') {
             setLot('PP_B');
-        } else {
+            setFromNodeId('')
+        }
+        else if (toLocation === '1153 Centre St'){
+            setLot('FK_B');
+            setFromNodeId('') // TODO
+        }
+        else {
             setLot('CH_B');
+            setFromNodeId('')
         }
     };
     const handleParkC = () => {
@@ -343,8 +352,15 @@ const DirectionsMapComponent = () => {
         setDropOffToParkPath([]);
         if (toLocation === '20 Patriot Place' || toLocation === '22 Patriot Place') {
             setLot('PP_C');
-        } else {
+            setFromNodeId('')
+        }
+        else if (toLocation === '1153 Centre St'){
+            setLot('FK_C');
+            setFromNodeId('') // TODO
+        }
+        else {
             setLot('CH_C');
+            setFromNodeId('')
         }
     };
 
@@ -470,8 +486,6 @@ const DirectionsMapComponent = () => {
     };
 
 
-
-
     return (
         <div className="flex w-screen h-screen">
             {/* LEFT PANEL */}
@@ -587,7 +601,7 @@ const DirectionsMapComponent = () => {
                             onClick={() => handleHere()}
                             className="w-full bg-mgbblue text-white py-2 rounded-sm hover:bg-mgbblue/90 transition disabled:opacity-50"
                         >
-                            {showHospital ? 'Show Google Map' : "I'm Here!"}
+                            I'm Here!
                         </button>
                     </div>
                     <div className="mt-6">
@@ -654,7 +668,7 @@ const DirectionsMapComponent = () => {
                     mapId={'73fda600718f172c'}
                 >
                     <HospitalMapComponent 
-                      startNodeId={'CHFloor1Door8'} 
+                      startNodeId={fromNodeId}
                       endNodeId={toDirectoryNodeId} 
                       selectedAlgorithm={selectedAlgorithm} />
                     {lot !== '' && (
@@ -663,7 +677,7 @@ const DirectionsMapComponent = () => {
                 </Map>
 
                 {/* Route Info Box */}
-                {showRouteInfo && !showHospital && (
+                {showRouteInfo && (
                     <div className="absolute bottom-3 left-6 p-4 bg-white rounded-xl shadow-lg text-sm text-gray-800 max-w-sm space-y-1">
                         <h3 className="font-bold text-base mb-1 text-mgbblue">Route Info</h3>
                         <p>

@@ -8,11 +8,11 @@ declare const __dirname: string;
 
 export async function exportNodesAndEdges(): Promise<void> {
     // Paths to JSON files
-    const CHPath = path.resolve(__dirname, 'JSONFiles', 'CHNodesEdges.json');
-    const PP20thPath = path.resolve(__dirname, 'JSONFiles', '20PPAllNodesEdges.json');
-    const PP22thPath = path.resolve(__dirname, 'JSONFiles', '22PPAllNodesEdges.json');
+    //const CHPath = path.resolve(__dirname, 'JSONFiles', 'CHNodesEdges.json');
+    const PP20thPath1 = path.resolve(__dirname, 'JSONFiles', 'PPF01NodesAndEdge.json');
+    //const PP22thPath = path.resolve(__dirname, 'JSONFiles', '22PPAllNodesEdges.json');
 
-    const buildings = [CHPath, PP20thPath, PP22thPath];
+    const buildings = [PP20thPath1];
 
     // go through buildings
     for (const building of buildings) {
