@@ -6,7 +6,7 @@ import {createNode, deleteNode, getNodes, NodeResponse} from '@/database/getNode
 import {createEdge, deleteEdge, EdgeResponse, getEdges} from '@/database/getEdges.ts';
 import SelectElement from '@/elements/SelectElement.tsx';
 import InputElement from "@/elements/InputElement.tsx";
-import * as async_hooks from "node:async_hooks";
+import { ZoomIn } from 'lucide-react';
 
 interface MapNode {
     node: myNode;
@@ -38,6 +38,8 @@ const availableFloors: Floor[] = [
     { id: "PP-2", floor: "2", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP02.svg" },
     { id: "PP-3", floor: "3", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP03.svg" },
     { id: "PP-4", floor: "4", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP04.svg" },
+
+    { id: "FK-1", floor: "1", buildingId: "3", buildingName: "Faulkner Hospital",svgPath: "/FK01.svg" },
 
 ];
 
@@ -522,8 +524,32 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         })
         return () => {google.maps.event.removeListener(listener)}
     }, [map]);
+
+    const HospitalLocations: Record<string, {lat: number, lng: number, zoom: number}> = {
+        'Chestnut Hill': {lat: 42.325988, lng: -71.149567, zoom: 18},
+        'Patriot Place': {lat: 42.092617, lng: -71.266492, zoom: 18},
+        'Faulkner Hospital': {lat: 42.301684739524546, lng: -71.12816396084828, zoom: 18}
+    };
+
+    const loc = availableFloors.find(f => f.id === currentFloorId)?.buildingName || null;
+    const handleZoomToHospital = () => {
+        if (!map || !loc) return;
+
+        const hospitalLocation = HospitalLocations[loc];
+        if (hospitalLocation) {
+            map.panTo({ lat: hospitalLocation.lat, lng: hospitalLocation.lng });
+            map.setZoom(hospitalLocation.zoom);
+        }
+    };
     return (
         <>
+            <button
+                onClick={handleZoomToHospital}
+                className="absolute top-1/5 right-6 z-10 bg-white p-3 rounded-full shadow-lg hover:bg-gray-100 transition-colors"
+                title="Zoom to hospital"
+            >
+                <ZoomIn size={26} className="text-mgbblue" />
+            </button>
             <div
                 hidden={clickedNode === null || mode === 'Edge'}
                 className="absolute bottom-18 left-8 p-4 bg-white rounded-xl shadow-lg text-sm text-gray-800 max-w-sm space-y-1 z-10"
@@ -547,6 +573,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                     </p>
 
                 </div>
+
                 <SelectElement
                     label={'Select Node Type'}
                     id={'nodeType'}

@@ -40,6 +40,8 @@ const availableFloors: Floor[] = [
     { id: "PP-2", floor: "2", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP02.svg" },
     { id: "PP-3", floor: "3", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP03.svg" },
     { id: "PP-4", floor: "4", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP04.svg" },
+
+    { id: "FK-1", floor: "1", buildingId: "3", buildingName: "Faulkner Hospital",svgPath: "/FK01.svg" },
 ];
 
 
@@ -212,7 +214,6 @@ const HospitalMapComponent = ({
     const [startNode, setStartNode] = useState<myNode>();
     const [endNode, setEndNode] = useState<myNode>();
     const [currentFloorId, setCurrentFloorId] = useState<string>();
-    const [showFloorSelect, setShowFloorSelect] = useState(true);
     const [textSpeech, setTextSpeech] = useState<HTMLElement | null>(null);
 
     console.log(startNodeId);
@@ -306,12 +307,6 @@ const HospitalMapComponent = ({
         return availableFloors.find((f) => f.id === 'CH-1')!;
     };
 
-    // const getCurrentFloorPath = (buildingId: string, floorNumber: string) => {
-    //     return bfsPath.filter(
-    //         node => node.buildingId === buildingId && node.floor === floorNumber
-    //     );
-    // };
-
 
     const chestnutHillFloor = getChestnutHillFloor();
     const patriotPlaceFloor = getCurrentPatriotPlaceFloor();
@@ -337,12 +332,6 @@ const HospitalMapComponent = ({
 // Then use these in your component:
     const { buildingId, floor } = getCurrentFloorInfo();
 
-    // coordinates to test
-    const coords = [ { lat: 42.32641975362307, lng: -71.14992617744028 },
-        { lat: 42.32643660922756, lng: -71.14959023076334 },
-        { lat: 42.3262859001328, lng: -71.14956609088263 },
-        { lat: 42.326275985048134, lng: -71.14951647001675 },
-        { lat: 42.32624227374853, lng: -71.14946819025536 },]
 
     return (
         <>
