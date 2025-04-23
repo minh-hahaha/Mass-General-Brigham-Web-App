@@ -19,6 +19,10 @@ const PatriotPlaceBounds = {
     southWest: { lat: 42.09086272947439, lng: -71.2675430325 }, // Bottom-left corner
     northEast: { lat: 42.09342690806031, lng: -71.2649785507 }, // Top-right corner
 };
+const FaulknerBounds = {
+    southWest: { lat: 42.300487127183445, lng: -71.13067267701479}, // Bottom-left corner
+    northEast: { lat: 42.30301668867676, lng: -71.126350413866 }, // Top-right corner
+};
 
 
 // floor type
@@ -303,6 +307,10 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm}:Props)
             <OverlayComponent
                 bounds={PatriotPlaceBounds}
                 imageSrc={patriotPlaceFloor.svgPath}
+            />
+            <OverlayComponent
+                bounds={FaulknerBounds}
+                imageSrc={'/FK01.svg'}
             />
             {/*<DisplayPathComponent coordinates={GetPolylinePath(currentFloorPath)} />*/}
             {/*<DisplayPathComponent coordinates={coords} />*/}
