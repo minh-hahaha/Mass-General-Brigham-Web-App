@@ -18,11 +18,6 @@ yarn workspace database push
 # Data seed
 yarn prisma db seed
 
-# Build the frontend
-echo "Building frontend..."
-cd /app/apps/frontend
-yarn build
-
 # Start the backend server in the background
 echo "Starting backend..."
 cd /app/apps/backend
