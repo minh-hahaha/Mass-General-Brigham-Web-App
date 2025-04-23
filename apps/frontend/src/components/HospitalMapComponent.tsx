@@ -2,7 +2,7 @@ import FloorSelector from "@/components/FloorSelector.tsx";
 import {useState, useEffect} from "react";
 import {ROUTES} from "common/src/constants.ts";
 import axios from "axios";
-
+import TextToSpeechMapComponent from "@/components/TextToSpeechMapComponent.tsx";
 import {myNode} from "common/src/classes/classes.ts";
 import OverlayComponent from "@/components/OverlayMapComponent.tsx";
 import {GetNode} from "@/database/getDepartmentNode.ts";
@@ -18,6 +18,10 @@ const ChestnutHillBounds = {
 const PatriotPlaceBounds = {
     southWest: { lat: 42.09086272947439, lng: -71.2675430325 }, // Bottom-left corner
     northEast: { lat: 42.09342690806031, lng: -71.2649785507 }, // Top-right corner
+};
+const FaulknerBounds = {
+    southWest: { lat: 42.300487127183445, lng: -71.13067267701479}, // Bottom-left corner
+    northEast: { lat: 42.30301668867676, lng: -71.126350413866 }, // Top-right corner
 };
 
 
@@ -172,25 +176,38 @@ async function FindPath(start: myNode, end: myNode, strategy: string) {
     return nodes;
 }
 
-function GetPolylinePath(path: myNode[]): {lat: number; lng: number}[] {
-    return path.map(node => ({
+function GetPolylinePath(path: myNode[]): { lat: number; lng: number }[] {
+    return path.map((node) => ({
         lat: node.y,
         lng: node.x,
-    }))
+    }));
 }
+
+
+let directions1:string;
+function setDirections(directions: string) {
+    directions1 = directions;
+
+}
+
+
+
 
 // interface for prop
 interface Props {
     startNodeId: string;
     endNodeId: string;
     selectedAlgorithm: string;
+    driveDirections: string;
 }
 
-const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm}:Props) => {
+const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveDirections}:Props) => {
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
     const [startNode, setStartNode] = useState<myNode>();
     const [endNode, setEndNode] = useState<myNode>();
     const [currentFloorId, setCurrentFloorId] = useState<string>();
+    const [showFloorSelect, setShowFloorSelect] = useState(true);
+    const [textSpeech, setTextSpeech] = useState<HTMLElement | null>(null);
 
     console.log(startNodeId);
     console.log(endNodeId);
@@ -222,7 +239,10 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm}:Props)
                     const textDirection = createTextPath(result);
                     const text = document.getElementById('text-directions');
                     if(text) {
+                        setTextSpeech(text);
                         text.innerHTML = textDirection.toString().replace(/,/g, '<br><br>');
+                        setDirections(text.innerHTML);
+
                     }
                 } catch (error) {
                     console.error("Error finding path:", error);
@@ -290,10 +310,14 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm}:Props)
 
     return (
         <>
-            <div
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20"
-            >
+            <TextToSpeechMapComponent
+                walkDirections={directions1}
+                driveDirections={driveDirections}
+            />
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20">
                 <FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />
+
+
             </div>
         <div className="relative w-full h-full">
             <OverlayComponent
@@ -303,6 +327,10 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm}:Props)
             <OverlayComponent
                 bounds={PatriotPlaceBounds}
                 imageSrc={patriotPlaceFloor.svgPath}
+            />
+            <OverlayComponent
+                bounds={FaulknerBounds}
+                imageSrc={'/FK01.svg'}
             />
             {/*<DisplayPathComponent coordinates={GetPolylinePath(currentFloorPath)} />*/}
             {/*<DisplayPathComponent coordinates={coords} />*/}
