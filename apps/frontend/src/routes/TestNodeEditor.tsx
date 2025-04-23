@@ -34,11 +34,12 @@ const availableFloors: Floor[] = [
     { id: "PP-2", floor: "2", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP02.svg" },
     { id: "PP-3", floor: "3", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP03.svg" },
     { id: "PP-4", floor: "4", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP04.svg" },
+
 ];
 
 const TestNodeEditor = () => {
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-    const [currentFloorId, setCurrentFloorId] = useState<string>("");
+    const [currentFloorId, setCurrentFloorId] = useState<string>("CH-1");
 
     const handleFloorChange = (floorId: string) => {
         setCurrentFloorId(floorId);
@@ -90,7 +91,7 @@ const TestNodeEditor = () => {
                         >
                             <FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />
                         </div>
-                        <NodeEditorComponent currentFloorId={currentFloorId}></NodeEditorComponent>
+                        <NodeEditorComponent currentFloorId={currentFloorId} ></NodeEditorComponent>
                     </Map>
                 </div>
             </APIProvider>

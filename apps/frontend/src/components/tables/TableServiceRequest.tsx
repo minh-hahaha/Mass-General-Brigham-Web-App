@@ -10,7 +10,6 @@ import {
 } from '@/components/ui/table.tsx';
 import { FaChevronRight } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import TransportationRequestPage from '@/routes/TransportationRequestPage.tsx';
 
 interface Props {
     setActiveForm: (
@@ -170,7 +169,7 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                 <div className="flex flex-row items-center gap-2 mt-2">
                     <button
                         onClick={handleShowNewRequests}
-                        className="bg-mgbblue hover:bg-blue-950 text-white px-9 py-3 rounded text-sm relative top-1"
+                        className="bg-gray-500 hover:bg-gray-700 text-white px-9 py-3 rounded text-sm relative top-1"
                     >
                         New Request +
                     </button>
@@ -248,7 +247,7 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                                     <TableCell className="text-center py-3">
                                         {req.requestTime?.split('T')[1]?.substring(0, 5)}
                                     </TableCell>
-                                    <TableCell>{req.serviceType}</TableCell>
+                                    <TableCell className="text-center py-3">{req.serviceType}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

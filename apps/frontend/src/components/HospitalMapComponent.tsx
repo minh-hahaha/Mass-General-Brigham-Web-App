@@ -1,14 +1,12 @@
-import FloorSelector from "@/components/FloorSelector.tsx";
-import {useState, useEffect} from "react";
-import {ROUTES} from "common/src/constants.ts";
-import axios from "axios";
-import TextToSpeechMapComponent from "@/components/TextToSpeechMapComponent.tsx";
-import {myNode} from "common/src/classes/classes.ts";
-import OverlayComponent from "@/components/OverlayMapComponent.tsx";
-import {GetNode} from "@/database/getDepartmentNode.ts";
-import DisplayPathComponent from "@/components/DisplayPathComponent.tsx";
-
-
+import FloorSelector from '@/components/FloorSelector.tsx';
+import { useState, useEffect } from 'react';
+import { ROUTES } from 'common/src/constants.ts';
+import axios from 'axios';
+import TextToSpeechMapComponent from '@/components/TextToSpeechMapComponent.tsx';
+import { myNode } from 'common/src/classes/classes.ts';
+import OverlayComponent from '@/components/OverlayMapComponent.tsx';
+import { GetNode } from '@/database/getDepartmentNode.ts';
+import DisplayPathComponent from '@/components/DisplayPathComponent.tsx';
 
 const ChestnutHillBounds = {
     southWest: { lat: 42.32543670863917, lng: -71.15022693442262 }, // Bottom-left corner
@@ -20,10 +18,9 @@ const PatriotPlaceBounds = {
     northEast: { lat: 42.09342690806031, lng: -71.2649785507 }, // Top-right corner
 };
 const FaulknerBounds = {
-    southWest: { lat: 42.300487127183445, lng: -71.13067267701479}, // Bottom-left corner
+    southWest: { lat: 42.300487127183445, lng: -71.13067267701479 }, // Bottom-left corner
     northEast: { lat: 42.30301668867676, lng: -71.126350413866 }, // Top-right corner
 };
-
 
 // floor type
 interface Floor {
@@ -163,15 +160,14 @@ function getNumberSuffix(num: string): string {
     }
 }
 
-
-
 async function FindPath(start: myNode, end: myNode, strategy: string) {
-    const data = JSON.stringify({start, end, strategy});
+    const data = JSON.stringify({ start, end, strategy });
     console.log(data);
     const res = await axios.post(ROUTES.FINDPATH, data, {
-        headers: {'Content-Type': 'application/json'}
-    })
-    const nodes : myNode[] = res.data
+        headers: { 'Content-Type': 'application/json' },
+    });
+    const nodes: myNode[] = res.data;
+    // console.log("PATH" + nodes)
     return nodes;
 }
 
@@ -182,15 +178,15 @@ function GetPolylinePath(path: myNode[]): { lat: number; lng: number }[] {
     }));
 }
 
-
-let directions1:string;
+let directions1: string;
 function setDirections(directions: string) {
     directions1 = directions;
-
 }
-
-
-
+let directions11: string[];
+function setDirections2(directions: string[]) {
+    directions11 = directions;
+    console.log(directions11);
+}
 
 // interface for prop
 interface Props {
@@ -198,9 +194,18 @@ interface Props {
     endNodeId: string;
     selectedAlgorithm: string;
     driveDirections: string;
+    drive2Directions: string[];
+    showTextDirections: boolean;
 }
 
-const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveDirections}:Props) => {
+const HospitalMapComponent = ({
+    startNodeId,
+    endNodeId,
+    selectedAlgorithm,
+    driveDirections,
+    drive2Directions,
+    showTextDirections,
+}: Props) => {
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
     const [startNode, setStartNode] = useState<myNode>();
     const [endNode, setEndNode] = useState<myNode>();
@@ -208,8 +213,8 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveD
     const [showFloorSelect, setShowFloorSelect] = useState(true);
     const [textSpeech, setTextSpeech] = useState<HTMLElement | null>(null);
 
-    console.log("start nodeId in hospitalMapComponent" + startNodeId);
-    console.log("end nodeId in hospitalMapComponent" + endNodeId);
+    console.log(startNodeId);
+    console.log(endNodeId);
 
     // get node using nodeId
     useEffect(() => {
@@ -227,8 +232,6 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveD
 
         console.log('Got Department Node');
     }, [startNodeId, endNodeId]);
-    console.log("-----" + typeof endNode?.x);
-
 
     // Find path and text directions
     useEffect(() => {
@@ -236,18 +239,25 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveD
             if (startNode && endNode) {
                 try {
                     const result = await FindPath(startNode, endNode, selectedAlgorithm);
-                    console.log("Path found:", result);
+                    console.log('Path found:', result);
                     setBFSPath(result);
                     const textDirection = createTextPath(result);
                     const text = document.getElementById('text-directions');
-                    if(text) {
-                        setTextSpeech(text);
+                    if (text) {
+                        //setTextSpeech(text);
+                        //console.log(text);
+                        console.log(textDirection);
+                        //console.log(textDirection.toString().replace(/,/g, '<br><br>'));
                         text.innerHTML = textDirection.toString().replace(/,/g, '<br><br>');
                         setDirections(text.innerHTML);
+                        console.log(text.innerHTML);
+                        setDirections2(text.innerHTML.split('<br><br>'));
+
+
 
                     }
                 } catch (error) {
-                    console.error("Error finding path:", error);
+                    console.error('Error finding path:', error);
                     setBFSPath([]);
                 }
             } else {
@@ -256,13 +266,13 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveD
             }
         };
         getMyPaths();
-    }, [startNode, endNode,selectedAlgorithm]);
+    }, [startNode, endNode, selectedAlgorithm]);
 
     // auto-select floor id for start node
     useEffect(() => {
         if (bfsPath.length > 0 && startNode) {
             const startFloor = availableFloors.find(
-                f => f.buildingId === startNode.buildingId && f.floor === startNode.floor
+                (f) => f.buildingId === startNode.buildingId && f.floor === startNode.floor
             );
             if (startFloor) {
                 setCurrentFloorId(startFloor.id);
@@ -280,17 +290,19 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveD
     const getCurrentPatriotPlaceFloor = () => {
         let floorId = currentFloorId;
         if (!floorId?.startsWith('PP-')) {
-            floorId = "PP-1"; // Default to PP-1 if not a PP floor
+            floorId = 'PP-1'; // Default to PP-1 if not a PP floor
         }
 
         // Find the floor data
-        return availableFloors.find(f => f.id === floorId) || availableFloors.find(f => f.id === "PP-1")!;
+        return (
+            availableFloors.find((f) => f.id === floorId) ||
+            availableFloors.find((f) => f.id === 'PP-1')!
+        );
     };
 
     const getChestnutHillFloor = () => {
-        return availableFloors.find(f => f.id === "CH-1")!;
+        return availableFloors.find((f) => f.id === 'CH-1')!;
     };
-
 
     // const getCurrentFloorPath = (buildingId: string, floorNumber: string) => {
     //     return bfsPath.filter(
@@ -304,7 +316,7 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveD
 
     const getCurrentFloorPath = (buildingId: string, floorNumber: string) => {
         return bfsPath.filter(
-            node => node.buildingId === buildingId && node.floor === floorNumber
+            (node) => node.buildingId === buildingId && node.floor === floorNumber
         );
     };
 
@@ -332,10 +344,14 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveD
 
     return (
         <>
-            <TextToSpeechMapComponent
-                walkDirections={directions1}
-                driveDirections={driveDirections}
-            />
+            {showTextDirections && (
+                <TextToSpeechMapComponent
+                    walkDirections={directions1}
+                    driveDirections={driveDirections}
+                    drive22Directions={drive2Directions}
+                    walk22Directions={directions11}
+                />
+            )}
             <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20">
                 <FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />
 
@@ -360,6 +376,5 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveD
         </>
     );
 };
-
 
 export default HospitalMapComponent;
