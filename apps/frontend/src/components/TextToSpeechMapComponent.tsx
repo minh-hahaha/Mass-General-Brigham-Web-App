@@ -70,6 +70,10 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Direc
         }
     };
 
+    useEffect(() => {
+        setTextToDisplay(driveDirections);
+    }, [driveDirections]);
+
 
     function htmlToPlainText(html: string): string {
         const div = document.createElement('div');
@@ -108,16 +112,16 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Direc
     return (
         <>
 
-            <div className="fixed top-16 right-10 p-4 z-50">
-                <div className="bg-white p-4  rounded shadow-md flex flex-col items-end space-y-2 border border-gray-200 w-96 z-10 bg-white rounded-lg">
+            <div className="fixed top-14 right-10 p-4 z-50">
+                <div className="p-5 shadow-md flex flex-col items-end space-y-2 border border-gray-200 w-90 z-10 bg-white rounded-lg">
                     <div
                         id="text-directions"
-                        className="text-black w-full h-16 overflow-y-auto"
+                        className="text-black w-full h-14 overflow-y-auto text-center"
                         dangerouslySetInnerHTML={{ __html: textToDisplay }}
 
                     ></div>
 
-                    <div className="flex space-x-2">
+                    <div className="flex space-x-2 mt-3">
                         <MGBButton onClick={handleModeSwitch} variant={"secondary"} disabled={false}>
                             {textMode}
                              </MGBButton>

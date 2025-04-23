@@ -86,6 +86,7 @@ const DirectionsMapComponent = () => {
     const [selectedAlgorithm, setSelectedAlgorithm] = useState('BFS');
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const [setTTS, TTS]=useState<string>('');
+    const [showTextDirection, setShowTextDirection] = useState<boolean>(false);
 
     useEffect(() => {
         const checkAdmin = () => {
@@ -665,6 +666,7 @@ const DirectionsMapComponent = () => {
                       selectedAlgorithm={selectedAlgorithm}
                       driveDirections={textDirections}
                       drive2Directions={text2Directions}
+                      showTextDirections={!!toLocation}
                     />
                     {lot !== '' && (
                         <DisplayPathComponent coordinates={dropOffToParkPath}/>

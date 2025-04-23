@@ -1,14 +1,12 @@
-import FloorSelector from "@/components/FloorSelector.tsx";
-import {useState, useEffect} from "react";
-import {ROUTES} from "common/src/constants.ts";
-import axios from "axios";
-import TextToSpeechMapComponent from "@/components/TextToSpeechMapComponent.tsx";
-import {myNode} from "common/src/classes/classes.ts";
-import OverlayComponent from "@/components/OverlayMapComponent.tsx";
-import {GetNode} from "@/database/getDepartmentNode.ts";
-import DisplayPathComponent from "@/components/DisplayPathComponent.tsx";
-
-
+import FloorSelector from '@/components/FloorSelector.tsx';
+import { useState, useEffect } from 'react';
+import { ROUTES } from 'common/src/constants.ts';
+import axios from 'axios';
+import TextToSpeechMapComponent from '@/components/TextToSpeechMapComponent.tsx';
+import { myNode } from 'common/src/classes/classes.ts';
+import OverlayComponent from '@/components/OverlayMapComponent.tsx';
+import { GetNode } from '@/database/getDepartmentNode.ts';
+import DisplayPathComponent from '@/components/DisplayPathComponent.tsx';
 
 const ChestnutHillBounds = {
     southWest: { lat: 42.32543670863917, lng: -71.15022693442262 }, // Bottom-left corner
@@ -20,10 +18,9 @@ const PatriotPlaceBounds = {
     northEast: { lat: 42.09342690806031, lng: -71.2649785507 }, // Top-right corner
 };
 const FaulknerBounds = {
-    southWest: { lat: 42.300487127183445, lng: -71.13067267701479}, // Bottom-left corner
+    southWest: { lat: 42.300487127183445, lng: -71.13067267701479 }, // Bottom-left corner
     northEast: { lat: 42.30301668867676, lng: -71.126350413866 }, // Top-right corner
 };
-
 
 // floor type
 interface Floor {
@@ -37,15 +34,43 @@ interface Floor {
 // All available floors across buildings
 const availableFloors: Floor[] = [
     // Chestnut Hill
-    { id: "CH-1", floor: "1", buildingId: "1", buildingName: "Chestnut Hill",svgPath: "/CH01.svg" },
+    {
+        id: 'CH-1',
+        floor: '1',
+        buildingId: '1',
+        buildingName: 'Chestnut Hill',
+        svgPath: '/CH01.svg',
+    },
     // 20 Patriot Place
-    { id: "PP-1", floor: "1", buildingId: "2", buildingName: "Patriot Place", svgPath: "/PP01.svg" },
-    { id: "PP-2", floor: "2", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP02.svg" },
-    { id: "PP-3", floor: "3", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP03.svg" },
-    { id: "PP-4", floor: "4", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP04.svg" },
+    {
+        id: 'PP-1',
+        floor: '1',
+        buildingId: '2',
+        buildingName: 'Patriot Place',
+        svgPath: '/PP01.svg',
+    },
+    {
+        id: 'PP-2',
+        floor: '2',
+        buildingId: '2',
+        buildingName: 'Patriot Place',
+        svgPath: '/PP02.svg',
+    },
+    {
+        id: 'PP-3',
+        floor: '3',
+        buildingId: '2',
+        buildingName: 'Patriot Place',
+        svgPath: '/PP03.svg',
+    },
+    {
+        id: 'PP-4',
+        floor: '4',
+        buildingId: '2',
+        buildingName: 'Patriot Place',
+        svgPath: '/PP04.svg',
+    },
 ];
-
-
 
 /* TEXT DIRECTIONS HOSPITAL INTERIOR */
 
@@ -163,15 +188,13 @@ function getNumberSuffix(num: string): string {
     }
 }
 
-
-
 async function FindPath(start: myNode, end: myNode, strategy: string) {
-    const data = JSON.stringify({start, end, strategy});
+    const data = JSON.stringify({ start, end, strategy });
     console.log(data);
     const res = await axios.post(ROUTES.FINDPATH, data, {
-        headers: {'Content-Type': 'application/json'}
-    })
-    const nodes : myNode[] = res.data
+        headers: { 'Content-Type': 'application/json' },
+    });
+    const nodes: myNode[] = res.data;
     // console.log("PATH" + nodes)
     return nodes;
 }
@@ -183,19 +206,14 @@ function GetPolylinePath(path: myNode[]): { lat: number; lng: number }[] {
     }));
 }
 
-
-let directions1:string;
+let directions1: string;
 function setDirections(directions: string) {
     directions1 = directions;
-
 }
-let directions11:string[];
+let directions11: string[];
 function setDirections2(directions: string[]) {
     directions11 = directions;
-
 }
-
-
 
 // interface for prop
 interface Props {
@@ -204,9 +222,17 @@ interface Props {
     selectedAlgorithm: string;
     driveDirections: string;
     drive2Directions: string[];
+    showTextDirections: boolean;
 }
 
-const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveDirections, drive2Directions}:Props) => {
+const HospitalMapComponent = ({
+    startNodeId,
+    endNodeId,
+    selectedAlgorithm,
+    driveDirections,
+    drive2Directions,
+    showTextDirections,
+}: Props) => {
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
     const [startNode, setStartNode] = useState<myNode>();
     const [endNode, setEndNode] = useState<myNode>();
@@ -239,21 +265,20 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveD
             if (startNode && endNode) {
                 try {
                     const result = await FindPath(startNode, endNode, selectedAlgorithm);
-                    console.log("Path found:", result);
+                    console.log('Path found:', result);
                     setBFSPath(result);
                     const textDirection = createTextPath(result);
                     const text = document.getElementById('text-directions');
-                    if(text) {
+                    if (text) {
                         setTextSpeech(text);
                         console.log(textDirection);
                         //console.log(textDirection.toString().replace(/,/g, '<br><br>'));
                         text.innerHTML = textDirection.toString().replace(/,/g, '<br><br>');
                         setDirections(text.innerHTML);
-                        setDirections2(textDirection[0].split(","));
-
+                        setDirections2(textDirection.toString().split(','));
                     }
                 } catch (error) {
-                    console.error("Error finding path:", error);
+                    console.error('Error finding path:', error);
                     setBFSPath([]);
                 }
             } else {
@@ -262,13 +287,13 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveD
             }
         };
         getMyPaths();
-    }, [startNode, endNode,selectedAlgorithm]);
+    }, [startNode, endNode, selectedAlgorithm]);
 
     // auto-select floor id for start node
     useEffect(() => {
         if (bfsPath.length > 0 && startNode) {
             const startFloor = availableFloors.find(
-                f => f.buildingId === startNode.buildingId && f.floor === startNode.floor
+                (f) => f.buildingId === startNode.buildingId && f.floor === startNode.floor
             );
             if (startFloor) {
                 setCurrentFloorId(startFloor.id);
@@ -286,68 +311,66 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveD
     const getCurrentPatriotPlaceFloor = () => {
         let floorId = currentFloorId;
         if (!floorId?.startsWith('PP-')) {
-            floorId = "PP-1"; // Default to PP-1 if not a PP floor
+            floorId = 'PP-1'; // Default to PP-1 if not a PP floor
         }
 
         // Find the floor data
-        return availableFloors.find(f => f.id === floorId) || availableFloors.find(f => f.id === "PP-1")!;
-    };
-
-    const getChestnutHillFloor = () => {
-        return availableFloors.find(f => f.id === "CH-1")!;
-    };
-
-
-    const getCurrentFloorPath = (buildingId: string, floorNumber: string) => {
-        return bfsPath.filter(
-            node => node.buildingId === buildingId && node.floor === floorNumber
+        return (
+            availableFloors.find((f) => f.id === floorId) ||
+            availableFloors.find((f) => f.id === 'PP-1')!
         );
     };
 
+    const getChestnutHillFloor = () => {
+        return availableFloors.find((f) => f.id === 'CH-1')!;
+    };
+
+    const getCurrentFloorPath = (buildingId: string, floorNumber: string) => {
+        return bfsPath.filter(
+            (node) => node.buildingId === buildingId && node.floor === floorNumber
+        );
+    };
 
     const chestnutHillFloor = getChestnutHillFloor();
     const patriotPlaceFloor = getCurrentPatriotPlaceFloor();
 
-
     // coordinates to test
-    const coords = [ { lat: 42.32641975362307, lng: -71.14992617744028 },
+    const coords = [
+        { lat: 42.32641975362307, lng: -71.14992617744028 },
         { lat: 42.32643660922756, lng: -71.14959023076334 },
         { lat: 42.3262859001328, lng: -71.14956609088263 },
         { lat: 42.326275985048134, lng: -71.14951647001675 },
-        { lat: 42.32624227374853, lng: -71.14946819025536 },]
+        { lat: 42.32624227374853, lng: -71.14946819025536 },
+    ];
 
     return (
         <>
-            <TextToSpeechMapComponent
-                walkDirections={directions1}
-                driveDirections={driveDirections}
-                drive22Directions={drive2Directions}
-                walk22Directions={directions11}
-            />
+            {showTextDirections && (
+                <TextToSpeechMapComponent
+                    walkDirections={directions1}
+                    driveDirections={driveDirections}
+                    drive22Directions={drive2Directions}
+                    walk22Directions={directions11}
+                />
+            )}
             <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20">
                 <FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />
-
-
             </div>
-        <div className="relative w-full h-full">
-            <OverlayComponent
-                bounds={ChestnutHillBounds}
-                imageSrc={chestnutHillFloor.svgPath}
-            />
-            <OverlayComponent
-                bounds={PatriotPlaceBounds}
-                imageSrc={patriotPlaceFloor.svgPath}
-            />
-            <OverlayComponent
-                bounds={FaulknerBounds}
-                imageSrc={'/FK01.svg'}
-            />
-            {/*<DisplayPathComponent coordinates={GetPolylinePath(currentFloorPath)} />*/}
-            {/*<DisplayPathComponent coordinates={coords} />*/}
-        </div>
+            <div className="relative w-full h-full">
+                <OverlayComponent
+                    bounds={ChestnutHillBounds}
+                    imageSrc={chestnutHillFloor.svgPath}
+                />
+                <OverlayComponent
+                    bounds={PatriotPlaceBounds}
+                    imageSrc={patriotPlaceFloor.svgPath}
+                />
+                <OverlayComponent bounds={FaulknerBounds} imageSrc={'/FK01.svg'} />
+                {/*<DisplayPathComponent coordinates={GetPolylinePath(currentFloorPath)} />*/}
+                {/*<DisplayPathComponent coordinates={coords} />*/}
+            </div>
         </>
     );
 };
-
 
 export default HospitalMapComponent;
