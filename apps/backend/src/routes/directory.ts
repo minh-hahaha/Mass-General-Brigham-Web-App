@@ -110,6 +110,7 @@ router.get('/node', async function (req: Request, res: Response) {
                 nodeId: nodeId,
             },
         });
+        console.log(NODE_DATA);
         res.send(NODE_DATA);
     } catch (error) {
         console.error(`NO NODES FOR THIS LOCATION: ${error}`);

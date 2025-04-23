@@ -8,7 +8,7 @@ interface Props {
 const DisplayPathComponent = ({ coordinates }: Props) => {
     const map = useMap();
     const polylineRef = useRef<google.maps.Polyline | null>(null);
-
+    console.log("coords " + coordinates[0])
     useEffect(() => {
         if (!map) return;
 

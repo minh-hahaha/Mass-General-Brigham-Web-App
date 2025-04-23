@@ -72,10 +72,10 @@ const DirectionsMapComponent = () => {
 
     const [currentDirectoryName, setCurrentDirectoryName] = useState('');
 
+    const [fromNodeId, setFromNodeId] = useState('');
     const [toDirectoryNodeId, setToDirectoryNodeId] = useState('');
-    const [fromNode, setFromNode] = useState<myNode>(nullNode);
 
-    const [selectedBuildingId, setSelectedBuildingId] = useState('');
+    // const [selectedBuildingId, setSelectedBuildingId] = useState('');
 
     const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
     const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
@@ -160,12 +160,10 @@ const DirectionsMapComponent = () => {
         const handleDeptChange = () => {
             console.log('currentDirectoryName - ', currentDirectoryName);
             const dept = directoryList.find((dept) => dept.deptName === currentDirectoryName);
-            console.log('dept - ' + dept);
-
             //checks null
             if (dept) {
                 setToDirectoryNodeId(dept.nodeId);
-                console.log(dept.nodeId);
+                console.log("DEPT NODE ID: " + dept.nodeId);
             } else {
                 setToDirectoryNodeId('');
             }
@@ -173,15 +171,15 @@ const DirectionsMapComponent = () => {
         handleDeptChange();
     }, [currentDirectoryName]);
 
-    // set selected building id as it changes
-    useEffect(() => {
-        if (toLocation) {
-            const id = BuildingIDMap[toLocation] || '';
-            setSelectedBuildingId(id);
-        } else {
-            setSelectedBuildingId('');
-        }
-    }, [toLocation]);
+    // // set selected building id as it changes
+    // useEffect(() => {
+    //     if (toLocation) {
+    //         const id = BuildingIDMap[toLocation] || '';
+    //         setSelectedBuildingId(id);
+    //     } else {
+    //         setSelectedBuildingId('');
+    //     }
+    // }, [toLocation]);
 
     // find new direction when from and to location change
     useEffect(() => {
@@ -234,7 +232,7 @@ const DirectionsMapComponent = () => {
 
     const [lot, setLot] = useState('');
     const [parking, setParking] = useState(true);
-    const [showHospital, setShowHospital] = useState(false);
+    const [pathVisible, setPathVisible] = useState(false);
     const [dropOffToParkPath, setDropOffToParkPath] = useState<Coordinate[]>([]);
     const [dropOffLocation, setDropOffLocation] = useState<google.maps.LatLng>();
     // draw route
@@ -329,6 +327,7 @@ const DirectionsMapComponent = () => {
     // drop off to parking
     const handleParkA = () => {
         clearParking();
+        setPathVisible(false);
         setDropOffToParkPath([]);
         if (toLocation === '20 Patriot Place' || toLocation === '22 Patriot Place') {
             setLot('PP_A');
@@ -338,37 +337,74 @@ const DirectionsMapComponent = () => {
         }
         else {
             setLot('CH_A');
-
         }
     };
     const handleParkB = () => {
         clearParking();
+        setPathVisible(false);
         setDropOffToParkPath([]);
         if (toLocation === '20 Patriot Place' || toLocation === '22 Patriot Place') {
             setLot('PP_B');
-        } else {
+        }
+        else if (toLocation === '1153 Centre St'){
+            setLot('FK_B');
+        }
+        else {
             setLot('CH_B');
         }
     };
     const handleParkC = () => {
         clearParking();
+        setPathVisible(false);
         setDropOffToParkPath([]);
         if (toLocation === '20 Patriot Place' || toLocation === '22 Patriot Place') {
             setLot('PP_C');
-        } else {
+        }
+        else if (toLocation === '1153 Centre St'){
+            setLot('FK_C');
+        }
+        else {
             setLot('CH_C');
         }
     };
-
     const clearParking = () => {
         setLot('');
     };
 
     const handleHere = () => {
-        setShowHospital((prevState) => !prevState);
+        setPathVisible(true);
+
+        // clear parking
+        clearParking();
+
+        // Get the current location and lot from state
+        const currentLot = lot; // Get the selected lot before clearing
+
+        if (currentLot) {
+            // get prefix and lot letter
+            const [locationPrefix, lotLetter] = currentLot.split('_');
+
+            if (locationPrefix === 'PP') {
+                setFromNodeId(`PPFloor1Parking Lot${lotLetter}`);
+            } else if (locationPrefix === 'FK') {
+                if (lotLetter === 'A') {
+                    setFromNodeId('FKFloor1Parking LotA'); // Replace with actual node ID
+                } else if (lotLetter === 'B') {
+                    setFromNodeId('FKFloor1Parking LotB'); // Replace with actual node ID
+                } else if (lotLetter === 'C') {
+                    setFromNodeId('FKFloor1Parking LotC'); // Replace with actual node ID
+                }
+            } else if (locationPrefix === 'CH') {
+                if (lotLetter === 'A') {
+                    setFromNodeId('CHFloor1Parking Lot1');
+                } else if (lotLetter === 'B') {
+                    setFromNodeId('CHFloor1Parking LotB');
+                } else if (lotLetter === 'C') {
+                    setFromNodeId('CHFloor1Parking LotC');
+                }
+            }
+        }
     };
-
-
 
     const customLineRef = useRef<google.maps.Polyline | null>(null);
     const customMarkersRef = useRef<google.maps.Marker[]>([]);
@@ -481,8 +517,6 @@ const DirectionsMapComponent = () => {
         );
 
     };
-
-
 
     return (
         <div className="flex w-screen h-screen">
@@ -599,7 +633,7 @@ const DirectionsMapComponent = () => {
                             onClick={() => handleHere()}
                             className="w-full bg-mgbblue text-white py-2 rounded-sm hover:bg-mgbblue/90 transition disabled:opacity-50"
                         >
-                            {showHospital ? 'Show Google Map' : "I'm Here!"}
+                            I'm Here!
                         </button>
                     </div>
                     <div className="mt-6">
@@ -661,9 +695,10 @@ const DirectionsMapComponent = () => {
                     mapId={'73fda600718f172c'}
                 >
                     <HospitalMapComponent
-                      startNodeId={'CHFloor1Door8'}
-                      endNodeId={toDirectoryNodeId}
+                        startNodeId={fromNodeId}
+                        endNodeId={toDirectoryNodeId}
                       selectedAlgorithm={selectedAlgorithm}
+                        visible={pathVisible}
                       driveDirections={textDirections}
                       drive2Directions={text2Directions}
                       showTextDirections={!!toLocation}
@@ -674,7 +709,7 @@ const DirectionsMapComponent = () => {
                 </Map>
 
                 {/* Route Info Box */}
-                {showRouteInfo && !showHospital && (
+                {showRouteInfo && (
                     <div className="absolute bottom-3 left-6 p-4 bg-white rounded-xl shadow-lg text-sm text-gray-800 max-w-sm space-y-1">
                         <h3 className="font-bold text-base mb-1 text-mgbblue">Route Info</h3>
                         <p>
