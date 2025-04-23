@@ -24,7 +24,12 @@ async function main() {
             {
                 buildingId: 3,
                 buildingName: '22 Patriot Place',
-            }
+            },
+            {
+                buildingId: 4,
+                buildingName: 'Faulkner Hospital',
+            },
+
         ],
         skipDuplicates: true,
     });
