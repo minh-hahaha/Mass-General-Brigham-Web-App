@@ -44,6 +44,10 @@ const availableFloors: Floor[] = [
 ];
 
 const TestNodeEditor = () => {
+    const loggedIn = sessionStorage.getItem('loggedIn');
+    if (!loggedIn) {
+        window.location.href = '/';
+    }
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
     const [currentFloorId, setCurrentFloorId] = useState<string>("CH-1");
 
