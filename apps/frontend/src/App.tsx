@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LogoBar from './components/LogoBar.tsx';
-import Footer from './components/Footer.tsx';
 import LoginPage from './routes/LoginPage.tsx';
 import HomePage from './routes/HomePage.tsx';
 import TransportationRequestPage from './routes/TransportationRequestPage.tsx';
@@ -12,15 +11,11 @@ import SanitationRequestPage from './routes/SanitationRequestComponent.tsx';
 import TransportRequestPage from "./routes/TransportationRequestPage.tsx";
 import TranslationServiceRequestPage from './routes/TranslationServiceRequestPage.tsx';
 import MedicalDeviceServiceRequestPage from './routes/MedicalDeviceServiceRequestPage.tsx'
-import MedicalDeviceServiceDisplayPage from './routes/MedicalDeviceRequestDisplayPage.tsx'
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { ShadSidebar } from '@/components/ui/shadsidebar.tsx';
 import {MapPage} from "@/routes/MapPage.tsx";
 import MapViewPage from "@/routes/MapViewPage.tsx";
-import SanitationRequestDisplayPage from "@/routes/SanitationRequestDisplayPage.tsx";
-import ServiceRequestSelectPage from "@/routes/ServiceRequestSelectPage.tsx";
 import MaintenanceRequestPage from "@/routes/MaintenanceRequestPage.tsx";
-import AboutPage from './routes/AboutPage.tsx';
 import Cookies from "js-cookie";
 import TestNodeEditor from '@/routes/TestNodeEditor.tsx';
 
@@ -79,14 +74,8 @@ function App() {
                                     path="/SanitationRequest"
                                     element={<SanitationRequestPage />}
                                 />
-                                <Route
-                                    path="/SanitationRequest"
-                                    element={<SanitationRequestPage />}
-                                />
-                                <Route
-                                    path="/SanitationRequestDisplayPage"
-                                    element={<SanitationRequestDisplayPage />}
-                                />
+                        <Route path="/SanitationRequest" element={<SanitationRequestPage />} />
+
                                 <Route
                                     path="/MaintenancePage"
                                     element={<MaintenanceRequestPage />}
@@ -96,24 +85,10 @@ function App() {
                                     element={<TransportationRequestPage />}
                                 />
                                 <Route
-                                    path="/ServiceRequestSelectPage"
-                                    element={<ServiceRequestSelectPage />}
-                                />
-                                <Route
-
-                                    path="/AboutPage"
-                                    element={<AboutPage />}
-                                />
-                                <Route
                                     path={"/MedicalDevicePage"}
                                     element={<MedicalDeviceServiceRequestPage/>}
                                 />
-                                <Route
-                                    path={"/MedicalDeviceDisplayPage"}
-                                    element={<MedicalDeviceServiceDisplayPage/>}
-                                />
                             </Routes>
-                            <Footer/>
                         </main>
                     </div>
                 </BrowserRouter>

@@ -68,11 +68,6 @@ const directoryItems = [
 ];
 
 const forms = [
-    {
-        title: 'Service Requests',
-        url: './ServiceRequestSelectPage',
-        icon: Tablet,
-    },
     // {
     //     title: 'Transportation Request',
     //     url: '/TransportationRequestPage',
@@ -94,7 +89,7 @@ const forms = [
     //     icon: Hammer,
     // },
     {
-        title: 'Requests Display Page',
+        title: 'Service Requests Page',
         url: '/ServiceRequestDisplay',
         icon: Tablet,
     },
