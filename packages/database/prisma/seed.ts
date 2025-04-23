@@ -125,6 +125,7 @@ async function main() {
                 buildingId: 1,
                 deptPhone: '617-732-9500',
                 deptServices: 'Orthopedic surgery, Vascular surgery, Contact Dermatitis and Occupational Dermatology Program, Pain Medicine and Travel Medicine',
+                nodeId: "CHFloor1Road130"
             },
             {
                 deptId: 13,
@@ -161,6 +162,7 @@ async function main() {
                 buildingId: 1,
                 deptPhone: '617-732-9821',
                 deptServices: 'CT scan, MRI, X-Ray',
+                nodeId: "CHFloor1Room102"
             },
             {
                 deptId: 18,
@@ -175,6 +177,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'Blood Draw / Phlebotomy',
+                nodeId: "PPFloor1Room130"
             },
             {
                 deptId: 20,
@@ -182,6 +185,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'Pharmacy',
+                nodeId: "PPFloor1Room130"
             },
             {
                 deptId: 21,
@@ -189,6 +193,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'Via Fax: 508-718-4026',
                 deptServices: 'magnetic resonance imaging (MRI), computed tomography (CT), single photon emission computed tomography (SPECT) imaging, ultrasound, digital mammography, x-ray, bone densitometry. Available twice a week: arthrograms, magnetic resonance (MR) arthrograms, computed tomography (CT) arthrograms, diagnostic and therapeutic joint injections',
+                nodeId:"PPFloor1Room110"
             },
             {
                 deptId: 22,
@@ -196,6 +201,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: '1-866-378-9164',
                 deptServices: 'Transthoracic echocardiography, Holter monitoring, Electrocardiogram (ECG), Exercise tolerance testing, Exercise stress echocardiography, Vascular and arterial studies',
+                nodeId:"PPFloor1Room150"
             },
             {
                 deptId: 23,
@@ -226,6 +232,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: ' 1-866-378-9164',
                 deptServices: 'Cardiac Rehab, Occupational Therapy(Hand Therapy, Upper Extremity), Physical Therapy, Speech - Language, Clinical Lab, Surgi-Care',
+                nodeId: "PPFloor2Room"
             },
             {
                 deptId: 27,
@@ -233,6 +240,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'Audiology, ENT, General and Gastrointestinal Surgery, Plastic Surgery, Thoracic Surgery, Vascular Surgery, Weight Management and Wellness',
+                nodeId: "PPFloor3Room_1"
             },
             {
                 deptId: 28,
@@ -240,6 +248,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: '1-866-378-9164',
                 deptServices: 'arm, elbow and hand disorders, athletic injuries, spine disorders, foot and ankle problems, hip and knee disorders, shoulder issues, joint replacement, musculoskeletal oncology',
+                nodeId: "PPFloor3Room"
             },
             {
                 deptId: 29,
@@ -247,6 +256,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'X-Ray',
+                nodeId: "PPFloor3Room"
             },
             {
                 deptId: 30,
@@ -254,6 +264,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'Electromyography (EMG)',
+                nodeId: "PPFloor4Room1_1"
             },
             {
                 deptId: 31,
@@ -261,7 +272,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'Nutrition',
-
+                nodeId: "PPFloor4Room1_1"
             },
             {
                 deptId: 32,
@@ -269,6 +280,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: '1-866-378-9164',
                 deptServices: 'diagnosis and treatment of spine-related low-back and neck pain, complex regional pain syndrome, post-herpetic neuralgia (shingles), other neuropathic syndromes, chronic pelvic pain, chronic pain in young adults, comprehensive evaluation for patients with cancer-related pain, headaches, arthritis',
+                nodeId: "PPFloor4Room1_1"
             },
             {
                 deptId: 33,
@@ -276,6 +288,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'interventional spine procedures, electrodiagnostic medicine consultations and alternative therapies such as medical acupuncture',
+                nodeId: "PPFloor4Room1_1"
             },
             {
                 deptId: 34,
@@ -283,7 +296,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'Plumonary Function Testing',
-
+                nodeId: "PPFloor4Room1_1"
             },
             {
                 deptId: 35,
@@ -291,7 +304,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'Day Surgery Center',
-
+                nodeId: "PPFloor4Room1_1"
             },
             {
                 deptId: 36,
@@ -313,6 +326,7 @@ async function main() {
                 buildingId: 3,
                 deptPhone: '1-866-378-9164',
                 deptServices: "Allergy, Cardiac Arrhythmia, Dermatology, Endocrinology, Gastroenterology, Kidney (Renal) Medicine, Neurology, Neurosurgery, Ophthalmology, Optometry, Pulmonology, Rheumatology, Vein Care Services, Women's Health",
+                nodeId: "PPFloor3Room_2"
             },
             {
                 deptId: 39,
@@ -327,6 +341,7 @@ async function main() {
                 buildingId: 3,
                 deptPhone: 'N/A',
                 deptServices: 'Blood Draw / Phlebotomy',
+                nodeId: "PPFloor4Room3_1"
             },
             {
                 deptId: 41,
@@ -334,7 +349,7 @@ async function main() {
                 buildingId: 3,
                 deptPhone: 'N/A',
                 deptServices: 'Community Room',
-
+                nodeId: "PPFloor4Room2"
             },
             {
                 deptId: 42,
@@ -342,7 +357,7 @@ async function main() {
                 buildingId: 3,
                 deptPhone: '(508) 718-4050',
                 deptServices: 'Primary Care',
-
+                nodeId: "PPFloor4Room2"
             },
 
             //TODO: UPDATE EACH DEPARTMENT WITH THEIR OWN NODES

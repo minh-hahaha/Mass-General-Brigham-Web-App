@@ -232,7 +232,7 @@ const DirectionsMapComponent = () => {
 
     const [lot, setLot] = useState('');
     const [parking, setParking] = useState(true);
-    const [showHospital, setShowHospital] = useState(false);
+    const [pathVisible, setPathVisible] = useState(false);
     const [dropOffToParkPath, setDropOffToParkPath] = useState<Coordinate[]>([]);
     const [dropOffLocation, setDropOffLocation] = useState<google.maps.LatLng>();
     // draw route
@@ -327,64 +327,84 @@ const DirectionsMapComponent = () => {
     // drop off to parking
     const handleParkA = () => {
         clearParking();
+        setPathVisible(false);
         setDropOffToParkPath([]);
         if (toLocation === '20 Patriot Place' || toLocation === '22 Patriot Place') {
             setLot('PP_A');
-            setFromNodeId('') // TODO
         }
         else if (toLocation === '1153 Centre St'){
             setLot('FK_A');
-            setFromNodeId('') // TODO
         }
         else {
             setLot('CH_A');
-            setFromNodeId('') // TODO
         }
     };
     const handleParkB = () => {
         clearParking();
+        setPathVisible(false);
         setDropOffToParkPath([]);
         if (toLocation === '20 Patriot Place' || toLocation === '22 Patriot Place') {
             setLot('PP_B');
-            setFromNodeId('')
         }
         else if (toLocation === '1153 Centre St'){
             setLot('FK_B');
-            setFromNodeId('') // TODO
         }
         else {
             setLot('CH_B');
-            setFromNodeId('')
         }
     };
     const handleParkC = () => {
         clearParking();
+        setPathVisible(false);
         setDropOffToParkPath([]);
         if (toLocation === '20 Patriot Place' || toLocation === '22 Patriot Place') {
             setLot('PP_C');
-            setFromNodeId('')
         }
         else if (toLocation === '1153 Centre St'){
             setLot('FK_C');
-            setFromNodeId('') // TODO
         }
         else {
             setLot('CH_C');
-            setFromNodeId('')
         }
     };
-
     const clearParking = () => {
         setLot('');
     };
 
     const handleHere = () => {
+        setPathVisible(true);
+
+        // clear parking
         clearParking();
-        setShowHospital((prevState) => !prevState);
-        setFromNodeId("PPFloor1Parking LotC") // TODO
+
+        // Get the current location and lot from state
+        const currentLot = lot; // Get the selected lot before clearing
+
+        if (currentLot) {
+            // get prefix and lot letter
+            const [locationPrefix, lotLetter] = currentLot.split('_');
+
+            if (locationPrefix === 'PP') {
+                setFromNodeId(`PPFloor1Parking Lot${lotLetter}`);
+            } else if (locationPrefix === 'FK') {
+                if (lotLetter === 'A') {
+                    setFromNodeId('FKFloor1Parking LotA'); // Replace with actual node ID
+                } else if (lotLetter === 'B') {
+                    setFromNodeId('FKFloor1Parking LotB'); // Replace with actual node ID
+                } else if (lotLetter === 'C') {
+                    setFromNodeId('FKFloor1Parking LotC'); // Replace with actual node ID
+                }
+            } else if (locationPrefix === 'CH') {
+                if (lotLetter === 'A') {
+                    setFromNodeId('CHFloor1Parking Lot1');
+                } else if (lotLetter === 'B') {
+                    setFromNodeId('CHFloor1Parking LotB');
+                } else if (lotLetter === 'C') {
+                    setFromNodeId('CHFloor1Parking LotC');
+                }
+            }
+        }
     };
-
-
 
     const customLineRef = useRef<google.maps.Polyline | null>(null);
     const customMarkersRef = useRef<google.maps.Marker[]>([]);
@@ -678,6 +698,7 @@ const DirectionsMapComponent = () => {
                         startNodeId={fromNodeId}
                         endNodeId={toDirectoryNodeId}
                       selectedAlgorithm={selectedAlgorithm}
+                        visible={pathVisible}
                       driveDirections={textDirections}
                       drive2Directions={text2Directions}
                       showTextDirections={!!toLocation}

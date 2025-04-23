@@ -193,6 +193,7 @@ interface Props {
     startNodeId: string;
     endNodeId: string;
     selectedAlgorithm: string;
+    visible: boolean;
     driveDirections: string;
     drive2Directions: string[];
     showTextDirections: boolean;
@@ -202,6 +203,7 @@ const HospitalMapComponent = ({
     startNodeId,
     endNodeId,
     selectedAlgorithm,
+    visible,
     driveDirections,
     drive2Directions,
     showTextDirections,
@@ -370,7 +372,9 @@ const HospitalMapComponent = ({
                 bounds={FaulknerBounds}
                 imageSrc={'/FK01.svg'}
             />
+            {visible &&
             <DisplayPathComponent coordinates={GetPolylinePath(getCurrentFloorPath(buildingId, floor))} />
+            }
             {/*<DisplayPathComponent coordinates={coords} />*/}
         </div>
         </>
