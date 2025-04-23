@@ -591,6 +591,226 @@
             "roomNumber": "2"
         },
         {
+            "nodeId": "FKFloor1Door",
+            "x": 42.30126236345959,
+            "y": -71.12787659257752,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Door",
+            "name": "Main Door Entrance",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "FKFloor1Hallway",
+            "x": 42.30134270752775,
+            "y": -71.12805093616349,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Hallway",
+            "name": "Main Hallway",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "FKFloor1Parking Lot",
+            "x": 42.30110762644685,
+            "y": -71.12754131645066,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Parking Lot",
+            "name": "FK Parking Lot A",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "FKFloor1Parking Lot_1",
+            "x": 42.30190766051154,
+            "y": -71.12770694121774,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Parking Lot",
+            "name": "FK Parking Lot B",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "FKFloor1Parking Lot_2",
+            "x": 42.30210737514233,
+            "y": -71.12926963124966,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Parking Lot",
+            "name": "FK Parking Lot C",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "FKFloor1Road",
+            "x": 42.3011820192889,
+            "y": -71.1277277299772,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Road",
+            "name": "9",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "FKFloor1Road_1",
+            "x": 42.30133873992187,
+            "y": -71.12763519376618,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Road",
+            "name": "10",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "FKFloor1Road_10",
+            "x": 42.30094911969692,
+            "y": -71.12920410778688,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Road",
+            "name": "4",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "FKFloor1Road_11",
+            "x": 42.30104831038317,
+            "y": -71.12966812994645,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Road",
+            "name": "3",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "FKFloor1Road_12",
+            "x": 42.30128041597835,
+            "y": -71.12974323179887,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Road",
+            "name": "2",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "FKFloor1Road_13",
+            "x": 42.3015819535934,
+            "y": -71.12943209555314,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Road",
+            "name": "1",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "FKFloor1Road_14",
+            "x": 42.30196284114833,
+            "y": -71.12902439978288,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Road",
+            "name": "FK Lot C Entrance",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "FKFloor1Road_2",
+            "x": 42.30142205959323,
+            "y": -71.12765799254281,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Road",
+            "name": "11",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "FKFloor1Road_3",
+            "x": 42.30162440690752,
+            "y": -71.12747810103208,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Road",
+            "name": "14",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "FKFloor1Road_4",
+            "x": 42.30165019622439,
+            "y": -71.12726754762441,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Road",
+            "name": "15",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "FKFloor1Road_5",
+            "x": 42.30151097403526,
+            "y": -71.12759955454693,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Road",
+            "name": "12",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "FKFloor1Road_6",
+            "x": 42.30161207583976,
+            "y": -71.12777399644311,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Road",
+            "name": "13",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "FKFloor1Road_7",
+            "x": 42.30107013231316,
+            "y": -71.12797029164003,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Road",
+            "name": "8",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "FKFloor1Road_8",
+            "x": 42.30089555666138,
+            "y": -71.12830288555787,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Road",
+            "name": "7",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "FKFloor1Road_9",
+            "x": 42.30072891581496,
+            "y": -71.1287213101642,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Road",
+            "name": "5",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "FKFloor1Room",
+            "x": 42.3014409056941,
+            "y": -71.12806032389504,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Room",
+            "name": "Main Reception",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "FKFloor1Room_1",
+            "x": 42.30173549927414,
+            "y": -71.12719915129453,
+            "floor": "1",
+            "buildingId": "3",
+            "nodeType": "Room",
+            "name": "Belkin House Reception",
+            "roomNumber": null
+        },
+        {
             "nodeId": "PPFloor11",
             "x": 42.09251265453761,
             "y": -71.2667702083791,
@@ -2468,359 +2688,464 @@
             "to": "PPFloor4Hallway_1"
         },
         {
-            "edgeId": 170,
+            "edgeId": 122,
             "from": "PPFloor2Elevator",
             "to": "PPFloor2Hallway1"
         },
         {
-            "edgeId": 171,
+            "edgeId": 123,
             "from": "PPFloor2Hallway1",
             "to": "PPFloor2Hallway Intersection2"
         },
         {
-            "edgeId": 172,
+            "edgeId": 124,
             "from": "PPFloor2Hallway Intersection2",
             "to": "PPFloor2Hallway3"
         },
         {
-            "edgeId": 173,
+            "edgeId": 125,
             "from": "PPFloor2Hallway3",
             "to": "PPFloor2Hallway4"
         },
         {
-            "edgeId": 174,
+            "edgeId": 126,
             "from": "PPFloor2Hallway4",
             "to": "PPFloor2Hallway5"
         },
         {
-            "edgeId": 175,
+            "edgeId": 127,
             "from": "PPFloor2Hallway5",
             "to": "PPFloor2Hallway6"
         },
         {
-            "edgeId": 176,
+            "edgeId": 128,
             "from": "PPFloor2Hallway6",
             "to": "PPFloor2Hallway7"
         },
         {
-            "edgeId": 177,
+            "edgeId": 129,
             "from": "PPFloor2Hallway7",
             "to": "PPFloor2Stairs_2"
         },
         {
-            "edgeId": 178,
+            "edgeId": 130,
             "from": "PPFloor2Hallway1",
             "to": "PPFloor2Hallway8"
         },
         {
-            "edgeId": 179,
+            "edgeId": 131,
             "from": "PPFloor2Stairs",
             "to": "PPFloor2Hallway8"
         },
         {
-            "edgeId": 180,
+            "edgeId": 132,
             "from": "PPFloor2Hallway10",
             "to": "PPFloor2Hallway11"
         },
         {
-            "edgeId": 181,
+            "edgeId": 133,
             "from": "PPFloor2Hallway11",
             "to": "PPFloor2Stairs_1"
         },
         {
-            "edgeId": 182,
+            "edgeId": 134,
             "from": "PPFloor2Elevator_1",
             "to": "PPFloor2Elevator_1"
         },
         {
-            "edgeId": 183,
+            "edgeId": 135,
             "from": "PPFloor2Elevator_1",
             "to": "PPFloor2Hallway10"
         },
         {
-            "edgeId": 184,
+            "edgeId": 136,
             "from": "PPFloor2Hallway8",
             "to": "PPFloor2Hallway9"
         },
         {
-            "edgeId": 185,
+            "edgeId": 137,
             "from": "PPFloor2Hallway9",
             "to": "PPFloor2Room"
         },
         {
-            "edgeId": 186,
+            "edgeId": 138,
             "from": "PPFloor2Hallway9",
             "to": "PPFloor2Hallway10"
         },
         {
-            "edgeId": 187,
+            "edgeId": 139,
             "from": "PPFloor1Parking LotC",
             "to": "PPFloor1Road6"
         },
         {
-            "edgeId": 188,
+            "edgeId": 140,
             "from": "PPFloor1Road6",
             "to": "PPFloor1Road7"
         },
         {
-            "edgeId": 189,
+            "edgeId": 141,
             "from": "PPFloor1Road7",
             "to": "PPFloor1Road8"
         },
         {
-            "edgeId": 190,
+            "edgeId": 142,
             "from": "PPFloor1Road8",
             "to": "PPFloor1Road9"
         },
         {
-            "edgeId": 191,
+            "edgeId": 143,
             "from": "PPFloor1Road3",
             "to": "PPFloor1Road9"
         },
         {
-            "edgeId": 192,
+            "edgeId": 144,
             "from": "PPFloor1Road2",
             "to": "PPFloor1Road3"
         },
         {
-            "edgeId": 193,
+            "edgeId": 145,
             "from": "PPFloor1Parking LotB",
             "to": "PPFloor1Road1_1"
         },
         {
-            "edgeId": 194,
+            "edgeId": 146,
             "from": "PPFloor1Road1_1",
             "to": "PPFloor1Road2"
         },
         {
-            "edgeId": 195,
+            "edgeId": 147,
             "from": "PPFloor1Road9",
             "to": "PPFloor1Parking Lot4"
         },
         {
-            "edgeId": 196,
+            "edgeId": 148,
             "from": "PPFloor1Parking Lot4",
             "to": "PPFloor1Parking LotA"
         },
         {
-            "edgeId": 197,
+            "edgeId": 149,
             "from": "PPFloor1Parking Lot4",
             "to": "PPFloor1Road10"
         },
         {
-            "edgeId": 198,
+            "edgeId": 150,
             "from": "PPFloor1Road10",
             "to": "PPFloor1Road1"
         },
         {
-            "edgeId": 199,
+            "edgeId": 151,
             "from": "PPFloor1Road10",
             "to": "PPFloor1111"
         },
         {
-            "edgeId": 200,
+            "edgeId": 152,
             "from": "PPFloor1111",
             "to": "PPFloor1Door_2"
         },
         {
-            "edgeId": 201,
+            "edgeId": 153,
             "from": "PPFloor1Door_2",
             "to": "PPFloor1Hallway14"
         },
         {
-            "edgeId": 202,
+            "edgeId": 154,
             "from": "PPFloor1Hallway14",
             "to": "PPFloor1Stairs_3"
         },
         {
-            "edgeId": 203,
+            "edgeId": 155,
             "from": "PPFloor1Hallway14",
             "to": "PPFloor1Stairs_1"
         },
         {
-            "edgeId": 204,
+            "edgeId": 156,
             "from": "PPFloor1Hallway14",
             "to": "PPFloor11"
         },
         {
-            "edgeId": 205,
+            "edgeId": 157,
             "from": "PPFloor1Hallway14",
             "to": "PPFloor1Hallway15"
         },
         {
-            "edgeId": 206,
+            "edgeId": 158,
             "from": "PPFloor1Hallway15",
             "to": "PPFloor1Stairs_2"
         },
         {
-            "edgeId": 207,
+            "edgeId": 159,
             "from": "PPFloor1Hallway14",
             "to": "PPFloor1Elevator_2"
         },
         {
-            "edgeId": 208,
+            "edgeId": 160,
             "from": "PPFloor1Road1",
             "to": "PPFloor1Door_3"
         },
         {
-            "edgeId": 209,
+            "edgeId": 161,
             "from": "PPFloor1Door_3",
             "to": "PPFloor1Hallway Intersection1"
         },
         {
-            "edgeId": 210,
+            "edgeId": 162,
             "from": "PPFloor1Hallway Intersection1",
             "to": "PPFloor1Hallway2"
         },
         {
-            "edgeId": 211,
+            "edgeId": 163,
             "from": "PPFloor1Hallway2",
             "to": "PPFloor1Hallway4"
         },
         {
-            "edgeId": 212,
+            "edgeId": 164,
             "from": "PPFloor1Hallway4",
             "to": "PPFloor1Room130"
         },
         {
-            "edgeId": 213,
+            "edgeId": 165,
             "from": "PPFloor1Hallway2",
             "to": "PPFloor1Hallway3"
         },
         {
-            "edgeId": 214,
+            "edgeId": 166,
             "from": "PPFloor1Hallway3",
             "to": "PPFloor1Room110"
         },
         {
-            "edgeId": 215,
+            "edgeId": 167,
             "from": "PPFloor1Hallway Intersection1",
             "to": "PPFloor1Hallway9"
         },
         {
-            "edgeId": 216,
+            "edgeId": 168,
             "from": "PPFloor1Hallway9",
             "to": "PPFloor1Elevator"
         },
         {
-            "edgeId": 217,
+            "edgeId": 169,
             "from": "PPFloor1Hallway9",
             "to": "PPFloor1Hallway10"
         },
         {
-            "edgeId": 218,
+            "edgeId": 170,
             "from": "PPFloor1Hallway9",
             "to": "PPFloor1Stairs_4"
         },
         {
-            "edgeId": 219,
+            "edgeId": 171,
             "from": "PPFloor1Hallway10",
             "to": "PPFloor1111_1"
         },
         {
-            "edgeId": 220,
+            "edgeId": 172,
             "from": "PPFloor1111_1",
             "to": "PPFloor1Door"
         },
         {
-            "edgeId": 221,
+            "edgeId": 173,
             "from": "PPFloor1Door",
             "to": "PPFloor1Room120"
         },
         {
-            "edgeId": 222,
+            "edgeId": 174,
             "from": "PPFloor1111_1",
             "to": "PPFloor1112"
         },
         {
-            "edgeId": 223,
+            "edgeId": 175,
             "from": "PPFloor1112",
             "to": "PPFloor1Door_1"
         },
         {
-            "edgeId": 224,
+            "edgeId": 176,
             "from": "PPFloor1Door_1",
             "to": "PPFloor1Room150"
         },
         {
-            "edgeId": 225,
+            "edgeId": 177,
             "from": "PPFloor1112",
             "to": "PPFloor1113"
         },
         {
-            "edgeId": 226,
+            "edgeId": 178,
             "from": "PPFloor1113",
             "to": "PPFloor1Elevator_1"
         },
         {
-            "edgeId": 227,
+            "edgeId": 179,
             "from": "PPFloor1113",
             "to": "PPFloor1Stairs_5"
         },
         {
-            "edgeId": 228,
+            "edgeId": 180,
             "from": "PPFloor1Hallway2",
             "to": "PPFloor1Hallway Intersection5"
         },
         {
-            "edgeId": 229,
+            "edgeId": 181,
             "from": "PPFloor1Hallway Intersection5",
             "to": "PPFloor1Hallway Intersection6"
         },
         {
-            "edgeId": 230,
+            "edgeId": 182,
             "from": "PPFloor1Hallway Intersection6",
             "to": "PPFloor1Hallway Intersection7"
         },
         {
-            "edgeId": 231,
+            "edgeId": 183,
             "from": "PPFloor1Hallway Intersection7",
             "to": "PPFloor1Hallway Intersection8"
         },
         {
-            "edgeId": 232,
+            "edgeId": 184,
             "from": "PPFloor1Hallway Intersection8",
             "to": "PPFloor1Stairs"
         },
         {
-            "edgeId": 233,
+            "edgeId": 185,
             "from": "PPFloor1Elevator",
             "to": "PPFloor2Elevator"
         },
         {
-            "edgeId": 234,
+            "edgeId": 186,
             "from": "PPFloor2Elevator",
             "to": "PPFloor3Elevator"
         },
         {
-            "edgeId": 235,
+            "edgeId": 187,
             "from": "PPFloor3Elevator",
             "to": "PPFloor4Elevator_1"
         },
         {
-            "edgeId": 236,
+            "edgeId": 188,
             "from": "PPFloor1Elevator_1",
             "to": "PPFloor2Elevator_1"
         },
         {
-            "edgeId": 237,
+            "edgeId": 189,
             "from": "PPFloor2Elevator_1",
             "to": "PPFloor3Elevator_1"
         },
         {
-            "edgeId": 238,
+            "edgeId": 190,
             "from": "PPFloor3Elevator_1",
             "to": "PPFloor4Elevator"
         },
         {
-            "edgeId": 239,
+            "edgeId": 191,
             "from": "PPFloor1Elevator_2",
             "to": "PPFloor3Elevator_2"
         },
         {
-            "edgeId": 240,
+            "edgeId": 192,
             "from": "PPFloor3Elevator_2",
             "to": "PPFloor4Elevator3"
+        },
+        {
+            "edgeId": 193,
+            "from": "FKFloor1Parking Lot",
+            "to": "FKFloor1Road"
+        },
+        {
+            "edgeId": 194,
+            "from": "FKFloor1Road",
+            "to": "FKFloor1Road_1"
+        },
+        {
+            "edgeId": 195,
+            "from": "FKFloor1Road_1",
+            "to": "FKFloor1Road_2"
+        },
+        {
+            "edgeId": 196,
+            "from": "FKFloor1Road_2",
+            "to": "FKFloor1Road_5"
+        },
+        {
+            "edgeId": 197,
+            "from": "FKFloor1Road_5",
+            "to": "FKFloor1Road_3"
+        },
+        {
+            "edgeId": 198,
+            "from": "FKFloor1Road_4",
+            "to": "FKFloor1Road_3"
+        },
+        {
+            "edgeId": 199,
+            "from": "FKFloor1Road_4",
+            "to": "FKFloor1Room_1"
+        },
+        {
+            "edgeId": 200,
+            "from": "FKFloor1Road_5",
+            "to": "FKFloor1Road_6"
+        },
+        {
+            "edgeId": 201,
+            "from": "FKFloor1Road_6",
+            "to": "FKFloor1Parking Lot_1"
+        },
+        {
+            "edgeId": 202,
+            "from": "FKFloor1Road",
+            "to": "FKFloor1Door"
+        },
+        {
+            "edgeId": 203,
+            "from": "FKFloor1Door",
+            "to": "FKFloor1Hallway"
+        },
+        {
+            "edgeId": 204,
+            "from": "FKFloor1Hallway",
+            "to": "FKFloor1Room"
+        },
+        {
+            "edgeId": 205,
+            "from": "FKFloor1Road",
+            "to": "FKFloor1Road_7"
+        },
+        {
+            "edgeId": 206,
+            "from": "FKFloor1Road_7",
+            "to": "FKFloor1Road_8"
+        },
+        {
+            "edgeId": 207,
+            "from": "FKFloor1Road_8",
+            "to": "FKFloor1Road_9"
+        },
+        {
+            "edgeId": 208,
+            "from": "FKFloor1Road_9",
+            "to": "FKFloor1Road_10"
+        },
+        {
+            "edgeId": 209,
+            "from": "FKFloor1Road_10",
+            "to": "FKFloor1Road_11"
+        },
+        {
+            "edgeId": 210,
+            "from": "FKFloor1Road_11",
+            "to": "FKFloor1Road_12"
+        },
+        {
+            "edgeId": 211,
+            "from": "FKFloor1Road_12",
+            "to": "FKFloor1Road_13"
+        },
+        {
+            "edgeId": 212,
+            "from": "FKFloor1Road_13",
+            "to": "FKFloor1Road_14"
+        },
+        {
+            "edgeId": 213,
+            "from": "FKFloor1Road_14",
+            "to": "FKFloor1Parking Lot_2"
         }
     ]
 }

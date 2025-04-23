@@ -49,7 +49,7 @@ const navItems = [
     },
     {
         title: 'Map Editor',
-        url: '/Test',
+        url: '/MapEditorPage',
         icon: PencilLine,
     },
 ];
