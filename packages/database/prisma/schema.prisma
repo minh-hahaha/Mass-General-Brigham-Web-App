@@ -100,10 +100,10 @@ model TranslationRequest {
 
 model Department {
   deptId        Int        @id @default(autoincrement())
-  deptServices  String
+  deptServices  String?
   deptName      String
   buildingId    Int
-  deptPhone     String
+  deptPhone     String?
   members       Employee[]
   locations     Location[]
   building      Building   @relation(fields: [buildingId], references: [buildingId])
