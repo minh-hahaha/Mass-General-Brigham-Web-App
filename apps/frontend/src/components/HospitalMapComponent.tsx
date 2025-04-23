@@ -189,7 +189,11 @@ function setDirections(directions: string) {
     directions1 = directions;
 
 }
+let directions11:string[];
+function setDirections2(directions: string[]) {
+    directions11 = directions;
 
+}
 
 
 
@@ -199,9 +203,10 @@ interface Props {
     endNodeId: string;
     selectedAlgorithm: string;
     driveDirections: string;
+    drive2Directions: string[];
 }
 
-const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveDirections}:Props) => {
+const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveDirections, drive2Directions}:Props) => {
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
     const [startNode, setStartNode] = useState<myNode>();
     const [endNode, setEndNode] = useState<myNode>();
@@ -240,8 +245,11 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveD
                     const text = document.getElementById('text-directions');
                     if(text) {
                         setTextSpeech(text);
+                        console.log(textDirection);
+                        //console.log(textDirection.toString().replace(/,/g, '<br><br>'));
                         text.innerHTML = textDirection.toString().replace(/,/g, '<br><br>');
                         setDirections(text.innerHTML);
+                        setDirections2(textDirection.toString().split(","));
 
                     }
                 } catch (error) {
@@ -313,6 +321,8 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveD
             <TextToSpeechMapComponent
                 walkDirections={directions1}
                 driveDirections={driveDirections}
+                drive22Directions={drive2Directions}
+                walk22Directions={directions11}
             />
             <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20">
                 <FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />

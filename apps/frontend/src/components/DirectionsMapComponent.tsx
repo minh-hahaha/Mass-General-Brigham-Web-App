@@ -82,6 +82,7 @@ const DirectionsMapComponent = () => {
 
     const [buildingID, setBuildingID] = useState<number>(0);
     const [textDirections, setTextDirections] = useState<string>('No destination/start selected');
+    const [text2Directions, setText2Directions] = useState<string[]>([]);
     const [selectedAlgorithm, setSelectedAlgorithm] = useState('BFS');
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const [setTTS, TTS]=useState<string>('');
@@ -277,6 +278,9 @@ const DirectionsMapComponent = () => {
                                 `${direction.instructions} and continue for ${direction.distance ? direction.distance.text : ''}`
                         )
                         .toString();
+                    console.log(htmlStr.split(","));
+                    setText2Directions(htmlStr.split(","));
+                    console.log(htmlStr.replace(/,/g, '<br><br>'));
                     setTextDirections(htmlStr.replace(/,/g, '<br><br>'));
                 }
             });
@@ -659,7 +663,9 @@ const DirectionsMapComponent = () => {
                       startNodeId={'CHFloor1Door8'}
                       endNodeId={toDirectoryNodeId}
                       selectedAlgorithm={selectedAlgorithm}
-                      driveDirections={textDirections}/>
+                      driveDirections={textDirections}
+                      drive2Directions={text2Directions}
+                    />
                     {lot !== '' && (
                         <DisplayPathComponent coordinates={dropOffToParkPath}/>
                     )}
