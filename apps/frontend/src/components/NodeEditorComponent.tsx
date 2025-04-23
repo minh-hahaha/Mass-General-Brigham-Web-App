@@ -117,7 +117,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 position: google.maps.ControlPosition.TOP_CENTER,
                 drawingModes: [
                     drawingLibrary.OverlayType.MARKER,
-                    drawingLibrary.OverlayType.POLYLINE,
+                   // drawingLibrary.OverlayType.POLYLINE,
                 ],
             },
             markerOptions: {
@@ -131,16 +131,16 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         drawingManager.setMap(map);
         google.maps.event.addListener(drawingManager, 'overlaycomplete', (event: google.maps.drawing.OverlayCompleteEvent) => {
             if (event.type === google.maps.drawing.OverlayType.POLYLINE) {
-                const polyline = event.overlay as google.maps.Polyline;
-                const path = polyline.getPath().getArray();
-                const nodes = [];
-                for (let i = 0; i < path.length; i++) {
-                    nodes.push(createMapNode(undefined, path[i]));
-                    if (i !== 0) {
-                        createMapEdge(nodes[i - 1], nodes[i], polyline);
-                    }
-                }
-                drawingManager.setDrawingMode(null);
+                // const polyline = event.overlay as google.maps.Polyline;
+                // const path = polyline.getPath().getArray();
+                // const nodes = [];
+                // for (let i = 0; i < path.length; i++) {
+                //     nodes.push(createMapNode(undefined, path[i]));
+                //     if (i !== 0) {
+                //         createMapEdge(nodes[i - 1], nodes[i], polyline);
+                //     }
+                // }
+                // drawingManager.setDrawingMode(null);
             }else if(event.type === google.maps.drawing.OverlayType.MARKER){
                 const marker = event.overlay as google.maps.Marker;
                 const position = marker.getPosition();
@@ -177,7 +177,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         return mapNode;
     }
 
-    function createMapEdge(startNode: MapNode, endNode: MapNode, line: google.maps.Polyline) {
+    function createMapEdge(startNode: MapNode, endNode: MapNode) {
         const startPos = startNode.drawnNode.getPosition();
         const endPos = endNode.drawnNode.getPosition();
         if (!startPos || !endPos) {
@@ -198,7 +198,11 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             edge: new myEdge(incrementTempEdgeID(), startNode.node, endNode.node),
             to: endNode,
             from: startNode,
-            drawnEdge: line
+            drawnEdge: new google.maps.Polyline({
+                zIndex: -1,
+                map: map,
+                path: [startPos, endPos],
+            })
         };
         console.log("Successfully created edge", mapEdge);
         setMapEdges((prev) => [...prev, mapEdge]);
@@ -214,51 +218,37 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         }
     }
 
-    async function createDBEdge(from: MapNode, to: MapNode) {
-        const newEdge: EdgeResponse = {
-            edgeId: incrementTempEdgeID(),
-            from: from.node.nodeId,
-            to: to.node.nodeId
-        }
-        await createEdge(newEdge);
-    }
-
-    function cut(edges: google.maps.LatLng[], posToCut: google.maps.LatLng): {result: google.maps.LatLng[], edge: MapEdge | null} {
-        const indexToCut = edges.findIndex(edge => edge.equals(posToCut));
-        if(indexToCut !== -1) {
-            const slice1 = edges.slice(0, indexToCut);
-            const slice2 = edges.slice(indexToCut + 1);
-            const node1 = mapNodes.find(node => node.drawnNode.getPosition() === slice1[slice1.length -1]);
-            const node2 = mapNodes.find(node => node.drawnNode.getPosition() === slice2[0]);
-            const edge = mapEdges.find(edge => edge.drawnEdge.getPath().getArray().includes(posToCut));
-            if(!node1 || !node2 || !edge){
-              return {result: slice1.concat(slice2), edge: null};
-           }
-            const mapEdge = {
-                edge: new myEdge(incrementTempEdgeID(), node1.node, node2.node),
-                to: node2,
-                from: node1,
-                drawnEdge: edge.drawnEdge
-            };
-            return {result: slice1.concat(slice2), edge: mapEdge};
-        }
-        return {result: [], edge: null};
-    }
+    // function cut(edges: google.maps.LatLng[], posToCut: google.maps.LatLng): {result: google.maps.LatLng[], edge: MapEdge | null} {
+    //     const indexToCut = edges.findIndex(edge => edge.equals(posToCut));
+    //     if(indexToCut !== -1) {
+    //         const slice1 = edges.slice(0, indexToCut);
+    //         const slice2 = edges.slice(indexToCut + 1);
+    //         const node1 = mapNodes.find(node => node.drawnNode.getPosition() === slice1[slice1.length -1]);
+    //         const node2 = mapNodes.find(node => node.drawnNode.getPosition() === slice2[0]);
+    //         const edge = mapEdges.find(edge => edge.drawnEdge.getPath().getArray().includes(posToCut));
+    //         if(!node1 || !node2 || !edge){
+    //           return {result: slice1.concat(slice2), edge: null};
+    //        }
+    //         const mapEdge = {
+    //             edge: new myEdge(incrementTempEdgeID(), node1.node, node2.node),
+    //             to: node2,
+    //             from: node1,
+    //             drawnEdge: edge.drawnEdge
+    //         };
+    //         return {result: slice1.concat(slice2), edge: mapEdge};
+    //     }
+    //     return {result: [], edge: null};
+    // }
 
     function removeEdgesFromNode(node: MapNode) {
+        const toRemove:number[] = [];
         mapEdgesRef.current.forEach((edge) => {
             if(edge.from.node.nodeId === node.node.nodeId || edge.to.node.nodeId === node.node.nodeId) {
-                const stuff = cut(edge.drawnEdge.getPath().getArray(), node.drawnNode.getPosition() as google.maps.LatLng);
-                if(stuff.edge){
-                    setMapEdges(mapEdgesRef.current.filter(e => (e.edge.from.nodeId !== node.node.nodeId && e.edge.to.nodeId !== node.node.nodeId)).concat(stuff.edge));
-                    edge.drawnEdge.setPath(stuff.result);
-                }
+                edge.drawnEdge.setMap(null);
+                toRemove.push(edge.edge.edgeId);
             }
         });
-        // Remove all edges with the node in it
-        console.log(mapEdgesRef.current);
-        console.log(mapEdgesRef.current.filter(e => (e.edge.from.nodeId !== node.node.nodeId && e.edge.to.nodeId !== node.node.nodeId)));
-        //setMapEdges(mapEdgesRef.current.filter(e => (e.edge.from.nodeId !== node.node.nodeId && e.edge.to.nodeId !== node.node.nodeId)));
+        setMapEdges(mapEdgesRef.current.filter(edge => !toRemove.includes(edge.edge.edgeId)));
     }
 
     function clickNode(nodeId: string) {
@@ -272,31 +262,33 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             if(fromNode && modeRef.current === 'Edge') {
                 const fromEdge = mapEdgesRef.current.find(edge => edge.from.node.nodeId === fromNode.node.nodeId || edge.to.node.nodeId === fromNode.node.nodeId);
                 const toEdge = mapEdgesRef.current.find(edge => edge.from.node.nodeId === toNode.node.nodeId || edge.to.node.nodeId === toNode.node.nodeId);
+                createMapEdge(fromNode, toNode);
                 if(fromEdge){
                     if(toEdge){
                         const indexOfToNode = toEdge.drawnEdge.getPath().getArray().indexOf(toNode.drawnNode.getPosition() as google.maps.LatLng);
                         const indexOfFromNode = fromEdge.drawnEdge.getPath().getArray().indexOf(fromNode.drawnNode.getPosition() as google.maps.LatLng);
-                        console.log(indexOfFromNode, indexOfToNode);
-                        if(indexOfToNode === 0 && indexOfFromNode === fromEdge.drawnEdge.getPath().getArray().length - 1) {
-                            // Connecting lines end to start together
-                            console.log("End to Front")
-                            handleEndToFront(fromEdge, toEdge);
-                            createMapEdge(fromNode, toNode, toEdge.drawnEdge);
-                        }else {
-                            // Branch off w/ two edges
-                            console.log("Branching from line w/ edge")
-                            handleBranchEdge(fromNode, toEdge);
-                        }
-                    }else{
-                        // Branch off w/ node
-                        console.log("Branching from line w/ node")
-                        handleBranchNode(fromNode, toNode);
-                    }
-                }else{
-                    // Node to node
-                    console.log("Connecting node to node")
-                    handleNodeToNode(fromNode, toNode);
-                }
+
+                        // console.log(indexOfFromNode, indexOfToNode);
+                        // if(indexOfToNode === 0 && indexOfFromNode === fromEdge.drawnEdge.getPath().getArray().length - 1) {
+                        //     // Connecting lines end to start together
+                        //     console.log("End to Front")
+                        //     handleEndToFront(fromEdge, toEdge);
+                        //     createMapEdge(fromNode, toNode);
+                        // }else {
+                        //     // Branch off w/ two edges
+                        //     console.log("Branching from line w/ edge")
+                        //     handleBranchEdge(fromNode, toEdge);
+                        // }
+                     }//else{
+                    //     // Branch off w/ node
+                    //     console.log("Branching from line w/ node")
+                    //     handleBranchNode(fromNode, toNode);
+                    // }
+                 }//else{
+                //     // Node to node
+                //     console.log("Connecting node to node")
+                //     handleNodeToNode(fromNode, toNode);
+                // }
                 setClickedNode(null);
             }
         }
@@ -311,7 +303,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         })
         toEdge.drawnEdge.setMap(null);
         toEdge.drawnEdge = line;
-        createMapEdge(fromNode, toEdge.from, line);
+        createMapEdge(fromNode, toEdge.from);
 
     }
 
@@ -321,7 +313,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             path: [fromNode.drawnNode.getPosition() as google.maps.LatLng, toNode.drawnNode.getPosition() as google.maps.LatLng],
             zIndex: -1
         })
-        createMapEdge(fromNode, toNode, line);
+        createMapEdge(fromNode, toNode);
     }
 
     function handleEndToFront(fromEdge: MapEdge, toEdge: MapEdge) {
@@ -342,20 +334,35 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             map: map,
             path: [fromNode.drawnNode.getPosition() as google.maps.LatLng, toNode.drawnNode.getPosition() as google.maps.LatLng]
         });
-        createMapEdge(fromNode, toNode, line);
+        createMapEdge(fromNode, toNode);
     }
 
     const generateCustomId = (node: myNode) => {
         const floorPart = "Floor" + currentFloorId.charAt(currentFloorId.length - 1);
         const typePart = node.nodeType.charAt(0).toUpperCase() + node.nodeType.slice(1);
-        const roomPart = (node.roomNumber ? node.roomNumber : '') || `${mapNodes.length + 1}`;
+        const roomPart = (node.roomNumber || "");
         return `${currentFloorId.substring(0,2)}${floorPart}${typePart}${roomPart}`;
     };
 
     async function saveNodesAndEdges() {
-        const nodes = [];
+        const nodes: NodeResponse[] = [];
+        const usedNodeIds = new Set<string>();
+
         for (const node of mapNodes) {
-            node.node.nodeId = generateCustomId(node.node);
+            const baseId = generateCustomId(node.node);
+            let newId = baseId;
+            let suffix = 1;
+
+            // Ensure uniqueness
+            while (usedNodeIds.has(newId)) {
+                newId = `${baseId}_${suffix++}`;
+            }
+
+            node.node.nodeId = newId;
+            node.node.floor = currentFloorId.charAt(currentFloorId.length - 1);
+            const currentFloor = availableFloors.find(f => f.id === currentFloorId);
+            node.node.buildingId = currentFloor ? currentFloor.buildingId : "1";
+            usedNodeIds.add(newId);
             const sendNode: NodeResponse = {
                 nodeId: node.node.nodeId,
                 x: node.node.x,
@@ -394,7 +401,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
     return (
         <>
             <div
-                hidden={clickedNode === null}
+                hidden={clickedNode === null || mode === 'Edge'}
                 className="absolute bottom-18 left-8 p-4 bg-white rounded-xl shadow-lg text-sm text-gray-800 max-w-sm space-y-1 z-10"
             >
                 <h3 className="font-bold text-base mb-1 text-mgbblue">Node Options</h3>
