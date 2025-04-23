@@ -46,9 +46,6 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
     if (loading) {
         return <p>Loading Requests...</p>;
     }
-    if (!requests || requests.length === 0) {
-        return <p>No service requests found!</p>;
-    }
 
     const filteredRequests = requests.filter((req) => {
         return (

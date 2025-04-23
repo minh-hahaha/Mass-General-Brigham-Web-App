@@ -44,9 +44,6 @@ const TableSanitationRequest: React.FC<Props> = ({ setActiveForm }) => {
     if (loading) {
         return <p>Loading Requests...</p>;
     }
-    if (requests == null) {
-        return <p>No requests found!</p>;
-    }
 
     const filteredRequests = requests.filter((req) => {
         const disposalText = req.sanitation.disposalRequired ? 'yes' : 'no';

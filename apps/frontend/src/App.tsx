@@ -15,7 +15,6 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import { ShadSidebar } from '@/components/ui/shadsidebar.tsx';
 import {MapPage} from "@/routes/MapPage.tsx";
 import MapViewPage from "@/routes/MapViewPage.tsx";
-import ServiceRequestSelectPage from "@/routes/ServiceRequestSelectPage.tsx";
 import MaintenanceRequestPage from "@/routes/MaintenanceRequestPage.tsx";
 import Cookies from "js-cookie";
 import TestNodeEditor from '@/routes/TestNodeEditor.tsx';

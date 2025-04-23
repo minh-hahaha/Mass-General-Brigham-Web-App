@@ -46,9 +46,6 @@ const TableTransportRequest: React.FC<Props> = ({ setActiveForm }) => {
     if (loading) {
         return <p>Loading Requests...</p>;
     }
-    if (requests == null) {
-        return <p>No requests found!</p>;
-    }
 
     // Format date for display
     const formatDate = (dateString: string) => {
