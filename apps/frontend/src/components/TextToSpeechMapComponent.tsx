@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react";
 import {ROUTES} from "common/src/constants.ts";
 import axios from "axios";
+import MGBButton from "@/elements/MGBButton.tsx";
 
 interface State {
     walkDirections: string;
@@ -51,8 +52,8 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections}:State) => {
     return (
         <>
 
-            <div className="fixed top-16 right-10 z-50">
-                <div className="bg-white p-4 rounded shadow-md flex flex-col items-end space-y-2 border border-gray-200 w-96">
+            <div className="fixed top-16 right-10 p-4 z-50">
+                <div className="bg-white p-4  rounded shadow-md flex flex-col items-end space-y-2 border border-gray-200 w-96 z-10 bg-white rounded-lg">
                     <div
                         id="text-directions"
                         className="text-black w-full h-16 overflow-y-auto"
@@ -61,21 +62,28 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections}:State) => {
                     ></div>
 
                     <div className="flex space-x-2">
-                        <button
-                            id="mode-switch"
-                            className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 transition"
-                            onClick={handleModeSwitch}
-                        >
+                        <MGBButton onClick={handleModeSwitch} variant={"secondary"} disabled={false}>
                             {textMode}
-                        </button>
-
-                        <button
-                            id="speak"
-                            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-                            onClick={speakDirections}
-                        >
+                             </MGBButton>
+                        <MGBButton onClick={speakDirections} variant={"primary"} disabled={false}>
                             Speak
-                        </button>
+                        </MGBButton>
+
+                        {/*<button*/}
+                        {/*    id="mode-switch"*/}
+                        {/*    className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 transition"*/}
+                        {/*    onClick={handleModeSwitch}*/}
+                        {/*>*/}
+                        {/*    {textMode}*/}
+                        {/*</button>*/}
+
+                        {/*<button*/}
+                        {/*    id="speak"*/}
+                        {/*    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"*/}
+                        {/*    onClick={speakDirections}*/}
+                        {/*>*/}
+                        {/*    Speak*/}
+                        {/*</button>*/}
                     </div>
                 </div>
             </div>
