@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { myNode } from 'common/src/classes/classes.ts';
 import axios from 'axios';
 import { FaRegClock } from 'react-icons/fa';
-import { MapPin, Circle, Hospital } from 'lucide-react';
+import { MapPin, Circle, Hospital, ZoomIn } from 'lucide-react';
 import { MdOutlineMyLocation } from 'react-icons/md';
 import { ROUTES } from 'common/src/constants.ts';
 import {CHtoLotA, CHtoLotB, CHtoLotC, PPtoLotA, PPtoLotB, PPtoLotC}  from '../assets/parkingCoords.tsx'
@@ -29,26 +29,15 @@ import TextToSpeechMapComponent from "@/components/TextToSpeechMapComponent.tsx"
 
 const Buildings = ['Chestnut Hill - 850 Boylston Street', '20 Patriot Place', '22 Patriot Place', 'Faulkner Hospital'];
 
-const BuildingIDMap: Record<string, string> = {
-    'Chestnut Hill - 850 Boylston Street': '1',
-    '20 Patriot Place': '2',
-    '22 Patriot Place': '3',
-    'Faulkner Hospital': '4',
+const HospitalLocations: Record<string, {lat: number, lng: number, zoom: number}> = {
+    'Chestnut Hill - 850 Boylston Street': {lat: 42.325988, lng: -71.149567, zoom: 18},
+    '20 Patriot Place': {lat: 42.092617, lng: -71.266492, zoom: 18},
+    '22 Patriot Place': {lat: 42.092617, lng: -71.266492, zoom: 18},
+    'Faulkner Hospital': {lat: 42.301331, lng: -71.130805, zoom: 18}
 };
 
 type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
 
-
-const nullNode: myNode = {
-    nodeId: '',
-    x: 0,
-    y: 0,
-    floor: '0',
-    buildingId: '0',
-    nodeType: '0',
-    name: '',
-    roomNumber: '0',
-};
 
 // Define the interface
 interface Coordinate {
@@ -518,6 +507,15 @@ const DirectionsMapComponent = () => {
 
     };
 
+    const handleZoomToHospital = () => {
+        if (!map || !toLocation) return;
+
+        const hospitalLocation = HospitalLocations[toLocation];
+        if (hospitalLocation) {
+            map.panTo({ lat: hospitalLocation.lat, lng: hospitalLocation.lng });
+            map.setZoom(hospitalLocation.zoom);
+        }
+    };
     return (
         <div className="flex w-screen h-screen">
             {/* LEFT PANEL */}
@@ -629,7 +627,7 @@ const DirectionsMapComponent = () => {
                     {/* I'm Here Button */}
                     <div className={clsx(parking ? 'mt-6' : '-mt-2.5')}>
                         <button
-                            disabled={lot === ''}
+                            disabled={lot === '' && currentDirectoryName === ''}
                             onClick={() => handleHere()}
                             className="w-full bg-mgbblue text-white py-2 rounded-sm hover:bg-mgbblue/90 transition disabled:opacity-50"
                         >
@@ -719,6 +717,16 @@ const DirectionsMapComponent = () => {
                             <span className="font-medium">Travel Time:</span> {duration}
                         </p>
                     </div>
+                )}
+                {/* zoom to Hospital Button */}
+                {toLocation && (
+                    <button
+                        onClick={handleZoomToHospital}
+                        className="absolute top-1/4 right-6 z-10 bg-white p-3 rounded-full shadow-lg hover:bg-gray-100 transition-colors"
+                        title="Zoom to hospital"
+                    >
+                        <ZoomIn size={26} className="text-mgbblue" />
+                    </button>
                 )}
             </main>
         </div>

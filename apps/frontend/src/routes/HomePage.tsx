@@ -20,6 +20,8 @@ const HomePage = () => {
                             Use the kiosk to quickly locate departments, clinics, and services
                             throughout the hospital.
                         </h2>
+                        <h4 className='text-white font-serif text-center drop-shadow-lg'>* Disclaimer: This web application
+                            is strictly a CS3733-D25 Software Engineering class project for Prof. Wilson Wong at WPI *</h4>
                     </div>
                 </motion.div>
                 <motion.div
