@@ -20,9 +20,32 @@ interface MapEdge {
     drawnEdge: google.maps.Polyline;
 }
 
+// floor type
+interface Floor {
+    id: string;
+    floor: string;
+    buildingId: string;
+    buildingName: string; // for display
+    svgPath: string;
+}
+
+// All available floors across buildings
+const availableFloors: Floor[] = [
+    // Chestnut Hill
+    { id: "CH-1", floor: "1", buildingId: "1", buildingName: "Chestnut Hill",svgPath: "/CH01.svg" },
+    // 20 Patriot Place
+    { id: "PP-1", floor: "1", buildingId: "2", buildingName: "Patriot Place", svgPath: "/PP01.svg" },
+    { id: "PP-2", floor: "2", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP02.svg" },
+    { id: "PP-3", floor: "3", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP03.svg" },
+    { id: "PP-4", floor: "4", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP04.svg" },
+
+];
+
 interface Props {
     currentFloorId: string;
 }
+
+
 
 const NodeEditorComponent = ({currentFloorId}:Props) => {
     const map = useMap();
@@ -134,8 +157,8 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 incrementTempNodeID().toString(),
                 position.lat(),
                 position.lng(),
+                currentFloorId.charAt(currentFloorId.length - 1),
                 '1',
-                'IDK',
                 '1',
                 'Node',
                 null
@@ -200,7 +223,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         await createEdge(newEdge);
     }
 
-    function cut(edges: google.maps.LatLng[], posToCut: google.maps.LatLng) {
+    function cut(edges: google.maps.LatLng[], posToCut: google.maps.LatLng): {result: google.maps.LatLng[], edge: MapEdge | null} {
         const indexToCut = edges.findIndex(edge => edge.equals(posToCut));
         if(indexToCut !== -1) {
             const slice1 = edges.slice(0, indexToCut);
@@ -208,27 +231,34 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             const node1 = mapNodes.find(node => node.drawnNode.getPosition() === slice1[slice1.length -1]);
             const node2 = mapNodes.find(node => node.drawnNode.getPosition() === slice2[0]);
             const edge = mapEdges.find(edge => edge.drawnEdge.getPath().getArray().includes(posToCut));
-           if(node1 && node2 && edge){
-               console.log(node1)
-               console.log(node2)
-               console.log(edge)
-               createMapEdge(node1, node2, edge.drawnEdge);
+            if(!node1 || !node2 || !edge){
+              return {result: slice1.concat(slice2), edge: null};
            }
-            return slice1.concat(slice2);
+            const mapEdge = {
+                edge: new myEdge(incrementTempEdgeID(), node1.node, node2.node),
+                to: node2,
+                from: node1,
+                drawnEdge: edge.drawnEdge
+            };
+            return {result: slice1.concat(slice2), edge: mapEdge};
         }
-        return edges;
+        return {result: [], edge: null};
     }
 
     function removeEdgesFromNode(node: MapNode) {
         mapEdgesRef.current.forEach((edge) => {
             if(edge.from.node.nodeId === node.node.nodeId || edge.to.node.nodeId === node.node.nodeId) {
-                edge.drawnEdge.setPath(cut(edge.drawnEdge.getPath().getArray(), node.drawnNode.getPosition() as google.maps.LatLng))
+                const stuff = cut(edge.drawnEdge.getPath().getArray(), node.drawnNode.getPosition() as google.maps.LatLng);
+                if(stuff.edge){
+                    setMapEdges(mapEdgesRef.current.filter(e => (e.edge.from.nodeId !== node.node.nodeId && e.edge.to.nodeId !== node.node.nodeId)).concat(stuff.edge));
+                    edge.drawnEdge.setPath(stuff.result);
+                }
             }
         });
         // Remove all edges with the node in it
         console.log(mapEdgesRef.current);
         console.log(mapEdgesRef.current.filter(e => (e.edge.from.nodeId !== node.node.nodeId && e.edge.to.nodeId !== node.node.nodeId)));
-        setMapEdges(mapEdgesRef.current.filter(e => (e.edge.from.nodeId !== node.node.nodeId && e.edge.to.nodeId !== node.node.nodeId)));
+        //setMapEdges(mapEdgesRef.current.filter(e => (e.edge.from.nodeId !== node.node.nodeId && e.edge.to.nodeId !== node.node.nodeId)));
     }
 
     function clickNode(nodeId: string) {
