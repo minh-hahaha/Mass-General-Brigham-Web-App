@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import MGBButton from '@/elements/MGBButton.tsx';
 import ConfirmMessageComponent from '@/components/ConfirmMessageComponent.tsx';
 import { SubmitMaintenanceRequest, maintenanceRequest } from '@/database/maintenanceRequest.ts';
@@ -79,6 +79,13 @@ const MaintenanceRequestPage = () => {
     const handleConfirmationClose = () => {
         setShowConfirmation(false);
     };
+
+    useEffect(() => {
+        if (showConfirmation) {
+            alert("Request Submitted");
+            handleConfirmationClose(); // close the state after the alert
+        }
+    }, [showConfirmation]);
 
     const hospitalLocations = ['Chestnut Hill', '20 Patriot Place', '22 Patriot Place'];
 
@@ -312,12 +319,6 @@ const MaintenanceRequestPage = () => {
                             >
                                 Submit Request
                             </MGBButton>
-
-                            {showConfirmation && (
-                                <div className="inline-block">
-                                    <ConfirmMessageComponent onClose={handleConfirmationClose} />
-                                </div>
-                            )}
                             <MGBButton
                                 onClick={() => handleReset()}
                                 variant={'secondary'}

@@ -84,7 +84,7 @@ const AllDirectory = ({ onImportClick }: { onImportClick: () => void }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await GetDirectory('Ascending', 'Descending', '22 Patriot Place');
+                const result = await GetDirectory('Ascending', 'Descending', '');
                 setData(result);
             } catch (error) {
                 console.error('Failed to fetch directory data:', error);
@@ -211,7 +211,7 @@ const ChestnutDirectory = ({ onImportClick }: { onImportClick: () => void }) => 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await GetDirectory('Ascending', 'Descending', '22 Patriot Place');
+                const result = await GetDirectory('Ascending', 'Descending', 'Chestnut Hill');
                 setData(result);
             } catch (error) {
                 console.error('Failed to fetch directory data:', error);
@@ -326,7 +326,7 @@ const Patriot20Directory = ({ onImportClick }: { onImportClick: () => void }) =>
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await GetDirectory('Ascending', 'Descending', '22 Patriot Place');
+                const result = await GetDirectory('Ascending', 'Descending', '20 Patriot Place');
                 setData(result);
             } catch (error) {
                 console.error('Failed to fetch directory data:', error);
@@ -543,6 +543,121 @@ const Patriot22Directory = ({ onImportClick }: { onImportClick: () => void }) =>
     );
 };
 
+const FaulknerDirectory = ({ onImportClick }: { onImportClick: () => void }) => {
+    const [filter, setShowFilters] = useState<boolean>(false);
+    const [filters, setFilters] = useState({
+        deptName: '',
+        deptServices: '',
+        building: '',
+        floor: '',
+        phone: '',
+    });
+    const [data, setData] = useState<DepartmentRequest[]>([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await GetDirectory('Ascending', 'Descending', 'Faulkner Hospital');
+                setData(result);
+            } catch (error) {
+                console.error('Failed to fetch directory data:', error);
+            }
+        };
+        fetchData();
+    }, []);
+
+    const filteredData = data.filter((department) => {
+        return (
+            (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
+            (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
+            (!filters.floor || department.node?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
+            (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
+        );
+    });
+    return (
+        <>
+            <div className={`w-full flex flex-row justify-between px-10`}>
+                <div className="flex flex-row items-center gap-2 mt-2">
+                    <button
+                        onClick={() => setShowFilters((prev) => !prev)}
+                        className="bg-mgbblue hover:bg-blue-950 text-white px-9 py-3 rounded text-sm relative top-1"
+                    >
+                        Filters
+                    </button>
+                    {filter && (
+                        <motion.div
+                            initial={{ x: -30, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: -30, opacity: 0 }}
+                            transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+                            className="relative left-[10px] rounded flex flex-row gap-5"
+                        >
+                            <div>
+                                <label className="block text-sm font-medium">Dept Name</label>
+                                <input
+                                    type="text"
+                                    className="border border-mgbblue rounded-sm w-47 p-1"
+                                    value={filters.deptName}
+                                    onChange={(e) =>
+                                        setFilters({ ...filters, deptName: e.target.value })
+                                    }
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium">Services</label>
+                                <input
+                                    type="text"
+                                    className="border border-mgbblue rounded-sm w-47 p-1"
+                                    value={filters.deptServices}
+                                    onChange={(e) =>
+                                        setFilters({ ...filters, deptServices: e.target.value })
+                                    }
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium">Floor</label>
+                                <input
+                                    type="text"
+                                    className="border border-mgbblue rounded-sm w-30 p-1"
+                                    value={filters.floor}
+                                    onChange={(e) =>
+                                        setFilters({
+                                            ...filters,
+                                            floor: e.target.value,
+                                        })
+                                    }
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium">Phone</label>
+                                <input
+                                    type="text"
+                                    className="border border-mgbblue rounded-sm w-47 p-1"
+                                    value={filters.phone}
+                                    onChange={(e) =>
+                                        setFilters({
+                                            ...filters,
+                                            phone: e.target.value,
+                                        })
+                                    }
+                                />
+                            </div>
+                        </motion.div>
+                    )}
+                </div>
+                <div className="flex flex-row items-center gap-2 mt-2">
+                    <button
+                        onClick={onImportClick}
+                        className="bg-gray-500 hover:bg-gray-700 text-white px-9 py-3 rounded text-sm relative top-1"
+                    >
+                        Import New Directory +
+                    </button>
+                </div>
+            </div>
+            <DirectoryTable data={filteredData} />
+        </>
+    );
+};
+
 const DirectoryDisplayPage = () => {
     const [showImportModal, setShowImportModal] = useState(false);
 
@@ -563,6 +678,10 @@ const DirectoryDisplayPage = () => {
             label: '22 Patriot Place',
             component: () => <Patriot22Directory onImportClick={handleOpenImport} />,
         },
+        {
+            label: 'Faulkner',
+            component: () => <FaulknerDirectory onImportClick={handleOpenImport} />,
+        }
     ];
 
     return (
