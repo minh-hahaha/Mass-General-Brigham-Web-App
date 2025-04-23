@@ -25,6 +25,18 @@ const DisplayPathComponent = ({ coordinates }: Props) => {
                 strokeColor: "#FF0000",
                 strokeOpacity: 1.0,
                 strokeWeight: 2,
+                icons: [{
+                    icon: {
+                        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        scale: 3,
+                        fillColor: "#20499C",
+                        fillOpacity: 1,
+                        strokeWeight: 1,
+                        strokeColor: 'black',
+                    },
+                    offset: '30px',
+                    repeat: '100px'  // Show an arrow every 150 pixels
+                }]
             });
 
             path.setMap(map);

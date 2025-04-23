@@ -23,15 +23,14 @@ type MedicalDeviceType =
     | 'Crash Cart';
 
 type location = 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place';
-
 type status = 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
-
+type priority = 'Low' | 'Medium' | 'High' | 'Emergency';
 
 export interface MedicalDeviceRequestData {
     employeeName: string;
     employeeId: number;
     requestDate: string;
-    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
+    priority: priority
     location: location;
     device: string;
     deviceModel?: string;
@@ -217,6 +216,7 @@ const MedicalDeviceServiceRequestPage = () => {
                                             name="deviceModel"
                                             label="Device Model"
                                             type="text"
+                                            placeholder="Enter device model (optional)"
                                             value={deviceModel}
                                             onChange={(e) => setDeviceModel(e.target.value)}
                                         />
@@ -229,6 +229,7 @@ const MedicalDeviceServiceRequestPage = () => {
                                             id="deviceSerialNumber"
                                             name="deviceSerialNumber"
                                             label="Serial Number"
+                                            placeholder="Enter device serial number (optional)"
                                             type="text"
                                             value={deviceSerialNumber}
                                             onChange={(e) => setDeviceSerialNumber(e.target.value)}
@@ -244,6 +245,7 @@ const MedicalDeviceServiceRequestPage = () => {
                                         <textarea
                                             id={"reasoning"}
                                             value={reasoning}
+                                            placeholder="Reasoning for device needed"
                                             onChange={(e) => setReasoning(e.target.value)}
                                             cols={3}
                                             required
@@ -315,6 +317,28 @@ const MedicalDeviceServiceRequestPage = () => {
                                                 </option>
                                             )
                                         )}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col pt-2">
+                                <div className="flex items-center gap-2">
+                                    <label className="w-1/4">Priority</label>
+                                    <select
+                                        id="priority"
+                                        value={priority}
+                                        onChange={(e) =>
+                                            setPriority(
+                                                e.target.value as priority
+                                            )
+                                        }
+                                        required
+                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                    >
+                                        <option value="Low">Low</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="High">High</option>
+                                        <option value="Emergency">Emergency</option>
                                     </select>
                                 </div>
                             </div>
