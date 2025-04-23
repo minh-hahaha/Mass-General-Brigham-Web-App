@@ -7,7 +7,7 @@ import TransportationRequestPage from './routes/TransportationRequestPage.tsx';
 import ServiceRequestDisplayPage from './routes/ServiceRequestDisplayPage.tsx';
 import DirectoryDisplayPage from './routes/DirectoryDisplayPage.tsx';
 import ImportExportDirectoryPage from './routes/ImportExportDirectoryPage.tsx';
-import SanitationRequestPage from './components/SanitationRequestComponent.tsx';
+import SanitationRequestPage from './routes/SanitationRequestComponent.tsx';
 import TransportRequestPage from "./routes/TransportationRequestPage.tsx";
 import TranslationServiceRequestPage from './routes/TranslationServiceRequestPage.tsx';
 import MedicalDeviceServiceRequestPage from './routes/MedicalDeviceServiceRequestPage.tsx'
