@@ -177,6 +177,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             from: startNode,
             drawnEdge: line
         };
+        console.log("Successfully created edge", mapEdge);
         setMapEdges((prev) => [...prev, mapEdge]);
     }
 
@@ -202,7 +203,18 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
     function cut(edges: google.maps.LatLng[], posToCut: google.maps.LatLng) {
         const indexToCut = edges.findIndex(edge => edge === posToCut);
         if(indexToCut !== -1) {
-            return edges.slice(0, indexToCut).concat(edges.slice(indexToCut + 1));
+            const slice1 = edges.slice(0, indexToCut);
+            const slice2 = edges.slice(indexToCut + 1);
+            const node1 = mapNodes.find(node => node.drawnNode.getPosition() === slice1[slice1.length -1]);
+            const node2 = mapNodes.find(node => node.drawnNode.getPosition() === slice2[0]);
+            const edge = mapEdges.find(edge => edge.drawnEdge.getPath().getArray().includes(posToCut));
+           if(node1 && node2 && edge){
+               console.log(node1)
+               console.log(node2)
+               console.log(edge)
+               createMapEdge(node1, node2, edge.drawnEdge);
+           }
+            return slice1.concat(slice2);
         }
         return edges;
     }
@@ -214,6 +226,8 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             }
         });
         // Remove all edges with the node in it
+        console.log(mapEdgesRef.current);
+        console.log(mapEdgesRef.current.filter(e => (e.edge.from.nodeId !== node.node.nodeId && e.edge.to.nodeId !== node.node.nodeId)));
         setMapEdges(mapEdgesRef.current.filter(e => (e.edge.from.nodeId !== node.node.nodeId && e.edge.to.nodeId !== node.node.nodeId)));
     }
 
