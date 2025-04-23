@@ -44,7 +44,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
 
 
     // Node Property Use States
-    type NodeType = ('Stairs' | 'Elevator' | 'Room' | 'Hallway | Parking | Road')
+    type NodeType = 'Stairs' | 'Elevator' | 'Room' | 'Hallway' | 'Parking Lot' | 'Road' | 'Door' | 'Hallway Intersection'
     const [nodeType, setNodeType] = useState<NodeType>('Stairs');
     const [roomNumber, setRoomNumber] = useState<string | null>(null);
     const [nodeName, setNodeName] = useState<string>('Node');
@@ -374,7 +374,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                     value={nodeType}
                     placeholder={'Select Node Type'}
                     onChange={(e) => setNodeType(e.target.value as NodeType)}
-                    options={['Hallway', 'Room', 'Elevator', 'Stairs']}
+                    options={['Stairs', 'Elevator', 'Room', 'Hallway', 'Parking Lot', 'Road', 'Door', 'Hallway Intersection']}
                 ></SelectElement>
                 <InputElement
                     label={'Node Name'}
