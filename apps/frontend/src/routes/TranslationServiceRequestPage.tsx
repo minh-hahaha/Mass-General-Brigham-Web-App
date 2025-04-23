@@ -37,6 +37,8 @@ const TranslationServiceRequestPage = () => {
     const [notes, setNotes] = useState('');
     const [department, setDepartment] = useState('');
 
+    const [showConfirmation, setShowConfirmation] = useState(false);
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -57,6 +59,7 @@ const TranslationServiceRequestPage = () => {
         };
 
         SubmitTranslatorRequest(newRequest);
+        setShowConfirmation(true);
         handleReset();
     };
 
@@ -74,6 +77,10 @@ const TranslationServiceRequestPage = () => {
         setStatus('');
         setNotes('');
         setDepartment('');
+    };
+
+    const handleConfirmationClose = () => {
+        setShowConfirmation(false);
     };
 
     return (
@@ -328,26 +335,28 @@ const TranslationServiceRequestPage = () => {
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            <div className="flex flex-col gap-2">
-                                <div className="flex items-center justify-center space-x-4">
-                                    <MGBButton
-                                        onClick={() => handleSubmit}
-                                        variant={'primary'}
-                                        disabled={false}
-                                    >
-                                        Submit Request
-                                    </MGBButton>
+                        {/* submit button and confirmation message */}
+                        <div className="flex items-center justify-center space-x-4">
+                            <MGBButton
+                                onClick={() => handleSubmit}
+                                variant={'primary'}
+                                disabled={false}
+                            >
+                                Submit Request
+                            </MGBButton>
 
-                                    <MGBButton
-                                        onClick={() => handleReset()}
-                                        variant={'secondary'}
-                                        disabled={false}
-                                    >
-                                        Clear Form
-                                    </MGBButton>
+                            {showConfirmation && (
+                                <div className="inline-block">
+                                    <ConfirmMessageComponent onClose={handleConfirmationClose} />
                                 </div>
-                            </div>
+                            )}
+                            <MGBButton
+                                onClick={() => handleReset()}
+                                variant={'secondary'}
+                                disabled={false}
+                            >
+                                Clear Form
+                            </MGBButton>
                         </div>
                     </form>
                 </div>
