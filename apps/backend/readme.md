@@ -133,3 +133,4 @@ documents the recommended structure for using this.
 - bin/database-connection.ts provides a database connection the rest of the
   database package can use. When this is required by www.ts, it automatically starts
   the database. It also automatically disconnects WHENEVER the client exits
+  s

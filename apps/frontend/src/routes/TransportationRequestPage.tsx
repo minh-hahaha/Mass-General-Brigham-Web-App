@@ -7,8 +7,8 @@ import { SubmitTransportRequest } from '../database/transportRequest.ts';
 interface transportRequest {
     patientId: number;
     patientName: string;
-    transportType: 'Ambulance' | 'Helicopter' | 'Other';
-    priority: 'Low' | 'Medium' | 'High';
+    transportType: 'Ambulance' | 'Helicopter' | 'Medical Van' | 'Other';
+    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     pickupLocation: string;
     dropOffLocation: string;
     pickupDate: string;
@@ -103,7 +103,7 @@ const TransportRequestPage = () => {
         // flex row container
         <div className="flex flex-col justify-center items-center min-h-screen">
             {/* make the form left side */}
-            <div className="flex flex-col items-center border border-[#d3d5d7] bg-white rounded-2xl shadow-xl p-8 w-full max-w-[700px] mt-10 mb-10">
+            <div className="flex flex-col items-center bg-white rounded-2xl p-8 w-full max-w-[700px] mt-10 mb-10">
                 <h1 className="text-[30px] font-bold mb-6">Patient Transportation Request</h1>
                 <div>
                     <form onSubmit={handleSubmit} className="space-y-6">
@@ -207,9 +207,10 @@ const TransportRequestPage = () => {
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >
-                                        <option value="Routine">Routine</option>
-                                        <option value="Urgent">Urgent</option>
-                                        <option value="Emergency">Emergency</option>
+                                        <option value="Low">Low</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="High">High</option>
+                                        <option value="Emergency">High</option>
                                     </select>
                                 </div>
                             </div>

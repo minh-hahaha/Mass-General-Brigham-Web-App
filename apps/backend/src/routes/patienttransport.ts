@@ -7,7 +7,7 @@ router.get('/', async (req: Request, res: Response) => {
     try {
         const requests = await PrismaClient.serviceRequest.findMany({
             where: {
-                serviceType: 'Patient Transport',
+                serviceType: 'Patient Transportation',
             },
             include: {
                 //might flag an error
@@ -25,8 +25,6 @@ router.get('/', async (req: Request, res: Response) => {
 router.post('/', async (req: Request, res: Response) => {
     //Format for tempDate is  2025-04-04T01:44
     //(maybe on future iterations split the field?)
-    const tempDate = new Date(req.body.pickupDate);
-    const pickupDate = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate());
 
     try {
         const result = await PrismaClient.$transaction(async (prisma) => {
@@ -36,12 +34,11 @@ router.post('/', async (req: Request, res: Response) => {
                     priority: req.body.priority,
                     status: req.body.status,
                     comments: req.body.notes,
-                    serviceType: 'Patient Transport',
+                    serviceType: 'Patient Transportation',
 
-                    //optional fields
-                    locationId: req.body.locationId ?? null,
+                    //optional field
                     employeeId: req.body.employeeId ?? null, // change to user id in the future?
-                    requestDate: new Date(pickupDate) ?? null,
+                    requestDate: new Date(req.body.requestDate).toISOString() ?? null,
                     requestTime: new Date(req.body.pickupTime) ?? null,
                 },
             });
@@ -64,6 +61,7 @@ router.post('/', async (req: Request, res: Response) => {
                 },
             });
 
+            console.log(serviceRequest);
             return { serviceRequest, patientTransport };
         });
 

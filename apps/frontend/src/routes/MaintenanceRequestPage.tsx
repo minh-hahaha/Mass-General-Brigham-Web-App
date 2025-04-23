@@ -18,7 +18,7 @@ const MaintenanceRequestPage = () => {
 
     // Maintenance Details
     const [priority, setPriority] = useState<'Low' | 'Medium' | 'High' | 'Emergency'>('Low');
-    const [maintenanceHospital, setMaintenanceHospital] = useState('');
+    const [maintenanceHospital, setMaintenanceHospital] = useState<'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital'>('Chestnut Hill')
     const [maintenanceLocation, setMaintenanceLocation] = useState('');
     const [maintenanceTime, setMaintenanceTime] = useState('');
     const [status, setStatus] = useState<'Pending' | 'In Progress' | 'Completed' | 'Canceled'>(
@@ -27,7 +27,7 @@ const MaintenanceRequestPage = () => {
 
     // Requester Information
     const [employeeId, setEmployeeId] = useState(0);
-    const [requestDate, setRequestDate] = useState(new Date().toISOString().split('T')[0]);
+    const [requestDate, setRequestDate] = useState(new Date().toISOString());
     const [employeeName, setEmployeeName] = useState('');
     const [notes, setNotes] = useState('');
     const [locationId, setLocationId] = useState(1);
@@ -65,7 +65,7 @@ const MaintenanceRequestPage = () => {
         setMaintenanceType('');
         setMaintenanceDescription('');
         setPriority('Low');
-        setMaintenanceHospital('');
+        setMaintenanceHospital('Chestnut Hill');
         setMaintenanceLocation('');
         setMaintenanceTime('');
         setStatus('Pending');
@@ -86,7 +86,7 @@ const MaintenanceRequestPage = () => {
         // flex row container
         <div className="flex flex-col justify-center items-center min-h-screen">
             {/* make the form left side */}
-            <div className="flex flex-col items-center border border-[#d3d5d7] bg-white rounded-2xl shadow-xl p-8 w-full max-w-[700px] mt-10 mb-10">
+            <div className="flex flex-col items-center rounded-2xl p-8 w-full max-w-[700px] mt-10 mb-10">
                 <h1 className="text-[30px] font-bold mb-6">Maintenance Request</h1>
                 <h2 className="text-[15px] font-semibold mb-6">Max Jeronimo and Haotian Liu</h2>
                 <div className="flex flex-col gap-2 mb-6">
@@ -206,7 +206,7 @@ const MaintenanceRequestPage = () => {
                                     <select
                                         id="maintenanceHospital"
                                         value={maintenanceHospital}
-                                        onChange={(e) => setMaintenanceHospital(e.target.value)}
+                                        onChange={(e) => setMaintenanceHospital(e.target.value as maintenanceRequest['maintenanceHospital'])}
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >

@@ -37,6 +37,8 @@ const TranslationServiceRequestPage = () => {
     const [notes, setNotes] = useState('');
     const [department, setDepartment] = useState('');
 
+    const [showConfirmation, setShowConfirmation] = useState(false);
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -57,6 +59,7 @@ const TranslationServiceRequestPage = () => {
         };
 
         SubmitTranslatorRequest(newRequest);
+        setShowConfirmation(true);
         handleReset();
     };
 
@@ -76,11 +79,15 @@ const TranslationServiceRequestPage = () => {
         setDepartment('');
     };
 
+    const handleConfirmationClose = () => {
+        setShowConfirmation(false);
+    };
+
     return (
         // flex row container
         <div className="flex flex-col justify-center items-center min-h-screen">
             {/* make the form left side */}
-            <div className="flex flex-col items-center border border-[#d3d5d7] bg-white rounded-2xl shadow-xl p-8 w-full max-w-[700px] mt-10 mb-10">
+            <div className="flex flex-col items-center rounded-2xl p-8 w-full max-w-[700px] mt-10 mb-10">
                 <h1 className="text-[30px] font-bold mb-6">Translation Service Request </h1>
                 <p> Krish Patel and Jake Lariviere </p>
                 <div>
@@ -296,22 +303,17 @@ const TranslationServiceRequestPage = () => {
                                         <label className="w-1/4">Status</label>
                                         <select
                                             id="status"
-                                            value={priority}
+                                            value={status} // <-- changed from priority to status
                                             onChange={(e) => setStatus(e.target.value)}
                                             required
                                             className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                         >
                                             <option value="">Select Status</option>
-                                            {['Pending', 'In Progress', 'Completed', 'Cancelled'].map(
-                                                (status) => (
-                                                    <option
-                                                        key={`status-${status}`}
-                                                        value={status}
-                                                    >
-                                                        {status}
-                                                    </option>
-                                                )
-                                            )}
+                                            {['Pending', 'In Progress', 'Completed', 'Cancelled'].map((status) => (
+                                                <option key={`status-${status}`} value={status}>
+                                                    {status}
+                                                </option>
+                                            ))}
                                         </select>
                                     </div>
                                 </div>
@@ -333,26 +335,28 @@ const TranslationServiceRequestPage = () => {
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            <div className="flex flex-col gap-2">
-                                <div className="flex items-center justify-center space-x-4">
-                                    <MGBButton
-                                        onClick={() => handleSubmit}
-                                        variant={'primary'}
-                                        disabled={false}
-                                    >
-                                        Submit Request
-                                    </MGBButton>
+                        {/* submit button and confirmation message */}
+                        <div className="flex items-center justify-center space-x-4">
+                            <MGBButton
+                                onClick={() => handleSubmit}
+                                variant={'primary'}
+                                disabled={false}
+                            >
+                                Submit Request
+                            </MGBButton>
 
-                                    <MGBButton
-                                        onClick={() => handleReset()}
-                                        variant={'secondary'}
-                                        disabled={false}
-                                    >
-                                        Clear Form
-                                    </MGBButton>
+                            {showConfirmation && (
+                                <div className="inline-block">
+                                    <ConfirmMessageComponent onClose={handleConfirmationClose} />
                                 </div>
-                            </div>
+                            )}
+                            <MGBButton
+                                onClick={() => handleReset()}
+                                variant={'secondary'}
+                                disabled={false}
+                            >
+                                Clear Form
+                            </MGBButton>
                         </div>
                     </form>
                 </div>

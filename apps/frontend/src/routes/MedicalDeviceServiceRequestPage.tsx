@@ -23,15 +23,14 @@ type MedicalDeviceType =
     | 'Crash Cart';
 
 type location = 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place';
-
 type status = 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
-
+type priority = 'Low' | 'Medium' | 'High' | 'Emergency';
 
 export interface MedicalDeviceRequestData {
     employeeName: string;
     employeeId: number;
     requestDate: string;
-    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
+    priority: priority
     location: location;
     device: string;
     deviceModel?: string;
@@ -116,7 +115,7 @@ const MedicalDeviceServiceRequestPage = () => {
 
     return (
         <div className="flex flex-col justify-center items-center min-h-screen">
-            <div className="flex flex-col items-center border border-[#d3d5d7] bg-white rounded-2xl shadow-xl p-8 w-full max-w-[700px] mt-10 mb-10">
+            <div className="flex flex-col items-center rounded-2xl p-8 w-full max-w-[700px] mt-10 mb-10">
                 <h1 className="text-[30px] font-bold mb-6">Medical Device Request Form</h1>
                 <p> Vinam Nguyen </p>
                 <div>
@@ -178,7 +177,7 @@ const MedicalDeviceServiceRequestPage = () => {
                                             required={true}
                                             className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                         >
-                                            <option value="" disabled>Select Device</option>
+                                            <option value="">Select Device</option>
                                             {['ECG Monitor', 'Vital Signs Monitor', 'Pulse Oximeter', 'Infusion Pump', 'Syringe Pump',
                                                 'Defibrillator', 'Ventilator', 'Nebulizer', 'Anesthesia Machine',
                                                 'Wheelchair', 'IV Stand', 'Suction Machine', 'Warming Blanket System',
@@ -217,6 +216,7 @@ const MedicalDeviceServiceRequestPage = () => {
                                             name="deviceModel"
                                             label="Device Model"
                                             type="text"
+                                            placeholder="Enter device model (optional)"
                                             value={deviceModel}
                                             onChange={(e) => setDeviceModel(e.target.value)}
                                         />
@@ -229,6 +229,7 @@ const MedicalDeviceServiceRequestPage = () => {
                                             id="deviceSerialNumber"
                                             name="deviceSerialNumber"
                                             label="Serial Number"
+                                            placeholder="Enter device serial number (optional)"
                                             type="text"
                                             value={deviceSerialNumber}
                                             onChange={(e) => setDeviceSerialNumber(e.target.value)}
@@ -244,6 +245,7 @@ const MedicalDeviceServiceRequestPage = () => {
                                         <textarea
                                             id={"reasoning"}
                                             value={reasoning}
+                                            placeholder="Reasoning for device needed"
                                             onChange={(e) => setReasoning(e.target.value)}
                                             cols={3}
                                             required
@@ -267,7 +269,7 @@ const MedicalDeviceServiceRequestPage = () => {
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >
-                                        <option value="" disabled>Select Location</option>
+                                        <option value="">Select Location</option>
                                         {['Chestnut Hill', '20 Patriot Place', '22 Patriot Place'].map(
                                             (location) => (
                                                 <option
@@ -299,12 +301,12 @@ const MedicalDeviceServiceRequestPage = () => {
                                     <label className="w-1/4">Status</label>
                                     <select
                                         id="status"
-                                        value={priority}
+                                        value={status}
                                         onChange={(e) => setStatus(e.target.value as status)}
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >
-                                        <option value="" disabled>Select Status</option>
+                                        <option value="">Select Status</option>
                                         {['Pending', 'In Progress', 'Completed', 'Cancelled'].map(
                                             (status) => (
                                                 <option
@@ -315,6 +317,28 @@ const MedicalDeviceServiceRequestPage = () => {
                                                 </option>
                                             )
                                         )}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col pt-2">
+                                <div className="flex items-center gap-2">
+                                    <label className="w-1/4">Priority</label>
+                                    <select
+                                        id="priority"
+                                        value={priority}
+                                        onChange={(e) =>
+                                            setPriority(
+                                                e.target.value as priority
+                                            )
+                                        }
+                                        required
+                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                    >
+                                        <option value="Low">Low</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="High">High</option>
+                                        <option value="Emergency">Emergency</option>
                                     </select>
                                 </div>
                             </div>
