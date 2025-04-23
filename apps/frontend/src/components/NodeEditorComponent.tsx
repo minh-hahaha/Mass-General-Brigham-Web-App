@@ -522,14 +522,31 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         })
         return () => {google.maps.event.removeListener(listener)}
     }, [map]);
-
     return (
         <>
             <div
                 hidden={clickedNode === null || mode === 'Edge'}
                 className="absolute bottom-18 left-8 p-4 bg-white rounded-xl shadow-lg text-sm text-gray-800 max-w-sm space-y-1 z-10"
             >
-                <h3 className="font-bold text-base mb-1 text-mgbblue">Node Options</h3>
+                <h3 className="font-bold text-base mb-1 text-mgbblue">Node Data</h3>
+                <div>
+                    <p>
+                        Node ID: {mapNodes.find(node => node.node.nodeId === clickedNode)?.node.nodeId}
+                    </p>
+                    <p>
+                        X: {mapNodes.find(node => node.node.nodeId === clickedNode)?.node.x}
+                    </p>
+                    <p>
+                        Y: {mapNodes.find(node => node.node.nodeId === clickedNode)?.node.y}
+                    </p>
+                    <p>
+                        Floor: {mapNodes.find(node => node.node.nodeId === clickedNode)?.node.floor}
+                    </p>
+                    <p>
+                        Building ID: {mapNodes.find(node => node.node.nodeId === clickedNode)?.node.buildingId}
+                    </p>
+
+                </div>
                 <SelectElement
                     label={'Select Node Type'}
                     id={'nodeType'}
