@@ -365,426 +365,428 @@ async function main() {
                 nodeId: "22PPFloor4Room9"
 
             },
-            {
-                deptId: 43,
-                deptName: "Admitting/Registration",
-                buildingId: 4,
-                nodeId: "22PPFloor1Room1"
-            },
-            {
-                deptId: 44,
-                deptName: "Atrium Caf\u00e9",
-                buildingId: 4,
-                nodeId: "22PPFloor1Room2"
-            },
-            {
-                deptId: 45,
-                deptName: "Audiology",
-                buildingId: 4,
-                nodeId: "22PPFloor1Room3"
-            },
-            {
-                deptId: 46,
-                deptName: "Blood Drawing Lab",
-                buildingId: 4,
-                nodeId: "22PPFloor1Room4"
-            },
-            {
-                deptId: 47,
-                deptName: "Cardiac Rehab",
-                buildingId: 4,
-                nodeId: "22PPFloor1Room5"
-            },
-            {
-                deptId: 48,
-                deptName: "Emergency Department",
-                buildingId: 4,
-                nodeId: "22PPFloor1Room6"
-            },
-            {
-                deptId: 49,
-                deptName: "Emergency Entrance",
-                buildingId: 4,
-                nodeId: "22PPFloor1Room7"
-            },
-            {
-                deptId: 50,
-                deptName: "GI Endoscopy",
-                buildingId: 4,
-                nodeId: "22PPFloor1Room8"
-            },
-            {
-                deptId: 51,
-                deptName: "Information",
-                buildingId: 4,
-                nodeId: "22PPFloor1Room9"
-            },
-            {
-                deptId: 52,
-                deptName: "MRI/CT",
-                buildingId: 4,
-                nodeId: "22PPFloor1Room10"
-            },
-            {
-                deptId: 53,
-                deptName: "Patient Finances",
-                buildingId: 4,
-                nodeId: "22PPFloor1Room11"
-            },
-            {
-                deptId: 54,
-                deptName: "Pre-Admittance Screening",
-                buildingId: 4,
-                nodeId: "22PPFloor1Room12"
-            },
-            {
-                deptId: 55,
-                deptName: "Pulmonary Lab",
-                buildingId: 4,
-                nodeId: "22PPFloor1Room13"
-            },
-            {
-                deptId: 56,
-                deptName: "Radiology",
-                buildingId: 4,
-                nodeId: "22PPFloor1Room14"
-            },
-            {
-                deptId: 57,
-                deptName: "Special Testing",
-                buildingId: 4,
-                nodeId: "22PPFloor1Room15"
-            },
-            {
-                deptId: 58,
-                deptName: "Starbucks",
-                buildingId: 4,
-                nodeId: "22PPFloor1Room16"
-            },
-            {
-                deptId: 59,
-                deptName: "Taiclet Family Center",
-                buildingId: 4,
-                nodeId: "22PPFloor1Room17"
-            },
-            {
-                deptId: 60,
-                deptName: "Valet Parking",
-                buildingId: 4,
-                nodeId: "22PPFloor1Room18"
-            },
-            {
-                deptId: 61,
-                deptName: "Vascular Lab",
-                buildingId: 4,
-                nodeId: "22PPFloor1Room19"
-            },
-            {
-                deptId: 62,
-                deptName: "Biomedical Engineering",
-                buildingId: 4,
-                nodeId: "22PPFloor2Room1"
-            },
-            {
-                deptId: 63,
-                deptName: "Food Services",
-                buildingId: 4,
-                nodeId: "22PPFloor2Room2"
-            },
-            {
-                deptId: 64,
-                deptName: "Morgue",
-                buildingId: 4,
-                nodeId: "22PPFloor2Room3"
-            },
-            {
-                deptId: 65,
-                deptName: "Occupational Therapy",
-                buildingId: 4,
-                nodeId: "22PPFloor2Room4"
-            },
-            {
-                deptId: 66,
-                deptName: "Otolaryngology",
-                buildingId: 4,
-                nodeId: "22PPFloor2Room5"
-            },
-            {
-                deptId: 67,
-                deptName: "Pharmacy",
-                buildingId: 4,
-                nodeId: "22PPFloor2Room6"
-            },
-            {
-                deptId: 68,
-                deptName: "Physical Therapy",
-                buildingId: 4,
-                nodeId: "22PPFloor2Room7"
-            },
-            {
-                deptId: 69,
-                deptName: "Plastic Surgery",
-                buildingId: 4,
-                nodeId: "22PPFloor2Room8"
-            },
-            {
-                deptId: 70,
-                deptName: "Psychiatric Inpatient Care",
-                buildingId: 4,
-                nodeId: "22PPFloor2Room9"
-            },
-            {
-                deptId: 71,
-                deptName: "Psychiatric/Addiction Recovery",
-                buildingId: 4,
-                nodeId: "22PPFloor2Room10"
-            },
-            {
-                deptId: 72,
-                deptName: "Rehabilitation Services",
-                buildingId: 4,
-                nodeId: "22PPFloor2Room11"
-            },
-            {
-                deptId: 73,
-                deptName: "Cafeteria",
-                buildingId: 4,
-                nodeId: "22PPFloor3Room1"
-            },
-            {
-                deptId: 74,
-                deptName: "Chapel",
-                buildingId: 4,
-                nodeId: "22PPFloor3Room2"
-            },
-            {
-                deptId: 75,
-                deptName: "Family/Patient Resources",
-                buildingId: 4,
-                nodeId: "22PPFloor3Room3"
-            },
-            {
-                deptId: 76,
-                deptName: "Gift Shop",
-                buildingId: 4,
-                nodeId: "22PPFloor3Room4"
-            },
-            {
-                deptId: 77,
-                deptName: "Gynocology & Oncology",
-                buildingId: 4,
-                nodeId: "22PPFloor3Room5"
-            },
-            {
-                deptId: 78,
-                deptName: "Huvos Auditorium",
-                buildingId: 4,
-                nodeId: "22PPFloor3Room6"
-            },
-            {
-                deptId: 79,
-                deptName: "Information",
-                buildingId: 4,
-                nodeId: "22PPFloor3Room7"
-            },
-            {
-                deptId: 80,
-                deptName: "Obstetrics and Gynecology Associates",
-                buildingId: 4,
-                nodeId: "22PPFloor3Room8"
-            },
-            {
-                deptId: 81,
-                deptName: "Outdoor Dining Terrace",
-                buildingId: 4,
-                nodeId: "22PPFloor3Room9"
-            },
-            {
-                deptId: 82,
-                deptName: "Roslindale Pediatric Associates",
-                buildingId: 4,
-                nodeId: "22PPFloor3Room10"
-            },
-            {
-                deptId: 83,
-                deptName: "Shuttle Pickup",
-                buildingId: 4,
-                nodeId: "22PPFloor3Room11"
-            },
-            {
-                deptId: 84,
-                deptName: "Volunteer Services",
-                buildingId: 4,
-                nodeId: "22PPFloor3Room12"
-            },
-            {
-                deptId: 85,
-                deptName: "Cardiology",
-                buildingId: 4,
-                nodeId: "22PPFloor4Room1"
-            },
-            {
-                deptId: 86,
-                deptName: "Foot and Ankle Center",
-                buildingId: 4,
-                nodeId: "22PPFloor4Room2"
-            },
-            {
-                deptId: 87,
-                deptName: "Gastroenterology Associates",
-                buildingId: 4,
-                nodeId: "22PPFloor4Room3"
-            },
-            {
-                deptId: 88,
-                deptName: "HVMA Internal Medicine",
-                buildingId: 4,
-                nodeId: "22PPFloor4Room4"
-            },
-            {
-                deptId: 89,
-                deptName: "HVMA Neurology",
-                buildingId: 4,
-                nodeId: "22PPFloor4Room5"
-            },
-            {
-                deptId: 90,
-                deptName: "Medical Library",
-                buildingId: 4,
-                nodeId: "22PPFloor4Room6"
-            },
-            {
-                deptId: 91,
-                deptName: "Medical Records",
-                buildingId: 4,
-                nodeId: "22PPFloor4Room7"
-            },
-            {
-                deptId: 92,
-                deptName: "MOHS Clinic",
-                buildingId: 4,
-                nodeId: "22PPFloor4Room8"
-            },
-            {
-                deptId: 93,
-                deptName: "Neurology",
-                buildingId: 4,
-                nodeId: "22PPFloor4Room9"
-            },
-            {
-                deptId: 94,
-                deptName: "Primary Care Physicians",
-                buildingId: 4,
-                nodeId: "22PPFloor4Room10"
-            },
-            {
-                deptId: 95,
-                deptName: "Pulmonary Services",
-                buildingId: 4,
-                nodeId: "22PPFloor4Room11"
-            },
-            {
-                deptId: 96,
-                deptName: "Rheumatology Center",
-                buildingId: 4,
-                nodeId: "22PPFloor4Room12"
-            },
-            {
-                deptId: 97,
-                deptName: "Sadowsky Conference Room",
-                buildingId: 4,
-                nodeId: "22PPFloor4Room13"
-            },
-            {
-                deptId: 98,
-                deptName: "Social Work",
-                buildingId: 4,
-                nodeId: "22PPFloor4Room14"
-            },
-            {
-                deptId: 99,
-                deptName: "Tynan Conference Room",
-                buildingId: 4,
-                nodeId: "22PPFloor4Room15"
-            },
-            {
-                deptId: 100,
-                deptName: "Urology",
-                buildingId: 4,
-                nodeId: "22PPFloor4Room16"
-            },
-            {
-                deptId: 101,
-                deptName: "Boston ENT Associates",
-                buildingId: 4,
-                nodeId: "22PPFloor5Room1"
-            },
-            {
-                deptId: 102,
-                deptName: "Endocrinology/Diabetes/Hemotology",
-                buildingId: 4,
-                nodeId: "22PPFloor5Room2"
-            },
-            {
-                deptId: 103,
-                deptName: "Headache",
-                buildingId: 4,
-                nodeId: "22PPFloor5Room3"
-            },
-            {
-                deptId: 104,
-                deptName: "ICU",
-                buildingId: 4,
-                nodeId: "22PPFloor5Room4"
-            },
-            {
-                deptId: 105,
-                deptName: "Internal Medicine",
-                buildingId: 4,
-                nodeId: "22PPFloor5Room5"
-            },
-            {
-                deptId: 106,
-                deptName: "Oncology Clinic",
-                buildingId: 4,
-                nodeId: "22PPFloor5Room6"
-            },
-            {
-                deptId: 107,
-                deptName: "Orthopaedics Associates",
-                buildingId: 4,
-                nodeId: "22PPFloor5Room7"
-            },
-            {
-                deptId: 108,
-                deptName: "Outpatient Infusion Center",
-                buildingId: 4,
-                nodeId: "22PPFloor5Room8"
-            },
-            {
-                deptId: 109,
-                deptName: "Primary Care Physicians",
-                buildingId: 4,
-                nodeId: "22PPFloor5Room9"
-            },
-            {
-                deptId: 110,
-                deptName: "Surgical Specialties",
-                buildingId: 4,
-                nodeId: "22PPFloor5Room10"
-            },
-            {
-                deptId: 111,
-                deptName: "X-Ray",
-                buildingId: 4,
-                nodeId: "22PPFloor5Room11"
-            },
-            {
-                deptId: 112,
-                deptName: "X-Ray Waiting Room",
-                buildingId: 4,
-                nodeId: "22PPFloor5Room12"
-            }
+
+            //TODO: UPDATE EACH DEPARTMENT WITH THEIR OWN NODES
+            // {
+            //     deptId: 43,
+            //     deptName: "Admitting/Registration",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor1Room1"
+            // },
+            // {
+            //     deptId: 44,
+            //     deptName: "Atrium Cafe",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor1Room2"
+            // },
+            // {
+            //     deptId: 45,
+            //     deptName: "Audiology",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor1Room3"
+            // },
+            // {
+            //     deptId: 46,
+            //     deptName: "Blood Drawing Lab",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor1Room4"
+            // },
+            // {
+            //     deptId: 47,
+            //     deptName: "Cardiac Rehab",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor1Room5"
+            // },
+            // {
+            //     deptId: 48,
+            //     deptName: "Emergency Department",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor1Room6"
+            // },
+            // {
+            //     deptId: 49,
+            //     deptName: "Emergency Entrance",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor1Room7"
+            // },
+            // {
+            //     deptId: 50,
+            //     deptName: "GI Endoscopy",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor1Room8"
+            // },
+            // {
+            //     deptId: 51,
+            //     deptName: "Information",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor1Room9"
+            // },
+            // {
+            //     deptId: 52,
+            //     deptName: "MRI/CT",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor1Room10"
+            // },
+            // {
+            //     deptId: 53,
+            //     deptName: "Patient Finances",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor1Room11"
+            // },
+            // {
+            //     deptId: 54,
+            //     deptName: "Pre-Admittance Screening",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor1Room12"
+            // },
+            // {
+            //     deptId: 55,
+            //     deptName: "Pulmonary Lab",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor1Room13"
+            // },
+            // {
+            //     deptId: 56,
+            //     deptName: "Radiology",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor1Room14"
+            // },
+            // {
+            //     deptId: 57,
+            //     deptName: "Special Testing",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor1Room15"
+            // },
+            // {
+            //     deptId: 58,
+            //     deptName: "Starbucks",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor1Room16"
+            // },
+            // {
+            //     deptId: 59,
+            //     deptName: "Taiclet Family Center",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor1Room17"
+            // },
+            // {
+            //     deptId: 60,
+            //     deptName: "Valet Parking",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor1Room18"
+            // },
+            // {
+            //     deptId: 61,
+            //     deptName: "Vascular Lab",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor1Room19"
+            // },
+            // {
+            //     deptId: 62,
+            //     deptName: "Biomedical Engineering",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor2Room1"
+            // },
+            // {
+            //     deptId: 63,
+            //     deptName: "Food Services",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor2Room2"
+            // },
+            // {
+            //     deptId: 64,
+            //     deptName: "Morgue",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor2Room3"
+            // },
+            // {
+            //     deptId: 65,
+            //     deptName: "Occupational Therapy",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor2Room4"
+            // },
+            // {
+            //     deptId: 66,
+            //     deptName: "Otolaryngology",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor2Room5"
+            // },
+            // {
+            //     deptId: 67,
+            //     deptName: "Pharmacy",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor2Room6"
+            // },
+            // {
+            //     deptId: 68,
+            //     deptName: "Physical Therapy",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor2Room7"
+            // },
+            // {
+            //     deptId: 69,
+            //     deptName: "Plastic Surgery",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor2Room8"
+            // },
+            // {
+            //     deptId: 70,
+            //     deptName: "Psychiatric Inpatient Care",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor2Room9"
+            // },
+            // {
+            //     deptId: 71,
+            //     deptName: "Psychiatric/Addiction Recovery",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor2Room10"
+            // },
+            // {
+            //     deptId: 72,
+            //     deptName: "Rehabilitation Services",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor2Room11"
+            // },
+            // {
+            //     deptId: 73,
+            //     deptName: "Cafeteria",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor3Room1"
+            // },
+            // {
+            //     deptId: 74,
+            //     deptName: "Chapel",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor3Room2"
+            // },
+            // {
+            //     deptId: 75,
+            //     deptName: "Family/Patient Resources",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor3Room3"
+            // },
+            // {
+            //     deptId: 76,
+            //     deptName: "Gift Shop",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor3Room4"
+            // },
+            // {
+            //     deptId: 77,
+            //     deptName: "Gynocology & Oncology",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor3Room5"
+            // },
+            // {
+            //     deptId: 78,
+            //     deptName: "Huvos Auditorium",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor3Room6"
+            // },
+            // {
+            //     deptId: 79,
+            //     deptName: "Information",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor3Room7"
+            // },
+            // {
+            //     deptId: 80,
+            //     deptName: "Obstetrics and Gynecology Associates",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor3Room8"
+            // },
+            // {
+            //     deptId: 81,
+            //     deptName: "Outdoor Dining Terrace",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor3Room9"
+            // },
+            // {
+            //     deptId: 82,
+            //     deptName: "Roslindale Pediatric Associates",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor3Room10"
+            // },
+            // {
+            //     deptId: 83,
+            //     deptName: "Shuttle Pickup",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor3Room11"
+            // },
+            // {
+            //     deptId: 84,
+            //     deptName: "Volunteer Services",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor3Room12"
+            // },
+            // {
+            //     deptId: 85,
+            //     deptName: "Cardiology",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor4Room1"
+            // },
+            // {
+            //     deptId: 86,
+            //     deptName: "Foot and Ankle Center",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor4Room2"
+            // },
+            // {
+            //     deptId: 87,
+            //     deptName: "Gastroenterology Associates",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor4Room3"
+            // },
+            // {
+            //     deptId: 88,
+            //     deptName: "HVMA Internal Medicine",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor4Room4"
+            // },
+            // {
+            //     deptId: 89,
+            //     deptName: "HVMA Neurology",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor4Room5"
+            // },
+            // {
+            //     deptId: 90,
+            //     deptName: "Medical Library",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor4Room6"
+            // },
+            // {
+            //     deptId: 91,
+            //     deptName: "Medical Records",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor4Room7"
+            // },
+            // {
+            //     deptId: 92,
+            //     deptName: "MOHS Clinic",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor4Room8"
+            // },
+            // {
+            //     deptId: 93,
+            //     deptName: "Neurology",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor4Room9"
+            // },
+            // {
+            //     deptId: 94,
+            //     deptName: "Primary Care Physicians",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor4Room10"
+            // },
+            // {
+            //     deptId: 95,
+            //     deptName: "Pulmonary Services",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor4Room11"
+            // },
+            // {
+            //     deptId: 96,
+            //     deptName: "Rheumatology Center",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor4Room12"
+            // },
+            // {
+            //     deptId: 97,
+            //     deptName: "Sadowsky Conference Room",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor4Room13"
+            // },
+            // {
+            //     deptId: 98,
+            //     deptName: "Social Work",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor4Room14"
+            // },
+            // {
+            //     deptId: 99,
+            //     deptName: "Tynan Conference Room",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor4Room15"
+            // },
+            // {
+            //     deptId: 100,
+            //     deptName: "Urology",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor4Room16"
+            // },
+            // {
+            //     deptId: 101,
+            //     deptName: "Boston ENT Associates",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor5Room1"
+            // },
+            // {
+            //     deptId: 102,
+            //     deptName: "Endocrinology/Diabetes/Hemotology",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor5Room2"
+            // },
+            // {
+            //     deptId: 103,
+            //     deptName: "Headache",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor5Room3"
+            // },
+            // {
+            //     deptId: 104,
+            //     deptName: "ICU",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor5Room4"
+            // },
+            // {
+            //     deptId: 105,
+            //     deptName: "Internal Medicine",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor5Room5"
+            // },
+            // {
+            //     deptId: 106,
+            //     deptName: "Oncology Clinic",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor5Room6"
+            // },
+            // {
+            //     deptId: 107,
+            //     deptName: "Orthopaedics Associates",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor5Room7"
+            // },
+            // {
+            //     deptId: 108,
+            //     deptName: "Outpatient Infusion Center",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor5Room8"
+            // },
+            // {
+            //     deptId: 109,
+            //     deptName: "Primary Care Physicians",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor5Room9"
+            // },
+            // {
+            //     deptId: 110,
+            //     deptName: "Surgical Specialties",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor5Room10"
+            // },
+            // {
+            //     deptId: 111,
+            //     deptName: "X-Ray",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor5Room11"
+            // },
+            // {
+            //     deptId: 112,
+            //     deptName: "X-Ray Waiting Room",
+            //     buildingId: 4,
+            //     nodeId: "22PPFloor5Room12"
+            // }
 
         ],
         skipDuplicates: true,
