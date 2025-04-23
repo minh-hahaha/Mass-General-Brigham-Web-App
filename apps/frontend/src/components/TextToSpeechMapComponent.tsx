@@ -91,7 +91,7 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Direc
         // console.log(textToSpeak);
         // console.log("textToSpeak");
         const message = textToSpeak[counter];//.isArray(textToSpeak) ? textToSpeak.join(' ') : textToSpeak;
-        if(counter===textToSpeak.length){
+        if(counter===textToSpeak.length-1){
             handleProgressReset()
         }else{
             counter++;
