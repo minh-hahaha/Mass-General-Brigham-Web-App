@@ -526,33 +526,6 @@ const DirectionsMapComponent = () => {
         );
 
     };
-    function htmlToPlainText(html: string): string {
-        const div = document.createElement('div');
-        div.innerHTML = html;  // Set the HTML as the inner content of a div
-        return div.innerText || div.textContent || '';
-    }
-    const speakDirections = async () => {
-        const message = Array.isArray(textDirections) ? textDirections.join(' ') : textDirections;
-        let messageString=htmlToPlainText(message);
-        if (messageString.length==0) {
-            messageString="Empty of Directions, select a from, and, too location in order to receive directions.";
-        }
-        const response = await fetch('http://localhost:5001/api/tts', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text: messageString }),
-        });
-
-        const audioBlob = await response.blob();  // Get blob from server
-
-        // Log audioBlob size to confirm it's a valid file
-        console.log('Audio Blob size:', audioBlob.size);
-        console.log(textDirections);
-        const audioUrl = URL.createObjectURL(audioBlob);  // Create a URL for the audio
-        const audio = new Audio(audioUrl);  // Create audio object
-        audio.play();
-    };
-
 
 
 
@@ -675,16 +648,7 @@ const DirectionsMapComponent = () => {
                             {showHospital ? 'Show Google Map' : "I'm Here!"}
                         </button>
                     </div>
-                    {/* speak text button*/}
-                    <div className={clsx(parking ? 'mt-6' : '-mt-2.5')}>
-                        <button className="w-full bg-mgbblue text-white py-2 rounded-sm hover:bg-mgbblue/90 transition disabled:opacity-50"
 
-
-                                onClick={() => speakDirections()}>
-                            Speak
-
-                        </button>
-                    </div>
                     <div className="mt-6">
                         {toLocation && isAdmin && (
                             <AlgorithmSelector

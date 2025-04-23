@@ -187,33 +187,6 @@ function setDirections(directions: string) {
 
 }
 
-//text to speech
-function htmlToPlainText(html: string): string {
-    const div = document.createElement('div');
-    div.innerHTML = html;  // Set the HTML as the inner content of a div
-    return div.innerText || div.textContent || '';
-}
-const speakDirections = async () => {
-    const message = Array.isArray(directions1) ? directions1.join(' ') : directions1;
-    let messageString=htmlToPlainText(message.toString());
-    if (messageString.length==0) {
-        messageString="Empty of Directions, select a from, and, too location in order to receive directions.";
-    }
-    const response = await fetch('http://localhost:5001/api/tts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: messageString }),
-    });
-
-    const audioBlob = await response.blob();  // Get blob from server
-
-    // Log audioBlob size to confirm it's a valid file
-    console.log('Audio Blob size:', audioBlob.size);
-    console.log(directions1);
-    const audioUrl = URL.createObjectURL(audioBlob);  // Create a URL for the audio
-    const audio = new Audio(audioUrl);  // Create audio object
-    audio.play();
-};
 
 
 
@@ -340,16 +313,8 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveD
             />
             <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20">
                 <FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />
-                {/* speak text button*/}
-                <div >
-                    <button className="w-full bg-mgbblue text-white py-2 rounded-sm hover:bg-mgbblue/90 transition disabled:opacity-50"
 
 
-                            onClick={() => speakDirections()}>
-                        Speak
-
-                    </button>
-                </div>
             </div>
         <div className="relative w-full h-full">
             <OverlayComponent

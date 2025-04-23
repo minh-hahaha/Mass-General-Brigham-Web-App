@@ -7,9 +7,19 @@ interface State {
     driveDirections: string;
 }
 const TextToSpeechMapComponent = ({walkDirections, driveDirections}:State) => {
-    useEffect(() => {
+    const [textMode, setTextMode] = useState("Mode: Transport Directions");
+    const [textToSpeak, setTextToSpeak] = useState(driveDirections);
 
-    }, []);
+    const handleModeSwitch = () => {
+        if (textMode === "Mode: Transport Directions") {
+            setTextMode("Mode: Building Directions");
+            setTextToSpeak(walkDirections);
+        } else {
+            setTextMode("Mode: Transport Directions");
+            setTextToSpeak(driveDirections);
+        }
+    };
+
 
     function htmlToPlainText(html: string): string {
         const div = document.createElement('div');
@@ -38,28 +48,37 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections}:State) => {
         audio.play();
     };
 
-    return(
+    return (
         <>
-            <div className="bg-white max-w-2xl absolute top-0 right-20 mt-4 w-fit p-2 rounded-r-md cursor-pointer z-20 rounded">
 
-                {/* speak text button*/}
-                <div >
-                    <button className="w-full bg-mgbblue text-white py-2 rounded-sm hover:bg-mgbblue/90 transition disabled:opacity-50"
-                            onClick={() => speakDirections()}>
-                        Speak
+            <div className="fixed top-16 right-10 z-50">
+                <div className="bg-white p-4 rounded shadow-md flex flex-col items-end space-y-2 border border-gray-200 w-96">
+                    <div
+                        id="text-directions"
+                        className="text-black w-full h-16 overflow-y-auto"
+                        dangerouslySetInnerHTML={{ __html: textToSpeak }}
+                    ></div>
 
-                    </button>
+                    <div className="flex space-x-2">
+                        <button
+                            id="mode-switch"
+                            className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 transition"
+                            onClick={handleModeSwitch}
+                        >
+                            {textMode}
+                        </button>
+
+                        <button
+                            id="speak"
+                            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                            onClick={speakDirections}
+                        >
+                            Speak
+                        </button>
+                    </div>
                 </div>
-                <div className="flex items-center justify-center max-w-2xl"
-                    id={'text-directions'}
-                    dangerouslySetInnerHTML={{ __html: textToSpeak}}
-                />
-
-
-
             </div>
         </>
-
     );
 
 };
