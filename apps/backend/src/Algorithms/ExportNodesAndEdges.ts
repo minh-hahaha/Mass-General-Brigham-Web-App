@@ -8,11 +8,11 @@ declare const __dirname: string;
 
 export async function exportNodesAndEdges(): Promise<void> {
     // Paths to JSON files
-    //const CHPath = path.resolve(__dirname, 'JSONFiles', 'CHNodesEdges.json');
-    const PP20thPath1 = path.resolve(__dirname, 'JSONFiles', 'PPF01NodesAndEdge.json');
-    //const PP22thPath = path.resolve(__dirname, 'JSONFiles', '22PPAllNodesEdges.json');
+    const CHPath = path.resolve(__dirname, 'JSONFiles', 'CHFloor1AllNodesAndEdgesNew.json');
+    const PP20F1Path = path.resolve(__dirname, 'JSONFiles', 'PPF01NodesAndEdges.json');
+    const PP20F2Path = path.resolve(__dirname, 'JSONFiles', 'PPF02NodesAndEdges.json');
 
-    const buildings = [PP20thPath1];
+    const buildings = [CHPath, PP20F1Path, PP20F2Path];
 
     // go through buildings
     for (const building of buildings) {
@@ -25,6 +25,8 @@ export async function exportNodesAndEdges(): Promise<void> {
                 data: nodes,
                 skipDuplicates: true,
             });
+            console.log('Seed NODES!');
+
             // extract edges from all buildings
             await prisma.edge.createMany({
                 data: edges.map((e: { from: any; to: any }) => ({
@@ -33,7 +35,7 @@ export async function exportNodesAndEdges(): Promise<void> {
                 })),
                 skipDuplicates: true,
             });
-            console.log('Extraction successful!');
+            console.log('Seed EDGES!');
         } catch (error) {
             console.log('Error with extracting JSON data: ' + error);
         } finally {

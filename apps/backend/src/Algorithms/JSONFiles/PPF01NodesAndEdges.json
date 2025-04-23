@@ -266,7 +266,7 @@
             "y": -71.26678630163319,
             "floor": "1",
             "buildingId": "2",
-            "nodeType": "1",
+            "nodeType": "Stairs",
             "name": "PP 22 F1 Main Stairs",
             "roomNumber": null
         },
@@ -296,7 +296,7 @@
             "y": -71.26689761330731,
             "floor": "1",
             "buildingId": "2",
-            "nodeType": "1",
+            "nodeType": "Stairs",
             "name": "PP 22 F1 Lower Left Stairs",
             "roomNumber": null
         },
@@ -401,12 +401,12 @@
             "roomNumber": "9"
         },
         {
-            "nodeId": "PPFloor11_3",
+            "nodeId": "PPFloor1Elevator",
             "x": 42.09257906185825,
             "y": -71.26617083236346,
             "floor": "1",
             "buildingId": "2",
-            "nodeType": "1",
+            "nodeType": "Elevator",
             "name": "PP 20 F1 Main Elevator",
             "roomNumber": null
         },
@@ -441,12 +441,12 @@
             "roomNumber": "10"
         },
         {
-            "nodeId": "PPFloor11_4",
+            "nodeId": "PPFloor1Elevator_1",
             "x": 42.09270799587195,
             "y": -71.26563636815735,
             "floor": "1",
             "buildingId": "2",
-            "nodeType": "1",
+            "nodeType": "Elevator",
             "name": "PP 20 F1 Side Elevator",
             "roomNumber": null
         },

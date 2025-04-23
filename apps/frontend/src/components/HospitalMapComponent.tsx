@@ -172,14 +172,13 @@ async function FindPath(start: myNode, end: myNode, strategy: string) {
         headers: {'Content-Type': 'application/json'}
     })
     const nodes : myNode[] = res.data
-    // console.log("PATH" + nodes)
     return nodes;
 }
 
 function GetPolylinePath(path: myNode[]): { lat: number; lng: number }[] {
     return path.map((node) => ({
-        lat: node.y,
-        lng: node.x,
+        lat: Number(node.x),
+        lng: Number(node.y),
     }));
 }
 
@@ -209,8 +208,8 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveD
     const [showFloorSelect, setShowFloorSelect] = useState(true);
     const [textSpeech, setTextSpeech] = useState<HTMLElement | null>(null);
 
-    console.log(startNodeId);
-    console.log(endNodeId);
+    console.log("start nodeId in hospitalMapComponent" + startNodeId);
+    console.log("end nodeId in hospitalMapComponent" + endNodeId);
 
     // get node using nodeId
     useEffect(() => {
@@ -225,8 +224,11 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveD
             }
         };
         fetchNode();
+
         console.log('Got Department Node');
     }, [startNodeId, endNodeId]);
+    console.log("-----" + typeof endNode?.x);
+
 
     // Find path and text directions
     useEffect(() => {
@@ -290,16 +292,36 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveD
     };
 
 
+    // const getCurrentFloorPath = (buildingId: string, floorNumber: string) => {
+    //     return bfsPath.filter(
+    //         node => node.buildingId === buildingId && node.floor === floorNumber
+    //     );
+    // };
+
+
+    const chestnutHillFloor = getChestnutHillFloor();
+    const patriotPlaceFloor = getCurrentPatriotPlaceFloor();
+
     const getCurrentFloorPath = (buildingId: string, floorNumber: string) => {
         return bfsPath.filter(
             node => node.buildingId === buildingId && node.floor === floorNumber
         );
     };
 
+    const getCurrentFloorInfo = () => {
+        if (!currentFloorId) return { buildingId: "1", floor: "1" };
 
-    const chestnutHillFloor = getChestnutHillFloor();
-    const patriotPlaceFloor = getCurrentPatriotPlaceFloor();
+        const currentFloor = availableFloors.find(f => f.id === currentFloorId);
+        if (!currentFloor) return { buildingId: "1", floor: "1" };
 
+        return {
+            buildingId: currentFloor.buildingId,
+            floor: currentFloor.floor
+        };
+    };
+
+// Then use these in your component:
+    const { buildingId, floor } = getCurrentFloorInfo();
 
     // coordinates to test
     const coords = [ { lat: 42.32641975362307, lng: -71.14992617744028 },
@@ -332,7 +354,7 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveD
                 bounds={FaulknerBounds}
                 imageSrc={'/FK01.svg'}
             />
-            {/*<DisplayPathComponent coordinates={GetPolylinePath(currentFloorPath)} />*/}
+            <DisplayPathComponent coordinates={GetPolylinePath(getCurrentFloorPath(buildingId, floor))} />
             {/*<DisplayPathComponent coordinates={coords} />*/}
         </div>
         </>

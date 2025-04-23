@@ -158,12 +158,10 @@ const DirectionsMapComponent = () => {
         const handleDeptChange = () => {
             console.log('currentDirectoryName - ', currentDirectoryName);
             const dept = directoryList.find((dept) => dept.deptName === currentDirectoryName);
-            console.log('dept - ' + dept);
-
             //checks null
             if (dept) {
                 setToDirectoryNodeId(dept.nodeId);
-                console.log(dept.nodeId);
+                console.log("DEPT NODE ID: " + dept.nodeId);
             } else {
                 setToDirectoryNodeId('');
             }
@@ -376,7 +374,9 @@ const DirectionsMapComponent = () => {
     };
 
     const handleHere = () => {
+        clearParking();
         setShowHospital((prevState) => !prevState);
+        setFromNodeId("PPFloor1Parking LotC") // TODO
     };
 
 
@@ -671,9 +671,10 @@ const DirectionsMapComponent = () => {
                 >
                     <HospitalMapComponent
                         startNodeId={fromNodeId}
-                      endNodeId={toDirectoryNodeId}
+                        endNodeId={toDirectoryNodeId}
                       selectedAlgorithm={selectedAlgorithm}
                       driveDirections={textDirections}/>
+
                     {lot !== '' && (
                         <DisplayPathComponent coordinates={dropOffToParkPath}/>
                     )}
