@@ -151,6 +151,5 @@ model Sanitation {
 }
 
 model RecentOrigins {
-  id                      Int @id @default(autoincrement())
-  location                String
+  location                String        @id
 }
