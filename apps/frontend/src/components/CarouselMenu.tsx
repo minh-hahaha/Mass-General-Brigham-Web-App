@@ -69,8 +69,6 @@ const CarouselMenu: React.FC<CarouselProps> = ({tableTabs}) => {
                         );
                     })}
                 </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
             </Carousel>
         </div>
     )

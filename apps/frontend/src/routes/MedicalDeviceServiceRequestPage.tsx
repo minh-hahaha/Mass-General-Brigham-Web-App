@@ -116,7 +116,7 @@ const MedicalDeviceServiceRequestPage = () => {
 
     return (
         <div className="flex flex-col justify-center items-center min-h-screen">
-            <div className="flex flex-col items-center border border-[#d3d5d7] bg-white rounded-2xl shadow-xl p-8 w-full max-w-[700px] mt-10 mb-10">
+            <div className="flex flex-col items-center rounded-2xl p-8 w-full max-w-[700px] mt-10 mb-10">
                 <h1 className="text-[30px] font-bold mb-6">Medical Device Request Form</h1>
                 <p> Vinam Nguyen </p>
                 <div>
@@ -299,7 +299,7 @@ const MedicalDeviceServiceRequestPage = () => {
                                     <label className="w-1/4">Status</label>
                                     <select
                                         id="status"
-                                        value={priority}
+                                        value={status}
                                         onChange={(e) => setStatus(e.target.value as status)}
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
