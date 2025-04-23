@@ -74,7 +74,7 @@ const ImportExportDirectoryPage = () => {
     }
 
     return (
-        <div className="flex flex-col justify-center items-center mt-10">
+        <div className="flex h-full justify-center pt-10 pb-120">
             <div className="flex flex-col items-center border border-[#d3d5d7] bg-white rounded-2xl shadow-xl p-8 w-full max-w-[700px] mt-10">
                 <input
                     className="border border-gray-300 rounded-md p-2 w-full"

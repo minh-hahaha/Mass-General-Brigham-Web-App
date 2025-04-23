@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LogoBar from './components/LogoBar.tsx';
+import Footer from './components/Footer.tsx';
 import LoginPage from './routes/LoginPage.tsx';
 import HomePage from './routes/HomePage.tsx';
 import TransportationRequestPage from './routes/TransportationRequestPage.tsx';
@@ -78,9 +79,14 @@ function App() {
                                     path="/SanitationRequest"
                                     element={<SanitationRequestPage />}
                                 />
-                        <Route path="/SanitationRequest" element={<SanitationRequestPage />} />
-                        <Route path="/SanitationRequestDisplayPage" element={<SanitationRequestDisplayPage />} />
-
+                                <Route
+                                    path="/SanitationRequest"
+                                    element={<SanitationRequestPage />}
+                                />
+                                <Route
+                                    path="/SanitationRequestDisplayPage"
+                                    element={<SanitationRequestDisplayPage />}
+                                />
                                 <Route
                                     path="/MaintenancePage"
                                     element={<MaintenanceRequestPage />}
@@ -107,6 +113,7 @@ function App() {
                                     element={<MedicalDeviceServiceDisplayPage/>}
                                 />
                             </Routes>
+                            <Footer/>
                         </main>
                     </div>
                 </BrowserRouter>
