@@ -211,7 +211,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
     useEffect(() => {
         if (!map || !drawingLibrary || drawingManager) return;
         drawingManager = new drawingLibrary.DrawingManager({
-            drawingMode: drawingLibrary.OverlayType.MARKER,
+            drawingMode: null,
             drawingControl: true,
             drawingControlOptions: {
                 position: google.maps.ControlPosition.TOP_CENTER,
@@ -222,7 +222,8 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             },
             markerOptions: {
                 zIndex: 1,
-                clickable: true
+                clickable: true,
+                draggable: true,
             },
             polylineOptions: {
                 zIndex: 0
@@ -268,11 +269,34 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 clickable: true,
                 map: map,
                 zIndex: 1,
+                draggable: true
             }),
         }
         google.maps.event.addListener(mapNode.drawnNode, 'click', (e: google.maps.MapMouseEvent) =>
             clickNode(mapNode.node.nodeId)
         );
+        google.maps.event.addListener(mapNode.drawnNode, 'drag', (e: google.maps.MapMouseEvent) => {
+            const loc = e.latLng;
+            if(loc){
+                mapEdgesRef.current.forEach((edge) => {
+                    const tempLoc: google.maps.LatLngLiteral = {
+                        lat: mapNode.node.x,
+                        lng: mapNode.node.y
+                    }
+                    const EPSILON = 1e-6;
+                    const indexOfNode = edge.drawnEdge.getPath().getArray().findIndex(
+                        ll =>
+                            Math.abs(ll.lat() - tempLoc.lat) < EPSILON &&
+                            Math.abs(ll.lng() - tempLoc.lng) < EPSILON
+                    );
+                    if(indexOfNode !== -1){
+                        edge.drawnEdge.getPath().setAt(indexOfNode, loc);
+                    }
+                })
+                mapNode.node.x = loc.lat();
+                mapNode.node.y = loc.lng();
+            }
+        })
         return mapNode;
     }
 
@@ -293,11 +317,34 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 clickable: true,
                 map: map,
                 zIndex: 1,
+                draggable: true
             }),
         };
         google.maps.event.addListener(mapNode.drawnNode, 'click', (e: google.maps.MapMouseEvent) =>
             clickNode(mapNode.node.nodeId)
         );
+        google.maps.event.addListener(mapNode.drawnNode, 'drag', (e: google.maps.MapMouseEvent) => {
+            const loc = e.latLng;
+            if(loc){
+                mapEdgesRef.current.forEach((edge) => {
+                    const tempLoc: google.maps.LatLngLiteral = {
+                        lat: mapNode.node.x,
+                        lng: mapNode.node.y
+                    }
+                    const EPSILON = 1e-6;
+                    const indexOfNode = edge.drawnEdge.getPath().getArray().findIndex(
+                        ll =>
+                            Math.abs(ll.lat() - tempLoc.lat) < EPSILON &&
+                            Math.abs(ll.lng() - tempLoc.lng) < EPSILON
+                    );
+                    if(indexOfNode !== -1){
+                        edge.drawnEdge.getPath().setAt(indexOfNode, loc);
+                    }
+                })
+                mapNode.node.x = loc.lat();
+                mapNode.node.y = loc.lng();
+            }
+        })
         setMapNodes((prev) => [...prev, mapNode]);
         return mapNode;
     }
