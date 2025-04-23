@@ -13,8 +13,8 @@ export async function exportNodesAndEdges(): Promise<void> {
     const PP22thPath = path.resolve(__dirname, 'JSONFiles', '22PPAllNodesEdges.json');
 
     const buildings = [CHPath, PP20thPath, PP22thPath];
-
-    // go through buildings
+    return;
+    // go through buildingsr
     for (const building of buildings) {
         const rawData = fs.readFileSync(building, 'utf-8');
         const { nodes, edges } = JSON.parse(rawData);

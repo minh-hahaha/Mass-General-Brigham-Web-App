@@ -17,13 +17,14 @@ export interface NodeResponse {
 
 
 // GET request to fetch all Nodes
-export async function getNodes() {
-    return (await axios.get<NodeResponse[]>(ROUTES.NODE)).data;
+export async function getNodes(fromFloor: string, fromBuilding: string) {
+    return (await axios.get<NodeResponse[]>(ROUTES.NODE, { params: {fromFloor: fromFloor, fromBuilding: fromBuilding} })).data;
 }
 
-export async function createNode(nodeResponse: NodeResponse): Promise<NodeResponse> {
-    return (await axios.post<NodeResponse>(ROUTES.NODE, nodeResponse)).data;
+export async function createNode(nodeResponse: NodeResponse[], overwrite: boolean, overwriteFloor: string, overwriteBuilding: string): Promise<NodeResponse> {
+    return (await axios.post<NodeResponse>(ROUTES.NODE, nodeResponse, { params: {overwrite: overwrite, overwriteFloor: overwriteFloor, overwriteBuilding: overwriteBuilding} })).data;
 }
+
 
 export async function deleteNode(id: string): Promise<void> {
     const params = {

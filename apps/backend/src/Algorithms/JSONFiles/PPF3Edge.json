@@ -1,0 +1,107 @@
+[
+    {
+        "edgeId": 92,
+        "from": "PPFloor3Elevator_1",
+        "to": "PPFloor3Hallway Intersection"
+    },
+    {
+        "edgeId": 93,
+        "from": "PPFloor3Stairs_1",
+        "to": "PPFloor3Hallway Intersection"
+    },
+    {
+        "edgeId": 94,
+        "from": "PPFloor3Hallway Intersection",
+        "to": "PPFloor3Hallway_3"
+    },
+    {
+        "edgeId": 95,
+        "from": "PPFloor3Hallway_3",
+        "to": "PPFloor3Hallway_2"
+    },
+    {
+        "edgeId": 96,
+        "from": "PPFloor3Hallway_2",
+        "to": "PPFloor3Hallway_1"
+    },
+    {
+        "edgeId": 97,
+        "from": "PPFloor3Hallway_1",
+        "to": "PPFloor3Hallway"
+    },
+    {
+        "edgeId": 98,
+        "from": "PPFloor3Hallway",
+        "to": "PPFloor3Door"
+    },
+    {
+        "edgeId": 99,
+        "from": "PPFloor3Door",
+        "to": "PPFloor3Room_1"
+    },
+    {
+        "edgeId": 100,
+        "from": "PPFloor3Hallway",
+        "to": "PPFloor3Stairs"
+    },
+    {
+        "edgeId": 101,
+        "from": "PPFloor3Hallway",
+        "to": "PPFloor3Hallway2"
+    },
+    {
+        "edgeId": 102,
+        "from": "PPFloor3Hallway2",
+        "to": "PPFloor3Elevator"
+    },
+    {
+        "edgeId": 103,
+        "from": "PPFloor3Hallway2",
+        "to": "PPFloor3Hallway Intersection1"
+    },
+    {
+        "edgeId": 104,
+        "from": "PPFloor3Hallway Intersection1",
+        "to": "PPFloor3Hallway1"
+    },
+    {
+        "edgeId": 105,
+        "from": "PPFloor3Hallway1",
+        "to": "PPFloor3Door_1"
+    },
+    {
+        "edgeId": 106,
+        "from": "PPFloor3Door_1",
+        "to": "PPFloor3Hallway_4"
+    },
+    {
+        "edgeId": 107,
+        "from": "PPFloor3Hallway_4",
+        "to": "PPFloor3Room"
+    },
+    {
+        "edgeId": 108,
+        "from": "PPFloor3Elevator_2",
+        "to": "PPFloor3Hallway1_1"
+    },
+    {
+        "edgeId": 109,
+        "from": "PPFloor3Stairs1",
+        "to": "PPFloor3Hallway2_1"
+    },
+    {
+        "edgeId": 110,
+        "from": "PPFloor3Hallway1_1",
+        "to": "PPFloor3Hallway2_1"
+    },
+    {
+        "edgeId": 111,
+        "from": "PPFloor3Hallway2_1",
+        "to": "PPFloor3Hallway_5"
+    },
+    {
+        "edgeId": 112,
+        "from": "PPFloor3Hallway_5",
+        "to": "PPFloor3Room_2"
+    }
+]
