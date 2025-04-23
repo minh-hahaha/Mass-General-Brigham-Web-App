@@ -1,15 +1,36 @@
 import { useEffect, useState } from 'react';
 import { getServiceRequest, incomingServiceRequest } from '@/database/serviceRequest.ts';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table.tsx";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table.tsx';
+import { FaChevronRight } from 'react-icons/fa';
+import { motion } from 'framer-motion';
+import TransportationRequestPage from '@/routes/TransportationRequestPage.tsx';
 
-const TableServiceRequests = () => {
-    const loggedIn = sessionStorage.getItem('loggedIn');
-    if (!loggedIn) {
-        window.location.href = '/';
-    }
+interface Props {
+    setActiveForm: (
+        type: 'transport' | 'translation' | 'maintenance' | 'medical device' | 'sanitation'
+    ) => void;
+}
 
+const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
     const [loading, setLoading] = useState(true);
     const [requests, setRequests] = useState<incomingServiceRequest[]>([]);
+    const [filter, setShowFilters] = useState<boolean>(false);
+    const [filters, setFilters] = useState({
+        employeeName: '',
+        department: '',
+        roomNumber: '',
+        status: '',
+        priority: '',
+        requestDate: '',
+    });
+    const [showNewRequests, setShowNewRequests] = useState<boolean>(false);
 
     useEffect(() => {
         async function fetchReqs() {
@@ -25,45 +46,216 @@ const TableServiceRequests = () => {
     if (loading) {
         return <p>Loading Requests...</p>;
     }
-    if (!requests || requests.length === 0) {
-        return <p>No service requests found!</p>;
-    }
+
+    const filteredRequests = requests.filter((req) => {
+        return (
+            (!filters.employeeName ||
+                (req.employeeName
+                    ? req.employeeName.toLowerCase().includes(filters.employeeName.toLowerCase())
+                    : 'unassigned'.includes(filters.employeeName.toLowerCase()))) &&
+            (!filters.department ||
+                req.requesterDepartmentId
+                    ?.toLowerCase()
+                    .includes(filters.department.toLowerCase())) &&
+            (!filters.roomNumber ||
+                req.requesterRoomNumber
+                    ?.toLowerCase()
+                    .includes(filters.roomNumber.toLowerCase())) &&
+            (!filters.status || req.status?.toLowerCase().includes(filters.status.toLowerCase())) &&
+            (!filters.priority ||
+                req.priority?.toLowerCase().includes(filters.priority.toLowerCase())) &&
+            (!filters.requestDate || req.requestDate?.startsWith(filters.requestDate))
+        );
+    });
+
+    const handleShowNewRequests = () => {
+        setShowNewRequests(!showNewRequests);
+        setShowFilters(false);
+    };
+
+    const handleShowFilters = () => {
+        setShowFilters(!filter);
+        setShowNewRequests(false);
+    };
 
     return (
-        <div className="flex justify-center mt-10">
-            <div className="w-full max-w-6xl border border-gray-300 rounded-2xl shadow-md overflow-auto p-4 bg-white">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Request ID</TableHead>
-                            <TableHead>Employee Name</TableHead>
-                            <TableHead>Department</TableHead>
-                            <TableHead>Room Number</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead>Priority</TableHead>
-                            <TableHead>Request Date</TableHead>
-                            <TableHead>Request Time</TableHead>
-                            <TableHead>Service Type</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {requests.map((req) => (
-                            <TableRow key={req.requestId}>
-                                <TableCell>{req.requestId}</TableCell>
-                                <TableCell>{req.employeeName ?? 'Unassigned'}</TableCell>
-                                <TableCell>{req.requesterDepartmentId}</TableCell>
-                                <TableCell>{req.requesterRoomNumber}</TableCell>
-                                <TableCell>{req.status}</TableCell>
-                                <TableCell>{req.priority}</TableCell>
-                                <TableCell>{req.requestDate?.split('T')[0]}</TableCell>
-                                <TableCell>{req.requestTime?.split('T')[1]?.substring(0, 5)}</TableCell>
-                                <TableCell>{req.serviceType}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
+        <>
+            <div className={`w-full flex flex-row justify-between px-10`}>
+                <div className="flex flex-row items-center gap-2 mt-2">
+                    <button
+                        onClick={handleShowFilters}
+                        className="bg-mgbblue hover:bg-blue-950 text-white px-9 py-3 rounded text-sm relative top-1"
+                    >
+                        Filters
+                    </button>
+                    {filter && (
+                        <motion.div
+                            initial={{ x: -30, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: -30, opacity: 0 }}
+                            transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+                            className="relative left-[10px] rounded flex flex-row gap-5"
+                        >
+                            <div>
+                                <label className="block text-sm font-medium">Employee Name</label>
+                                <input
+                                    type="text"
+                                    className="border border-mgbblue rounded-sm w-37 p-1"
+                                    value={filters.employeeName}
+                                    onChange={(e) =>
+                                        setFilters({ ...filters, employeeName: e.target.value })
+                                    }
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium">Department</label>
+                                <input
+                                    type="text"
+                                    className="border border-mgbblue rounded-sm w-37 p-1"
+                                    value={filters.department}
+                                    onChange={(e) =>
+                                        setFilters({ ...filters, department: e.target.value })
+                                    }
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium">Room</label>
+                                <input
+                                    type="text"
+                                    className="border border-mgbblue rounded-sm w-15 p-1"
+                                    value={filters.roomNumber}
+                                    onChange={(e) =>
+                                        setFilters({ ...filters, roomNumber: e.target.value })
+                                    }
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium">Status</label>
+                                <input
+                                    type="text"
+                                    className="border border-mgbblue rounded-sm w-25 p-1"
+                                    value={filters.status}
+                                    onChange={(e) =>
+                                        setFilters({ ...filters, status: e.target.value })
+                                    }
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium">Priority</label>
+                                <input
+                                    type="text"
+                                    className="border border-mgbblue rounded-sm w-25 p-1"
+                                    value={filters.priority}
+                                    onChange={(e) =>
+                                        setFilters({ ...filters, priority: e.target.value })
+                                    }
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium">
+                                    Request Date (ISO)
+                                </label>
+                                <input
+                                    type="datetime-local"
+                                    className="border border-mgbblue rounded-sm w-40 p-1"
+                                    value={filters.requestDate}
+                                    onChange={(e) =>
+                                        setFilters({ ...filters, requestDate: e.target.value })
+                                    }
+                                />
+                            </div>
+                        </motion.div>
+                    )}
+                </div>
+                <div className="flex flex-row items-center gap-2 mt-2">
+                    <button
+                        onClick={handleShowNewRequests}
+                        className="bg-mgbblue hover:bg-blue-950 text-white px-9 py-3 rounded text-sm relative top-1"
+                    >
+                        New Request +
+                    </button>
+                    {showNewRequests && (
+                        <motion.div
+                            initial={{ x: 20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: 20, opacity: 0 }}
+                            transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+                            className="absolute right-[220px] rounded flex flex-row gap-1"
+                        >
+                            <button
+                                onClick={() => setActiveForm('transport')}
+                                className="bg-white text-codGray px-3 py-2 rounded-sm border border-mgbblue hover:bg-gray-200 mt-2"
+                            >
+                                Transportation +
+                            </button>
+                            <button
+                                onClick={() => setActiveForm('translation')}
+                                className="bg-white text-codGray px-3 py-2 rounded-sm border border-mgbblue hover:bg-gray-200 mt-2"
+                            >
+                                Translation +
+                            </button>
+                            <button
+                                onClick={() => setActiveForm('sanitation')}
+                                className="bg-white text-codGray px-3 py-2 rounded-sm border border-mgbblue hover:bg-gray-200 mt-2"
+                            >
+                                Sanitation +
+                            </button>
+                            <button
+                                onClick={() => setActiveForm('medical device')}
+                                className="bg-white text-codGray px-3 py-2 rounded-sm border border-mgbblue hover:bg-gray-200 mt-2"
+                            >
+                                Medical Device +
+                            </button>
+                            <button
+                                onClick={() => setActiveForm('maintenance')}
+                                className="bg-white text-codGray px-3 py-2 border rounded-sm border-mgbblue hover:bg-gray-200 mt-2"
+                            >
+                                Maintenance +
+                            </button>
+                        </motion.div>
+                    )}
+                </div>
             </div>
-        </div>
+            <div className="flex justify-center mt-3 px-4">
+                <div className="w-350 border border-gray-300 rounded-2xl shadow-md overflow-hidden bg-white">
+                    <Table>
+                        <TableHeader>
+                            <TableRow className="bg-gray-50">
+                                <TableHead className="w-20 text-center font-semibold py-3">Request ID</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Employee Name</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Department</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Room</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Status</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Priority</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Request Date</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Request Time</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Service Type</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {filteredRequests.map((req) => (
+                                <TableRow
+                                    key={req.requestId}
+                                    className="border-b hover:bg-gray-50"
+                                >
+                                    <TableCell className="text-center py-3">{req.requestId}</TableCell>
+                                    <TableCell className="text-center py-3">{req.employeeName ?? 'Unassigned'}</TableCell>
+                                    <TableCell className="text-center py-3">{req.requesterDepartmentId}</TableCell>
+                                    <TableCell className="text-center py-3">{req.requesterRoomNumber}</TableCell>
+                                    <TableCell className="text-center py-3">{req.status}</TableCell>
+                                    <TableCell className="text-center py-3">{req.priority}</TableCell>
+                                    <TableCell className="text-center py-3">{req.requestDate?.split('T')[0]}</TableCell>
+                                    <TableCell className="text-center py-3">
+                                        {req.requestTime?.split('T')[1]?.substring(0, 5)}
+                                    </TableCell>
+                                    <TableCell>{req.serviceType}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </div>
+            </div>
+        </>
     );
 };
 
