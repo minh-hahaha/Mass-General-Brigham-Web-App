@@ -53,7 +53,7 @@ function App() {
                                     element={<DirectoryDisplayPage />}
                                 />
                                 <Route
-                                    path="/Test"
+                                    path="/MapEditorPage"
                                     element={<TestNodeEditor />}
                                 />
                                 <Route

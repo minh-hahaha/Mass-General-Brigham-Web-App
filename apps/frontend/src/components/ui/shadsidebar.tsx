@@ -52,7 +52,7 @@ const navItems = [
 const adminItems = [
     {
         title: 'Map Editor',
-        url: '/Test',
+        url: '/MapEditorPage',
         icon: PencilLine,
     },
 ]

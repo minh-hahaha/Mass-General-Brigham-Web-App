@@ -10,7 +10,7 @@ import { FaRegClock } from 'react-icons/fa';
 import { MapPin, Circle, Hospital, ZoomIn } from 'lucide-react';
 import { MdOutlineMyLocation } from 'react-icons/md';
 import { ROUTES } from 'common/src/constants.ts';
-import {CHtoLotA, CHtoLotB, CHtoLotC, PPtoLotA, PPtoLotB, PPtoLotC}  from '../assets/parkingCoords.tsx'
+import {CHtoLotA, CHtoLotB, CHtoLotC, PPtoLotA, PPtoLotB, PPtoLotC, FKtoLotA, FKtoLotB, FKtoLotC}  from '../assets/parkingCoords.tsx'
 
 
 import {
@@ -33,7 +33,7 @@ const HospitalLocations: Record<string, {lat: number, lng: number, zoom: number}
     'Chestnut Hill - 850 Boylston Street': {lat: 42.325988, lng: -71.149567, zoom: 18},
     '20 Patriot Place': {lat: 42.092617, lng: -71.266492, zoom: 18},
     '22 Patriot Place': {lat: 42.092617, lng: -71.266492, zoom: 18},
-    'Faulkner Hospital': {lat: 42.301331, lng: -71.130805, zoom: 18}
+    'Faulkner Hospital': {lat: 42.301684739524546, lng: -71.12816396084828, zoom: 18}
 };
 
 type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
@@ -187,6 +187,7 @@ const DirectionsMapComponent = () => {
         // Set the building ID for directory lookup
         const buildingIndex = Buildings.indexOf(newLocation);
         setBuildingID(buildingIndex + 1);
+        setPathVisible(false)
     };
 
     // find directions
@@ -295,6 +296,15 @@ const DirectionsMapComponent = () => {
             case 'PP_C':
                 selectedPath = PPtoLotC;
                 break;
+            case 'FK_A':
+                selectedPath = FKtoLotA;
+                break;
+            case 'FK_B':
+                selectedPath = FKtoLotB;
+                break;
+            case 'FK_C':
+                selectedPath = FKtoLotC;
+                break;
             default:
                 selectedPath = []; //NONE
         }
@@ -321,7 +331,7 @@ const DirectionsMapComponent = () => {
         if (toLocation === '20 Patriot Place' || toLocation === '22 Patriot Place') {
             setLot('PP_A');
         }
-        else if (toLocation === '1153 Centre St'){
+        else if (toLocation === 'Faulkner Hospital'){
             setLot('FK_A');
         }
         else {
@@ -335,7 +345,7 @@ const DirectionsMapComponent = () => {
         if (toLocation === '20 Patriot Place' || toLocation === '22 Patriot Place') {
             setLot('PP_B');
         }
-        else if (toLocation === '1153 Centre St'){
+        else if (toLocation === 'Faulkner Hospital'){
             setLot('FK_B');
         }
         else {
@@ -349,7 +359,7 @@ const DirectionsMapComponent = () => {
         if (toLocation === '20 Patriot Place' || toLocation === '22 Patriot Place') {
             setLot('PP_C');
         }
-        else if (toLocation === '1153 Centre St'){
+        else if (toLocation === 'Faulkner Hospital'){
             setLot('FK_C');
         }
         else {
@@ -377,11 +387,11 @@ const DirectionsMapComponent = () => {
                 setFromNodeId(`PPFloor1Parking Lot${lotLetter}`);
             } else if (locationPrefix === 'FK') {
                 if (lotLetter === 'A') {
-                    setFromNodeId('FKFloor1Parking LotA'); // Replace with actual node ID
+                    setFromNodeId('FKFloor1Parking Lot');
                 } else if (lotLetter === 'B') {
-                    setFromNodeId('FKFloor1Parking LotB'); // Replace with actual node ID
+                    setFromNodeId('FKFloor1Parking Lot_1');
                 } else if (lotLetter === 'C') {
-                    setFromNodeId('FKFloor1Parking LotC'); // Replace with actual node ID
+                    setFromNodeId('FKFloor1Parking Lot_2');
                 }
             } else if (locationPrefix === 'CH') {
                 if (lotLetter === 'A') {
@@ -602,7 +612,7 @@ const DirectionsMapComponent = () => {
                     {parking && (
                         <div className="-mt-5">
                             <p className="mb-2 text-sm text-codGray text-center -ml-4 font-black">
-                                Where did you park?
+                                Where do you want to park?
                             </p>
                             <div className="grid grid-cols-3 gap-2">
                                 {['A', 'B', 'C'].map((lot) => (
@@ -718,11 +728,11 @@ const DirectionsMapComponent = () => {
                         </p>
                     </div>
                 )}
-                {/* zoom to Hospital Button */}
+                {/* Zoom to Hospital Button */}
                 {toLocation && (
                     <button
                         onClick={handleZoomToHospital}
-                        className="absolute top-1/4 right-6 z-10 bg-white p-3 rounded-full shadow-lg hover:bg-gray-100 transition-colors"
+                        className="absolute top-1/5 right-6 z-10 bg-white p-3 rounded-full shadow-lg hover:bg-gray-100 transition-colors"
                         title="Zoom to hospital"
                     >
                         <ZoomIn size={26} className="text-mgbblue" />
