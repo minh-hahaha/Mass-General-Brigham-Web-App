@@ -253,6 +253,7 @@
     <g id="mIiLKz.tif-5" data-name="mIiLKz.tif">
       <use id="Layer_0-8" data-name="Layer 0" transform="translate(968.75 1197.54) rotate(-54.31) scale(.05) skewX(-.89)" xlink:href="#image-2"/>
     </g>
+    <text class="cls-19" transform="translate(745.53 3456.13)"><tspan class="cls-31" x="0" y="0">L</tspan><tspan class="cls-22" x="21.98" y="0">ot C</tspan></text>
   </g>
   <g id="A-WALL">
     <g id="LINE">
@@ -14815,13 +14816,13 @@
       <line class="cls-7" x1="1752.3" y1="1302.67" x2="1751.91" y2="1302.66"/>
     </g>
     <g id="SPLINE">
-      <path class="cls-7" d="M1750.29,1265.75c.3,1.5.57,3.02.82,4.53.25,1.52.46,3.04.66,4.57s.36,3.06.49,4.6c.14,1.54.25,3.08.33,4.62s.14,3.09.17,4.64c.03,1.55.03,3.1,0,4.65s-.08,3.1-.15,4.66c-.08,1.55-.18,3.11-.32,4.66"/>
+      <path class="cls-7" d="M1750.29,1265.75c.3,1.5.57,3.02.82,4.53s.46,3.04.66,4.57c.19,1.53.36,3.06.49,4.6.14,1.54.25,3.08.33,4.62.08,1.54.14,3.09.17,4.64.03,1.55.03,3.1,0,4.65-.02,1.55-.08,3.1-.15,4.66-.08,1.55-.18,3.11-.32,4.66"/>
     </g>
     <g id="SPLINE-2" data-name="SPLINE">
       <path class="cls-7" d="M1750.29,1265.75c-.12.09-.23.19-.35.28"/>
     </g>
     <g id="SPLINE-3" data-name="SPLINE">
-      <path class="cls-7" d="M1730.3,1281.87c-.06,1.1-.15,2.21-.26,3.31-.11,1.1-.25,2.2-.41,3.3s-.35,2.19-.56,3.28-.45,2.18-.72,3.26-.55,2.16-.86,3.23-.65,2.13-1.01,3.19"/>
+      <path class="cls-7" d="M1730.3,1281.87c-.06,1.1-.15,2.21-.26,3.31-.11,1.1-.25,2.2-.41,3.3-.16,1.1-.35,2.19-.56,3.28s-.45,2.18-.72,3.26-.55,2.16-.86,3.23c-.31,1.07-.65,2.13-1.01,3.19"/>
     </g>
     <g id="LINE-4762" data-name="LINE">
       <line class="cls-7" x1="1726.84" y1="1301.56" x2="1726.47" y2="1301.44"/>
@@ -21939,32 +21940,32 @@
   <g id="UP_Text" data-name="UP Text">
     <g id="MTEXT">
       <polyline id="Polyline_0" class="cls-5" points="2367.38 1115.32 2376.92 1112.02 2378.71 1118.27 2369.17 1121.58"/>
-      <text class="cls-42" transform="translate(2369.11 1119.45) rotate(-19.14) skewX(-3.14)"><tspan x="0" y="0">U</tspan><tspan class="cls-30" x="3.62" y="0">P</tspan></text>
+      <text class="cls-42" transform="translate(2369.1 1119.49) rotate(-19.14) skewX(-3.14)"><tspan x="0" y="0">U</tspan><tspan class="cls-30" x="3.62" y="0">P</tspan></text>
     </g>
     <g id="MTEXT-2" data-name="MTEXT">
       <polyline id="Polyline_0-2" data-name="Polyline_0" class="cls-5" points="1294.76 648.52 1304.3 645.21 1306.09 651.47 1296.55 654.78"/>
-      <text class="cls-42" transform="translate(1296.49 652.65) rotate(-19.14) skewX(-3.14)"><tspan x="0" y="0">U</tspan><tspan class="cls-30" x="3.62" y="0">P</tspan></text>
+      <text class="cls-42" transform="translate(1296.48 652.69) rotate(-19.14) skewX(-3.14)"><tspan x="0" y="0">U</tspan><tspan class="cls-30" x="3.62" y="0">P</tspan></text>
     </g>
     <g id="MTEXT-3" data-name="MTEXT">
       <polyline id="Polyline_0-3" data-name="Polyline_0" class="cls-5" points="2367.38 1115.32 2376.92 1112.02 2378.71 1118.27 2369.17 1121.58"/>
-      <text class="cls-42" transform="translate(2369.11 1119.45) rotate(-19.14) skewX(-3.14)"><tspan x="0" y="0">U</tspan><tspan class="cls-30" x="3.62" y="0">P</tspan></text>
+      <text class="cls-42" transform="translate(2369.1 1119.49) rotate(-19.14) skewX(-3.14)"><tspan x="0" y="0">U</tspan><tspan class="cls-30" x="3.62" y="0">P</tspan></text>
     </g>
     <g id="MTEXT-4" data-name="MTEXT">
       <polyline id="Polyline_0-4" data-name="Polyline_0" class="cls-5" points="1303.3 636.33 1312.83 633.02 1314.62 639.27 1305.09 642.58"/>
-      <text class="cls-42" transform="translate(1305.02 640.45) rotate(-19.14) skewX(-3.14)"><tspan x="0" y="0">U</tspan><tspan class="cls-30" x="3.62" y="0">P</tspan></text>
+      <text class="cls-42" transform="translate(1305.01 640.49) rotate(-19.14) skewX(-3.14)"><tspan x="0" y="0">U</tspan><tspan class="cls-30" x="3.62" y="0">P</tspan></text>
     </g>
   </g>
   <g id="Text">
-    <text class="cls-14" transform="translate(1299.24 886.76) rotate(-19.14) skewX(-3.14)"><tspan class="cls-25"><tspan x="0" y="0">110 </tspan></tspan><tspan class="cls-28" x="0" y="22.71">RADIO</tspan><tspan class="cls-41" x="61.17" y="22.71">L</tspan><tspan class="cls-25" x="71.05" y="22.71">OGY</tspan></text>
-    <text class="cls-10" transform="translate(1391.82 1203.5) rotate(-19.14) skewX(-3.14)"><tspan x="0" y="0">RECEPTION</tspan></text>
-    <text class="cls-16" transform="translate(1706.12 1072.46) rotate(-19.14) skewX(-3.14)"><tspan x="0" y="0">120 - URGENT CARE</tspan></text>
-    <text class="cls-10" transform="translate(1754.77 1207.87) rotate(-19.14) skewX(-3.14)"><tspan x="0" y="0">RECEPTION</tspan></text>
+    <text class="cls-14" transform="translate(1299.23 886.8) rotate(-19.14) skewX(-3.14)"><tspan class="cls-25"><tspan x="0" y="0">110 </tspan></tspan><tspan class="cls-28" x="0" y="22.71">RADIO</tspan><tspan class="cls-41" x="61.17" y="22.71">L</tspan><tspan class="cls-25" x="71.05" y="22.71">OGY</tspan></text>
+    <text class="cls-10" transform="translate(1391.8 1203.54) rotate(-19.14) skewX(-3.14)"><tspan x="0" y="0">RECEPTION</tspan></text>
+    <text class="cls-16" transform="translate(1706.11 1072.5) rotate(-19.14) skewX(-3.14)"><tspan x="0" y="0">120 - URGENT CARE</tspan></text>
+    <text class="cls-10" transform="translate(1754.75 1207.91) rotate(-19.14) skewX(-3.14)"><tspan x="0" y="0">RECEPTION</tspan></text>
     <text/>
-    <text class="cls-12" transform="translate(1517.09 1090.32) rotate(-19.14) skewX(-3.14)"><tspan class="cls-29"><tspan x="0" y="0">130 </tspan></tspan><tspan class="cls-26" x="0" y="18.93">B</tspan><tspan class="cls-40" x="10.42" y="18.93">L</tspan><tspan class="cls-29" x="18.65" y="18.93">OOD DR</tspan><tspan class="cls-34" x="81.92" y="18.93">A</tspan><tspan class="cls-26" x="91.93" y="18.93">W</tspan><tspan class="cls-29" x="0" y="37.85">PHLEB</tspan><tspan class="cls-33" x="48.95" y="37.85">OT</tspan><tspan class="cls-26" x="69.53" y="37.85">OMY</tspan><tspan class="cls-29"><tspan x="0" y="56.78">PHARMACY</tspan></tspan></text>
-    <text class="cls-15" transform="translate(1556.48 1185.18) rotate(-19.14) skewX(-3.14)"><tspan x="0" y="0">RECEPTION</tspan></text>
-    <text class="cls-14" transform="translate(1527.58 673.59) rotate(-19.14) skewX(-3.14)"><tspan class="cls-25"><tspan x="0" y="0">110 </tspan></tspan><tspan class="cls-28" x="0" y="22.71">RADIO</tspan><tspan class="cls-41" x="61.17" y="22.71">L</tspan><tspan class="cls-25" x="71.05" y="22.71">OGY</tspan></text>
-    <text class="cls-14" transform="translate(1977.65 915.96) rotate(-19.14) skewX(-3.14)"><tspan class="cls-25"><tspan x="0" y="0">150 </tspan></tspan><tspan class="cls-25" x="0" y="22.71">CARDIO</tspan><tspan class="cls-35" x="73.92" y="22.71">V</tspan><tspan class="cls-39" x="85.83" y="22.71">A</tspan><tspan class="cls-25" x="98.2" y="22.71">SCULAR</tspan><tspan class="cls-25"><tspan x="0" y="45.42">SERVICES</tspan></tspan><tspan class="cls-25" x="0" y="68.13">Special</tspan><tspan class="cls-38" x="64.3" y="68.13">t</tspan><tspan class="cls-25" x="71.2" y="68.13">y Clinic</tspan></text>
-    <text class="cls-10" transform="translate(1957.05 1138.56) rotate(-19.14) skewX(-3.14)"><tspan x="0" y="0">RECEPTION</tspan></text>
+    <text class="cls-12" transform="translate(1517.07 1090.37) rotate(-19.14) skewX(-3.14)"><tspan class="cls-29"><tspan x="0" y="0">130 </tspan></tspan><tspan class="cls-26" x="0" y="18.93">B</tspan><tspan class="cls-40" x="10.42" y="18.93">L</tspan><tspan class="cls-29" x="18.65" y="18.93">OOD DR</tspan><tspan class="cls-34" x="81.92" y="18.93">A</tspan><tspan class="cls-26" x="91.93" y="18.93">W</tspan><tspan class="cls-29" x="0" y="37.85">PHLEB</tspan><tspan class="cls-33" x="48.95" y="37.85">OT</tspan><tspan class="cls-26" x="69.53" y="37.85">OMY</tspan><tspan class="cls-29"><tspan x="0" y="56.78">PHARMACY</tspan></tspan></text>
+    <text class="cls-15" transform="translate(1556.47 1185.22) rotate(-19.14) skewX(-3.14)"><tspan x="0" y="0">RECEPTION</tspan></text>
+    <text class="cls-14" transform="translate(1527.57 673.63) rotate(-19.14) skewX(-3.14)"><tspan class="cls-25"><tspan x="0" y="0">110 </tspan></tspan><tspan class="cls-28" x="0" y="22.71">RADIO</tspan><tspan class="cls-41" x="61.17" y="22.71">L</tspan><tspan class="cls-25" x="71.05" y="22.71">OGY</tspan></text>
+    <text class="cls-14" transform="translate(1977.64 916) rotate(-19.14) skewX(-3.14)"><tspan class="cls-25"><tspan x="0" y="0">150 </tspan></tspan><tspan class="cls-25" x="0" y="22.71">CARDIO</tspan><tspan class="cls-35" x="73.92" y="22.71">V</tspan><tspan class="cls-39" x="85.83" y="22.71">A</tspan><tspan class="cls-25" x="98.2" y="22.71">SCULAR</tspan><tspan class="cls-25"><tspan x="0" y="45.42">SERVICES</tspan></tspan><tspan class="cls-25" x="0" y="68.13">Special</tspan><tspan class="cls-38" x="64.3" y="68.13">t</tspan><tspan class="cls-25" x="71.2" y="68.13">y Clinic</tspan></text>
+    <text class="cls-10" transform="translate(1957.03 1138.61) rotate(-19.14) skewX(-3.14)"><tspan x="0" y="0">RECEPTION</tspan></text>
     <text/>
     <text class="cls-9" transform="translate(476.01 1380.41) rotate(-53.45) skewX(-3.14)"><tspan class="cls-24" x="0" y="0">MassGene</tspan><tspan class="cls-37" x="117.24" y="0">r</tspan><tspan class="cls-24" x="126.46" y="0">al Hospital for Children</tspan><tspan class="cls-24"><tspan x="0" y="28.8">Spaulding Outpatient Center for Children</tspan></tspan></text>
   </g>

@@ -1,7 +1,7 @@
 import InputElement from '@/elements/InputElement.tsx';
 import MGBButton from '@/elements/MGBButton.tsx';
 import ConfirmMessageComponent from '@/components/ConfirmMessageComponent.tsx';
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import { SubmitTransportRequest } from '@/database/transportRequest.ts';
 import SelectElement from '@/elements/SelectElement.tsx';
 import { SubmitTranslatorRequest } from '@/database/translationRequest.ts';
@@ -62,6 +62,13 @@ const TranslationServiceRequestPage = () => {
         setShowConfirmation(true);
         handleReset();
     };
+
+    useEffect(() => {
+        if (showConfirmation) {
+            alert("Request Submitted");
+            handleConfirmationClose(); // close the state after the alert
+        }
+    }, [showConfirmation]);
 
     const handleReset = () => {
         setEmployeeName('');
@@ -344,12 +351,6 @@ const TranslationServiceRequestPage = () => {
                             >
                                 Submit Request
                             </MGBButton>
-
-                            {showConfirmation && (
-                                <div className="inline-block">
-                                    <ConfirmMessageComponent onClose={handleConfirmationClose} />
-                                </div>
-                            )}
                             <MGBButton
                                 onClick={() => handleReset()}
                                 variant={'secondary'}

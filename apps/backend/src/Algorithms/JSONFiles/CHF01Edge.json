@@ -1,0 +1,308 @@
+[
+    {
+        "edgeId": 406,
+        "from": "CHFloor1Parking Lot1",
+        "to": "CHFloor1Road1"
+    },
+    {
+        "edgeId": 407,
+        "from": "CHFloor1Road1",
+        "to": "CHFloor1Road2"
+    },
+    {
+        "edgeId": 408,
+        "from": "CHFloor1Road2",
+        "to": "CHFloor1Road3"
+    },
+    {
+        "edgeId": 409,
+        "from": "CHFloor1Road3",
+        "to": "CHFloor1Road3"
+    },
+    {
+        "edgeId": 410,
+        "from": "CHFloor1Road3",
+        "to": "CHFloor1Road4"
+    },
+    {
+        "edgeId": 411,
+        "from": "CHFloor1Road4",
+        "to": "CHFloor1Road5"
+    },
+    {
+        "edgeId": 412,
+        "from": "CHFloor1Road5",
+        "to": "CHFloor1Road1_1"
+    },
+    {
+        "edgeId": 413,
+        "from": "CHFloor1Road1_1",
+        "to": "CHFloor1Parking LotB"
+    },
+    {
+        "edgeId": 414,
+        "from": "CHFloor1Road1_1",
+        "to": "CHFloor1Road2_1"
+    },
+    {
+        "edgeId": 415,
+        "from": "CHFloor1Road2_1",
+        "to": "CHFloor1Road3_1"
+    },
+    {
+        "edgeId": 416,
+        "from": "CHFloor1Road3_1",
+        "to": "CHFloor1Road4_1"
+    },
+    {
+        "edgeId": 417,
+        "from": "CHFloor1Road4_1",
+        "to": "CHFloor1Door"
+    },
+    {
+        "edgeId": 418,
+        "from": "CHFloor1Road4_1",
+        "to": "CHFloor1Road5_1"
+    },
+    {
+        "edgeId": 419,
+        "from": "CHFloor1Road5_1",
+        "to": "CHFloor1Road4_2"
+    },
+    {
+        "edgeId": 420,
+        "from": "CHFloor1Road4_2",
+        "to": "CHFloor1Road3_2"
+    },
+    {
+        "edgeId": 421,
+        "from": "CHFloor1Road3_2",
+        "to": "CHFloor1Road2_2"
+    },
+    {
+        "edgeId": 422,
+        "from": "CHFloor1Road2_2",
+        "to": "CHFloor1Road1_2"
+    },
+    {
+        "edgeId": 423,
+        "from": "CHFloor1Road1_2",
+        "to": "CHFloor1Parking LotC"
+    },
+    {
+        "edgeId": 424,
+        "from": "CHFloor1Road3",
+        "to": "CHFloor1Door_1"
+    },
+    {
+        "edgeId": 425,
+        "from": "CHFloor1Door_1",
+        "to": "CHFloor1Hallway1"
+    },
+    {
+        "edgeId": 426,
+        "from": "CHFloor1Hallway1",
+        "to": "CHFloor1Hallway2"
+    },
+    {
+        "edgeId": 427,
+        "from": "CHFloor1Hallway2",
+        "to": "CHFloor1Hallway Intersection1"
+    },
+    {
+        "edgeId": 428,
+        "from": "CHFloor1Hallway Intersection1",
+        "to": "CHFloor1Hallway Intersection2"
+    },
+    {
+        "edgeId": 429,
+        "from": "CHFloor1Hallway Intersection2",
+        "to": "CHFloor1Door130"
+    },
+    {
+        "edgeId": 430,
+        "from": "CHFloor1Door130",
+        "to": "CHFloor1Hallway130"
+    },
+    {
+        "edgeId": 431,
+        "from": "CHFloor1Hallway130",
+        "to": "CHFloor1Road130"
+    },
+    {
+        "edgeId": 432,
+        "from": "CHFloor1Hallway Intersection2",
+        "to": "CHFloor1Hallway3"
+    },
+    {
+        "edgeId": 433,
+        "from": "CHFloor1Hallway3",
+        "to": "CHFloor1Hallway4"
+    },
+    {
+        "edgeId": 434,
+        "from": "CHFloor1Hallway4",
+        "to": "CHFloor1Hallway Intersection3"
+    },
+    {
+        "edgeId": 435,
+        "from": "CHFloor1Hallway Intersection3",
+        "to": "CHFloor1Hallway5"
+    },
+    {
+        "edgeId": 436,
+        "from": "CHFloor1Hallway5",
+        "to": "CHFloor1Hallway Intersection4"
+    },
+    {
+        "edgeId": 437,
+        "from": "CHFloor1Hallway Intersection4",
+        "to": "CHFloor1Hallway6"
+    },
+    {
+        "edgeId": 438,
+        "from": "CHFloor1Hallway6",
+        "to": "CHFloor1Hallway Intersection6"
+    },
+    {
+        "edgeId": 439,
+        "from": "CHFloor1Hallway Intersection6",
+        "to": "CHFloor1Hallway Intersection7"
+    },
+    {
+        "edgeId": 440,
+        "from": "CHFloor1Hallway Intersection7",
+        "to": "CHFloor1Hallway7"
+    },
+    {
+        "edgeId": 441,
+        "from": "CHFloor1Hallway7",
+        "to": "CHFloor1Elevator1"
+    },
+    {
+        "edgeId": 442,
+        "from": "CHFloor1Stairs1",
+        "to": "CHFloor1Hallway7"
+    },
+    {
+        "edgeId": 443,
+        "from": "CHFloor1Hallway7",
+        "to": "CHFloor1Hallway8"
+    },
+    {
+        "edgeId": 444,
+        "from": "CHFloor1Hallway8",
+        "to": "CHFloor1Hallway9"
+    },
+    {
+        "edgeId": 445,
+        "from": "CHFloor1Door",
+        "to": "CHFloor1Hallway9"
+    },
+    {
+        "edgeId": 446,
+        "from": "CHFloor1Hallway9",
+        "to": "CHFloor1Door100"
+    },
+    {
+        "edgeId": 447,
+        "from": "CHFloor1Door100",
+        "to": "CHFloor1Hallway100"
+    },
+    {
+        "edgeId": 448,
+        "from": "CHFloor1Hallway100",
+        "to": "CHFloor1Room100"
+    },
+    {
+        "edgeId": 449,
+        "from": "CHFloor1Hallway8",
+        "to": "CHFloor1Hallway10"
+    },
+    {
+        "edgeId": 450,
+        "from": "CHFloor1Hallway10",
+        "to": "CHFloor1Hallway11"
+    },
+    {
+        "edgeId": 451,
+        "from": "CHFloor1Hallway11",
+        "to": "CHFloor1Hallway Intersection8"
+    },
+    {
+        "edgeId": 452,
+        "from": "CHFloor1Hallway Intersection8",
+        "to": "CHFloor1Hallway12"
+    },
+    {
+        "edgeId": 453,
+        "from": "CHFloor1Hallway12",
+        "to": "CHFloor1Hallway13"
+    },
+    {
+        "edgeId": 454,
+        "from": "CHFloor1Hallway13",
+        "to": "CHFloor1Door_2"
+    },
+
+    {
+        "edgeId": 457,
+        "from": "CHFloor1Door_2",
+        "to": "CHFloor1Hallway102"
+    },
+    {
+        "edgeId": 458,
+        "from": "CHFloor1Hallway102",
+        "to": "CHFloor1Room102"
+    },
+    {
+        "edgeId": 459,
+        "from": "CHFloor1Hallway13",
+        "to": "CHFloor1Hallway14"
+    },
+    {
+        "edgeId": 460,
+        "from": "CHFloor1Hallway14",
+        "to": "CHFloor1Hallway Intersection9"
+    },
+    {
+        "edgeId": 461,
+        "from": "CHFloor1Hallway Intersection9",
+        "to": "CHFloor1Hallway15"
+    },
+    {
+        "edgeId": 462,
+        "from": "CHFloor1Hallway15",
+        "to": "CHFloor1Hallway Intersection10"
+    },
+    {
+        "edgeId": 463,
+        "from": "CHFloor1Hallway Intersection10",
+        "to": "CHFloor1Hallway16"
+    },
+    {
+        "edgeId": 464,
+        "from": "CHFloor1Hallway16",
+        "to": "CHFloor1Hallway Intersection11"
+    },
+    {
+        "edgeId": 465,
+        "from": "CHFloor1Hallway Intersection11",
+        "to": "CHFloor1Hallway17"
+    },
+    {
+        "edgeId": 466,
+        "from": "CHFloor1Hallway17",
+        "to": "CHFloor1Hallway18"
+    },
+    {
+        "edgeId": 467,
+        "from": "CHFloor1Hallway18",
+        "to": "CHFloor1Hallway18"
+    },
+    {
+        "edgeId": 468,
+        "from": "CHFloor1Stairs2",
+        "to": "CHFloor1Hallway18"
+    }
+]

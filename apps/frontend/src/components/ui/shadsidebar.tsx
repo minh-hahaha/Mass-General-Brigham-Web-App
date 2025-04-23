@@ -47,19 +47,17 @@ const navItems = [
         url: '/MapPage',
         icon: MapPin,
     },
-    {
-        title: 'Map Editor',
-        url: '/Test',
-        icon: PencilLine,
-    },
 ];
 
-const directoryItems = [
+const adminItems = [
     {
-        title: 'Import/Export Directory',
-        url: 'ImportExportDirectory',
-        icon: ArrowRightFromLine,
+        title: 'Map Editor',
+        url: '/MapEditorPage',
+        icon: PencilLine,
     },
+]
+
+const directoryItems = [
     {
         title: 'Directory Display Page',
         url: 'DirectoryDisplay',
@@ -147,6 +145,21 @@ export function ShadSidebar() {
                                 </SidebarMenuSubItem>
                             ))}
                         </SidebarMenuSub>
+                        <SidebarGroupContent>
+                            <SidebarMenuButton>Admin</SidebarMenuButton>
+                            <SidebarMenuSub>
+                                {adminItems.map((item) => (
+                                    <SidebarMenuSubItem key={item.title}>
+                                        <SidebarMenuSubButton asChild>
+                                            <a href={item.url}>
+                                                <item.icon />
+                                                <span>{item.title}</span>
+                                            </a>
+                                        </SidebarMenuSubButton>
+                                    </SidebarMenuSubItem>
+                                ))}
+                            </SidebarMenuSub>
+                        </SidebarGroupContent>
                     </SidebarGroupContent>
                     <SidebarGroupContent>
                         <SidebarMenuButton>Directories</SidebarMenuButton>

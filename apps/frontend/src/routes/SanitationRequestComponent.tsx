@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import MGBButton from '../elements/MGBButton.tsx';
 import axios from 'axios';
 import { ROUTES } from 'common/src/constants.ts';
@@ -70,6 +70,13 @@ const SanitationRequestPage = () => {
 
         // handleReset();
     };
+
+    useEffect(() => {
+        if (showConfirmation) {
+            alert("Request Submitted");
+            handleConfirmationClose(); // close the state after the alert
+        }
+    }, [showConfirmation]);
 
     const handleReset = () => {
         setStatus('Pending');//done
@@ -308,14 +315,6 @@ const SanitationRequestPage = () => {
                             >
                                 Submit Request
                             </MGBButton>
-
-                            {showConfirmation && submittedRequest && (
-                                <div className="inline-block">
-                                    <ConfirmMesg
-                                        onClose={handleConfirmationClose}
-                                    />
-                                </div>
-                            )}
                             <MGBButton
                                 onClick={() => handleReset()}
                                 variant={'secondary'}

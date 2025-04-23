@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import MGBButton from '../elements/MGBButton.tsx';
 import InputElement from '../elements/InputElement.tsx';
 import ConfirmMessageComponent from '../components/ConfirmMessageComponent.tsx';
@@ -65,6 +65,13 @@ const MedicalDeviceServiceRequestPage = () => {
     const [department, setDepartment] = useState('');
 
     const [showConfirmation, setShowConfirmation] = useState(false);
+
+    useEffect(() => {
+        if (showConfirmation) {
+            alert("Request Submitted");
+            handleConfirmationClose(); // close the state after the alert
+        }
+    }, [showConfirmation]);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -370,12 +377,6 @@ const MedicalDeviceServiceRequestPage = () => {
                             >
                                 Submit Request
                             </MGBButton>
-
-                            {showConfirmation && (
-                                <div className="inline-block">
-                                    <ConfirmMessageComponent onClose={handleConfirmationClose} />
-                                </div>
-                            )}
                             <MGBButton
                                 onClick={() => handleReset()}
                                 variant={'secondary'}

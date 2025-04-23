@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import MGBButton from '../elements/MGBButton.tsx';
 import InputElement from '../elements/InputElement.tsx';
 import ConfirmMessageComponent from '../components/ConfirmMessageComponent.tsx'; // Import the new component
@@ -92,6 +92,13 @@ const TransportRequestPage = () => {
     // async function DisplayTransportRequest(request: transportRequest) {
     //     await axios.post(ROUTES.PATIENTTRANSPORT, request);
     // }
+
+    useEffect(() => {
+        if (showConfirmation) {
+            alert("Request Submitted");
+            handleConfirmationClose(); // close the state after the alert
+        }
+    }, [showConfirmation]);
 
     const handleConfirmationClose = () => {
         setShowConfirmation(false);
@@ -328,14 +335,6 @@ const TransportRequestPage = () => {
                             >
                                 Submit Request
                             </MGBButton>
-
-                            {showConfirmation && submittedRequest && (
-                                <div className="inline-block">
-                                    <ConfirmMessageComponent
-                                        onClose={handleConfirmationClose}
-                                    />
-                                </div>
-                            )}
                             <MGBButton
                                 onClick={() => handleReset()}
                                 variant={'secondary'}
