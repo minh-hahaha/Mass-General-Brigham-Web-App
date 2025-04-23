@@ -11,6 +11,7 @@ import { MapPin, Circle, Hospital } from 'lucide-react';
 import { MdOutlineMyLocation } from 'react-icons/md';
 import { ROUTES } from 'common/src/constants.ts';
 
+
 import {
     DirectoryRequestByBuilding,
     getDirectory,
@@ -21,6 +22,7 @@ import AlgorithmSelector from '@/components/AlgorithmSelector.tsx';
 import FloorSelector from "@/components/FloorSelector.tsx";
 import {util} from "zod";
 import jsonStringifyReplacer = util.jsonStringifyReplacer;
+import TextToSpeechMapComponent from "@/components/TextToSpeechMapComponent.tsx";
 
 
 const Buildings = ['Chestnut Hill - 850 Boylston Street', '20 Patriot Place', '22 Patriot Place'];
@@ -113,7 +115,7 @@ const DirectionsMapComponent = () => {
     const [textDirections, setTextDirections] = useState<string>('');
     const [selectedAlgorithm, setSelectedAlgorithm] = useState('BFS');
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
-
+    const [setTTS, TTS]=useState<string>('');
 
     useEffect(() => {
         const checkAdmin = () => {
@@ -808,7 +810,12 @@ const DirectionsMapComponent = () => {
                     <HospitalMapComponent
                       startNodeId={'CHFloor1Door8'}
                       endNodeId={toDirectoryNodeId}
-                      selectedAlgorithm={selectedAlgorithm} />
+                      selectedAlgorithm={selectedAlgorithm}
+                      driveDirections={textDirections}
+
+                    />
+
+
                 </Map>
 
                 {/* Route Info Box */}

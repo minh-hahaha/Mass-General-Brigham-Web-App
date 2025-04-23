@@ -2,7 +2,7 @@ import FloorSelector from "@/components/FloorSelector.tsx";
 import {useState, useEffect} from "react";
 import {ROUTES} from "common/src/constants.ts";
 import axios from "axios";
-
+import TextToSpeechMapComponent from "@/components/TextToSpeechMapComponent.tsx";
 import {myNode} from "common/src/classes/classes.ts";
 import OverlayComponent from "@/components/OverlayMapComponent.tsx";
 import {GetNode} from "@/database/getDepartmentNode.ts";
@@ -173,26 +173,65 @@ async function FindPath(start: myNode, end: myNode, strategy: string) {
     return nodes;
 }
 
-function GetPolylinePath(path: myNode[]): {lat: number; lng: number}[] {
-    return path.map(node => ({
+function GetPolylinePath(path: myNode[]): { lat: number; lng: number }[] {
+    return path.map((node) => ({
         lat: node.y,
         lng: node.x,
-    }))
+    }));
 }
+
+
+let directions1:string;
+function setDirections(directions: string) {
+    directions1 = directions;
+
+}
+
+//text to speech
+function htmlToPlainText(html: string): string {
+    const div = document.createElement('div');
+    div.innerHTML = html;  // Set the HTML as the inner content of a div
+    return div.innerText || div.textContent || '';
+}
+const speakDirections = async () => {
+    const message = Array.isArray(directions1) ? directions1.join(' ') : directions1;
+    let messageString=htmlToPlainText(message.toString());
+    if (messageString.length==0) {
+        messageString="Empty of Directions, select a from, and, too location in order to receive directions.";
+    }
+    const response = await fetch('http://localhost:5001/api/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: messageString }),
+    });
+
+    const audioBlob = await response.blob();  // Get blob from server
+
+    // Log audioBlob size to confirm it's a valid file
+    console.log('Audio Blob size:', audioBlob.size);
+    console.log(directions1);
+    const audioUrl = URL.createObjectURL(audioBlob);  // Create a URL for the audio
+    const audio = new Audio(audioUrl);  // Create audio object
+    audio.play();
+};
+
+
 
 // interface for prop
 interface Props {
     startNodeId: string;
     endNodeId: string;
     selectedAlgorithm: string;
+    driveDirections: string;
 }
 
-const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm}:Props) => {
+const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveDirections}:Props) => {
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
     const [startNode, setStartNode] = useState<myNode>();
     const [endNode, setEndNode] = useState<myNode>();
     const [currentFloorId, setCurrentFloorId] = useState<string>();
     const [showFloorSelect, setShowFloorSelect] = useState(true);
+    const [textSpeech, setTextSpeech] = useState<HTMLElement | null>(null);
 
     console.log(startNodeId);
     console.log(endNodeId);
@@ -224,7 +263,10 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm}:Props)
                     const textDirection = createTextPath(result);
                     const text = document.getElementById('text-directions');
                     if(text) {
+                        setTextSpeech(text);
                         text.innerHTML = textDirection.toString().replace(/,/g, '<br><br>');
+                        setDirections(text.innerHTML);
+
                     }
                 } catch (error) {
                     console.error("Error finding path:", error);
@@ -292,10 +334,22 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm}:Props)
 
     return (
         <>
-            <div
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20"
-            >
+            <TextToSpeechMapComponent
+                walkDirections={directions1}
+                driveDirections={driveDirections}
+            />
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20">
                 <FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />
+                {/* speak text button*/}
+                <div >
+                    <button className="w-full bg-mgbblue text-white py-2 rounded-sm hover:bg-mgbblue/90 transition disabled:opacity-50"
+
+
+                            onClick={() => speakDirections()}>
+                        Speak
+
+                    </button>
+                </div>
             </div>
         <div className="relative w-full h-full">
             <OverlayComponent
