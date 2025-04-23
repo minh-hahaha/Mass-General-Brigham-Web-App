@@ -8,7 +8,6 @@ import OverlayComponent from "@/components/OverlayMapComponent.tsx";
 import {GetNode} from "@/database/getDepartmentNode.ts";
 import DisplayPathComponent from "@/components/DisplayPathComponent.tsx";
 
-import selectedAlgorithm from "@/components/DirectionsMapComponent.tsx"
 
 
 const ChestnutHillBounds = {
@@ -19,6 +18,10 @@ const ChestnutHillBounds = {
 const PatriotPlaceBounds = {
     southWest: { lat: 42.09086272947439, lng: -71.2675430325 }, // Bottom-left corner
     northEast: { lat: 42.09342690806031, lng: -71.2649785507 }, // Top-right corner
+};
+const FaulknerBounds = {
+    southWest: { lat: 42.300487127183445, lng: -71.13067267701479}, // Bottom-left corner
+    northEast: { lat: 42.30301668867676, lng: -71.126350413866 }, // Top-right corner
 };
 
 
@@ -325,8 +328,12 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveD
                 bounds={PatriotPlaceBounds}
                 imageSrc={patriotPlaceFloor.svgPath}
             />
+            <OverlayComponent
+                bounds={FaulknerBounds}
+                imageSrc={'/FK01.svg'}
+            />
             {/*<DisplayPathComponent coordinates={GetPolylinePath(currentFloorPath)} />*/}
-            <DisplayPathComponent coordinates={coords} />
+            {/*<DisplayPathComponent coordinates={coords} />*/}
         </div>
         </>
     );

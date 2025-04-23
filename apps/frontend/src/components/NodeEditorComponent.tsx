@@ -19,7 +19,11 @@ interface MapEdge {
     drawnEdge: google.maps.Polyline;
 }
 
-const NodeEditorComponent = () => {
+interface Props {
+    currentFloorId: string;
+}
+
+const NodeEditorComponent = ({currentFloorId}:Props) => {
     const map = useMap();
     const drawingLibrary = useMapsLibrary('drawing');
     let drawingManager: google.maps.drawing.DrawingManager;
@@ -37,11 +41,14 @@ const NodeEditorComponent = () => {
     let tempEdgeID = 100;
 
 
+
     // Node Property Use States
-    type NodeType = ('Stairs' | 'Elevator' | 'Room' | 'Hallway')
+    type NodeType = ('Stairs' | 'Elevator' | 'Room' | 'Hallway | Parking | Road')
     const [nodeType, setNodeType] = useState<NodeType>('Stairs');
     const [roomNumber, setRoomNumber] = useState<string | null>(null);
     const [nodeName, setNodeName] = useState<string>('Node');
+
+
 
     function incrementTempNodeID(): number {
         return tempNodeID++;
@@ -314,11 +321,17 @@ const NodeEditorComponent = () => {
     //         setClickedEdge(edgeID);
     //     }
     // }
+    const generateCustomId = () => {
+        const floorPart = "Floor" + currentFloorId.charAt(currentFloorId.length - 1);
+        const typePart = nodeType.charAt(0).toUpperCase() + nodeType.slice(1);
+        const roomPart = roomNumber || `${mapNodes.length + 1}`;
+        return `${currentFloorId.substring(0,2)}${floorPart}${typePart}${roomPart}`;
+    };
 
     async function saveNodesAndEdges() {
         for (const node of mapNodes) {
             const sendNode: NodeResponse = {
-                nodeId: node.node.nodeId,
+                nodeId: generateCustomId(),
                 x: node.node.x,
                 y: node.node.y,
                 floor: node.node.floor,

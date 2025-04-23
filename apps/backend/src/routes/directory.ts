@@ -170,10 +170,10 @@ router.post('/csv', async function (req: Request, res: Response) {
         for (let data of csvData) {
             const dataToUpsertDirectory = {
                 deptId: data.deptId,
-                deptServices: data.deptServices,
+                deptServices: data.deptServices || null,
                 deptName: data.deptName,
                 buildingId: data.buildingId,
-                deptPhone: data.deptPhone,
+                deptPhone: data.deptPhone || null,
                 nodeId: data.nodeId,
             };
             const dataToUpsertLocation = {
