@@ -11,6 +11,8 @@ import { MapPin, Circle, Hospital } from 'lucide-react';
 import { MdOutlineMyLocation } from 'react-icons/md';
 import { ROUTES } from 'common/src/constants.ts';
 import {CHtoLotA, CHtoLotB, CHtoLotC, PPtoLotA, PPtoLotB, PPtoLotC}  from '../assets/parkingCoords.tsx'
+
+
 import {
     DirectoryRequestByBuilding,
     getDirectory,
@@ -19,6 +21,11 @@ import { GetRecentOrigins, RecentOrigin } from '@/database/recentOrigins.ts';
 
 import AlgorithmSelector from '@/components/AlgorithmSelector.tsx';
 import DisplayPathComponent from "@/components/DisplayPathComponent.tsx";
+import FloorSelector from "@/components/FloorSelector.tsx";
+import {util} from "zod";
+import jsonStringifyReplacer = util.jsonStringifyReplacer;
+import TextToSpeechMapComponent from "@/components/TextToSpeechMapComponent.tsx";
+
 
 const Buildings = ['Chestnut Hill - 850 Boylston Street', '20 Patriot Place', '22 Patriot Place', 'Faulkner Hospital'];
 
@@ -74,10 +81,10 @@ const DirectionsMapComponent = () => {
     const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
 
     const [buildingID, setBuildingID] = useState<number>(0);
-    const [textDirections, setTextDirections] = useState<string>('');
+    const [textDirections, setTextDirections] = useState<string>('No destination/start selected');
     const [selectedAlgorithm, setSelectedAlgorithm] = useState('BFS');
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
-
+    const [setTTS, TTS]=useState<string>('');
 
     useEffect(() => {
         const checkAdmin = () => {
@@ -467,8 +474,8 @@ const DirectionsMapComponent = () => {
                 alert('Unable to retrieve your location.');
             }
         );
-    };
 
+    };
 
 
 
@@ -600,7 +607,7 @@ const DirectionsMapComponent = () => {
                     </div>
                     <div className="w-110 border-[0.5px] border-codGray mt-5 -ml-10" />
                     <div className="overflow-y-auto mt-4 flex-grow">
-                        {!toLocation ? (
+
                             <div className="max-h-[200px] overflow-y-auto w-full mt-1">
                                 <ul className="w-full flex flex-col space-y-2">
                                     <li
@@ -630,12 +637,7 @@ const DirectionsMapComponent = () => {
                                     ))}
                                 </ul>
                             </div>
-                        ) : (
-                            <div
-                                id={'text-directions'}
-                                dangerouslySetInnerHTML={{ __html: textDirections }}
-                            />
-                        )}
+
                     </div>
                 </aside>
 
@@ -653,10 +655,11 @@ const DirectionsMapComponent = () => {
                     mapTypeControl={false}
                     mapId={'73fda600718f172c'}
                 >
-                    <HospitalMapComponent 
-                      startNodeId={'CHFloor1Door8'} 
-                      endNodeId={toDirectoryNodeId} 
-                      selectedAlgorithm={selectedAlgorithm} />
+                    <HospitalMapComponent
+                      startNodeId={'CHFloor1Door8'}
+                      endNodeId={toDirectoryNodeId}
+                      selectedAlgorithm={selectedAlgorithm}
+                      driveDirections={textDirections}/>
                     {lot !== '' && (
                         <DisplayPathComponent coordinates={dropOffToParkPath}/>
                     )}

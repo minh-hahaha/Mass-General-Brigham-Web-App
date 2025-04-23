@@ -2,7 +2,7 @@ import FloorSelector from "@/components/FloorSelector.tsx";
 import {useState, useEffect} from "react";
 import {ROUTES} from "common/src/constants.ts";
 import axios from "axios";
-
+import TextToSpeechMapComponent from "@/components/TextToSpeechMapComponent.tsx";
 import {myNode} from "common/src/classes/classes.ts";
 import OverlayComponent from "@/components/OverlayMapComponent.tsx";
 import {GetNode} from "@/database/getDepartmentNode.ts";
@@ -176,25 +176,38 @@ async function FindPath(start: myNode, end: myNode, strategy: string) {
     return nodes;
 }
 
-function GetPolylinePath(path: myNode[]): {lat: number; lng: number}[] {
-    return path.map(node => ({
+function GetPolylinePath(path: myNode[]): { lat: number; lng: number }[] {
+    return path.map((node) => ({
         lat: node.y,
         lng: node.x,
-    }))
+    }));
 }
+
+
+let directions1:string;
+function setDirections(directions: string) {
+    directions1 = directions;
+
+}
+
+
+
 
 // interface for prop
 interface Props {
     startNodeId: string;
     endNodeId: string;
     selectedAlgorithm: string;
+    driveDirections: string;
 }
 
-const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm}:Props) => {
+const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm, driveDirections}:Props) => {
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
     const [startNode, setStartNode] = useState<myNode>();
     const [endNode, setEndNode] = useState<myNode>();
     const [currentFloorId, setCurrentFloorId] = useState<string>();
+    const [showFloorSelect, setShowFloorSelect] = useState(true);
+    const [textSpeech, setTextSpeech] = useState<HTMLElement | null>(null);
 
     console.log(startNodeId);
     console.log(endNodeId);
@@ -226,7 +239,10 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm}:Props)
                     const textDirection = createTextPath(result);
                     const text = document.getElementById('text-directions');
                     if(text) {
+                        setTextSpeech(text);
                         text.innerHTML = textDirection.toString().replace(/,/g, '<br><br>');
+                        setDirections(text.innerHTML);
+
                     }
                 } catch (error) {
                     console.error("Error finding path:", error);
@@ -294,10 +310,14 @@ const HospitalMapComponent = ({startNodeId, endNodeId, selectedAlgorithm}:Props)
 
     return (
         <>
-            <div
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20"
-            >
+            <TextToSpeechMapComponent
+                walkDirections={directions1}
+                driveDirections={driveDirections}
+            />
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20">
                 <FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />
+
+
             </div>
         <div className="relative w-full h-full">
             <OverlayComponent
