@@ -401,6 +401,8 @@ const DirectionsMapComponent = () => {
         setPathVisible(true);
         // clear parking
         clearParking();
+
+
     };
 
     const customLineRef = useRef<google.maps.Polyline | null>(null);
