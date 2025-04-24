@@ -174,16 +174,16 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm }) => {
                     <Table>
                         <TableHeader>
                             <TableRow className="bg-gray-50">
-                                <TableHead className="w-20 text-center font-semibold py-3">Request ID</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Language Required</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Meeting Type</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Meeting Link</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Patient Name</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Priority</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Status</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Request Date</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Location</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Department</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Request ID</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Language Required</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Meeting Type</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Meeting Link</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Patient Name</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Priority</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Status</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Request Date</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Location</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Department</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -192,16 +192,16 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm }) => {
                                     key={req.requestId}
                                     className="border-b hover:bg-gray-50"
                                 >
-                                    <TableCell className="text-center py-3">{req.requestId}</TableCell>
-                                    <TableCell className="text-center py-3">{req.translationRequest.language}</TableCell>
-                                    <TableCell className="text-center py-3">{req.translationRequest.typeMeeting}</TableCell>
-                                    <TableCell className="text-center py-3">{req.translationRequest.meetingLink}</TableCell>
-                                    <TableCell className="text-center py-3">{req.translationRequest.patientName}</TableCell>
-                                    <TableCell className="text-center py-3">{req.priority}</TableCell>
-                                    <TableCell className="text-center py-3">{req.status}</TableCell>
-                                    <TableCell className="text-center py-3">{req.requestDate.split('T')[0]}</TableCell>
-                                    <TableCell className="text-center py-3">{req.translationRequest.location}</TableCell>
-                                    <TableCell className="text-center py-3">{req.translationRequest.department}</TableCell>
+                                    <TableCell className="text-left py-3">{req.requestId}</TableCell>
+                                    <TableCell className="text-left py-3">{req.translationRequest.language}</TableCell>
+                                    <TableCell className="text-left py-3">{req.translationRequest.typeMeeting}</TableCell>
+                                    <TableCell className="text-left py-3">{req.translationRequest.meetingLink}</TableCell>
+                                    <TableCell className="text-left py-3">{req.translationRequest.patientName}</TableCell>
+                                    <TableCell className="text-left py-3">{req.priority}</TableCell>
+                                    <TableCell className="text-left py-3">{req.status}</TableCell>
+                                    <TableCell className="text-left py-3">{req.requestDate.split('T')[0]}</TableCell>
+                                    <TableCell className="text-left py-3">{req.translationRequest.location}</TableCell>
+                                    <TableCell className="text-left py-3">{req.translationRequest.department}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

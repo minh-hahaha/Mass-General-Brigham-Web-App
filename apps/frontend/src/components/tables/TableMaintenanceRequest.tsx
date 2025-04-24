@@ -185,34 +185,34 @@ const TableMaintenanceRequest: React.FC<Props> = ({ setActiveForm }) => {
                         <Table className="w-full table-fixed">
                             <TableHeader>
                                 <TableRow className="bg-gray-50">
-                                    <TableHead className="w-20 text-center font-semibold py-3">
+                                    <TableHead className="w-20 text-left font-semibold py-3">
                                         Request ID
                                     </TableHead>
-                                    <TableHead className="w-32 text-center font-semibold py-3">
+                                    <TableHead className="w-32 text-left font-semibold py-3">
                                         Maintenance Type
                                     </TableHead>
-                                    <TableHead className="w-28 text-center font-semibold py-3">
+                                    <TableHead className="w-28 text-left font-semibold py-3">
                                         Location
                                     </TableHead>
-                                    <TableHead className="w-28 text-center font-semibold py-3">
+                                    <TableHead className="w-28 text-left font-semibold py-3">
                                         Hospital
                                     </TableHead>
-                                    <TableHead className="w-32 text-center font-semibold py-3">
+                                    <TableHead className="w-32 text-left font-semibold py-3">
                                         Maintenance Time
                                     </TableHead>
-                                    <TableHead className="w-32 text-center font-semibold py-3">
+                                    <TableHead className="w-32 text-left font-semibold py-3">
                                         Employee Name
                                     </TableHead>
-                                    <TableHead className="w-24 text-center font-semibold py-3">
+                                    <TableHead className="w-24 text-left font-semibold py-3">
                                         Priority
                                     </TableHead>
-                                    <TableHead className="w-24 text-center font-semibold py-3">
+                                    <TableHead className="w-24 text-left font-semibold py-3">
                                         Status
                                     </TableHead>
-                                    <TableHead className="w-28 text-center font-semibold py-3">
+                                    <TableHead className="w-28 text-left font-semibold py-3">
                                         Request Date
                                     </TableHead>
-                                    <TableHead className="w-28 text-center font-semibold py-3">
+                                    <TableHead className="w-28 text-left font-semibold py-3">
                                         Service Type
                                     </TableHead>
                                 </TableRow>
@@ -223,36 +223,36 @@ const TableMaintenanceRequest: React.FC<Props> = ({ setActiveForm }) => {
                                         key={req.requestId}
                                         className="border-b hover:bg-gray-50"
                                     >
-                                        <TableCell className="text-center py-3">
+                                        <TableCell className="text-left py-3">
                                             {req.requestId}
                                         </TableCell>
-                                        <TableCell className="text-center py-3 truncate">
+                                        <TableCell className="text-left py-3 truncate">
                                             {req.maintenanceRequest.maintenanceType}
                                         </TableCell>
-                                        <TableCell className="text-center py-3 truncate">
+                                        <TableCell className="text-left py-3 truncate">
                                             {req.maintenanceRequest.maintenanceLocation}
                                         </TableCell>
-                                        <TableCell className="text-center py-3 truncate">
+                                        <TableCell className="text-left py-3 truncate">
                                             {req.maintenanceRequest.maintenanceHospital}
                                         </TableCell>
-                                        <TableCell className="text-center py-3 truncate">
+                                        <TableCell className="text-left py-3 truncate">
                                             {req.maintenanceRequest.maintenanceTime
                                                 ?.split('T')[1]
                                                 ?.substring(0, 5)}
                                         </TableCell>
-                                        <TableCell className="text-center py-3 truncate">
+                                        <TableCell className="text-left py-3 truncate">
                                             {req.employeeName}
                                         </TableCell>
-                                        <TableCell className="text-center py-3">
+                                        <TableCell className="text-left py-3">
                                             {req.priority}
                                         </TableCell>
-                                        <TableCell className="text-center py-3">
+                                        <TableCell className="text-left py-3">
                                             {req.status}
                                         </TableCell>
-                                        <TableCell className="text-center py-3">
+                                        <TableCell className="text-left py-3">
                                             {formatDate(req.requestDate)}
                                         </TableCell>
-                                        <TableCell className="text-center py-3 truncate">
+                                        <TableCell className="text-left py-3 truncate">
                                             {req.serviceType}
                                         </TableCell>
                                     </TableRow>

@@ -220,15 +220,15 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                     <Table>
                         <TableHeader>
                             <TableRow className="bg-gray-50">
-                                <TableHead className="w-20 text-center font-semibold py-3">Request ID</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Employee Name</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Department</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Room</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Status</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Priority</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Request Date</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Request Time</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Service Type</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Request ID</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Employee Name</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Department</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Room</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Status</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Priority</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Request Date</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Request Time</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Service Type</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -237,17 +237,17 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                                     key={req.requestId}
                                     className="border-b hover:bg-gray-50"
                                 >
-                                    <TableCell className="text-center py-3">{req.requestId}</TableCell>
-                                    <TableCell className="text-center py-3">{req.employeeName ?? 'Unassigned'}</TableCell>
-                                    <TableCell className="text-center py-3">{req.requesterDepartmentId}</TableCell>
-                                    <TableCell className="text-center py-3">{req.requesterRoomNumber}</TableCell>
-                                    <TableCell className="text-center py-3">{req.status}</TableCell>
-                                    <TableCell className="text-center py-3">{req.priority}</TableCell>
-                                    <TableCell className="text-center py-3">{req.requestDate?.split('T')[0]}</TableCell>
-                                    <TableCell className="text-center py-3">
+                                    <TableCell className="text-left py-3">{req.requestId}</TableCell>
+                                    <TableCell className="text-left py-3">{req.employeeName ?? 'Unassigned'}</TableCell>
+                                    <TableCell className="text-left py-3">{req.requesterDepartmentId}</TableCell>
+                                    <TableCell className="text-left py-3">{req.requesterRoomNumber}</TableCell>
+                                    <TableCell className="text-left py-3">{req.status}</TableCell>
+                                    <TableCell className="text-left py-3">{req.priority}</TableCell>
+                                    <TableCell className="text-left py-3">{req.requestDate?.split('T')[0]}</TableCell>
+                                    <TableCell className="text-left py-3">
                                         {req.requestTime?.split('T')[1]?.substring(0, 5)}
                                     </TableCell>
-                                    <TableCell className="text-center py-3">{req.serviceType}</TableCell>
+                                    <TableCell className="text-left py-3">{req.serviceType}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

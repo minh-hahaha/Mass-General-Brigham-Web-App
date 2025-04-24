@@ -184,15 +184,15 @@ const TableSanitationRequest: React.FC<Props> = ({ setActiveForm }) => {
                             hazardLevel: string
                             recurring: boolean
                             sanitationType: string*/}
-                                <TableHead className="w-20 text-center font-semibold py-3">Request ID</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Disposal Required</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Hazard Level</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Recurring</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Sanitation Type</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Priority</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Status</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Request Date</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Service Type</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Request ID</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Disposal Required</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Hazard Level</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Recurring</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Sanitation Type</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Priority</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Status</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Request Date</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Service Type</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -201,17 +201,17 @@ const TableSanitationRequest: React.FC<Props> = ({ setActiveForm }) => {
                                     key={req.requestId}
                                     className="border-b hover:bg-gray-50"
                                 >
-                                    <TableCell className="text-center py-3">{req.requestId}</TableCell>
-                                    <TableCell className="text-center py-3">
+                                    <TableCell className="text-left py-3">{req.requestId}</TableCell>
+                                    <TableCell className="text-left py-3">
                                         {req.sanitation.disposalRequired ? 'Yes' : 'No'}
                                     </TableCell>
-                                    <TableCell className="text-center py-3">{req.sanitation.hazardLevel}</TableCell>
-                                    <TableCell className="text-center py-3">{req.sanitation.recurring ? 'Yes' : 'No'}</TableCell>
-                                    <TableCell className="text-center py-3">{req.sanitation.sanitationType}</TableCell>
-                                    <TableCell className="text-center py-3">{req.priority}</TableCell>
-                                    <TableCell className="text-center py-3">{req.status}</TableCell>
-                                    <TableCell className="text-center py-3">{req.requestDate.split('T')[0]}</TableCell>
-                                    <TableCell className="text-center py-3">{req.serviceType}</TableCell>
+                                    <TableCell className="text-left py-3">{req.sanitation.hazardLevel}</TableCell>
+                                    <TableCell className="text-left py-3">{req.sanitation.recurring ? 'Yes' : 'No'}</TableCell>
+                                    <TableCell className="text-left py-3">{req.sanitation.sanitationType}</TableCell>
+                                    <TableCell className="text-left py-3">{req.priority}</TableCell>
+                                    <TableCell className="text-left py-3">{req.status}</TableCell>
+                                    <TableCell className="text-left py-3">{req.requestDate.split('T')[0]}</TableCell>
+                                    <TableCell className="text-left py-3">{req.serviceType}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
