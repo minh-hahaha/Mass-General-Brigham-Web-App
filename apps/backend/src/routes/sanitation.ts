@@ -66,7 +66,7 @@ router.post('/', async (req: Request, res: Response) => {
 
                     //optional fields
                     //location_id: req.body.locationId ?? null,
-                    employeeId: req.body.employeeId ?? null, // change to user id in the future?
+                    employeeId: req.body.employeeId || null, // change to user id in the future?
                     //request_date: new Date(pickupDate) ?? null,
                     //request_time: new Date(req.body.pickupTime) ?? null,
                 },
