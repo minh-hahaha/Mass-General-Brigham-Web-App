@@ -11,7 +11,8 @@ interface State {
 }
 const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Directions, walk22Directions}:State) => {
     //  const [textMode, setTextMode] = useState("Mode: Transport Directions");
-      const [textToDisplay, setTextToDisplay] = useState(driveDirections);
+    const [textToDisplay, setTextToDisplay] = useState(driveDirections);
+    const audio = new Audio();  // Create audio object
     //
     // const handleMode1Switch = () => {
     //     if (textMode === "Mode: Transport Directions") {
@@ -101,26 +102,22 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Direc
         if (messageString.length==0) {
             messageString="Empty of Directions, select a from, and, too location in order to receive directions.";
         }
-        const response = await fetch('http://localhost:5001/api/tts', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text: messageString }),
+        const response = await axios.post(ROUTES.TTS, { text: messageString }, {
+            responseType: 'blob',
         });
 
-        const audioBlob = await response.blob();  // Get blob from server
+        const audioBlob = await response.data;  // Get blob from server
 
         // Log audioBlob size to confirm it's a valid file
         console.log('Audio Blob size:', audioBlob.size);
-        console.log("111111111");
         console.log(textToSpeak);
         const audioUrl = URL.createObjectURL(audioBlob);  // Create a URL for the audio
-        const audio = new Audio(audioUrl);  // Create audio object
+        audio.src = audioUrl;
         audio.play();
     };
 
     return (
         <>
-
             <div className="fixed top-14 right-10 p-4 z-50">
                 <div className="p-5 shadow-md flex flex-col items-end space-y-2 border border-gray-200 w-90 z-10 bg-white rounded-lg">
                     <div
