@@ -15,6 +15,10 @@ COPY packages packages
 COPY configs configs
 COPY tsconfig.json turbo.json ./
 
+#Build time variable for Front end
+ARG VITE_GOOGLE_MAPS_API_KEY
+ENV VITE_GOOGLE_MAPS_API_KEY=$VITE_GOOGLE_MAPS_API_KEY
+
 # Enable Yarn Berry
 RUN corepack enable
 
