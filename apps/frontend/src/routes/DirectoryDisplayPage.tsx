@@ -544,6 +544,10 @@ const Patriot22Directory = ({ onImportClick }: { onImportClick: () => void }) =>
 };
 
 const FaulknerDirectory = ({ onImportClick }: { onImportClick: () => void }) => {
+    const loggedIn = sessionStorage.getItem('loggedIn');
+    if (!loggedIn) {
+        window.location.href = '/';
+    }
     const [filter, setShowFilters] = useState<boolean>(false);
     const [filters, setFilters] = useState({
         deptName: '',

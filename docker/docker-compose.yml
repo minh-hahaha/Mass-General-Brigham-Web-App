@@ -17,6 +17,7 @@ services:
       - BACKEND_PORT=${BACKEND_PORT}
       - BACKEND_SOURCE=${BACKEND_SOURCE}
       - BACKEND_URL=${BACKEND_URL}
+      - VITE_GOOGLE_MAPS_API_KEY=${VITE_GOOGLE_MAPS_API_KEY}
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:80"]

@@ -308,6 +308,33 @@ const DirectionsMapComponent = () => {
             default:
                 selectedPath = []; //NONE
         }
+        // Get the current location and lot from state
+        const currentLot = lot; // Get the selected lot before clearing
+
+        if (currentLot) {
+            // get prefix and lot letter
+            const [locationPrefix, lotLetter] = currentLot.split('_');
+
+            if (locationPrefix === 'PP') {
+                setFromNodeId(`PPFloor1Parking Lot${lotLetter}`);
+            } else if (locationPrefix === 'FK') {
+                if (lotLetter === 'A') {
+                    setFromNodeId('FKFloor1Parking Lot');
+                } else if (lotLetter === 'B') {
+                    setFromNodeId('FKFloor1Parking Lot_1');
+                } else if (lotLetter === 'C') {
+                    setFromNodeId('FKFloor1Parking Lot_2');
+                }
+            } else if (locationPrefix === 'CH') {
+                if (lotLetter === 'A') {
+                    setFromNodeId('CHFloor1Parking Lot1');
+                } else if (lotLetter === 'B') {
+                    setFromNodeId('CHFloor1Parking LotB');
+                } else if (lotLetter === 'C') {
+                    setFromNodeId('CHFloor1Parking LotC');
+                }
+            }
+        }
 
         if (dropOffLocation != null){
             const dropOffLat = dropOffLocation?.lat()
@@ -376,33 +403,7 @@ const DirectionsMapComponent = () => {
         // clear parking
         clearParking();
 
-        // Get the current location and lot from state
-        const currentLot = lot; // Get the selected lot before clearing
 
-        if (currentLot) {
-            // get prefix and lot letter
-            const [locationPrefix, lotLetter] = currentLot.split('_');
-
-            if (locationPrefix === 'PP') {
-                setFromNodeId(`PPFloor1Parking Lot${lotLetter}`);
-            } else if (locationPrefix === 'FK') {
-                if (lotLetter === 'A') {
-                    setFromNodeId('FKFloor1Parking Lot');
-                } else if (lotLetter === 'B') {
-                    setFromNodeId('FKFloor1Parking Lot_1');
-                } else if (lotLetter === 'C') {
-                    setFromNodeId('FKFloor1Parking Lot_2');
-                }
-            } else if (locationPrefix === 'CH') {
-                if (lotLetter === 'A') {
-                    setFromNodeId('CHFloor1Parking Lot1');
-                } else if (lotLetter === 'B') {
-                    setFromNodeId('CHFloor1Parking LotB');
-                } else if (lotLetter === 'C') {
-                    setFromNodeId('CHFloor1Parking LotC');
-                }
-            }
-        }
     };
 
     const customLineRef = useRef<google.maps.Polyline | null>(null);

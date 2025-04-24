@@ -6,10 +6,6 @@ import SelectElement from '@/elements/SelectElement.tsx';
 import { Label } from '@/components/ui/label.tsx';
 
 const ImportExportDirectoryPage = () => {
-    const loggedIn = sessionStorage.getItem('loggedIn');
-    if (!loggedIn) {
-        window.location.href = '/';
-    }
 
     const [file, setFile] = useState<File | null>(null);
     const [uploadType, setUploadType] = useState<'Overwrite' | 'Update'>('Update');
