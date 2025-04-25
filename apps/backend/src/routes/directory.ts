@@ -92,6 +92,9 @@ router.get('/byBuilding', async function (req: Request, res: Response) {
                 buildingId: {
                     equals: buildingFilter,
                 },
+                nodeId: {
+                    not: null,
+                },
             },
         });
         res.json(DIRECTORY_NAMES);
