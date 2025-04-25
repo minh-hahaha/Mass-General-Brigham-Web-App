@@ -1,6 +1,6 @@
 import express, { Router, Request, Response } from 'express';
-import PrismaClient from '../bin/prisma-client';
-import { dataToCSV, readCSV } from '../CSVImportExport.ts';
+import PrismaClient from '../../bin/prisma-client.ts';
+import { dataToCSV, readCSV } from '../../CSVImportExport.ts';
 import * as console from 'node:console';
 
 const router: Router = express.Router();

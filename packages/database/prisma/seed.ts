@@ -1,6 +1,6 @@
 import client from '../../../apps/backend/src/bin/prisma-client.ts'
 import { exportNodesAndEdges } from '../../../apps/backend/src/Algorithms/ExportNodesAndEdges.ts'
-import patienttransport from "../../../apps/backend/src/routes/patienttransport.ts";
+import patienttransport from "../../../apps/backend/src/routes/forms/patienttransport.ts";
 
 
 // Create the prisma client, this automatically connects to the database

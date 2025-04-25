@@ -1,5 +1,5 @@
 import express, { Router, Request, Response } from 'express';
-import PrismaClient from '../bin/prisma-client';
+import PrismaClient from '../../bin/prisma-client.ts';
 
 const router: Router = express.Router();
 
@@ -7,57 +7,62 @@ router.get('/', async (req: Request, res: Response) => {
     try {
         const requests = await PrismaClient.serviceRequest.findMany({
             where: {
-                serviceType: 'Translation',
+                serviceType: 'Patient Transportation',
             },
             include: {
                 //might flag an error
-                translationRequest: true, // includes Translation entry
+                patientTransport: true, // includes PatientTransport entry
             },
         });
 
         res.status(200).json(requests);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Failed to fetch translation requests' });
+        res.status(500).json({ error: 'Failed to fetch patient transport requests' });
     }
 });
 
 router.post('/', async (req: Request, res: Response) => {
     //Format for tempDate is  2025-04-04T01:44
     //(maybe on future iterations split the field?)
-    console.log(req.body);
-    const tempDate = new Date(req.body.date);
 
     try {
         const result = await PrismaClient.$transaction(async (prisma) => {
             //creates entry for service request
             const serviceRequest = await prisma.serviceRequest.create({
                 data: {
-                    employeeId: req.body.employeeId,
-                    requestDate: tempDate,
+                    priority: req.body.priority,
                     status: 'Pending',
                     comments: req.body.notes,
-                    priority: req.body.priority,
-                    serviceType: 'Translation',
+                    serviceType: 'Patient Transportation',
+
+                    //optional field
+                    employeeId: req.body.employeeId ?? null, // change to user id in the future?
+                    requestDate: new Date(req.body.requestDate).toISOString() ?? null,
+                    requestTime: new Date(req.body.pickupTime) ?? null,
                 },
             });
 
             //create entry for patient transport table
-            const translationRequest = await prisma.translationRequest.create({
+            const patientTransport = await prisma.patientTransport.create({
                 data: {
-                    serviceReqId: serviceRequest.requestId,
+                    servReqId: serviceRequest.requestId,
+                    patientId: req.body.patientId,
                     patientName: req.body.patientName,
-                    language: req.body.language,
-                    duration: req.body.duration,
-                    typeMeeting: req.body.typeMeeting,
-                    date: new Date(req.body.date),
-                    meetingLink: req.body.meetingLink,
-                    location: req.body.location,
-                    department: req.body.department,
+                    pickupLocation: req.body.pickupLocation,
+                    transportType: req.body.transportType,
+                    dropoffLocation: 'nowhere',
+                },
+                select: {
+                    servReqId: true,
+                    patientId: true,
+                    patientName: true,
+                    pickupLocation: true,
                 },
             });
 
-            return { serviceRequest, translationRequest };
+            console.log(serviceRequest);
+            return { serviceRequest, patientTransport };
         });
 
         res.status(201).json(result);

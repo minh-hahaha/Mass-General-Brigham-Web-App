@@ -6,7 +6,7 @@ export interface outgoingTranslationRequest {
     comments: string;
     employeeName: string;
     employeeId: number;
-    locationId: number;
+    // locationId: number;
     language: string;
     patientName: string;
     typeMeeting: string;
@@ -15,8 +15,7 @@ export interface outgoingTranslationRequest {
     location: string;
     priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     requestDate: string;
-    requestId: number;
-    requestTime: number;
+    requestTime: string;
     duration: number;
     date: string;
     notes: string;
@@ -38,7 +37,7 @@ export interface incomingTranslationRequest {
     priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     requestDate: string;
     requestId: number;
-    requestTime: number;
+    requestTime: string;
     serviceType: string;
     status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
 }
