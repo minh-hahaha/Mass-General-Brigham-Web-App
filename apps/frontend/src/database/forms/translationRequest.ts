@@ -1,6 +1,6 @@
 import {ROUTES} from "common/src/constants.ts";
 import axios from "axios";
-import {TranslationRequestData} from "@/routes/TranslationServiceRequestPage.tsx";
+import {TranslationRequestData} from "@/components/forms/TranslationServiceRequestPage.tsx";
 
 export interface incomingTranslationRequest {
     comments: string;

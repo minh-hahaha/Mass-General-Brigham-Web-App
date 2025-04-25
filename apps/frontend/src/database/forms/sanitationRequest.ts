@@ -1,4 +1,4 @@
-import { ROUTES } from 'common/src/constants';
+import { ROUTES } from 'common/src/constants.ts';
 
 import axios from 'axios';
 

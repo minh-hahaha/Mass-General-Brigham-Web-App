@@ -1,6 +1,6 @@
 import {ROUTES} from "common/src/constants.ts";
 import axios from "axios";
-import {MedicalDeviceRequestData} from "@/routes/MedicalDeviceServiceRequestPage.tsx";
+import {MedicalDeviceRequestData} from "@/components/forms/MedicalDeviceServiceRequestPage.tsx";
 
 export interface incomingMedicalDeviceRequest {
     comments: string;

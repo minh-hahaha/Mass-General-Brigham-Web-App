@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { GetTranslatorRequest, incomingTranslationRequest } from '@/database/translationRequest.ts';
+import { GetTranslatorRequest, incomingTranslationRequest } from '@/database/forms/translationRequest.ts';
 import {
     Table,
     TableBody,

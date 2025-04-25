@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import MGBButton from '../../elements/MGBButton.tsx';
 import InputElement from '../../elements/InputElement.tsx';
 import ConfirmMessageComponent from '../ConfirmMessageComponent.tsx';
-import { SubmitMedicalDeviceRequest } from '@/database/medicalDeviceRequest.ts';
+import { SubmitMedicalDeviceRequest } from '@/database/forms/medicalDeviceRequest.ts';
 
 type MedicalDeviceType =
     | 'ECG Monitor'

@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import MGBButton from '@/elements/MGBButton.tsx';
 import ConfirmMessageComponent from '@/components/ConfirmMessageComponent.tsx';
-import { SubmitMaintenanceRequest, maintenanceRequest } from '@/database/maintenanceRequest.ts';
+import { SubmitMaintenanceRequest, maintenanceRequest } from '@/database/forms/maintenanceRequest.ts';
 import InputElement from '@/elements/InputElement.tsx';
 import SelectElement from '@/elements/SelectElement.tsx';
 

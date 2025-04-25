@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import MGBButton from '../../elements/MGBButton.tsx';
 import InputElement from '../../elements/InputElement.tsx';
 import ConfirmMessageComponent from '../ConfirmMessageComponent.tsx'; // Import the new component
-import { SubmitTransportRequest } from '../../database/transportRequest.ts';
+import { SubmitTransportRequest } from '../../database/forms/transportRequest.ts';
 
 interface transportRequest {
     patientId: number;
@@ -13,7 +13,6 @@ interface transportRequest {
     dropOffLocation: string;
     pickupDate: string;
     pickupTime: string;
-    status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
     notes: string;
     requesterId: number;
     requesterName: string;
@@ -35,7 +34,7 @@ const TransportRequestPage = () => {
     const [dropOffLocation, setDropOffLocation] = useState('');
     const [pickupDate, setPickupDate] = useState(new Date().toISOString().split('T')[0]);
     const [pickupTime, setPickupTime] = useState('');
-    const [status, setStatus] = useState<transportRequest['status']>('Pending');
+    // const [status, setStatus] = useState<transportRequest['status']>('Pending');
     const [notes, setNotes] = useState('');
     const [requesterId, setRequesterId] = useState(0);
     const [requesterName, setRequesterName] = useState('');
@@ -57,7 +56,6 @@ const TransportRequestPage = () => {
             dropOffLocation,
             pickupDate,
             pickupTime,
-            status,
             notes,
             requesterId,
             requesterName,
@@ -81,7 +79,7 @@ const TransportRequestPage = () => {
         setDropOffLocation('');
         setPickupDate(new Date().toISOString().split('T')[0]);
         setPickupTime('');
-        setStatus('Pending');
+        // setStatus('Pending');
         setNotes('');
         setRequesterId(0);
         setRequestDate(new Date().toISOString().split('T')[0]);
@@ -104,7 +102,7 @@ const TransportRequestPage = () => {
         setShowConfirmation(false);
     };
 
-    const mgbLocations = ['Chestnut Hill', '20 Patriot Place', '22 Patriot Place'];
+    const mgbLocations = ['Chestnut Hill', '20 Patriot Place', '22 Patriot Place', 'Faulkner Hospital'];
 
     return (
         // flex row container
@@ -194,8 +192,6 @@ const TransportRequestPage = () => {
                                     >
                                         <option value="Ambulance">Ambulance</option>
                                         <option value="Helicopter">Helicopter</option>
-                                        <option value="Medical Van">Medical Van</option>
-                                        <option value="Other">Other</option>
                                     </select>
                                 </div>
                             </div>
@@ -217,7 +213,7 @@ const TransportRequestPage = () => {
                                         <option value="Low">Low</option>
                                         <option value="Medium">Medium</option>
                                         <option value="High">High</option>
-                                        <option value="Emergency">High</option>
+                                        <option value="Emergency">Emergency</option>
                                     </select>
                                 </div>
                             </div>
@@ -242,6 +238,7 @@ const TransportRequestPage = () => {
                                 </div>
                             </div>
 
+                            {/*TODO: get rid of the department that wasn't selected (make new directory request)*/}
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
                                     <label className="w-1/4">Destination</label>
@@ -286,23 +283,23 @@ const TransportRequestPage = () => {
                                     />
                                 </div>
                             </div><div className="flex flex-col pt-2">
-                            <div className="flex items-center gap-2">
-                                <label className="w-1/4"> Status</label>
-                                <select
-                                    id="status"
-                                    value={status}
-                                    onChange={(e) =>
-                                        setStatus(e.target.value as transportRequest['status'])
-                                    }
-                                    required
-                                    className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                >
-                                    <option value="Pending">Pending</option>
-                                    <option value="In Progress">In Progress</option>
-                                    <option value="Completed">Completed</option>
-                                    <option value="Cancelled">Cancelled</option>
-                                </select>
-                            </div>
+                            {/*<div className="flex items-center gap-2">*/}
+                            {/*    <label className="w-1/4"> Status</label>*/}
+                            {/*    <select*/}
+                            {/*        id="status"*/}
+                            {/*        value={status}*/}
+                            {/*        onChange={(e) =>*/}
+                            {/*            setStatus(e.target.value as transportRequest['status'])*/}
+                            {/*        }*/}
+                            {/*        required*/}
+                            {/*        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"*/}
+                            {/*    >*/}
+                            {/*        <option value="Pending">Pending</option>*/}
+                            {/*        <option value="In Progress">In Progress</option>*/}
+                            {/*        <option value="Completed">Completed</option>*/}
+                            {/*        <option value="Cancelled">Cancelled</option>*/}
+                            {/*    </select>*/}
+                            {/*</div>*/}
                         </div>
                         </div>
 

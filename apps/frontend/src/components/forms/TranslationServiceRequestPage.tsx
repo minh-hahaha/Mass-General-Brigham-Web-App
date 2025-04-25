@@ -2,9 +2,9 @@ import InputElement from '@/elements/InputElement.tsx';
 import MGBButton from '@/elements/MGBButton.tsx';
 import ConfirmMessageComponent from '@/components/ConfirmMessageComponent.tsx';
 import {useEffect, useState} from 'react';
-import { SubmitTransportRequest } from '@/database/transportRequest.ts';
+import { SubmitTransportRequest } from '@/database/forms/transportRequest.ts';
 import SelectElement from '@/elements/SelectElement.tsx';
-import { SubmitTranslatorRequest } from '@/database/translationRequest.ts';
+import { SubmitTranslatorRequest } from '@/database/forms/translationRequest.ts';
 
 export interface TranslationRequestData {
     employeeName: string;

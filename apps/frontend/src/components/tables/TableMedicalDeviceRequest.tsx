@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import {
     GetMedicalDeviceRequest,
     incomingMedicalDeviceRequest,
-} from '@/database/medicalDeviceRequest.ts';
+} from '@/database/forms/medicalDeviceRequest.ts';
 import {
     Table,
     TableBody,

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { GetSanitationRequest, incomingSanitationRequest } from '@/database/sanitationRequest.ts';
+import { GetSanitationRequest, incomingSanitationRequest } from '@/database/forms/sanitationRequest.ts';
 import {
     Table,
     TableBody,

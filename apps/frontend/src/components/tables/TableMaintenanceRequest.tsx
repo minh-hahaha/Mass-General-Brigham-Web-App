@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import {
     GetMaintenanceRequest,
     incomingMaintenanceRequest,
-} from '@/database/maintenanceRequest.ts';
+} from '@/database/forms/maintenanceRequest.ts';
 import {
     Table,
     TableBody,

@@ -1,4 +1,4 @@
-import { ROUTES } from 'common/src/constants';
+import { ROUTES } from 'common/src/constants.ts';
 
 import axios from 'axios';
 
@@ -11,7 +11,6 @@ export interface transportRequest {
     dropOffLocation: string;
     pickupDate: string;
     pickupTime: string;
-    status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
     notes: string;
     requesterId: number;
     requestDate: string;
@@ -28,7 +27,7 @@ export interface incomingRequest {
         pickupLocation: string;
         servReqId: number;
         transportType: 'Ambulance' | 'Helicopter' | 'Medical Van' | 'Other';
-    }
+    };
     priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     requestDate: string;
     requestId: number;
