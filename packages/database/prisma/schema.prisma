@@ -142,9 +142,7 @@ model Sanitation {
   sanitationDepartmentId String
   sanitationRoomNumber Int
   sanitationType           String
-  recurring                Boolean
   hazardLevel              String
-  disposalRequired         Boolean
   completeBy               DateTime       @default(now()) @db.Time
   servRequestId           ServiceRequest @relation(name: "ServiceSanitation", fields: [servReqId], references: [requestId])
 }
