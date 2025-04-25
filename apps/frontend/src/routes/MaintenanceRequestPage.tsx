@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import MGBButton from '@/elements/MGBButton.tsx';
 import ConfirmMessageComponent from '@/components/ConfirmMessageComponent.tsx';
 import { SubmitMaintenanceRequest, maintenanceRequest } from '@/database/maintenanceRequest.ts';
@@ -80,13 +80,20 @@ const MaintenanceRequestPage = () => {
         setShowConfirmation(false);
     };
 
+    useEffect(() => {
+        if (showConfirmation) {
+            alert("Request Submitted");
+            handleConfirmationClose(); // close the state after the alert
+        }
+    }, [showConfirmation]);
+
     const hospitalLocations = ['Chestnut Hill', '20 Patriot Place', '22 Patriot Place'];
 
     return (
         // flex row container
         <div className="flex flex-col justify-center items-center min-h-screen">
             {/* make the form left side */}
-            <div className="flex flex-col items-center border border-[#d3d5d7] bg-white rounded-2xl shadow-xl p-8 w-full max-w-[700px] mt-10 mb-10">
+            <div className="flex flex-col items-center rounded-2xl p-8 w-full max-w-[700px] mt-10 mb-10">
                 <h1 className="text-[30px] font-bold mb-6">Maintenance Request</h1>
                 <h2 className="text-[15px] font-semibold mb-6">Max Jeronimo and Haotian Liu</h2>
                 <div className="flex flex-col gap-2 mb-6">
@@ -312,12 +319,6 @@ const MaintenanceRequestPage = () => {
                             >
                                 Submit Request
                             </MGBButton>
-
-                            {showConfirmation && (
-                                <div className="inline-block">
-                                    <ConfirmMessageComponent onClose={handleConfirmationClose} />
-                                </div>
-                            )}
                             <MGBButton
                                 onClick={() => handleReset()}
                                 variant={'secondary'}

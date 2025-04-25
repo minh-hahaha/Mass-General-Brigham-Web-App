@@ -7,6 +7,7 @@
 **/.prisma
 **/dist
 .pnp.cjs
+serviceKey.json
 
 out
 
@@ -37,3 +38,4 @@ out
 
 **/.prettiercache
 **/.vite
+/please-worksofteng-a1a60fdc8125.json

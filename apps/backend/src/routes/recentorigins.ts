@@ -6,11 +6,7 @@ const router: Router = express.Router();
 
 router.get('/', async function (req: Request, res: Response) {
     try {
-        const recentOrigins = await PrismaClient.recentOrigins.findMany({
-            orderBy: {
-                id: 'desc',
-            },
-        });
+        const recentOrigins = await PrismaClient.recentOrigins.findMany();
         console.info('Successfully pulled recent origins'); // Log that it was successful
         console.log(recentOrigins);
         res.send(recentOrigins);
@@ -22,7 +18,7 @@ router.get('/', async function (req: Request, res: Response) {
 });
 
 router.post('/', async (req: Request, res: Response) => {
-    const { id, location } = req.body;
+    const { location } = req.body;
 
     try {
         const existing = await PrismaClient.recentOrigins.findFirst({
@@ -40,7 +36,7 @@ router.post('/', async (req: Request, res: Response) => {
         }
 
         const newOrigin = await PrismaClient.recentOrigins.create({
-            data: { id, location },
+            data: { location },
         });
 
         res.status(201).json(newOrigin);

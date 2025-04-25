@@ -15,6 +15,11 @@ const PatriotPlaceBounds = {
     northEast: { lat: 42.09342690806031, lng: -71.2649785507 }, // Top-right corner
 };
 
+const FaulknerBounds = {
+    southWest: { lat: 42.300487127183445, lng: -71.13067267701479 }, // Bottom-left corner
+    northEast: { lat: 42.30301668867676, lng: -71.126350413866 }, // Top-right corner
+};
+
 
 // floor type
 interface Floor {
@@ -25,7 +30,6 @@ interface Floor {
     svgPath: string;
 }
 
-// All available floors across buildings
 const availableFloors: Floor[] = [
     // Chestnut Hill
     { id: "CH-1", floor: "1", buildingId: "1", buildingName: "Chestnut Hill",svgPath: "/CH01.svg" },
@@ -34,11 +38,18 @@ const availableFloors: Floor[] = [
     { id: "PP-2", floor: "2", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP02.svg" },
     { id: "PP-3", floor: "3", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP03.svg" },
     { id: "PP-4", floor: "4", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP04.svg" },
+
+    { id: "FK-1", floor: "1", buildingId: "3", buildingName: "Faulkner Hospital",svgPath: "/FK01.svg" },
+
 ];
 
 const TestNodeEditor = () => {
+    const loggedIn = sessionStorage.getItem('loggedIn');
+    if (!loggedIn) {
+        window.location.href = '/';
+    }
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-    const [currentFloorId, setCurrentFloorId] = useState<string>("");
+    const [currentFloorId, setCurrentFloorId] = useState<string>("CH-1");
 
     const handleFloorChange = (floorId: string) => {
         setCurrentFloorId(floorId);
@@ -85,12 +96,16 @@ const TestNodeEditor = () => {
                             bounds={PatriotPlaceBounds}
                             imageSrc={patriotPlaceFloor.svgPath}
                         />
+                        <OverlayComponent
+                            bounds={FaulknerBounds}
+                            imageSrc={'/FK01.svg'}
+                        />
                         <div
                             className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20"
                         >
                             <FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />
                         </div>
-                        <NodeEditorComponent currentFloorId={currentFloorId}></NodeEditorComponent>
+                        <NodeEditorComponent currentFloorId={currentFloorId} ></NodeEditorComponent>
                     </Map>
                 </div>
             </APIProvider>

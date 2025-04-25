@@ -7,7 +7,7 @@ router.get('/', async (req: Request, res: Response) => {
     try {
         const requests = await PrismaClient.serviceRequest.findMany({
             where: {
-                serviceType: 'Patient Transport',
+                serviceType: 'Patient Transportation',
             },
             include: {
                 //might flag an error
@@ -34,10 +34,9 @@ router.post('/', async (req: Request, res: Response) => {
                     priority: req.body.priority,
                     status: req.body.status,
                     comments: req.body.notes,
-                    serviceType: 'Patient Transport',
+                    serviceType: 'Patient Transportation',
 
-                    //optional fields
-                    locationId: req.body.locationId ?? null,
+                    //optional field
                     employeeId: req.body.employeeId ?? null, // change to user id in the future?
                     requestDate: new Date(req.body.requestDate).toISOString() ?? null,
                     requestTime: new Date(req.body.pickupTime) ?? null,

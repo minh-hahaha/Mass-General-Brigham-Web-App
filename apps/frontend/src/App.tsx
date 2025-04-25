@@ -11,16 +11,14 @@ import SanitationRequestPage from './routes/SanitationRequestComponent.tsx';
 import TransportRequestPage from "./routes/TransportationRequestPage.tsx";
 import TranslationServiceRequestPage from './routes/TranslationServiceRequestPage.tsx';
 import MedicalDeviceServiceRequestPage from './routes/MedicalDeviceServiceRequestPage.tsx'
-import MedicalDeviceServiceDisplayPage from './routes/MedicalDeviceRequestDisplayPage.tsx'
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { ShadSidebar } from '@/components/ui/shadsidebar.tsx';
 import {MapPage} from "@/routes/MapPage.tsx";
 import MapViewPage from "@/routes/MapViewPage.tsx";
-import SanitationRequestDisplayPage from "@/routes/SanitationRequestDisplayPage.tsx";
-import ServiceRequestSelectPage from "@/routes/ServiceRequestSelectPage.tsx";
 import MaintenanceRequestPage from "@/routes/MaintenanceRequestPage.tsx";
 import Cookies from "js-cookie";
 import TestNodeEditor from '@/routes/TestNodeEditor.tsx';
+import AboutPage from '@/routes/AboutPage.tsx';
 
 function App() {
     const defaultOpen = Cookies.get("sidebar_state") === 'true';
@@ -56,7 +54,7 @@ function App() {
                                     element={<DirectoryDisplayPage />}
                                 />
                                 <Route
-                                    path="/Test"
+                                    path="/MapEditorPage"
                                     element={<TestNodeEditor />}
                                 />
                                 <Route
@@ -77,8 +75,10 @@ function App() {
                                     path="/SanitationRequest"
                                     element={<SanitationRequestPage />}
                                 />
-                        <Route path="/SanitationRequest" element={<SanitationRequestPage />} />
-                        <Route path="/SanitationRequestDisplayPage" element={<SanitationRequestDisplayPage />} />
+                                <Route
+                                    path="/SanitationRequest"
+                                    element={<SanitationRequestPage />}
+                                />
 
                                 <Route
                                     path="/MaintenancePage"
@@ -89,16 +89,12 @@ function App() {
                                     element={<TransportationRequestPage />}
                                 />
                                 <Route
-                                    path="/ServiceRequestSelectPage"
-                                    element={<ServiceRequestSelectPage />}
-                                />
-                                <Route
                                     path={"/MedicalDevicePage"}
                                     element={<MedicalDeviceServiceRequestPage/>}
                                 />
                                 <Route
-                                    path={"/MedicalDeviceDisplayPage"}
-                                    element={<MedicalDeviceServiceDisplayPage/>}
+                                    path="/AboutPage"
+                                    element={<AboutPage />}
                                 />
                             </Routes>
                         </main>

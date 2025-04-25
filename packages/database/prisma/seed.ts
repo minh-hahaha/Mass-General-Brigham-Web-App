@@ -1,5 +1,6 @@
 import client from '../../../apps/backend/src/bin/prisma-client.ts'
 import { exportNodesAndEdges } from '../../../apps/backend/src/Algorithms/ExportNodesAndEdges.ts'
+import patienttransport from "../../../apps/backend/src/routes/patienttransport.ts";
 
 
 // Create the prisma client, this automatically connects to the database
@@ -24,7 +25,12 @@ async function main() {
             {
                 buildingId: 3,
                 buildingName: '22 Patriot Place',
-            }
+            },
+            {
+                buildingId: 4,
+                buildingName: 'Faulkner Hospital',
+            },
+
         ],
         skipDuplicates: true,
     });
@@ -111,7 +117,7 @@ async function main() {
                 buildingId: 1,
                 deptPhone: '617-732-9841',
                 deptServices: 'Blood work, lab services',
-                nodeId: "CHFloor1Room100",
+                nodeId: "CHFloor1Room100"
             },
             {
                 deptId: 12,
@@ -119,7 +125,7 @@ async function main() {
                 buildingId: 1,
                 deptPhone: '617-732-9500',
                 deptServices: 'Orthopedic surgery, Vascular surgery, Contact Dermatitis and Occupational Dermatology Program, Pain Medicine and Travel Medicine',
-                nodeId: "CHFloor1Room130"
+                nodeId: "CHFloor1Road130"
             },
             {
                 deptId: 13,
@@ -156,7 +162,7 @@ async function main() {
                 buildingId: 1,
                 deptPhone: '617-732-9821',
                 deptServices: 'CT scan, MRI, X-Ray',
-                nodeId: "CHFloor1Room102",
+                nodeId: "CHFloor1Room102"
             },
             {
                 deptId: 18,
@@ -171,7 +177,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'Blood Draw / Phlebotomy',
-                nodeId: "20PPFloor1Room130"
+                nodeId: "PPFloor1Room130"
             },
             {
                 deptId: 20,
@@ -179,7 +185,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'Pharmacy',
-                nodeId: "20PPFloor1Room130"
+                nodeId: "PPFloor1Room130"
             },
             {
                 deptId: 21,
@@ -187,7 +193,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'Via Fax: 508-718-4026',
                 deptServices: 'magnetic resonance imaging (MRI), computed tomography (CT), single photon emission computed tomography (SPECT) imaging, ultrasound, digital mammography, x-ray, bone densitometry. Available twice a week: arthrograms, magnetic resonance (MR) arthrograms, computed tomography (CT) arthrograms, diagnostic and therapeutic joint injections',
-                nodeId: "20PPFloor1Room110"
+                nodeId:"PPFloor1Room110"
             },
             {
                 deptId: 22,
@@ -195,7 +201,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: '1-866-378-9164',
                 deptServices: 'Transthoracic echocardiography, Holter monitoring, Electrocardiogram (ECG), Exercise tolerance testing, Exercise stress echocardiography, Vascular and arterial studies',
-                nodeId: "20PPFloor1Room150"
+                nodeId:"PPFloor1Room150"
             },
             {
                 deptId: 23,
@@ -203,7 +209,6 @@ async function main() {
                 buildingId: 2,
                 deptPhone: '1-866-378-9164',
                 deptServices: 'diagnostic cystoscopy (cysto), retrograde pyelogram, transurethral resection of bladder tumor, cold knife urethrotomy, bladder stone removal, fulguration, bladder biopsy, ureteroscopy, chemotherapy and formalin instillation, laser lithotripsy, electrohydraulic lithotripsy (EHL), urethral or bladder neck contracture dilation, circumcision, suprapubic tube (catheter) change, ureteral stent placement and removal, prostate needle biopsy, varicocelectomy, hydrocelectomy, vasectomy, testicular biopsy, orchiectomy, SPARC™ procedures',
-                nodeId: "20PPFloor1Room110"
             },
             {
                 deptId: 24,
@@ -211,7 +216,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: '508-718-4400',
                 deptServices: 'Urgent Care',
-                nodeId: "20PPFloor1Room120",
+                nodeId: "PPFloor1Room120"
             },
             {
                 deptId: 25,
@@ -219,7 +224,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: '1-866-378-9164',
                 deptServices: 'Hand and Upper Extremity, Arthroplasty, Pediatric Trauma, Physiatry, Podiatry',
-                nodeId: "20PPFloor2Room8"
+                nodeId: "PPFloor2Room"
             },
             {
                 deptId: 26,
@@ -227,7 +232,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: ' 1-866-378-9164',
                 deptServices: 'Cardiac Rehab, Occupational Therapy(Hand Therapy, Upper Extremity), Physical Therapy, Speech - Language, Clinical Lab, Surgi-Care',
-                nodeId: "20PPFloor2Room8"
+                nodeId: "PPFloor2Room"
             },
             {
                 deptId: 27,
@@ -235,7 +240,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'Audiology, ENT, General and Gastrointestinal Surgery, Plastic Surgery, Thoracic Surgery, Vascular Surgery, Weight Management and Wellness',
-                nodeId: "20PPFloor3Room9"
+                nodeId: "PPFloor3Room_1"
             },
             {
                 deptId: 28,
@@ -243,7 +248,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: '1-866-378-9164',
                 deptServices: 'arm, elbow and hand disorders, athletic injuries, spine disorders, foot and ankle problems, hip and knee disorders, shoulder issues, joint replacement, musculoskeletal oncology',
-                nodeId: "20PPFloor3Room14"
+                nodeId: "PPFloor3Room"
             },
             {
                 deptId: 29,
@@ -251,7 +256,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'X-Ray',
-                nodeId: "20PPFloor3Room14"
+                nodeId: "PPFloor3Room"
             },
             {
                 deptId: 30,
@@ -259,7 +264,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'Electromyography (EMG)',
-                nodeId: "20PPFloor4Room5"
+                nodeId: "PPFloor4Room1_1"
             },
             {
                 deptId: 31,
@@ -267,8 +272,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'Nutrition',
-                nodeId: "20PPFloor4Room5"
-
+                nodeId: "PPFloor4Room1_1"
             },
             {
                 deptId: 32,
@@ -276,7 +280,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: '1-866-378-9164',
                 deptServices: 'diagnosis and treatment of spine-related low-back and neck pain, complex regional pain syndrome, post-herpetic neuralgia (shingles), other neuropathic syndromes, chronic pelvic pain, chronic pain in young adults, comprehensive evaluation for patients with cancer-related pain, headaches, arthritis',
-                nodeId: "20PPFloor4Room5"
+                nodeId: "PPFloor4Room1_1"
             },
             {
                 deptId: 33,
@@ -284,7 +288,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'interventional spine procedures, electrodiagnostic medicine consultations and alternative therapies such as medical acupuncture',
-                nodeId: "20PPFloor4Room5"
+                nodeId: "PPFloor4Room1_1"
             },
             {
                 deptId: 34,
@@ -292,8 +296,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'Plumonary Function Testing',
-                nodeId: "20PPFloor4Room5"
-
+                nodeId: "PPFloor4Room1_1"
             },
             {
                 deptId: 35,
@@ -301,8 +304,7 @@ async function main() {
                 buildingId: 2,
                 deptPhone: 'N/A',
                 deptServices: 'Day Surgery Center',
-                nodeId: "20PPFloor4Room5"
-
+                nodeId: "PPFloor4Room1_1"
             },
             {
                 deptId: 36,
@@ -324,7 +326,7 @@ async function main() {
                 buildingId: 3,
                 deptPhone: '1-866-378-9164',
                 deptServices: "Allergy, Cardiac Arrhythmia, Dermatology, Endocrinology, Gastroenterology, Kidney (Renal) Medicine, Neurology, Neurosurgery, Ophthalmology, Optometry, Pulmonology, Rheumatology, Vein Care Services, Women's Health",
-                nodeId: "22PPFloor3Room3"
+                nodeId: "PPFloor3Room_2"
             },
             {
                 deptId: 39,
@@ -332,7 +334,6 @@ async function main() {
                 buildingId: 3,
                 deptPhone: 'N/A',
                 deptServices: 'Patient Financial Services',
-                nodeId: "22PPFloor3Room3"
             },
             {
                 deptId: 40,
@@ -340,7 +341,7 @@ async function main() {
                 buildingId: 3,
                 deptPhone: 'N/A',
                 deptServices: 'Blood Draw / Phlebotomy',
-                nodeId: "22PPFloor4Room10"
+                nodeId: "PPFloor4Room3_1"
             },
             {
                 deptId: 41,
@@ -348,8 +349,7 @@ async function main() {
                 buildingId: 3,
                 deptPhone: 'N/A',
                 deptServices: 'Community Room',
-                nodeId: "22PPFloor4Room9"
-
+                nodeId: "PPFloor4Room2"
             },
             {
                 deptId: 42,
@@ -357,284 +357,365 @@ async function main() {
                 buildingId: 3,
                 deptPhone: '(508) 718-4050',
                 deptServices: 'Primary Care',
-                nodeId: "22PPFloor4Room9"
+                nodeId: "PPFloor4Room2"
+            },
 
-            },
-        ],
-        skipDuplicates: true,
-    });
-    const createManyLocations = await client.location.createMany({
-        data: [
             {
-                locType: 'hallway',
-                floor: 0,
-                departmentId: 1,
+                deptId: 43,
+                deptName: "Admitting/Registration",
+                buildingId: 4
             },
             {
-                locType: 'suite',
-                roomNum: 301,
-                floor: 3,
-                departmentId: 1,
+                deptId: 44,
+                deptName: "Atrium Cafe",
+                buildingId: 4
             },
             {
-                locType: 'suite',
-                roomNum: 540,
-                floor: 5,
-                departmentId: 1,
+                deptId: 45,
+                deptName: "Audiology",
+                buildingId: 4,
+                nodeId: "FKFloor1Room"
             },
             {
-                locType: 'suite',
-                roomNum: 210,
-                floor: 2,
-                departmentId: 2,
+                deptId: 46,
+                deptName: "Blood Drawing Lab",
+                buildingId: 4,
+                nodeId: "FKFloor1Room"
             },
             {
-                locType: 'suite',
-                roomNum: 317,
-                floor: 3,
-                departmentId: 3,
+                deptId: 47,
+                deptName: "Cardiac Rehab",
+                buildingId: 4,
+                nodeId: "FKFloor1Room"
             },
             {
-                locType: 'suite',
-                roomNum: 575,
-                floor: 5,
-                departmentId: 4,
+                deptId: 48,
+                deptName: "Emergency Department",
+                buildingId: 4
             },
             {
-                locType: 'suite',
-                roomNum: 428,
-                floor: 4,
-                departmentId: 5,
+                deptId: 49,
+                deptName: "Emergency Entrance",
+                buildingId: 4
             },
             {
-                locType: 'suite',
-                roomNum: 530,
-                floor: 5,
-                departmentId: 5,
+                deptId: 50,
+                deptName: "GI Endoscopy",
+                buildingId: 4
             },
             {
-                locType: 'suite',
-                roomNum: 303,
-                floor: 3,
-                departmentId: 6,
+                deptId: 51,
+                deptName: "Information",
+                buildingId: 4
             },
             {
-                locType: 'suite',
-                roomNum: 320,
-                floor: 3,
-                departmentId: 7,
+                deptId: 52,
+                deptName: "MRI/CT",
+                buildingId: 4,
+                nodeId: "FKFloor1Room"
             },
             {
-                locType: 'suite',
-                roomNum: 201,
-                floor: 2,
-                departmentId: 8,
+                deptId: 53,
+                deptName: "Patient Finances",
+                buildingId: 4
             },
             {
-                locType: 'suite',
-                roomNum: 202,
-                floor: 2,
-                departmentId: 9,
+                deptId: 54,
+                deptName: "Pre-Admittance Screening",
+                buildingId: 4
             },
             {
-                locType: 'suite',
-                roomNum: 402,
-                floor: 4,
-                departmentId: 10,
+                deptId: 55,
+                deptName: "Pulmonary Lab",
+                buildingId: 4
             },
             {
-                locType: 'suite',
-                roomNum: 100,
-                floor: 1,
-                departmentId: 11,
+                deptId: 56,
+                deptName: "Radiology",
+                buildingId: 4
             },
             {
-                locType: 'suite',
-                roomNum: 130,
-                floor: 1,
-                departmentId: 12,
+                deptId: 57,
+                deptName: "Special Testing",
+                buildingId: 4
             },
             {
-                locType: 'suite',
-                roomNum: 422,
-                floor: 4,
-                departmentId: 13,
+                deptId: 58,
+                deptName: "Starbucks",
+                buildingId: 4
             },
             {
-                locType: 'suite',
-                roomNum: 204,//204B
-                floor: 2,
-                departmentId: 14,
+                deptId: 59,
+                deptName: "Taiclet Family Center",
+                buildingId: 4
             },
             {
-                locType: 'suite',
-                roomNum: 317,
-                floor: 3,
-                departmentId: 15,
+                deptId: 60,
+                deptName: "Valet Parking",
+                buildingId: 4
             },
             {
-                locType: 'suite',
-                roomNum: 560,
-                floor: 5,
-                departmentId: 16,
+                deptId: 61,
+                deptName: "Vascular Lab",
+                buildingId: 4,
+                nodeId: "FKFloor1Room"
             },
             {
-                locType: 'suite',
-                roomNum: 102,//102B
-                floor: 1,
-                departmentId: 17,
+                deptId: 62,
+                deptName: "Biomedical Engineering",
+                buildingId: 4
             },
             {
-                locType: 'suite',
-                roomNum: 200,
-                floor: 2,
-                departmentId: 18,
+                deptId: 63,
+                deptName: "Food Services",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 1,
-                departmentId: 19,
+                deptId: 64,
+                deptName: "Morgue",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 1,
-                departmentId: 20,
-                // nodeId:  :D
+                deptId: 65,
+                deptName: "Occupational Therapy",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 1,
-                departmentId: 21,
+                deptId: 66,
+                deptName: "Otolaryngology",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 1,
-                departmentId: 22,
+                deptId: 67,
+                deptName: "Pharmacy",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 1,
-                departmentId: 23,
+                deptId: 68,
+                deptName: "Physical Therapy",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 1,
-                departmentId: 24,
+                deptId: 69,
+                deptName: "Plastic Surgery",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 2,
-                departmentId: 25,
+                deptId: 70,
+                deptName: "Psychiatric Inpatient Care",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 2,
-                departmentId: 26,
+                deptId: 71,
+                deptName: "Psychiatric/Addiction Recovery",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 3,
-                departmentId: 27,
+                deptId: 72,
+                deptName: "Rehabilitation Services",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 3,
-                departmentId: 28,
+                deptId: 73,
+                deptName: "Cafeteria",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 3,
-                departmentId: 29,
+                deptId: 74,
+                deptName: "Chapel",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 4,
-                departmentId: 30,
+                deptId: 75,
+                deptName: "Family/Patient Resources",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 4,
-                departmentId: 31,
+                deptId: 76,
+                deptName: "Gift Shop",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 4,
-                departmentId: 32,
+                deptId: 77,
+                deptName: "Gynocology & Oncology",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 4,
-                departmentId: 33,
+                deptId: 78,
+                deptName: "Huvos Auditorium",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 4,
-                departmentId: 34,
+                deptId: 79,
+                deptName: "Information",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 4,
-                departmentId: 35,
+                deptId: 80,
+                deptName: "Obstetrics and Gynecology Associates",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 1,
-                departmentId: 36,
+                deptId: 81,
+                deptName: "Outdoor Dining Terrace",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 1,
-                departmentId: 37,
+                deptId: 82,
+                deptName: "Roslindale Pediatric Associates",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 3,
-                departmentId: 38,
+                deptId: 83,
+                deptName: "Shuttle Pickup",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 3,
-                departmentId: 39,
+                deptId: 84,
+                deptName: "Volunteer Services",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 4,
-                departmentId: 40,
+                deptId: 85,
+                deptName: "Cardiology",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 4,
-                departmentId: 41,
+                deptId: 86,
+                deptName: "Foot and Ankle Center",
+                buildingId: 4
             },
             {
-                locType: 'department',
-                roomNum: null,
-                floor: 4,
-                departmentId: 42,
+                deptId: 87,
+                deptName: "Gastroenterology Associates",
+                buildingId: 4
             },
+            {
+                deptId: 88,
+                deptName: "HVMA Internal Medicine",
+                buildingId: 4
+            },
+            {
+                deptId: 89,
+                deptName: "HVMA Neurology",
+                buildingId: 4
+            },
+            {
+                deptId: 90,
+                deptName: "Medical Library",
+                buildingId: 4
+            },
+            {
+                deptId: 91,
+                deptName: "Medical Records",
+                buildingId: 4
+            },
+            {
+                deptId: 92,
+                deptName: "MOHS Clinic",
+                buildingId: 4
+            },
+            {
+                deptId: 93,
+                deptName: "Neurology",
+                buildingId: 4
+            },
+            {
+                deptId: 94,
+                deptName: "Primary Care Physicians",
+                buildingId: 4
+            },
+            {
+                deptId: 95,
+                deptName: "Pulmonary Services",
+                buildingId: 4
+            },
+            {
+                deptId: 96,
+                deptName: "Rheumatology Center",
+                buildingId: 4
+            },
+            {
+                deptId: 97,
+                deptName: "Sadowsky Conference Room",
+                buildingId: 4
+            },
+            {
+                deptId: 98,
+                deptName: "Social Work",
+                buildingId: 4
+            },
+            {
+                deptId: 99,
+                deptName: "Tynan Conference Room",
+                buildingId: 4
+            },
+            {
+                deptId: 100,
+                deptName: "Urology",
+                buildingId: 4
+            },
+            {
+                deptId: 101,
+                deptName: "Boston ENT Associates",
+                buildingId: 4
+            },
+            {
+                deptId: 102,
+                deptName: "Endocrinology/Diabetes/Hemotology",
+                buildingId: 4
+            },
+            {
+                deptId: 103,
+                deptName: "Headache",
+                buildingId: 4
+            },
+            {
+                deptId: 104,
+                deptName: "ICU",
+                buildingId: 4
+            },
+            {
+                deptId: 105,
+                deptName: "Internal Medicine",
+                buildingId: 4
+            },
+            {
+                deptId: 106,
+                deptName: "Oncology Clinic",
+                buildingId: 4
+            },
+            {
+                deptId: 107,
+                deptName: "Orthopaedics Associates",
+                buildingId: 4
+            },
+            {
+                deptId: 108,
+                deptName: "Outpatient Infusion Center",
+                buildingId: 4
+            },
+            {
+                deptId: 109,
+                deptName: "Primary Care Physicians",
+                buildingId: 4
+            },
+            {
+                deptId: 110,
+                deptName: "Surgical Specialties",
+                buildingId: 4
+            },
+            {
+                deptId: 111,
+                deptName: "X-Ray",
+                buildingId: 4
+            },
+            {
+                deptId: 112,
+                deptName: "X-Ray Waiting Room",
+                buildingId: 4
+            }
+
         ],
         skipDuplicates: true,
     });
@@ -711,46 +792,13 @@ async function main() {
 
     const createManyServiceReqs = await client.serviceRequest.createMany({
         data: [
-            /*
-                                                 yyyy:mm:dd  hh:mm:ss */
 
-            {
-                status: 'Completed',
-                priority: 'urgent',
-                serviceType: 'Patient Transportation',
-
-            },
-
-            {
-                status: 'In Progress',
-                priority: 'urgent',
-                serviceType: 'Equipment Request',
-
-            },
-            {
-                status: 'Queued',
-                priority: 'urgent',
-                serviceType: 'X-Ray',
-
-            },
-            {
-                status: 'Queued',
-                priority: 'urgent',
-                serviceType: 'equipment request',
-
-            },
-            {
-                status: 'Queued',
-                priority: 'urgent',
-                serviceType: 'Blood Work',
-
-            },
         ],
         skipDuplicates: true,
     });
 
 
-    console.log({ createManyDepartments, createManyBuildings , createManyLocations, createManyEmployees , createManyServiceReqs});
+    console.log({ createManyDepartments, createManyBuildings , createManyEmployees , createManyServiceReqs});
 }
 
 

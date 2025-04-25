@@ -2,7 +2,6 @@ import express, { Router, Request, Response } from 'express';
 import PrismaClient from '../bin/prisma-client';
 import { CSVtoData, dataToCSV, readCSV } from '../CSVImportExport.ts';
 import * as path from 'node:path';
-import fs from 'node:fs';
 
 const router: Router = express.Router();
 
@@ -24,6 +23,7 @@ DIRECTORY_FILTER_OPTIONS.push({
         { building: { buildingName: '22 Patriot Place' } },
     ],
 });
+DIRECTORY_FILTER_OPTIONS.push({ building: { buildingName: 'Faulkner Hospital' } });
 
 // GET Send Data
 router.get('/', async function (req: Request, res: Response) {
@@ -47,7 +47,7 @@ router.get('/', async function (req: Request, res: Response) {
         const args = {
             include: {
                 building: { select: { buildingName: true } },
-                node: { select: { floor: true } },
+                departmentNodes: { select: { floor: true } },
             },
             where: Object.assign({}, ...filters),
             orderBy: sorts,
@@ -111,6 +111,7 @@ router.get('/node', async function (req: Request, res: Response) {
                 nodeId: nodeId,
             },
         });
+        console.log(NODE_DATA);
         res.send(NODE_DATA);
     } catch (error) {
         console.error(`NO NODES FOR THIS LOCATION: ${error}`);
@@ -126,24 +127,28 @@ router.get('/csv', async function (req: Request, res: Response) {
         //Attempt to pull from directory
         const DIRECTORY = await PrismaClient.department.findMany({
             include: {
-                locations: true,
+                departmentNodes: true,
             },
             orderBy: {
                 deptId: 'desc',
             },
         });
-        // Take the joined Location fields and flatten them for CSV parsing {xx:xx, yy:yy, zz:{aa:aa, bb:bb}} => {xx:xx, yy:yy, aa:aa, bb:bb}
-        const flattenedDirectories = DIRECTORY.flatMap((directory) =>
-            directory.locations.map((location) => ({
-                ...directory,
-                floor: location.floor,
-                roomNum: location.roomNum,
-                locId: location.locId,
-                locType: location.locType,
-                nodeId: location.nodeId,
-            }))
-        );
-        await dataToCSV(flattenedDirectories);
+        // Take the joined Node fields and flatten them for CSV parsing {xx:xx, yy:yy, zz:{aa:aa, bb:bb}} => {xx:xx, yy:yy, aa:aa, bb:bb}
+        // const flattenedDirectories = DIRECTORY.flatMap(() => {} );
+        // directory.departmentNodes.map((node) => ({
+        //     ...directory,
+        //     nodeId: node.nodeId,
+        //     x: node.x,
+        //     y: node.y,
+        //     floor: node.floor,
+        //     buildingId: node.buildingId,
+        //     nodeType: node.nodeType,
+        //     name: node.name,
+        //     roomNumber: node.roomNumber,
+        //     departmentId: node.departmentId,
+        // }))
+
+        await dataToCSV(DIRECTORY); //the big boy
         // Uses the first key as the name of the file EX: dep_id.csv
         const fileName = Object.keys(DIRECTORY[0])[0].toString();
         res.sendFile('data.csv', {
@@ -165,23 +170,27 @@ router.post('/csv', async function (req: Request, res: Response) {
     try {
         if (overwrite === 'Overwrite') {
             await PrismaClient.department.deleteMany();
-            await PrismaClient.location.deleteMany();
         }
         for (let data of csvData) {
             const dataToUpsertDirectory = {
                 deptId: data.deptId,
-                deptServices: data.deptServices,
+                deptServices: data.deptServices || null,
                 deptName: data.deptName,
                 buildingId: data.buildingId,
-                deptPhone: data.deptPhone,
+                deptPhone: data.deptPhone || null,
                 nodeId: data.nodeId,
             };
-            const dataToUpsertLocation = {
-                locId: data.locId,
-                departmentId: data.deptId,
-                locType: data.locType,
-                roomNum: data.roomNum,
+
+            const dataToUpsertNode = {
+                nodeId: data.nodeId,
+                x: data.x,
+                y: data.y,
                 floor: data.floor,
+                buildingId: data.buildingId,
+                nodeType: data.nodeType,
+                name: data.name,
+                roomNumber: data.roomNumber,
+                departments: data.deptId ?? null,
             };
             if (overwrite === 'Overwrite') {
                 console.log('Overwriting');
@@ -189,9 +198,10 @@ router.post('/csv', async function (req: Request, res: Response) {
                     data: dataToUpsertDirectory,
                     skipDuplicates: true, // Will occur when a department is in two locations
                 });
-                await PrismaClient.location.createMany({
-                    data: dataToUpsertLocation,
-                    skipDuplicates: true, // This shouldn't happen but just in case
+
+                await PrismaClient.node.createMany({
+                    data: dataToUpsertNode,
+                    skipDuplicates: true,
                 });
             } else {
                 console.log('updating');
@@ -200,10 +210,10 @@ router.post('/csv', async function (req: Request, res: Response) {
                     update: dataToUpsertDirectory,
                     create: dataToUpsertDirectory,
                 });
-                await PrismaClient.location.upsert({
-                    where: { locId: data.locId },
-                    update: dataToUpsertLocation,
-                    create: dataToUpsertLocation,
+                await PrismaClient.node.upsert({
+                    where: { nodeId: data.nodeId },
+                    update: dataToUpsertNode,
+                    create: dataToUpsertNode,
                 });
             }
         }

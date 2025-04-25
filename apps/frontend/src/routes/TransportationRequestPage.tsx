@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import MGBButton from '../elements/MGBButton.tsx';
 import InputElement from '../elements/InputElement.tsx';
 import ConfirmMessageComponent from '../components/ConfirmMessageComponent.tsx'; // Import the new component
@@ -93,6 +93,13 @@ const TransportRequestPage = () => {
     //     await axios.post(ROUTES.PATIENTTRANSPORT, request);
     // }
 
+    useEffect(() => {
+        if (showConfirmation) {
+            alert("Request Submitted");
+            handleConfirmationClose(); // close the state after the alert
+        }
+    }, [showConfirmation]);
+
     const handleConfirmationClose = () => {
         setShowConfirmation(false);
     };
@@ -103,7 +110,7 @@ const TransportRequestPage = () => {
         // flex row container
         <div className="flex flex-col justify-center items-center min-h-screen">
             {/* make the form left side */}
-            <div className="flex flex-col items-center border border-[#d3d5d7] bg-white rounded-2xl shadow-xl p-8 w-full max-w-[700px] mt-10 mb-10">
+            <div className="flex flex-col items-center bg-white rounded-2xl p-8 w-full max-w-[700px] mt-10 mb-10">
                 <h1 className="text-[30px] font-bold mb-6">Patient Transportation Request</h1>
                 <div>
                     <form onSubmit={handleSubmit} className="space-y-6">
@@ -328,14 +335,6 @@ const TransportRequestPage = () => {
                             >
                                 Submit Request
                             </MGBButton>
-
-                            {showConfirmation && submittedRequest && (
-                                <div className="inline-block">
-                                    <ConfirmMessageComponent
-                                        onClose={handleConfirmationClose}
-                                    />
-                                </div>
-                            )}
                             <MGBButton
                                 onClick={() => handleReset()}
                                 variant={'secondary'}

@@ -1,0 +1,341 @@
+{
+    "nodes": [
+        {
+            "nodeId": "PPFloor3Elevator",
+            "x": 42.09257499425689,
+            "y": -71.26616163279201,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Elevator",
+            "name": "Main Elevator",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "PPFloor3Stairs",
+            "x": 42.09259738588514,
+            "y": -71.26610597695495,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Stairs",
+            "name": "Main Stairs",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "PPFloor3Hallway",
+            "x": 42.09255907131646,
+            "y": -71.26608183707381,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Hallway",
+            "name": "Hallway",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "PPFloor3Hallway2",
+            "x": 42.09254414355615,
+            "y": -71.26615090395595,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Hallway",
+            "name": "Hallway",
+            "roomNumber": "2"
+        },
+        {
+            "nodeId": "PPFloor3Hallway Intersection1",
+            "x": 42.09253468930614,
+            "y": -71.26621460642005,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Hallway Intersection",
+            "name": "Hallway Intersection",
+            "roomNumber": "1"
+        },
+        {
+            "nodeId": "PPFloor3Hallway1",
+            "x": 42.09258594127614,
+            "y": -71.26625349845077,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Hallway",
+            "name": "Hallway",
+            "roomNumber": "1"
+        },
+        {
+            "nodeId": "PPFloor3Room",
+            "x": 42.09266057999331,
+            "y": -71.26635810460235,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Room",
+            "name": "Sports Medicine Center Reception ",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "PPFloor3Door",
+            "x": 42.09258889264044,
+            "y": -71.26606886538541,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Door",
+            "name": "Surgical Specialties Door",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "PPFloor3Room_1",
+            "x": 42.09262422164255,
+            "y": -71.26605210157906,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Room",
+            "name": "Surgical Specialties Reception",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "PPFloor3Hallway_1",
+            "x": 42.09259180958678,
+            "y": -71.2659689530996,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Hallway",
+            "name": "Hallway",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "PPFloor3Hallway_2",
+            "x": 42.09263460245808,
+            "y": -71.26580600890195,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Hallway",
+            "name": "Hallway",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "PPFloor3Hallway_3",
+            "x": 42.09266794107037,
+            "y": -71.26567726286923,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Hallway",
+            "name": "Hallway",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "PPFloor3Hallway Intersection",
+            "x": 42.09268635193828,
+            "y": -71.26563434752499,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Hallway Intersection",
+            "name": "Hallway Intersection",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "PPFloor3Elevator_1",
+            "x": 42.09271123148106,
+            "y": -71.26565245243584,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Elevator",
+            "name": "Side Elevator",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "PPFloor3Stairs_1",
+            "x": 42.09269331821123,
+            "y": -71.2655994788078,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Stairs",
+            "name": "Side Stairs",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "PPFloor3Door_1",
+            "x": 42.09262954670596,
+            "y": -71.26627246900793,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Door",
+            "name": "Sports Medicine Center Door",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "PPFloor3Hallway_4",
+            "x": 42.09262208283453,
+            "y": -71.26633214815851,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Hallway",
+            "name": "Sports Medicine Center Hallway",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "PPFloor3Elevator_2",
+            "x": 42.09263032565085,
+            "y": -71.26676534502703,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Elevator",
+            "name": "Main Elevator",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "PPFloor3Hallway1_1",
+            "x": 42.09261738827336,
+            "y": -71.26673718183237,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Hallway",
+            "name": "Hallway",
+            "roomNumber": "1"
+        },
+        {
+            "nodeId": "PPFloor3Hallway2_1",
+            "x": 42.09256315077731,
+            "y": -71.26679954319196,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Hallway",
+            "name": "Hallway ",
+            "roomNumber": "2"
+        },
+        {
+            "nodeId": "PPFloor3Stairs1",
+            "x": 42.09258006890033,
+            "y": -71.26682904749113,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Stairs",
+            "name": "Main Stairs",
+            "roomNumber": "1"
+        },
+        {
+            "nodeId": "PPFloor3Hallway_5",
+            "x": 42.09254473987362,
+            "y": -71.2668324002524,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Hallway",
+            "name": "Reception Hallway",
+            "roomNumber": null
+        },
+        {
+            "nodeId": "PPFloor3Room_2",
+            "x": 42.09252682655679,
+            "y": -71.2668324002524,
+            "floor": "3",
+            "buildingId": "2",
+            "nodeType": "Room",
+            "name": "Reception",
+            "roomNumber": null
+        }
+    ],
+    "edges": [
+        {
+            "edgeId": 92,
+            "from": "PPFloor3Elevator_1",
+            "to": "PPFloor3Hallway Intersection"
+        },
+        {
+            "edgeId": 93,
+            "from": "PPFloor3Stairs_1",
+            "to": "PPFloor3Hallway Intersection"
+        },
+        {
+            "edgeId": 94,
+            "from": "PPFloor3Hallway Intersection",
+            "to": "PPFloor3Hallway_3"
+        },
+        {
+            "edgeId": 95,
+            "from": "PPFloor3Hallway_3",
+            "to": "PPFloor3Hallway_2"
+        },
+        {
+            "edgeId": 96,
+            "from": "PPFloor3Hallway_2",
+            "to": "PPFloor3Hallway_1"
+        },
+        {
+            "edgeId": 97,
+            "from": "PPFloor3Hallway_1",
+            "to": "PPFloor3Hallway"
+        },
+        {
+            "edgeId": 98,
+            "from": "PPFloor3Hallway",
+            "to": "PPFloor3Door"
+        },
+        {
+            "edgeId": 99,
+            "from": "PPFloor3Door",
+            "to": "PPFloor3Room_1"
+        },
+        {
+            "edgeId": 100,
+            "from": "PPFloor3Hallway",
+            "to": "PPFloor3Stairs"
+        },
+        {
+            "edgeId": 101,
+            "from": "PPFloor3Hallway",
+            "to": "PPFloor3Hallway2"
+        },
+        {
+            "edgeId": 102,
+            "from": "PPFloor3Hallway2",
+            "to": "PPFloor3Elevator"
+        },
+        {
+            "edgeId": 103,
+            "from": "PPFloor3Hallway2",
+            "to": "PPFloor3Hallway Intersection1"
+        },
+        {
+            "edgeId": 104,
+            "from": "PPFloor3Hallway Intersection1",
+            "to": "PPFloor3Hallway1"
+        },
+        {
+            "edgeId": 105,
+            "from": "PPFloor3Hallway1",
+            "to": "PPFloor3Door_1"
+        },
+        {
+            "edgeId": 106,
+            "from": "PPFloor3Door_1",
+            "to": "PPFloor3Hallway_4"
+        },
+        {
+            "edgeId": 107,
+            "from": "PPFloor3Hallway_4",
+            "to": "PPFloor3Room"
+        },
+        {
+            "edgeId": 108,
+            "from": "PPFloor3Elevator_2",
+            "to": "PPFloor3Hallway1_1"
+        },
+        {
+            "edgeId": 109,
+            "from": "PPFloor3Stairs1",
+            "to": "PPFloor3Hallway2_1"
+        },
+        {
+            "edgeId": 110,
+            "from": "PPFloor3Hallway1_1",
+            "to": "PPFloor3Hallway2_1"
+        },
+        {
+            "edgeId": 111,
+            "from": "PPFloor3Hallway2_1",
+            "to": "PPFloor3Hallway_5"
+        },
+        {
+            "edgeId": 112,
+            "from": "PPFloor3Hallway_5",
+            "to": "PPFloor3Room_2"
+        }
+    ]
+}

@@ -56,6 +56,10 @@ export async function GetDirectory(
             break;
         case 'Patriot Place':
             buildingOption = 3;
+            break;
+        case 'Faulkner Hospital':
+            buildingOption = 4;
+            break;
     }
     const response = await axios.get<DepartmentRequest[]>(ROUTES.DIRECTORY, {
         params: {
