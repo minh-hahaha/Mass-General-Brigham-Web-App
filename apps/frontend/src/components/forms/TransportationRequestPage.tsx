@@ -17,13 +17,8 @@ const TransportRequestPage = () => {
     const [dropOffLocation, setDropOffLocation] = useState('');
     const [pickupDate, setPickupDate] = useState(new Date().toISOString().split('T')[0]);
     const [pickupTime, setPickupTime] = useState('');
-    // const [status, setStatus] = useState<transportRequest['status']>('Pending');
     const [notes, setNotes] = useState('');
-    const [requesterId, setRequesterId] = useState(0);
-    const [requesterName, setRequesterName] = useState('');
-    const [requestDate, setRequestDate] = useState(new Date().toISOString().split('T')[0]);
     const [assignedToId, setAssignedToId] = useState(0);
-
     const [submittedRequest, setSubmittedRequest] = useState<transportRequest | null>(null);
     const [showConfirmation, setShowConfirmation] = useState(false);
 
@@ -213,25 +208,8 @@ const TransportRequestPage = () => {
                                                   required={true}
                                     />
                                 </div>
-                            </div><div className="flex flex-col pt-2">
-                            {/*<div className="flex items-center gap-2">*/}
-                            {/*    <label className="w-1/4"> Status</label>*/}
-                            {/*    <select*/}
-                            {/*        id="status"*/}
-                            {/*        value={status}*/}
-                            {/*        onChange={(e) =>*/}
-                            {/*            setStatus(e.target.value as transportRequest['status'])*/}
-                            {/*        }*/}
-                            {/*        required*/}
-                            {/*        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"*/}
-                            {/*    >*/}
-                            {/*        <option value="Pending">Pending</option>*/}
-                            {/*        <option value="In Progress">In Progress</option>*/}
-                            {/*        <option value="Completed">Completed</option>*/}
-                            {/*        <option value="Cancelled">Cancelled</option>*/}
-                            {/*    </select>*/}
-                            {/*</div>*/}
-                        </div>
+                            </div>
+
                         </div>
 
                         <div>

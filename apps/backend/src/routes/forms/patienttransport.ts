@@ -51,7 +51,7 @@ router.post('/', async (req: Request, res: Response) => {
                     patientName: req.body.patientName,
                     pickupLocation: req.body.pickupLocation,
                     transportType: req.body.transportType,
-                    dropoffLocation: 'nowhere',
+                    dropoffLocation: req.body.dropoffLocation,
                 },
                 select: {
                     servReqId: true,
