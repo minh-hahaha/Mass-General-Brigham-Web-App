@@ -183,7 +183,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 clickable: true,
                 draggable: true,
                 icon: {
-                    url: './adminh.png',
+                    url: './minh ha icon.png',
                     scaledSize: new google.maps.Size(40, 40), // width, height in pixels
                 }
             },
