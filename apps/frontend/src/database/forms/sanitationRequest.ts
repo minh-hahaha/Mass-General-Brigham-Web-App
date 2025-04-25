@@ -5,11 +5,9 @@ import axios from 'axios';
 export interface sanitationRequest {
     //Service Request fields
     employeeName:              string;
-    status:                     'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
     priority:                   'Low' | 'Medium' | 'High';
     requestTime:                string;
     locationId:                 string;
-
 
     //Optional fields
     comments:                   string;
@@ -18,15 +16,12 @@ export interface sanitationRequest {
     requesterDepartmentId:         string;
     requesterRoomNumber: string;
 
-
     //Sanitation fields
     sanitationLocationId:     string;
     sanitationDepartmentId:   string;
     sanitationRoomNumber:      number;
     sanitationType:             string;
-    recurring:                  boolean;
-    hazardLevel:                'None' | 'Sharp' | 'Biohazard';
-    disposalRequired:           boolean;
+    hazardLevel:                'Low' | 'Moderate' | 'High' | 'Extreme';
     completeBy:                 string;
 }
 
