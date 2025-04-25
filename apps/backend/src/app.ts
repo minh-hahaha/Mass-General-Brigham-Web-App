@@ -18,6 +18,7 @@ import nodeRouter from './routes/node.ts';
 import edgeRouter from './routes/edge.ts';
 import originRouter from './routes/recentorigins.ts';
 import textToSpeechRouter from './routes/textToSpeech.ts';
+import buildingRouter from './routes/building.ts';
 
 import { ROUTES } from 'common/src/constants';
 
@@ -45,6 +46,7 @@ app.use(ROUTES.EMPLOYEE, employeeRouter);
 
 app.use(ROUTES.VALIDATE, validateRouter);
 app.use(ROUTES.SANITATION, sanitationRouter);
+app.use(ROUTES.BUILDING, buildingRouter);
 
 //Directory
 app.use(ROUTES.DIRECTORY, directoryRouter);

@@ -4,6 +4,7 @@ export const ROUTES = {
     EMPLOYEE: '/api/employee',
     SERVICEREQUESTS: '/api/servicereqs',
     VALIDATE: '/api/validate',
+    BUILDING: '/api/building',
 
     ///Requests
     PATIENTTRANSPORT: '/api/patienttransport',
@@ -21,7 +22,6 @@ export const ROUTES = {
 
     //Algorithms
     FINDPATH: '/api/graph/traverse',
-
     NODE: '/api/node',
     EDGE: '/api/edge',
 
