@@ -1,7 +1,10 @@
 import MGBButton from '@/elements/MGBButton.tsx';
 import { motion } from 'framer-motion';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const HomePage = () => {
+    const { loginWithRedirect, isAuthenticated, logout, isLoading } = useAuth0();
+
     return (
         <>
             <section className="h-screen relative bg-[url('/mgbhero.jpeg')] bg-cover bg-center flex flex-col justify-center">
@@ -20,8 +23,10 @@ const HomePage = () => {
                             Use the kiosk to quickly locate departments, clinics, and services
                             throughout the hospital.
                         </h2>
-                        <h4 className='text-white font-serif text-center drop-shadow-lg'>* Disclaimer: This web application
-                            is strictly a CS3733-D25 Software Engineering class project for Prof. Wilson Wong at WPI *</h4>
+                        <h4 className="text-white font-serif text-center drop-shadow-lg">
+                            * Disclaimer: This web application is strictly a CS3733-D25 Software
+                            Engineering class project for Prof. Wilson Wong at WPI *
+                        </h4>
                     </div>
                 </motion.div>
                 <motion.div
@@ -32,22 +37,34 @@ const HomePage = () => {
                     <div className="relative z-10 flex flex-row justify-center items-center mt-5 gap-3">
                         <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                             <MGBButton
-                                onClick={() => window.location.href = '/MapPage'}
+                                onClick={() => (window.location.href = '/MapPage')}
                                 variant={'primary'}
                                 disabled={false}
                             >
                                 I Need Directions
                             </MGBButton>
                         </motion.button>
-                        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                            <MGBButton
-                                onClick={() => window.location.href = '/Login'}
-                                variant={'secondary'}
-                                disabled={false}
-                            >
-                                Log In
-                            </MGBButton>
-                        </motion.button>
+                        {!isAuthenticated ? (
+                            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                <MGBButton
+                                    onClick={() => loginWithRedirect()}
+                                    variant={'secondary'}
+                                    disabled={false}
+                                >
+                                    Log In
+                                </MGBButton>
+                            </motion.button>
+                        ) : (
+                            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                <MGBButton
+                                    onClick={() => logout()}
+                                    variant={'secondary'}
+                                    disabled={false}
+                                >
+                                    Log Out
+                                </MGBButton>
+                            </motion.button>
+                        )}
                     </div>
                 </motion.div>
             </section>

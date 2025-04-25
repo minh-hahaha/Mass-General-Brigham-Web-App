@@ -28,6 +28,14 @@ const aboutItems = [
     }
 ];
 
+const creditItems = [
+    {
+        title: '',
+        href: '/',
+        description: '',
+    }
+];
+
 const ListItem = React.forwardRef<React.ElementRef<'a'>, React.ComponentPropsWithoutRef<'a'>>(
     ({ className, title, children, ...props }, ref) => {
         return (
@@ -73,6 +81,22 @@ const LogoBar = () => {
                             <NavigationMenuContent>
                                 <ul className="grid w-[200px] gap-3 p-2 md:w-[300px] md:grid-cols-2 lg:w-[400px]">
                                     {aboutItems.map((item) => (
+                                        <ListItem
+                                            key={item.title}
+                                            title={item.title}
+                                            href={item.href}
+                                        >
+                                            {item.description}
+                                        </ListItem>
+                                    ))}
+                                </ul>
+                            </NavigationMenuContent>
+                        </NavigationMenuItem>
+                        <NavigationMenuItem>
+                            <NavigationMenuTrigger className="mt-1">Credits</NavigationMenuTrigger>
+                            <NavigationMenuContent>
+                                <ul className="grid w-[200px] gap-3 p-2 md:w-[300px] md:grid-cols-2 lg:w-[400px]">
+                                    {creditItems.map((item) => (
                                         <ListItem
                                             key={item.title}
                                             title={item.title}
