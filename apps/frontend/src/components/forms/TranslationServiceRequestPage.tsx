@@ -4,23 +4,23 @@ import ConfirmMessageComponent from '@/components/ConfirmMessageComponent.tsx';
 import {useEffect, useState} from 'react';
 import { SubmitTransportRequest } from '@/database/forms/transportRequest.ts';
 import SelectElement from '@/elements/SelectElement.tsx';
-import { SubmitTranslatorRequest } from '@/database/forms/translationRequest.ts';
-
-export interface TranslationRequestData {
-    employeeName: string;
-    employeeId: number;
-    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
-    location: 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place';
-    language: string;
-    patientName: string;
-    duration: number;
-    typeMeeting: 'Remote (Online)' | 'On-site (In-Person)';
-    date: string;
-    meetingLink: string;
-    status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
-    notes: string;
-    department: string;
-}
+import { SubmitTranslatorRequest, outgoingTranslationRequest } from '@/database/forms/translationRequest.ts';
+//
+// export interface TranslationRequestData {
+//     employeeName: string;
+//     employeeId: number;
+//     priority: 'Low' | 'Medium' | 'High' | 'Emergency';
+//     location: 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place';
+//     language: string;
+//     patientName: string;
+//     duration: number;
+//     typeMeeting: 'Remote (Online)' | 'On-site (In-Person)';
+//     date: string;
+//     meetingLink: string;
+//     status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
+//     notes: string;
+//     department: string;
+// }
 
 const TranslationServiceRequestPage = () => {
     const [employeeName, setEmployeeName] = useState('');
@@ -42,20 +42,26 @@ const TranslationServiceRequestPage = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const newRequest: TranslationRequestData = {
+        //TODO: MAKE THIS ALIGN WITH HOW REQUESTS SHOULD WORK
+        const newRequest: outgoingTranslationRequest = {
             employeeName: employeeName,
             employeeId: employeeId,
             priority: priority as 'Low' | 'Medium' | 'High' | 'Emergency',
-            location: location as 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place',
+            location: location as 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital',
             language: patientLanguage,
             patientName: patientName,
             duration: duration,
             typeMeeting: typeMeeting as 'Remote (Online)' | 'On-site (In-Person)',
             date: date,
             meetingLink: meetingLink,
-            status: status as 'Pending' | 'In Progress' | 'Completed' | 'Cancelled',
             notes: notes,
             department: department,
+            comments: comments,
+            locationId: locationId,
+            requestId: requestId,
+            requestDate: requestDate,
+            requestTime: requestTime
+
         };
 
         SubmitTranslatorRequest(newRequest);
