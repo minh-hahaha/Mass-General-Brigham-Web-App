@@ -36,13 +36,17 @@ const TranslationServiceRequestPage = () => {
     const [status, setStatus] = useState('');
     const [notes, setNotes] = useState('');
     const [department, setDepartment] = useState('');
+    const [comment, setComment] = useState('');
 
     const [showConfirmation, setShowConfirmation] = useState(false);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const requestDate = "";
+        const requestTime = "";
 
-        //TODO: MAKE THIS ALIGN WITH HOW REQUESTS SHOULD WORK
+
+        //TODO: add LOCATION
         const newRequest: outgoingTranslationRequest = {
             employeeName: employeeName,
             employeeId: employeeId,
@@ -56,9 +60,7 @@ const TranslationServiceRequestPage = () => {
             meetingLink: meetingLink,
             notes: notes,
             department: department,
-            comments: comments,
-            locationId: locationId,
-            requestId: requestId,
+            comments: comment,
             requestDate: requestDate,
             requestTime: requestTime
 
