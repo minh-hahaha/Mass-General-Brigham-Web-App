@@ -31,7 +31,7 @@ router.post('/', async (req: Request, res: Response) => {
                 data: {
                     employeeId: req.body.employeeId,
                     requestDate: new Date(req.body.requestDate).toISOString(), // Convert to full ISO string
-                    status: req.body.status,
+                    status: 'Pending',
                     comments: req.body.notes,
                     priority: req.body.priority,
                     serviceType: 'Medical Device',

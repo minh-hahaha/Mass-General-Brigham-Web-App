@@ -33,7 +33,7 @@ router.post('/', async (req: Request, res: Response) => {
                 data: {
                     employeeId: req.body.employeeId || req.body.assignedToId,
                     // requestDate: tempDate ?? null,
-                    status: req.body.status,
+                    status: 'Pending',
                     comments: req.body.notes,
                     priority: req.body.priority,
                     serviceType: 'Maintenance Request',

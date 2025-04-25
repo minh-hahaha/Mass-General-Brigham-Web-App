@@ -35,7 +35,7 @@ router.post('/', async (req: Request, res: Response) => {
                 data: {
                     employeeId: req.body.employeeId,
                     requestDate: tempDate,
-                    status: req.body.status,
+                    status: 'Pending',
                     comments: req.body.notes,
                     priority: req.body.priority,
                     serviceType: 'Translation',

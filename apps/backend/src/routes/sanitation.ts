@@ -55,7 +55,7 @@ router.post('/', async (req: Request, res: Response) => {
             const serviceRequest = await prisma.serviceRequest.create({
                 data: {
                     priority: req.body.priority,
-                    status: req.body.status,
+                    status: 'Pending',
                     comments: req.body.notes,
                     serviceType: 'Sanitation',
 
