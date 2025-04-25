@@ -1,12 +1,11 @@
 import { ChangeEvent, useState } from 'react';
-import {ImportCSV, ExportCSV, ExportJSON, ImportJSON} from '../database/csvImportExport.ts';
+import { ImportCSV, ExportCSV, ExportJSON, ImportJSON } from '../database/csvImportExport.ts';
 import MGBButton from '../elements/MGBButton.tsx';
 import InputElement from '@/elements/InputElement.tsx';
 import SelectElement from '@/elements/SelectElement.tsx';
 import { Label } from '@/components/ui/label.tsx';
 
 const ImportExportDirectoryPage = () => {
-
     const [file, setFile] = useState<File | null>(null);
     const [uploadType, setUploadType] = useState<'Overwrite' | 'Update'>('Update');
     const [downloadType, setDownloadType] = useState<'CSV' | 'JSON'>('CSV');
@@ -16,7 +15,12 @@ const ImportExportDirectoryPage = () => {
         if (e.target.files) {
             const selectedFile = e.target.files[0];
             console.log(selectedFile.type);
-            if (!selectedFile.name.endsWith('.csv') && selectedFile.type !== 'text/csv' && (!selectedFile.name.endsWith('.json') && selectedFile.type !== 'application/json')) {
+            if (
+                !selectedFile.name.endsWith('.csv') &&
+                selectedFile.type !== 'text/csv' &&
+                !selectedFile.name.endsWith('.json') &&
+                selectedFile.type !== 'application/json'
+            ) {
                 console.log('Please select a CSV or JSON file');
                 setFile(null);
                 return;
@@ -35,9 +39,9 @@ const ImportExportDirectoryPage = () => {
         console.log('Sending file:', file.name, file.type, file.size);
 
         try {
-            if(file.type === 'text/csv') {
+            if (file.type === 'text/csv') {
                 await ImportCSV(formData, uploadType);
-            }else{
+            } else {
                 await ImportJSON(formData, uploadType);
             }
             // Clear file after successful upload
@@ -57,13 +61,15 @@ const ImportExportDirectoryPage = () => {
         try {
             let response;
             let blob;
-            if(downloadType === 'CSV') {
+            if (downloadType === 'CSV') {
                 response = await ExportCSV(); // has backend data
                 // download csv
                 blob = new Blob([response], { type: 'text/csv;charset=utf-8;' });
-            }else{
+            } else {
                 response = await ExportJSON();
-                blob = new Blob([JSON.stringify(response, null, 2)], { type: 'application/json;charset=utf-8;' });
+                blob = new Blob([JSON.stringify(response, null, 2)], {
+                    type: 'application/json;charset=utf-8;',
+                });
             }
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
@@ -110,29 +116,31 @@ const ImportExportDirectoryPage = () => {
                             </button>
                         </div>
                     </div>
-                    <div>
-                        <div className="flex flex-col gap-2">
-                            <label className="font-semibold">Select Upload Method</label>
-                            <div className="flex items-center gap-6">
-                                <InputElement
-                                    type="radio"
-                                    id="update"
-                                    name="upload-method"
-                                    value="update"
-                                    label="Update"
-                                    checked={uploadType === 'Update'}
-                                    onChange={() => setUploadType('Update')}
-                                />
-                                <InputElement
-                                    type="radio"
-                                    id="overwrite"
-                                    name="upload-method"
-                                    value="overwrite"
-                                    label="Overwrite"
-                                    checked={uploadType === 'Overwrite'}
-                                    onChange={() => setUploadType('Overwrite')}
-                                />
-                            </div>
+                    <div className="flex flex-col gap-2 -ml-5">
+                        <label className="font-semibold mt-1">Select Upload Method</label>
+                        <div className="flex items-center gap-4">
+                            <button
+                                type="button"
+                                className={`px-4 py-2 rounded-md border ${
+                                    uploadType === 'Update'
+                                        ? 'bg-mgbblue text-white border-mgbblue'
+                                        : 'bg-white text-gray-700 border-gray-300'
+                                }`}
+                                onClick={() => setUploadType('Update')}
+                            >
+                                Update
+                            </button>
+                            <button
+                                type="button"
+                                className={`px-4 py-2 rounded-md border ${
+                                    uploadType === 'Overwrite'
+                                        ? 'bg-mgbblue text-white border-mgbblue'
+                                        : 'bg-white text-gray-700 border-gray-300'
+                                }`}
+                                onClick={() => setUploadType('Overwrite')}
+                            >
+                                Overwrite
+                            </button>
                         </div>
                     </div>
                 </div>
