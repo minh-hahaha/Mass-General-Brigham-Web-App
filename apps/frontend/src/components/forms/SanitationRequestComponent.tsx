@@ -6,7 +6,7 @@ import ConfirmMesg from '../ConfirmMessageComponent.tsx'; // Import the new comp
 import { SubmitSanitationRequest, sanitationRequest } from '../../database/forms/sanitationRequest.ts';
 import InputElement from "@/elements/InputElement.tsx";
 import SelectElement from '@/elements/SelectElement.tsx';
-import { getDirectory } from '@/database/gettingDirectory.ts';
+import {DirectoryRequestByBuilding, getDirectory} from '@/database/gettingDirectory.ts';
 
 // Component definition
 const SanitationRequestPage = () => {
@@ -25,9 +25,7 @@ const SanitationRequestPage = () => {
 
     //Sanitation fields
     const [sanitationType, setSanitationType] = useState('');
-    const [recurring, setRecurring] = useState(false);
     const [hazardLevel, setHazardLevel] = useState<sanitationRequest['hazardLevel']>('Low');
-    const [disposalRequired, setDisposalRequired] = useState(false);
     const [completeBy, setCompleteBy] = useState('');
     const [sanitationLocationId, setSanitation_location_id] = useState('');
     const [sanitationDepartmentId, setSanitation_department_id] = useState('');
@@ -37,6 +35,9 @@ const SanitationRequestPage = () => {
     //until we get locations working as a singular dropdown
     const [requesterDepartmentId, setRequester_department] = useState('');
     const[requesterRoomNumber, setRequester_roomnum] = useState('');
+
+    const [directoryList, setDirectoryList] = useState<string[]>([""]);
+    const [directory, setDirectory] = useState<string>("");
 
     const [submittedRequest, setSubmittedRequest] = useState<sanitationRequest | null>(null);
     const [showConfirmation, setShowConfirmation] = useState(false);
@@ -76,18 +77,19 @@ const SanitationRequestPage = () => {
         }
     }, [showConfirmation]);
 
-    // useEffect(() => {
-    //     const fetchDirectoryList = async () => {
-    //         try {
-    //             const data = await getDirectory(buildingID);
-    //             setDirectoryList(data);
-    //         } catch (error) {
-    //             console.error('Error fetching building names:', error);
-    //         }
-    //     };
-    //     fetchDirectoryList();
-    //     console.log('Updated Directory list');
-    // }, [buildingID, toLocation]);
+    useEffect(() => {
+        const fetchDirectoryList = async () => {
+            try {
+                const data = await getDirectory(mgbLocations.indexOf(locationId));
+                const names = data.map((item: DirectoryRequestByBuilding) => item.deptName);
+                setDirectoryList(names);
+            } catch (error) {
+                console.error('Error fetching building names:', error);
+            }
+        };
+        fetchDirectoryList();
+        console.log('Updated Directory list');
+    }, [locationId, directory]);
 
     const handleReset = () => {
         setPriority('Low');//done
@@ -97,9 +99,7 @@ const SanitationRequestPage = () => {
         setRequest_date(new Date().toISOString());//done
         setEmployee_id(0);//done
         setSanitationType('');//done
-        // setRecurring(false);
         setHazardLevel('Low');//done
-        // setDisposalRequired(false);
         setCompleteBy(new Date().toISOString());//
         setSanitation_location_id('');
         setSanitation_department_id('');
@@ -108,11 +108,6 @@ const SanitationRequestPage = () => {
         setRequester_department('');
         setRequester_roomnum('');
     };
-
-    // //Data is sent to the backend
-    // async function DisplayTransportRequest(request: transportRequest) {
-    //     await axios.post(ROUTES.PATIENTTRANSPORT, request);
-    // }
 
     const handleConfirmationClose = () => {
         setShowConfirmation(false);
@@ -128,37 +123,6 @@ const SanitationRequestPage = () => {
                 <p>Yael Whitson and Jack Morris</p>
                 <div>
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        {/*<div>*/}
-                        {/*    <h3 className="text-xl font-semibold mb-4 ">*/}
-                        {/*        <b>Requester Information</b>*/}
-                        {/*    </h3>*/}
-                        {/*    <div className="flex flex-col gap-2">*/}
-                        {/*        <div className="flex items-center gap-2">*/}
-                        {/*            <InputElement*/}
-                        {/*                label="Requester Name"*/}
-                        {/*                type="text"*/}
-                        {/*                id="employee_name"*/}
-                        {/*                placeholder="Enter your name"*/}
-                        {/*                value={employeeName}*/}
-                        {/*                onChange={(e) => setEmployee_name(e.target.value)}*/}
-                        {/*                required={true}*/}
-                        {/*            />*/}
-                        {/*        </div>*/}
-
-                        {/*        <div className="flex items-center gap-2">*/}
-                        {/*            <InputElement*/}
-                        {/*                label="Requester ID"*/}
-                        {/*                type="number"*/}
-                        {/*                id="employee_id"*/}
-                        {/*                placeholder="Enter Employee ID"*/}
-                        {/*                value={employeeId}*/}
-                        {/*                onChange={(e) => setEmployee_id(Number(e.target.value))}*/}
-                        {/*                required={true}*/}
-                        {/*            />*/}
-                        {/*        </div>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
-
                         <div className="flex flex-col gap-2">
                             <h3 className="text-xl font-semibold mb-4">
                                 <b>Request Location</b>
@@ -180,25 +144,22 @@ const SanitationRequestPage = () => {
                                     ))}
                                 </select>
                             </div>
+
+                            {/*Department Dropdown*/}
                             <div className="flex items-center gap-2">
-                                <InputElement
+
+                                <label className="w-1/4"> Department </label>
+                                <SelectElement
                                     label="Department"
-                                    type="text"
                                     id="departmentId"
-                                    placeholder="Enter Department name"
-                                    value={requesterDepartmentId}
-                                    onChange={(e) => setRequester_department(e.target.value)}
-                                    required={true}
+                                    value={directory}
+                                    onChange={(e) => setDirectory(e.target.value)}
+                                    required
+                                    options={directoryList}
+                                    placeholder="Select a Department"
+                                    // className="py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                    className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                 />
-                                {/*<SelectElement*/}
-                                {/*    label="To:"*/}
-                                {/*    id="toLocation"*/}
-                                {/*    value={toLocation}*/}
-                                {/*    onChange={(e) => handleChangeToLocation(e)}*/}
-                                {/*    options={Buildings}*/}
-                                {/*    placeholder="Select destination"*/}
-                                {/*    className="bg-white text-codGray border border-mgbblue -mt-3 w-70"*/}
-                                {/*/>*/}
                             </div>
                             <div className="flex items-center gap-2">
                                 <InputElement
@@ -218,25 +179,6 @@ const SanitationRequestPage = () => {
                                 <b>Sanitation Details</b>
                             </h3>
                             <div className="flex flex-col gap-2">
-
-                                {/*<div className="flex flex-col gap-2">*/}
-                                {/*    <div className="flex items-center gap-2">*/}
-                                {/*        <label className="w-1/4">Status</label>*/}
-                                {/*        <select*/}
-                                {/*            id="status"*/}
-                                {/*            value={status}*/}
-                                {/*            onChange={(e) => setStatus(e.target.value as sanitationRequest['status'])}*/}
-                                {/*            required*/}
-                                {/*            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"*/}
-                                {/*        >*/}
-                                {/*            <option value="Pending">Unassigned</option>*/}
-                                {/*            <option value="In Progress">Assigned</option>*/}
-                                {/*            <option value="Completed">Working</option>*/}
-                                {/*            <option value="Cancelled">Other</option>*/}
-                                {/*        </select>*/}
-                                {/*    </div>*/}
-                                {/*</div>*/}
-
                                 <div className="flex items-center gap-2">
                                     <label className="w-1/4">Priority</label>
                                     <select
