@@ -21,13 +21,9 @@ const MaintenanceRequestPage = () => {
     const [maintenanceHospital, setMaintenanceHospital] = useState<'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital'>('Chestnut Hill')
     const [maintenanceLocation, setMaintenanceLocation] = useState('');
     const [maintenanceTime, setMaintenanceTime] = useState('');
-    const [status, setStatus] = useState<'Pending' | 'In Progress' | 'Completed' | 'Canceled'>(
-        'Pending'
-    );
 
     // Requester Information
     const [employeeId, setEmployeeId] = useState(0);
-    const [requestDate, setRequestDate] = useState(new Date().toISOString());
     const [employeeName, setEmployeeName] = useState('');
     const [notes, setNotes] = useState('');
     const [locationId, setLocationId] = useState(1);
@@ -37,9 +33,6 @@ const MaintenanceRequestPage = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // Format the request date properly to avoid "Invalid Date" error
-        const formattedRequestDate = new Date(requestDate).toISOString();
-
         const newRequest: maintenanceRequest = {
             maintenanceType,
             maintenanceDescription,
@@ -47,9 +40,7 @@ const MaintenanceRequestPage = () => {
             maintenanceHospital,
             maintenanceLocation,
             maintenanceTime,
-            status,
             employeeId,
-            requestDate: formattedRequestDate,
             employeeName,
             notes,
             locationId,
@@ -68,9 +59,7 @@ const MaintenanceRequestPage = () => {
         setMaintenanceHospital('Chestnut Hill');
         setMaintenanceLocation('');
         setMaintenanceTime('');
-        setStatus('Pending');
         setEmployeeId(0);
-        setRequestDate(new Date().toISOString().split('T')[0]);
         setEmployeeName('');
         setNotes('');
         setLocationId(1);
@@ -96,52 +85,7 @@ const MaintenanceRequestPage = () => {
             <div className="flex flex-col items-center rounded-2xl p-8 w-full max-w-[700px] mt-10 mb-10">
                 <h1 className="text-[30px] font-bold mb-6">Maintenance Request</h1>
                 <h2 className="text-[15px] font-semibold mb-6">Max Jeronimo and Haotian Liu</h2>
-                <div className="flex flex-col gap-2 mb-6">
-                    <h3 className="text-xl font-semibold mb-4">
-                        <b>Requester Information</b>
-                    </h3>
-                    <div className="flex items-center gap-2">
-                        <label className="w-1/4">Requester ID</label>
-                        <input
-                            id="employeeId"
-                            name="employeeId"
-                            placeholder="Enter employee ID"
-                            required
-                            type="number"
-                            value={employeeId}
-                            onChange={(e) => setEmployeeId(Number(e.target.value))}
-                            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                        />
-                    </div>
 
-                    <div className="flex items-center gap-2">
-                        <label className="w-1/4">Request Date</label>
-                        <input
-                            id="requestDate"
-                            name="requestDate"
-                            placeholder="Select request date"
-                            required
-                            type="date"
-                            value={requestDate}
-                            onChange={(e) => setRequestDate(e.target.value)}
-                            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                        />
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                        <label className="w-1/4">Requester Name</label>
-                        <input
-                            id="employeeName"
-                            name="employeeName"
-                            placeholder="Enter employee name"
-                            required
-                            type="text"
-                            value={employeeName}
-                            onChange={(e) => setEmployeeName(e.target.value)}
-                            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                        />
-                    </div>
-                </div>
                 <div>
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
@@ -252,34 +196,6 @@ const MaintenanceRequestPage = () => {
                                         onChange={(e) => setMaintenanceTime(e.target.value)}
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
-                                </div>
-
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Status</label>
-                                    <select
-                                        id="status"
-                                        value={status}
-                                        onChange={(e) =>
-                                            setStatus(
-                                                e.target.value as
-                                                    | 'Pending'
-                                                    | 'In Progress'
-                                                    | 'Completed'
-                                                    | 'Canceled'
-                                            )
-                                        }
-                                        required
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    >
-                                        <option value="">Select status</option>
-                                        {['Pending', 'In Progress', 'Completed', 'Canceled'].map(
-                                            (option) => (
-                                                <option key={option} value={option}>
-                                                    {option}
-                                                </option>
-                                            )
-                                        )}
-                                    </select>
                                 </div>
                             </div>
                         </div>

@@ -22,7 +22,7 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 router.post('/', async (req: Request, res: Response) => {
-    //Format for tempDate is  2025-04-04T01:44
+    //Format for tempDate is 2025-04-04T01:44
     console.log(req.body);
     const tempDate = new Date(req.body.maintenanceDate || req.body.pickupDate);
 
@@ -32,7 +32,6 @@ router.post('/', async (req: Request, res: Response) => {
             const serviceRequest = await prisma.serviceRequest.create({
                 data: {
                     employeeId: req.body.employeeId || req.body.assignedToId,
-                    // requestDate: tempDate ?? null,
                     status: 'Pending',
                     comments: req.body.notes,
                     priority: req.body.priority,

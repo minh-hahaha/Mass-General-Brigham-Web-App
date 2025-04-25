@@ -11,11 +11,9 @@ export interface maintenanceRequest {
     maintenanceHospital: 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital'
     maintenanceLocation: string;
     maintenanceTime: string;
-    status: 'Pending' | 'In Progress' | 'Completed' | 'Canceled';
 
     // Requester Information
     employeeId: number;
-    requestDate: string;
     employeeName: string;
     notes: string;
     locationId: number;
@@ -25,7 +23,7 @@ export interface incomingMaintenanceRequest {
     requestId: number;
     employeeId: number;
     requestDate: string;
-    status: 'Pending' | 'In Progress' | 'Completed' | 'Canceled';
+    status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
     comments: string;
     priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     locationId: number;
