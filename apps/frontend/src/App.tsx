@@ -19,6 +19,7 @@ import MaintenanceRequestPage from "@/routes/MaintenanceRequestPage.tsx";
 import Cookies from "js-cookie";
 import TestNodeEditor from '@/routes/TestNodeEditor.tsx';
 import AboutPage from '@/routes/AboutPage.tsx';
+import CreditsPage from "@/routes/CreditsPage.tsx";
 
 function App() {
     const defaultOpen = Cookies.get("sidebar_state") === 'true';
@@ -95,6 +96,10 @@ function App() {
                                 <Route
                                     path="/AboutPage"
                                     element={<AboutPage />}
+                                />
+                                <Route
+                                    path="/CreditsPage"
+                                    element={<CreditsPage />}
                                 />
                             </Routes>
                         </main>
