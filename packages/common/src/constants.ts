@@ -4,7 +4,10 @@ export const ROUTES = {
     EMPLOYEE: '/api/employee',
     SERVICEREQUESTS: '/api/servicereqs',
     VALIDATE: '/api/validate',
+
+    //Buildings
     BUILDING: '/api/building',
+    BUILDING_NOT: '/api/building/not',
 
     ///Requests
     PATIENTTRANSPORT: '/api/patienttransport',

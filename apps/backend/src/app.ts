@@ -46,7 +46,10 @@ app.use(ROUTES.EMPLOYEE, employeeRouter);
 
 app.use(ROUTES.VALIDATE, validateRouter);
 app.use(ROUTES.SANITATION, sanitationRouter);
+
+//Building
 app.use(ROUTES.BUILDING, buildingRouter);
+app.use(ROUTES.BUILDING_NOT, buildingRouter);
 
 //Directory
 app.use(ROUTES.DIRECTORY, directoryRouter);
