@@ -56,7 +56,6 @@ model MaintenanceRequest {
   maintenanceHospital    String
   maintenanceLocation    String
   maintenanceTime        DateTime
-  // employee_name           String
   servRequestId          ServiceRequest @relation(name: "MaintenanceRequest", fields: [servMaintenanceId], references: [requestId])
 }
 
