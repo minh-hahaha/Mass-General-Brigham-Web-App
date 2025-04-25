@@ -142,6 +142,33 @@ const ImportExportDirectoryPage = () => {
                                 Overwrite
                             </button>
                         </div>
+                        <div className="flex flex-col gap-2 -ml-5">
+                            <label className="font-semibold mt-1">Select Download Type</label>
+                            <div className="flex items-center gap-4">
+                                <button
+                                    type="button"
+                                    className={`px-4 py-2 rounded-md border ${
+                                        downloadType === 'CSV'
+                                            ? 'bg-mgbblue text-white border-mgbblue'
+                                            : 'bg-white text-gray-700 border-gray-300'
+                                    }`}
+                                    onClick={() => setDownloadType('CSV')}
+                                >
+                                    CSV
+                                </button>
+                                <button
+                                    type="button"
+                                    className={`px-4 py-2 rounded-md border ${
+                                        downloadType === 'JSON'
+                                            ? 'bg-mgbblue text-white border-mgbblue'
+                                            : 'bg-white text-gray-700 border-gray-300'
+                                    }`}
+                                    onClick={() => setDownloadType('JSON')}
+                                >
+                                    JSON
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div hidden={!upload}>
