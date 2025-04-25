@@ -1,8 +1,8 @@
 import {useEffect, useState} from 'react';
-import MGBButton from '../elements/MGBButton.tsx';
-import InputElement from '../elements/InputElement.tsx';
-import ConfirmMessageComponent from '../components/ConfirmMessageComponent.tsx'; // Import the new component
-import { SubmitTransportRequest } from '../database/transportRequest.ts';
+import MGBButton from '../../elements/MGBButton.tsx';
+import InputElement from '../../elements/InputElement.tsx';
+import ConfirmMessageComponent from '../ConfirmMessageComponent.tsx'; // Import the new component
+import { SubmitTransportRequest } from '../../database/transportRequest.ts';
 
 interface transportRequest {
     patientId: number;

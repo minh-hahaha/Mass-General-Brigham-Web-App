@@ -1,9 +1,9 @@
 import {useEffect, useState} from 'react';
-import MGBButton from '../elements/MGBButton.tsx';
+import MGBButton from '../../elements/MGBButton.tsx';
 import axios from 'axios';
 import { ROUTES } from 'common/src/constants.ts';
-import ConfirmMesg from '../components/ConfirmMessageComponent.tsx'; // Import the new component
-import { SubmitSanitationRequest, sanitationRequest } from '../database/sanitationRequest.ts';
+import ConfirmMesg from '../ConfirmMessageComponent.tsx'; // Import the new component
+import { SubmitSanitationRequest, sanitationRequest } from '../../database/sanitationRequest.ts';
 import InputElement from "@/elements/InputElement.tsx";
 
 // Component definition

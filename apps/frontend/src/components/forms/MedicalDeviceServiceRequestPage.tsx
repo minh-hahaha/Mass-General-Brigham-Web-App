@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
-import MGBButton from '../elements/MGBButton.tsx';
-import InputElement from '../elements/InputElement.tsx';
-import ConfirmMessageComponent from '../components/ConfirmMessageComponent.tsx';
+import MGBButton from '../../elements/MGBButton.tsx';
+import InputElement from '../../elements/InputElement.tsx';
+import ConfirmMessageComponent from '../ConfirmMessageComponent.tsx';
 import { SubmitMedicalDeviceRequest } from '@/database/medicalDeviceRequest.ts';
 
 type MedicalDeviceType =

@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import CarouselMenu from '@/components/CarouselMenu.tsx';
 
-import TransportationRequestPage from '@/routes/TransportationRequestPage.tsx';
+import TransportationRequestPage from '@/components/forms/TransportationRequestPage.tsx';
 import TableAllRequest from '@/components/tables/TableServiceRequest.tsx';
 import TableMaintenanceRequest from '@/components/tables/TableMaintenanceRequest.tsx';
 import TableSanitationRequest from '@/components/tables/TableSanitationRequest.tsx';
 import TableTransportRequest from '@/components/tables/TableTransportRequest.tsx';
 import TableMedicalDeviceRequest from '@/components/tables/TableMedicalDeviceRequest.tsx';
-import SanitationRequestPage from '@/routes/SanitationRequestComponent.tsx';
-import MedicalDeviceServiceRequestPage from '@/routes/MedicalDeviceServiceRequestPage.tsx';
-import MaintenanceRequestPage from '@/routes/MaintenanceRequestPage.tsx';
+import SanitationRequestPage from '@/components/forms/SanitationRequestComponent.tsx';
+import MedicalDeviceServiceRequestPage from '@/components/forms/MedicalDeviceServiceRequestPage.tsx';
+import MaintenanceRequestPage from '@/components/forms/MaintenanceRequestPage.tsx';
 import TableTranslatorRequest from "@/components/tables/TableTranslatorRequest.tsx";
-import TranslationServiceRequestPage from "@/routes/TranslationServiceRequestPage.tsx";
+import TranslationServiceRequestPage from "@/components/forms/TranslationServiceRequestPage.tsx";
 // ...other imports...
 
 
