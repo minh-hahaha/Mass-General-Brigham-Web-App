@@ -22,12 +22,11 @@ type MedicalDeviceType =
     | 'Portable Suction Unit'
     | 'Crash Cart';
 
-type location = 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place';
-type status = 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
+type location = 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital';
+// type status = 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
 type priority = 'Low' | 'Medium' | 'High' | 'Emergency';
-
+const buildings = ["Chestnut Hill", "20 Patriot Place", "22 Patriot Place", "Faulkner Hospital"];
 export interface MedicalDeviceRequestData {
-    employeeName: string;
     employeeId: number;
     requestDate: string;
     priority: priority
@@ -37,7 +36,6 @@ export interface MedicalDeviceRequestData {
     deviceSerialNumber?: string;
     deviceReasoning: string;
     quantity: number;
-    status: status;
     notes?: string;
     department: string;
 }
@@ -48,7 +46,10 @@ const MedicalDeviceServiceRequestPage = () => {
     if (!loggedIn) {
         window.location.href = '/';
     }
-
+    const medicalDevices = ['ECG Monitor', 'Vital Signs Monitor', 'Pulse Oximeter', 'Infusion Pump', 'Syringe Pump',
+        'Defibrillator', 'Ventilator', 'Nebulizer', 'Anesthesia Machine',
+        'Wheelchair', 'IV Stand', 'Suction Machine', 'Warming Blanket System',
+        'Oxygen Concentrator', 'Portable Suction Unit', 'Crash Cart'];
     const [employeeName, setEmployeeName] = useState('');
     const [employeeId, setEmployeeId] = useState<number>(0);
     const [requestDate, setRequestDate] = useState('');
@@ -60,7 +61,6 @@ const MedicalDeviceServiceRequestPage = () => {
     const [deviceSerialNumber, setDeviceSerialNumber] = useState('');
     const [quantity, setQuantity] = useState(1);
     const [reasoning, setReasoning] = useState('');
-    const [status, setStatus] = useState<MedicalDeviceRequestData['status']>('Pending');
     const [notes, setNotes] = useState('');
     const [department, setDepartment] = useState('');
 
@@ -77,11 +77,10 @@ const MedicalDeviceServiceRequestPage = () => {
         e.preventDefault();
 
         const newRequest: MedicalDeviceRequestData = {
-            employeeName: employeeName,
             employeeId: employeeId,
             requestDate: requestDate,
             priority: priority as 'Low' | 'Medium' | 'High' | 'Emergency',
-            location: location as 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place',
+            location: location as 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital',
             device: device as 'ECG Monitor' | 'Vital Signs Monitor' | 'Pulse Oximeter' |
                 'Infusion Pump' | 'Syringe Pump' | 'Defibrillator' |
                 'Ventilator' | 'Nebulizer' | 'Anesthesia Machine' |
@@ -91,7 +90,6 @@ const MedicalDeviceServiceRequestPage = () => {
             deviceSerialNumber: deviceSerialNumber,
             quantity: quantity,
             deviceReasoning: reasoning,
-            status: status as 'Pending' | 'In Progress' | 'Completed' | 'Cancelled',
             notes: notes,
             department: department,
         }
@@ -115,7 +113,6 @@ const MedicalDeviceServiceRequestPage = () => {
         setDeviceSerialNumber('');
         setQuantity(0);
         setReasoning('');
-        setStatus('Pending');
         setNotes('');
         setDepartment('');
     };
@@ -127,47 +124,6 @@ const MedicalDeviceServiceRequestPage = () => {
                 <p> Vinam Nguyen </p>
                 <div>
                     <form onSubmit={handleSubmit} className={"space-y-6"}>
-                        <div>
-                            <h3 className="text-xl font-semibold mb-4">
-                                <b>Requester Information</b>
-                            </h3>
-                            <div className="flex flex-col gap-2">
-                                <div className="flex items-center gap-2">
-                                    <InputElement
-                                        label={"Requester Name "}
-                                        type={"text"}
-                                        id={"employeeName"}
-                                        placeholder={"Please enter your full name"}
-                                        value={employeeName}
-                                        onChange={(e) => setEmployeeName(e.target.value)}
-                                        required={true}
-                                    />
-                                </div>
-
-                                <div className="flex items-center gap-2">
-                                    <InputElement
-                                        label={"Requester ID "}
-                                        type={"text"}
-                                        id={"employeeID"}
-                                        placeholder={"Please enter your ID"}
-                                        value={employeeId}
-                                        onChange={(e) => setEmployeeId(Number(e.target.value))}
-                                        required={true}
-                                    />
-                                </div>
-
-                                <div className="flex items-center gap-2">
-                                    <InputElement
-                                        label={"Request Date "}
-                                        type={"datetime-local"}
-                                        id={"date"}
-                                        value={requestDate}
-                                        onChange={(e) => setRequestDate(e.target.value)}
-                                        required={true}
-                                    />
-                                </div>
-                            </div>
-                        </div>
 
                         <div>
                             <h3 className="text-xl font-semibold mb-4">
@@ -185,10 +141,7 @@ const MedicalDeviceServiceRequestPage = () => {
                                             className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                         >
                                             <option value="">Select Device</option>
-                                            {['ECG Monitor', 'Vital Signs Monitor', 'Pulse Oximeter', 'Infusion Pump', 'Syringe Pump',
-                                                'Defibrillator', 'Ventilator', 'Nebulizer', 'Anesthesia Machine',
-                                                'Wheelchair', 'IV Stand', 'Suction Machine', 'Warming Blanket System',
-                                                'Oxygen Concentrator', 'Portable Suction Unit', 'Crash Cart'].map(
+                                            {medicalDevices.map(
                                                     (medicalDevices) => (
                                                         <option
                                                             key={`medicalDevices-${medicalDevices}`}
@@ -276,8 +229,8 @@ const MedicalDeviceServiceRequestPage = () => {
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >
-                                        <option value="">Select Location</option>
-                                        {['Chestnut Hill', '20 Patriot Place', '22 Patriot Place'].map(
+                                        {/*<option value="">Select Location</option>*/}
+                                        {buildings.map(
                                             (location) => (
                                                 <option
                                                     key={`location-${location}`}
@@ -301,30 +254,6 @@ const MedicalDeviceServiceRequestPage = () => {
                                         value={department}
                                         onChange={(e) => setDepartment(e.target.value)}
                                     />
-                                </div>
-                            </div>
-                            <div className="flex flex-col pt-2">
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Status</label>
-                                    <select
-                                        id="status"
-                                        value={status}
-                                        onChange={(e) => setStatus(e.target.value as status)}
-                                        required
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    >
-                                        <option value="">Select Status</option>
-                                        {['Pending', 'In Progress', 'Completed', 'Cancelled'].map(
-                                            (status) => (
-                                                <option
-                                                    key={`status-${status}`}
-                                                    value={status}
-                                                >
-                                                    {status}
-                                                </option>
-                                            )
-                                        )}
-                                    </select>
                                 </div>
                             </div>
 

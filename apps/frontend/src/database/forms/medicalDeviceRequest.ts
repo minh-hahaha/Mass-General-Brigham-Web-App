@@ -5,7 +5,6 @@ import {MedicalDeviceRequestData} from "@/components/forms/MedicalDeviceServiceR
 export interface incomingMedicalDeviceRequest {
     comments: string;
     employeeId: number;
-    employeeName: string;
     locationId: number;
     medicalDeviceRequest: {
         device: string;
