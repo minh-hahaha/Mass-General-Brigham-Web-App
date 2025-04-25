@@ -57,7 +57,7 @@ const DirectoryTable: React.FC<DirectoryTableProps> = ({ data }) => {
                                     {department.building.buildingName}
                                 </TableCell>
                                 <TableCell className="text-center">
-                                    {department.node ? department.node.floor : 'no node'}
+                                    {department.departmentNodes ? department.departmentNodes.floor : 'no node'}
                                 </TableCell>
                                 <TableCell className="text-center">
                                     {department.deptPhone}
@@ -98,7 +98,7 @@ const AllDirectory = ({ onImportClick }: { onImportClick: () => void }) => {
             (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
             (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
             (!filters.building || department.building?.buildingName?.toLowerCase().includes(filters.building.toLowerCase())) &&
-            (!filters.floor || department.node?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
+            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
             (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
         );
     });
@@ -224,7 +224,7 @@ const ChestnutDirectory = ({ onImportClick }: { onImportClick: () => void }) => 
         return (
             (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
             (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
-            (!filters.floor || department.node?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
+            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
             (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
         );
     });
@@ -339,7 +339,7 @@ const Patriot20Directory = ({ onImportClick }: { onImportClick: () => void }) =>
         return (
             (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
             (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
-            (!filters.floor || department.node?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
+            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
             (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
         );
     });
@@ -454,7 +454,7 @@ const Patriot22Directory = ({ onImportClick }: { onImportClick: () => void }) =>
         return (
             (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
             (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
-            (!filters.floor || department.node?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
+            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
             (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
         );
     });
@@ -573,7 +573,7 @@ const FaulknerDirectory = ({ onImportClick }: { onImportClick: () => void }) => 
         return (
             (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
             (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
-            (!filters.floor || department.node?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
+            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
             (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
         );
     });

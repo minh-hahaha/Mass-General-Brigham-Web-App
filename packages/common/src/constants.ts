@@ -18,6 +18,7 @@ export const ROUTES = {
     DIRECTORY_NAMES: '/api/directory/names',
     DIRECTORY_NODE: '/api/directory/node',
     DIRECTORY_BUILDING: '/api/directory/byBuilding',
+    DIRECTORY_JSON: '/api/directory/json',
 
     //Algorithms
     FINDPATH: '/api/graph/traverse',

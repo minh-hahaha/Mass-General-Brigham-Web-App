@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react';
-import { ImportCSV, ExportCSV } from '../database/csvImportExport.ts';
+import {ImportCSV, ExportCSV, ExportJSON, ImportJSON} from '../database/csvImportExport.ts';
 import MGBButton from '../elements/MGBButton.tsx';
 import InputElement from '@/elements/InputElement.tsx';
 import SelectElement from '@/elements/SelectElement.tsx';
@@ -9,13 +9,15 @@ const ImportExportDirectoryPage = () => {
 
     const [file, setFile] = useState<File | null>(null);
     const [uploadType, setUploadType] = useState<'Overwrite' | 'Update'>('Update');
+    const [downloadType, setDownloadType] = useState<'CSV' | 'JSON'>('CSV');
     const [upload, setUpload] = useState(false);
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             const selectedFile = e.target.files[0];
-            if (!selectedFile.name.endsWith('.csv') && selectedFile.type !== 'text/csv') {
-                console.log('Please select a CSV file');
+            console.log(selectedFile.type);
+            if (!selectedFile.name.endsWith('.csv') && selectedFile.type !== 'text/csv' && (!selectedFile.name.endsWith('.json') && selectedFile.type !== 'application/json')) {
+                console.log('Please select a CSV or JSON file');
                 setFile(null);
                 return;
             }
@@ -33,7 +35,11 @@ const ImportExportDirectoryPage = () => {
         console.log('Sending file:', file.name, file.type, file.size);
 
         try {
-            await ImportCSV(formData, uploadType);
+            if(file.type === 'text/csv') {
+                await ImportCSV(formData, uploadType);
+            }else{
+                await ImportJSON(formData, uploadType);
+            }
             // Clear file after successful upload
             setFile(null);
             if (document.getElementById('fileInput') as HTMLInputElement) {
@@ -49,14 +55,21 @@ const ImportExportDirectoryPage = () => {
 
     async function handleExport() {
         try {
-            const response = await ExportCSV(); // has backend data
-            // download csv
-            const blob = new Blob([response], { type: 'text/csv;charset=utf-8;' });
+            let response;
+            let blob;
+            if(downloadType === 'CSV') {
+                response = await ExportCSV(); // has backend data
+                // download csv
+                blob = new Blob([response], { type: 'text/csv;charset=utf-8;' });
+            }else{
+                response = await ExportJSON();
+                blob = new Blob([JSON.stringify(response, null, 2)], { type: 'application/json;charset=utf-8;' });
+            }
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
 
             link.href = url;
-            link.setAttribute('download', 'export.csv');
+            link.setAttribute('download', 'export.' + (downloadType === 'CSV' ? 'csv' : 'json'));
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -73,7 +86,7 @@ const ImportExportDirectoryPage = () => {
                     className="border border-gray-300 rounded-md p-2 w-full"
                     type="file"
                     onChange={handleFileChange}
-                    accept=".csv, text/csv"
+                    accept=".csv, text/csv, .json, application/json"
                 />
                 {/* Added margin-top to separate the buttons from the input */}
                 <div className="flex justify-between w-full space-x-4">
@@ -98,17 +111,29 @@ const ImportExportDirectoryPage = () => {
                         </div>
                     </div>
                     <div>
-                        <SelectElement
-                            className="border border-mgbblue py-4"
-                            placeholder={'Select an upload type'}
-                            options={['Update', 'Overwrite']}
-                            label={'Upload Type'}
-                            id={'upload-type'}
-                            value={uploadType}
-                            onChange={(e) =>
-                                setUploadType(e.target.value as 'Overwrite' | 'Update')
-                            }
-                        />
+                        <div className="flex flex-col gap-2">
+                            <label className="font-semibold">Select Upload Method</label>
+                            <div className="flex items-center gap-6">
+                                <InputElement
+                                    type="radio"
+                                    id="update"
+                                    name="upload-method"
+                                    value="update"
+                                    label="Update"
+                                    checked={uploadType === 'Update'}
+                                    onChange={() => setUploadType('Update')}
+                                />
+                                <InputElement
+                                    type="radio"
+                                    id="overwrite"
+                                    name="upload-method"
+                                    value="overwrite"
+                                    label="Overwrite"
+                                    checked={uploadType === 'Overwrite'}
+                                    onChange={() => setUploadType('Overwrite')}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div hidden={!upload}>
