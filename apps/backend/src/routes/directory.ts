@@ -23,6 +23,7 @@ DIRECTORY_FILTER_OPTIONS.push({
         { building: { buildingName: '22 Patriot Place' } },
     ],
 });
+DIRECTORY_FILTER_OPTIONS.push({ building: { buildingName: 'Faulkner Hospital' } });
 
 // GET Send Data
 router.get('/', async function (req: Request, res: Response) {

@@ -399,7 +399,6 @@ const DirectionsMapComponent = () => {
 
     const handleHere = () => {
         setPathVisible(true);
-
         // clear parking
         clearParking();
 

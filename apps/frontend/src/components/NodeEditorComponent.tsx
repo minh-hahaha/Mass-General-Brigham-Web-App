@@ -99,48 +99,6 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         clickedEdgeRef.current = clickedEdge;
     }, [clickedEdge]);
 
-    // useEffect(() => {
-    //     console.log('Floor changed to:', currentFloorId);
-    //     const bldgData = availableFloors.find((f) => f.id === currentFloorId);
-    //     mapNodesRef.current.forEach((node) => node.drawnNode.setMap(null));
-    //     mapEdgesRef.current.forEach((edge) => edge.drawnEdge.setMap(null));
-    //     setMapEdges([]);
-    //     setMapNodes([]);
-    //     console.log("After erase:");
-    //     console.log(mapEdges);
-    //     console.log(mapNodes);
-    //     if (!bldgData) {
-    //         console.error('Building data not found');
-    //         return;
-    //     }
-    //     const newNodes: MapNode[] = [];
-    //     getNodes(bldgData.floor, bldgData.buildingId)
-    //         .then((nodeResponses) => {
-    //             nodeResponses.forEach((nodeResponse) => {
-    //                 newNodes.push(createMapNodeFromNodeResponse(nodeResponse));
-    //             });
-    //             console.log("New Nodes:")
-    //             console.log(newNodes);
-    //             setMapNodes(newNodes);
-    //         })
-    //         .then(() => {
-    //             getEdges(bldgData.floor, bldgData.buildingId).then((edgeResponses) => {
-    //                 edgeResponses.forEach((edgeResponse) => {
-    //                     const fromNode = newNodes.find(
-    //                         (node) => node.node.nodeId === edgeResponse.from
-    //                     );
-    //                     const toNode = newNodes.find(
-    //                         (node) => node.node.nodeId === edgeResponse.to
-    //                     );
-    //                     if (fromNode && toNode) {
-    //                         createMapEdge(fromNode, toNode);
-    //                     }
-    //                 });
-    //                 console.log("Edges")
-    //             });
-    //         })
-    // }, [currentFloorId]);
-
     useEffect(() => {
         // This useEffect is called twice on startup
         // This stops the code from executing both time
@@ -211,18 +169,19 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
     useEffect(() => {
         if (!map || !drawingLibrary || drawingManager) return;
         drawingManager = new drawingLibrary.DrawingManager({
-            drawingMode: drawingLibrary.OverlayType.MARKER,
+            drawingMode: null,
             drawingControl: true,
             drawingControlOptions: {
                 position: google.maps.ControlPosition.TOP_CENTER,
                 drawingModes: [
                     drawingLibrary.OverlayType.MARKER,
-                   // drawingLibrary.OverlayType.POLYLINE,
+                    drawingLibrary.OverlayType.POLYLINE,
                 ],
             },
             markerOptions: {
                 zIndex: 1,
-                clickable: true
+                clickable: true,
+                draggable: true,
             },
             polylineOptions: {
                 zIndex: 0
@@ -231,16 +190,17 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         drawingManager.setMap(map);
         google.maps.event.addListener(drawingManager, 'overlaycomplete', (event: google.maps.drawing.OverlayCompleteEvent) => {
             if (event.type === google.maps.drawing.OverlayType.POLYLINE) {
-                // const polyline = event.overlay as google.maps.Polyline;
-                // const path = polyline.getPath().getArray();
-                // const nodes = [];
-                // for (let i = 0; i < path.length; i++) {
-                //     nodes.push(createMapNode(undefined, path[i]));
-                //     if (i !== 0) {
-                //         createMapEdge(nodes[i - 1], nodes[i], polyline);
-                //     }
-                // }
-                // drawingManager.setDrawingMode(null);
+                const polyline = event.overlay as google.maps.Polyline;
+                const path = polyline.getPath().getArray();
+                const nodes = [];
+                for (let i = 0; i < path.length; i++) {
+                    nodes.push(createMapNode(undefined, path[i]));
+                    if (i !== 0) {
+                        createMapEdge(nodes[i - 1], nodes[i]);
+                    }
+                }
+                polyline.setMap(null);
+                drawingManager.setDrawingMode(null);
             }else if(event.type === google.maps.drawing.OverlayType.MARKER){
                 const marker = event.overlay as google.maps.Marker;
                 const position = marker.getPosition();
@@ -250,6 +210,16 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             }
         });
     }, [map]);
+
+    function createDrawnNode(position: google.maps.LatLng){
+        return new google.maps.Marker({
+            position: position,
+            clickable: true,
+            map: map,
+            zIndex: 1,
+            draggable: true
+        })
+    }
 
     function createMapNodeFromNodeResponse(node: NodeResponse) {
         const mapNode: MapNode = {
@@ -263,16 +233,35 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 node.name,
                 node.roomNumber
             ),
-            drawnNode: new google.maps.Marker({
-                position: new google.maps.LatLng(node.x, node.y),
-                clickable: true,
-                map: map,
-                zIndex: 1,
-            }),
+            drawnNode: createDrawnNode(new google.maps.LatLng(node.x, node.y)),
         }
         google.maps.event.addListener(mapNode.drawnNode, 'click', (e: google.maps.MapMouseEvent) =>
             clickNode(mapNode.node.nodeId)
         );
+        google.maps.event.addListener(mapNode.drawnNode, 'drag', (e: google.maps.MapMouseEvent) => {
+            const loc = e.latLng;
+            if(loc){
+                mapEdgesRef.current.forEach((edge) => {
+                    if(edge.from.node.nodeId === mapNode.node.nodeId || edge.to.node.nodeId === mapNode.node.nodeId ) {
+                        const tempLoc: google.maps.LatLngLiteral = {
+                            lat: mapNode.node.x,
+                            lng: mapNode.node.y
+                        }
+                        const EPSILON = 1e-6;
+                        const indexOfPathCoord = edge.drawnEdge.getPath().getArray().findIndex(
+                            ll =>
+                                Math.abs(ll.lat() - tempLoc.lat) < EPSILON &&
+                                Math.abs(ll.lng() - tempLoc.lng) < EPSILON
+                        );
+                        if (indexOfPathCoord !== -1) {
+                            edge.drawnEdge.getPath().setAt(indexOfPathCoord, loc);
+                        }
+                    }
+                })
+                mapNode.node.x = loc.lat();
+                mapNode.node.y = loc.lng();
+            }
+        })
         return mapNode;
     }
 
@@ -288,16 +277,35 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 'Node',
                 null
             ),
-            drawnNode: marker ? marker : new google.maps.Marker({
-                position: position,
-                clickable: true,
-                map: map,
-                zIndex: 1,
-            }),
+            drawnNode: marker ? marker : createDrawnNode(position),
         };
         google.maps.event.addListener(mapNode.drawnNode, 'click', (e: google.maps.MapMouseEvent) =>
             clickNode(mapNode.node.nodeId)
         );
+        google.maps.event.addListener(mapNode.drawnNode, 'drag', (e: google.maps.MapMouseEvent) => {
+            const loc = e.latLng;
+            if(loc){
+                mapEdgesRef.current.forEach((edge) => {
+                    if(edge.from.node.nodeId === mapNode.node.nodeId || edge.to.node.nodeId === mapNode.node.nodeId ) {
+                        const tempLoc: google.maps.LatLngLiteral = {
+                            lat: mapNode.node.x,
+                            lng: mapNode.node.y
+                        }
+                        const EPSILON = 1e-6;
+                        const indexOfPathCoord = edge.drawnEdge.getPath().getArray().findIndex(
+                            ll =>
+                                Math.abs(ll.lat() - tempLoc.lat) < EPSILON &&
+                                Math.abs(ll.lng() - tempLoc.lng) < EPSILON
+                        );
+                        if (indexOfPathCoord !== -1) {
+                            edge.drawnEdge.getPath().setAt(indexOfPathCoord, loc);
+                        }
+                    }
+                })
+                mapNode.node.x = loc.lat();
+                mapNode.node.y = loc.lng();
+            }
+        })
         setMapNodes((prev) => [...prev, mapNode]);
         return mapNode;
     }
@@ -420,49 +428,6 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 setClickedNode(null);
             }
         }
-    }
-
-
-    function handleBranchEdge(fromNode: MapNode, toEdge: MapEdge) {
-        const line = new google.maps.Polyline({
-            map: map,
-            path: [fromNode.drawnNode.getPosition() as google.maps.LatLng].concat(toEdge.drawnEdge.getPath().getArray()),
-            zIndex: -1
-        })
-        toEdge.drawnEdge.setMap(null);
-        toEdge.drawnEdge = line;
-        createMapEdge(fromNode, toEdge.from);
-
-    }
-
-    function handleBranchNode(fromNode: MapNode, toNode: MapNode) {
-        const line = new google.maps.Polyline({
-            map: map,
-            path: [fromNode.drawnNode.getPosition() as google.maps.LatLng, toNode.drawnNode.getPosition() as google.maps.LatLng],
-            zIndex: -1
-        })
-        createMapEdge(fromNode, toNode);
-    }
-
-    function handleEndToFront(fromEdge: MapEdge, toEdge: MapEdge) {
-        const path = fromEdge.drawnEdge.getPath().getArray().concat(toEdge.drawnEdge.getPath().getArray());
-        fromEdge.drawnEdge.setMap(null);
-        toEdge.drawnEdge.setMap(null);
-        const newLine = new google.maps.Polyline({
-            path: path,
-            map: map,
-            zIndex: -1,
-        });
-        fromEdge.drawnEdge = newLine;
-        toEdge.drawnEdge = newLine;
-    }
-
-    function handleNodeToNode(fromNode: MapNode, toNode: MapNode) {
-        const line = new google.maps.Polyline({
-            map: map,
-            path: [fromNode.drawnNode.getPosition() as google.maps.LatLng, toNode.drawnNode.getPosition() as google.maps.LatLng]
-        });
-        createMapEdge(fromNode, toNode);
     }
 
     const generateCustomId = (node: myNode) => {

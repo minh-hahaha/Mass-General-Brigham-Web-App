@@ -18,6 +18,7 @@ import MapViewPage from "@/routes/MapViewPage.tsx";
 import MaintenanceRequestPage from "@/routes/MaintenanceRequestPage.tsx";
 import Cookies from "js-cookie";
 import TestNodeEditor from '@/routes/TestNodeEditor.tsx';
+import AboutPage from '@/routes/AboutPage.tsx';
 
 function App() {
     const defaultOpen = Cookies.get("sidebar_state") === 'true';
@@ -74,7 +75,10 @@ function App() {
                                     path="/SanitationRequest"
                                     element={<SanitationRequestPage />}
                                 />
-                        <Route path="/SanitationRequest" element={<SanitationRequestPage />} />
+                                <Route
+                                    path="/SanitationRequest"
+                                    element={<SanitationRequestPage />}
+                                />
 
                                 <Route
                                     path="/MaintenancePage"
@@ -87,6 +91,10 @@ function App() {
                                 <Route
                                     path={"/MedicalDevicePage"}
                                     element={<MedicalDeviceServiceRequestPage/>}
+                                />
+                                <Route
+                                    path="/AboutPage"
+                                    element={<AboutPage />}
                                 />
                             </Routes>
                         </main>
