@@ -2,24 +2,7 @@ import {useEffect, useState} from 'react';
 import MGBButton from '../../elements/MGBButton.tsx';
 import InputElement from '../../elements/InputElement.tsx';
 import ConfirmMessageComponent from '../ConfirmMessageComponent.tsx'; // Import the new component
-import { SubmitTransportRequest } from '../../database/forms/transportRequest.ts';
-
-interface transportRequest {
-    patientId: number;
-    patientName: string;
-    transportType: 'Ambulance' | 'Helicopter' | 'Medical Van' | 'Other';
-    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
-    pickupLocation: string;
-    dropOffLocation: string;
-    pickupDate: string;
-    pickupTime: string;
-    notes: string;
-    requesterId: number;
-    requesterName: string;
-    requestDate: string;
-    assignedToId: number;
-}
-
+import { SubmitTransportRequest, transportRequest} from '../../database/forms/transportRequest.ts';
 // Component definition
 const TransportRequestPage = () => {
     const loggedIn = sessionStorage.getItem('loggedIn');
@@ -57,9 +40,6 @@ const TransportRequestPage = () => {
             pickupDate,
             pickupTime,
             notes,
-            requesterId,
-            requesterName,
-            requestDate,
             assignedToId,
         };
 
@@ -79,10 +59,7 @@ const TransportRequestPage = () => {
         setDropOffLocation('');
         setPickupDate(new Date().toISOString().split('T')[0]);
         setPickupTime('');
-        // setStatus('Pending');
         setNotes('');
-        setRequesterId(0);
-        setRequestDate(new Date().toISOString().split('T')[0]);
         setAssignedToId(0);
     };
 
@@ -112,38 +89,6 @@ const TransportRequestPage = () => {
                 <h1 className="text-[30px] font-bold mb-6">Patient Transportation Request</h1>
                 <div>
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        <div>
-                            <h3 className="text-xl font-semibold mb-4">
-                                <b>Requester Information</b>
-                            </h3>
-                            <div className="flex flex-col pt-2">
-                                <div className="flex items-center gap-2">
-                                    <InputElement label={"Requester Id"} type={"number"} id={"requesterId"} value={requesterId}
-                                                  onChange={e => setRequesterId(Number(e.target.value))}
-                                                  required={true}
-                                    />
-                                </div>
-                            </div>
-                            <div className="flex flex-col pt-2">
-                                <div className="flex items-center gap-2">
-                                    <InputElement label={"Requester Name"} type={"text"} id={"requesterName"} value={requesterName}
-                                                  onChange={e => setRequesterName(e.target.value)}
-                                                  required={true}
-                                                  placeholder={"Requester Name"}
-                                    />
-                                </div>
-                            </div>
-                            <div className="flex flex-col pt-2">
-                                <div className="flex items-center gap-2">
-                                    <InputElement label={"Request Date"} type={"date"} id={requestDate} value={requestDate}
-                                                  onChange={e => setRequestDate(e.target.value.toString().split('T')[0])}
-                                                  required={true}
-                                    />
-                                </div>
-                            </div>
-                            <div className="flex flex-col pt-2">
-                            </div>
-                        </div>
                         <div>
                             <h3 className="text-xl font-semibold mb-4">
                                 <b>Patient Information</b>
@@ -258,20 +203,6 @@ const TransportRequestPage = () => {
                                     </select>
                                 </div>
                             </div>
-
-                            {/*<div className="flex flex-col pt-2">*/}
-                            {/*    <div className="flex items-center gap-2">*/}
-                            {/*        <label className="w-1/4">Pickup Date</label>*/}
-                            {/*        <input*/}
-                            {/*            type="date"*/}
-                            {/*            id="scheduledDate"*/}
-                            {/*            value={pickupDate}*/}
-                            {/*            onChange={(e) => setPickupDate(e.target.value)}*/}
-                            {/*            required*/}
-                            {/*            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"*/}
-                            {/*        />*/}
-                            {/*    </div>*/}
-                            {/*</div>*/}
 
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">

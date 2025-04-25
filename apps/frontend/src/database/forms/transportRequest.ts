@@ -12,8 +12,6 @@ export interface transportRequest {
     pickupDate: string;
     pickupTime: string;
     notes: string;
-    requesterId: number;
-    requestDate: string;
     assignedToId: number;
 }
 
