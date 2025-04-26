@@ -5,7 +5,12 @@ import InputElement from '@/elements/InputElement.tsx';
 import SelectElement from '@/elements/SelectElement.tsx';
 import { Label } from '@/components/ui/label.tsx';
 
-const ImportExportDirectoryPage = () => {
+type ImportExportProps = {
+    jsonRoute: string;
+    csvRoute: string;
+}
+
+const ImportExportDirectoryPage = ({jsonRoute, csvRoute}: ImportExportProps) => {
     const [file, setFile] = useState<File | null>(null);
     const [uploadType, setUploadType] = useState<'Overwrite' | 'Update'>('Update');
     const [downloadType, setDownloadType] = useState<'CSV' | 'JSON'>('CSV');
@@ -40,9 +45,9 @@ const ImportExportDirectoryPage = () => {
 
         try {
             if (file.type === 'text/csv') {
-                await ImportCSV(formData, uploadType);
+                await ImportCSV(csvRoute, formData, uploadType);
             } else {
-                await ImportJSON(formData, uploadType);
+                await ImportJSON(jsonRoute, formData, uploadType);
             }
             // Clear file after successful upload
             setFile(null);
@@ -62,11 +67,11 @@ const ImportExportDirectoryPage = () => {
             let response;
             let blob;
             if (downloadType === 'CSV') {
-                response = await ExportCSV(); // has backend data
+                response = await ExportCSV(csvRoute); // has backend data
                 // download csv
                 blob = new Blob([response], { type: 'text/csv;charset=utf-8;' });
             } else {
-                response = await ExportJSON();
+                response = await ExportJSON(jsonRoute);
                 blob = new Blob([JSON.stringify(response, null, 2)], {
                     type: 'application/json;charset=utf-8;',
                 });

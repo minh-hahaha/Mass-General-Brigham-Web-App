@@ -7,6 +7,8 @@ import {createEdge, deleteEdge, EdgeResponse, getEdges} from '@/database/getEdge
 import SelectElement from '@/elements/SelectElement.tsx';
 import InputElement from "@/elements/InputElement.tsx";
 import { ZoomIn } from 'lucide-react';
+import ImportExportDirectoryPage from "@/routes/ImportExportDirectoryPage.tsx";
+import {ROUTES} from "common/src/constants.ts";
 
 interface MapNode {
     node: myNode;
@@ -65,6 +67,11 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
     const mapNodesRef = useRef(mapNodes);
     let tempNodeID = 0;
     let tempEdgeID = 100;
+
+    const [showImportModal, setShowImportModal] = useState(false);
+
+    const handleOpenImport = () => setShowImportModal(true);
+    const handleCloseImport = () => setShowImportModal(false);
 
 
 
@@ -506,6 +513,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             map.setZoom(hospitalLocation.zoom);
         }
     };
+
     return (
         <>
             <button
@@ -595,7 +603,39 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                         disabled={false}
                     ></MGBButton>
                 </div>
+                <div>
+                    <MGBButton
+                        onClick={() => handleOpenImport()}
+                        children={'Import Export Nodes and Edges'}
+                        variant={'primary'}
+                        disabled={false}
+                    ></MGBButton>
+                </div>
             </div>
+            {showImportModal && (
+                <div
+                    className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center"
+                    onClick={handleCloseImport}
+                >
+                    <div
+                        className="absolute top-20 bg-white rounded-lg shadow-xl w-150 max-w-4xl overflow-hidden"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <button
+                            onClick={handleCloseImport}
+                            className="absolute top-2 right-3 text-gray-600 hover:text-black text-2xl"
+                        >
+                            &times;
+                        </button>
+                        <div className="mt-4">
+                            <h1 className="text-center font-black">Import/Export New Nodes and Edges</h1>
+                        </div>
+                        <div className="h-full overflow-y-auto p-6 -mt-22">
+                            <ImportExportDirectoryPage jsonRoute={ROUTES.NODE_EDGE_JSON} csvRoute={ROUTES.NODE_EDGE_CSV} />
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 };

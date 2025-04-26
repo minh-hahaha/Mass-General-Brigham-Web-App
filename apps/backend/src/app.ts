@@ -65,6 +65,8 @@ app.use(ROUTES.MEDICALDEVICEREQUEST, medicalDeviceRouter);
 app.use(ROUTES.FINDPATH, graphRouter);
 app.use(ROUTES.NODE, nodeRouter);
 app.use(ROUTES.EDGE, edgeRouter);
+app.use(ROUTES.NODE_EDGE_CSV, nodeRouter);
+app.use(ROUTES.NODE_EDGE_JSON, nodeRouter);
 
 app.use(ROUTES.RECENT_ORIGINS, originRouter);
 

@@ -25,6 +25,8 @@ export const ROUTES = {
 
     NODE: '/api/node',
     EDGE: '/api/edge',
+    NODE_EDGE_CSV: '/api/node/csv',
+    NODE_EDGE_JSON: '/api/node/json',
 
     //Map page
     RECENT_ORIGINS: '/api/recentorigins',
