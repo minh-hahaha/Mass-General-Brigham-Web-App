@@ -15,8 +15,6 @@ const CreditsPage = () => {
                 </motion.div>
 
                 <div className='grid grid-cols-1 px-10 gap-8'>
-
-                    {/* Main Stack */}
                     <motion.div
                         className="grid grid-cols-2 gap-4"
                         initial={{ opacity: 0 }}
