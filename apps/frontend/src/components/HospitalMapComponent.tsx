@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { ROUTES } from 'common/src/constants.ts';
 import axios from 'axios';
 import TextToSpeechMapComponent from '@/components/TextToSpeechMapComponent.tsx';
-import { myNode } from 'common/src/classes/classes.ts';
+import {myEdge, myNode} from 'common/src/classes/classes.ts';
 import OverlayComponent from '@/components/OverlayMapComponent.tsx';
 import { GetNode } from '@/database/getDepartmentNode.ts';
 import DisplayPathComponent from '@/components/DisplayPathComponent.tsx';
@@ -81,6 +81,7 @@ function createTextPath(traversalResult: myNode[] | undefined | null): string[] 
         { key: 'CH', dir: new Vector(0, traversalResult[0].y + 50) },
         { key: '20PP', dir: new Vector(traversalResult[0].x + 50, 0) },
         { key: '22PP', dir: new Vector(0, traversalResult[0].y + 50) },
+        { key: 'FK', dir: new Vector(traversalResult[0].x + 50, 0) },
     ];
     const directions = [];
     const startDir = StartDirs.find((value) => traversalResult[0].nodeId.includes(value.key));
@@ -132,8 +133,9 @@ function createTextPath(traversalResult: myNode[] | undefined | null): string[] 
             !traversingFloors ||
             (traversingFloors && nextNode.nodeType !== 'Elevator' && nextNode.nodeType !== 'Stairs')
         ) {
+            const distance = currentNode.distanceTo(nextNode);
             directions.push(
-                `From the ${currentNode.nodeId} ${determineDirection(angle)} until you reach the ${nextNode.nodeId}`
+                `From the ${currentNode.nodeId} ${determineDirection(angle)} for ${distance.toFixed(1)} feet until you reach the ${nextNode.nodeId}`
             );
         }
     }
