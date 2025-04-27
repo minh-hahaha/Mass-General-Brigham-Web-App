@@ -4,62 +4,140 @@ import Member from '../components/Member.tsx';
 import MemberPair from '../components/MemberPair.tsx';
 
 const AboutPage = () => {
-    return(
+    return (
         <div className="bg-gray-200 h-2full max-w-full overflow-x-hidden">
             <div className="grid grid-cols-1 px-24 py-24">
-                <motion.div className='font-semibold text-4xl pb-20'
-                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 2, delay: 0.5}}>
+                <motion.div
+                    className="font-semibold text-4xl pb-20"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 2, delay: 0.5 }}
+                >
                     Meet the Developers of Team C
                 </motion.div>
-                <div className='grid grid-cols-1 px-10 gap-4 transition-[delay-150 duration-300 ease-in-out]'>
+                <div className="grid grid-cols-1 px-10 gap-4 transition-[delay-150 duration-300 ease-in-out]">
 
                     <MemberPair ordinal={0}>
-                        {Member('AdMinh.jpg', 'Minh Ha', 'Lead Software Engineer', 'minh-hahaha')}
-                        {Member('Andrew.png', 'Andrew Melton', 'Assistant Lead Software Engineer', '4ndrew13')}
+                        <Member
+                            image={'AdMinh.jpg'}
+                            name={'Minh Ha'}
+                            title={'Lead Software Engineer'}
+                            github={'minh-hahaha'}
+                        />
+                        <Member
+                            image={'Andrew.png'}
+                            name={'Andrew Melton'}
+                            title={'Assistant Lead Software Engineer'}
+                            github={'4ndrew13'}
+                        />
                     </MemberPair>
 
                     <MemberPair ordinal={1}>
-                        {Member('Pakorn.jpg', 'Pakorn Liengsawangwong', 'Assistant Lead Software Engineer', 'pako490')}
-                        {Member('max.png', 'Max Jeronimo', 'Backend / Databases', 'max-jeronimo')}
+                        <Member
+                            image={'Pakorn.jpg'}
+                            name={'Pakorn Liengsawangwong'}
+                            title={'Assistant Lead Software Engineer'}
+                            github={'pako490'}
+                        />
+                        <Member
+                            image={'max.png'}
+                            name={'Max Jeronimo'}
+                            title={'Backend / Databases'}
+                            github={'max-jeronimo'}
+                        />
                     </MemberPair>
 
                     <MemberPair ordinal={2}>
-                        {Member('Jake.jpg', 'Jake Lariviere', 'Backend / Databases', 'jlariv11')}
-                        {Member('Jack.png', 'Jack Morris', 'Backend / Databases', 'JackMorris1234')}
+                        <Member
+                            image={'Jake.jpg'}
+                            name={'Jake Lariviere'}
+                            title={'Backend / Databases'}
+                            github={'jlariv11'}
+                        />
+                        <Member
+                            image={'Jack.png'}
+                            name={'Jack Morris'}
+                            title={'Backend / Databases'}
+                            github={'JackMorris1234'}
+                        />
                     </MemberPair>
 
                     <MemberPair ordinal={3}>
-                        {Member('Vinam.jpg', 'Vinam Nguyen', 'Algorithms / Project Manager', 'vinamnguyen')}
-                        {Member('Krish.png', 'Krish Patel', 'Algorithms / Scrum Master', 'krishpate1')}
+                        <Member
+                            image={'Vinam.jpg'}
+                            name={'Vinam Nguyen'}
+                            title={'Algorithms / Project Manager'}
+                            github={'vinamnguyen'}
+                        />
+                        <Member
+                            image={'Krish.png'}
+                            name={'Krish Patel'}
+                            title={'Algorithms / Scrum Master'}
+                            github={'krishpate1'}
+                        />
                     </MemberPair>
 
                     <MemberPair ordinal={4}>
-                        {Member('Yael.jpg', 'Yael Whitson', 'Frontend / Documentation Analyst', 'whywhitson')}
-                        {Member('Sean.jpg', 'Haotian Liu', 'Frontend / Product Owner', 'seanliu7081')}
+                        <Member
+                            image={'Yael.jpg'}
+                            name={'Yael Whitson'}
+                            title={'Frontend / Documentation Analyst'}
+                            github={'whywhitson'}
+                        />
+                        <Member
+                            image={'Sean.jpg'}
+                            name={'Haotian Liu'}
+                            title={'Frontend / Product Owner'}
+                            github={'seanliu7081'}
+                        />
                     </MemberPair>
 
                     <MemberPair ordinal={5}>
-                        {Member('kai.png', 'Kai Davidson', 'Team Coach', 'None')}
-                        {Member('wwong2.jpg', 'Wilson Wong', 'Professor', 'None')}
+                        <Member
+                            image={'kai.png'}
+                            name={'Kai Davidson'}
+                            title={'Team Coach'}
+                            github={'None'}
+                        />
+                        <Member
+                            image={'wwong2.jpg'}
+                            name={'Wilson Wong'}
+                            title={'Professor'}
+                            github={'None'}
+                        />
                     </MemberPair>
 
-                    <motion.div className='font-semibold text-4xl pb-20'
-                                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 2, delay: 4}}>
+                    <motion.div
+                        className="font-semibold text-4xl pb-20"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 2, delay: 4 }}
+                    >
                         Special Thanks to:
                     </motion.div>
 
                     <MemberPair ordinal={7}>
-                        {Member('msgLogo.png', 'Brigham and Women\'s Hospital', 'Provided maps and data', 'None')}
-                        {Member('AndrewShinn.jpg', 'Andrew Shinn', 'Brigham and Women\'s Representative', 'None')}
+                        <Member
+                            image={'msgLogo.png'}
+                            name={'Brigham and Women\'s Hospital'}
+                            title={'Provided maps and data'}
+                            github={'None'}
+                        />
+                        <Member
+                            image={'AndrewShinn.jpg'}
+                            name={'Andrew Shinn'}
+                            title={'Brigham and Women\'s Representative'}
+                            github={'None'}
+                        />
                     </MemberPair>
-
                 </div>
-                <div className='pt-8'>
-                    The Brigham & Women’s Hospital maps and data used in this application are copyrighted and provided for the sole use of educational purposes.
+                <div className="pt-8">
+                    The Brigham & Women’s Hospital maps and data used in this application are
+                    copyrighted and provided for the sole use of educational purposes.
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default AboutPage;
