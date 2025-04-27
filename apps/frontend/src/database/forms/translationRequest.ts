@@ -8,7 +8,7 @@ export interface outgoingTranslationRequest {
     employeeId: number;
     // locationId: number;
     language: string;
-    patientName: string;
+    patientId: number;
     typeMeeting: string;
     meetingLink: string;
     department: string;
@@ -33,6 +33,7 @@ export interface incomingTranslationRequest {
         meetingLink: string;
         department: string;
         location: string;
+        patientId: number;
     }
     priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     requestDate: string;
