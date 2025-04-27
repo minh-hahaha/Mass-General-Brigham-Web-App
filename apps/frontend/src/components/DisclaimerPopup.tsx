@@ -1,5 +1,6 @@
 import {motion} from 'framer-motion';
 import MGBButton from "@/elements/MGBButton.tsx";
+import WillyWonga from"@/assets/willyWonga.png";
 
 interface DisclaimerPopupProps {
     onClose: () => void;
@@ -34,8 +35,12 @@ const DisclaimerPopup: React.FC<DisclaimerPopupProps> = ({ onClose }) => {
                             variant={'primary'}
                             disabled={false}
                         >
-                            <div className="font-serif">
-                                I Understand
+                            <div className="flex items-center gap-2 justify-center">
+                                <span>
+                                    I Understand!
+                                </span>
+                                <img src={WillyWonga} alt = "Willy Wonga" className="h-6 w-6"/>
+
                             </div>
                         </MGBButton>
                     </motion.button>
