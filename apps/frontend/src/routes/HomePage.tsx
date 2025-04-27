@@ -10,9 +10,7 @@ const HomePage = () => {
 
     return (
         <>
-            {showDisclaimer && (
-                <DisclaimerPopup onClose={() => setShowDisclaimer(false)} />
-            )}
+
             <section className="h-screen relative bg-[url('/mgbhero.jpeg')] bg-cover bg-center flex flex-col justify-center">
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-black/45 z-0"></div>
@@ -58,6 +56,9 @@ const HomePage = () => {
                     </div>
                 </motion.div>
             </section>
+            {showDisclaimer && (
+                <DisclaimerPopup onClose={() => setShowDisclaimer(false)} />
+            )}
         </>
     );
 };
