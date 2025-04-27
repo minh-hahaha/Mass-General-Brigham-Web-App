@@ -29,6 +29,7 @@ export class myNode {
         this.name = name;
         this.roomNumber = roomNumber;
     }
+
 }
 
 export class myEdge {
