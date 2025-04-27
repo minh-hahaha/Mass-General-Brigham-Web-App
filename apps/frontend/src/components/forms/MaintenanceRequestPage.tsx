@@ -44,7 +44,6 @@ const MaintenanceRequestPage = () => {
             maintenanceDescription,
             priority,
             maintenanceHospital,
-            maintenanceLocation,
             maintenanceTime,
             employeeId,
             employeeName,

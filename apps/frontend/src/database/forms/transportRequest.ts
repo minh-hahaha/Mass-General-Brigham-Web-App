@@ -7,8 +7,6 @@ export interface transportRequest {
     patientName: string;
     transportType: hospitalTransportType;
     priority: string;
-    transportType: 'Ambulance' | 'Helicopter' | 'Medical Van' | 'Other';
-    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     completeByDate: string;
     pickupLocation: string;
     dropOffLocation: string;
@@ -25,7 +23,6 @@ export interface incomingRequest {
         pickupLocation: string;
         dropOffLocation: string;
         servReqId: number;
-        transportType: 'Ambulance' | 'Helicopter' | 'Medical Van' | 'Other';
         completeByDate:  string;
         transportType: hospitalTransportType;
     };

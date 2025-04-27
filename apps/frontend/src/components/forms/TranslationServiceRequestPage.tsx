@@ -16,6 +16,7 @@ import SelectFormElement from "@/elements/SelectFormElement.tsx";
 const TranslationServiceRequestPage = () => {
     const [employeeName, setEmployeeName] = useState('');
     const [employeeId, setEmployeeId] = useState<number>(0);
+    const [patientId, setPatientId] = useState<number>(0);
     const [patientName, setPatientName] = useState('');
     const [patientLanguage, setPatientLanguage] = useState('');
     const [priority, setPriority] = useState('');
@@ -42,12 +43,12 @@ const TranslationServiceRequestPage = () => {
 
         //TODO: add LOCATION
         const newRequest: outgoingTranslationRequest = {
+            patientId: patientId,
             employeeName: employeeName,
             employeeId: employeeId,
             priority: priority as priorityType,
             location: location as mgbHospitalType,
             language: patientLanguage,
-            patientName: patientName,
             duration: duration,
             typeMeeting: typeMeeting as meetingType,
             date: date,
@@ -125,14 +126,14 @@ const TranslationServiceRequestPage = () => {
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center gap-2">
                                     <InputElement
-                                        id="patientName"
-                                        name="patientName"
-                                        label="Patient Name: "
-                                        placeholder="Please enter the patient name"
+                                        id="patientId"
+                                        name="patientId"
+                                        label="Patient Id: "
+                                        placeholder="Please enter the patient id"
                                         required={true}
-                                        type="text"
-                                        value={patientName}
-                                        onChange={(e) => setPatientName(e.target.value)}
+                                        type="number"
+                                        value={patientId}
+                                        onChange={(e) => setPatientId(Number(e.target.value as string))}
                                     />
                                 </div>
                                 <SelectFormElement

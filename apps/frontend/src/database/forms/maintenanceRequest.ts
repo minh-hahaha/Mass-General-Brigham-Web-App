@@ -4,6 +4,7 @@ import axios from 'axios';
 export interface maintenanceRequest {
     // Maintenance Information
     maintenanceType: string;
+    maintenanceDescription: string;
 
     // Maintenance Details
     priority: 'Low' | 'Medium' | 'High' | 'Emergency';
