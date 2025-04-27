@@ -5,7 +5,6 @@ export type mgbHospitalType = 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot
 export const mgbHospitals = ['Chestnut Hill', '20 Patriot Place', '22 Patriot Place', 'Faulkner Hospital'];
 export type priorityType = 'Low' | 'Medium' | 'High' | 'Emergency';
 export const priorityArray = ['Low', 'Medium', 'High', 'Emergency'];
-
 export type statusType = 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
 
 //Maintenance Request
@@ -106,4 +105,27 @@ export type meetingType = 'Remote (Online)' | 'On-site (In-Person)';
 export const meetingTypeArray = ['Remote (Online)', 'On-site (In-Person)'];
 //Transport Request
 
-export type transportType = 'Ambulance' | 'Helicopter' | 'Medical Van';
+export type hospitalTransportType =
+    | "Ambulance"
+    | "Helicopter"
+    | "Medical Van"
+    | "Critical Care Transport"
+    | "Neonatal Transport"
+    | "Mobile ICU"
+    | "Bariatric Transport"
+    | "Organ Transport Vehicle"
+    | "Patient Transfer Shuttle"
+    | "Airplane Medical Transport";
+
+const hospitalTransportArray = [
+    "Ambulance",
+    "Helicopter",
+    "Medical Van",
+    "Critical Care Transport",
+    "Neonatal Transport",
+    "Mobile ICU",
+    "Bariatric Transport",
+    "Organ Transport Vehicle",
+    "Patient Transfer Shuttle",
+    "Airplane Medical Transport"
+];

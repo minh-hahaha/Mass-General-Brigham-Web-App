@@ -3,6 +3,8 @@ import MGBButton from '../../elements/MGBButton.tsx';
 import InputElement from '../../elements/InputElement.tsx';
 import ConfirmMessageComponent from '../ConfirmMessageComponent.tsx'; // Import the new component
 import { SubmitTransportRequest, transportRequest} from '../../database/forms/transportRequest.ts';
+import {hospitalTransportType, priorityType, mgbHospitals} from '@/database/forms/formTypes.ts'
+
 // Component definition
 const TransportRequestPage = () => {
     const loggedIn = sessionStorage.getItem('loggedIn');
@@ -11,8 +13,8 @@ const TransportRequestPage = () => {
     const [patientId, setPatientId] = useState(0);
     const [patientName, setPatientName] = useState('');
     const [transportType, setTransportType] =
-        useState<transportRequest['transportType']>('Ambulance');
-    const [priority, setPriority] = useState<transportRequest['priority']>('Low');
+        useState<hospitalTransportType>('Ambulance');
+    const [priority, setPriority] = useState<priorityType>('Low');
     const [pickupLocation, setPickupLocation] = useState('');
     const [dropOffLocation, setDropOffLocation] = useState('');
     const [pickupDate, setPickupDate] = useState(new Date().toISOString().split('T')[0]);
@@ -58,11 +60,6 @@ const TransportRequestPage = () => {
         setAssignedToId(0);
     };
 
-    // //Data is sent to the backend
-    // async function DisplayTransportRequest(request: transportRequest) {
-    //     await axios.post(ROUTES.PATIENTTRANSPORT, request);
-    // }
-
     useEffect(() => {
         if (showConfirmation) {
             alert("Request Submitted");
@@ -73,8 +70,6 @@ const TransportRequestPage = () => {
     const handleConfirmationClose = () => {
         setShowConfirmation(false);
     };
-
-    const mgbLocations = ['Chestnut Hill', '20 Patriot Place', '22 Patriot Place', 'Faulkner Hospital'];
 
     return (
         // flex row container
@@ -169,7 +164,7 @@ const TransportRequestPage = () => {
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >
                                         <option value="">Select pickup location</option>
-                                        {mgbLocations.map((location) => (
+                                        {mgbHospitals.map((location) => (
                                             <option key={`pickup-${location}`} value={location}>
                                                 {location}
                                             </option>
@@ -190,7 +185,7 @@ const TransportRequestPage = () => {
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >
                                         <option value="">Select destination</option>
-                                        {mgbLocations.map((location) => (
+                                        {mgbHospitals.map((location) => (
                                             <option key={`dest-${location}`} value={location}>
                                                 {location}
                                             </option>
