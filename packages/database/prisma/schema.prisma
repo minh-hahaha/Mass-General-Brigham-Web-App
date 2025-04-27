@@ -50,13 +50,11 @@ model ServiceRequest {
 }
 
 model MaintenanceRequest {
-  servMaintenanceId      Int            @id
-  maintenanceType        String
-  maintenanceDescription String
-  maintenanceHospital    String
-  maintenanceLocation    String
-  maintenanceTime        DateTime
-  servRequestId          ServiceRequest @relation(name: "MaintenanceRequest", fields: [servMaintenanceId], references: [requestId])
+  servMaintenanceId   Int            @id
+  maintenanceType     String
+  maintenanceHospital String
+  maintenanceTime     DateTime
+  servRequestId       ServiceRequest @relation(name: "MaintenanceRequest", fields: [servMaintenanceId], references: [requestId])
 }
 
 model MedicalDeviceRequest {

@@ -4,12 +4,10 @@ import axios from 'axios';
 export interface maintenanceRequest {
     // Maintenance Information
     maintenanceType: string;
-    maintenanceDescription: string;
 
     // Maintenance Details
     priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     maintenanceHospital: 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital'
-    maintenanceLocation: string;
     maintenanceTime: string;
 
     // Requester Information
@@ -33,9 +31,7 @@ export interface incomingMaintenanceRequest {
     maintenanceRequest: {
         servMaintenanceId: number;
         maintenanceType: string;
-        maintenanceDescription: string;
         maintenanceHospital: 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital'
-        maintenanceLocation: string;
         maintenanceTime: string;
     }
 }
