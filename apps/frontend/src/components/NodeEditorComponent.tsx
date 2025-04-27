@@ -151,9 +151,11 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
     }
 
     const fetchDirectoryList = async () => {
+        console.log('Fetching directories');
         try {
             const data = await getDirectory(Number(currentBuilding));
             setDepartmentOptions(data.map(dir => ({ deptName: dir.deptName, deptId: dir.deptId })));
+            console.log("Finished")
         } catch (error) {
             console.error('Error fetching building names:', error);
         }
@@ -184,8 +186,16 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
             const deptIds = tags.map(tag => departmentOptions.find(dept => dept.deptName === tag)?.deptId.toString());
             if(deptIds[0]){
                 currentNode.attachedDepartments = deptIds as string[];
+                //remove the set departments from any other nodes: one department has one node
+                mapNodes.forEach(node => {
+                    for(const tag of tags){
+                        const deptId = departmentOptions.find(dept => dept.deptName === tag)?.deptId.toString();
+                        if(deptId && node.node.nodeId !== currentNode.node.nodeId && node.attachedDepartments.includes(deptId)){
+                            node.attachedDepartments = node.attachedDepartments.filter(t => t !== deptId);
+                        }
+                    }
+                })
             }
-            //TODO: remove the set departments from any other nodes: one department has one node
         }
     }, [tags]);
 
@@ -204,8 +214,6 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
     }, [clickedNode]);
 
     useEffect(() => {
-        // This useEffect is called twice on startup
-        // This stops the code from executing both times
         let isCancelled = false;
 
         console.log('Floor changed to:', currentFloorId);
@@ -221,48 +229,61 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
             console.error('Building data not found');
             return;
         }
+
         setCurrentBuilding(bldgData.buildingId);
-        const newNodes: MapNode[] = [];
-
-        // Make sure to await fetchDirectoryList before proceeding
-        const fetchDirectoryAndNodes = async () => {
-            try {
-                await fetchDirectoryList(); // Wait for directory list to be set first
-                const nodeResponses = await getNodes(bldgData.floor, bldgData.buildingId);
-                if (isCancelled) return;
-
-                nodeResponses.forEach((nodeResponse) => {
-                    newNodes.push(mapNodeFromNodeResponse(nodeResponse));
-                });
-
-                const edgeResponses = await getEdges(bldgData.floor, bldgData.buildingId);
-                if (isCancelled || !edgeResponses) return;
-
-                edgeResponses.forEach((edgeResponse) => {
-                    const fromNode = newNodes.find(
-                        (node) => node.node.nodeId === edgeResponse.from
-                    );
-                    const toNode = newNodes.find((node) => node.node.nodeId === edgeResponse.to);
-                    if (fromNode && toNode) {
-                        createMapEdge(fromNode, toNode);
-                    }
-                });
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchDirectoryAndNodes();
 
         return () => {
-            // cancel ongoing async logic if effect re-runs
             isCancelled = true;
         };
     }, [currentFloorId]);
 
     useEffect(() => {
-        fetchDirectoryList();
-    }, [currentBuilding])
+        if (!currentBuilding) return; // Skip if empty string
+        let isCancelled = false;
+
+        async function fetchDirectoryAndNodes() {
+            try {
+                await fetchDirectoryList();
+                if (isCancelled) return;
+
+                const bldgData = availableFloors.find((f) => f.id === currentFloorId);
+                if (!bldgData) {
+                    console.error('Building data not found');
+                    return;
+                }
+
+                const nodeResponses = await getNodes(bldgData.floor, bldgData.buildingId);
+                const newNodes: MapNode[] = nodeResponses.map(mapNodeFromNodeResponse);
+
+                const edgeResponses = await getEdges(bldgData.floor, bldgData.buildingId);
+                if (isCancelled || !edgeResponses) return;
+
+                edgeResponses.forEach((edgeResponse) => {
+                    const fromNode = newNodes.find((node) => node.node.nodeId === edgeResponse.from);
+                    const toNode = newNodes.find((node) => node.node.nodeId === edgeResponse.to);
+                    if (fromNode && toNode) {
+                        createMapEdge(fromNode, toNode);
+                    }
+                });
+
+                setMapNodes(newNodes);
+            } catch (error) {
+                console.error('Error fetching directory/nodes/edges:', error);
+            }
+        }
+
+        fetchDirectoryAndNodes();
+
+        return () => {
+            isCancelled = true;
+        };
+    }, [currentBuilding]);
+
+
+
+    // useEffect(() => {
+    //     fetchDirectoryList();
+    // }, [currentBuilding])
 
 
     useEffect(() => {
@@ -337,6 +358,8 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                 deptNames.push(dept.deptId.toString());
             }
         }
+        console.log(departmentOptionsRef.current);
+        console.log("jsdawsfioj;asfgrvrknjdsfjkn;sAEFnjk");
         const mapNode: MapNode = {
             node: new myNode(
                 node.nodeId,
@@ -351,7 +374,6 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
             drawnNode: createDrawnNode(new google.maps.LatLng(node.x, node.y)),
             attachedDepartments: deptNames
         };
-        console.log(deptNames);
         return createMapNode(mapNode);
     }
 

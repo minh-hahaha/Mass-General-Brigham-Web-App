@@ -13,7 +13,7 @@ const TagFilterBox = ({selectTitle, tags, setTags, options}: TagFilterBoxProps) 
 
     // Handle the input change
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setTags((prevTags) => [...prevTags, e.target.value]);
+    setTags((prevTags) => [...prevTags.filter(t => t !== e.target.value), e.target.value]);
     };
 
     // Delete tag
@@ -31,7 +31,7 @@ const TagFilterBox = ({selectTitle, tags, setTags, options}: TagFilterBoxProps) 
                     >
                         <span className="mr-2">{tag}</span>
                         <button
-                            className="text-red-500 font-bold"
+                            className="text-red-600 font-bold"
                             onClick={() => handleDeleteTag(tag)}
                         >
                             X
