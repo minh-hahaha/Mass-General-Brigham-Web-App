@@ -1,17 +1,20 @@
 import {useMap, useMapsLibrary} from '@vis.gl/react-google-maps';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, SetStateAction, useEffect, useRef, useState } from 'react';
 import { myEdge, myNode } from 'common/src/classes/classes.ts';
 import MGBButton from '@/elements/MGBButton.tsx';
-import {createNode, deleteNode, getNodes, NodeResponse} from '@/database/getNode.ts';
-import {createEdge, deleteEdge, EdgeResponse, getEdges} from '@/database/getEdges.ts';
+import { createNode, deleteNode, getNodes, NodeResponse } from '@/database/getNode.ts';
+import { createEdge, deleteEdge, EdgeResponse, getEdges } from '@/database/getEdges.ts';
 import SelectElement from '@/elements/SelectElement.tsx';
-import InputElement from "@/elements/InputElement.tsx";
+import InputElement from '@/elements/InputElement.tsx';
 import { ZoomIn } from 'lucide-react';
-import ImportExportDirectoryPage from "@/routes/ImportExportDirectoryPage.tsx";
-import {ROUTES} from "common/src/constants.ts";
+import ImportExportDirectoryPage from '@/routes/ImportExportDirectoryPage.tsx';
+import { ROUTES } from 'common/src/constants.ts';
+import TagFilterBox from '@/elements/TagFilterBox.tsx';
+import {getDirectory} from "@/database/gettingDirectory.ts";
 
 interface MapNode {
     node: myNode;
+    attachedDepartments: string[];
     drawnNode: google.maps.Marker;
 }
 
@@ -34,24 +37,57 @@ interface Floor {
 // All available floors across buildings
 const availableFloors: Floor[] = [
     // Chestnut Hill
-    { id: "CH-1", floor: "1", buildingId: "1", buildingName: "Chestnut Hill",svgPath: "/CH01.svg" },
+    {
+        id: 'CH-1',
+        floor: '1',
+        buildingId: '1',
+        buildingName: 'Chestnut Hill',
+        svgPath: '/CH01.svg',
+    },
     // 20 Patriot Place
-    { id: "PP-1", floor: "1", buildingId: "2", buildingName: "Patriot Place", svgPath: "/PP01.svg" },
-    { id: "PP-2", floor: "2", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP02.svg" },
-    { id: "PP-3", floor: "3", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP03.svg" },
-    { id: "PP-4", floor: "4", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP04.svg" },
+    {
+        id: 'PP-1',
+        floor: '1',
+        buildingId: '2',
+        buildingName: 'Patriot Place',
+        svgPath: '/PP01.svg',
+    },
+    {
+        id: 'PP-2',
+        floor: '2',
+        buildingId: '2',
+        buildingName: 'Patriot Place',
+        svgPath: '/PP02.svg',
+    },
+    {
+        id: 'PP-3',
+        floor: '3',
+        buildingId: '2',
+        buildingName: 'Patriot Place',
+        svgPath: '/PP03.svg',
+    },
+    {
+        id: 'PP-4',
+        floor: '4',
+        buildingId: '2',
+        buildingName: 'Patriot Place',
+        svgPath: '/PP04.svg',
+    },
 
-    { id: "FK-1", floor: "1", buildingId: "3", buildingName: "Faulkner Hospital",svgPath: "/FK01.svg" },
-
+    {
+        id: 'FK-1',
+        floor: '1',
+        buildingId: '3',
+        buildingName: 'Faulkner Hospital',
+        svgPath: '/FK01.svg',
+    },
 ];
 
 interface Props {
     currentFloorId: string;
 }
 
-
-
-const NodeEditorComponent = ({currentFloorId}:Props) => {
+const NodeEditorComponent = ({ currentFloorId }: Props) => {
     const map = useMap();
     const drawingLibrary = useMapsLibrary('drawing');
     let drawingManager: google.maps.drawing.DrawingManager;
@@ -68,6 +104,11 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
     let tempNodeID = 0;
     let tempEdgeID = 100;
 
+    const [currentBuilding, setCurrentBuilding] = useState<string>('');
+    const [departmentOptions, setDepartmentOptions] = useState<{ deptName: string, deptId: number }[]>([]);
+    const departmentOptionsRef = useRef(departmentOptions);
+    const [tags, setTags] = useState<string[]>([]);
+
     const [showImportModal, setShowImportModal] = useState(false);
 
     const handleOpenImport = () => setShowImportModal(true);
@@ -80,21 +121,26 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         icon: {
             url: './minh ha icon.png',
             scaledSize: new google.maps.Size(60, 60),
-        }
-    }
+        },
+    };
 
     const edgeProps = {
-        zIndex: 0
-    }
-
-
+        zIndex: 0,
+    };
 
     // Node Property Use States
-    type NodeType = 'Stairs' | 'Elevator' | 'Room' | 'Hallway' | 'Parking Lot' | 'Road' | 'Door' | 'Hallway Intersection'
+    type NodeType =
+        | 'Stairs'
+        | 'Elevator'
+        | 'Room'
+        | 'Hallway'
+        | 'Parking Lot'
+        | 'Road'
+        | 'Door'
+        | 'Hallway Intersection';
     const [nodeType, setNodeType] = useState<NodeType>('Stairs');
     const [roomNumber, setRoomNumber] = useState<string | null>(null);
     const [nodeName, setNodeName] = useState<string>('Node');
-
 
     function incrementTempNodeID(): number {
         return tempNodeID++;
@@ -104,6 +150,18 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         return ++tempEdgeID;
     }
 
+    const fetchDirectoryList = async () => {
+        try {
+            const data = await getDirectory(Number(currentBuilding));
+            setDepartmentOptions(data.map(dir => ({ deptName: dir.deptName, deptId: dir.deptId })));
+        } catch (error) {
+            console.error('Error fetching building names:', error);
+        }
+    };
+
+    useEffect(() => {
+        departmentOptionsRef.current = departmentOptions;
+    }, [departmentOptions]);
     useEffect(() => {
         modeRef.current = mode;
     }, [mode]);
@@ -121,8 +179,33 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
     }, [clickedEdge]);
 
     useEffect(() => {
+        const currentNode = getCurrentNode();
+        if(currentNode){
+            const deptIds = tags.map(tag => departmentOptions.find(dept => dept.deptName === tag)?.deptId.toString());
+            if(deptIds[0]){
+                currentNode.attachedDepartments = deptIds as string[];
+            }
+            //TODO: remove the set departments from any other nodes: one department has one node
+        }
+    }, [tags]);
+
+    useEffect(() => {
+        const currentNode = getCurrentNode();
+        if(currentNode){
+            //const deptNames = departmentOptionsRef.current.map(dept => currentNode.attachedDepartments.includes(dept.deptId.toString()) ? dept.deptName : '').filter(i => i !== '');
+            const deptNames: string[] = [];
+            for (const dept of departmentOptionsRef.current) {
+                if(currentNode.attachedDepartments.includes(dept.deptId.toString())){
+                    deptNames.push(dept.deptName);
+                }
+            }
+            setTags(deptNames);
+        }
+    }, [clickedNode]);
+
+    useEffect(() => {
         // This useEffect is called twice on startup
-        // This stops the code from executing both time
+        // This stops the code from executing both times
         let isCancelled = false;
 
         console.log('Floor changed to:', currentFloorId);
@@ -138,36 +221,38 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             console.error('Building data not found');
             return;
         }
-
+        setCurrentBuilding(bldgData.buildingId);
         const newNodes: MapNode[] = [];
 
-        getNodes(bldgData.floor, bldgData.buildingId)
-            .then((nodeResponses) => {
+        // Make sure to await fetchDirectoryList before proceeding
+        const fetchDirectoryAndNodes = async () => {
+            try {
+                await fetchDirectoryList(); // Wait for directory list to be set first
+                const nodeResponses = await getNodes(bldgData.floor, bldgData.buildingId);
                 if (isCancelled) return;
 
                 nodeResponses.forEach((nodeResponse) => {
                     newNodes.push(mapNodeFromNodeResponse(nodeResponse));
                 });
 
-                //setMapNodes(newNodes);
-
-                return getEdges(bldgData.floor, bldgData.buildingId);
-            })
-            .then((edgeResponses) => {
+                const edgeResponses = await getEdges(bldgData.floor, bldgData.buildingId);
                 if (isCancelled || !edgeResponses) return;
 
                 edgeResponses.forEach((edgeResponse) => {
                     const fromNode = newNodes.find(
                         (node) => node.node.nodeId === edgeResponse.from
                     );
-                    const toNode = newNodes.find(
-                        (node) => node.node.nodeId === edgeResponse.to
-                    );
+                    const toNode = newNodes.find((node) => node.node.nodeId === edgeResponse.to);
                     if (fromNode && toNode) {
                         createMapEdge(fromNode, toNode);
                     }
                 });
-            });
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchDirectoryAndNodes();
 
         return () => {
             // cancel ongoing async logic if effect re-runs
@@ -175,12 +260,15 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         };
     }, [currentFloorId]);
 
+    useEffect(() => {
+        fetchDirectoryList();
+    }, [currentBuilding])
+
 
     useEffect(() => {
-        if(!clickedNode)
-            return;
-        const currentNode = mapNodes.find(node => node.node.nodeId === clickedNode);
-        if(currentNode){
+        if (!clickedNode) return;
+        const currentNode = mapNodes.find((node) => node.node.nodeId === clickedNode);
+        if (currentNode) {
             currentNode.node.nodeType = nodeType;
             currentNode.node.name = nodeName;
             currentNode.node.roomNumber = roomNumber !== '' ? roomNumber : null;
@@ -200,59 +288,75 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 ],
             },
             markerOptions: nodeProps,
-            polylineOptions: edgeProps
+            polylineOptions: edgeProps,
         });
         drawingManager.setMap(map);
-        google.maps.event.addListener(drawingManager, 'overlaycomplete', (event: google.maps.drawing.OverlayCompleteEvent) => {
-            if (event.type === google.maps.drawing.OverlayType.POLYLINE) {
-                const polyline = event.overlay as google.maps.Polyline;
-                const path = polyline.getPath().getArray();
-                const nodes = [];
-                for (let i = 0; i < path.length; i++) {
-                    nodes.push(mapNodeFromPosition(path[i]));
-                    if (i !== 0) {
-                        createMapEdge(nodes[i - 1], nodes[i]);
+        google.maps.event.addListener(
+            drawingManager,
+            'overlaycomplete',
+            (event: google.maps.drawing.OverlayCompleteEvent) => {
+                if (event.type === google.maps.drawing.OverlayType.POLYLINE) {
+                    const polyline = event.overlay as google.maps.Polyline;
+                    const path = polyline.getPath().getArray();
+                    const nodes = [];
+                    for (let i = 0; i < path.length; i++) {
+                        nodes.push(mapNodeFromPosition(path[i]));
+                        if (i !== 0) {
+                            createMapEdge(nodes[i - 1], nodes[i]);
+                        }
                     }
+                    polyline.setMap(null);
+                    drawingManager.setDrawingMode(null);
+                } else if (event.type === google.maps.drawing.OverlayType.MARKER) {
+                    const marker = event.overlay as google.maps.Marker;
+                    if (!marker) return;
+                    mapNodeFromMarker(marker);
                 }
-                polyline.setMap(null);
-                drawingManager.setDrawingMode(null);
-            }else if(event.type === google.maps.drawing.OverlayType.MARKER){
-                const marker = event.overlay as google.maps.Marker;
-                if(!marker)
-                    return;
-                mapNodeFromMarker(marker);
             }
-        });
+        );
     }, [map]);
 
-    function createDrawnNode(position: google.maps.LatLng){
+    const getCurrentNode = () => {
+        return mapNodes.find((node) => node.node.nodeId === clickedNode);
+    }
+
+    function createDrawnNode(position: google.maps.LatLng) {
         return new google.maps.Marker({
             ...nodeProps,
             position: position,
-            map: map
+            map: map,
         });
     }
 
     // Creates the map node from a node response
     function mapNodeFromNodeResponse(node: NodeResponse) {
-           const mapNode: MapNode = {
-               node: new myNode(
-                   node.nodeId,
-                   node.x,
-                   node.y,
-                   node.floor,
-                   node.nodeType,
-                   node.buildingId,
-                   node.name,
-                   node.roomNumber
-               ),
-               drawnNode: createDrawnNode(new google.maps.LatLng(node.x, node.y)),
-           }
+        //const deptNames = departmentOptionsRef.current.map(dept => node.departments.includes(dept.deptId.toString()) ? dept.deptName : '').filter(i => i !== '');
+        const deptNames: string[] = [];
+        for (const dept of departmentOptionsRef.current) {
+            if(node.departments.includes(dept.deptId.toString())){
+                deptNames.push(dept.deptId.toString());
+            }
+        }
+        const mapNode: MapNode = {
+            node: new myNode(
+                node.nodeId,
+                node.x,
+                node.y,
+                node.floor,
+                node.nodeType,
+                node.buildingId,
+                node.name,
+                node.roomNumber
+            ),
+            drawnNode: createDrawnNode(new google.maps.LatLng(node.x, node.y)),
+            attachedDepartments: deptNames
+        };
+        console.log(deptNames);
         return createMapNode(mapNode);
     }
 
     // Creates a map node from a position
-    function mapNodeFromPosition(position: google.maps.LatLng){
+    function mapNodeFromPosition(position: google.maps.LatLng) {
         const mapNode: MapNode = {
             node: new myNode(
                 incrementTempNodeID().toString(),
@@ -265,12 +369,13 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 null
             ),
             drawnNode: createDrawnNode(position),
-        }
+            attachedDepartments: []
+        };
         return createMapNode(mapNode);
     }
 
     // Creates a map node from a marker
-    function mapNodeFromMarker(marker: google.maps.Marker){
+    function mapNodeFromMarker(marker: google.maps.Marker) {
         const mapNode: MapNode = {
             node: new myNode(
                 incrementTempNodeID().toString(),
@@ -283,7 +388,8 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 null
             ),
             drawnNode: marker,
-        }
+            attachedDepartments: []
+        };
         return createMapNode(mapNode);
     }
 
@@ -294,28 +400,34 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         );
         google.maps.event.addListener(mapNode.drawnNode, 'drag', (e: google.maps.MapMouseEvent) => {
             const loc = e.latLng;
-            if(loc){
+            if (loc) {
                 mapEdgesRef.current.forEach((edge) => {
-                    if(edge.from.node.nodeId === mapNode.node.nodeId || edge.to.node.nodeId === mapNode.node.nodeId ) {
+                    if (
+                        edge.from.node.nodeId === mapNode.node.nodeId ||
+                        edge.to.node.nodeId === mapNode.node.nodeId
+                    ) {
                         const tempLoc: google.maps.LatLngLiteral = {
                             lat: mapNode.node.x,
-                            lng: mapNode.node.y
-                        }
+                            lng: mapNode.node.y,
+                        };
                         const EPSILON = 1e-6;
-                        const indexOfPathCoord = edge.drawnEdge.getPath().getArray().findIndex(
-                            ll =>
-                                Math.abs(ll.lat() - tempLoc.lat) < EPSILON &&
-                                Math.abs(ll.lng() - tempLoc.lng) < EPSILON
-                        );
+                        const indexOfPathCoord = edge.drawnEdge
+                            .getPath()
+                            .getArray()
+                            .findIndex(
+                                (ll) =>
+                                    Math.abs(ll.lat() - tempLoc.lat) < EPSILON &&
+                                    Math.abs(ll.lng() - tempLoc.lng) < EPSILON
+                            );
                         if (indexOfPathCoord !== -1) {
                             edge.drawnEdge.getPath().setAt(indexOfPathCoord, loc);
                         }
                     }
-                })
+                });
                 mapNode.node.x = loc.lat();
                 mapNode.node.y = loc.lng();
             }
-        })
+        });
         setMapNodes((prev) => [...prev, mapNode]);
         return mapNode;
     }
@@ -326,7 +438,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         if (!startPos || !endPos) {
             return;
         }
-        if(startPos.equals(endPos)){
+        if (startPos.equals(endPos)) {
             return;
         }
         if (
@@ -348,7 +460,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 ...edgeProps,
                 map: map,
                 path: [startPos, endPos],
-            })
+            }),
         };
         setMapEdges((prev) => [...prev, mapEdge]);
     }
@@ -364,25 +476,30 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
     }
 
     function removeEdgesFromNode(node: MapNode) {
-        const toRemove:number[] = [];
+        const toRemove: number[] = [];
         mapEdgesRef.current.forEach((edge) => {
-            if(edge.from.node.nodeId === node.node.nodeId || edge.to.node.nodeId === node.node.nodeId) {
+            if (
+                edge.from.node.nodeId === node.node.nodeId ||
+                edge.to.node.nodeId === node.node.nodeId
+            ) {
                 edge.drawnEdge.setMap(null);
                 toRemove.push(edge.edge.edgeId);
             }
         });
-        setMapEdges(mapEdgesRef.current.filter(edge => !toRemove.includes(edge.edge.edgeId)));
+        setMapEdges(mapEdgesRef.current.filter((edge) => !toRemove.includes(edge.edge.edgeId)));
     }
 
     function clickNode(nodeId: string) {
         const toNode = mapNodesRef.current.find((node) => node.node.nodeId === nodeId);
-        const fromNode = mapNodesRef.current.find((node) => node.node.nodeId === clickedNodeRef.current);
+        const fromNode = mapNodesRef.current.find(
+            (node) => node.node.nodeId === clickedNodeRef.current
+        );
         if (toNode) {
             setClickedNode(nodeId);
             setNodeType(toNode.node.nodeType as NodeType);
             setNodeName(toNode.node.name);
             setRoomNumber(toNode.node.roomNumber);
-            if(fromNode && modeRef.current === 'Edge') {
+            if (fromNode && modeRef.current === 'Edge') {
                 createMapEdge(fromNode, toNode);
                 setClickedNode(null);
             }
@@ -390,16 +507,16 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
     }
 
     const generateCustomId = (node: myNode) => {
-        const floorPart = "Floor" + currentFloorId.charAt(currentFloorId.length - 1);
+        const floorPart = 'Floor' + currentFloorId.charAt(currentFloorId.length - 1);
         const typePart = node.nodeType.charAt(0).toUpperCase() + node.nodeType.slice(1);
-        const roomPart = (node.roomNumber || "");
-        return `${currentFloorId.substring(0,2)}${floorPart}${typePart}${roomPart}`;
+        const roomPart = node.roomNumber || '';
+        return `${currentFloorId.substring(0, 2)}${floorPart}${typePart}${roomPart}`;
     };
 
     async function saveNodesAndEdges() {
         const nodes: NodeResponse[] = [];
         const usedNodeIds = new Set<string>();
-        const currentFloor = availableFloors.find(f => f.id === currentFloorId);
+        const currentFloor = availableFloors.find((f) => f.id === currentFloorId);
 
         for (const node of mapNodes) {
             const baseId = generateCustomId(node.node);
@@ -413,7 +530,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
 
             node.node.nodeId = newId;
             node.node.floor = currentFloorId.charAt(currentFloorId.length - 1);
-            node.node.buildingId = currentFloor ? currentFloor.buildingId : "1";
+            node.node.buildingId = currentFloor ? currentFloor.buildingId : '1';
             usedNodeIds.add(newId);
             const sendNode: NodeResponse = {
                 nodeId: node.node.nodeId,
@@ -424,10 +541,16 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 nodeType: node.node.nodeType,
                 name: node.node.name,
                 roomNumber: node.node.roomNumber,
+                departments: node.attachedDepartments,
             };
             nodes.push(sendNode);
         }
-        await createNode(nodes, true, currentFloor ? currentFloor.floor : "1", currentFloor ? currentFloor.buildingId : "1");
+        await createNode(
+            nodes,
+            true,
+            currentFloor ? currentFloor.floor : '1',
+            currentFloor ? currentFloor.buildingId : '1'
+        );
         for (const edge of mapEdges) {
             const sendEdge: EdgeResponse = {
                 edgeId: null, // Let the database auto generate edge ids
@@ -440,24 +563,28 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
     }
 
     useEffect(() => {
-        if(!map)
-            return;
-        const listener = google.maps.event.addListener(map, 'click', (e: google.maps.MapMouseEvent) => {
-            if(modeRef.current === 'Node') {
-                console.log("Hello")
-                setClickedNode(null);
+        if (!map) return;
+        const listener = google.maps.event.addListener(
+            map,
+            'click',
+            (e: google.maps.MapMouseEvent) => {
+                if (modeRef.current === 'Node') {
+                    setClickedNode(null);
+                }
             }
-        })
-        return () => {google.maps.event.removeListener(listener)}
+        );
+        return () => {
+            google.maps.event.removeListener(listener);
+        };
     }, [map]);
 
-    const HospitalLocations: Record<string, {lat: number, lng: number, zoom: number}> = {
-        'Chestnut Hill': {lat: 42.325988, lng: -71.149567, zoom: 18},
-        'Patriot Place': {lat: 42.092617, lng: -71.266492, zoom: 18},
-        'Faulkner Hospital': {lat: 42.301684739524546, lng: -71.12816396084828, zoom: 18}
+    const HospitalLocations: Record<string, { lat: number; lng: number; zoom: number }> = {
+        'Chestnut Hill': { lat: 42.325988, lng: -71.149567, zoom: 18 },
+        'Patriot Place': { lat: 42.092617, lng: -71.266492, zoom: 18 },
+        'Faulkner Hospital': { lat: 42.301684739524546, lng: -71.12816396084828, zoom: 18 },
     };
 
-    const loc = availableFloors.find(f => f.id === currentFloorId)?.buildingName || null;
+    const loc = availableFloors.find((f) => f.id === currentFloorId)?.buildingName || null;
     const handleZoomToHospital = () => {
         if (!map || !loc) return;
 
@@ -538,6 +665,13 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                     variant={'primary'}
                     disabled={false}
                 ></MGBButton>
+                <h3 className="font-bold text-base mb-1 text-mgbblue">Set Departments</h3>
+                <TagFilterBox
+                    selectTitle={'Select a Department'}
+                    tags={tags}
+                    setTags={setTags}
+                    options={departmentOptions.map(opt => opt.deptName)}
+                ></TagFilterBox>
             </div>
             <div
                 className={
@@ -604,7 +738,10 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                             </h1>
                         </div>
                         <div className="h-full overflow-y-auto p-6 -mt-22">
-                            <ImportExportDirectoryPage jsonRoute={ROUTES.NODE_EDGE_JSON} csvRoute={ROUTES.NODE_EDGE_CSV} />
+                            <ImportExportDirectoryPage
+                                jsonRoute={ROUTES.NODE_EDGE_JSON}
+                                csvRoute={ROUTES.NODE_EDGE_CSV}
+                            />
                         </div>
                     </div>
                 </div>

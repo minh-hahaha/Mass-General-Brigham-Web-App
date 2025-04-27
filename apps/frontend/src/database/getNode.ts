@@ -12,6 +12,7 @@ export interface NodeResponse {
     nodeType: string,
     name: string,
     roomNumber: string | null,
+    departments: string[]
 }
 
 

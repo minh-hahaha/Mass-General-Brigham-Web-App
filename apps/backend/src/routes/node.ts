@@ -18,9 +18,22 @@ router.get('/', async (req: Request, res: Response) => {
                 floor: floor,
                 buildingId: building,
             },
+            include: {
+                departments: {
+                    select: {
+                        deptId: true,
+                    },
+                },
+            },
         });
-
-        res.status(200).json(NODES);
+        const flattenedData = NODES.flatMap((node) => [
+            {
+                ...node,
+                departments: node.departments.map((dept) => dept.deptId).map((d) => d.toString()),
+            },
+        ]);
+        console.log(flattenedData);
+        res.status(200).json(flattenedData);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to fetch nodes' });
@@ -61,13 +74,22 @@ router.post('/', async (req: Request, res: Response) => {
             nodeType: node.nodeType,
             name: node.name,
             roomNumber: node.roomNumber,
-            departments: node.departments,
         };
 
         try {
             const NODES_UPDATE = await PrismaClient.node.create({
                 data: tempNode,
             });
+            for (const deptId of node.departments) {
+                await PrismaClient.department.update({
+                    where: {
+                        deptId: Number(deptId),
+                    },
+                    data: {
+                        nodeId: tempNode.nodeId,
+                    },
+                });
+            }
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: 'Failed to update nodes' });
