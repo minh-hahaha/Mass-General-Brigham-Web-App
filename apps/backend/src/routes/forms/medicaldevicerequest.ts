@@ -43,11 +43,8 @@ router.post('/', async (req: Request, res: Response) => {
                 data: {
                     servReqId: serviceRequest.requestId,
                     device: req.body.device,
-                    deviceReasoning: req.body.deviceReasoning ?? '', // fallback to empty string if undefined
-                    deviceSerialNumber: req.body.deviceSerialNumber,
-                    deviceModel: req.body.model,
                     location: req.body.location,
-                    department: req.body.department,
+                    completeByDate: req.body.completeByDate,
                 },
             });
             return { serviceRequest, medicalDeviceRequest };

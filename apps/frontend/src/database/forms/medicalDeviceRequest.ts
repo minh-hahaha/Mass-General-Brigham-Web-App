@@ -8,16 +8,12 @@ export interface incomingMedicalDeviceRequest {
     locationId: number;
     medicalDeviceRequest: {
         device: string;
-        deviceReasoning: string;
-        deviceSerialNumber: string;
-        deviceModel: string;
         date: string;
         location: string;
-        department: string;
     }
     priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     requestDate: string;
-    date: string;
+    completeByDate: string;
     requestId: number;
     requestTime: number;
     serviceType: string;

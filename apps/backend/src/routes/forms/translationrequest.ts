@@ -46,9 +46,8 @@ router.post('/', async (req: Request, res: Response) => {
             const translationRequest = await prisma.translationRequest.create({
                 data: {
                     serviceReqId: serviceRequest.requestId,
-                    patientName: req.body.patientName,
+                    patientId: req.body.patientId,
                     language: req.body.language,
-                    duration: req.body.duration,
                     typeMeeting: req.body.typeMeeting,
                     date: new Date(req.body.date),
                     meetingLink: req.body.meetingLink,

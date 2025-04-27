@@ -7,10 +7,11 @@ export interface transportRequest {
     patientName: string;
     transportType: hospitalTransportType;
     priority: string;
+    transportType: 'Ambulance' | 'Helicopter' | 'Medical Van' | 'Other';
+    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
+    completeByDate: string;
     pickupLocation: string;
     dropOffLocation: string;
-    pickupDate: string;
-    pickupTime: string;
     notes: string;
     assignedToId: number;
 }
@@ -21,9 +22,11 @@ export interface incomingRequest {
     locationId: number;
     patientTransport: {
         patientId: number;
-        patientName: string;
         pickupLocation: string;
+        dropOffLocation: string;
         servReqId: number;
+        transportType: 'Ambulance' | 'Helicopter' | 'Medical Van' | 'Other';
+        completeByDate:  string;
         transportType: hospitalTransportType;
     };
     priority: priorityType;

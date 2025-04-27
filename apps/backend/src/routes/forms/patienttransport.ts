@@ -48,15 +48,15 @@ router.post('/', async (req: Request, res: Response) => {
                 data: {
                     servReqId: serviceRequest.requestId,
                     patientId: req.body.patientId,
-                    patientName: req.body.patientName,
                     pickupLocation: req.body.pickupLocation,
                     transportType: req.body.transportType,
                     dropoffLocation: req.body.dropoffLocation,
+                    completeByDate: new Date(req.body.dropoffDate).toISOString() ?? null,
                 },
                 select: {
                     servReqId: true,
                     patientId: true,
-                    patientName: true,
+                    dropoffLocation: true,
                     pickupLocation: true,
                 },
             });

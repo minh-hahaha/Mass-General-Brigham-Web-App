@@ -45,9 +45,7 @@ router.post('/', async (req: Request, res: Response) => {
                 data: {
                     servMaintenanceId: serviceRequest.requestId,
                     maintenanceType: req.body.maintenanceType,
-                    maintenanceDescription: req.body.maintenanceDescription,
                     maintenanceHospital: req.body.maintenanceHospital,
-                    maintenanceLocation: req.body.maintenanceLocation,
                     maintenanceTime: new Date(req.body.maintenanceTime) ?? null,
                 },
             });
