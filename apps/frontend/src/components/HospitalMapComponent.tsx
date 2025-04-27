@@ -133,9 +133,9 @@ function createTextPath(traversalResult: myNode[] | undefined | null): string[] 
             !traversingFloors ||
             (traversingFloors && nextNode.nodeType !== 'Elevator' && nextNode.nodeType !== 'Stairs')
         ) {
-            const distance = currentNode.distanceTo(nextNode);
+            const tempEdge = new myEdge(-1, currentNode, nextNode);
             directions.push(
-                `From the ${currentNode.nodeId} ${determineDirection(angle)} for ${distance.toFixed(1)} feet until you reach the ${nextNode.nodeId}`
+                `From the ${currentNode.nodeId} ${determineDirection(angle)} for ${tempEdge.distance.toFixed(1)} feet until you reach the ${nextNode.nodeId}`
             );
         }
     }
