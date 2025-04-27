@@ -193,7 +193,7 @@ const TableTransportRequest: React.FC<Props> = ({ setActiveForm }) => {
                                 <TableHead className="w-20 text-center font-semibold py-3">Starting Location</TableHead>
                                 <TableHead className="w-20 text-center font-semibold py-3">Destination</TableHead>
                                 <TableHead className="w-20 text-center font-semibold py-3">Transport Type</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Complete Date</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Complete By Date</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
