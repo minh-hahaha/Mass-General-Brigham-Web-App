@@ -1,27 +1,15 @@
 import InputElement from '@/elements/InputElement.tsx';
 import MGBButton from '@/elements/MGBButton.tsx';
-import ConfirmMessageComponent from '@/components/ConfirmMessageComponent.tsx';
 import {useEffect, useState} from 'react';
-import { SubmitTransportRequest } from '@/database/forms/transportRequest.ts';
 import SelectElement from '@/elements/SelectElement.tsx';
 import { SubmitTranslatorRequest, outgoingTranslationRequest } from '@/database/forms/translationRequest.ts';
-//
-// export interface TranslationRequestData {
-//     employeeName: string;
-//     employeeId: number;
-//     priority: 'Low' | 'Medium' | 'High' | 'Emergency';
-//     location: 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place';
-//     language: string;
-//     patientName: string;
-//     duration: number;
-//     typeMeeting: 'Remote (Online)' | 'On-site (In-Person)';
-//     date: string;
-//     meetingLink: string;
-//     status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
-//     notes: string;
-//     department: string;
-// }
 
+type hospitals = 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital';
+type priority = 'Low' | 'Medium' | 'High' | 'Emergency';
+type typeMeeting = 'Remote (Online)' | 'On-site (In-Person)';
+type location = 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital';
+type status = 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
+const mbgLocations = ["Chestnut Hill", "20 Patriot Place", "22 Patriot Place", "Faulkner Hospital"];
 const TranslationServiceRequestPage = () => {
     const [employeeName, setEmployeeName] = useState('');
     const [employeeId, setEmployeeId] = useState<number>(0);
@@ -107,38 +95,6 @@ const TranslationServiceRequestPage = () => {
                 <p> Krish Patel and Jake Lariviere </p>
                 <div>
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        <div>
-                            <h3 className="text-xl font-semibold mb-4">
-                                <b>Requester Information</b>
-                            </h3>
-                            <div className="flex flex-col gap-2">
-                                <div className="flex items-center gap-2">
-                                    <InputElement
-                                        id="employeeName"
-                                        name="employeeName"
-                                        label="Requester Name: "
-                                        placeholder="Please enter a requester name"
-                                        required={true}
-                                        type="text"
-                                        value={employeeName}
-                                        onChange={(e) => setEmployeeName(e.target.value)}
-                                    />
-                                </div>
-
-                                <div className="flex items-center gap-2">
-                                    <InputElement
-                                        id="employeeId"
-                                        name="employeeId"
-                                        label="Requester ID: "
-                                        placeholder="Please enter the requester ID"
-                                        required={true}
-                                        type="text"
-                                        value={employeeId}
-                                        onChange={(e) => setEmployeeId(Number(e.target.value))}
-                                    />
-                                </div>
-                            </div>
-                        </div>
 
                         <div>
                             <h3 className="text-xl font-semibold mb-4">

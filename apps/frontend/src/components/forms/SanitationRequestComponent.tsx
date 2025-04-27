@@ -80,7 +80,7 @@ const SanitationRequestPage = () => {
     useEffect(() => {
         const fetchDirectoryList = async () => {
             try {
-                const data = await getDirectory(mgbLocations.indexOf(locationId));
+                const data = await getDirectory(mgbLocations.indexOf(locationId) + 1);
                 const names = data.map((item: DirectoryRequestByBuilding) => item.deptName);
                 setDirectoryList(names);
             } catch (error) {
@@ -145,21 +145,23 @@ const SanitationRequestPage = () => {
                                 </select>
                             </div>
 
-                            {/*Department Dropdown*/}
-                            <div className="flex items-center gap-2">
+                            <div className="flex flex-col pt-2">
+                                {/*Department Dropdown*/}
+                                <div className="flex items-center gap-2">
 
-                                <label className="w-1/4"> Department </label>
-                                <SelectElement
-                                    label="Department"
-                                    id="departmentId"
-                                    value={directory}
-                                    onChange={(e) => setDirectory(e.target.value)}
-                                    required
-                                    options={directoryList}
-                                    placeholder="Select a Department"
-                                    // className="py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                />
+                                    <label className="w-1/4"> Department </label>
+                                    <SelectElement
+                                        label=""
+                                        id="departmentId"
+                                        value={directory}
+                                        onChange={(e) => setDirectory(e.target.value)}
+                                        required
+                                        options={directoryList}
+                                        placeholder="Select a Department"
+                                        // className="py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                    />
+                                </div>
                             </div>
                             <div className="flex items-center gap-2">
                                 <InputElement
@@ -219,7 +221,7 @@ const SanitationRequestPage = () => {
                                         <option value="Low">Low</option>
                                         <option value="Moderate">Moderate</option>
                                         <option value="High">High</option>
-                                        <option value="Extreme">Extremee</option>
+                                        <option value="Extreme">Extreme</option>
                                     </select>
                                 </div>
 
@@ -233,19 +235,6 @@ const SanitationRequestPage = () => {
                                         required={true}
                                     />
                                 </div>
-
-                                {/*<div className="flex flex-col items-center gap-4">*/}
-                                {/*    <div className="flex gap-6">*/}
-                                {/*        <label className="flex items-center gap-2">*/}
-                                {/*            <input type="checkbox" id="recurring" onChange={(e) => setRecurring(e.target.checked)} />*/}
-                                {/*            <span>Recurring</span>*/}
-                                {/*        </label>*/}
-                                {/*        <label className="flex items-center gap-2">*/}
-                                {/*            <input type="checkbox" id="disposalRequired" onChange={(e) => setDisposalRequired(e.target.checked)} />*/}
-                                {/*            <span>Disposal Required</span>*/}
-                                {/*        </label>*/}
-                                {/*    </div>*/}
-                                {/*</div>*/}
                             </div>
                         </div>
 

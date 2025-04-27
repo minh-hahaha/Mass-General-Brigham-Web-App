@@ -3,6 +3,8 @@ import MGBButton from '../../elements/MGBButton.tsx';
 import InputElement from '../../elements/InputElement.tsx';
 import ConfirmMessageComponent from '../ConfirmMessageComponent.tsx';
 import { SubmitMedicalDeviceRequest } from '@/database/forms/medicalDeviceRequest.ts';
+import {DirectoryRequestByBuilding, getDirectory} from "@/database/gettingDirectory.ts";
+import SelectElement from "@/elements/SelectElement.tsx";
 
 type MedicalDeviceType =
     | 'ECG Monitor'
@@ -23,7 +25,6 @@ type MedicalDeviceType =
     | 'Crash Cart';
 
 type location = 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital';
-// type status = 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
 type priority = 'Low' | 'Medium' | 'High' | 'Emergency';
 const buildings = ["Chestnut Hill", "20 Patriot Place", "22 Patriot Place", "Faulkner Hospital"];
 export interface MedicalDeviceRequestData {
@@ -66,6 +67,24 @@ const MedicalDeviceServiceRequestPage = () => {
 
     const [showConfirmation, setShowConfirmation] = useState(false);
 
+    const [directoryList, setDirectoryList] = useState<string[]>([""]);
+    const [directory, setDirectory] = useState<string>("");
+
+
+    useEffect(() => {
+        const fetchDirectoryList = async () => {
+            try {
+                const data = await getDirectory(buildings.indexOf(location) + 1);
+                const names = data.map((item: DirectoryRequestByBuilding) => item.deptName);
+                setDirectoryList(names);
+            } catch (error) {
+                console.error('Error fetching building names:', error);
+            }
+        };
+        fetchDirectoryList();
+        console.log('Updated Directory list');
+    }, [location, directory]);
+
     useEffect(() => {
         if (showConfirmation) {
             alert("Request Submitted");
@@ -81,11 +100,7 @@ const MedicalDeviceServiceRequestPage = () => {
             requestDate: requestDate,
             priority: priority as 'Low' | 'Medium' | 'High' | 'Emergency',
             location: location as 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital',
-            device: device as 'ECG Monitor' | 'Vital Signs Monitor' | 'Pulse Oximeter' |
-                'Infusion Pump' | 'Syringe Pump' | 'Defibrillator' |
-                'Ventilator' | 'Nebulizer' | 'Anesthesia Machine' |
-                'Wheelchair' | 'IV Stand' | 'Suction Machine' |
-                'Warming Blanket System' | 'Oxygen Concentrator' | 'Portable Suction Unit' | 'Crash Cart',
+            device: device as MedicalDeviceType,
             deviceModel: deviceModel,
             deviceSerialNumber: deviceSerialNumber,
             quantity: quantity,
@@ -242,17 +257,21 @@ const MedicalDeviceServiceRequestPage = () => {
                                         )}
                                     </select>
                                 </div>
+
+                            {/*Department Dropdown*/}
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
-                                    <InputElement
-                                        id="department"
-                                        name="department"
-                                        label="Department: "
-                                        placeholder="Please enter the department"
-                                        required={true}
-                                        type="text"
-                                        value={department}
-                                        onChange={(e) => setDepartment(e.target.value)}
+                                    <label className="w-1/4"> Department </label>
+                                    <SelectElement
+                                        label=""
+                                        id="departmentId"
+                                        value={directory}
+                                        onChange={(e) => setDirectory(e.target.value)}
+                                        required
+                                        options={directoryList}
+                                        placeholder="Select a Department"
+                                        // className="py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
                                 </div>
                             </div>

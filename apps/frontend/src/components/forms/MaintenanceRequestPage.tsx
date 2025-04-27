@@ -4,6 +4,11 @@ import ConfirmMessageComponent from '@/components/ConfirmMessageComponent.tsx';
 import { SubmitMaintenanceRequest, maintenanceRequest } from '@/database/forms/maintenanceRequest.ts';
 import InputElement from '@/elements/InputElement.tsx';
 import SelectElement from '@/elements/SelectElement.tsx';
+import {DirectoryRequestByBuilding, getDirectory} from "@/database/gettingDirectory.ts";
+
+
+type mbgHospitals =  'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital';
+const hospitals = ['Chestnut Hill', '20 Patriot Place', '22 Patriot Place', 'Faulkner Hospital'];
 
 // Component definition
 const MaintenanceRequestPage = () => {
@@ -18,7 +23,7 @@ const MaintenanceRequestPage = () => {
 
     // Maintenance Details
     const [priority, setPriority] = useState<'Low' | 'Medium' | 'High' | 'Emergency'>('Low');
-    const [maintenanceHospital, setMaintenanceHospital] = useState<'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital'>('Chestnut Hill')
+    const [maintenanceHospital, setMaintenanceHospital] = useState<mbgHospitals>('Chestnut Hill')
     const [maintenanceLocation, setMaintenanceLocation] = useState('');
     const [maintenanceTime, setMaintenanceTime] = useState('');
 
@@ -29,6 +34,9 @@ const MaintenanceRequestPage = () => {
     const [locationId, setLocationId] = useState(1);
 
     const [showConfirmation, setShowConfirmation] = useState(false);
+
+    const [directoryList, setDirectoryList] = useState<string[]>([""]);
+    const [directory, setDirectory] = useState<string>("");
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -70,13 +78,27 @@ const MaintenanceRequestPage = () => {
     };
 
     useEffect(() => {
+        const fetchDirectoryList = async () => {
+            try {
+                const data = await getDirectory(hospitals.indexOf(maintenanceHospital) + 1);
+                const names = data.map((item: DirectoryRequestByBuilding) => item.deptName);
+                setDirectoryList(names);
+            } catch (error) {
+                console.error('Error fetching building names:', error);
+            }
+        };
+        fetchDirectoryList();
+        console.log('Updated Directory list');
+    }, [maintenanceHospital, directory]);
+
+    useEffect(() => {
         if (showConfirmation) {
             alert("Request Submitted");
             handleConfirmationClose(); // close the state after the alert
         }
     }, [showConfirmation]);
 
-    const hospitalLocations = ['Chestnut Hill', '20 Patriot Place', '22 Patriot Place'];
+    const hospitalLocations = ['Chestnut Hill', '20 Patriot Place', '22 Patriot Place', 'Faulkner Hospital'];
 
     return (
         // flex row container
@@ -170,18 +192,22 @@ const MaintenanceRequestPage = () => {
                                     </select>
                                 </div>
 
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Department</label>
-                                    <input
-                                        id="maintenanceLocation"
-                                        name="maintenanceLocation"
-                                        placeholder="Enter department/location"
-                                        required
-                                        type="text"
-                                        value={maintenanceLocation}
-                                        onChange={(e) => setMaintenanceLocation(e.target.value)}
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    />
+                                {/*Department Dropdown*/}
+                                <div className="flex flex-col pt-2">
+                                    <div className="flex items-center gap-2">
+                                        <label className="w-1/4"> Department </label>
+                                        <SelectElement
+                                            label=""
+                                            id="departmentId"
+                                            value={directory}
+                                            onChange={(e) => setDirectory(e.target.value)}
+                                            required
+                                            options={directoryList}
+                                            placeholder="Select a Department"
+                                            // className="py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                        />
+                                    </div>
                                 </div>
 
                                 <div className="flex items-center gap-2">
