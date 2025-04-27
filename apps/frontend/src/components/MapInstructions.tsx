@@ -26,7 +26,7 @@ const instructionPages = [
     {
         title: "Save Nodes",
         imagePath: "/instructions/save-nodes.png",
-        description: "Click the \"Save\" button to store your node network configuration."
+        description: "Click the \"Save Nodes and Edges\" button to store your node network configuration."
     }
 ];
 
