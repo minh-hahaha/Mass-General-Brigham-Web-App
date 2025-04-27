@@ -74,7 +74,7 @@ export const medicalDevices = ['ECG Monitor', 'Vital Signs Monitor', 'Pulse Oxim
     'Oxygen Concentrator', 'Portable Suction Unit', 'Crash Cart'];
 
 //Sanitation Request
-export type sanitationType =
+export type reqSanitationType =
     "Routine Cleaning"
     | "Deep Cleaning"
     | "Detail Cleaning"
@@ -96,8 +96,32 @@ export type sanitationType =
     | "Isolation Room Cleaning"
     | "Operating Room Turnover"
     | "Cleanroom Sanitation";
-export type hazardLevelType = 'Low' | 'Moderate' | 'High' | 'Extreme';
 
+export const reqSanitationArray = [
+    "Routine Cleaning",
+    "Deep Cleaning",
+    "Detail Cleaning",
+    "Surface Disinfection",
+    "Fogging Disinfection",
+    "UV Sanitation",
+    "Steam Sanitation",
+    "Sterilization",
+    "Biohazard Cleanup",
+    "Chemical Spill Cleanup",
+    "Mold Remediation",
+    "Pest Sanitation",
+    "Fire/Smoke Residue Cleaning",
+    "Flood/Water Damage Cleaning",
+    "Restroom Sanitation",
+    "Kitchen/Breakroom Sanitation",
+    "Trash/Recycling Sanitation",
+    "Locker Room/Changing Area Cleaning",
+    "Isolation Room Cleaning",
+    "Operating Room Turnover",
+    "Cleanroom Sanitation"
+];
+export type hazardLevelType = 'Low' | 'Moderate' | 'High' | 'Extreme';
+export const hazardLevelArray = ['Low', 'Moderate', 'High', 'Extreme'];
 
 //Translation Request
 

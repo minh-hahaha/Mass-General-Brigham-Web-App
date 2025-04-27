@@ -5,7 +5,14 @@ import { SubmitSanitationRequest, sanitationRequest } from '../../database/forms
 import InputElement from "@/elements/InputElement.tsx";
 import SelectElement from '@/elements/SelectElement.tsx';
 import {DirectoryRequestByBuilding, getDirectory} from '@/database/gettingDirectory.ts';
-import {hazardLevelType, mgbHospitals, priorityType} from '@/database/forms/formTypes.ts'
+import {
+    hazardLevelArray,
+    hazardLevelType,
+    mgbHospitals,
+    priorityType,
+    reqSanitationArray
+} from '@/database/forms/formTypes.ts'
+import SelectFormElement from "@/elements/SelectFormElement.tsx";
 
 // Component definition
 const SanitationRequestPage = () => {
@@ -125,40 +132,29 @@ const SanitationRequestPage = () => {
                             <h3 className="text-xl font-semibold mb-4">
                                 <b>Request Location</b>
                             </h3>
-                            <div className="flex items-center gap-2">
-                                <label className="w-1/4">Location</label>
-                                <select
-                                    id="pickupLocation"
-                                    value={locationId}
-                                    onChange={(e) => setLocation_id(e.target.value)}
-                                    required
-                                    className="w-70 px-3 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                >
-                                    <option value="">Select Location</option>
-                                    {mgbHospitals.map((location) => (
-                                        <option key={`pickup-${location}`} value={location}>
-                                            {location}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
+
+                            <SelectFormElement
+                                label="Location"
+                                id={"location"}
+                                value={locationId}
+                                onChange={(e) => setLocation_id(e.target.value)}
+                                required={true}
+                                options={mgbHospitals}
+                                placeholder="Select a Location"
+                            />
 
                             <div className="flex flex-col pt-2">
                                 {/*Department Dropdown*/}
-                                <div className="flex items-center gap-2">
-
-                                    <label className="w-1/4"> Department </label>
-                                    <SelectElement
-                                        label=""
-                                        id="departmentId"
-                                        value={directory}
-                                        onChange={(e) => setDirectory(e.target.value)}
-                                        required
-                                        options={directoryList}
-                                        placeholder="Select a Department"
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    />
-                                </div>
+                                <SelectFormElement
+                                    label="Department"
+                                    id={"department"}
+                                    value={directory}
+                                    onChange={(e) => setDirectory(e.target.value)}
+                                    required={true}
+                                    options={directoryList}
+                                    placeholder="Select a Department"
+                                    className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                />
                             </div>
                             <div className="flex items-center gap-2">
                                 <InputElement
@@ -206,32 +202,25 @@ const SanitationRequestPage = () => {
                                     />
                                 </div>
 
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Hazard Level</label>
-                                    <select
-                                        id="hazardLevel"
-                                        value={hazardLevel}
-                                        onChange={(e) => setHazardLevel(e.target.value as hazardLevelType)}
-                                        required
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    >
-                                        <option value="Low">Low</option>
-                                        <option value="Moderate">Moderate</option>
-                                        <option value="High">High</option>
-                                        <option value="Extreme">Extreme</option>
-                                    </select>
-                                </div>
+                                <SelectFormElement
+                                    label={"Hazard Level"}
+                                    id={"HazardLevel"}
+                                    value={hazardLevel}
+                                    onChange={(e) => {setHazardLevel(e.target.value as hazardLevelType)}}
+                                    required
+                                    options={hazardLevelArray}
+                                    placeholder="Select a Hazard Level"
+                                />
 
-                                <div className="flex items-center gap-2">
-                                    <InputElement
-                                        label="Sanitation Type"
-                                        type="text"
-                                        id="sanitationType"
-                                        value={sanitationType}
-                                        onChange={(e) => setSanitationType(e.target.value)}
-                                        required={true}
-                                    />
-                                </div>
+                                <SelectFormElement
+                                    label={"Sanitation Type"}
+                                    id={"sanitationType"}
+                                    value={sanitationType}
+                                    onChange={(e) => {setSanitationType(e.target.value as hazardLevelType)}}
+                                    required
+                                    options={reqSanitationArray}
+                                    placeholder="Select a Sanitation Type"
+                                />
                             </div>
                         </div>
 
