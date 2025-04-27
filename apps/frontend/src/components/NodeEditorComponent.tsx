@@ -153,11 +153,11 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
     }
 
     const fetchDirectoryList = async () => {
-        console.log('Fetching directories');
+        //console.log('Fetching directories');
         try {
             const data = await getDirectory(Number(currentBuilding));
             setDepartmentOptions(data.map(dir => ({ deptName: dir.deptName, deptId: dir.deptId })));
-            console.log("Finished")
+            //console.log("Finished")
         } catch (error) {
             console.error('Error fetching building names:', error);
         }
@@ -274,13 +274,13 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                 console.error('Error fetching directory/nodes/edges:', error);
             }
         }
-
+        //console.log("floor:", currentFloorId, "building:", currentBuilding);
         fetchDirectoryAndNodes();
 
         return () => {
             isCancelled = true;
         };
-    }, [currentBuilding]);
+    }, [currentBuilding, currentFloorId]);
 
 
 
@@ -361,8 +361,8 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                 deptNames.push(dept.deptId.toString());
             }
         }
-        console.log(departmentOptionsRef.current);
-        console.log("jsdawsfioj;asfgrvrknjdsfjkn;sAEFnjk");
+        //console.log(departmentOptionsRef.current);
+        //console.log("jsdawsfioj;asfgrvrknjdsfjkn;sAEFnjk");
         const mapNode: MapNode = {
             node: new myNode(
                 node.nodeId,

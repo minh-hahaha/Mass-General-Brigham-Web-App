@@ -46,21 +46,33 @@ router.post('/', async (req: Request, res: Response) => {
     const overwriteFloor = req.query.overwriteFloor as string;
     const overwriteBuilding = req.query.overwriteBuilding as string;
 
+    console.log('deleting floor', overwriteFloor);
+    console.log('deleting bldg', overwriteBuilding);
+    const overwriteBuildings = [];
+    if (overwriteBuilding === '2') {
+        overwriteBuildings.push('2');
+        overwriteBuildings.push('3');
+    } else if (overwriteBuilding === '3') {
+        overwriteBuildings.push('4');
+    } else {
+        overwriteBuildings.push(overwriteBuilding);
+    }
+
     if (overwrite == 'true') {
         await PrismaClient.department.updateMany({
             where: {
                 departmentNodes: {
                     is: {
                         floor: overwriteFloor,
-                        buildingId: overwriteBuilding,
+                        buildingId: { in: overwriteBuildings },
                     },
                 },
             },
             data: { nodeId: null },
         });
-        await PrismaClient.edge.deleteMany({
+        const d = await PrismaClient.edge.deleteMany({
             where: {
-                nodeTo: {
+                nodeFrom: {
                     is: {
                         floor: overwriteFloor,
                         buildingId: overwriteBuilding,
@@ -68,6 +80,7 @@ router.post('/', async (req: Request, res: Response) => {
                 },
             },
         });
+        console.log(d);
         await PrismaClient.node.deleteMany({
             where: {
                 floor: overwriteFloor,
