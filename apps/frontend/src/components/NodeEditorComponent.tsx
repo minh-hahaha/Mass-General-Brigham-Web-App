@@ -189,6 +189,10 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 zIndex: 1,
                 clickable: true,
                 draggable: true,
+                icon: {
+                    url: './minh ha icon.png',
+                    scaledSize: new google.maps.Size(40, 40), // width, height in pixels
+                }
             },
             polylineOptions: {
                 zIndex: 0
@@ -224,7 +228,11 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             clickable: true,
             map: map,
             zIndex: 1,
-            draggable: true
+            draggable: true,
+            icon: {
+                url: './minh ha icon.png',
+                scaledSize: new google.maps.Size(60, 60), // width, height in pixels
+            }
         })
     }
 
