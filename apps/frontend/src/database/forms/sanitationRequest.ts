@@ -1,11 +1,11 @@
 import { ROUTES } from 'common/src/constants.ts';
-
 import axios from 'axios';
+import { priorityType, hazardLevelType, statusType } from '@/database/forms/formTypes.ts';
 
 export interface sanitationRequest {
     //Service Request fields
     employeeName:              string;
-    priority:                   'Low' | 'Medium' | 'High';
+    priority:                   priorityType;
     requestTime:                string;
     locationId:                 string;
 
@@ -21,7 +21,7 @@ export interface sanitationRequest {
     sanitationDepartmentId:   string;
     sanitationRoomNumber:      number;
     sanitationType:             string;
-    hazardLevel:                'Low' | 'Moderate' | 'High' | 'Extreme';
+    hazardLevel:                hazardLevelType;
     completeBy:                 string;
 }
 
@@ -33,16 +33,16 @@ export interface incomingSanitationRequest {
         servReqId:          number;
         sanitationType:      string;
         recurring:           boolean;
-        hazardLevel:         'None' | 'Sharp' | 'Biohazard';
+        hazardLevel:         hazardLevelType;
         disposalRequired:    boolean;
         completeBy:          string;
     }
-    priority: 'Low' | 'Medium' | 'High';
+    priority: priorityType;
     requestDate: string;
     requestId: number;
     requestTime: number;
     serviceType: string;
-    status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
+    status: statusType;
     transportType: string;
 }
 
