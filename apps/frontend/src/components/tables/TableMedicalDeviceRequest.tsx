@@ -29,13 +29,11 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => 
     const [requests, setRequests] = useState<incomingMedicalDeviceRequest[]>([]);
     const [filter, setShowFilters] = useState<boolean>(false);
     const [filters, setFilters] = useState({
-        device: '',
-        serNum: '',
-        location: '',
         priority: '',
         status: '',
-        reqDate: '',
-        department: '',
+        device: '',
+        location: '',
+        completeByDate: '',
     });
 
     useEffect(() => {
@@ -53,13 +51,11 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => 
 
     const filteredRequests = requests.filter((req) => {
         return (
-            (!filters.device || req.medicalDeviceRequest.device?.toLowerCase().includes(filters.device.toLowerCase())) &&
-            (!filters.serNum || req.medicalDeviceRequest.deviceSerialNumber?.toLowerCase().includes(filters.serNum.toLowerCase())) &&
-            (!filters.location || req.medicalDeviceRequest.location?.toLowerCase().includes(filters.location.toLowerCase())) &&
             (!filters.priority || req.priority?.toLowerCase().includes(filters.priority.toLowerCase())) &&
             (!filters.status || req.status?.toLowerCase().includes(filters.status.toLowerCase())) &&
-            (!filters.reqDate || req.medicalDeviceRequest.date?.startsWith(filters.reqDate)) &&
-            (!filters.department || req.medicalDeviceRequest.department?.toLowerCase().includes(filters.department.toLowerCase()))
+            (!filters.device || req.medicalDeviceRequest.device?.toLowerCase().includes(filters.device.toLowerCase())) &&
+            (!filters.location || req.medicalDeviceRequest.location?.toLowerCase().includes(filters.location.toLowerCase())) &&
+            (!filters.status || req.status?.toLowerCase().includes(filters.status.toLowerCase()))
         );
     });
     // Format date for display
@@ -86,39 +82,6 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => 
                             className="relative left-[10px] rounded flex flex-row gap-5"
                         >
                             <div>
-                                <label className="block text-sm font-medium">Device</label>
-                                <input
-                                    type="text"
-                                    className="border border-mgbblue rounded-sm w-30 p-1"
-                                    value={filters.device}
-                                    onChange={(e) =>
-                                        setFilters({ ...filters, device: e.target.value })
-                                    }
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium">Serial Num</label>
-                                <input
-                                    type="text"
-                                    className="border border-mgbblue rounded-sm w-25 p-1"
-                                    value={filters.serNum}
-                                    onChange={(e) =>
-                                        setFilters({ ...filters, serNum: e.target.value })
-                                    }
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium">Location</label>
-                                <input
-                                    type="text"
-                                    className="border border-mgbblue rounded-sm w-25 p-1"
-                                    value={filters.reqDate}
-                                    onChange={(e) =>
-                                        setFilters({ ...filters, reqDate: e.target.value })
-                                    }
-                                />
-                            </div>
-                            <div>
                                 <label className="block text-sm font-medium">Priority</label>
                                 <input
                                     type="text"
@@ -144,27 +107,41 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => 
                                 />
                             </div>
                             <div>
+                                <label className="block text-sm font-medium">Device</label>
+                                <input
+                                    type="text"
+                                    className="border border-mgbblue rounded-sm w-30 p-1"
+                                    value={filters.device}
+                                    onChange={(e) =>
+                                        setFilters({ ...filters, device: e.target.value })
+                                    }
+                                />
+                            </div>
+                            <div>
                                 <label className="block text-sm font-medium">Request Date</label>
                                 <input
                                     type="datetime-local"
                                     className="border border-mgbblue rounded-sm w-35 p-1"
-                                    value={filters.reqDate}
+                                    value={filters.completeByDate}
                                     onChange={(e) =>
                                         setFilters({
                                             ...filters,
-                                            reqDate: e.target.value,
+                                            completeByDate: e.target.value,
                                         })
                                     }
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium">Department</label>
+                                <label className="block text-sm font-medium">Location</label>
                                 <input
                                     type="text"
-                                    className="border border-mgbblue rounded-sm w-30 p-1"
-                                    value={filters.department}
+                                    className="border border-mgbblue rounded-sm w-25 p-1"
+                                    value={filters.location}
                                     onChange={(e) =>
-                                        setFilters({ ...filters, department: e.target.value })
+                                        setFilters({
+                                            ...filters,
+                                            location: e.target.value,
+                                        })
                                     }
                                 />
                             </div>
@@ -185,15 +162,11 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => 
                     <Table>
                         <TableHeader>
                             <TableRow className="bg-gray-50">
-                                <TableHead className="w-20 text-center font-semibold py-3">Request ID</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Medical Device</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Medical Device Serial Number</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Explanation</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Location</TableHead>
                                 <TableHead className="w-20 text-center font-semibold py-3">Priority</TableHead>
                                 <TableHead className="w-20 text-center font-semibold py-3">Status</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Request Date</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Department</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Medical Device</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Location</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Deliver By Date</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -202,26 +175,11 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => 
                                     key={req.requestId}
                                     className="border-b hover:bg-gray-50"
                                 >
-                                    <TableCell className="text-center py-3">{req.requestId}</TableCell>
-                                    <TableCell className="text-center py-3">{req.medicalDeviceRequest.device}</TableCell>
-                                    <TableCell className="text-center py-3">
-                                        {req.medicalDeviceRequest.deviceSerialNumber}
-                                    </TableCell>
-                                    <TableCell className="text-center py-3">
-                                        {req.medicalDeviceRequest.deviceReasoning
-                                            ?.match(/.{1,30}/g)
-                                            ?.map((chunk, i) => (
-                                                <span key={i}>
-                                                    {chunk}
-                                                    <br />
-                                                </span>
-                                            ))}
-                                    </TableCell>
-                                    <TableCell className="text-center py-3">{req.medicalDeviceRequest.location}</TableCell>
                                     <TableCell className="text-center py-3">{req.priority}</TableCell>
                                     <TableCell className="text-center py-3">{req.status}</TableCell>
-                                    <TableCell className="text-center py-3">{formatDate(req.requestDate)}</TableCell>
-                                    <TableCell className="text-center py-3">{req.medicalDeviceRequest.department}</TableCell>
+                                    <TableCell className="text-center py-3">{req.medicalDeviceRequest.device}</TableCell>
+                                    <TableCell className="text-center py-3">{req.medicalDeviceRequest.location}</TableCell>
+                                    <TableCell className="text-center py-3">{formatDate(req.completeByDate)}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

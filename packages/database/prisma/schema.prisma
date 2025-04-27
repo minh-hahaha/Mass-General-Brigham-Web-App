@@ -65,7 +65,6 @@ model MedicalDeviceRequest {
   device         String
   location       String
   completeByDate DateTime
-  department     String
 }
 
 //TODO: FIX LOCATION FIELDS
