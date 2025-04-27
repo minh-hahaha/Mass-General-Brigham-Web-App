@@ -369,28 +369,6 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         }
     }
 
-    // function cut(edges: google.maps.LatLng[], posToCut: google.maps.LatLng): {result: google.maps.LatLng[], edge: MapEdge | null} {
-    //     const indexToCut = edges.findIndex(edge => edge.equals(posToCut));
-    //     if(indexToCut !== -1) {
-    //         const slice1 = edges.slice(0, indexToCut);
-    //         const slice2 = edges.slice(indexToCut + 1);
-    //         const node1 = mapNodes.find(node => node.drawnNode.getPosition() === slice1[slice1.length -1]);
-    //         const node2 = mapNodes.find(node => node.drawnNode.getPosition() === slice2[0]);
-    //         const edge = mapEdges.find(edge => edge.drawnEdge.getPath().getArray().includes(posToCut));
-    //         if(!node1 || !node2 || !edge){
-    //           return {result: slice1.concat(slice2), edge: null};
-    //        }
-    //         const mapEdge = {
-    //             edge: new myEdge(incrementTempEdgeID(), node1.node, node2.node),
-    //             to: node2,
-    //             from: node1,
-    //             drawnEdge: edge.drawnEdge
-    //         };
-    //         return {result: slice1.concat(slice2), edge: mapEdge};
-    //     }
-    //     return {result: [], edge: null};
-    // }
-
     function removeEdgesFromNode(node: MapNode) {
         const toRemove:number[] = [];
         mapEdgesRef.current.forEach((edge) => {
@@ -411,35 +389,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             setNodeName(toNode.node.name);
             setRoomNumber(toNode.node.roomNumber);
             if(fromNode && modeRef.current === 'Edge') {
-                const fromEdge = mapEdgesRef.current.find(edge => edge.from.node.nodeId === fromNode.node.nodeId || edge.to.node.nodeId === fromNode.node.nodeId);
-                const toEdge = mapEdgesRef.current.find(edge => edge.from.node.nodeId === toNode.node.nodeId || edge.to.node.nodeId === toNode.node.nodeId);
                 createMapEdge(fromNode, toNode);
-                if(fromEdge){
-                    if(toEdge){
-                        const indexOfToNode = toEdge.drawnEdge.getPath().getArray().indexOf(toNode.drawnNode.getPosition() as google.maps.LatLng);
-                        const indexOfFromNode = fromEdge.drawnEdge.getPath().getArray().indexOf(fromNode.drawnNode.getPosition() as google.maps.LatLng);
-
-                        // console.log(indexOfFromNode, indexOfToNode);
-                        // if(indexOfToNode === 0 && indexOfFromNode === fromEdge.drawnEdge.getPath().getArray().length - 1) {
-                        //     // Connecting lines end to start together
-                        //     console.log("End to Front")
-                        //     handleEndToFront(fromEdge, toEdge);
-                        //     createMapEdge(fromNode, toNode);
-                        // }else {
-                        //     // Branch off w/ two edges
-                        //     console.log("Branching from line w/ edge")
-                        //     handleBranchEdge(fromNode, toEdge);
-                        // }
-                     }//else{
-                    //     // Branch off w/ node
-                    //     console.log("Branching from line w/ node")
-                    //     handleBranchNode(fromNode, toNode);
-                    // }
-                 }//else{
-                //     // Node to node
-                //     console.log("Connecting node to node")
-                //     handleNodeToNode(fromNode, toNode);
-                // }
                 setClickedNode(null);
             }
         }
@@ -486,11 +436,10 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         await createNode(nodes, true, currentFloor ? currentFloor.floor : "1", currentFloor ? currentFloor.buildingId : "1");
         for (const edge of mapEdges) {
             const sendEdge: EdgeResponse = {
-                edgeId: null, // Let the database auto generate any drawn for the first time nodes
+                edgeId: null, // Let the database auto generate edge ids
                 to: edge.edge.to.nodeId,
                 from: edge.edge.from.nodeId,
             };
-            // TODO: add floor field: delete all where floorID == x same thing but more complicated
             await createEdge(sendEdge);
         }
         setClickedNode(null);
@@ -500,7 +449,10 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
         if(!map)
             return;
         const listener = google.maps.event.addListener(map, 'click', (e: google.maps.MapMouseEvent) => {
-            //TODO: set clickedNode to null when in nav mode
+            if(modeRef.current === 'Node') {
+                console.log("Hello")
+                setClickedNode(null);
+            }
         })
         return () => {google.maps.event.removeListener(listener)}
     }, [map]);
