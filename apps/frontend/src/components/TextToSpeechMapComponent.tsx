@@ -2,14 +2,18 @@ import {useState, useEffect} from "react";
 import {ROUTES} from "common/src/constants.ts";
 import axios from "axios";
 import MGBButton from "@/elements/MGBButton.tsx";
+import { BsArrowUp } from "react-icons/bs";
+import { BsArrow90DegRight } from "react-icons/bs";
+import { BsArrow90DegLeft } from "react-icons/bs";
 
 interface State {
     walkDirections: string;
     driveDirections: string;
     drive22Directions: string[];
     walk22Directions: string[];
+    icons:string[];
 }
-const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Directions, walk22Directions}:State) => {
+const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Directions, walk22Directions, icons}:State) => {
     //  const [textMode, setTextMode] = useState("Mode: Transport Directions");
     const [textToDisplay, setTextToDisplay] = useState(driveDirections);
     const audio = new Audio();  // Create audio object
@@ -65,12 +69,16 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Direc
             setTextMode("Mode: Building Directions");
             setTextToSpeak(walk22Directions);
             setTextToDisplay(walkDirections);
+
         } else {
             setTextMode("Mode: Transport Directions");
             setTextToSpeak(drive22Directions);
             setTextToDisplay(driveDirections);
         }
     };
+   const handleIconSwitch=()=>{
+
+   }
 
      // useEffect(() => {
      //     setTextToDisplay(driveDirections);
@@ -85,9 +93,9 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Direc
     }
 
     const speakDirections = async () => {
-        // console.log(driveDirections);
+         console.log(driveDirections);
          console.log(walkDirections);
-        // console.log(drive22Directions);
+         console.log(drive22Directions);
          console.log(walk22Directions);
         // console.log(textToSpeak);
         // console.log("textToSpeak");
