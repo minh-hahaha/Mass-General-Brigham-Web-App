@@ -8,7 +8,7 @@ import {
     meetingTypeArray, mgbHospitals,
     mgbHospitalType,
     priorityArray,
-    priorityType
+    priorityType, translateLangugeArray
 } from "@/database/forms/formTypes.ts";
 import {DirectoryRequestByBuilding, getDirectory} from "@/database/gettingDirectory.ts";
 import SelectFormElement from "@/elements/SelectFormElement.tsx";
@@ -135,19 +135,14 @@ const TranslationServiceRequestPage = () => {
                                         onChange={(e) => setPatientName(e.target.value)}
                                     />
                                 </div>
-
-                                <div className="flex items-center gap-2">
-                                    <InputElement
-                                        id="language"
-                                        name="language"
-                                        label="Patient Language: "
-                                        placeholder="Please enter the language "
-                                        required={true}
-                                        type="text"
-                                        value={patientLanguage}
-                                        onChange={(e) => setPatientLanguage(e.target.value)}
-                                    />
-                                </div>
+                                <SelectFormElement
+                                    label="Language"
+                                    id="language"
+                                    value= {patientLanguage}
+                                    onChange={(e) => setPatientLanguage(e.target.value)}
+                                    options={translateLangugeArray}
+                                    placeholder="Select Language"
+                                />
                             </div>
                         </div>
 

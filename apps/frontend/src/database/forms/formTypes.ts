@@ -104,9 +104,30 @@ export type hazardLevelType = 'Low' | 'Moderate' | 'High' | 'Extreme';
 export type meetingType = 'Remote (Online)' | 'On-site (In-Person)';
 export const meetingTypeArray = ['Remote (Online)', 'On-site (In-Person)'];
 
-//TODO: ADD THESE
-// export type translateLangugeType = ;
-// export const translateLangugeArray = [];
+
+export type translateLangugeType =
+  | "Arabic"
+  | "Cantonese Chinese"
+  | "French"
+  | "Hindi"
+  | "Japanese"
+  | "Mandarin Chinese"
+  | "Portuguese"
+  | "Russian"
+  | "Spanish"
+  | "Vietnamese";
+export const translateLangugeArray = [
+  "Arabic",
+  "Cantonese Chinese",
+  "French",
+  "Hindi",
+  "Japanese",
+  "Mandarin Chinese",
+  "Portuguese",
+  "Russian",
+  "Spanish",
+  "Vietnamese"
+];
 
 //Transport Request
 
