@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-
+// add , adobe illustrator, webstorm, react-googlemaps, radix-ui, google-text-to-speech
 const CreditsPage = () => {
     return (
         <div className="bg-gray-200 min-h-screen max-w-full overflow-x-hidden">
@@ -72,13 +72,35 @@ const CreditsPage = () => {
                             link="https://ui.shadcn.com"
                         />
                         <CreditItem
-                            picture=""
-                            title=""
-                            description=""
-                            version=""
-                            link=""
+                            picture="/Credits/Tailwind.png"
+                            title="Tailwind"
+                            description="CSS Framework"
+                            version="4.1.3"
+                            link="https://tailwindcss.com"
                         />
                         </motion.div>
+
+                    <motion.div
+                        className="grid grid-cols-2 gap-4"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1, delay: 2 }}
+                    >
+                        <CreditItem
+                            picture="'/Credits/Webstorm.png'"
+                            title="Jetbrains Webstorm"
+                            description="IDE for our Application"
+                            version="v2024.3.5"
+                            link="https://www.jetbrains.com/webstorm/"
+                        />
+                        <CreditItem
+                            picture="/Credits/Illustrator.png"
+                            title="Adobe Illustrator"
+                            description="Vector Graphis Editor"
+                            version="v29.5"
+                            link="https://www.adobe.com/products/illustrator.html"
+                        />
+                    </motion.div>
 
                 </div>
             </div>
