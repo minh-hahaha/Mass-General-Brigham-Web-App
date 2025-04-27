@@ -4,11 +4,13 @@ import MGBButton from '../elements/MGBButton.tsx';
 import InputElement from '@/elements/InputElement.tsx';
 import SelectElement from '@/elements/SelectElement.tsx';
 import { Label } from '@/components/ui/label.tsx';
+import JSZip from 'jszip';
 
 type ImportExportProps = {
     jsonRoute: string;
     csvRoute: string;
 }
+
 
 const ImportExportDirectoryPage = ({jsonRoute, csvRoute}: ImportExportProps) => {
     const [file, setFile] = useState<File | null>(null);
@@ -64,27 +66,52 @@ const ImportExportDirectoryPage = ({jsonRoute, csvRoute}: ImportExportProps) => 
 
     async function handleExport() {
         try {
-            let response;
             let blob;
+            const zip = new JSZip();
             if (downloadType === 'CSV') {
-                response = await ExportCSV(csvRoute); // has backend data
-                // download csv
-                blob = new Blob([response], { type: 'text/csv;charset=utf-8;' });
+                const response = await ExportCSV(csvRoute); // has backend data
+                if(Array.isArray(response)) {
+                    for(let i = 0; i < response.length; i++) {
+                        //blobs.push(new Blob([r], {type: 'text/csv;charset=utf-8;'}));
+                        zip.file(`export_${i+1}.csv`, response[i]);
+                    }
+                }else {
+                    // download csv
+                    blob = new Blob([response], {type: 'text/csv;charset=utf-8;'});
+                }
             } else {
-                response = await ExportJSON(jsonRoute);
-                blob = new Blob([JSON.stringify(response, null, 2)], {
-                    type: 'application/json;charset=utf-8;',
-                });
+                const response = await ExportJSON(jsonRoute);
+                if(Array.isArray(response)) {
+                    for(let i = 0; i < response.length; i++) {
+                        zip.file(`export_${i+1}.json`, JSON.stringify(response[i], null, 2));
+                        // blobs.push(new Blob([JSON.stringify(r, null, 2)], {
+                        //     type: 'application/json;charset=utf-8;',
+                        // }));
+                    }
+                }else {
+                    // download csv
+                    blob = new Blob([JSON.stringify(response, null, 2)], {
+                        type: 'application/json;charset=utf-8;',
+                    });
+                }
+            }
+
+            if(!blob){
+                blob = await zip.generateAsync({type: 'blob'});
             }
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
-
             link.href = url;
-            link.setAttribute('download', 'export.' + (downloadType === 'CSV' ? 'csv' : 'json'));
+            if(zip.files['export_1.csv'] || zip.files['export_1.json']){
+                link.setAttribute('download', 'export.zip');
+            }else {
+                link.setAttribute('download', 'export.' + (downloadType === 'CSV' ? 'csv' : 'json'));
+            }
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(url); // Free up memory by revoking the object URL
+
         } catch (e) {
             console.log('Downloading');
         }

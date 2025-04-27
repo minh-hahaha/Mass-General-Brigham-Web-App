@@ -233,7 +233,7 @@ router.get('/json', async function (req: Request, res: Response) {
                 deptId: 'asc',
             },
         });
-        res.status(200).json(DIRECTORY);
+        res.status(200).json({ directories: DIRECTORY });
     } catch (error) {
         res.sendStatus(500);
     }
@@ -245,7 +245,7 @@ router.post('/json', upload.single('file'), async function (req: Request, res: R
         return;
     }
     const overwrite = req.query.overwrite as string;
-    const jsonData = JSON.parse(req.file.buffer.toString('utf-8'));
+    const jsonData = JSON.parse(req.file.buffer.toString('utf-8')).directories;
     try {
         if (overwrite === 'Overwrite') {
             await PrismaClient.department.deleteMany();

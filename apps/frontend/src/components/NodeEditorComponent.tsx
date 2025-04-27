@@ -538,21 +538,19 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 <h3 className="font-bold text-base mb-1 text-mgbblue">Node Data</h3>
                 <div>
                     <p>
-                        Node ID: {mapNodes.find(node => node.node.nodeId === clickedNode)?.node.nodeId}
+                        Node ID:{' '}
+                        {mapNodes.find((node) => node.node.nodeId === clickedNode)?.node.nodeId}
+                    </p>
+                    <p>X: {mapNodes.find((node) => node.node.nodeId === clickedNode)?.node.x}</p>
+                    <p>Y: {mapNodes.find((node) => node.node.nodeId === clickedNode)?.node.y}</p>
+                    <p>
+                        Floor:{' '}
+                        {mapNodes.find((node) => node.node.nodeId === clickedNode)?.node.floor}
                     </p>
                     <p>
-                        X: {mapNodes.find(node => node.node.nodeId === clickedNode)?.node.x}
+                        Building ID:{' '}
+                        {mapNodes.find((node) => node.node.nodeId === clickedNode)?.node.buildingId}
                     </p>
-                    <p>
-                        Y: {mapNodes.find(node => node.node.nodeId === clickedNode)?.node.y}
-                    </p>
-                    <p>
-                        Floor: {mapNodes.find(node => node.node.nodeId === clickedNode)?.node.floor}
-                    </p>
-                    <p>
-                        Building ID: {mapNodes.find(node => node.node.nodeId === clickedNode)?.node.buildingId}
-                    </p>
-
                 </div>
 
                 <SelectElement
@@ -561,7 +559,16 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                     value={nodeType}
                     placeholder={'Select Node Type'}
                     onChange={(e) => setNodeType(e.target.value as NodeType)}
-                    options={['Stairs', 'Elevator', 'Room', 'Hallway', 'Parking Lot', 'Road', 'Door', 'Hallway Intersection']}
+                    options={[
+                        'Stairs',
+                        'Elevator',
+                        'Room',
+                        'Hallway',
+                        'Parking Lot',
+                        'Road',
+                        'Door',
+                        'Hallway Intersection',
+                    ]}
                 ></SelectElement>
                 <InputElement
                     label={'Node Name'}
@@ -571,13 +578,13 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                     onChange={(e) => setNodeName(e.target.value)}
                 ></InputElement>
                 <div>
-                <InputElement
-                    label={'Room Number'}
-                    type={'text'}
-                    id={'roomNum'}
-                    value={roomNumber ? roomNumber : ''}
-                    onChange={(e) => setRoomNumber(e.target.value)}
-                ></InputElement>
+                    <InputElement
+                        label={'Room Number'}
+                        type={'text'}
+                        id={'roomNum'}
+                        value={roomNumber ? roomNumber : ''}
+                        onChange={(e) => setRoomNumber(e.target.value)}
+                    ></InputElement>
                 </div>
                 <MGBButton
                     onClick={() => removeSelectedNode()}
@@ -586,23 +593,33 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                     disabled={false}
                 ></MGBButton>
             </div>
-            <div className={"absolute bottom-18 right-16 p-4 bg-white rounded-xl shadow-lg text-sm text-gray-800 max-w-sm space-y-1 z-10"}>
+            <div
+                className={
+                    'absolute bottom-18 right-16 p-4 bg-white rounded-xl shadow-lg text-sm text-gray-800 max-w-sm space-y-1 z-10'
+                }
+            >
                 <div>
-                <MGBButton
-                    onClick={() => {setMode('Node'); setClickedNode(null);}}
-                    children={'Edit Nodes'}
-                    variant={(mode === 'Node') ? 'secondary' : 'primary'}
-                    disabled={mode === 'Node'}
-                ></MGBButton>
+                    <MGBButton
+                        onClick={() => {
+                            setMode('Node');
+                            setClickedNode(null);
+                        }}
+                        children={'Edit Nodes'}
+                        variant={mode === 'Node' ? 'secondary' : 'primary'}
+                        disabled={mode === 'Node'}
+                    ></MGBButton>
                 </div>
                 <div>
-                <MGBButton
-                    onClick={() => {setMode('Edge'); setClickedNode(null);}}
-                    children={'Create Edges'}
-                    variant={(mode === 'Edge') ? 'secondary' : 'primary'}
-                    disabled={mode === 'Edge'}
-                ></MGBButton>
-                    </div>
+                    <MGBButton
+                        onClick={() => {
+                            setMode('Edge');
+                            setClickedNode(null);
+                        }}
+                        children={'Create Edges'}
+                        variant={mode === 'Edge' ? 'secondary' : 'primary'}
+                        disabled={mode === 'Edge'}
+                    ></MGBButton>
+                </div>
                 <div>
                     <MGBButton
                         onClick={() => saveNodesAndEdges()}
@@ -636,7 +653,9 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                             &times;
                         </button>
                         <div className="mt-4">
-                            <h1 className="text-center font-black">Import/Export New Nodes and Edges</h1>
+                            <h1 className="text-center font-black">
+                                Import/Export New Nodes and Edges
+                            </h1>
                         </div>
                         <div className="h-full overflow-y-auto p-6 -mt-22">
                             <ImportExportDirectoryPage jsonRoute={ROUTES.NODE_EDGE_JSON} csvRoute={ROUTES.NODE_EDGE_CSV} />

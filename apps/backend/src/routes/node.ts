@@ -113,8 +113,8 @@ router.get('/json', async function (req: Request, res: Response) {
     }
 });
 
+// WARNING: If using this make sure you are prepared for an array of data [nodes, edges]
 router.get('/csv', async function (req: Request, res: Response) {
-    //TODO: FIX
     try {
         const NODES = await PrismaClient.node.findMany({
             orderBy: {
@@ -128,7 +128,7 @@ router.get('/csv', async function (req: Request, res: Response) {
         });
         const nodesCSV = await dataToCSV(NODES);
         const edgesCSV = await dataToCSV(EDGES);
-        res.status(200).send(nodesCSV);
+        res.status(200).send([nodesCSV, edgesCSV]);
     } catch (error) {
         console.error(error);
         res.sendStatus(500);
