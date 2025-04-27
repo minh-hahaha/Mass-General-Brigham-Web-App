@@ -42,6 +42,17 @@ const AboutPage = () => {
                         {Member('kai.png', 'Kai Davidson', 'Team Coach', 'None')}
                         {Member('wwong2.jpg', 'Wilson Wong', 'Professor', 'None')}
                     </MemberPair>
+
+                    <motion.div className='font-semibold text-4xl pb-20'
+                                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 2, delay: 4}}>
+                        Special Thanks to:
+                    </motion.div>
+
+                    <MemberPair ordinal={7}>
+                        {Member('msgLogo.png', 'Brigham and Women\'s Hospital', 'Provided maps and data', 'None')}
+                        {Member('AndrewShinn.jpg', 'Andrew Shinn', 'Brigham and Women\'s Representative', 'None')}
+                    </MemberPair>
+
                 </div>
                 <div className='pt-8'>
                     The Brigham & Women’s Hospital maps and data used in this application are copyrighted and provided for the sole use of educational purposes.
