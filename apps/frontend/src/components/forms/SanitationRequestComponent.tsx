@@ -1,12 +1,11 @@
 import {useEffect, useState} from 'react';
 import MGBButton from '../../elements/MGBButton.tsx';
-import axios from 'axios';
-import { ROUTES } from 'common/src/constants.ts';
 import ConfirmMesg from '../ConfirmMessageComponent.tsx'; // Import the new component
 import { SubmitSanitationRequest, sanitationRequest } from '../../database/forms/sanitationRequest.ts';
 import InputElement from "@/elements/InputElement.tsx";
 import SelectElement from '@/elements/SelectElement.tsx';
 import {DirectoryRequestByBuilding, getDirectory} from '@/database/gettingDirectory.ts';
+import {hazardLevelType, mgbHospitals, priorityType} from '@/database/forms/formTypes.ts'
 
 // Component definition
 const SanitationRequestPage = () => {
@@ -14,7 +13,7 @@ const SanitationRequestPage = () => {
     if (!loggedIn) {window.location.href = '/';}
 
     //Service request fields
-    const [priority, setPriority] = useState<sanitationRequest['priority']>('Low');
+    const [priority, setPriority] = useState<priorityType>('Low');
     const [requestTime, setRequest_time] = useState('');
 
     //Optional fields
@@ -80,7 +79,7 @@ const SanitationRequestPage = () => {
     useEffect(() => {
         const fetchDirectoryList = async () => {
             try {
-                const data = await getDirectory(mgbLocations.indexOf(locationId) + 1);
+                const data = await getDirectory(mgbHospitals.indexOf(locationId) + 1);
                 const names = data.map((item: DirectoryRequestByBuilding) => item.deptName);
                 setDirectoryList(names);
             } catch (error) {
@@ -113,7 +112,6 @@ const SanitationRequestPage = () => {
         setShowConfirmation(false);
     };
 
-    const mgbLocations = ['Chestnut Hill', '20 Patriot Place', '22 Patriot Place', 'Faulkner Hospital'];
 
     return (
         // flex row container
@@ -137,7 +135,7 @@ const SanitationRequestPage = () => {
                                     className="w-70 px-3 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                 >
                                     <option value="">Select Location</option>
-                                    {mgbLocations.map((location) => (
+                                    {mgbHospitals.map((location) => (
                                         <option key={`pickup-${location}`} value={location}>
                                             {location}
                                         </option>
@@ -186,7 +184,7 @@ const SanitationRequestPage = () => {
                                     <select
                                         id="priority"
                                         value={priority}
-                                        onChange={(e) => setPriority(e.target.value as sanitationRequest['priority'])}
+                                        onChange={(e) => setPriority(e.target.value as priorityType)}
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >
@@ -214,7 +212,7 @@ const SanitationRequestPage = () => {
                                     <select
                                         id="hazardLevel"
                                         value={hazardLevel}
-                                        onChange={(e) => setHazardLevel(e.target.value as sanitationRequest['hazardLevel'])}
+                                        onChange={(e) => setHazardLevel(e.target.value as hazardLevelType)}
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >

@@ -5,33 +5,20 @@ import ConfirmMessageComponent from '../ConfirmMessageComponent.tsx';
 import { SubmitMedicalDeviceRequest } from '@/database/forms/medicalDeviceRequest.ts';
 import {DirectoryRequestByBuilding, getDirectory} from "@/database/gettingDirectory.ts";
 import SelectElement from "@/elements/SelectElement.tsx";
+import {
+    medicalDevices,
+    medicalDeviceType,
+    mgbHospitals,
+    mgbHospitalType,
+    priorityType,
+} from '@/database/forms/formTypes.ts';
 
-type MedicalDeviceType =
-    | 'ECG Monitor'
-    | 'Vital Signs Monitor'
-    | 'Pulse Oximeter'
-    | 'Infusion Pump'
-    | 'Syringe Pump'
-    | 'Defibrillator'
-    | 'Ventilator'
-    | 'Nebulizer'
-    | 'Anesthesia Machine'
-    | 'Wheelchair'
-    | 'IV Stand'
-    | 'Suction Machine'
-    | 'Warming Blanket System'
-    | 'Oxygen Concentrator'
-    | 'Portable Suction Unit'
-    | 'Crash Cart';
 
-type location = 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital';
-type priority = 'Low' | 'Medium' | 'High' | 'Emergency';
-const buildings = ["Chestnut Hill", "20 Patriot Place", "22 Patriot Place", "Faulkner Hospital"];
 export interface MedicalDeviceRequestData {
     employeeId: number;
     requestDate: string;
-    priority: priority
-    location: location;
+    priority: priorityType;
+    location: mgbHospitalType;
     device: string;
     deviceModel?: string;
     deviceSerialNumber?: string;
@@ -47,16 +34,13 @@ const MedicalDeviceServiceRequestPage = () => {
     if (!loggedIn) {
         window.location.href = '/';
     }
-    const medicalDevices = ['ECG Monitor', 'Vital Signs Monitor', 'Pulse Oximeter', 'Infusion Pump', 'Syringe Pump',
-        'Defibrillator', 'Ventilator', 'Nebulizer', 'Anesthesia Machine',
-        'Wheelchair', 'IV Stand', 'Suction Machine', 'Warming Blanket System',
-        'Oxygen Concentrator', 'Portable Suction Unit', 'Crash Cart'];
+
     const [employeeName, setEmployeeName] = useState('');
     const [employeeId, setEmployeeId] = useState<number>(0);
     const [requestDate, setRequestDate] = useState('');
     const [priority, setPriority] = useState<MedicalDeviceRequestData['priority']>('Low');
     const [location, setLocation] =
-        useState<MedicalDeviceRequestData['location']>('Chestnut Hill');
+        useState<mgbHospitalType>('Chestnut Hill');
     const [device, setMedicalDevice] = useState<MedicalDeviceRequestData['device']>('ECG Monitor');
     const [deviceModel, setDeviceModel] = useState('');
     const [deviceSerialNumber, setDeviceSerialNumber] = useState('');
@@ -74,7 +58,7 @@ const MedicalDeviceServiceRequestPage = () => {
     useEffect(() => {
         const fetchDirectoryList = async () => {
             try {
-                const data = await getDirectory(buildings.indexOf(location) + 1);
+                const data = await getDirectory(mgbHospitals.indexOf(location) + 1);
                 const names = data.map((item: DirectoryRequestByBuilding) => item.deptName);
                 setDirectoryList(names);
             } catch (error) {
@@ -98,9 +82,9 @@ const MedicalDeviceServiceRequestPage = () => {
         const newRequest: MedicalDeviceRequestData = {
             employeeId: employeeId,
             requestDate: requestDate,
-            priority: priority as 'Low' | 'Medium' | 'High' | 'Emergency',
-            location: location as 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital',
-            device: device as MedicalDeviceType,
+            priority: priority as priorityType,
+            location: location as mgbHospitalType,
+            device: device as medicalDeviceType,
             deviceModel: deviceModel,
             deviceSerialNumber: deviceSerialNumber,
             quantity: quantity,
@@ -151,7 +135,7 @@ const MedicalDeviceServiceRequestPage = () => {
                                         <select
                                             id={"device"}
                                             value={device}
-                                            onChange={(e) => setMedicalDevice(e.target.value as MedicalDeviceType)}
+                                            onChange={(e) => setMedicalDevice(e.target.value as medicalDeviceType)}
                                             required={true}
                                             className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                         >
@@ -240,12 +224,12 @@ const MedicalDeviceServiceRequestPage = () => {
                                     <select
                                         id="location"
                                         value={location}
-                                        onChange={(e) => setLocation(e.target.value as location)}
+                                        onChange={(e) => setLocation(e.target.value as mgbHospitalType)}
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >
                                         {/*<option value="">Select Location</option>*/}
-                                        {buildings.map(
+                                        {mgbHospitals.map(
                                             (location) => (
                                                 <option
                                                     key={`location-${location}`}
@@ -284,7 +268,7 @@ const MedicalDeviceServiceRequestPage = () => {
                                         value={priority}
                                         onChange={(e) =>
                                             setPriority(
-                                                e.target.value as priority
+                                                e.target.value as priorityType
                                             )
                                         }
                                         required

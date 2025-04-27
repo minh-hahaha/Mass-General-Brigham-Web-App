@@ -5,10 +5,7 @@ import { SubmitMaintenanceRequest, maintenanceRequest } from '@/database/forms/m
 import InputElement from '@/elements/InputElement.tsx';
 import SelectElement from '@/elements/SelectElement.tsx';
 import {DirectoryRequestByBuilding, getDirectory} from "@/database/gettingDirectory.ts";
-
-
-type mbgHospitals =  'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital';
-const hospitals = ['Chestnut Hill', '20 Patriot Place', '22 Patriot Place', 'Faulkner Hospital'];
+import {mgbHospitals, mgbHospitalType, priorityArray, priorityType} from "@/database/forms/formTypes.ts";
 
 // Component definition
 const MaintenanceRequestPage = () => {
@@ -22,8 +19,8 @@ const MaintenanceRequestPage = () => {
     const [maintenanceDescription, setMaintenanceDescription] = useState('');
 
     // Maintenance Details
-    const [priority, setPriority] = useState<'Low' | 'Medium' | 'High' | 'Emergency'>('Low');
-    const [maintenanceHospital, setMaintenanceHospital] = useState<mbgHospitals>('Chestnut Hill')
+    const [priority, setPriority] = useState<priorityType>('Low');
+    const [maintenanceHospital, setMaintenanceHospital] = useState<mgbHospitalType>('Chestnut Hill')
     const [maintenanceLocation, setMaintenanceLocation] = useState('');
     const [maintenanceTime, setMaintenanceTime] = useState('');
 
@@ -80,7 +77,7 @@ const MaintenanceRequestPage = () => {
     useEffect(() => {
         const fetchDirectoryList = async () => {
             try {
-                const data = await getDirectory(hospitals.indexOf(maintenanceHospital) + 1);
+                const data = await getDirectory(mgbHospitals.indexOf(maintenanceHospital) + 1);
                 const names = data.map((item: DirectoryRequestByBuilding) => item.deptName);
                 setDirectoryList(names);
             } catch (error) {
@@ -154,19 +151,13 @@ const MaintenanceRequestPage = () => {
                                         id="priority"
                                         value={priority}
                                         onChange={(e) =>
-                                            setPriority(
-                                                e.target.value as
-                                                    | 'Low'
-                                                    | 'Medium'
-                                                    | 'High'
-                                                    | 'Emergency'
-                                            )
+                                            setPriority(e.target.value as priorityType)
                                         }
                                         required
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >
                                         <option value="">Select priority level</option>
-                                        {['Low', 'Medium', 'High', 'Emergency'].map((option) => (
+                                        {priorityArray.map((option) => (
                                             <option key={option} value={option}>
                                                 {option}
                                             </option>
