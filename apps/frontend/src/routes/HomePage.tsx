@@ -32,7 +32,7 @@ const HomePage = () => {
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 1, delay: 1 }}
+                    transition={{ duration: 0.5, delay: 1 }}
                 >
                     <div className="relative z-10 flex flex-row justify-center items-center mt-5 gap-3">
                         <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>

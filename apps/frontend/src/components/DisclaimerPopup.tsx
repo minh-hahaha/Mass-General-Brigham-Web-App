@@ -11,7 +11,7 @@ const DisclaimerPopup: React.FC<DisclaimerPopupProps> = ({ onClose }) => {
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 2 }}
+            transition={{ duration: 0.5, delay: 1 }}
             className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center"
             onClick={onClose}
         >
