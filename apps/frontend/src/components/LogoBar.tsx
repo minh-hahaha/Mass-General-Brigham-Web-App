@@ -23,7 +23,7 @@ const aboutItems = [
     },
     {
         title: 'Tech Stack',
-        href: '/',
+        href: '/CreditsPage',
         description: 'The tools behind the creation of this app'
     }
 ];
