@@ -9,7 +9,46 @@ export const priorityArray = ['Low', 'Medium', 'High', 'Emergency'];
 export type statusType = 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
 
 //Maintenance Request
+export type maintenanceType =
+    | "Routine Facility"
+    | "HVAC"
+    | "Electrical"
+    | "Plumbing"
+    | "Elevator and Lift"
+    | "Generator/Backup Power"
+    | "Medical Equipment"
+    | "Fire Safety Systems"
+    | "Security System"
+    | "Waste Management"
+    | "Groundskeeping"
+    | "Infection Control System"
+    | "Laundry Systems"
+    | "Sterile Processing Equipment"
+    | "Telecommunications"
+    | "Building Automation System"
+    | "Roof and Structural"
+    | "Patient Room Turnover Support";
 
+export const maintenanceTypeArray = [
+    "Routine Facility",
+    "HVAC",
+    "Electrical",
+    "Plumbing",
+    "Elevator and Lift",
+    "Generator/Backup Power",
+    "Medical Equipment",
+    "Fire Safety Systems",
+    "Security System",
+    "Waste Management",
+    "Groundskeeping",
+    "Infection Control System",
+    "Laundry Systems",
+    "Sterile Processing Equipment",
+    "Telecommunications",
+    "Building Automation System",
+    "Roof and Structural",
+    "Patient Room Turnover Support"
+];
 
 //Medical Device Request
 export type medicalDeviceType =

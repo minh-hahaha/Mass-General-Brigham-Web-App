@@ -100,7 +100,7 @@ const SanitationRequestPage = () => {
         setSanitationType('');//done
         setHazardLevel('Low');//done
         setCompleteBy(new Date().toISOString());//
-        setSanitation_location_id('');
+        setSanitation_location_id ('');
         setSanitation_department_id('');
         setSanitation_roomNumber(0);
         setEmployee_name('');
@@ -156,7 +156,6 @@ const SanitationRequestPage = () => {
                                         required
                                         options={directoryList}
                                         placeholder="Select a Department"
-                                        // className="py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     />
                                 </div>

@@ -95,7 +95,6 @@ const MaintenanceRequestPage = () => {
         }
     }, [showConfirmation]);
 
-    const hospitalLocations = ['Chestnut Hill', '20 Patriot Place', '22 Patriot Place', 'Faulkner Hospital'];
 
     return (
         // flex row container
@@ -175,7 +174,7 @@ const MaintenanceRequestPage = () => {
                                         className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                     >
                                         <option value="">Select hospital location</option>
-                                        {hospitalLocations.map((option) => (
+                                        {mgbHospitals.map((option) => (
                                             <option key={option} value={option}>
                                                 {option}
                                             </option>

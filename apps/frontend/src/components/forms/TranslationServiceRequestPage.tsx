@@ -278,17 +278,22 @@ const TranslationServiceRequestPage = () => {
                                         </select>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-2">
-                                    <InputElement
-                                        id="department"
-                                        name="department"
-                                        label="Department: "
-                                        placeholder="Please enter the department"
-                                        required={true}
-                                        type="text"
-                                        value={department}
-                                        onChange={(e) => setDepartment(e.target.value)}
-                                    />
+                                <div className="flex flex-col pt-2">
+                                    {/*Department Dropdown*/}
+                                    <div className="flex items-center gap-2">
+
+                                        <label className="w-1/4"> Department </label>
+                                        <SelectElement
+                                            label=""
+                                            id="departmentId"
+                                            value={directory}
+                                            onChange={(e) => setDirectory(e.target.value)}
+                                            required
+                                            options={directoryList}
+                                            placeholder="Select a Department"
+                                            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                        />
+                                    </div>
                                 </div>
                                 <h3 className="text-xl font-semibold mb-4 mt-3">
                                     <b>Additional Information</b>
