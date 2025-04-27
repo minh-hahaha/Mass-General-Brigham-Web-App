@@ -1,0 +1,13 @@
+{
+    "type": "service_account",
+    "project_id": "softeng-api-keys",
+    "private_key_id": "342b3ab0b16eed30f08543da7ce64a5dadb9a136",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCWM94th9U0O4Ew\ngeAB1uHMb2PUCd9NHtGrBOJ3uVXQJpGMllzf/gBkQRLPd5e/j16rd+gsQJuNXjFv\ngZ1FtwOm5tPUIT3jvBgd3+zHzrA1aBWwvDy8sXiK7pQu3wf724+ldtj6uISsJbnS\nUMVouA5gZsVZ++J0ckOf0JZpGcGnVTnUyojPnHHxDojRBmzu89H/xnFSwd5jGEAb\nB6W/uWpJfmYwarteyRAx1NVKche+JkUODuNU070fGxb8QMj4V+7na758JEZ3ITDS\nXdAoinN1amHl2Enc/ilmy+2Uqc8DfeqLy6naPrktVzpCnt2KRR/c08Z2KU7AuPbC\n3i1T6Q+fAgMBAAECggEAFoH7PzNlnYgf2db8bF947UZGiABat+xwWteb4COjr6di\nlCtMC5ISbkjaEBYfD+jktNPTtMiRsWN2C6bj8bh1EaOcBo5cqdhb0iOQuyLxK2+c\nyyPKA4n3QvUcENIBw5n+h+Wr/2t7EMODzvek6AZSETFqorX+FJkIIoCtVAk0sxBK\n7LqLYZKleNkRu5SK/Zq28H4ncIHy6lp9V7/U1/r0O9p1q3blP1UjRX7lNCcXXx+0\nlYkXMnGUI31wc7LZtfONQSL5dI4gmANbX2TMfT+sP7X08SbUdMlGnA1tQybE5AAe\n8wmYKS49Lx6dKoK97QdhjklHrhh6LKrTQWejgEGMgQKBgQDHwn0/STy1TyyeP4E8\nBMzhdKj67F9KrkVN86YFvVjHdELqYTI3T+pMSQFVp/Zh/sqtZHpXa5LbfJt0jI7y\nzM0k+lYKJdpxGF9POfwz8zfIxRZKReHPJ6h9OBijN9bsLBRt7f7YzmFh2nca5t9n\n1SrEeYCDzmoz+3JdmZEiAoLf4QKBgQDAfZeTn3wj+h2Pl+iHLUHp+kpaOtVkp8Vh\noSfGSAATmOBzeEeZW6M2HuLBgYa5CzQU7YDSBwUIXE0Zkdx7I5E9TNnJNAvvzIUk\nhFbxZUP13bcdQuP22gb7YCQGLCEAI3w/e+phcKGM2Sm6xzNPRcc0MPDq122yjsk7\nrWetztfffwKBgAqRTGTrr+17icW5YFHXgysuK75SgNwHih0MlazaDndGvD9/8tMg\nRCnS9uIcJ5mZjAlONnandzZrSiIJSYqosPWS1Lhmtj6jZm9fhusMo9fYLUyyk7aM\nx4oQTKVdz93gmxgRrhi0Gky97O0cZ5crnL6WGuleIxoq5Cr1c8sTzO6hAoGBAKCv\n9zoH2ATchZLaWAWINU8SXsFF/d+h4jbm5iIy9sVlSHF8RiDyi6PhUqAA9atBe//A\naFpr+7qH+uDOj8TH4zXOErxQ02oiTD84rq+jPoFfzb4CmfT2+v8budbhPcc02ELS\nuc0PzfybSKegJOgXMv0RofwZTHzTj49e6X8BfdoXAoGATveLEfn1GxxM8deYuxqZ\n3/iOL2i5djiWUHQQAmi8MR+dYN/OzTZO2WQgqeutBOl0kXMVIqcOZ3a0MNEUCqL8\nij6okhPjKnBieSigE0DYgnzlPhZF7RLzHYg15NgkIhJFKNAIvRF1691TV7K0EoFu\n7IKSjjCe+CfGKQ62n+zcV44=\n-----END PRIVATE KEY-----\n",
+    "client_email": "tts-softeng@softeng-api-keys.iam.gserviceaccount.com",
+    "client_id": "109577171979249131724",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/tts-softeng%40softeng-api-keys.iam.gserviceaccount.com",
+    "universe_domain": "googleapis.com"
+}
