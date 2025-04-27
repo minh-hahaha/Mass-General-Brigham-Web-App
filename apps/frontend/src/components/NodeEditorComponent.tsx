@@ -73,6 +73,20 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
     const handleOpenImport = () => setShowImportModal(true);
     const handleCloseImport = () => setShowImportModal(false);
 
+    const nodeProps = {
+        zIndex: 1,
+        clickable: true,
+        draggable: true,
+        icon: {
+            url: './minh ha icon.png',
+            scaledSize: new google.maps.Size(60, 60),
+        }
+    }
+
+    const edgeProps = {
+        zIndex: 0
+    }
+
 
 
     // Node Property Use States
@@ -132,10 +146,10 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 if (isCancelled) return;
 
                 nodeResponses.forEach((nodeResponse) => {
-                    newNodes.push(createMapNodeFromNodeResponse(nodeResponse));
+                    newNodes.push(mapNodeFromNodeResponse(nodeResponse));
                 });
 
-                setMapNodes(newNodes);
+                //setMapNodes(newNodes);
 
                 return getEdges(bldgData.floor, bldgData.buildingId);
             })
@@ -185,18 +199,8 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                     drawingLibrary.OverlayType.POLYLINE,
                 ],
             },
-            markerOptions: {
-                zIndex: 1,
-                clickable: true,
-                draggable: true,
-                icon: {
-                    url: './minh ha icon.png',
-                    scaledSize: new google.maps.Size(40, 40), // width, height in pixels
-                }
-            },
-            polylineOptions: {
-                zIndex: 0
-            }
+            markerOptions: nodeProps,
+            polylineOptions: edgeProps
         });
         drawingManager.setMap(map);
         google.maps.event.addListener(drawingManager, 'overlaycomplete', (event: google.maps.drawing.OverlayCompleteEvent) => {
@@ -205,7 +209,7 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 const path = polyline.getPath().getArray();
                 const nodes = [];
                 for (let i = 0; i < path.length; i++) {
-                    nodes.push(createMapNode(undefined, path[i]));
+                    nodes.push(mapNodeFromPosition(path[i]));
                     if (i !== 0) {
                         createMapEdge(nodes[i - 1], nodes[i]);
                     }
@@ -214,73 +218,41 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 drawingManager.setDrawingMode(null);
             }else if(event.type === google.maps.drawing.OverlayType.MARKER){
                 const marker = event.overlay as google.maps.Marker;
-                const position = marker.getPosition();
-                if(!marker || !position)
+                if(!marker)
                     return;
-                createMapNode(marker, position);
+                mapNodeFromMarker(marker);
             }
         });
     }, [map]);
 
     function createDrawnNode(position: google.maps.LatLng){
         return new google.maps.Marker({
+            ...nodeProps,
             position: position,
-            clickable: true,
-            map: map,
-            zIndex: 1,
-            draggable: true,
-            icon: {
-                url: './minh ha icon.png',
-                scaledSize: new google.maps.Size(60, 60), // width, height in pixels
-            }
-        })
+            map: map
+        });
     }
 
-    function createMapNodeFromNodeResponse(node: NodeResponse) {
-        const mapNode: MapNode = {
-            node: new myNode(
-                node.nodeId,
-                node.x,
-                node.y,
-                node.floor,
-                node.nodeType,
-                node.buildingId,
-                node.name,
-                node.roomNumber
-            ),
-            drawnNode: createDrawnNode(new google.maps.LatLng(node.x, node.y)),
-        }
-        google.maps.event.addListener(mapNode.drawnNode, 'click', (e: google.maps.MapMouseEvent) =>
-            clickNode(mapNode.node.nodeId)
-        );
-        google.maps.event.addListener(mapNode.drawnNode, 'drag', (e: google.maps.MapMouseEvent) => {
-            const loc = e.latLng;
-            if(loc){
-                mapEdgesRef.current.forEach((edge) => {
-                    if(edge.from.node.nodeId === mapNode.node.nodeId || edge.to.node.nodeId === mapNode.node.nodeId ) {
-                        const tempLoc: google.maps.LatLngLiteral = {
-                            lat: mapNode.node.x,
-                            lng: mapNode.node.y
-                        }
-                        const EPSILON = 1e-6;
-                        const indexOfPathCoord = edge.drawnEdge.getPath().getArray().findIndex(
-                            ll =>
-                                Math.abs(ll.lat() - tempLoc.lat) < EPSILON &&
-                                Math.abs(ll.lng() - tempLoc.lng) < EPSILON
-                        );
-                        if (indexOfPathCoord !== -1) {
-                            edge.drawnEdge.getPath().setAt(indexOfPathCoord, loc);
-                        }
-                    }
-                })
-                mapNode.node.x = loc.lat();
-                mapNode.node.y = loc.lng();
-            }
-        })
-        return mapNode;
+    // Creates the map node from a node response
+    function mapNodeFromNodeResponse(node: NodeResponse) {
+           const mapNode: MapNode = {
+               node: new myNode(
+                   node.nodeId,
+                   node.x,
+                   node.y,
+                   node.floor,
+                   node.nodeType,
+                   node.buildingId,
+                   node.name,
+                   node.roomNumber
+               ),
+               drawnNode: createDrawnNode(new google.maps.LatLng(node.x, node.y)),
+           }
+        return createMapNode(mapNode);
     }
 
-    function createMapNode(marker: google.maps.Marker | undefined, position: google.maps.LatLng): MapNode {
+    // Creates a map node from a position
+    function mapNodeFromPosition(position: google.maps.LatLng){
         const mapNode: MapNode = {
             node: new myNode(
                 incrementTempNodeID().toString(),
@@ -292,8 +264,31 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 'Node',
                 null
             ),
-            drawnNode: marker ? marker : createDrawnNode(position),
-        };
+            drawnNode: createDrawnNode(position),
+        }
+        return createMapNode(mapNode);
+    }
+
+    // Creates a map node from a marker
+    function mapNodeFromMarker(marker: google.maps.Marker){
+        const mapNode: MapNode = {
+            node: new myNode(
+                incrementTempNodeID().toString(),
+                (marker.getPosition() as google.maps.LatLng).lat(),
+                (marker.getPosition() as google.maps.LatLng).lng(),
+                currentFloorId.charAt(currentFloorId.length - 1),
+                '1',
+                '1',
+                'Node',
+                null
+            ),
+            drawnNode: marker,
+        }
+        return createMapNode(mapNode);
+    }
+
+    // Applies the proper event listeners to the MapNodes and adds them to the list of nodes
+    function createMapNode(mapNode: MapNode): MapNode {
         google.maps.event.addListener(mapNode.drawnNode, 'click', (e: google.maps.MapMouseEvent) =>
             clickNode(mapNode.node.nodeId)
         );
@@ -350,12 +345,11 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             to: endNode,
             from: startNode,
             drawnEdge: new google.maps.Polyline({
-                zIndex: -1,
+                ...edgeProps,
                 map: map,
                 path: [startPos, endPos],
             })
         };
-        console.log("Successfully created edge", mapEdge);
         setMapEdges((prev) => [...prev, mapEdge]);
     }
 
