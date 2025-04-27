@@ -21,7 +21,7 @@ const TransportRequestPage = () => {
     const [patientName, setPatientName] = useState('');
     const [transportType, setTransportType] =
         useState<hospitalTransportType>('Ambulance (BLS)');
-    const [priority, setPriority] = useState<priorityType>('Low');
+    const [priority, setPriority] = useState('Select Priority');
     const [pickupLocation, setPickupLocation] = useState('');
     const [dropOffLocation, setDropOffLocation] = useState('');
     const [pickupDate, setPickupDate] = useState(new Date().toISOString().split('T')[0]);
@@ -101,16 +101,6 @@ const TransportRequestPage = () => {
                                                   placeholder={"Enter Patient ID"}
                                     />
                                 </div>
-                                <div className="flex items-center gap-2">
-                                    <InputElement label={"Patient Name"}
-                                                  type={"text"}
-                                                  id={"patientName"}
-                                                  value={patientName}
-                                                  onChange={e => setPatientName(e.target.value)}
-                                                  required={true}
-                                                  placeholder={"Enter Patient Name"}
-                                               />
-                                </div>
                             </div>
                         </div>
 
@@ -123,12 +113,13 @@ const TransportRequestPage = () => {
                                 id = 'transportType'
                                 value = {transportType}
                                 onChange = {(e) =>
-                                    setPickupLocation(
+                                    setTransportType(
                                         e.target.value as hospitalTransportType
                                     )
                                 }
                                 required
                                 options = {hospitalTransportArray}
+                                placeholder = 'Select Transport Type'
                             />
 
                             <div className="flex flex-col pt-2">
@@ -141,26 +132,8 @@ const TransportRequestPage = () => {
                                     }
                                     required
                                     options = {priorityArray}
+                                    placeholder = 'Select Priority'
                                 />
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Priority</label>
-                                    <select
-                                        id="priority"
-                                        value={priority}
-                                        onChange={(e) =>
-                                            setPriority(
-                                                e.target.value as transportRequest['priority']
-                                            )
-                                        }
-                                        required
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    >
-                                        <option value="Low">Low</option>
-                                        <option value="Medium">Medium</option>
-                                        <option value="High">High</option>
-                                        <option value="Emergency">Emergency</option>
-                                    </select>
-                                </div>
                             </div>
 
                             <div className="flex flex-col pt-2">
@@ -172,7 +145,8 @@ const TransportRequestPage = () => {
                                         setPickupLocation(e.target.value as mgbHospitalType)
                                     }
                                     required
-                                    options = {hospitalTransportArray}
+                                    options = {mgbHospitals}
+                                    placeholder = 'Select Pickup Location'
                                 />
                             </div>
 
@@ -188,6 +162,7 @@ const TransportRequestPage = () => {
                                     }
                                     required
                                     options = {mgbHospitals}
+                                    placeholder = 'Select Destination Location'
                                 />
                             </div>
 

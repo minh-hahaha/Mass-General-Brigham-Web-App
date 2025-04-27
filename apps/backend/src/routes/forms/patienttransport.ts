@@ -25,7 +25,7 @@ router.get('/', async (req: Request, res: Response) => {
 router.post('/', async (req: Request, res: Response) => {
     //Format for tempDate is  2025-04-04T01:44
     //(maybe on future iterations split the field?)
-
+    console.log('posting patient transport request');
     try {
         const result = await PrismaClient.$transaction(async (prisma) => {
             //creates entry for service request

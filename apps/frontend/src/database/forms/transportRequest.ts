@@ -6,7 +6,7 @@ export interface transportRequest {
     patientId: number;
     patientName: string;
     transportType: hospitalTransportType;
-    priority: priorityType;
+    priority: string;
     pickupLocation: string;
     dropOffLocation: string;
     pickupDate: string;
