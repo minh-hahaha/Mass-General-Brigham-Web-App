@@ -24,11 +24,11 @@ const TableTransportRequest: React.FC<Props> = ({ setActiveForm }) => {
     const [requests, setRequests] = useState<incomingRequest[]>([]);
     const [filters, setFilters] = useState({
         patientId: '',
-        patientName: '',
         priority: '',
         status: '',
         pickUp: '',
-        requestDate: '',
+        dropOff: '',
+        completeBy: '',
         transportType: '',
     });
     const [filter, setShowFilters] = useState<boolean>(false);
@@ -56,22 +56,22 @@ const TableTransportRequest: React.FC<Props> = ({ setActiveForm }) => {
     const filteredRequests = requests.filter((req) => {
         return (
             (!filters.patientId || String(req.patientTransport.patientId) === filters.patientId) &&
-            (!filters.patientName ||
-                req.patientTransport.patientName
-                    ?.toLowerCase()
-                    .includes(filters.patientName.toLowerCase())) &&
             (!filters.priority ||
                 req.priority?.toLowerCase().includes(filters.priority.toLowerCase())) &&
             (!filters.status || req.status?.toLowerCase().includes(filters.status.toLowerCase())) &&
+            (!filters.dropOff ||
+                req.patientTransport.dropOffLocation
+                    ?.toLowerCase()
+                    .includes(filters.dropOff.toLowerCase())) &&
             (!filters.pickUp ||
                 req.patientTransport.pickupLocation
                     ?.toLowerCase()
                     .includes(filters.pickUp.toLowerCase())) &&
-            (!filters.requestDate || req.requestDate?.startsWith(filters.requestDate)) &&
             (!filters.transportType ||
                 req.patientTransport.transportType
                     ?.toLowerCase()
-                    .includes(filters.transportType.toLowerCase()))
+                    .includes(filters.transportType.toLowerCase())) &&
+            (!filters.completeBy || req.patientTransport.completeByDate?.startsWith(filters.completeBy))
         );
     });
 
@@ -101,17 +101,6 @@ const TableTransportRequest: React.FC<Props> = ({ setActiveForm }) => {
                                     value={filters.patientId}
                                     onChange={(e) =>
                                         setFilters({ ...filters, patientId: e.target.value })
-                                    }
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium">Patient Name</label>
-                                <input
-                                    type="text"
-                                    className="border border-mgbblue rounded-sm w-30 p-1"
-                                    value={filters.patientName}
-                                    onChange={(e) =>
-                                        setFilters({ ...filters, patientName: e.target.value })
                                     }
                                 />
                             </div>
@@ -149,13 +138,13 @@ const TableTransportRequest: React.FC<Props> = ({ setActiveForm }) => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium">Request Date</label>
+                                <label className="block text-sm font-medium">Pick Up</label>
                                 <input
-                                    type="datetime-local"
-                                    className="border border-mgbblue rounded-sm w-35 p-1"
-                                    value={filters.requestDate}
+                                    type="text"
+                                    className="border border-mgbblue rounded-sm w-25 p-1"
+                                    value={filters.dropOff}
                                     onChange={(e) =>
-                                        setFilters({ ...filters, requestDate: e.target.value })
+                                        setFilters({ ...filters, dropOff: e.target.value })
                                     }
                                 />
                             </div>
@@ -167,6 +156,17 @@ const TableTransportRequest: React.FC<Props> = ({ setActiveForm }) => {
                                     value={filters.transportType}
                                     onChange={(e) =>
                                         setFilters({ ...filters, transportType: e.target.value })
+                                    }
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium">Complete Date</label>
+                                <input
+                                    type="datetime-local"
+                                    className="border border-mgbblue rounded-sm w-35 p-1"
+                                    value={filters.completeBy}
+                                    onChange={(e) =>
+                                        setFilters({ ...filters, completeBy: e.target.value })
                                     }
                                 />
                             </div>
@@ -187,15 +187,13 @@ const TableTransportRequest: React.FC<Props> = ({ setActiveForm }) => {
                     <Table>
                         <TableHeader>
                             <TableRow className="bg-gray-50">
-                                <TableHead className="w-20 text-center font-semibold py-3">Request ID</TableHead>
                                 <TableHead className="w-20 text-center font-semibold py-3">Patient ID</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Patient Name</TableHead>
                                 <TableHead className="w-20 text-center font-semibold py-3">Priority</TableHead>
                                 <TableHead className="w-20 text-center font-semibold py-3">Status</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Pick Up Location</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Request Date</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Service Type</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Starting Location</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Destination</TableHead>
                                 <TableHead className="w-20 text-center font-semibold py-3">Transport Type</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Complete Date</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -204,15 +202,13 @@ const TableTransportRequest: React.FC<Props> = ({ setActiveForm }) => {
                                     key={req.requestId}
                                     className="border-b hover:bg-gray-50"
                                 >
-                                    <TableCell className="text-center py-3">{req.requestId}</TableCell>
                                     <TableCell className="text-center py-3">{req.patientTransport.patientId}</TableCell>
-                                    <TableCell className="text-center py-3">{req.patientTransport.patientName}</TableCell>
                                     <TableCell className="text-center py-3">{req.priority}</TableCell>
                                     <TableCell className="text-center py-3">{req.status}</TableCell>
                                     <TableCell className="text-center py-3">{req.patientTransport.pickupLocation}</TableCell>
-                                    <TableCell className="text-center py-3">{formatDate(req.requestDate)}</TableCell>
-                                    <TableCell className="text-center py-3">{req.serviceType}</TableCell>
+                                    <TableCell className="text-center py-3">{req.patientTransport.dropOffLocation}</TableCell>
                                     <TableCell className="text-center py-3">{req.patientTransport.transportType}</TableCell>
+                                    <TableCell className="text-center py-3">{formatDate(req.patientTransport.completeByDate)}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

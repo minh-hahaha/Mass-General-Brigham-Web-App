@@ -4,13 +4,11 @@ import axios from 'axios';
 
 export interface transportRequest {
     patientId: number;
-    patientName: string;
     transportType: 'Ambulance' | 'Helicopter' | 'Medical Van' | 'Other';
     priority: 'Low' | 'Medium' | 'High' | 'Emergency';
+    completeByDate: string;
     pickupLocation: string;
     dropOffLocation: string;
-    pickupDate: string;
-    pickupTime: string;
     notes: string;
     assignedToId: number;
 }
@@ -21,10 +19,11 @@ export interface incomingRequest {
     locationId: number;
     patientTransport: {
         patientId: number;
-        patientName: string;
         pickupLocation: string;
+        dropOffLocation: string;
         servReqId: number;
         transportType: 'Ambulance' | 'Helicopter' | 'Medical Van' | 'Other';
+        completeByDate:  string;
     };
     priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     requestDate: string;
