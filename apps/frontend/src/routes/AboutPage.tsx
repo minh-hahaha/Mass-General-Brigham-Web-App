@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import Member from '../components/Member.tsx';
+import MemberPair from '../components/MemberPair.tsx';
 
 const AboutPage = () => {
     return(
@@ -10,108 +12,40 @@ const AboutPage = () => {
                     Meet the Developers of Team C
                 </motion.div>
                 <div className='grid grid-cols-1 px-10 gap-4 transition-[delay-150 duration-300 ease-in-out]'>
-                    <motion.div className="grid grid-cols-2 gap-4"
-                                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 1}}
-                    >
-                        <div className='grid grid-cols-2 grid-cols-[200px_minmax(900px,_1fr)_100px] bg-gray-300 px-4 py-4 rounded-2xl'>
-                            <div className="rounded-full size-32 bg-cover bg-center bg-[url('/TheTeam/AdMinh.jpg')]" />
-                            <div className='grid grid-cols-1 text-codgray text-bold '>
-                                <div className='text-lg'>Minh Ha</div>
-                                <div className='text-sm'>Lead Software Engineer</div>
-                                <div className='text-sm'>Github: <Link to='https://github.com/minh-hahaha' className='text-mgbblue underline transition-[delay-150 duration-300 ease-in-out] hover:text-teal-500 hover:text-lg'>minh-hahaha</Link></div>
-                            </div>
-                        </div>
-                        <div className='grid grid-cols-2 grid-cols-[200px_minmax(900px,_1fr)_100px] bg-gray-300 px-4 py-4 rounded-2xl'>
-                            <div className="rounded-full size-32 bg-cover bg-center bg-[url('/TheTeam/Andrew.png')]" />
-                            <div className='grid grid-cols-1 text-codgray text-bold '>
-                                <div className='text-lg'>Andrew Melton</div>
-                                <div className='text-sm'>Assistant Lead Software Engineer</div>
-                                <div className='text-sm'>Github: <Link to='https://github.com/4ndrew13' className='text-mgbblue underline transition-[delay-150 duration-300 ease-in-out] hover:text-teal-500 hover:text-lg'>4ndrew13</Link></div>
-                            </div>
-                        </div>
-                    </motion.div>
-                    <motion.div className="grid grid-cols-2 gap-4"
-                                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 1.5}}
-                    >
-                        <div className='grid grid-cols-2 grid-cols-[200px_minmax(900px,_1fr)_100px] bg-gray-300 px-4 py-4 rounded-2xl'>
-                            <div className="rounded-full size-32 bg-cover bg-center bg-[url('/TheTeam/Pakorn.jpg')]" />
-                            <div className='grid grid-cols-1 text-codgray text-bold '>
-                                <div className='text-lg'>Pakorn Liengsawangwong</div>
-                                <div className='text-sm'>Assistant Lead Software Engineer</div>
-                                <div className='text-sm'>Github: <Link to='https://github.com/pako490' className='text-mgbblue underline transition-[delay-150 duration-300 ease-in-out] hover:text-teal-500 hover:text-lg'>pako490</Link></div>
-                            </div>
-                        </div>
-                        <div className='grid grid-cols-2 grid-cols-[200px_minmax(900px,_1fr)_100px] bg-gray-300 px-4 py-4 rounded-2xl'>
-                            <div className="rounded-full size-32 bg-cover bg-center bg-[url('/TheTeam/max.png')]" />
-                            <div className='grid grid-cols-1 text-codgray text-bold '>
-                                <div className='text-lg'>Max Jeronimo</div>
-                                <div className='text-sm'>Backend / Databases</div>
-                                <div className='text-sm'>Github: <Link to='https://github.com/max-jeronimo' className='text-mgbblue underline transition-[delay-150 duration-300 ease-in-out] hover:text-teal-500 hover:text-lg'>max-jeronimo</Link></div>
-                            </div>
-                        </div>
-                    </motion.div>
-                    <motion.div className="grid grid-cols-2 gap-4"
-                                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 2}}
-                    >
-                        <div className='grid grid-cols-2 grid-cols-[200px_minmax(900px,_1fr)_100px] bg-gray-300 px-4 py-4 rounded-2xl'>
-                            <div className="rounded-full size-32 bg-cover bg-center bg-[url('/TheTeam/Jake.jpg')]" />
-                            <div className='grid grid-cols-1 text-codgray text-bold '>
-                                <div className='text-lg'>Jake Lariviere</div>
-                                <div className='text-sm'>Backend / Databases</div>
-                                <div className='text-sm'>Github: <Link to='https://github.com/jlariv11' className='text-mgbblue underline transition-[delay-150 duration-300 ease-in-out] hover:text-teal-500 hover:text-lg'>jlariv11</Link></div>
-                            </div>
-                        </div>
-                        <div className='grid grid-cols-2 grid-cols-[200px_minmax(900px,_1fr)_100px] bg-gray-300 px-4 py-4 rounded-2xl'>
-                            <div className="rounded-full size-32 bg-cover bg-center bg-[url('/TheTeam/Jack.png')]" />
-                            <div className='grid grid-cols-1 text-codgray text-bold '>
-                                <div className='text-lg'>Jack Morris</div>
-                                <div className='text-sm'>Backend / Databases</div>
-                                <div className='text-sm'>Github: <Link to='https://github.com/JackMorris1234' className='text-mgbblue underline transition-[delay-150 duration-300 ease-in-out] hover:text-teal-500 hover:text-lg'>JackMorris1234</Link></div>
-                            </div>
-                        </div>
-                    </motion.div>
-                    <motion.div className="grid grid-cols-2 gap-4"
-                                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 2.5}}
-                    >
-                        <div className='grid grid-cols-2 grid-cols-[200px_minmax(900px,_1fr)_100px] bg-gray-300 px-4 py-4 rounded-2xl'>
-                            <div className="rounded-full size-32 bg-cover bg-center bg-[url('/TheTeam/Vinam.jpg')]" />
-                            <div className='grid grid-cols-1 text-codgray text-bold '>
-                                <div className='text-lg'>Vinam Nguyen</div>
-                                <div className='text-sm'>Algorithms / Project Manager</div>
-                                <div className='text-sm'>Github: <Link to='https://github.com/vinamnguyen' className='text-mgbblue underline transition-[delay-150 duration-300 ease-in-out] hover:text-teal-500 hover:text-lg'>vinamnguyen</Link></div>
-                            </div>
-                        </div>
-                        <div className='grid grid-cols-2 grid-cols-[200px_minmax(900px,_1fr)_100px] bg-gray-300 px-4 py-4 rounded-2xl'>
-                            <div className="rounded-full size-32 bg-cover bg-center bg-[url('/TheTeam/Krish.png')]" />
-                            <div className='grid grid-cols-1 text-codgray text-bold '>
-                                <div className='text-lg'>Krish Patel</div>
-                                <div className='text-sm'>Algorithms / Scrum Master</div>
-                                <div className='text-sm'>Github: <Link to='https://github.com/krishpate1' className='text-mgbblue underline transition-[delay-150 duration-300 ease-in-out] hover:text-teal-500 hover:text-lg'>krishpate1</Link></div>
-                            </div>
-                        </div>
-                    </motion.div>
-                    <motion.div className="grid grid-cols-2 gap-4"
-                                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 3}}
-                    >
-                        <div className='grid grid-cols-2 grid-cols-[200px_minmax(900px,_1fr)_100px] bg-gray-300 px-4 py-4 rounded-2xl'>
-                            <div className="rounded-full size-32 bg-cover bg-center bg-[url('/TheTeam/Yael.jpg')]" />
-                            <div className='grid grid-cols-1 text-codgray text-bold '>
-                                <div className='text-lg'>Yael Whitson</div>
-                                <div className='text-sm'>Frontend / Documentation Analyst</div>
-                                <div className='text-sm'>Github: <Link to='https://github.com/whywhitson' className='text-mgbblue underline transition-[delay-150 duration-300 ease-in-out] hover:text-teal-500 hover:text-lg'>whywhitson</Link></div>
-                            </div>
-                        </div>
-                        <div className='grid grid-cols-2 grid-cols-[200px_minmax(900px,_1fr)_100px] bg-gray-300 px-4 py-4 rounded-2xl'>
-                            <div className="rounded-full size-32 bg-cover bg-center bg-[url('/TheTeam/Sean.jpg')]" />
-                            <div className='grid grid-cols-1 text-codgray text-bold '>
-                                <div className='text-lg'>Haotian Liu</div>
-                                <div className='text-sm'>Frontend / Product Owner</div>
-                                <div className='text-sm'>Github: <Link to='https://github.com/seanliu7081' className='text-mgbblue underline transition-[delay-150 duration-300 ease-in-out] hover:text-teal-500 hover:text-lg'>seanliu7081</Link></div>
-                            </div>
-                        </div>
-                    </motion.div>
+
+                    <MemberPair ordinal={0}>
+                        {Member('AdMinh.jpg', 'Minh Ha', 'Lead Software Engineer', 'minh-hahaha')}
+                        {Member('Andrew.png', 'Andrew Melton', 'Assistant Lead Software Engineer', '4ndrew13')}
+                    </MemberPair>
+
+                    <MemberPair ordinal={1}>
+                        {Member('Pakorn.jpg', 'Pakorn Liengsawangwong', 'Assistant Lead Software Engineer', 'pako490')}
+                        {Member('max.png', 'Max Jeronimo', 'Backend / Databases', 'max-jeronimo')}
+                    </MemberPair>
+
+                    <MemberPair ordinal={2}>
+                        {Member('Jake.jpg', 'Jake Lariviere', 'Backend / Databases', 'jlariv11')}
+                        {Member('Jack.png', 'Jack Morris', 'Backend / Databases', 'JackMorris1234')}
+                    </MemberPair>
+
+                    <MemberPair ordinal={3}>
+                        {Member('Vinam.jpg', 'Vinam Nguyen', 'Algorithms / Project Manager', 'vinamnguyen')}
+                        {Member('Krish.png', 'Krish Patel', 'Algorithms / Scrum Master', 'krishpate1')}
+                    </MemberPair>
+
+                    <MemberPair ordinal={4}>
+                        {Member('Yael.jpg', 'Yael Whitson', 'Frontend / Documentation Analyst', 'whywhitson')}
+                        {Member('Sean.jpg', 'Haotian Liu', 'Frontend / Product Owner', 'seanliu7081')}
+                    </MemberPair>
+
+                    <MemberPair ordinal={5}>
+                        {Member('kai.png', 'Kai Davidson', 'Team Coach', 'None')}
+                        {Member('wwong2.jpg', 'Wilson Wong', 'Professor', 'None')}
+                    </MemberPair>
                 </div>
-                {/*</motion.div>*/}
+                <div className='pt-8'>
+                    The Brigham & Women’s Hospital maps and data used in this application are copyrighted and provided for the sole use of educational purposes.
+                </div>
             </div>
         </div>
     )
