@@ -32,7 +32,7 @@ router.get('/', async (req: Request, res: Response) => {
                 departments: node.departments.map((dept) => dept.deptId).map((d) => d.toString()),
             },
         ]);
-        console.log(flattenedData);
+        //console.log(flattenedData);
         res.status(200).json(flattenedData);
     } catch (error) {
         console.error(error);

@@ -109,6 +109,8 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
     const departmentOptionsRef = useRef(departmentOptions);
     const [tags, setTags] = useState<string[]>([]);
 
+    const [canSave, setCanSave] = useState<boolean>(true);
+
     const [showImportModal, setShowImportModal] = useState(false);
 
     const handleOpenImport = () => setShowImportModal(true);
@@ -238,6 +240,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
     }, [currentFloorId]);
 
     useEffect(() => {
+        console.log("Swapping to building:", currentBuilding);
         if (!currentBuilding) return; // Skip if empty string
         let isCancelled = false;
 
@@ -536,6 +539,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
     };
 
     async function saveNodesAndEdges() {
+        setCanSave(false);
         const nodes: NodeResponse[] = [];
         const usedNodeIds = new Set<string>();
         const currentFloor = availableFloors.find((f) => f.id === currentFloorId);
@@ -581,6 +585,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
             };
             await createEdge(sendEdge);
         }
+        setCanSave(true);
         setClickedNode(null);
     }
 
@@ -726,8 +731,8 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                     <MGBButton
                         onClick={() => saveNodesAndEdges()}
                         children={'Save Nodes and Edges'}
-                        variant={'primary'}
-                        disabled={false}
+                        variant={canSave ? 'primary' : 'secondary'}
+                        disabled={!canSave}
                     ></MGBButton>
                 </div>
                 <div>
