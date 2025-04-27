@@ -1,12 +1,12 @@
 import { ROUTES } from 'common/src/constants.ts';
-
 import axios from 'axios';
+import { priorityType, statusType, transportType } from '@/database/forms/formTypes.ts';
 
 export interface transportRequest {
     patientId: number;
     patientName: string;
-    transportType: 'Ambulance' | 'Helicopter' | 'Medical Van' | 'Other';
-    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
+    transportType: transportType;
+    priority: priorityType;
     pickupLocation: string;
     dropOffLocation: string;
     pickupDate: string;
@@ -24,14 +24,14 @@ export interface incomingRequest {
         patientName: string;
         pickupLocation: string;
         servReqId: number;
-        transportType: 'Ambulance' | 'Helicopter' | 'Medical Van' | 'Other';
+        transportType: transportType;
     };
-    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
+    priority: priorityType;
     requestDate: string;
     requestId: number;
     requestTime: number;
     serviceType: string;
-    status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
+    status: statusType;
 }
 
 

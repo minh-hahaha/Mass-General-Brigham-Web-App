@@ -105,3 +105,5 @@ export type hazardLevelType = 'Low' | 'Moderate' | 'High' | 'Extreme';
 export type meetingType = 'Remote (Online)' | 'On-site (In-Person)';
 export const meetingTypeArray = ['Remote (Online)', 'On-site (In-Person)'];
 //Transport Request
+
+export type transportType = 'Ambulance' | 'Helicopter' | 'Medical Van';
