@@ -3,13 +3,15 @@ import MGBButton from '@/elements/MGBButton.tsx';
 import {useEffect, useState} from 'react';
 import SelectElement from '@/elements/SelectElement.tsx';
 import { SubmitTranslatorRequest, outgoingTranslationRequest } from '@/database/forms/translationRequest.ts';
+import {
+    meetingType,
+    meetingTypeArray, mgbHospitals,
+    mgbHospitalType,
+    priorityArray,
+    priorityType
+} from "@/database/forms/formTypes.ts";
+import {DirectoryRequestByBuilding, getDirectory} from "@/database/gettingDirectory.ts";
 
-type hospitals = 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital';
-type priority = 'Low' | 'Medium' | 'High' | 'Emergency';
-type typeMeeting = 'Remote (Online)' | 'On-site (In-Person)';
-type location = 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital';
-type status = 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
-const mbgLocations = ["Chestnut Hill", "20 Patriot Place", "22 Patriot Place", "Faulkner Hospital"];
 const TranslationServiceRequestPage = () => {
     const [employeeName, setEmployeeName] = useState('');
     const [employeeId, setEmployeeId] = useState<number>(0);
@@ -28,6 +30,9 @@ const TranslationServiceRequestPage = () => {
 
     const [showConfirmation, setShowConfirmation] = useState(false);
 
+    const [directoryList, setDirectoryList] = useState<string[]>([""]);
+    const [directory, setDirectory] = useState<string>("");
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const requestDate = "";
@@ -38,12 +43,12 @@ const TranslationServiceRequestPage = () => {
         const newRequest: outgoingTranslationRequest = {
             employeeName: employeeName,
             employeeId: employeeId,
-            priority: priority as 'Low' | 'Medium' | 'High' | 'Emergency',
-            location: location as 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital',
+            priority: priority as priorityType,
+            location: location as mgbHospitalType,
             language: patientLanguage,
             patientName: patientName,
             duration: duration,
-            typeMeeting: typeMeeting as 'Remote (Online)' | 'On-site (In-Person)',
+            typeMeeting: typeMeeting as meetingType,
             date: date,
             meetingLink: meetingLink,
             notes: notes,
@@ -58,6 +63,22 @@ const TranslationServiceRequestPage = () => {
         setShowConfirmation(true);
         handleReset();
     };
+
+
+    useEffect(() => {
+        const fetchDirectoryList = async () => {
+            try {
+                const data = await getDirectory(mgbHospitals.indexOf(location) + 1);
+                const names = data.map((item: DirectoryRequestByBuilding) => item.deptName);
+                setDirectoryList(names);
+            } catch (error) {
+                console.error('Error fetching building names:', error);
+            }
+        };
+        fetchDirectoryList();
+        console.log('Updated Directory list');
+    }, [location, directory]);
+
 
     useEffect(() => {
         if (showConfirmation) {
@@ -145,7 +166,7 @@ const TranslationServiceRequestPage = () => {
                                             className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                         >
                                             <option value="">Select Priority</option>
-                                            {['Low', 'Medium', 'High', 'Emergency'].map(
+                                            {priorityArray.map(
                                                 (priority) => (
                                                     <option
                                                         key={`pri-${priority}`}
@@ -203,7 +224,7 @@ const TranslationServiceRequestPage = () => {
                                             className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                                         >
                                             <option value="">Select Type Meeting</option>
-                                            {['Remote (Online)', 'On-site (In-Person)'].map(
+                                            {meetingTypeArray.map(
                                                 (type) => (
                                                     <option
                                                         key={`type-${type}`}
@@ -268,25 +289,6 @@ const TranslationServiceRequestPage = () => {
                                         value={department}
                                         onChange={(e) => setDepartment(e.target.value)}
                                     />
-                                </div>
-                                <div className="flex flex-col pt-2">
-                                    <div className="flex items-center gap-2">
-                                        <label className="w-1/4">Status</label>
-                                        <select
-                                            id="status"
-                                            value={status} // <-- changed from priority to status
-                                            onChange={(e) => setStatus(e.target.value)}
-                                            required
-                                            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                        >
-                                            <option value="">Select Status</option>
-                                            {['Pending', 'In Progress', 'Completed', 'Cancelled'].map((status) => (
-                                                <option key={`status-${status}`} value={status}>
-                                                    {status}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
                                 </div>
                                 <h3 className="text-xl font-semibold mb-4 mt-3">
                                     <b>Additional Information</b>
