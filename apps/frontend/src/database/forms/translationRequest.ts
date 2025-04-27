@@ -1,19 +1,19 @@
 import {ROUTES} from "common/src/constants.ts";
 import axios from "axios";
+import {priorityType, statusType} from "@/database/forms/formTypes.ts";
 // import {TranslationRequestData} from "@/components/forms/TranslationServiceRequestPage.tsx";
 
 export interface outgoingTranslationRequest {
     comments: string;
     employeeName: string;
     employeeId: number;
-    // locationId: number;
     language: string;
     patientName: string;
     typeMeeting: string;
     meetingLink: string;
     department: string;
     location: string;
-    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
+    priority: priorityType;
     requestDate: string;
     requestTime: string;
     duration: number;
@@ -34,12 +34,12 @@ export interface incomingTranslationRequest {
         department: string;
         location: string;
     }
-    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
+    priority: priorityType;
     requestDate: string;
     requestId: number;
     requestTime: string;
     serviceType: string;
-    status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
+    status: statusType;
 }
 
 

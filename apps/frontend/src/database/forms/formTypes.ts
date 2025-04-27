@@ -103,29 +103,29 @@ export type hazardLevelType = 'Low' | 'Moderate' | 'High' | 'Extreme';
 
 export type meetingType = 'Remote (Online)' | 'On-site (In-Person)';
 export const meetingTypeArray = ['Remote (Online)', 'On-site (In-Person)'];
+
+//TODO: ADD THESE
+// export type translateLangugeType = ;
+// export const translateLangugeArray = [];
+
 //Transport Request
 
-export type hospitalTransportType =
-    | "Ambulance"
+export type hospitalTransportType = "Ambulance (BLS)"
+    | "Ambulance (ALS)"
     | "Helicopter"
-    | "Medical Van"
     | "Critical Care Transport"
     | "Neonatal Transport"
+    | "Medical Van"
     | "Mobile ICU"
-    | "Bariatric Transport"
-    | "Organ Transport Vehicle"
-    | "Patient Transfer Shuttle"
-    | "Airplane Medical Transport";
+    | "Bariatric Transport";
 
-const hospitalTransportArray = [
-    "Ambulance",
+export const hospitalTransportArray = [
+    "Ambulance (BLS)",
+    "Ambulance (ALS)",
     "Helicopter",
-    "Medical Van",
     "Critical Care Transport",
     "Neonatal Transport",
+    "Medical Van",
     "Mobile ICU",
-    "Bariatric Transport",
-    "Organ Transport Vehicle",
-    "Patient Transfer Shuttle",
-    "Airplane Medical Transport"
+    "Bariatric Transport"
 ];

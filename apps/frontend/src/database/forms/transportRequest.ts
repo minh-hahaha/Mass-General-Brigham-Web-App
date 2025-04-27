@@ -1,11 +1,11 @@
 import { ROUTES } from 'common/src/constants.ts';
 import axios from 'axios';
-import { priorityType, statusType, transportType } from '@/database/forms/formTypes.ts';
+import { priorityType, statusType, hospitalTransportType } from '@/database/forms/formTypes.ts';
 
 export interface transportRequest {
     patientId: number;
     patientName: string;
-    transportType: transportType;
+    transportType: hospitalTransportType;
     priority: priorityType;
     pickupLocation: string;
     dropOffLocation: string;
@@ -24,7 +24,7 @@ export interface incomingRequest {
         patientName: string;
         pickupLocation: string;
         servReqId: number;
-        transportType: transportType;
+        transportType: hospitalTransportType;
     };
     priority: priorityType;
     requestDate: string;

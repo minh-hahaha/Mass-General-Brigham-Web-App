@@ -2,8 +2,15 @@ import {useEffect, useState} from 'react';
 import MGBButton from '../../elements/MGBButton.tsx';
 import InputElement from '../../elements/InputElement.tsx';
 import ConfirmMessageComponent from '../ConfirmMessageComponent.tsx'; // Import the new component
-import { SubmitTransportRequest, transportRequest} from '../../database/forms/transportRequest.ts';
-import {hospitalTransportType, priorityType, mgbHospitals} from '@/database/forms/formTypes.ts'
+import { SubmitTransportRequest, transportRequest} from '@/database/forms/transportRequest.ts';
+import {
+    hospitalTransportType,
+    priorityType,
+    mgbHospitals,
+    hospitalTransportArray,
+    mgbHospitalType, priorityArray
+} from '@/database/forms/formTypes.ts'
+import SelectFormElement from "@/elements/SelectFormElement.tsx";
 
 // Component definition
 const TransportRequestPage = () => {
@@ -13,7 +20,7 @@ const TransportRequestPage = () => {
     const [patientId, setPatientId] = useState(0);
     const [patientName, setPatientName] = useState('');
     const [transportType, setTransportType] =
-        useState<hospitalTransportType>('Ambulance');
+        useState<hospitalTransportType>('Ambulance (BLS)');
     const [priority, setPriority] = useState<priorityType>('Low');
     const [pickupLocation, setPickupLocation] = useState('');
     const [dropOffLocation, setDropOffLocation] = useState('');
@@ -50,7 +57,7 @@ const TransportRequestPage = () => {
     const handleReset = () => {
         setPatientId(0);
         setPatientName('');
-        setTransportType('Ambulance');
+        setTransportType('Ambulance (BLS)');
         setPriority('Low');
         setPickupLocation('');
         setDropOffLocation('');
@@ -111,27 +118,30 @@ const TransportRequestPage = () => {
                             <h3 className="text-xl font-semibold mb-4">
                                 <b>Transport Details</b>
                             </h3>
-                            <div className="flex flex-col gap-2">
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Transport</label>
-                                    <select
-                                        id="transportType"
-                                        value={transportType}
-                                        onChange={(e) =>
-                                            setTransportType(
-                                                e.target.value as transportRequest['transportType']
-                                            )
-                                        }
-                                        required
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    >
-                                        <option value="Ambulance">Ambulance</option>
-                                        <option value="Helicopter">Helicopter</option>
-                                    </select>
-                                </div>
-                            </div>
+                            <SelectFormElement
+                                label = 'Type'
+                                id = 'transportType'
+                                value = {transportType}
+                                onChange = {(e) =>
+                                    setPickupLocation(
+                                        e.target.value as hospitalTransportType
+                                    )
+                                }
+                                required
+                                options = {hospitalTransportArray}
+                            />
 
                             <div className="flex flex-col pt-2">
+                                <SelectFormElement
+                                    label = 'Priority'
+                                    id = 'priority'
+                                    value = {priority}
+                                    onChange = {(e) =>
+                                        setPriority(e.target.value as priorityType)
+                                    }
+                                    required
+                                    options = {priorityArray}
+                                />
                                 <div className="flex items-center gap-2">
                                     <label className="w-1/4">Priority</label>
                                     <select
@@ -154,44 +164,31 @@ const TransportRequestPage = () => {
                             </div>
 
                             <div className="flex flex-col pt-2">
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Location</label>
-                                    <select
-                                        id="pickupLocation"
-                                        value={pickupLocation}
-                                        onChange={(e) => setPickupLocation(e.target.value)}
-                                        required
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    >
-                                        <option value="">Select pickup location</option>
-                                        {mgbHospitals.map((location) => (
-                                            <option key={`pickup-${location}`} value={location}>
-                                                {location}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
+                                <SelectFormElement
+                                    label = 'Pickup'
+                                    id = 'pickupLocation'
+                                    value = {pickupLocation}
+                                    onChange = {(e) =>
+                                        setPickupLocation(e.target.value as mgbHospitalType)
+                                    }
+                                    required
+                                    options = {hospitalTransportArray}
+                                />
                             </div>
 
-                            {/*TODO: get rid of the department that wasn't selected (make new directory request)*/}
+
                             <div className="flex flex-col pt-2">
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Destination</label>
-                                    <select
-                                        id="destinationLocation"
-                                        value={dropOffLocation}
-                                        onChange={(e) => setDropOffLocation(e.target.value)}
-                                        required
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    >
-                                        <option value="">Select destination</option>
-                                        {mgbHospitals.map((location) => (
-                                            <option key={`dest-${location}`} value={location}>
-                                                {location}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
+
+                                <SelectFormElement
+                                    label = 'Destination'
+                                    id = 'destinationLocation'
+                                    value = {dropOffLocation}
+                                    onChange = {(e) =>
+                                        setDropOffLocation(e.target.value)
+                                    }
+                                    required
+                                    options = {mgbHospitals}
+                                />
                             </div>
 
                             <div className="flex flex-col pt-2">
