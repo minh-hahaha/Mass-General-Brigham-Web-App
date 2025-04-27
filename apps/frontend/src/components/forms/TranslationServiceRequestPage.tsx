@@ -11,6 +11,7 @@ import {
     priorityType
 } from "@/database/forms/formTypes.ts";
 import {DirectoryRequestByBuilding, getDirectory} from "@/database/gettingDirectory.ts";
+import SelectFormElement from "@/elements/SelectFormElement.tsx";
 
 const TranslationServiceRequestPage = () => {
     const [employeeName, setEmployeeName] = useState('');
@@ -155,30 +156,18 @@ const TranslationServiceRequestPage = () => {
                                 <b>Translator Information</b>
                             </h3>
                             <div className="flex flex-col gap-2">
-                                <div className="flex flex-col pt-2">
-                                    <div className="flex items-center gap-2">
-                                        <label className="w-1/4">Priority</label>
-                                        <select
-                                            id="priority"
-                                            value={priority}
-                                            onChange={(e) => setPriority(e.target.value)}
-                                            required
-                                            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                        >
-                                            <option value="">Select Priority</option>
-                                            {priorityArray.map(
-                                                (priority) => (
-                                                    <option
-                                                        key={`pri-${priority}`}
-                                                        value={priority}
-                                                    >
-                                                        {priority}
-                                                    </option>
-                                                )
-                                            )}
-                                        </select>
-                                    </div>
-                                </div>
+                                <SelectFormElement
+                                    label = 'Priority'
+                                    id = 'priority'
+                                    value = {priority}
+                                    onChange = {(e) =>
+                                        setPriority(e.target.value as priorityType)
+                                    }
+                                    required
+                                    options = {priorityArray}
+                                    placeholder = 'Select Priority'
+                                />
+                            </div>
 
                                 <div className="flex items-center gap-2">
                                     <InputElement
@@ -205,7 +194,6 @@ const TranslationServiceRequestPage = () => {
                                         onChange={(e) => setDuration(Number(e.target.value))}
                                     />
                                 </div>
-                            </div>
                         </div>
 
                         <div>
@@ -214,28 +202,17 @@ const TranslationServiceRequestPage = () => {
                             </h3>
                             <div className="flex flex-col gap-2">
                                 <div className="flex flex-col pt-2">
-                                    <div className="flex items-center gap-2">
-                                        <label className="w-1/4">Meeting Type</label>
-                                        <select
-                                            id="typeMeeting"
-                                            value={typeMeeting}
-                                            onChange={(e) => setTypeMeeting(e.target.value)}
-                                            required
-                                            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                        >
-                                            <option value="">Select Type Meeting</option>
-                                            {meetingTypeArray.map(
-                                                (type) => (
-                                                    <option
-                                                        key={`type-${type}`}
-                                                        value={type}
-                                                    >
-                                                        {type}
-                                                    </option>
-                                                )
-                                            )}
-                                        </select>
-                                    </div>
+                                    <SelectFormElement
+                                        label = 'Meeting Type'
+                                        id = 'meetingType'
+                                        value = {typeMeeting}
+                                        onChange = {(e) =>
+                                            setPriority(e.target.value as meetingType)
+                                        }
+                                        required
+                                        options = {meetingTypeArray}
+                                        placeholder = 'Select Meeting Type'
+                                    />
                                 </div>
 
                                 <div
@@ -255,45 +232,35 @@ const TranslationServiceRequestPage = () => {
                                 </div>
 
                                 <div className="flex flex-col pt-2">
-                                    <div className="flex items-center gap-2">
-                                        <label className="w-1/4">Location</label>
-                                        <select
-                                            id="location"
-                                            value={location}
-                                            onChange={(e) => setLocation(e.target.value)}
+                                    <div className="flex flex-col pt-2">
+                                        <SelectFormElement
+                                            label = 'Hospital'
+                                            id = 'location'
+                                            value = {location}
+                                            onChange = {(e) =>
+                                                setLocation(e.target.value as mgbHospitalType)
+                                            }
                                             required
-                                            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                        >
-                                            <option value="">Select Location</option>
-                                            {['Chestnut Hill', '20 Patriot Place', '22 Patriot Place'].map(
-                                                (location) => (
-                                                    <option
-                                                        key={`location-${location}`}
-                                                        value={location}
-                                                    >
-                                                        {location}
-                                                    </option>
-                                                )
-                                            )}
-                                        </select>
+                                            options = {mgbHospitals}
+                                            placeholder = 'Select Hospital'
+                                        />
                                     </div>
                                 </div>
                                 <div className="flex flex-col pt-2">
                                     {/*Department Dropdown*/}
-                                    <div className="flex items-center gap-2">
 
-                                        <label className="w-1/4"> Department </label>
-                                        <SelectElement
-                                            label=""
-                                            id="departmentId"
-                                            value={directory}
-                                            onChange={(e) => setDirectory(e.target.value)}
+                                        <SelectFormElement
+                                            label = 'Department'
+                                            id = 'department'
+                                            value = {department}
+                                            onChange = {(e) =>
+                                                setDepartment(e.target.value)
+                                            }
                                             required
-                                            options={directoryList}
-                                            placeholder="Select a Department"
-                                            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                            options = {directoryList}
+                                            placeholder = 'Select Department'
                                         />
-                                    </div>
+
                                 </div>
                                 <h3 className="text-xl font-semibold mb-4 mt-3">
                                     <b>Additional Information</b>
