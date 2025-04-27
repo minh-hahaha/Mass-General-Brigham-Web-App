@@ -42,6 +42,7 @@ const SelectFormElement: React.FC<SelectElementProps> = ({
                             required={required}
                             className={`w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300`}
                         >
+                            <option value="">{placeholder}</option>
                             {options.map((option, index) => (
                                 <option key={index} value={option}>
                                     {option}
