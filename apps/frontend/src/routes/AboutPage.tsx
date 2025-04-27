@@ -5,7 +5,7 @@ const AboutPage = () => {
     return(
         <div className="bg-gray-200 h-2full max-w-full overflow-x-hidden">
             <div className="grid grid-cols-1 px-24 py-24">
-                <motion.div className='font-semibold text-4xl pb-20'
+                <motion.div className='font-semibold text-4xl pb-20 text-center'
                             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 2, delay: 0.5}}>
                     Meet the Developers of Team C
                 </motion.div>
