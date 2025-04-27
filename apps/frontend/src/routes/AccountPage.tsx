@@ -21,7 +21,6 @@ const AccountPage = () => {
                     <p><strong>Email:</strong> user@example.com</p>
                 </CardContent>
             </Card>
-
         </div>
     )
 }
