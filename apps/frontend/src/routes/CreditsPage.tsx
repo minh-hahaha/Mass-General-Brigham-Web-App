@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-// add , adobe illustrator, webstorm, react-googlemaps, radix-ui, google-text-to-speech
+// add , , , react-googlemaps, radix-ui, google-text-to-speech
 const CreditsPage = () => {
     return (
         <div className="bg-gray-200 min-h-screen max-w-full overflow-x-hidden">
@@ -22,7 +22,7 @@ const CreditsPage = () => {
                         transition={{ duration: 1, delay: 1 }}
                     >
                         <CreditItem
-                            picture="/TheTeam/AdMinh.jpg"
+                            picture="/Credits/PostgresSQL.png"
                             title="PostgreSQL"
                             description="Relational Database Management System"
                             version="v14.17"
@@ -33,7 +33,7 @@ const CreditsPage = () => {
                             title="Express.js"
                             description="Web Application Web Framework"
                             version="v5.1.0"
-                            link="https://ui.shadcn.com"
+                            link="https://expressjs.com"
                         />
 
                     </motion.div>
@@ -75,7 +75,7 @@ const CreditsPage = () => {
                             picture="/Credits/Tailwind.png"
                             title="Tailwind"
                             description="CSS Framework"
-                            version="4.1.3"
+                            version="v4.1.3"
                             link="https://tailwindcss.com"
                         />
                         </motion.div>
@@ -96,11 +96,33 @@ const CreditsPage = () => {
                         <CreditItem
                             picture="/Credits/Illustrator.png"
                             title="Adobe Illustrator"
-                            description="Vector Graphis Editor"
+                            description="Vector Graphics Editor"
                             version="v29.5"
                             link="https://www.adobe.com/products/illustrator.html"
                         />
                     </motion.div>
+
+                    <motion.div
+                        className="grid grid-cols-2 gap-4"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1, delay: 2 }}
+                    >
+                    <CreditItem
+                        picture="'/Credits/ReactGoogleMaps.png'"
+                        title="React Google Maps"
+                        description="React Integration"
+                        version="v1.5.2"
+                        link="https://visgl.github.io/react-google-maps/"
+                    />
+                    <CreditItem
+                        picture="/Credits/TexttoSpeech.png"
+                        title="Google Text-to-Speech"
+                        description="Text-to-Speech API"
+                        version="v6.0.1"
+                        link="https://cloud.google.com/text-to-speech"
+                    />
+                </motion.div>
 
                 </div>
             </div>
