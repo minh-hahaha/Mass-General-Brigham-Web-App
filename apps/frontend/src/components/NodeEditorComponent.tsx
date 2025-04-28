@@ -591,9 +591,6 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
 
     useEffect(() => {
         if (!map) return;
-        map.setOptions({
-            mapId: "73fda600718f172c"
-        })
         const listener = google.maps.event.addListener(
             map,
             'click',

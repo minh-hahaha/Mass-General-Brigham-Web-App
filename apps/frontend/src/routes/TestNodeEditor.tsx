@@ -83,6 +83,7 @@ const TestNodeEditor = () => {
                         defaultZoom={15}
                         renderingType={RenderingType.RASTER}
                         mapTypeControl={false}
+                        mapId={"10f50e6c04bae897"}
                     >
                         <OverlayComponent
                             bounds={ChestnutHillBounds}
