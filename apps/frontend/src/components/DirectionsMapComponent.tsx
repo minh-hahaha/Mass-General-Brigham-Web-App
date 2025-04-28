@@ -41,7 +41,7 @@ const DirectionsMapComponent = () => {
     const map = useMap();
     const routesLibrary = useMapsLibrary('routes');
     const [fromLocation, setFromLocation] = useState('');
-    const [toLocation, setToLocation] = useState('');
+    const [toLocation, setToLocation] = useState<{lat:number, lng: number } | null>(null);
     const [travelMode, setTravelMode] = useState<TravelModeType>('DRIVING');
     const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>([]);
     const [distance, setDistance] = useState('');
@@ -156,23 +156,20 @@ const DirectionsMapComponent = () => {
     const [dropOffLocation, setDropOffLocation] = useState<google.maps.LatLng>();
     // draw route
     const calculateRoute = () => {
-        if (!directionsRenderer || !directionsService) return;
+        if (!directionsRenderer || !directionsService || !toLocation) return;
 
         clearAllRoutes();
 
         directionsRenderer.setMap(map);
 
-        let actualLocation = toLocation;
-        if (toLocation === '22 Patriot Place') {
-            actualLocation = '42.092617243197296, -71.26649215663976';
-        }
+
 
         const googleTravelMode =
             google.maps.TravelMode[travelMode as keyof typeof google.maps.TravelMode];
         directionsService
             .route({
                 origin: fromLocation,
-                destination: actualLocation,
+                destination: toLocation.lat.toString() + "," + toLocation.lng.toString(),
                 travelMode: googleTravelMode,
                 provideRouteAlternatives: false,
             })
@@ -356,19 +353,19 @@ const DirectionsMapComponent = () => {
         }
     };
 
-    const handleDirectionRequest = (from: string, to: string, mode: TravelModeType) => {
+    const handleDirectionRequest = (from: string, to: {lat:number, lng: number }, mode: TravelModeType) => {
         setFromLocation(from);
         setToLocation(to);
         setTravelMode(mode);
 
-        if(mode === "DRIVING"){
-            setParking(true)
+        if (mode === 'DRIVING') {
+            setParking(true);
         } else {
-            setParking(false)
-            setLot('')
+            setParking(false);
+            setLot('');
         }
-        calculateRoute()
-    }
+        calculateRoute();
+    };
 
     const handleHospitalSelect = (hospitalId: number)  => {
         clearAllRoutes();
@@ -380,7 +377,7 @@ const DirectionsMapComponent = () => {
         )
 
         if(hospital){
-            setToLocation(hospital[0]); //hospital place
+            setToLocation(hospital[1]); //hospital place
             setBuildingID(hospitalId);
             if (map){
                 map.panTo({lat: hospital[1].lat, lng: hospital[1].lng}); // location
