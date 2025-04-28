@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from "react";
-import HospitalCardComponent from "@/components/MapUI/HospitalCardComponent.tsx";
+
 import MGBButton from "@/elements/MGBButton.tsx";
 import {ArrowLeft, Navigation, MapPin, Phone, Clock, ChevronRight, Circle, Hospital} from 'lucide-react';
 
@@ -7,6 +7,8 @@ import clsx from "clsx";
 import TravelModeComponent from "@/components/TravelModeComponent.tsx";
 import {MdOutlineMyLocation} from "react-icons/md";
 import {useMapsLibrary} from "@vis.gl/react-google-maps";
+import {CiHospital1} from "react-icons/ci";
+import SelectElement from "@/elements/SelectElement.tsx";
 
 const hospitals = [
     {
@@ -59,6 +61,8 @@ type Step = 'SELECT_HOSPITAL' | 'HOSPITAL_DETAIL' | 'DIRECTIONS' | 'DEPARTMENT'
 
 type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING'
 
+type Algorithm = 'BFS' | 'DFS'
+
 interface DirectoryItem {
     deptName: string
     nodeId: string
@@ -77,12 +81,13 @@ interface HospitalSidebarProps {
     onParkingSelect: (parkingId: string) => void;
     onClickingBack: () => void;
     onClickFindDepartment: () => void;
+    onChoosingAlgo: (algorithm: string) => void;
     directoryList: DirectoryItem[];
 }
 
 
 
-const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmentSelect, onParkingSelect, onClickingBack, onClickFindDepartment,directoryList}:HospitalSidebarProps) => {
+const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmentSelect, onParkingSelect, onClickingBack, onClickFindDepartment, onChoosingAlgo, directoryList}:HospitalSidebarProps) => {
     const [currentStep, setCurrentStep] = useState<Step>('SELECT_HOSPITAL');
     const [selectedHospital, setSelectedHospital] = useState<typeof hospitals[0] | null >(null);
 
@@ -90,6 +95,7 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
     const [fromLocation, setFromLocation] = useState('');
     const [travelMode, setTravelMode] = useState<TravelModeType>('DRIVING');
     const [selectedLot, setSelectedLot] = useState('')
+    const [selectedAlgorithm, setSelectedAlgorithm] = useState<Algorithm>("BFS");
 
     const placesLibrary = useMapsLibrary('places');
 
@@ -98,7 +104,6 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
     // autocomplete
     useEffect(() => {
         if (!placesLibrary || !fromLocationRef.current) return;
-
         // autocomplete for origin
         const fromAutocomplete = new placesLibrary.Autocomplete(fromLocationRef.current, {
             types: ['geocode', 'establishment'],
@@ -162,13 +167,18 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
         }
     }
 
+    const handleAlgorithmChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedAlgorithm(e.target.value as Algorithm);
+        onChoosingAlgo(selectedAlgorithm);
+    }
+
     const handleBack = () =>{
         if (currentStep === "HOSPITAL_DETAIL") {
             setCurrentStep('SELECT_HOSPITAL');
             setSelectedHospital(null);
+            onClickingBack();
         }
         else if (currentStep === "DIRECTIONS") {
-            onClickingBack();
             setCurrentStep('HOSPITAL_DETAIL')
         }
         else if (currentStep === "DEPARTMENT") {
@@ -188,7 +198,7 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
                 const latLng = `${latitude}, ${longitude}`;
                 setFromLocation(latLng); // this triggers map routing
 
-                // Optional: reverse geocode to get a human-readable address
+                //reverse geocode to get a human-readable address
                 try {
                     const geocoder = new google.maps.Geocoder();
                     geocoder.geocode(
@@ -284,7 +294,7 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
                     </div>
                 </div>
 
-                <div className='space-y-3'>
+                <div className='space-y-3 flex justify-center'>
                     <MGBButton onClick={handleFindDirections} variant={"secondary"} disabled={false}>
                         <div className="flex items-center">
                             <Navigation size={18} className="text-mgbblue mr-3 fill-mgbblue" />
@@ -369,7 +379,7 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
                             />
 
                             {/* Travel Mode */}
-                            <div className="mt-4 mb-4">
+                            <div className="mt-4 mb-4 ml-8">
                                 <TravelModeComponent
                                     selectedMode={travelMode}
                                     onChange={handleTravelModeChange}
@@ -377,20 +387,25 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
                             </div>
 
                             {/* Action buttons */}
-                            <button
-                                onClick={handleDirectionsSubmit}
-                                disabled={!fromLocation}
-                                className="w-full bg-mgbblue text-white py-2 rounded-sm hover:bg-mgbblue/90 transition disabled:opacity-50 mb-4"
-                            >
-                                Get Directions
-                            </button>
-                            <button
-                                onClick={handleFindDepartment}
-                                disabled={!fromLocation}
-                                className="w-full bg-mgbblue text-white py-2 rounded-sm hover:bg-mgbblue/90 transition disabled:opacity-50 mb-4"
-                            >
-                                Find Department
-                            </button>
+                            <div className="flex flex-row gap-2">
+
+                                <MGBButton
+                                    onClick={handleDirectionsSubmit}
+                                    disabled={!fromLocation}
+                                    variant={'primary'}
+                                    className="hover:bg-mgbblue/90 transition disabled:opacity-50 mb-4"
+                                >
+                                    <span className="font-medium">Get Directions</span>
+                                </MGBButton>
+                                <MGBButton
+                                    onClick={handleFindDepartment}
+                                    disabled={!fromLocation}
+                                    variant={'secondary'}
+                                    className="hover:bg-yellow-600/90 transition disabled:opacity-50 mb-4"
+                                >
+                                    <span className="font-medium">Find Department</span>
+                                </MGBButton>
+                            </div>
                             {/* TODO: add text direction */}
                         </div>
                     </div>
@@ -466,7 +481,8 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
                                         )}
                                     >
                                         <div className="flex items-center">
-                                            <Hospital size={16} className="text-mgbblue mr-2" />
+                                            <CiHospital1  size={18} className="text-mgbblue mr-5 w-5 h-5"/>
+
                                             <span>{dept.deptName}</span>
                                         </div>
                                     </li>
@@ -474,6 +490,16 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
                             </ul>
                         )}
                     </div>
+                </div>
+
+                <div >
+                    <SelectElement
+                        label={'Select Algorithm'}
+                        id={'algorithm'}
+                        value={selectedAlgorithm}
+                        onChange={handleAlgorithmChange}
+                        options={["BFS", "DFS"]}
+                    />
                 </div>
 
 

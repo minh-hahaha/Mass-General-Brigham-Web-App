@@ -14,6 +14,7 @@ import { GetRecentOrigins, RecentOrigin } from '@/database/recentOrigins.ts';
 import AlgorithmSelector from '@/components/AlgorithmSelector.tsx';
 import DisplayPathComponent from "@/components/DisplayPathComponent.tsx";
 import MapSidebarComponent from "@/components/MapUI/MapSidebarComponent.tsx";
+import FloorSelector from "@/components/FloorSelector.tsx";
 
 const HospitalLocations: Record<string, {lat: number, lng: number, zoom: number}> = {
     'Chestnut Hill Healthcare Center': {lat: 42.325988, lng: -71.149567, zoom: 18},
@@ -62,11 +63,15 @@ const DirectionsMapComponent = () => {
     const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
 
     const [buildingID, setBuildingID] = useState<number>(0);
+
     const [textDirections, setTextDirections] = useState<string>('No destination/start selected');
     const [text2Directions, setText2Directions] = useState<string[]>([]);
-    const [selectedAlgorithm, setSelectedAlgorithm] = useState('BFS');
+    const [selectedAlgorithm, setSelectedAlgorithm] = useState('');
+
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
+    const [currentFloorId, setCurrentFloorId] = useState<string | undefined>('PP-1');
+    const [showFloorSelector, setShowFloorSelector] = useState<boolean>(false);
 
     useEffect(() => {
         const checkAdmin = () => {
@@ -138,7 +143,18 @@ const DirectionsMapComponent = () => {
         }
     }, [fromLocation, toLocation]);
 
+    // update floor selector visibility
+    useEffect(() => {
+        setShowFloorSelector(buildingID === 2);
 
+        if(buildingID === 2) {
+            setCurrentFloorId("PP-1");
+
+        }
+        else{
+            setCurrentFloorId(undefined);
+        }
+    }, [buildingID]);
 
     // find directions
     const handleFindDirections = async () => {
@@ -148,6 +164,11 @@ const DirectionsMapComponent = () => {
     const handleAlgorithmChange = (algorithm: string) => {
         setSelectedAlgorithm(algorithm);
     };
+
+    const handleFloorChange = (floorId: string) => {
+        setCurrentFloorId(floorId);
+        console.log('changed floor to : ', floorId);
+    }
 
 
     const [lot, setLot] = useState('');
@@ -226,6 +247,9 @@ const DirectionsMapComponent = () => {
 
         if(hospital){
             setBuildingID(hospitalId);
+            if(hospitalId === 2){
+                setShowFloorSelector(true)
+            }
             if (map){
                 map.panTo({lat: hospital[1].lat, lng: hospital[1].lng}); // location
                 map.setZoom(hospital[1].zoom);
@@ -266,12 +290,13 @@ const DirectionsMapComponent = () => {
     const handleBack =() => {
         clearRoute();
         clearParking();
+        setShowFloorSelector(false);
     }
 
     return (
         <div className="flex w-screen h-screen">
             {/* LEFT PANEL */}
-            <div className="relative">
+            <div className="relative flex items-start">
                 <aside className="relative top-6 left-6 z-10 w-[400px] max-h-[80vh] bg-white p-6 shadow-xl rounded-lg overflow-hidden flex flex-col">
                     <MapSidebarComponent
                         onDirectionsRequest={handleDirectionRequest}
@@ -280,11 +305,22 @@ const DirectionsMapComponent = () => {
                         onParkingSelect={handleParkingSelect}
                         onClickingBack={handleBack}
                         onClickFindDepartment={handleFindDepartment}
+                        onChoosingAlgo={handleAlgorithmChange}
                         directoryList={directoryList}
                     />
                 </aside>
+                {showFloorSelector && (
+                    <div className="relative top-6 left-8 z-10 ">
+                        <FloorSelector
+                            currentFloorId={currentFloorId}
+                            onChange={handleFloorChange}
+                        />
+                    </div>
+                )
+                }
 
             </div>
+
 
             {/* MAP AREA */}
             <main className="absolute inset-0 z-0">
@@ -303,6 +339,7 @@ const DirectionsMapComponent = () => {
                         endNodeId={toDirectoryNodeId}
                         selectedAlgorithm={selectedAlgorithm}
                         visible={pathVisible}
+                        currentFloorId={currentFloorId}
 
                         driveDirections={textDirections}
                         drive2Directions={text2Directions}
@@ -322,16 +359,7 @@ const DirectionsMapComponent = () => {
                         </p>
                     </div>
                 )}
-                {/* Zoom to Hospital Button */}
-                {toLocation && (
-                    <button
-                        onClick={handleZoomToHospital}
-                        className="absolute top-1/5 right-6 z-10 bg-white p-3 rounded-full shadow-lg hover:bg-gray-100 transition-colors"
-                        title="Zoom to hospital"
-                    >
-                        <ZoomIn size={26} className="text-mgbblue" />
-                    </button>
-                )}
+
             </main>
         </div>
     );
