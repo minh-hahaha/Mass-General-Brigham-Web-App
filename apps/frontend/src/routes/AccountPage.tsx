@@ -1,8 +1,26 @@
 import account from "@/assets/icons/account.png";
+import React, {useState} from "react";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import CarouselMenu from '@/components/CarouselMenu.tsx';
+import TableAllRequest from '@/components/tables/TableServiceRequest.tsx';
+import TableMaintenanceRequest from '@/components/tables/TableMaintenanceRequest.tsx';
+import TableSanitationRequest from '@/components/tables/TableSanitationRequest.tsx';
+import TableTransportRequest from '@/components/tables/TableTransportRequest.tsx';
+import TableMedicalDeviceRequest from '@/components/tables/TableMedicalDeviceRequest.tsx';
+import TableTranslatorRequest from "@/components/tables/TableTranslatorRequest.tsx";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table.tsx';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+
+const [selectedTab, setSelectedTab] = useState(0);
+const tableTabs = [
+    { label: 'All', component: TableAllRequest },
+    { label: 'Transport', component: TableTransportRequest },
+    { label: 'Translation', component: TableTranslatorRequest },
+    { label: 'Sanitation', component: TableSanitationRequest },
+    { label: 'Medical Device', component: TableMedicalDeviceRequest },
+    { label: 'Maintenance', component: TableMaintenanceRequest },
+];
 
 const AccountPage = () => {
     return(
@@ -39,20 +57,7 @@ const AccountPage = () => {
                         </Tabs>
                     </CardHeader>
                     <CardContent>
-                        {/* Replace with your actual Table component */}
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-left text-sm">
-                                <thead>
-                                <tr className="border-b">
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {/* Map over request data */}
-                                <tr className="border-b">
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+
                     </CardContent>
                 </Card>
             </div>
