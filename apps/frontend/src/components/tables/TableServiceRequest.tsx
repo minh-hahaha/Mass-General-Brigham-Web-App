@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/table.tsx';
 import { FaChevronRight } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import { splitDateTime } from '@/database/forms/formTypes.ts';
 
 interface Props {
     setActiveForm: (
@@ -27,7 +28,7 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
         roomNumber: '',
         status: '',
         priority: '',
-        requestDate: '',
+        requestDateTime: '',
     });
     const [showNewRequests, setShowNewRequests] = useState<boolean>(false);
 
@@ -63,7 +64,7 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
             (!filters.status || req.status?.toLowerCase().includes(filters.status.toLowerCase())) &&
             (!filters.priority ||
                 req.priority?.toLowerCase().includes(filters.priority.toLowerCase())) &&
-            (!filters.requestDate || req.requestDate?.startsWith(filters.requestDate))
+            (!filters.requestDateTime || req.requestDateTime?.startsWith(filters.requestDateTime))
         );
     });
 
@@ -77,6 +78,7 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
         setShowNewRequests(false);
     };
 
+    // const [requestDate, requestTime] = splitDateTime(filters.requestDateTime);
     return (
         <>
             <div className={`w-full flex flex-row justify-between px-10`}>
@@ -157,9 +159,9 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                                 <input
                                     type="datetime-local"
                                     className="border border-mgbblue rounded-sm w-40 p-1"
-                                    value={filters.requestDate}
+                                    value={filters.requestDateTime}
                                     onChange={(e) =>
-                                        setFilters({ ...filters, requestDate: e.target.value })
+                                        setFilters({ ...filters, requestDateTime: e.target.value })
                                     }
                                 />
                             </div>
@@ -243,9 +245,9 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                                     <TableCell className="text-center py-3">{req.requesterRoomNumber}</TableCell>
                                     <TableCell className="text-center py-3">{req.status}</TableCell>
                                     <TableCell className="text-center py-3">{req.priority}</TableCell>
-                                    <TableCell className="text-center py-3">{req.requestDate?.split('T')[0]}</TableCell>
+                                    <TableCell className="text-center py-3">{req.requestDateTime?.split('T')[0]}</TableCell>
                                     <TableCell className="text-center py-3">
-                                        {req.requestTime?.split('T')[1]?.substring(0, 5)}
+                                        {req.requestDateTime?.split('T')[1]?.substring(0, 5)}
                                     </TableCell>
                                     <TableCell className="text-center py-3">{req.serviceType}</TableCell>
                                 </TableRow>

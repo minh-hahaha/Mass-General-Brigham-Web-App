@@ -33,7 +33,6 @@ router.post('/csv', async function (req: Request, res: Response) {
             const dataToUpsert = {
                 requestId: data.requestId,
                 employeeId: data.employeeId,
-                requestDate: data.requestDate,
                 status: data.status,
                 comments: data.comments,
                 priority: data.priority,
