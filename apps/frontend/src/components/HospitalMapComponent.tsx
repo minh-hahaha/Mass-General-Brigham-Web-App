@@ -68,11 +68,11 @@ class Vector {
     }
 }
 
-function createTextPath(traversalResult: myNode[] | undefined | null): string[] {
+function createTextPath(traversalResult: myNode[] | undefined | null): [string[], string[] ]{
     // Make sure a path exists
     if (!traversalResult) {
         console.log('No Path');
-        return [];
+        return [[],[]];
     }
 
     // Initial facing direction. TODO: need to be able to figure out direction for the first node
@@ -84,6 +84,7 @@ function createTextPath(traversalResult: myNode[] | undefined | null): string[] 
         { key: 'FK', dir: new Vector(traversalResult[0].x + 50, 0) },
     ];
     const directions = [];
+    const icons=[];
     const startDir = StartDirs.find((value) => traversalResult[0].nodeId.includes(value.key));
     let currentDirection;
     if (!startDir) {
@@ -127,6 +128,8 @@ function createTextPath(traversalResult: myNode[] | undefined | null): string[] 
             directions.push(
                 `Take the Elevator to the ${nextNode.floor}${getNumberSuffix(nextNode.floor)} floor`
             );
+            icons.push('elevator');
+
         }
         // The default instructions if not traversing floors or if getting off the elevator/stairs
         if (
@@ -137,9 +140,11 @@ function createTextPath(traversalResult: myNode[] | undefined | null): string[] 
             directions.push(
                 `From the ${currentNode.nodeId} ${determineDirection(angle)} for ${tempEdge.distance.toFixed(1)} feet until you reach the ${nextNode.nodeId}`
             );
+            icons.push(`${determineDirection(angle)}`);
         }
     }
-    return directions;
+
+    return [directions, icons];
 }
 
 function determineDirection(angle: number): string {
@@ -190,6 +195,10 @@ let directions11: string[];
 function setDirections2(directions: string[]) {
     directions11 = directions;
     console.log(directions11);
+}
+let iconsToPass:string[];
+function setIcons(icons: string[]) {
+    iconsToPass=icons;
 }
 
 // interface for prop
@@ -246,7 +255,8 @@ const HospitalMapComponent = ({
                     const result = await FindPath(startNode, endNode, selectedAlgorithm);
                     console.log('Path found:', result);
                     setBFSPath(result);
-                    const textDirection = createTextPath(result);
+                    const [textDirection, icons] = createTextPath(result);
+                    setIcons(icons);
                     const text = document.getElementById('text-directions');
                     if (text) {
                         //setTextSpeech(text);
@@ -343,6 +353,7 @@ const HospitalMapComponent = ({
                     driveDirections={driveDirections}
                     drive22Directions={drive2Directions}
                     walk22Directions={directions11}
+                    icons={iconsToPass}
                 />
             )}
             <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20">
