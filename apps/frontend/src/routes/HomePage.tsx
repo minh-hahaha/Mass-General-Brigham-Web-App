@@ -14,7 +14,19 @@ const HomePage = () => {
 
     return (
         <>
-            <section className="h-screen relative bg-[url('/mgbhero.jpeg')] bg-cover bg-center flex flex-col justify-center">
+            <section className="h-screen relative overflow-hidden bg-center flex flex-col justify-center">
+                {/* Background Video */}
+                <div className="absolute inset-0 z-0">
+                    <video
+                        className="w-full h-full object-cover"
+                        autoPlay
+                        loop
+                        muted
+                    >
+                        <source src="/MGBIntro.mp4" type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-black/45 z-0"></div>
                 <motion.div
