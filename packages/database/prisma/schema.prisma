@@ -34,8 +34,7 @@ model ServiceRequest {
   assignedId            Employee? @relation(fields: [employeeId], references: [employeeId])
   employeeId            Int?
   employeeName          String?
-  requestDate           DateTime? @default(now()) @db.Date
-  requestTime           DateTime? @default(now()) @db.Time
+  requestDateTime       DateTime  @default(now())
   status                String
   comments              String?
   priority              String
