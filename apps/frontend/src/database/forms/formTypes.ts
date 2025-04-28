@@ -7,6 +7,13 @@ export type priorityType = 'Low' | 'Medium' | 'High' | 'Emergency';
 export const priorityArray = ['Low', 'Medium', 'High', 'Emergency'];
 export type statusType = 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
 
+
+export const splitDateTime = (dateTime: string) => {
+    const [date, timeWithSeconds] = dateTime.split('T');
+    const time = timeWithSeconds?.slice(0, 5) || '';  // Grab only HH:MM part (without seconds)
+    return { date, time };
+};
+
 //Maintenance Request
 export type maintenanceType =
     | "Routine Facility"
@@ -174,3 +181,4 @@ export const hospitalTransportArray = [
     "Mobile ICU",
     "Bariatric Transport"
 ];
+
