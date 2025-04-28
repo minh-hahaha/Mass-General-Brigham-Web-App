@@ -31,19 +31,19 @@ const DirectoryTable: React.FC<DirectoryTableProps> = ({ data }) => {
                 <Table>
                     <TableHeader>
                         <TableRow className="bg-gray-50">
-                            <TableHead className="w-20 text-center font-semibold py-3">
+                            <TableHead className="w-20 text-left font-semibold py-3">
                                 Department Name
                             </TableHead>
-                            <TableHead className="w-20 text-center font-semibold py-3">
+                            <TableHead className="w-20 text-left font-semibold py-3">
                                 Department Services
                             </TableHead>
-                            <TableHead className="w-20 text-center font-semibold py-3">
+                            <TableHead className="w-20 text-left font-semibold py-3">
                                 Building
                             </TableHead>
-                            <TableHead className="w-20 text-center font-semibold py-3">
+                            <TableHead className="w-20 text-left font-semibold py-3">
                                 Floor
                             </TableHead>
-                            <TableHead className="w-20 text-center font-semibold py-3">
+                            <TableHead className="w-20 text-left font-semibold py-3">
                                 Phone Number
                             </TableHead>
                         </TableRow>
@@ -51,17 +51,17 @@ const DirectoryTable: React.FC<DirectoryTableProps> = ({ data }) => {
                     <TableBody>
                         {data.map((department) => (
                             <TableRow key={department.deptId} className="border-b hover:bg-gray-50">
-                                <TableCell className="text-center">{department.deptName}</TableCell>
-                                <TableCell className="break-words whitespace-normal max-w-s text-center">
+                                <TableCell className="text-left">{department.deptName}</TableCell>
+                                <TableCell className="break-words whitespace-normal max-w-s text-left">
                                     {department.deptServices}
                                 </TableCell>
-                                <TableCell className="text-center">
+                                <TableCell className="text-left">
                                     {department.building.buildingName}
                                 </TableCell>
-                                <TableCell className="text-center">
+                                <TableCell className="text-left">
                                     {department.departmentNodes ? department.departmentNodes.floor : 'no node'}
                                 </TableCell>
-                                <TableCell className="text-center">
+                                <TableCell className="text-left">
                                     {department.deptPhone}
                                 </TableCell>
                             </TableRow>
@@ -546,6 +546,7 @@ const Patriot22Directory = ({ onImportClick }: { onImportClick: () => void }) =>
 };
 
 const FaulknerDirectory = ({ onImportClick }: { onImportClick: () => void }) => {
+
     const [filter, setShowFilters] = useState<boolean>(false);
     const [filters, setFilters] = useState({
         deptName: '',
@@ -662,6 +663,8 @@ const FaulknerDirectory = ({ onImportClick }: { onImportClick: () => void }) => 
 
 const DirectoryDisplayPage = () => {
     const [showImportModal, setShowImportModal] = useState(false);
+    const searchParams = new URLSearchParams(window.location.search);
+    const location = searchParams.get('location');
 
     const handleOpenImport = () => setShowImportModal(true);
     const handleCloseImport = () => setShowImportModal(false);
@@ -686,10 +689,18 @@ const DirectoryDisplayPage = () => {
         }
     ];
 
+    const initialTabIndex = (() => {
+        if (!location) return 0;
+        const foundIndex = tableTabs.findIndex(tab =>
+            tab.label.toLowerCase().includes(location.toLowerCase())
+        );
+        return foundIndex !== -1 ? foundIndex : 0;
+    })();
+
     return (
         <>
             <div className="mb-10">
-                <CarouselMenu tableTabs={tableTabs} />
+                <CarouselMenu tableTabs={tableTabs} initialIndex={initialTabIndex} />
             </div>
 
             {showImportModal && (

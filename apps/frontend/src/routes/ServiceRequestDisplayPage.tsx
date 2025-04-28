@@ -39,6 +39,8 @@ const tableTabs = (setActiveForm: (type: FormType) => void) => [
     },
 ];
 
+
+
 type FormType =
     | 'transport'
     | 'translation'
@@ -49,10 +51,21 @@ type FormType =
 
 export default function RequestTablesCarousel() {
     const [activeForm, setActiveForm] = useState<FormType>(null);
+    const searchParams = new URLSearchParams(window.location.search);
+    const form = searchParams.get('form');
+    const tabs = tableTabs(setActiveForm);
+
+    const initialTabIndex = (() => {
+        if (!form) return 0;
+        const foundIndex = tabs.findIndex(tab =>
+            tab.label.toLowerCase().includes(form.toLowerCase())
+        );
+        return foundIndex !== -1 ? foundIndex : 0;
+    })();
 
     return (
         <>
-            <CarouselMenu tableTabs={tableTabs(setActiveForm)} />
+            <CarouselMenu tableTabs={tableTabs(setActiveForm)} initialIndex={initialTabIndex} />
 
             {activeForm && (
                 <div
