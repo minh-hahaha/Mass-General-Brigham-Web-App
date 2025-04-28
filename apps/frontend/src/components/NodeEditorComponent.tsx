@@ -1,5 +1,5 @@
 import {useMap, useMapsLibrary} from '@vis.gl/react-google-maps';
-import { useEffect, useRef, useState } from 'react';
+import {RefObject, useEffect, useRef, useState} from 'react';
 import { myEdge, myNode } from 'common/src/classes/classes.ts';
 import MGBButton from '@/elements/MGBButton.tsx';
 import { createNode, getNodes, NodeResponse } from '@/database/getNode.ts';
@@ -11,6 +11,7 @@ import ImportExportDirectoryPage from '@/routes/ImportExportDirectoryPage.tsx';
 import { ROUTES } from 'common/src/constants.ts';
 import TagFilterBox from '@/elements/TagFilterBox.tsx';
 import {getDirectory} from "@/database/gettingDirectory.ts";
+import {GetNode} from "@/database/getDepartmentNode.ts";
 
 
 // A container for a Node on the map
@@ -104,14 +105,12 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
     const [clickedEdge, setClickedEdge] = useState<number | null>(null);
     const clickedEdgeRef = useRef(clickedEdge);
     // A list of all the edges in the specified building and floor
-    const [mapEdges, setMapEdges] = useState<MapEdge[]>([]);
-    const mapEdgesRef = useRef(mapEdges);
+    const mapEdgesRef = useRef<MapEdge[]>([]);
     // A list of all the nodes in the specified building and floor
-    const [mapNodes, setMapNodes] = useState<MapNode[]>([]);
-    const mapNodesRef = useRef(mapNodes);
+    const mapNodesRef = useRef<MapNode[]>([]);
     // Temporary IDs for nodes and edges until they are given real ones when saved
-    let tempNodeID = 0;
-    let tempEdgeID = 100;
+    const tempNodeIdRef = useRef(0);
+    const tempEdgeIdRef = useRef(0);
 
     // The current building we are looking at
     const [currentBuilding, setCurrentBuilding] = useState<string>('');
@@ -130,6 +129,9 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
     // Handles opening and closing the import/export popup
     const handleOpenImport = () => setShowImportModal(true);
     const handleCloseImport = () => setShowImportModal(false);
+
+    // This to make sure we don't double up on nodes when rendering nodes and edges
+    const lastFloor = useRef<string>('');
 
     // Properties for the drawn nodes (AdvancedMarkers)
     const nodeProps = {
@@ -166,11 +168,11 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
     const [nodeName, setNodeName] = useState<string>('Node');
 
     function incrementTempNodeID(): number {
-        return tempNodeID++;
+        return tempNodeIdRef.current++;
     }
 
     function incrementTempEdgeID(): number {
-        return ++tempEdgeID;
+        return tempEdgeIdRef.current++; // prev ++tempEdgeIdRef.current
     }
 
     const fetchDirectoryList = async () => {
@@ -182,33 +184,88 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
         }
     };
 
+    // Sync useRefs and useStates
     useEffect(() => {
         departmentOptionsRef.current = departmentOptions;
-    }, [departmentOptions]);
-    useEffect(() => {
         modeRef.current = mode;
-    }, [mode]);
-    useEffect(() => {
-        mapEdgesRef.current = mapEdges;
-    }, [mapEdges]);
-    useEffect(() => {
-        mapNodesRef.current = mapNodes;
-    }, [mapNodes]);
-    useEffect(() => {
         clickedNodeRef.current = clickedNode;
-    }, [clickedNode]);
-    useEffect(() => {
         clickedEdgeRef.current = clickedEdge;
-    }, [clickedEdge]);
+    }, [departmentOptions, mode, clickedNode, clickedEdge]);
+
+    /*
+    TODO:
+        1. Load Nodes and Edges based on the current floor DONE
+        2. Load the directory information for the current floor DONE
+        3. Apply tags to the currently selected node when the user adds a tag to it DONE
+        4. Apply new node properties to the currently selected node when they are entered into the input box DONE
+     */
+
+    const getBuildingPropsByFloor = () => {
+        return availableFloors.find(floor => floor.id === currentFloorId);
+    }
+
+    const fetchNodeEdgeData = async (buildingProps: Floor) => {
+        const nodeData = await getNodes(buildingProps.floor, buildingProps.buildingId);
+        const newNodes = [];
+        for(const node of nodeData) {
+            newNodes.push(mapNodeFromNodeResponse(node));
+        }
+        const edgeData = await getEdges(buildingProps.floor, buildingProps.buildingId);
+        for(const edge of edgeData) {
+            const fromNode = newNodes.find(node => node.node.nodeId === edge.from);
+            const toNode = newNodes.find(node => node.node.nodeId === edge.to);
+            if(fromNode && toNode) {
+                createMapEdge(fromNode, toNode);
+            }
+        }
+        mapNodesRef.current = newNodes;
+    }
+
+    const fetchAvailableDepartments = async (buildingProps: Floor) => {
+        const departments = await getDirectory(Number(buildingProps.buildingId));
+        setDepartmentOptions(departments.map(dept => ({deptName: dept.deptName, deptId: dept.deptId})));
+    }
+
+    // Load the Nodes and Edges on floor/building change
+    useEffect(() => {
+
+        if(lastFloor.current === currentFloorId) return;
+        lastFloor.current = currentFloorId;
+
+        // Get the building properties
+        const buildingProps = getBuildingPropsByFloor();
+        if(!buildingProps) return;
+
+        // Clear any previous nodes and edges (do a re-render so it is synced when we add new nodes)
+        mapNodesRef.current.forEach(node => {
+            node.drawnNode.map = null;
+            google.maps.event.clearListeners(node.drawnNode, 'click');
+            google.maps.event.clearListeners(node.drawnNode, 'drag');
+        });
+        mapEdgesRef.current.forEach(edge => {
+            edge.drawnEdge.setMap(null);
+            google.maps.event.clearListeners(edge.drawnEdge, 'click');
+        });
+        setDepartmentOptions([]);
+        mapNodesRef.current = [];
+        mapEdgesRef.current = [];
+
+        // Get the nodes and edges for this building and floor
+        fetchAvailableDepartments(buildingProps).then(() => fetchNodeEdgeData(buildingProps))
+    }, [currentFloorId]);
 
     useEffect(() => {
-        const currentNode = getCurrentNode();
-        if(currentNode){
-            const deptIds = tags.map(tag => departmentOptions.find(dept => dept.deptName === tag)?.deptId.toString());
-            if(deptIds[0]){
-                currentNode.attachedDepartments = deptIds as string[];
-                //remove the set departments from any other nodes: one department has one node
-                mapNodes.forEach(node => {
+        if (!clickedNode) return;
+        const currentNode = mapNodesRef.current.find((node) => node.node.nodeId === clickedNode);
+        if (currentNode) {
+            currentNode.node.nodeType = nodeType;
+            currentNode.node.name = nodeName;
+            currentNode.node.roomNumber = roomNumber !== '' ? roomNumber : null;
+            const tagIds = tags.map(tag => departmentOptionsRef.current.find(dept => dept.deptName === tag)?.deptId.toString());
+            if(tagIds[0]){
+                currentNode.attachedDepartments = tagIds as string[];
+                // Remove the set departments from any other nodes (no duplicates)
+                mapNodesRef.current.forEach(node => {
                     for(const tag of tags){
                         const deptId = departmentOptions.find(dept => dept.deptName === tag)?.deptId.toString();
                         if(deptId && node.node.nodeId !== currentNode.node.nodeId && node.attachedDepartments.includes(deptId)){
@@ -218,99 +275,9 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                 })
             }
         }
-    }, [tags]);
-    //TODO: NEEDS TO IMPORT TAGS EVERY TIME
-    useEffect(() => {
-        const currentNode = getCurrentNode();
-        if(currentNode){
-            //const deptNames = departmentOptionsRef.current.map(dept => currentNode.attachedDepartments.includes(dept.deptId.toString()) ? dept.deptName : '').filter(i => i !== '');
-            const deptNames: string[] = [];
-            for (const dept of departmentOptionsRef.current) {
-                if(currentNode.attachedDepartments.includes(dept.deptId.toString())){
-                    deptNames.push(dept.deptName);
-                }
-            }
-            setTags(deptNames);
-        }
-    }, [clickedNode]);
+    }, [nodeType, nodeName, roomNumber, tags]);
 
-    useEffect(() => {
-        let isCancelled = false;
-
-        console.log('Floor changed to:', currentFloorId);
-        const bldgData = availableFloors.find((f) => f.id === currentFloorId);
-
-        // Clear map visuals
-        mapNodesRef.current.forEach((node) => node.drawnNode.map = null);
-        mapEdgesRef.current.forEach((edge) => edge.drawnEdge.setMap(null));
-        setMapEdges([]);
-        setMapNodes([]);
-
-        if (!bldgData) {
-            console.error('Building data not found');
-            return;
-        }
-
-        setCurrentBuilding(bldgData.buildingId);
-
-        return () => {
-            isCancelled = true;
-        };
-    }, [currentFloorId]);
-
-    useEffect(() => {
-        console.log("Swapping to building:", currentBuilding);
-        if (!currentBuilding) return; // Skip if empty string
-        let isCancelled = false;
-
-        async function fetchDirectoryAndNodes() {
-            try {
-                await fetchDirectoryList();
-                if (isCancelled) return;
-
-                const bldgData = availableFloors.find((f) => f.id === currentFloorId);
-                if (!bldgData) {
-                    console.error('Building data not found');
-                    return;
-                }
-
-                const nodeResponses = await getNodes(bldgData.floor, bldgData.buildingId);
-                const newNodes: MapNode[] = nodeResponses.map(mapNodeFromNodeResponse);
-
-                const edgeResponses = await getEdges(bldgData.floor, bldgData.buildingId);
-                if (isCancelled || !edgeResponses) return;
-
-                edgeResponses.forEach((edgeResponse) => {
-                    const fromNode = newNodes.find((node) => node.node.nodeId === edgeResponse.from);
-                    const toNode = newNodes.find((node) => node.node.nodeId === edgeResponse.to);
-                    if (fromNode && toNode) {
-                        createMapEdge(fromNode, toNode);
-                    }
-                });
-                setMapNodes(newNodes);
-            } catch (error) {
-                console.error('Error fetching directory/nodes/edges:', error);
-            }
-        }
-
-        fetchDirectoryAndNodes();
-
-        return () => {
-            isCancelled = true;
-        };
-    }, [currentBuilding, currentFloorId]);
-
-
-    useEffect(() => {
-        if (!clickedNode) return;
-        const currentNode = mapNodes.find((node) => node.node.nodeId === clickedNode);
-        if (currentNode) {
-            currentNode.node.nodeType = nodeType;
-            currentNode.node.name = nodeName;
-            currentNode.node.roomNumber = roomNumber !== '' ? roomNumber : null;
-        }
-    }, [nodeType, nodeName, roomNumber]);
-
+    // Handles creating the drawing manager
     useEffect(() => {
         if (!map || !drawingLibrary || drawingManager) return;
         drawingManager = new drawingLibrary.DrawingManager({
@@ -352,10 +319,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                 }
             }
         );
-    }, [map]);
-
-    useEffect(() => {
-        if (!map) return;
+        // Handle de-selecting any nodes or edges when clicking on the map
         google.maps.event.addListener(
             map,
             'click',
@@ -368,11 +332,10 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
         );
     }, [map]);
 
-
     /********************** NODES ************************/
 
     const getCurrentNode = () => {
-        return mapNodes.find((node) => node.node.nodeId === clickedNode);
+        return mapNodesRef.current.find((node) => node.node.nodeId === clickedNode);
     }
 
     function createDrawnNode(position: google.maps.LatLng) {
@@ -385,13 +348,6 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
 
     // Creates the map node from a node response
     function mapNodeFromNodeResponse(node: NodeResponse) {
-        //const deptNames = departmentOptionsRef.current.map(dept => node.departments.includes(dept.deptId.toString()) ? dept.deptName : '').filter(i => i !== '');
-        const deptNames: string[] = [];
-        for (const dept of departmentOptionsRef.current) {
-            if(node.departments.includes(dept.deptId.toString())){
-                deptNames.push(dept.deptId.toString());
-            }
-        }
         const mapNode: MapNode = {
             node: new myNode(
                 node.nodeId,
@@ -404,7 +360,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                 node.roomNumber
             ),
             drawnNode: createDrawnNode(new google.maps.LatLng(node.x, node.y)),
-            attachedDepartments: deptNames
+            attachedDepartments: node.departments
         };
         return createMapNode(mapNode);
     }
@@ -463,16 +419,16 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                 mapNode.node.y = loc.lng();
             }
         });
-        setMapNodes((prev) => [...prev, mapNode]);
+        mapNodesRef.current = [...mapNodesRef.current, mapNode]
         return mapNode;
     }
 
     async function removeSelectedNode() {
-        const selectedNode = mapNodes.find((node) => node.node.nodeId === clickedNode);
+        const selectedNode = mapNodesRef.current.find((node) => node.node.nodeId === clickedNode);
         if (selectedNode) {
             removeEdgesFromNode(selectedNode);
             selectedNode.drawnNode.map = null;
-            setMapNodes(mapNodes.filter((mapNode) => mapNode.node.nodeId !== clickedNode));
+            mapNodesRef.current = mapNodesRef.current.filter((mapNode) => mapNode.node.nodeId !== clickedNode);
             setClickedNode(null);
         }
     }
@@ -487,6 +443,12 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
             setNodeType(toNode.node.nodeType as NodeType);
             setNodeName(toNode.node.name);
             setRoomNumber(toNode.node.roomNumber);
+            const tags = toNode.attachedDepartments.map(id => departmentOptionsRef.current.find(deptId => deptId.deptId.toString() === id)?.deptName);
+            if(tags[0]) {
+                setTags(tags as string[]);
+            }else{
+                setTags([]);
+            }
             if (fromNode && modeRef.current === 'Edge') {
                 createMapEdge(fromNode, toNode);
                 setClickedNode(null);
@@ -532,7 +494,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                 }
             }
         );
-        setMapEdges((prev) => [...prev, mapEdge]);
+        mapEdgesRef.current = [...mapEdgesRef.current, mapEdge];
     }
 
     function clickEdge(edgeId: number){
@@ -556,10 +518,10 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
     }
 
     async function removeEdge(){
-        const selectedEdge = mapEdges.find((edge) => edge.edge.edgeId === clickedEdge);
+        const selectedEdge = mapEdgesRef.current.find((edge) => edge.edge.edgeId === clickedEdge);
         if (selectedEdge) {
             selectedEdge.drawnEdge.setMap(null);
-            setMapEdges(mapEdges.filter((mapEdge) => mapEdge.edge.edgeId !== clickedEdge));
+            mapEdgesRef.current = mapEdgesRef.current.filter((mapEdge) => mapEdge.edge.edgeId !== clickedEdge);
             setClickedEdge(null);
         }
     }
@@ -575,7 +537,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                 toRemove.push(edge.edge.edgeId);
             }
         });
-        setMapEdges(mapEdgesRef.current.filter((edge) => !toRemove.includes(edge.edge.edgeId)));
+        mapEdgesRef.current = mapEdgesRef.current.filter((edge) => !toRemove.includes(edge.edge.edgeId));
     }
 
     /********************** SAVING ************************/
@@ -593,7 +555,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
         const usedNodeIds = new Set<string>();
         const currentFloor = availableFloors.find((f) => f.id === currentFloorId);
 
-        for (const node of mapNodes) {
+        for (const node of mapNodesRef.current) {
             const baseId = generateCustomId(node.node);
             let newId = baseId;
             let suffix = 1;
@@ -626,7 +588,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
             currentFloor ? currentFloor.floor : '1',
             currentFloor ? currentFloor.buildingId : '1'
         );
-        for (const edge of mapEdges) {
+        for (const edge of mapEdgesRef.current) {
             const sendEdge: EdgeResponse = {
                 edgeId: null, // Let the database auto generate edge ids
                 to: edge.edge.to.nodeId,
@@ -672,17 +634,17 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                 <div>
                     <p>
                         Node ID:{' '}
-                        {mapNodes.find((node) => node.node.nodeId === clickedNode)?.node.nodeId}
+                        {mapNodesRef.current.find((node) => node.node.nodeId === clickedNode)?.node.nodeId}
                     </p>
-                    <p>X: {mapNodes.find((node) => node.node.nodeId === clickedNode)?.node.x}</p>
-                    <p>Y: {mapNodes.find((node) => node.node.nodeId === clickedNode)?.node.y}</p>
+                    <p>X: {mapNodesRef.current.find((node) => node.node.nodeId === clickedNode)?.node.x}</p>
+                    <p>Y: {mapNodesRef.current.find((node) => node.node.nodeId === clickedNode)?.node.y}</p>
                     <p>
                         Floor:{' '}
-                        {mapNodes.find((node) => node.node.nodeId === clickedNode)?.node.floor}
+                        {mapNodesRef.current.find((node) => node.node.nodeId === clickedNode)?.node.floor}
                     </p>
                     <p>
                         Building ID:{' '}
-                        {mapNodes.find((node) => node.node.nodeId === clickedNode)?.node.buildingId}
+                        {mapNodesRef.current.find((node) => node.node.nodeId === clickedNode)?.node.buildingId}
                     </p>
                 </div>
 
