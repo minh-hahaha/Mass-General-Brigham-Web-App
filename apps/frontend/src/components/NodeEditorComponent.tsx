@@ -221,8 +221,26 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
         mapNodesRef.current = newNodes;
     }
 
+    //TODO: Find a better way to handle elevators
+    /*
+        Something like if elevator type is selected, create another field to select a destination elevator
+        Then elevators can be deleted and re-added. May or may not need special handling --
+        the edges will be across floors so need to make sure that edge is deleted (should be handled)
+        ** Should query a list of elevators to choose from
+        What happens if an elevator is not assigned a destination? Can probably just be handled as a regular node
+     */
     const fetchAvailableDepartments = async (buildingProps: Floor) => {
-        const departments = await getDirectory(Number(buildingProps.buildingId));
+        let building = Number(buildingProps.buildingId);
+        if(buildingProps.buildingName === "Patriot Place"){
+            building = 2;
+        }else if(buildingProps.buildingName === "Faulkner Hospital"){
+            building = 4;
+        }
+        const departments = await getDirectory(building);
+        // This is because the directory counts the two PP bldgs separately as ids 2 and 3 with other buildings being 4 and beyond
+        if(building === 2){
+            departments.concat(await getDirectory(3));
+        }
         setDepartmentOptions(departments.map(dept => ({deptName: dept.deptName, deptId: dept.deptId})));
     }
 

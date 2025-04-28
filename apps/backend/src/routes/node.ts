@@ -57,8 +57,10 @@ router.post('/', async (req: Request, res: Response) => {
     } else {
         overwriteBuildings.push(overwriteBuilding);
     }
+    console.log('Overwrite blgds', overwriteBuildings);
 
     if (overwrite == 'true') {
+        console.log('start clean departments');
         await PrismaClient.department.updateMany({
             where: {
                 departmentNodes: {
@@ -70,25 +72,48 @@ router.post('/', async (req: Request, res: Response) => {
             },
             data: { nodeId: null },
         });
-        const d = await PrismaClient.edge.deleteMany({
+        console.log('finish clean departments');
+        console.log('start clean edges');
+        await PrismaClient.edge.deleteMany({
             where: {
-                nodeFrom: {
-                    is: {
-                        floor: overwriteFloor,
-                        buildingId: overwriteBuilding,
+                OR: [
+                    {
+                        nodeFrom: {
+                            is: {
+                                floor: overwriteFloor,
+                                buildingId: overwriteBuilding,
+                                nodeId: { not: { contains: 'Elevator' } },
+                            },
+                        },
                     },
-                },
+                    {
+                        nodeTo: {
+                            is: {
+                                floor: overwriteFloor,
+                                buildingId: overwriteBuilding,
+                                nodeId: { not: { contains: 'Elevator' } },
+                            },
+                        },
+                    },
+                ],
             },
         });
-        console.log(d);
+        console.log('finish clean edges');
+        console.log('start clean nodes');
         await PrismaClient.node.deleteMany({
             where: {
                 floor: overwriteFloor,
                 buildingId: overwriteBuilding,
+                nodeId: { not: { contains: 'Elevator' } },
             },
         });
+        console.log('finish clean nodes');
     }
     for (const node of data) {
+        if (node.nodeId.includes('Elevator')) {
+            console.log('Elevator node: skipping');
+            continue;
+        }
         const tempNode = {
             nodeId: node.nodeId,
             x: node.x,
@@ -104,7 +129,7 @@ router.post('/', async (req: Request, res: Response) => {
             const NODES_UPDATE = await PrismaClient.node.create({
                 data: tempNode,
             });
-
+            console.log('insert nodes');
             for (const deptId of node.departments) {
                 await PrismaClient.department.update({
                     where: {
@@ -115,6 +140,7 @@ router.post('/', async (req: Request, res: Response) => {
                     },
                 });
             }
+            console.log('finish insert nodes');
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: 'Failed to update nodes' });
