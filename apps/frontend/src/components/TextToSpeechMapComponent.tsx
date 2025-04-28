@@ -1,10 +1,12 @@
-import {useState, useEffect} from "react";
+import React, {useState, useEffect, JSX} from "react";
 import {ROUTES} from "common/src/constants.ts";
 import axios from "axios";
 import MGBButton from "@/elements/MGBButton.tsx";
 import { BsArrowUp } from "react-icons/bs";
 import { BsArrow90DegRight } from "react-icons/bs";
 import { BsArrow90DegLeft } from "react-icons/bs";
+import { IconType } from 'react-icons';
+import { GiNothingToSay } from "react-icons/gi";
 
 interface State {
     walkDirections: string;
@@ -56,28 +58,57 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Direc
     //     audio.play();
     // };
 
-    let counter: number;
-    counter=0;
+
     const [textMode, setTextMode] = useState("Mode: Transport Directions");
     const [textToSpeak, setTextToSpeak] = useState(drive22Directions);
+    const [iconToDisplay, setIconToDisplay] = useState<JSX.Element>(<GiNothingToSay />);
+    const [counter, setCounter] = useState(0);
+
     const handleProgressReset = () => {
-        counter = 0;
+        setCounter(0); // Reset the counter when needed
     };
 
+
+    const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
     const handleModeSwitch = () => {
         if (textMode === "Mode: Transport Directions") {
             setTextMode("Mode: Building Directions");
             setTextToSpeak(walk22Directions);
             setTextToDisplay(walkDirections);
+            if(icons[counter]==='Turn Left then Continue Straight'){
+                setIconToDisplay(<BsArrow90DegLeft />);
+            }else if(icons[counter]==="Continue Straight"){
+                setIconToDisplay(<BsArrowUp />);
+            }else if(icons[counter]==='Turn Right then Continue Straight'){
+                setIconToDisplay(<BsArrow90DegRight />);
+            }
+
 
         } else {
             setTextMode("Mode: Transport Directions");
             setTextToSpeak(drive22Directions);
             setTextToDisplay(driveDirections);
-        }
-    };
-   const handleIconSwitch=()=>{
+            setIconToDisplay(<GiNothingToSay />);
 
+
+        }
+
+
+
+    };
+   const handleIconSwitch= (index:number)=>{
+       if (textMode === "Mode: Transport Directions") {
+            setIconToDisplay(<GiNothingToSay />);
+       } else if(textMode === "Mode: Building Directions") {
+           if(icons[index]==='Turn Left then Continue Straight'){
+                setIconToDisplay(<BsArrow90DegLeft />);
+           }else if(icons[index]==="Continue Straight"){
+                setIconToDisplay(<BsArrowUp />);
+           }else if(icons[index]==='Turn Right then Continue Straight'){
+               setIconToDisplay(<BsArrow90DegRight />);
+           }
+
+       }
    }
 
      // useEffect(() => {
@@ -93,19 +124,22 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Direc
     }
 
     const speakDirections = async () => {
-         console.log(driveDirections);
-         console.log(walkDirections);
-         console.log(drive22Directions);
-         console.log(walk22Directions);
+        console.log("1111111111111111111111");
+         console.log(icons);
+         console.log(counter);
+
         // console.log(textToSpeak);
         // console.log("textToSpeak");
         const message = textToSpeak[counter];//.isArray(textToSpeak) ? textToSpeak.join(' ') : textToSpeak;
+        handleIconSwitch(counter);
+        console.log(counter);
+        console.log(textToSpeak.length-1)
         if(counter===textToSpeak.length-1){
             handleProgressReset()
         }else{
-            counter++;
+            setCounter(counter+1);
         }
-
+        console.log(counter);
         let messageString=htmlToPlainText(message);
         if (messageString.length==0) {
             messageString="Empty of Directions, select a from, and, too location in order to receive directions.";
@@ -142,6 +176,7 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Direc
                         <MGBButton onClick={speakDirections} variant={"primary"} disabled={false}>
                             Speak
                         </MGBButton>
+                        {iconToDisplay}
 
                         {/*<button*/}
                         {/*    id="mode-switch"*/}
