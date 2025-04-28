@@ -1,4 +1,4 @@
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import HospitalCardComponent from "@/components/MapUI/HospitalCardComponent.tsx";
 import MGBButton from "@/elements/MGBButton.tsx";
 import {ArrowLeft, Navigation, MapPin, Phone, Clock, ChevronRight, Circle, Hospital} from 'lucide-react';
@@ -7,6 +7,7 @@ import clsx from "clsx";
 import SelectElement from "@/elements/SelectElement.tsx";
 import TravelModeComponent from "@/components/TravelModeComponent.tsx";
 import {MdOutlineMyLocation} from "react-icons/md";
+import {useMapsLibrary} from "@vis.gl/react-google-maps";
 
 const hospitals = [
     {
@@ -80,7 +81,29 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
     const [travelMode, setTravelMode] = useState<TravelModeType>('DRIVING');
     const [selectedLot, setSelectedLot] = useState('')
 
+    const placesLibrary = useMapsLibrary('places');
+
+    // refs for autocomplete
     const fromLocationRef = useRef(null);
+    // autocomplete
+    useEffect(() => {
+        if (!placesLibrary || !fromLocationRef.current) return;
+
+        // autocomplete for origin
+        const fromAutocomplete = new placesLibrary.Autocomplete(fromLocationRef.current, {
+            types: ['geocode', 'establishment'],
+            fields: ['place_id', 'geometry', 'formatted_address', 'name'],
+            componentRestrictions: { country: 'us' }, // limit to US places
+        });
+
+        // event listeners so that when autocomplete the state is changed
+        fromAutocomplete.addListener('place_changed', () => {
+            const place = fromAutocomplete.getPlace();
+            if (place.formatted_address) {
+                setFromLocation(place.formatted_address);
+            }
+        });
+    }, [placesLibrary]);
 
     // Handle Select Hospital
     const handleHospitalSelect = (hospital: typeof hospitals[0]) => {
@@ -170,7 +193,6 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
         );
 
     };
-
 
 
     // step 1: selection card

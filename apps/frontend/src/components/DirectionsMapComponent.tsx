@@ -1,12 +1,7 @@
 import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
-import SelectElement from '../elements/SelectElement.tsx';
 import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google-maps';
-import TravelModeComponent from '@/components/TravelModeComponent.tsx';
 import HospitalMapComponent from '@/components/HospitalMapComponent';
-import clsx from 'clsx';
-import { FaRegClock } from 'react-icons/fa';
-import { MapPin, Circle, Hospital, ZoomIn } from 'lucide-react';
-import { MdOutlineMyLocation } from 'react-icons/md';
+import {ZoomIn } from 'lucide-react';
 import {CHtoLotA, CHtoLotB, CHtoLotC, PPtoLotA, PPtoLotB, PPtoLotC, FKtoLotA, FKtoLotB, FKtoLotC}  from '../assets/parkingCoords.tsx'
 
 
@@ -20,8 +15,6 @@ import AlgorithmSelector from '@/components/AlgorithmSelector.tsx';
 import DisplayPathComponent from "@/components/DisplayPathComponent.tsx";
 import MapSidebarComponent from "@/components/MapUI/MapSidebarComponent.tsx";
 
-const Buildings = ['Chestnut Hill - 850 Boylston Street', '20 Patriot Place', '22 Patriot Place', 'Faulkner Hospital'];
-
 const HospitalLocations: Record<string, {lat: number, lng: number, zoom: number}> = {
     'Chestnut Hill - 850 Boylston Street': {lat: 42.325988, lng: -71.149567, zoom: 18},
     'Patriot Place': {lat: 42.092617, lng: -71.266492, zoom: 18},
@@ -31,7 +24,8 @@ const HospitalLocations: Record<string, {lat: number, lng: number, zoom: number}
 const BuildingIDMap: Record<string, number> = {
     'Chestnut Hill - 850 Boylston Street': 1,
     'Patriot Place': 2,
-    'Faulkner Hospital': 3
+    'Faulkner Hospital': 3,
+    'Main Hospital': 4
 };
 
 type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
@@ -46,7 +40,6 @@ interface Coordinate {
 const DirectionsMapComponent = () => {
     const map = useMap();
     const routesLibrary = useMapsLibrary('routes');
-    const placesLibrary = useMapsLibrary('places');
     const [fromLocation, setFromLocation] = useState('');
     const [toLocation, setToLocation] = useState('');
     const [travelMode, setTravelMode] = useState<TravelModeType>('DRIVING');
@@ -72,8 +65,7 @@ const DirectionsMapComponent = () => {
     const [text2Directions, setText2Directions] = useState<string[]>([]);
     const [selectedAlgorithm, setSelectedAlgorithm] = useState('BFS');
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
-    const [setTTS, TTS]=useState<string>('');
-    const [showTextDirection, setShowTextDirection] = useState<boolean>(false);
+
 
     useEffect(() => {
         const checkAdmin = () => {
@@ -105,27 +97,7 @@ const DirectionsMapComponent = () => {
         setDirectionsRenderer(new routesLibrary.DirectionsRenderer({ map }));
     }, [map, routesLibrary]);
 
-    // refs for autocomplete
-    const fromLocationRef = useRef(null);
-    // autocomplete
-    useEffect(() => {
-        if (!placesLibrary || !fromLocationRef.current) return;
 
-        // autocomplete for origin
-        const fromAutocomplete = new placesLibrary.Autocomplete(fromLocationRef.current, {
-            types: ['geocode', 'establishment'],
-            fields: ['place_id', 'geometry', 'formatted_address', 'name'],
-            componentRestrictions: { country: 'us' }, // limit to US places
-        });
-
-        // event listeners so that when autocomplete the state is changed
-        fromAutocomplete.addListener('place_changed', () => {
-            const place = fromAutocomplete.getPlace();
-            if (place.formatted_address) {
-                setFromLocation(place.formatted_address);
-            }
-        });
-    }, [placesLibrary]);
 
     // API CALLS
     // get directory list
@@ -166,17 +138,17 @@ const DirectionsMapComponent = () => {
     }, [fromLocation, toLocation]);
 
 
-    const handleChangeToLocation = (e: ChangeEvent<HTMLSelectElement>) => {
-        const newLocation = e.target.value;
-        clearParking();
-        // Update the location state
-        setToLocation(newLocation);
-
-        // Set the building ID for directory lookup
-        const buildingIndex = Buildings.indexOf(newLocation);
-        setBuildingID(buildingIndex + 1);
-        setPathVisible(false)
-    };
+    // const handleChangeToLocation = (e: ChangeEvent<HTMLSelectElement>) => {
+    //     const newLocation = e.target.value;
+    //     clearParking();
+    //     // Update the location state
+    //     setToLocation(newLocation);
+    //
+    //     // Set the building ID for directory lookup
+    //     const buildingIndex = Buildings.indexOf(newLocation);
+    //     setBuildingID(buildingIndex + 1);
+    //     setPathVisible(false)
+    // };
 
     // find directions
     const handleFindDirections = async () => {
@@ -226,7 +198,6 @@ const DirectionsMapComponent = () => {
             actualLocation = '42.092617243197296, -71.26649215663976';
         }
 
-
         const googleTravelMode =
             google.maps.TravelMode[travelMode as keyof typeof google.maps.TravelMode];
         directionsService
@@ -263,6 +234,7 @@ const DirectionsMapComponent = () => {
             });
     };
 
+    // TODO: will have to delete this
     useEffect(() => {
         let selectedPath: { lat:number, lng: number }[];
         switch(lot) { // You'll need to have this state variable
@@ -385,13 +357,6 @@ const DirectionsMapComponent = () => {
         setLot('');
     };
 
-    const handleHere = () => {
-        setPathVisible(true);
-        // clear parking
-        clearParking();
-
-
-    };
 
     const customLineRef = useRef<google.maps.Polyline | null>(null);
     const customMarkersRef = useRef<google.maps.Marker[]>([]);
@@ -417,93 +382,6 @@ const DirectionsMapComponent = () => {
             animationRef.current = null;
         }
     }
-
-    // function calculateDoorRoute(pathPoints: google.maps.LatLngLiteral[], label: string) {
-    //     if (!map) return;
-    //     clearAllRoutes();
-    //
-    //     // Fit map to route
-    //     const bounds = new google.maps.LatLngBounds();
-    //     pathPoints.forEach((p) => bounds.extend(p));
-    //     map.fitBounds(bounds, 100);
-    //
-    //     // Add markers
-    //     const startMarker = new google.maps.Marker({ position: pathPoints[0], map, label });
-    //     const endMarker = new google.maps.Marker({
-    //         position: pathPoints[pathPoints.length - 1],
-    //         map,
-    //         label: 'D',
-    //     });
-    //     customMarkersRef.current = [startMarker, endMarker];
-    //
-    //     // Add polyline
-    //     const line = new google.maps.Polyline({
-    //         path: pathPoints,
-    //         map,
-    //         strokeOpacity: 0,
-    //         icons: [
-    //             {
-    //                 icon: {
-    //                     path: 'M 0,-1 0,1',
-    //                     strokeOpacity: 1,
-    //                     strokeColor: '#4285F4',
-    //                     scale: 4,
-    //                 },
-    //                 offset: '0',
-    //                 repeat: '25px',
-    //             },
-    //         ],
-    //     });
-    //
-    //     customLineRef.current = line;
-    //
-    //     let count = 0;
-    //     animationRef.current = window.setInterval(() => {
-    //         count = (count + 1) % 200;
-    //         const icons = line.get('icons');
-    //         if (icons && icons.length > 0) {
-    //             icons[0].offset = `${count / 2}%`;
-    //             line.set('icons', icons);
-    //         }
-    //     }, 100);
-    // }
-
-    const handleUseCurrentLocation = () => {
-        if (!navigator.geolocation) {
-            alert('Geolocation is not supported by your browser');
-            return;
-        }
-
-        navigator.geolocation.getCurrentPosition(
-            async (position) => {
-                const { latitude, longitude } = position.coords;
-                const latLng = `${latitude}, ${longitude}`;
-                setFromLocation(latLng); // this triggers map routing
-
-                // Optional: reverse geocode to get a human-readable address
-                try {
-                    const geocoder = new google.maps.Geocoder();
-                    geocoder.geocode(
-                        { location: { lat: latitude, lng: longitude } },
-                        (results, status) => {
-                            if (status === 'OK' && results && results[0]) {
-                                setFromLocation(results[0].formatted_address);
-                            } else {
-                                console.warn('Geocoder failed: ', status);
-                            }
-                        }
-                    );
-                } catch (error) {
-                    console.error('Reverse geocoding failed', error);
-                }
-            },
-            (error) => {
-                console.error('Error retrieving location:', error);
-                alert('Unable to retrieve your location.');
-            }
-        );
-
-    };
 
     const handleZoomToHospital = () => {
         if (!map || !toLocation) return;
