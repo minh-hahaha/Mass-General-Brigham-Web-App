@@ -17,6 +17,7 @@ import medicalDeviceRouter from './routes/medicaldevicerequest.ts';
 import nodeRouter from './routes/node.ts';
 import edgeRouter from './routes/edge.ts';
 import originRouter from './routes/recentorigins.ts';
+import textToSpeechRouter from './routes/textToSpeech.ts';
 
 import { ROUTES } from 'common/src/constants';
 
@@ -65,6 +66,8 @@ app.use(ROUTES.NODE, nodeRouter);
 app.use(ROUTES.EDGE, edgeRouter);
 
 app.use(ROUTES.RECENT_ORIGINS, originRouter);
+
+app.use(ROUTES.TTS, textToSpeechRouter);
 
 /**
  * Catch all 404 errors, and forward them to the error handler

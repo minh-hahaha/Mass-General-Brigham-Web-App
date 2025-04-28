@@ -182,6 +182,10 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
                 zIndex: 1,
                 clickable: true,
                 draggable: true,
+                icon: {
+                    url: './minh ha icon.png',
+                    scaledSize: new google.maps.Size(40, 40), // width, height in pixels
+                }
             },
             polylineOptions: {
                 zIndex: 0
@@ -217,7 +221,11 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             clickable: true,
             map: map,
             zIndex: 1,
-            draggable: true
+            draggable: true,
+            icon: {
+                url: './minh ha icon.png',
+                scaledSize: new google.maps.Size(60, 60), // width, height in pixels
+            }
         })
     }
 
@@ -242,18 +250,20 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             const loc = e.latLng;
             if(loc){
                 mapEdgesRef.current.forEach((edge) => {
-                    const tempLoc: google.maps.LatLngLiteral = {
-                        lat: mapNode.node.x,
-                        lng: mapNode.node.y
-                    }
-                    const EPSILON = 1e-6;
-                    const indexOfNode = edge.drawnEdge.getPath().getArray().findIndex(
-                        ll =>
-                            Math.abs(ll.lat() - tempLoc.lat) < EPSILON &&
-                            Math.abs(ll.lng() - tempLoc.lng) < EPSILON
-                    );
-                    if(indexOfNode !== -1){
-                        edge.drawnEdge.getPath().setAt(indexOfNode, loc);
+                    if(edge.from.node.nodeId === mapNode.node.nodeId || edge.to.node.nodeId === mapNode.node.nodeId ) {
+                        const tempLoc: google.maps.LatLngLiteral = {
+                            lat: mapNode.node.x,
+                            lng: mapNode.node.y
+                        }
+                        const EPSILON = 1e-6;
+                        const indexOfPathCoord = edge.drawnEdge.getPath().getArray().findIndex(
+                            ll =>
+                                Math.abs(ll.lat() - tempLoc.lat) < EPSILON &&
+                                Math.abs(ll.lng() - tempLoc.lng) < EPSILON
+                        );
+                        if (indexOfPathCoord !== -1) {
+                            edge.drawnEdge.getPath().setAt(indexOfPathCoord, loc);
+                        }
                     }
                 })
                 mapNode.node.x = loc.lat();
@@ -284,18 +294,20 @@ const NodeEditorComponent = ({currentFloorId}:Props) => {
             const loc = e.latLng;
             if(loc){
                 mapEdgesRef.current.forEach((edge) => {
-                    const tempLoc: google.maps.LatLngLiteral = {
-                        lat: mapNode.node.x,
-                        lng: mapNode.node.y
-                    }
-                    const EPSILON = 1e-6;
-                    const indexOfNode = edge.drawnEdge.getPath().getArray().findIndex(
-                        ll =>
-                            Math.abs(ll.lat() - tempLoc.lat) < EPSILON &&
-                            Math.abs(ll.lng() - tempLoc.lng) < EPSILON
-                    );
-                    if(indexOfNode !== -1){
-                        edge.drawnEdge.getPath().setAt(indexOfNode, loc);
+                    if(edge.from.node.nodeId === mapNode.node.nodeId || edge.to.node.nodeId === mapNode.node.nodeId ) {
+                        const tempLoc: google.maps.LatLngLiteral = {
+                            lat: mapNode.node.x,
+                            lng: mapNode.node.y
+                        }
+                        const EPSILON = 1e-6;
+                        const indexOfPathCoord = edge.drawnEdge.getPath().getArray().findIndex(
+                            ll =>
+                                Math.abs(ll.lat() - tempLoc.lat) < EPSILON &&
+                                Math.abs(ll.lng() - tempLoc.lng) < EPSILON
+                        );
+                        if (indexOfPathCoord !== -1) {
+                            edge.drawnEdge.getPath().setAt(indexOfPathCoord, loc);
+                        }
                     }
                 })
                 mapNode.node.x = loc.lat();

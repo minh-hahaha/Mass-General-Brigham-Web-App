@@ -26,7 +26,9 @@ export const ROUTES = {
     EDGE: '/api/edge',
 
     //Map page
-    RECENT_ORIGINS: '/api/recentorigins'
+    RECENT_ORIGINS: '/api/recentorigins',
+
+    TTS: "/api/tts",
 
 
 }

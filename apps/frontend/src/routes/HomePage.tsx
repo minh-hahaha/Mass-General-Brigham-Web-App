@@ -1,9 +1,15 @@
 import MGBButton from '@/elements/MGBButton.tsx';
+import DisclaimerPopup from '@/components/DisclaimerPopup.tsx'
 import { motion } from 'framer-motion';
+import {useState} from 'react';
+
 import { useAuth0 } from '@auth0/auth0-react';
 
 const HomePage = () => {
     const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
+
+    const [showDisclaimer, setShowDisclaimer] = useState(true);
+
 
     return (
         <>
@@ -32,7 +38,7 @@ const HomePage = () => {
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 1, delay: 1 }}
+                    transition={{ duration: 0.5, delay: 1 }}
                 >
                     <div className="relative z-10 flex flex-row justify-center items-center mt-5 gap-3">
                         <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -47,6 +53,9 @@ const HomePage = () => {
                     </div>
                 </motion.div>
             </section>
+            {showDisclaimer && (
+                <DisclaimerPopup onClose={() => setShowDisclaimer(false)} />
+            )}
         </>
     );
 };
