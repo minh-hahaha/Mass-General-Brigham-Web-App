@@ -105,7 +105,7 @@ ListItem.displayName = 'ListItem';
 const LogoBar = () => {
     const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
     return (
-        <header className="h-full flex items-center justify-between px-4 border-1 border-black">
+        <header className="h-full flex items-center justify-between px-4 mt-1 mb-1 border-b-10 border-fountainBlue">
             {/* Left: Trigger + Logo */}
             <div className="flex items-center ml-3">
                 <a href="/">

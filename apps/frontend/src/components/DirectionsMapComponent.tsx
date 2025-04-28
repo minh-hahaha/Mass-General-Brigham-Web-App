@@ -138,45 +138,14 @@ const DirectionsMapComponent = () => {
     }, [fromLocation, toLocation]);
 
 
-    // const handleChangeToLocation = (e: ChangeEvent<HTMLSelectElement>) => {
-    //     const newLocation = e.target.value;
-    //     clearParking();
-    //     // Update the location state
-    //     setToLocation(newLocation);
-    //
-    //     // Set the building ID for directory lookup
-    //     const buildingIndex = Buildings.indexOf(newLocation);
-    //     setBuildingID(buildingIndex + 1);
-    //     setPathVisible(false)
-    // };
 
     // find directions
     const handleFindDirections = async () => {
         calculateRoute();
-        // try {
-        //     await axios.post(ROUTES.RECENT_ORIGINS, {
-        //         location: fromLocation,
-        //     });
-        //     console.log('origin saved');
-        // } catch (error) {
-        //     console.error(error);
-        // }
     };
 
     const handleAlgorithmChange = (algorithm: string) => {
         setSelectedAlgorithm(algorithm);
-    };
-
-    // change travel mode
-    const handleTravelModeChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setTravelMode(e.target.value as TravelModeType);
-        if (e.target.value === 'DRIVING') {
-            setParking(true);
-            clearParking();
-        } else {
-            setParking(false);
-            clearParking();
-        }
     };
 
 
@@ -438,157 +407,6 @@ const DirectionsMapComponent = () => {
             {/* LEFT PANEL */}
             <div className="relative">
                 <aside className="relative top-6 left-6 z-10 w-[400px] max-h-[80vh] bg-white p-6 shadow-xl rounded-lg overflow-hidden flex flex-col">
-                    <form>
-                        {/* Blue Box Section */}
-                        {/*<div className="py-5 pr-6 pl-4 rounded-lg -mt-6">*/}
-                        {/*    <h2 className="text-xl font-black text-codGray mb-6 text-center ml-4">*/}
-                        {/*        Hospital Directions*/}
-                        {/*    </h2>*/}
-                        {/*    <div className="flex gap-4 relative -ml-6 -mt-7">*/}
-                        {/*        /!* Breadcrumb Line + Icons *!/*/}
-                        {/*        <div className="flex flex-col items-center pt-1">*/}
-                        {/*            /!* Map icon *!/*/}
-                        {/*            <div className="text-codGray p-1 text-xl mt-6">*/}
-                        {/*                <Circle size={18} />*/}
-                        {/*            </div>*/}
-                        {/*            /!* Line *!/*/}
-                        {/*            <div className="h-6 border-l-2 border-dotted border-codGray" />*/}
-                        {/*            /!* Pin icon *!/*/}
-                        {/*            <div className="text-codGray p-1 text-xl">*/}
-                        {/*                <MapPin size={18} />*/}
-                        {/*            </div>*/}
-                        {/*        </div>*/}
-
-                        {/*        /!* Form Inputs *!/*/}
-                        {/*        <div className="flex-1">*/}
-                        {/*            <div className="mt-5">*/}
-                        {/*                <input*/}
-                        {/*                    type="text"*/}
-                        {/*                    id="fromLocation"*/}
-                        {/*                    ref={fromLocationRef}*/}
-                        {/*                    value={fromLocation}*/}
-                        {/*                    onChange={(e) => setFromLocation(e.target.value)}*/}
-                        {/*                    required*/}
-                        {/*                    placeholder="Choose a starting point..."*/}
-                        {/*                    className="w-70 p-2 border border-mgbblue rounded-sm bg-white text-codGray placeholder:text-codGray focus:ring-2 focus:ring-white"*/}
-                        {/*                />*/}
-                        {/*                <SelectElement*/}
-                        {/*                    label="To:"*/}
-                        {/*                    id="toLocation"*/}
-                        {/*                    value={toLocation}*/}
-                        {/*                    onChange={(e) => handleChangeToLocation(e)}*/}
-                        {/*                    options={Buildings}*/}
-                        {/*                    placeholder="Select destination"*/}
-                        {/*                    className="bg-white text-codGray border border-mgbblue -mt-3 w-70"*/}
-                        {/*                />*/}
-                        {/*            </div>*/}
-
-                        {/*            <div className="mt-8 -ml-6">*/}
-                        {/*                <div className="flex items-center gap-2 ml-6 -mt-3 w-70">*/}
-                        {/*                    <Hospital*/}
-                        {/*                        className="text-codGray mt-1 -ml-9.5 mr-2"*/}
-                        {/*                        size={22}*/}
-                        {/*                    />*/}
-                        {/*                    <SelectElement*/}
-                        {/*                        label=""*/}
-                        {/*                        id="toDirectory"*/}
-                        {/*                        value={currentDirectoryName}*/}
-                        {/*                        onChange={(e) =>*/}
-                        {/*                            setCurrentDirectoryName(e.target.value)*/}
-                        {/*                        }*/}
-                        {/*                        options={directoryList.map((dept) => dept.deptName)}*/}
-                        {/*                        placeholder="Select department"*/}
-                        {/*                        className="bg-white text-codGray border border-mgbblue flex-1"*/}
-                        {/*                    />*/}
-                        {/*                </div>*/}
-                        {/*                <div className="ml-15 mt-4">*/}
-                        {/*                    /!* Travel Mode *!/*/}
-                        {/*                    <TravelModeComponent*/}
-                        {/*                        selectedMode={travelMode}*/}
-                        {/*                        onChange={handleTravelModeChange}*/}
-                        {/*                    />*/}
-                        {/*                </div>*/}
-                        {/*            </div>*/}
-                        {/*        </div>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
-                    </form>
-
-                    {/*/!* Parking Lot Buttons *!/*/}
-                    {/*{parking && (*/}
-                    {/*    <div className="-mt-5">*/}
-                    {/*        <p className="mb-2 text-sm text-codGray text-center -ml-4 font-black">*/}
-                    {/*            Where do you want to park?*/}
-                    {/*        </p>*/}
-                    {/*        <div className="grid grid-cols-3 gap-2">*/}
-                    {/*            {['A', 'B', 'C'].map((lot) => (*/}
-                    {/*                <button*/}
-                    {/*                    key={lot}*/}
-                    {/*                    onClick={() =>*/}
-                    {/*                        lot === 'A'*/}
-                    {/*                            ? handleParkA()*/}
-                    {/*                            : lot === 'B'*/}
-                    {/*                              ? handleParkB()*/}
-                    {/*                              : handleParkC()*/}
-                    {/*                    }*/}
-                    {/*                    className="bg-white text-codGray border border-mgbblue py-1 rounded-sm hover:bg-mgbblue hover:text-white transition"*/}
-                    {/*                >*/}
-                    {/*                    Lot {lot}*/}
-                    {/*                </button>*/}
-                    {/*            ))}*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*)}*/}
-
-                    {/*/!* I'm Here Button *!/*/}
-                    {/*<div className={clsx(parking ? 'mt-6' : '-mt-2.5')}>*/}
-                    {/*    <button*/}
-                    {/*        disabled={lot === '' && currentDirectoryName === ''}*/}
-                    {/*        onClick={() => handleHere()}*/}
-                    {/*        className="w-full bg-mgbblue text-white py-2 rounded-sm hover:bg-mgbblue/90 transition disabled:opacity-50"*/}
-                    {/*    >*/}
-                    {/*        I'm Here!*/}
-                    {/*    </button>*/}
-                    {/*</div>*/}
-                    {/*<div className="mt-6">*/}
-                    {/*    {toLocation && isAdmin && (*/}
-                    {/*        <AlgorithmSelector*/}
-                    {/*            selectedAlgorithm={selectedAlgorithm}*/}
-                    {/*            onChange={handleAlgorithmChange}*/}
-                    {/*        />*/}
-                    {/*    )}*/}
-                    {/*</div>*/}
-                    {/*<div className="w-110 border-[0.5px] border-codGray mt-5 -ml-10" />*/}
-                    {/*<div className="overflow-y-auto mt-4 flex-grow">*/}
-
-                    {/*        <div className="max-h-[200px] overflow-y-auto w-full mt-1">*/}
-                    {/*            <ul className="w-full flex flex-col space-y-2">*/}
-                    {/*                <li*/}
-                    {/*                    className="flex items-center w-full py-2 rounded-md transition-colors hover:bg-gray-200 cursor-pointer"*/}
-                    {/*                    onClick={handleUseCurrentLocation}*/}
-                    {/*                >*/}
-
-                    {/*                    <span className="text-codGray mx-3">Current Location</span>*/}
-                    {/*                </li>*/}
-                    {/*                {recentOrigins.map((origin, index) => (*/}
-                    {/*                    <li*/}
-                    {/*                        key={index}*/}
-                    {/*                        className="flex items-center w-100 py-2 rounded-md transition-colors hover:bg-gray-200 cursor-pointer"*/}
-                    {/*                        onClick={() => setFromLocation(origin.location)}*/}
-                    {/*                    >*/}
-                    {/*                        <FaRegClock*/}
-                    {/*                            className="text-mgbblue min-w-[20px]"*/}
-                    {/*                            size={18}*/}
-                    {/*                        />*/}
-                    {/*                        <span className="text-codGray mx-3">*/}
-                    {/*                            {origin.location.match('.+?(?=[ \\d]{5})')}*/}
-                    {/*                        </span>*/}
-                    {/*                    </li>*/}
-                    {/*                ))}*/}
-                    {/*            </ul>*/}
-                    {/*        </div>*/}
-
-                    {/*</div>*/}
                     <MapSidebarComponent
                         onDirectionsRequest={handleDirectionRequest}
                         onHospitalSelect={handleHospitalSelect}
@@ -609,7 +427,7 @@ const DirectionsMapComponent = () => {
                     // MGB at Chestnut hill 42.325988270594415, -71.1495669288061
                     defaultZoom={15}
                     renderingType={RenderingType.RASTER}
-                    mapTypeControl={false}
+                    disableDefaultUI={true}
                     mapId={'73fda600718f172c'}
                 >
                     <HospitalMapComponent
@@ -630,7 +448,7 @@ const DirectionsMapComponent = () => {
 
                 {/* Route Info Box */}
                 {showRouteInfo && (
-                    <div className="absolute bottom-3 left-6 p-4 z-10 bg-white rounded-xl shadow-lg text-sm text-gray-800 max-w-sm space-y-1">
+                    <div className="absolute bottom-4 right-6 p-4 z-10 bg-white rounded-xl shadow-lg text-sm text-gray-800 max-w-sm space-y-1">
                         <h3 className="font-bold text-base mb-1 text-mgbblue">Route Info</h3>
                         <p>
                             <span className="font-medium">Distance:</span> {distance}

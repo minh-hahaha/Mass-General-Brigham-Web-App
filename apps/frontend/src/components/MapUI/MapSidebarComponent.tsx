@@ -198,7 +198,7 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
     // step 1: selection card
     const renderHospitalSelection = () => (
         <div className='w-full'>
-            <h2 className='text-xl font-black text-codGray mb-6 text-center'>Select a Hospital</h2>
+            <h2 className='text-xl font-black mb-6 text-center'>Select a Hospital</h2>
             <div className='space-y-4 mt-4'>
                 {hospitals.map (hospital => (
                     <div
@@ -281,11 +281,11 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
     }
 
     // step 3 - google maps
-    const renderDirections =() => {
+    const renderDirections = () => {
         if (!selectedHospital) return null;
         return (
             <div className='w-full'>
-                {/*Back button*/}
+                {/* Back button */}
                 <div className='flex items-center mb-4'>
                     <button
                         onClick={handleBack}
@@ -298,7 +298,7 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
                     </h2>
                 </div>
 
-                <div className="flex gap-4 relative -mt-7">
+                <div className="flex gap-4 relative">
                     {/* Breadcrumb Line + Icons */}
                     <div className="flex flex-col items-center pt-1">
                         {/* Map icon */}
@@ -316,39 +316,48 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
                     {/* Form Inputs */}
                     <div className="flex-1 flex-col">
                         <div className="mt-5">
-                            <div className="flex flex-row items-center">
-                                <input
-                                    type="text"
-                                    id="fromLocation"
-                                    ref={fromLocationRef}
-                                    value={fromLocation}
-                                    onChange={(e) => setFromLocation(e.target.value)}
-                                    required
-                                    placeholder="Choose a starting point..."
-                                    className="w-70 mb-3 p-2 border border-mgbblue rounded-sm bg-white text-codGray placeholder:text-codGray focus:ring-2 focus:ring-white"
-                                />
-                                <div >
-                                    <MdOutlineMyLocation
-                                        className="text-mgbblue min-w-[20px]"
-                                        size={18}
-                                        onClick={handleUseCurrentLocation}
+                            {/* From location with current location button */}
+                            <div className="flex items-center mb-3">
+                                <div className="relative flex-1">
+                                    <input
+                                        type="text"
+                                        id="fromLocation"
+                                        ref={fromLocationRef}
+                                        value={fromLocation}
+                                        onChange={(e) => setFromLocation(e.target.value)}
+                                        required
+                                        placeholder="Choose a starting point..."
+                                        className="w-full p-2 border border-mgbblue rounded-sm bg-white text-codGray placeholder:text-codGray focus:ring-2 focus:ring-white pr-8"
                                     />
+                                    <button
+                                        onClick={handleUseCurrentLocation}
+                                        className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                                    >
+                                        <MdOutlineMyLocation
+                                            className="text-mgbblue min-w-[20px]"
+                                            size={18}
+                                        />
+                                    </button>
                                 </div>
                             </div>
 
+                            {/* Destination input */}
                             <input
                                 type="text"
                                 value={selectedHospital.name}
                                 readOnly
-                                className="w-70 p-2 border border-mgbblue rounded-sm bg-white text-codGray placeholder:text-codGray focus:ring-2 focus:ring-white"
+                                className="w-full p-2 border border-mgbblue rounded-sm bg-white text-codGray placeholder:text-codGray focus:ring-2 focus:ring-white mb-4"
                             />
-                            <div className="ml-15 mt-4">
-                                {/* Travel Mode */}
+
+                            {/* Travel Mode */}
+                            <div className="mt-4 mb-4">
                                 <TravelModeComponent
                                     selectedMode={travelMode}
                                     onChange={handleTravelModeChange}
                                 />
                             </div>
+
+                            {/* Action buttons */}
                             <button
                                 onClick={handleDirectionsSubmit}
                                 disabled={!fromLocation}
@@ -363,14 +372,13 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
                             >
                                 Find Department
                             </button>
-                            // TODO: add text direction
+                            {/* TODO: add text direction */}
                         </div>
                     </div>
                 </div>
-
             </div>
-        )
-    }
+        );
+    };
 
     // step 4 - pathfinding
     const renderDepartments = () => {
