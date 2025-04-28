@@ -1,4 +1,4 @@
-import React, {useState, useEffect, JSX} from "react";
+import React, {useState, useEffect, JSX, useRef} from "react";
 import {ROUTES} from "common/src/constants.ts";
 import axios from "axios";
 import MGBButton from "@/elements/MGBButton.tsx";
@@ -18,7 +18,7 @@ interface State {
 const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Directions, walk22Directions, icons}:State) => {
     //  const [textMode, setTextMode] = useState("Mode: Transport Directions");
     const [textToDisplay, setTextToDisplay] = useState(driveDirections);
-    const audio = new Audio();  // Create audio object
+    const audioRef = useRef(new Audio());  // Create audio object
     //
     // const handleMode1Switch = () => {
     //     if (textMode === "Mode: Transport Directions") {
@@ -71,6 +71,7 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Direc
 
     const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
     const handleModeSwitch = () => {
+        handleProgressReset();
         if (textMode === "Mode: Transport Directions") {
             setTextMode("Mode: Building Directions");
             setTextToSpeak(walk22Directions);
@@ -150,12 +151,17 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Direc
 
         const audioBlob = await response.data;  // Get blob from server
 
+
+        if (!audioRef.current.paused) {
+            audioRef.current.pause(); // Stop the currently playing audio
+            audioRef.current.currentTime = 0; // Reset to the beginning
+        }
         // Log audioBlob size to confirm it's a valid file
         console.log('Audio Blob size:', audioBlob.size);
         console.log(textToSpeak);
         const audioUrl = URL.createObjectURL(audioBlob);  // Create a URL for the audio
-        audio.src = audioUrl;
-        audio.play();
+        audioRef.current.src = audioUrl;
+        audioRef.current.play();
     };
 
     return (
