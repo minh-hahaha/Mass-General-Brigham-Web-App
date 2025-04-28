@@ -187,6 +187,11 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
         }
     };
 
+    const fetchElevators = async (buildingProps: Floor) => {
+        const elevators = await getNodes(buildingProps.floor, buildingProps.buildingId, 'Elevator');
+        console.log(elevators);
+    }
+
     // Sync useRefs and useStates
     useEffect(() => {
         departmentOptionsRef.current = departmentOptions;
@@ -208,7 +213,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
     }
 
     const fetchNodeEdgeData = async (buildingProps: Floor) => {
-        const nodeData = await getNodes(buildingProps.floor, buildingProps.buildingId);
+        const nodeData = await getNodes(buildingProps.floor, buildingProps.buildingId, 'all'); //TODO: if there are problems check this
         const newNodes = [];
         for(const node of nodeData) {
             newNodes.push(mapNodeFromNodeResponse(node));
@@ -272,7 +277,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
         mapEdgesRef.current = [];
 
         // Get the nodes and edges for this building and floor
-        fetchAvailableDepartments(buildingProps).then(() => fetchNodeEdgeData(buildingProps))
+        fetchAvailableDepartments(buildingProps).then(() => fetchNodeEdgeData(buildingProps)).then(() => fetchElevators(buildingProps))
     }, [currentFloorId]);
 
     useEffect(() => {

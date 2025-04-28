@@ -12,12 +12,17 @@ const upload = multer({ storage });
 router.get('/', async (req: Request, res: Response) => {
     const building = req.query.fromBuilding as string;
     const floor = req.query.fromFloor as string;
+    const type = req.query.ofType as string;
+    const selectProps: any = {
+        floor: floor,
+        buildingId: building,
+    };
+    if (type !== 'all') {
+        selectProps.nodeType = type;
+    }
     try {
         const NODES = await PrismaClient.node.findMany({
-            where: {
-                floor: floor,
-                buildingId: building,
-            },
+            where: selectProps,
             include: {
                 departments: {
                     select: {
