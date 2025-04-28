@@ -20,6 +20,8 @@ docker build --platform=linux/amd64 --provenance=false --target production \
   --build-arg BACKEND_SOURCE=$BACKEND_SOURCE \
   --build-arg BACKEND_URL=$BACKEND_URL \
   --build-arg VITE_GOOGLE_MAPS_API_KEY=$VITE_GOOGLE_MAPS_API_KEY \
+  --build-arg VITE_AUTH0_DOMAIN=$VITE_AUTH0_DOMAIN \
+  --build-arg VITE_AUTH0_CLIENT_ID=$VITE_AUTH0_CLIENT_ID \
   -t $REPOSITORY_URI:$GIT_COMMIT_HASH \
   -f ./docker/Dockerfile .
 
