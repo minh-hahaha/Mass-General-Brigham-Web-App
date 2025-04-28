@@ -5,7 +5,14 @@ import { SubmitMaintenanceRequest, maintenanceRequest } from '@/database/forms/m
 import InputElement from '@/elements/InputElement.tsx';
 import SelectElement from '@/elements/SelectElement.tsx';
 import {DirectoryRequestByBuilding, getDirectory} from "@/database/gettingDirectory.ts";
-import {mgbHospitals, mgbHospitalType, priorityArray, priorityType} from "@/database/forms/formTypes.ts";
+import {
+    maintenanceTypeArray,
+    mgbHospitals,
+    mgbHospitalType,
+    priorityArray,
+    priorityType,
+    reqMaintenanceType
+} from "@/database/forms/formTypes.ts";
 import SelectFormElement from "@/elements/SelectFormElement.tsx";
 
 // Component definition
@@ -39,14 +46,13 @@ const MaintenanceRequestPage = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        //TODO: HANDLE EMPLOYEE HERE
         const newRequest: maintenanceRequest = {
             maintenanceType,
             maintenanceDescription,
             priority,
             maintenanceHospital,
             maintenanceTime,
-            employeeId,
-            employeeName,
             notes,
             locationId,
         };
@@ -111,17 +117,17 @@ const MaintenanceRequestPage = () => {
                                 <b>Maintenance Information</b>
                             </h3>
                             <div className="flex flex-col gap-2">
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Maintenance Type</label>
-                                    <input
-                                        id="maintenanceType"
-                                        name="maintenanceType"
-                                        placeholder="Enter maintenance type"
+                                <div className="flex flex-col gap-2">
+                                    <SelectFormElement
+                                        label = 'Maintenance Type'
+                                        id = 'maintenanceType'
+                                        value = {maintenanceType}
+                                        onChange = {(e) =>
+                                            setMaintenanceType(e.target.value as reqMaintenanceType)
+                                        }
                                         required
-                                        type="text"
-                                        value={maintenanceType}
-                                        onChange={(e) => setMaintenanceType(e.target.value)}
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                        options = {maintenanceTypeArray}
+                                        placeholder = 'Select Maintenance Type'
                                     />
                                 </div>
                                 <div className="flex items-center gap-2">

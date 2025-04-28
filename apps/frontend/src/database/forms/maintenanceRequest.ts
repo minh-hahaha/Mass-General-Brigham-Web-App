@@ -1,5 +1,6 @@
 import { ROUTES } from 'common/src/constants.ts';
 import axios from 'axios';
+import {mgbHospitalType, priorityType, statusType} from "@/database/forms/formTypes.ts";
 
 export interface maintenanceRequest {
     // Maintenance Information
@@ -7,13 +8,11 @@ export interface maintenanceRequest {
     maintenanceDescription: string;
 
     // Maintenance Details
-    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
-    maintenanceHospital: 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital'
+    priority: priorityType;
+    maintenanceHospital: mgbHospitalType;
     maintenanceTime: string;
 
     // Requester Information
-    employeeId: number;
-    employeeName: string;
     notes: string;
     locationId: number;
 }
@@ -22,9 +21,9 @@ export interface incomingMaintenanceRequest {
     requestId: number;
     employeeId: number;
     requestDate: string;
-    status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
+    status: statusType;
     comments: string;
-    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
+    priority: priorityType;
     locationId: number;
     serviceType: string;
     requestTime: number;
@@ -32,7 +31,7 @@ export interface incomingMaintenanceRequest {
     maintenanceRequest: {
         servMaintenanceId: number;
         maintenanceType: string;
-        maintenanceHospital: 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital'
+        maintenanceHospital: mgbHospitalType
         maintenanceTime: string;
     }
 }

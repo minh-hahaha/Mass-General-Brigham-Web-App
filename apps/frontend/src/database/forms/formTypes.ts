@@ -15,7 +15,7 @@ export const splitDateTime = (dateTime: string) => {
 };
 
 //Maintenance Request
-export type maintenanceType =
+export type reqMaintenanceType =
     | "Routine Facility"
     | "HVAC"
     | "Electrical"
