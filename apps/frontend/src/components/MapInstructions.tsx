@@ -15,7 +15,7 @@ const instructionPages = [
     {
         title: "Create Edge",
         imagePath: "/assets/instructions/create_edge.png",
-        description: "Click the \"Create Edge\" button, then select a starting node and click destination node to connect them."
+        description: "Click the \"Create Edge\" button, then nodes can connected."
     },
     {
         title: "Edit Node",
@@ -23,9 +23,9 @@ const instructionPages = [
         description: "Click on the node to edit its name, room number, or remove node."
     },
     {
-        title: "Save Changes",
+        title: "Save Nodes and Edges",
         imagePath: "/assets/instructions/save_changes.png",
-        description: "Click the \"Save Changes\" button to store your node network configuration."
+        description: "Click the \"Save Nodes and Edges\" button to store your configuration."
     }
 ];
 
