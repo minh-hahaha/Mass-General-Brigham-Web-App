@@ -67,11 +67,7 @@ interface DirectoryItem {
 }
 
 interface HospitalSidebarProps {
-    onDirectionsRequest: (
-        fromLocation: string,
-        toLocation: { lat: number; lng: number },
-        travelMode: TravelModeType
-    ) => void;
+    onDirectionsRequest: (fromLocation:string, toLocation:string, travelMode: TravelModeType) => void;
     onHospitalSelect: (hospitalId: number) => void;
     onDepartmentSelect: (departmentNodeId: string) => void;
     onParkingSelect: (parkingId: string) => void;
@@ -273,20 +269,22 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
                     </div>
                 </div>
 
-                <div className='space-y-3'>
-                    <MGBButton onClick={handleFindDirections} variant={"secondary"} disabled={false}>
+                <div className="space-y-3">
+                    <MGBButton
+                        onClick={handleFindDirections}
+                        variant={'secondary'}
+                        disabled={false}
+                    >
                         <div className="flex items-center">
                             <Navigation size={18} className="text-mgbblue mr-3 fill-mgbblue" />
                             <span className="font-medium">Get Directions</span>
                             <ChevronRight size={18} />
                         </div>
                     </MGBButton>
-
                 </div>
-
             </div>
-        )
-    }
+        );
+    };
 
     // step 3 - google maps
     const renderDirections = () => {
@@ -358,7 +356,7 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
                             />
 
                             {/* Travel Mode */}
-                            <div className="mt-4 mb-4">
+                            <div className="mt-4 mb-4 ml-10">
                                 <TravelModeComponent
                                     selectedMode={travelMode}
                                     onChange={handleTravelModeChange}
@@ -366,20 +364,24 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
                             </div>
 
                             {/* Action buttons */}
-                            <button
-                                onClick={handleDirectionsSubmit}
-                                disabled={!fromLocation}
-                                className="w-full bg-mgbblue text-white py-2 rounded-sm hover:bg-mgbblue/90 transition disabled:opacity-50 mb-4"
-                            >
-                                Get Directions
-                            </button>
-                            <button
-                                onClick={handleFindDepartment}
-                                disabled={!fromLocation}
-                                className="w-full bg-mgbblue text-white py-2 rounded-sm hover:bg-mgbblue/90 transition disabled:opacity-50 mb-4"
-                            >
-                                Find Department
-                            </button>
+                            <div className="flex flex-row gap-2">
+                                <MGBButton
+                                    onClick={handleDirectionsSubmit}
+                                    disabled={!fromLocation}
+                                    variant={'primary'}
+                                    className="hover:bg-mgbblue/90 transition disabled:opacity-50 mb-4"
+                                >
+                                    Get Directions
+                                </MGBButton>
+                                <MGBButton
+                                    onClick={handleFindDepartment}
+                                    disabled={!fromLocation}
+                                    variant={'secondary'}
+                                    className="hover:bg-yellow-600/90 transition disabled:opacity-50 mb-4"
+                                >
+                                    Find Department
+                                </MGBButton>
+                            </div>
                             {/* TODO: add text direction */}
                         </div>
                     </div>
