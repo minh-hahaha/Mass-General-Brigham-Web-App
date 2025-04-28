@@ -128,6 +128,15 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
 
     const edgeProps = {
         zIndex: 0,
+        clickable: true,
+        strokeColor: '#000000',
+        strokeWeight: 5
+    };
+    const selectedEdgeProps = {
+        zIndex: 0,
+        clickable: true,
+        strokeColor: '#ff0000',
+        strokeWeight: 5
     };
 
     // Node Property Use States
@@ -481,7 +490,22 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                 path: [startPos, endPos],
             }),
         };
+        google.maps.event.addListener(mapEdge.drawnEdge, 'click', (e: google.maps.MapMouseEvent) =>
+            clickEdge(mapEdge.edge.edgeId)
+        );
         setMapEdges((prev) => [...prev, mapEdge]);
+    }
+
+    function clickEdge(edgeId: number){
+        const toBeSelectedEdge = mapEdgesRef.current.find((edge) => edge.edge.edgeId === edgeId);
+        const currentSelectedEdge = mapEdgesRef.current.find((edge) => edge.edge.edgeId === clickedEdgeRef.current);
+        if (toBeSelectedEdge) {
+            if(currentSelectedEdge){
+                currentSelectedEdge.drawnEdge.setOptions(edgeProps);
+            }
+            toBeSelectedEdge.drawnEdge.setOptions(selectedEdgeProps);
+            setClickedEdge(edgeId);
+        }
     }
 
     async function removeSelectedNode() {
@@ -489,8 +513,17 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
         if (selectedNode) {
             removeEdgesFromNode(selectedNode);
             selectedNode.drawnNode.map = null;
-            setClickedNode(null);
             setMapNodes(mapNodes.filter((mapNode) => mapNode.node.nodeId !== clickedNode));
+            setClickedNode(null);
+        }
+    }
+
+    async function removeEdge(){
+        const selectedEdge = mapEdges.find((edge) => edge.edge.edgeId === clickedEdge);
+        if (selectedEdge) {
+            selectedEdge.drawnEdge.setMap(null);
+            setMapEdges(mapEdges.filter((mapEdge) => mapEdge.edge.edgeId !== clickedEdge));
+            setClickedEdge(null);
         }
     }
 
@@ -585,7 +618,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
 
     useEffect(() => {
         if (!map) return;
-        const listener = google.maps.event.addListener(
+        google.maps.event.addListener(
             map,
             'click',
             (e: google.maps.MapMouseEvent) => {
@@ -594,9 +627,6 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                 }
             }
         );
-        return () => {
-            google.maps.event.removeListener(listener);
-        };
     }, [map]);
 
     const HospitalLocations: Record<string, { lat: number; lng: number; zoom: number }> = {
@@ -693,6 +723,19 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                     setTags={setTags}
                     options={departmentOptions.map(opt => opt.deptName)}
                 ></TagFilterBox>
+            </div>
+
+            <div
+                hidden={clickedEdge === null || mode === 'Edge'}
+                className="absolute bottom-18 left-8 p-4 bg-white rounded-xl shadow-lg text-sm text-gray-800 max-w-sm space-y-1 z-10"
+            >
+                <h3 className="font-bold text-base mb-1 text-mgbblue">Edge</h3>
+                <MGBButton
+                    onClick={() => removeEdge()}
+                    children={'Delete Edge'}
+                    variant={'primary'}
+                    disabled={false}
+                ></MGBButton>
             </div>
             <div
                 className={
