@@ -17,10 +17,13 @@ const TRAVEL_MODES = [
 
 interface TravelModeProps {
     selectedMode: TravelModeType;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (mode: TravelModeType) => void;
 }
 
 const TravelModeComponent = ({ selectedMode, onChange }: TravelModeProps) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        onChange(e.target.value as TravelModeType);
+    }
     return (
         <div className="mb-6">
             <div className="flex gap-6">
@@ -40,10 +43,11 @@ const TravelModeComponent = ({ selectedMode, onChange }: TravelModeProps) => {
                             name="travelMode"
                             value={mode.id}
                             checked={selectedMode === mode.id}
-                            onChange={onChange}
+                            onChange={handleChange}
                             className="hidden"
                         />
                         {travelIcons[mode.id as TravelModeType]}
+                        <span className="mt-1 text-xs">{mode.label}</span>
                     </label>
                 ))}
             </div>
