@@ -68,10 +68,10 @@ model MedicalDeviceRequest {
 model PatientTransport {
   servReqId       Int            @id
   patientId       Int
-  pickupLocation  String
-  dropoffLocation String
+  pickupLocation  String        //pick up hospital
+  dropoffLocation String        //drop off hospital
   transportType   String
-  completeByDate  DateTime
+  transportDate   DateTime
   servRequestId   ServiceRequest @relation(name: "ServicePatientTransport", fields: [servReqId], references: [requestId])
 }
 
