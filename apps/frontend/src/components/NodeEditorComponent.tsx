@@ -19,6 +19,7 @@ interface MapNode {
     node: myNode; // The actual node that goes in the database
     attachedDepartments: string[]; // The departments that are attached to the node
     drawnNode: google.maps.marker.AdvancedMarkerElement; // The marker that is shown on the map
+    destinationElevator: string | null; // If the node is an elevator, this represents the elevator it goes to
 }
 
 // A container for an Edge on the map
@@ -132,6 +133,8 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
 
     // This to make sure we don't double up on nodes when rendering nodes and edges
     const lastFloor = useRef<string>('');
+    // This will hold the nodeID of the elevator the node is connected to
+    const [destinationElevator, setDestinationElevator] = useState<string>('');
 
     // Properties for the drawn nodes (AdvancedMarkers)
     const nodeProps = {
@@ -378,7 +381,8 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                 node.roomNumber
             ),
             drawnNode: createDrawnNode(new google.maps.LatLng(node.x, node.y)),
-            attachedDepartments: node.departments
+            attachedDepartments: node.departments,
+            destinationElevator: null //TODO: this should not be null if the loaded node is an elevator this will get complicated :( probably set it when adding edges
         };
         return createMapNode(mapNode);
     }
@@ -397,7 +401,8 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                 null
             ),
             drawnNode: createDrawnNode(position),
-            attachedDepartments: []
+            attachedDepartments: [],
+            destinationElevator: null
         };
         return createMapNode(mapNode);
     }
@@ -699,6 +704,25 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                         onChange={(e) => setRoomNumber(e.target.value)}
                     ></InputElement>
                 </div>
+                <div hidden={nodeType !== 'Elevator'}>
+                <SelectElement
+                    label={'Select Destination Elevator'}
+                    id={'destinationElevator'}
+                    value={destinationElevator}
+                    placeholder={'Select Destination Elevator'}
+                    onChange={(e) => setDestinationElevator(e.target.value)}
+                    options={[
+                        'Elevator A',
+                        'Elevator B',
+                        'Elevator C',
+                        'Elevator D',
+                        'Elevator E',
+                        'Elevator F',
+                        'Elevator G',
+                        'Elevator H',
+                    ]}
+                ></SelectElement>
+                    </div>
                 <MGBButton
                     onClick={() => removeSelectedNode()}
                     children={'Delete Node'}
