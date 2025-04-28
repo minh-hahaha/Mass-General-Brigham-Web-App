@@ -1,9 +1,9 @@
 import {useMap, useMapsLibrary} from '@vis.gl/react-google-maps';
-import { ChangeEvent, SetStateAction, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { myEdge, myNode } from 'common/src/classes/classes.ts';
 import MGBButton from '@/elements/MGBButton.tsx';
-import { createNode, deleteNode, getNodes, NodeResponse } from '@/database/getNode.ts';
-import { createEdge, deleteEdge, EdgeResponse, getEdges } from '@/database/getEdges.ts';
+import { createNode, getNodes, NodeResponse } from '@/database/getNode.ts';
+import { createEdge, EdgeResponse, getEdges } from '@/database/getEdges.ts';
 import SelectElement from '@/elements/SelectElement.tsx';
 import InputElement from '@/elements/InputElement.tsx';
 import { ZoomIn } from 'lucide-react';
@@ -12,17 +12,20 @@ import { ROUTES } from 'common/src/constants.ts';
 import TagFilterBox from '@/elements/TagFilterBox.tsx';
 import {getDirectory} from "@/database/gettingDirectory.ts";
 
+
+// A container for a Node on the map
 interface MapNode {
-    node: myNode;
-    attachedDepartments: string[];
-    drawnNode: google.maps.marker.AdvancedMarkerElement;
+    node: myNode; // The actual node that goes in the database
+    attachedDepartments: string[]; // The departments that are attached to the node
+    drawnNode: google.maps.marker.AdvancedMarkerElement; // The marker that is shown on the map
 }
 
+// A container for an Edge on the map
 interface MapEdge {
-    edge: myEdge;
-    to: MapNode;
-    from: MapNode;
-    drawnEdge: google.maps.Polyline;
+    edge: myEdge; // The actual edge that goes in the database
+    to: MapNode; // The node that the edge points to
+    from: MapNode; // The node that the edge originates from
+    drawnEdge: google.maps.Polyline; // The line that is shown on the map
 }
 
 // floor type
@@ -91,52 +94,61 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
     const map = useMap();
     const drawingLibrary = useMapsLibrary('drawing');
     let drawingManager: google.maps.drawing.DrawingManager;
+    // The drawing mode, either node(editing node values) or edge (drawing edges between nodes)
     const [mode, setMode] = useState<'Node' | 'Edge'>('Node');
     const modeRef = useRef(mode);
+    // Stores the ID of the node that was most recently clicked on
     const [clickedNode, setClickedNode] = useState<string | null>(null);
     const clickedNodeRef = useRef(clickedNode);
+    // Stores the ID of the node that was most recently clicked on
     const [clickedEdge, setClickedEdge] = useState<number | null>(null);
     const clickedEdgeRef = useRef(clickedEdge);
+    // A list of all the edges in the specified building and floor
     const [mapEdges, setMapEdges] = useState<MapEdge[]>([]);
     const mapEdgesRef = useRef(mapEdges);
+    // A list of all the nodes in the specified building and floor
     const [mapNodes, setMapNodes] = useState<MapNode[]>([]);
     const mapNodesRef = useRef(mapNodes);
+    // Temporary IDs for nodes and edges until they are given real ones when saved
     let tempNodeID = 0;
     let tempEdgeID = 100;
 
+    // The current building we are looking at
     const [currentBuilding, setCurrentBuilding] = useState<string>('');
+    // The available departments for the current building and floor
     const [departmentOptions, setDepartmentOptions] = useState<{ deptName: string, deptId: number }[]>([]);
     const departmentOptionsRef = useRef(departmentOptions);
+    // The list of departments the currently clicked node belongs to
     const [tags, setTags] = useState<string[]>([]);
 
+    // Determines if the saveNodesAndEdges button is clickable
     const [canSave, setCanSave] = useState<boolean>(true);
 
+    // Determines if the import/export popup is displayed
     const [showImportModal, setShowImportModal] = useState(false);
 
+    // Handles opening and closing the import/export popup
     const handleOpenImport = () => setShowImportModal(true);
     const handleCloseImport = () => setShowImportModal(false);
 
+    // Properties for the drawn nodes (AdvancedMarkers)
     const nodeProps = {
         zIndex: 1,
         gmpClickable: true,
         gmpDraggable: true,
-        // icon: {
-        //     url: './minh ha icon.png',
-        //     scaledSize: new google.maps.Size(60, 60),
-        // },
     };
 
+    // Properties for the drawn edges (Polylines)
     const edgeProps = {
         zIndex: 0,
         clickable: true,
         strokeColor: '#000000',
         strokeWeight: 5
     };
+    // Properties for the drawn edges (Polylines) when selected
     const selectedEdgeProps = {
-        zIndex: 0,
-        clickable: true,
+        ...edgeProps,
         strokeColor: '#ff0000',
-        strokeWeight: 5
     };
 
     // Node Property Use States
@@ -162,11 +174,9 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
     }
 
     const fetchDirectoryList = async () => {
-        //console.log('Fetching directories');
         try {
             const data = await getDirectory(Number(currentBuilding));
             setDepartmentOptions(data.map(dir => ({ deptName: dir.deptName, deptId: dir.deptId })));
-            //console.log("Finished")
         } catch (error) {
             console.error('Error fetching building names:', error);
         }
@@ -209,7 +219,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
             }
         }
     }, [tags]);
-
+    //TODO: NEEDS TO IMPORT TAGS EVERY TIME
     useEffect(() => {
         const currentNode = getCurrentNode();
         if(currentNode){
@@ -282,7 +292,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                 console.error('Error fetching directory/nodes/edges:', error);
             }
         }
-        //console.log("floor:", currentFloorId, "building:", currentBuilding);
+
         fetchDirectoryAndNodes();
 
         return () => {
@@ -317,6 +327,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
             polylineOptions: edgeProps,
         });
         drawingManager.setMap(map);
+        // Handles the drawing and creation of new nodes and edges from drawing on the map
         google.maps.event.addListener(
             drawingManager,
             'overlaycomplete',
@@ -343,6 +354,23 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
         );
     }, [map]);
 
+    useEffect(() => {
+        if (!map) return;
+        google.maps.event.addListener(
+            map,
+            'click',
+            () => {
+                if (modeRef.current === 'Node') {
+                    setClickedNode(null);
+                    resetEdge();
+                }
+            }
+        );
+    }, [map]);
+
+
+    /********************** NODES ************************/
+
     const getCurrentNode = () => {
         return mapNodes.find((node) => node.node.nodeId === clickedNode);
     }
@@ -364,8 +392,6 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                 deptNames.push(dept.deptId.toString());
             }
         }
-        //console.log(departmentOptionsRef.current);
-        //console.log("jsdawsfioj;asfgrvrknjdsfjkn;sAEFnjk");
         const mapNode: MapNode = {
             node: new myNode(
                 node.nodeId,
@@ -402,28 +428,9 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
         return createMapNode(mapNode);
     }
 
-    // Creates a map node from a marker
-    function mapNodeFromMarker(marker: google.maps.marker.AdvancedMarkerElement) {
-        const mapNode: MapNode = {
-            node: new myNode(
-                incrementTempNodeID().toString(),
-                (marker.position as google.maps.LatLng).lat(),
-                (marker.position as google.maps.LatLng).lng(),
-                currentFloorId.charAt(currentFloorId.length - 1),
-                '1',
-                '1',
-                'Node',
-                null
-            ),
-            drawnNode: marker,
-            attachedDepartments: []
-        };
-        return createMapNode(mapNode);
-    }
-
     // Applies the proper event listeners to the MapNodes and adds them to the list of nodes
     function createMapNode(mapNode: MapNode): MapNode {
-        google.maps.event.addListener(mapNode.drawnNode, 'click', (e: google.maps.MapMouseEvent) =>
+        google.maps.event.addListener(mapNode.drawnNode, 'click', () =>
             clickNode(mapNode.node.nodeId)
         );
         google.maps.event.addListener(mapNode.drawnNode, 'drag', (e: google.maps.MapMouseEvent) => {
@@ -460,6 +467,35 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
         return mapNode;
     }
 
+    async function removeSelectedNode() {
+        const selectedNode = mapNodes.find((node) => node.node.nodeId === clickedNode);
+        if (selectedNode) {
+            removeEdgesFromNode(selectedNode);
+            selectedNode.drawnNode.map = null;
+            setMapNodes(mapNodes.filter((mapNode) => mapNode.node.nodeId !== clickedNode));
+            setClickedNode(null);
+        }
+    }
+
+    function clickNode(nodeId: string) {
+        const toNode = mapNodesRef.current.find((node) => node.node.nodeId === nodeId);
+        const fromNode = mapNodesRef.current.find(
+            (node) => node.node.nodeId === clickedNodeRef.current
+        );
+        if (toNode) {
+            setClickedNode(nodeId);
+            setNodeType(toNode.node.nodeType as NodeType);
+            setNodeName(toNode.node.name);
+            setRoomNumber(toNode.node.roomNumber);
+            if (fromNode && modeRef.current === 'Edge') {
+                createMapEdge(fromNode, toNode);
+                setClickedNode(null);
+            }
+        }
+    }
+
+    /********************** EDGES ************************/
+
     function createMapEdge(startNode: MapNode, endNode: MapNode) {
         const startPos = startNode.drawnNode.position as google.maps.LatLng;
         const endPos = endNode.drawnNode.position as google.maps.LatLng;
@@ -490,7 +526,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                 path: [startPos, endPos],
             }),
         };
-        google.maps.event.addListener(mapEdge.drawnEdge, 'click', (e: google.maps.MapMouseEvent) => {
+        google.maps.event.addListener(mapEdge.drawnEdge, 'click', () => {
                 if (modeRef.current === 'Node') {
                     clickEdge(mapEdge.edge.edgeId)
                 }
@@ -519,16 +555,6 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
         }
     }
 
-    async function removeSelectedNode() {
-        const selectedNode = mapNodes.find((node) => node.node.nodeId === clickedNode);
-        if (selectedNode) {
-            removeEdgesFromNode(selectedNode);
-            selectedNode.drawnNode.map = null;
-            setMapNodes(mapNodes.filter((mapNode) => mapNode.node.nodeId !== clickedNode));
-            setClickedNode(null);
-        }
-    }
-
     async function removeEdge(){
         const selectedEdge = mapEdges.find((edge) => edge.edge.edgeId === clickedEdge);
         if (selectedEdge) {
@@ -552,22 +578,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
         setMapEdges(mapEdgesRef.current.filter((edge) => !toRemove.includes(edge.edge.edgeId)));
     }
 
-    function clickNode(nodeId: string) {
-        const toNode = mapNodesRef.current.find((node) => node.node.nodeId === nodeId);
-        const fromNode = mapNodesRef.current.find(
-            (node) => node.node.nodeId === clickedNodeRef.current
-        );
-        if (toNode) {
-            setClickedNode(nodeId);
-            setNodeType(toNode.node.nodeType as NodeType);
-            setNodeName(toNode.node.name);
-            setRoomNumber(toNode.node.roomNumber);
-            if (fromNode && modeRef.current === 'Edge') {
-                createMapEdge(fromNode, toNode);
-                setClickedNode(null);
-            }
-        }
-    }
+    /********************** SAVING ************************/
 
     const generateCustomId = (node: myNode) => {
         const floorPart = 'Floor' + currentFloorId.charAt(currentFloorId.length - 1);
@@ -626,20 +637,6 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
         setCanSave(true);
         setClickedNode(null);
     }
-
-    useEffect(() => {
-        if (!map) return;
-        google.maps.event.addListener(
-            map,
-            'click',
-            (e: google.maps.MapMouseEvent) => {
-                if (modeRef.current === 'Node') {
-                    setClickedNode(null);
-                    resetEdge();
-                }
-            }
-        );
-    }, [map]);
 
     const HospitalLocations: Record<string, { lat: number; lng: number; zoom: number }> = {
         'Chestnut Hill': { lat: 42.325988, lng: -71.149567, zoom: 18 },
