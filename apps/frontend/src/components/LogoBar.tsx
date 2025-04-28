@@ -119,7 +119,7 @@ const LogoBar = () => {
 
 
     return (
-        <header className="h-full flex items-center justify-between px-4 mt-1 mb-1 border-b-10 border-fountainBlue">
+        <header className="h-full w-full flex items-center justify-between px-4 mt-1 mb-1 border-b-10 border-fountainBlue">
             {/* Left: Trigger + Logo */}
             <div className="flex items-center ml-3">
                 <a href="/">
@@ -222,7 +222,7 @@ const LogoBar = () => {
             <div className="flex flex-row gap-4 -mr-8">
                 <Search className="my-2" />
                 <input
-                    className="text-sm w-90 px-4 border border-solid border-mgbblue rounded-md"
+                    className="text-sm w-80 px-4 border border-solid border-mgbblue rounded-md"
                     type="text"
                     placeholder="Search"
                 />
