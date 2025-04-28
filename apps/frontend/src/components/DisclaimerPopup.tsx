@@ -29,7 +29,7 @@ const DisclaimerPopup: React.FC<DisclaimerPopupProps> = ({ onClose }) => {
                 </h4>
                 <div
                     className="p-1 pt-4 flex flex-row justify-end p">
-                    <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
                         <MGBButton
                             onClick={onClose}
                             variant={'primary'}

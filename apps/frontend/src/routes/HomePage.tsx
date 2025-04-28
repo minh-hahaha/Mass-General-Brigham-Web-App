@@ -43,7 +43,7 @@ const HomePage = () => {
                                 Your guide to hospital locations and services
                             </h2>
                             <RiArrowRightSLine color="white" size={28} className="mt-1 ml-1 mr-2"/>
-                            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                            <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
                                 <MGBButton
                                     onClick={() => (window.location.href = '/MapPage')}
                                     variant={'secondary'}
