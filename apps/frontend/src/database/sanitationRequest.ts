@@ -6,7 +6,7 @@ export interface sanitationRequest {
     //Service Request fields
     employeeName:              string;
     status:                     'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
-    priority:                   'Low' | 'Medium' | 'High';
+    priority:                   'Low' | 'Medium' | 'High' | 'Emergency';
     requestTime:                string;
     locationId:                 string;
 
@@ -42,7 +42,7 @@ export interface incomingSanitationRequest {
         disposalRequired:    boolean;
         completeBy:          string;
     }
-    priority: 'Low' | 'Medium' | 'High';
+    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     requestDate: string;
     requestId: number;
     requestTime: number;
