@@ -4,29 +4,31 @@ import {
     CarouselContent,
     CarouselItem,
     CarouselNext,
-    CarouselPrevious
-} from "@/components/ui/carousel.tsx";
-import {cn} from "@/lib/utils.ts";
+    CarouselPrevious,
+} from '@/components/ui/carousel.tsx';
+import { cn } from '@/lib/utils.ts';
 import { ReactNode, useEffect, useState } from 'react';
-
 
 // An interface that defines the props the component accepts
 interface CarouselProps {
-    tableTabs: {label: string, component: React.FC}[];
+    tableTabs: { label: string; component: React.FC }[];
+    initialIndex?: number;
 }
 
-const CarouselMenu: React.FC<CarouselProps> = ({tableTabs}) => {
-    const [api, setApi] = useState<CarouselApi | null>(null)
-    const [selectedIndex, setSelectedIndex] = useState(0)
+const CarouselMenu: React.FC<CarouselProps> = ({ tableTabs, initialIndex = 0 }) => {
+    const [api, setApi] = useState<CarouselApi | null>(null);
+    const [selectedIndex, setSelectedIndex] = useState(initialIndex);
 
     useEffect(() => {
-        if (!api) return
-        const onSelect = () => setSelectedIndex(api.selectedScrollSnap())
-        api.on("select", onSelect)
-        onSelect()
-        return () =>{ api.off("select", onSelect) }
+        if (!api) return;
+        api.scrollTo(initialIndex);
+        const onSelect = () => setSelectedIndex(api.selectedScrollSnap());
+        api.on('select', onSelect);
+        onSelect();
+        return () => {
+            api.off('select', onSelect);
+        };
     }, [api]);
-
 
     return (
         <div className="w-full px-6 pt-10">
@@ -46,10 +48,10 @@ const CarouselMenu: React.FC<CarouselProps> = ({tableTabs}) => {
                             key={tab.label}
                             onClick={() => api?.scrollTo(index)}
                             className={cn(
-                                "flex-1 z-10 px-4 py-3 text-sm font-medium transition-colors duration-200",
+                                'flex-1 z-10 px-4 py-3 text-sm font-medium transition-colors duration-200',
                                 selectedIndex === index
-                                    ? "text-white"
-                                    : "text-mgbblue hover:text-mgbblue/80"
+                                    ? 'text-white'
+                                    : 'text-mgbblue hover:text-mgbblue/80'
                             )}
                         >
                             {tab.label}
@@ -71,7 +73,7 @@ const CarouselMenu: React.FC<CarouselProps> = ({tableTabs}) => {
                 </CarouselContent>
             </Carousel>
         </div>
-    )
-}
+    );
+};
 
 export default CarouselMenu;

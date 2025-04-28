@@ -1,15 +1,7 @@
 import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
-import SelectElement from '../elements/SelectElement.tsx';
 import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google-maps';
-import TravelModeComponent from '@/components/TravelModeComponent.tsx';
 import HospitalMapComponent from '@/components/HospitalMapComponent';
-import clsx from 'clsx';
-import { myNode } from 'common/src/classes/classes.ts';
-import axios from 'axios';
-import { FaRegClock } from 'react-icons/fa';
-import { MapPin, Circle, Hospital, ZoomIn } from 'lucide-react';
-import { MdOutlineMyLocation } from 'react-icons/md';
-import { ROUTES } from 'common/src/constants.ts';
+import {ZoomIn } from 'lucide-react';
 import {CHtoLotA, CHtoLotB, CHtoLotC, PPtoLotA, PPtoLotB, PPtoLotC, FKtoLotA, FKtoLotB, FKtoLotC}  from '../assets/parkingCoords.tsx'
 
 
@@ -21,19 +13,19 @@ import { GetRecentOrigins, RecentOrigin } from '@/database/recentOrigins.ts';
 
 import AlgorithmSelector from '@/components/AlgorithmSelector.tsx';
 import DisplayPathComponent from "@/components/DisplayPathComponent.tsx";
-import FloorSelector from "@/components/FloorSelector.tsx";
-import {util} from "zod";
-import jsonStringifyReplacer = util.jsonStringifyReplacer;
-import TextToSpeechMapComponent from "@/components/TextToSpeechMapComponent.tsx";
-
-
-const Buildings = ['Chestnut Hill - 850 Boylston Street', '20 Patriot Place', '22 Patriot Place', 'Faulkner Hospital'];
+import MapSidebarComponent from "@/components/MapUI/MapSidebarComponent.tsx";
 
 const HospitalLocations: Record<string, {lat: number, lng: number, zoom: number}> = {
     'Chestnut Hill - 850 Boylston Street': {lat: 42.325988, lng: -71.149567, zoom: 18},
-    '20 Patriot Place': {lat: 42.092617, lng: -71.266492, zoom: 18},
-    '22 Patriot Place': {lat: 42.092617, lng: -71.266492, zoom: 18},
+    'Patriot Place': {lat: 42.092617, lng: -71.266492, zoom: 18},
     'Faulkner Hospital': {lat: 42.301684739524546, lng: -71.12816396084828, zoom: 18}
+};
+
+const BuildingIDMap: Record<string, number> = {
+    'Chestnut Hill - 850 Boylston Street': 1,
+    'Patriot Place': 2,
+    'Faulkner Hospital': 3,
+    'Main Hospital': 4
 };
 
 type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
@@ -48,7 +40,6 @@ interface Coordinate {
 const DirectionsMapComponent = () => {
     const map = useMap();
     const routesLibrary = useMapsLibrary('routes');
-    const placesLibrary = useMapsLibrary('places');
     const [fromLocation, setFromLocation] = useState('');
     const [toLocation, setToLocation] = useState('');
     const [travelMode, setTravelMode] = useState<TravelModeType>('DRIVING');
@@ -74,8 +65,7 @@ const DirectionsMapComponent = () => {
     const [text2Directions, setText2Directions] = useState<string[]>([]);
     const [selectedAlgorithm, setSelectedAlgorithm] = useState('BFS');
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
-    const [setTTS, TTS]=useState<string>('');
-    const [showTextDirection, setShowTextDirection] = useState<boolean>(false);
+
 
     useEffect(() => {
         const checkAdmin = () => {
@@ -107,27 +97,7 @@ const DirectionsMapComponent = () => {
         setDirectionsRenderer(new routesLibrary.DirectionsRenderer({ map }));
     }, [map, routesLibrary]);
 
-    // refs for autocomplete
-    const fromLocationRef = useRef(null);
-    // autocomplete
-    useEffect(() => {
-        if (!placesLibrary || !fromLocationRef.current) return;
 
-        // autocomplete for origin
-        const fromAutocomplete = new placesLibrary.Autocomplete(fromLocationRef.current, {
-            types: ['geocode', 'establishment'],
-            fields: ['place_id', 'geometry', 'formatted_address', 'name'],
-            componentRestrictions: { country: 'us' }, // limit to US places
-        });
-
-        // event listeners so that when autocomplete the state is changed
-        fromAutocomplete.addListener('place_changed', () => {
-            const place = fromAutocomplete.getPlace();
-            if (place.formatted_address) {
-                setFromLocation(place.formatted_address);
-            }
-        });
-    }, [placesLibrary]);
 
     // API CALLS
     // get directory list
@@ -160,16 +130,6 @@ const DirectionsMapComponent = () => {
         handleDeptChange();
     }, [currentDirectoryName]);
 
-    // // set selected building id as it changes
-    // useEffect(() => {
-    //     if (toLocation) {
-    //         const id = BuildingIDMap[toLocation] || '';
-    //         setSelectedBuildingId(id);
-    //     } else {
-    //         setSelectedBuildingId('');
-    //     }
-    // }, [toLocation]);
-
     // find new direction when from and to location change
     useEffect(() => {
         if (toLocation && fromLocation) {
@@ -178,45 +138,14 @@ const DirectionsMapComponent = () => {
     }, [fromLocation, toLocation]);
 
 
-    const handleChangeToLocation = (e: ChangeEvent<HTMLSelectElement>) => {
-        const newLocation = e.target.value;
-        clearParking();
-        // Update the location state
-        setToLocation(newLocation);
-
-        // Set the building ID for directory lookup
-        const buildingIndex = Buildings.indexOf(newLocation);
-        setBuildingID(buildingIndex + 1);
-        setPathVisible(false)
-    };
 
     // find directions
     const handleFindDirections = async () => {
         calculateRoute();
-        // try {
-        //     await axios.post(ROUTES.RECENT_ORIGINS, {
-        //         location: fromLocation,
-        //     });
-        //     console.log('origin saved');
-        // } catch (error) {
-        //     console.error(error);
-        // }
     };
 
     const handleAlgorithmChange = (algorithm: string) => {
         setSelectedAlgorithm(algorithm);
-    };
-
-    // change travel mode
-    const handleTravelModeChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setTravelMode(e.target.value as TravelModeType);
-        if (e.target.value === 'DRIVING') {
-            setParking(true);
-            clearParking();
-        } else {
-            setParking(false);
-            clearParking();
-        }
     };
 
 
@@ -237,7 +166,6 @@ const DirectionsMapComponent = () => {
         if (toLocation === '22 Patriot Place') {
             actualLocation = '42.092617243197296, -71.26649215663976';
         }
-
 
         const googleTravelMode =
             google.maps.TravelMode[travelMode as keyof typeof google.maps.TravelMode];
@@ -275,6 +203,7 @@ const DirectionsMapComponent = () => {
             });
     };
 
+    // TODO: will have to delete this
     useEffect(() => {
         let selectedPath: { lat:number, lng: number }[];
         switch(lot) { // You'll need to have this state variable
@@ -397,13 +326,6 @@ const DirectionsMapComponent = () => {
         setLot('');
     };
 
-    const handleHere = () => {
-        setPathVisible(true);
-        // clear parking
-        clearParking();
-
-
-    };
 
     const customLineRef = useRef<google.maps.Polyline | null>(null);
     const customMarkersRef = useRef<google.maps.Marker[]>([]);
@@ -430,93 +352,6 @@ const DirectionsMapComponent = () => {
         }
     }
 
-    // function calculateDoorRoute(pathPoints: google.maps.LatLngLiteral[], label: string) {
-    //     if (!map) return;
-    //     clearAllRoutes();
-    //
-    //     // Fit map to route
-    //     const bounds = new google.maps.LatLngBounds();
-    //     pathPoints.forEach((p) => bounds.extend(p));
-    //     map.fitBounds(bounds, 100);
-    //
-    //     // Add markers
-    //     const startMarker = new google.maps.Marker({ position: pathPoints[0], map, label });
-    //     const endMarker = new google.maps.Marker({
-    //         position: pathPoints[pathPoints.length - 1],
-    //         map,
-    //         label: 'D',
-    //     });
-    //     customMarkersRef.current = [startMarker, endMarker];
-    //
-    //     // Add polyline
-    //     const line = new google.maps.Polyline({
-    //         path: pathPoints,
-    //         map,
-    //         strokeOpacity: 0,
-    //         icons: [
-    //             {
-    //                 icon: {
-    //                     path: 'M 0,-1 0,1',
-    //                     strokeOpacity: 1,
-    //                     strokeColor: '#4285F4',
-    //                     scale: 4,
-    //                 },
-    //                 offset: '0',
-    //                 repeat: '25px',
-    //             },
-    //         ],
-    //     });
-    //
-    //     customLineRef.current = line;
-    //
-    //     let count = 0;
-    //     animationRef.current = window.setInterval(() => {
-    //         count = (count + 1) % 200;
-    //         const icons = line.get('icons');
-    //         if (icons && icons.length > 0) {
-    //             icons[0].offset = `${count / 2}%`;
-    //             line.set('icons', icons);
-    //         }
-    //     }, 100);
-    // }
-
-    const handleUseCurrentLocation = () => {
-        if (!navigator.geolocation) {
-            alert('Geolocation is not supported by your browser');
-            return;
-        }
-
-        navigator.geolocation.getCurrentPosition(
-            async (position) => {
-                const { latitude, longitude } = position.coords;
-                const latLng = `${latitude}, ${longitude}`;
-                setFromLocation(latLng); // this triggers map routing
-
-                // Optional: reverse geocode to get a human-readable address
-                try {
-                    const geocoder = new google.maps.Geocoder();
-                    geocoder.geocode(
-                        { location: { lat: latitude, lng: longitude } },
-                        (results, status) => {
-                            if (status === 'OK' && results && results[0]) {
-                                setFromLocation(results[0].formatted_address);
-                            } else {
-                                console.warn('Geocoder failed: ', status);
-                            }
-                        }
-                    );
-                } catch (error) {
-                    console.error('Reverse geocoding failed', error);
-                }
-            },
-            (error) => {
-                console.error('Error retrieving location:', error);
-                alert('Unable to retrieve your location.');
-            }
-        );
-
-    };
-
     const handleZoomToHospital = () => {
         if (!map || !toLocation) return;
 
@@ -526,166 +361,59 @@ const DirectionsMapComponent = () => {
             map.setZoom(hospitalLocation.zoom);
         }
     };
+
+    const handleDirectionRequest = (from: string, to: string, mode: TravelModeType) => {
+        setFromLocation(from);
+        setToLocation(to);
+        setTravelMode(mode);
+
+        if(mode === "DRIVING"){
+            setParking(true)
+        } else {
+            setParking(false)
+            setLot('')
+        }
+        calculateRoute()
+    }
+
+    const handleHospitalSelect = (hospitalId: number)  => {
+        clearAllRoutes();
+        setLot('');
+        setPathVisible(false);
+
+        const hospital = Object.entries(HospitalLocations).find(
+            ([name]) => BuildingIDMap[name] === hospitalId
+        )
+
+        if(hospital){
+            setToLocation(hospital[0]); //hospital place
+            setBuildingID(hospitalId);
+            if (map){
+                map.panTo({lat: hospital[1].lat, lng: hospital[1].lng}); // location
+                map.setZoom(hospital[1].zoom);
+            }
+        }
+    }
+
+    const handleDepartmentSelect = (departmentNodeId: string) => {
+            setToDirectoryNodeId(departmentNodeId);
+    }
+
+    const handleParkingSelect = (lotId: string) => {
+        setLot(lotId)
+    }
     return (
         <div className="flex w-screen h-screen">
             {/* LEFT PANEL */}
             <div className="relative">
-
-                <aside className="relative top-6 left-6 z-10 w-[400px] max-h-[75vh] bg-white p-6 shadow-xl rounded-lg overflow-hidden flex flex-col">
-                    <form>
-                        {/* Blue Box Section */}
-                        <div className="py-5 pr-6 pl-4 rounded-lg -mt-6">
-                            <h2 className="text-xl font-black text-codGray mb-6 text-center ml-4">
-                                Hospital Directions
-                            </h2>
-                            <div className="flex gap-4 relative -ml-6 -mt-7">
-                                {/* Breadcrumb Line + Icons */}
-                                <div className="flex flex-col items-center pt-1">
-                                    {/* Map icon */}
-                                    <div className="text-codGray p-1 text-xl mt-6">
-                                        <Circle size={18} />
-                                    </div>
-                                    {/* Line */}
-                                    <div className="h-6 border-l-2 border-dotted border-codGray" />
-                                    {/* Pin icon */}
-                                    <div className="text-codGray p-1 text-xl">
-                                        <MapPin size={18} />
-                                    </div>
-                                </div>
-
-                                {/* Form Inputs */}
-                                <div className="flex-1">
-                                    <div className="mt-5">
-                                        <input
-                                            type="text"
-                                            id="fromLocation"
-                                            ref={fromLocationRef}
-                                            value={fromLocation}
-                                            onChange={(e) => setFromLocation(e.target.value)}
-                                            required
-                                            placeholder="Choose a starting point..."
-                                            className="w-70 p-2 border border-mgbblue rounded-sm bg-white text-codGray placeholder:text-codGray focus:ring-2 focus:ring-white"
-                                        />
-                                        <SelectElement
-                                            label="To:"
-                                            id="toLocation"
-                                            value={toLocation}
-                                            onChange={(e) => handleChangeToLocation(e)}
-                                            options={Buildings}
-                                            placeholder="Select destination"
-                                            className="bg-white text-codGray border border-mgbblue -mt-3 w-70"
-                                        />
-                                    </div>
-
-                                    <div className="mt-8 -ml-6">
-                                        <div className="flex items-center gap-2 ml-6 -mt-3 w-70">
-                                            <Hospital
-                                                className="text-codGray mt-1 -ml-9.5 mr-2"
-                                                size={22}
-                                            />
-                                            <SelectElement
-                                                label=""
-                                                id="toDirectory"
-                                                value={currentDirectoryName}
-                                                onChange={(e) =>
-                                                    setCurrentDirectoryName(e.target.value)
-                                                }
-                                                options={directoryList.map((dept) => dept.deptName)}
-                                                placeholder="Select department"
-                                                className="bg-white text-codGray border border-mgbblue flex-1"
-                                            />
-                                        </div>
-                                        <div className="ml-15 mt-4">
-                                            {/* Travel Mode */}
-                                            <TravelModeComponent
-                                                selectedMode={travelMode}
-                                                onChange={handleTravelModeChange}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
-                    {/* Parking Lot Buttons */}
-                    {parking && (
-                        <div className="-mt-5">
-                            <p className="mb-2 text-sm text-codGray text-center -ml-4 font-black">
-                                Where do you want to park?
-                            </p>
-                            <div className="grid grid-cols-3 gap-2">
-                                {['A', 'B', 'C'].map((lot) => (
-                                    <button
-                                        key={lot}
-                                        onClick={() =>
-                                            lot === 'A'
-                                                ? handleParkA()
-                                                : lot === 'B'
-                                                  ? handleParkB()
-                                                  : handleParkC()
-                                        }
-                                        className="bg-white text-codGray border border-mgbblue py-1 rounded-sm hover:bg-mgbblue hover:text-white transition"
-                                    >
-                                        Lot {lot}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* I'm Here Button */}
-                    <div className={clsx(parking ? 'mt-6' : '-mt-2.5')}>
-                        <button
-                            disabled={lot === '' && currentDirectoryName === ''}
-                            onClick={() => handleHere()}
-                            className="w-full bg-mgbblue text-white py-2 rounded-sm hover:bg-mgbblue/90 transition disabled:opacity-50"
-                        >
-                            I'm Here!
-                        </button>
-                    </div>
-                    <div className="mt-6">
-                        {toLocation && isAdmin && (
-                            <AlgorithmSelector
-                                selectedAlgorithm={selectedAlgorithm}
-                                onChange={handleAlgorithmChange}
-                            />
-                        )}
-                    </div>
-                    <div className="w-110 border-[0.5px] border-codGray mt-5 -ml-10" />
-                    <div className="overflow-y-auto mt-4 flex-grow">
-
-                            <div className="max-h-[200px] overflow-y-auto w-full mt-1">
-                                <ul className="w-full flex flex-col space-y-2">
-                                    <li
-                                        className="flex items-center w-full py-2 rounded-md transition-colors hover:bg-gray-200 cursor-pointer"
-                                        onClick={handleUseCurrentLocation}
-                                    >
-                                        <MdOutlineMyLocation
-                                            className="text-mgbblue min-w-[20px]"
-                                            size={18}
-                                        />
-                                        <span className="text-codGray mx-3">Current Location</span>
-                                    </li>
-                                    {recentOrigins.map((origin, index) => (
-                                        <li
-                                            key={index}
-                                            className="flex items-center w-100 py-2 rounded-md transition-colors hover:bg-gray-200 cursor-pointer"
-                                            onClick={() => setFromLocation(origin.location)}
-                                        >
-                                            <FaRegClock
-                                                className="text-mgbblue min-w-[20px]"
-                                                size={18}
-                                            />
-                                            <span className="text-codGray mx-3">
-                                                {origin.location.match('.+?(?=[ \\d]{5})')}
-                                            </span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-
-                    </div>
+                <aside className="relative top-6 left-6 z-10 w-[400px] max-h-[80vh] bg-white p-6 shadow-xl rounded-lg overflow-hidden flex flex-col">
+                    <MapSidebarComponent
+                        onDirectionsRequest={handleDirectionRequest}
+                        onHospitalSelect={handleHospitalSelect}
+                        onDepartmentSelect={handleDepartmentSelect}
+                        onParkingSelect={handleParkingSelect}
+                        directoryList={directoryList}
+                    />
                 </aside>
 
             </div>
@@ -699,7 +427,7 @@ const DirectionsMapComponent = () => {
                     // MGB at Chestnut hill 42.325988270594415, -71.1495669288061
                     defaultZoom={15}
                     renderingType={RenderingType.RASTER}
-                    mapTypeControl={false}
+                    disableDefaultUI={true}
                     mapId={'73fda600718f172c'}
                 >
                     <HospitalMapComponent
@@ -707,6 +435,8 @@ const DirectionsMapComponent = () => {
                         endNodeId={toDirectoryNodeId}
                       selectedAlgorithm={selectedAlgorithm}
                         visible={pathVisible}
+
+
                       driveDirections={textDirections}
                       drive2Directions={text2Directions}
                       showTextDirections={!!toLocation}
@@ -718,7 +448,7 @@ const DirectionsMapComponent = () => {
 
                 {/* Route Info Box */}
                 {showRouteInfo && (
-                    <div className="absolute bottom-3 left-6 p-4 bg-white rounded-xl shadow-lg text-sm text-gray-800 max-w-sm space-y-1">
+                    <div className="absolute bottom-4 right-6 p-4 z-10 bg-white rounded-xl shadow-lg text-sm text-gray-800 max-w-sm space-y-1">
                         <h3 className="font-bold text-base mb-1 text-mgbblue">Route Info</h3>
                         <p>
                             <span className="font-medium">Distance:</span> {distance}

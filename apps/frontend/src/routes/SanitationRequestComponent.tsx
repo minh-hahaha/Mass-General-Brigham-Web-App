@@ -8,8 +8,6 @@ import InputElement from "@/elements/InputElement.tsx";
 
 // Component definition
 const SanitationRequestPage = () => {
-    const loggedIn = sessionStorage.getItem('loggedIn');
-    if (!loggedIn) {window.location.href = '/';}
 
     //Service request fields
     const [status, setStatus] = useState<sanitationRequest ['status']>('Pending');
