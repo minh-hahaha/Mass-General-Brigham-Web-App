@@ -27,6 +27,7 @@ export interface MedicalDeviceRequestData {
     quantity: number;
     notes?: string;
     department: string;
+    deliverDate: string;
 }
 
 // Medical Device Component Definition
@@ -54,7 +55,7 @@ const MedicalDeviceServiceRequestPage = () => {
 
     const [directoryList, setDirectoryList] = useState<string[]>([""]);
     const [directory, setDirectory] = useState<string>("");
-
+    const [deliverDate, setDeliverDate] = useState('');
 
     useEffect(() => {
         const fetchDirectoryList = async () => {
@@ -80,6 +81,7 @@ const MedicalDeviceServiceRequestPage = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        const formattedDate = new Date(deliverDate).toISOString();
         const newRequest: MedicalDeviceRequestData = {
             employeeId: employeeId,
             requestDate: requestDate,
@@ -92,6 +94,7 @@ const MedicalDeviceServiceRequestPage = () => {
             deviceReasoning: reasoning,
             notes: notes,
             department: department,
+            deliverDate: formattedDate,
         }
         SubmitMedicalDeviceRequest(newRequest);
         setShowConfirmation(true);
@@ -254,6 +257,19 @@ const MedicalDeviceServiceRequestPage = () => {
                                         placeholder = 'Select Priority'
                                     />
                                 </div>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                                <InputElement
+                                    id="date"
+                                    name="date"
+                                    label="Delivery By: "
+                                    placeholder="Please choose a date to deliver:"
+                                    required={true}
+                                    type="datetime-local"
+                                    value={deliverDate}
+                                    onChange={(e) => setDeliverDate(e.target.value)}
+                                />
                             </div>
                         </div>
 

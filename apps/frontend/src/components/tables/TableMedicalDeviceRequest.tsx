@@ -33,7 +33,7 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => 
         status: '',
         device: '',
         location: '',
-        completeByDate: '',
+        deliverDate: '',
     });
 
     useEffect(() => {
@@ -122,11 +122,11 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => 
                                 <input
                                     type="datetime-local"
                                     className="border border-mgbblue rounded-sm w-35 p-1"
-                                    value={filters.completeByDate}
+                                    value={filters.deliverDate}
                                     onChange={(e) =>
                                         setFilters({
                                             ...filters,
-                                            completeByDate: e.target.value,
+                                            deliverDate: e.target.value,
                                         })
                                     }
                                 />
@@ -179,7 +179,7 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => 
                                     <TableCell className="text-center py-3">{req.status}</TableCell>
                                     <TableCell className="text-center py-3">{req.medicalDeviceRequest.device}</TableCell>
                                     <TableCell className="text-center py-3">{req.medicalDeviceRequest.location}</TableCell>
-                                    <TableCell className="text-center py-3">{formatDate(req.completeByDate)}</TableCell>
+                                    <TableCell className="text-center py-3">{formatDate(req.medicalDeviceRequest.deliverDate)}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

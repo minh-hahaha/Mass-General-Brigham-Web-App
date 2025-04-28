@@ -10,6 +10,7 @@ export interface incomingMedicalDeviceRequest {
         device: string;
         date: string;
         location: string;
+        deliverDate: string;
     }
     priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     requestDate: string;

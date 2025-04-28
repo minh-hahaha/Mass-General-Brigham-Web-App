@@ -61,7 +61,7 @@ model MedicalDeviceRequest {
   servRequestId  ServiceRequest @relation(name: "MedicalDeviceRequest", fields: [servReqId], references: [requestId])
   device         String
   location       String
-  completeByDate DateTime
+  deliverDate    DateTime
 }
 
 //TODO: FIX LOCATION FIELDS

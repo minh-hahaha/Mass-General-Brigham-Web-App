@@ -29,7 +29,6 @@ router.post('/', async (req: Request, res: Response) => {
             //creates entry for service request
             const serviceRequest = await prisma.serviceRequest.create({
                 data: {
-                    employeeId: req.body.employeeId,
                     status: 'Pending',
                     comments: req.body.notes,
                     priority: req.body.priority,
@@ -43,7 +42,7 @@ router.post('/', async (req: Request, res: Response) => {
                     servReqId: serviceRequest.requestId,
                     device: req.body.device,
                     location: req.body.location,
-                    completeByDate: req.body.completeByDate,
+                    deliverDate: req.body.deliverDate,
                 },
             });
             return { serviceRequest, medicalDeviceRequest };
