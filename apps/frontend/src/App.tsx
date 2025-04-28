@@ -19,6 +19,7 @@ import TestNodeEditor from '@/routes/TestNodeEditor.tsx';
 import AboutPage from '@/routes/AboutPage.tsx';
 import {Auth0Provider} from "@auth0/auth0-react";
 
+
 function App() {
     const defaultOpen = Cookies.get('sidebar_state') === 'true';
     const domain = import.meta.env.VITE_AUTH0_DOMAIN;
