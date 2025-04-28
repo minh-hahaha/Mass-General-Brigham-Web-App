@@ -9,9 +9,10 @@ export interface transportRequest {
     priority: string;
     completeByDate: string;
     pickupLocation: string;
-    dropOffLocation: string;
+    dropoffLocation: string;
     notes: string;
     assignedToId: number;
+    formattedDate: string;
 }
 
 export interface incomingRequest {
@@ -21,9 +22,9 @@ export interface incomingRequest {
     patientTransport: {
         patientId: number;
         pickupLocation: string;
-        dropOffLocation: string;
+        dropoffLocation: string;
         servReqId: number;
-        completeByDate:  string;
+        transportDate:  string;
         transportType: hospitalTransportType;
     };
     priority: priorityType;

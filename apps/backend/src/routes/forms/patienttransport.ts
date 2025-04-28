@@ -27,6 +27,7 @@ router.post('/', async (req: Request, res: Response) => {
     //(maybe on future iterations split the field?)
     console.log('posting patient transport request');
     try {
+        console.log(req.body.dropOffDate);
         const result = await PrismaClient.$transaction(async (prisma) => {
             //creates entry for service request
             const serviceRequest = await prisma.serviceRequest.create({
@@ -38,8 +39,6 @@ router.post('/', async (req: Request, res: Response) => {
 
                     //optional field
                     employeeId: req.body.employeeId ?? null, // change to user id in the future?
-                    requestDate: new Date(req.body.requestDate).toISOString() ?? null,
-                    requestTime: new Date(req.body.pickupTime) ?? null,
                 },
             });
 
@@ -51,7 +50,7 @@ router.post('/', async (req: Request, res: Response) => {
                     pickupLocation: req.body.pickupLocation,
                     transportType: req.body.transportType,
                     dropoffLocation: req.body.dropoffLocation,
-                    completeByDate: new Date(req.body.dropoffDate).toISOString() ?? null,
+                    transportDate: req.body.formattedDate,
                 },
                 select: {
                     servReqId: true,

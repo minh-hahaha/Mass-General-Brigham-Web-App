@@ -23,9 +23,10 @@ const TransportRequestPage = () => {
         useState<hospitalTransportType>('Ambulance (BLS)');
     const [priority, setPriority] = useState('Select Priority');
     const [pickupLocation, setPickupLocation] = useState('');
-    const [dropOffLocation, setDropOffLocation] = useState('');
-    const [pickupDate, setPickupDate] = useState(new Date().toISOString().split('T')[0]);
-    const [pickupTime, setPickupTime] = useState('');
+    const [dropoffLocation, setDropoffLocation] = useState('');
+    // const [pickupDate, setPickupDate] = useState(new Date().toISOString().split('T')[0]);
+    // const [pickupTime, setPickupTime] = useState('');
+    const [transportDate, setTransportDate] = useState('');
     const [notes, setNotes] = useState('');
     const [assignedToId, setAssignedToId] = useState(0);
     const [submittedRequest, setSubmittedRequest] = useState<transportRequest | null>(null);
@@ -34,15 +35,17 @@ const TransportRequestPage = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        //makes sure transportDate is the right format
+        const formattedDate = new Date(transportDate).toISOString();
+
         const newRequest: transportRequest = {
             patientId,
             patientName,
             transportType,
             priority,
             pickupLocation,
-            dropOffLocation,
-            pickupDate,
-            pickupTime,
+            dropoffLocation,
+            formattedDate,
             notes,
             assignedToId,
         };
@@ -60,11 +63,12 @@ const TransportRequestPage = () => {
         setTransportType('Ambulance (BLS)');
         setPriority('Low');
         setPickupLocation('');
-        setDropOffLocation('');
-        setPickupDate(new Date().toISOString().split('T')[0]);
-        setPickupTime('');
+        setDropoffLocation('');
+        // setPickupDate(new Date().toISOString().split('T')[0]);
+        // setPickupTime(new Date().toISOString().split('T')[1]);
         setNotes('');
         setAssignedToId(0);
+        setTransportDate('');
     };
 
     useEffect(() => {
@@ -156,9 +160,9 @@ const TransportRequestPage = () => {
                                 <SelectFormElement
                                     label = 'Destination'
                                     id = 'destinationLocation'
-                                    value = {dropOffLocation}
+                                    value = {dropoffLocation}
                                     onChange = {(e) =>
-                                        setDropOffLocation(e.target.value)
+                                        setDropoffLocation(e.target.value as mgbHospitalType)
                                     }
                                     required
                                     options = {mgbHospitals}
@@ -168,10 +172,10 @@ const TransportRequestPage = () => {
 
                             <div className="flex flex-col pt-2">
                                 <div className="flex items-center gap-2">
-                                    <InputElement label={"Pickup Time"}
+                                    <InputElement label={"Transport Date"}
                                                   type={"datetime-local"}
-                                                  id={"scheduledTime"}
-                                                  value={pickupTime} onChange={e => setPickupTime(e.target.value)}
+                                                  id={"transportDate"}
+                                                  value={transportDate} onChange={e => setTransportDate(e.target.value)}
                                                   required={true}
                                     />
                                 </div>
