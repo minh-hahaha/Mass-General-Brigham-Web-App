@@ -208,7 +208,21 @@ const TableSanitationRequest: React.FC<Props> = ({ setActiveForm }) => {
                                     <TableCell className="text-left py-3">{req.sanitation.hazardLevel}</TableCell>
                                     <TableCell className="text-left py-3">{req.sanitation.recurring ? 'Yes' : 'No'}</TableCell>
                                     <TableCell className="text-left py-3">{req.sanitation.sanitationType}</TableCell>
-                                    <TableCell className="text-left py-3">{req.priority}</TableCell>
+                                    <TableCell className="text-left py-3">
+                                        <span
+                                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                                req.priority === 'High'
+                                                    ? 'bg-orange-100 text-orange-800'
+                                                    : req.priority === 'Medium'
+                                                        ? 'bg-yellow-100 text-yellow-800'
+                                                        : req.priority === 'Emergency'
+                                                            ? 'bg-red-100 text-red-800'
+                                                            : 'bg-green-100 text-green-800'
+                                            }`}
+                                        >
+                                            {req.priority}
+                                        </span>
+                                    </TableCell>
                                     <TableCell className="text-left py-3">{req.status}</TableCell>
                                     <TableCell className="text-left py-3">{req.requestDate.split('T')[0]}</TableCell>
                                     <TableCell className="text-left py-3">{req.serviceType}</TableCell>

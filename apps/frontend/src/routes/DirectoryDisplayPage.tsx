@@ -544,10 +544,7 @@ const Patriot22Directory = ({ onImportClick }: { onImportClick: () => void }) =>
 };
 
 const FaulknerDirectory = ({ onImportClick }: { onImportClick: () => void }) => {
-    const loggedIn = sessionStorage.getItem('loggedIn');
-    if (!loggedIn) {
-        window.location.href = '/';
-    }
+
     const [filter, setShowFilters] = useState<boolean>(false);
     const [filters, setFilters] = useState({
         deptName: '',
@@ -664,6 +661,8 @@ const FaulknerDirectory = ({ onImportClick }: { onImportClick: () => void }) => 
 
 const DirectoryDisplayPage = () => {
     const [showImportModal, setShowImportModal] = useState(false);
+    const searchParams = new URLSearchParams(window.location.search);
+    const location = searchParams.get('location');
 
     const handleOpenImport = () => setShowImportModal(true);
     const handleCloseImport = () => setShowImportModal(false);
@@ -688,10 +687,18 @@ const DirectoryDisplayPage = () => {
         }
     ];
 
+    const initialTabIndex = (() => {
+        if (!location) return 0;
+        const foundIndex = tableTabs.findIndex(tab =>
+            tab.label.toLowerCase().includes(location.toLowerCase())
+        );
+        return foundIndex !== -1 ? foundIndex : 0;
+    })();
+
     return (
         <>
             <div className="mb-10">
-                <CarouselMenu tableTabs={tableTabs} />
+                <CarouselMenu tableTabs={tableTabs} initialIndex={initialTabIndex} />
             </div>
 
             {showImportModal && (

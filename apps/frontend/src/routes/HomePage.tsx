@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useAuth0 } from '@auth0/auth0-react';
 
 const HomePage = () => {
-    const { loginWithRedirect, isAuthenticated, logout, isLoading } = useAuth0();
+    const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
 
     return (
         <>
@@ -44,27 +44,6 @@ const HomePage = () => {
                                 I Need Directions
                             </MGBButton>
                         </motion.button>
-                        {!isAuthenticated ? (
-                            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                                <MGBButton
-                                    onClick={() => loginWithRedirect()}
-                                    variant={'secondary'}
-                                    disabled={false}
-                                >
-                                    Log In
-                                </MGBButton>
-                            </motion.button>
-                        ) : (
-                            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                                <MGBButton
-                                    onClick={() => logout()}
-                                    variant={'secondary'}
-                                    disabled={false}
-                                >
-                                    Log Out
-                                </MGBButton>
-                            </motion.button>
-                        )}
                     </div>
                 </motion.div>
             </section>

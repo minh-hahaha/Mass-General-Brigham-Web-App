@@ -13,8 +13,8 @@ const MGBButton = ({ onClick, children, variant, disabled }: ButtonProps) => {
     return (
         <button
             className={`
-                ${variant === 'primary' ? 'bg-mgbblue hover:bg-blue-950' : 'bg-gray-500 hover:bg-gray-700'}
-                py-2 px-4 cursor-pointer text-white rounded-sm text-sm tracking-wider
+                ${variant === 'primary' ? 'bg-mgbblue hover:bg-blue-950 text-white' : 'bg-mgbyellow hover:bg-yellow-600 text-codGray'}
+                py-2 px-4 cursor-pointer rounded-sm text-sm tracking-wider
             `}
             onClick={onClick}
             disabled={disabled}

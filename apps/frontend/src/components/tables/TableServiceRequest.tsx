@@ -269,11 +269,11 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                                         <span
                                             className={`px-2 py-1 rounded-full text-xs font-medium ${
                                                 req.priority === 'High'
-                                                    ? 'bg-red-100 text-red-800'
+                                                    ? 'bg-orange-100 text-orange-800'
                                                     : req.priority === 'Medium'
                                                       ? 'bg-yellow-100 text-yellow-800'
                                                       : req.priority === 'Emergency'
-                                                        ? 'bg-purple-100 text-purple-800'
+                                                        ? 'bg-red-100 text-red-800'
                                                         : 'bg-green-100 text-green-800'
                                             }`}
                                         >

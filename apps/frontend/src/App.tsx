@@ -11,8 +11,6 @@ import SanitationRequestPage from './routes/SanitationRequestComponent.tsx';
 import TransportRequestPage from './routes/TransportationRequestPage.tsx';
 import TranslationServiceRequestPage from './routes/TranslationServiceRequestPage.tsx';
 import MedicalDeviceServiceRequestPage from './routes/MedicalDeviceServiceRequestPage.tsx';
-import { SidebarProvider } from '@/components/ui/sidebar';
-import { ShadSidebar } from '@/components/ui/shadsidebar.tsx';
 import { MapPage } from '@/routes/MapPage.tsx';
 import MapViewPage from '@/routes/MapViewPage.tsx';
 import MaintenanceRequestPage from '@/routes/MaintenanceRequestPage.tsx';
@@ -36,14 +34,12 @@ function App() {
             cacheLocation="localstorage"
             onRedirectCallback={() => (window.location.href = '/MapPage')}
         >
-            <SidebarProvider defaultOpen={defaultOpen}>
                 <div className="h-dvh flex flex-col w-full max-w-full">
                     <div className="h-16 sticky top-0 z-50 bg-white shadow-md">
                         <LogoBar />
                     </div>
                     <BrowserRouter>
                         <div className="flex flex-row flex-1 overflow-hidden">
-                            <ShadSidebar />
                             <main className="flex-1 overflow-auto">
                                 <Routes>
                                     <Route path="/" element={<HomePage />} />
@@ -101,7 +97,6 @@ function App() {
                         </div>
                     </BrowserRouter>
                 </div>
-            </SidebarProvider>
         </Auth0Provider>
     );
 }

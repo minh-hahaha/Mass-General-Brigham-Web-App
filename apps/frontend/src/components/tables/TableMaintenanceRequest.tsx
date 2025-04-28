@@ -244,7 +244,19 @@ const TableMaintenanceRequest: React.FC<Props> = ({ setActiveForm }) => {
                                             {req.employeeName}
                                         </TableCell>
                                         <TableCell className="text-left py-3">
+                                        <span
+                                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                                req.priority === 'High'
+                                                    ? 'bg-orange-100 text-orange-800'
+                                                    : req.priority === 'Medium'
+                                                        ? 'bg-yellow-100 text-yellow-800'
+                                                        : req.priority === 'Emergency'
+                                                            ? 'bg-red-100 text-red-800'
+                                                            : 'bg-green-100 text-green-800'
+                                            }`}
+                                        >
                                             {req.priority}
+                                        </span>
                                         </TableCell>
                                         <TableCell className="text-left py-3">
                                             {req.status}
