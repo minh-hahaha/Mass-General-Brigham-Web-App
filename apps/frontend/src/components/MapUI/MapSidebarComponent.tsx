@@ -14,6 +14,7 @@ const hospitals = [
         id: 1,
         name: 'Chestnut Hill Healthcare Center',
         address: '850 Boylston Street, Chestnut Hill, MA 02467',
+        defaultParking: {lat: 42.326350183802454, lng: -71.14988541411569},
         phoneNumber: '(800) 294-9999',
         hours: 'Mon-Fri: 8:00 AM - 5:30 PM',
         image:'/HospitalCards/ChestnutHillCard.jpg',
@@ -24,6 +25,7 @@ const hospitals = [
         id: 2,
         name: 'Foxborough Health Care Center',
         address: '20-22 Patriot Place, Foxborough, MA 02035',
+        defaultParking: {lat: 42.09222126540862, lng: -71.26646379537021},
         phoneNumber: '(508) 718-4000',
         hours: 'Mon-Sat: 8:00 AM - 8:00 PM',
         image:'/HospitalCards/PatriotPlaceCard.jpg',
@@ -34,6 +36,7 @@ const hospitals = [
         id: 3,
         name: 'Brigham and Women\'s Faulkner Hospital',
         address: '1153 Centre St, Jamaica Plain, MA 02130',
+        defaultParking: {lat: 42.30110395876755, lng: -71.12754584282733},
         phoneNumber: '(617) 983-7000',
         hours: 'Open 24 hours',
         image:'/HospitalCards/FaulknerHospitalCard.jpg',
@@ -44,6 +47,7 @@ const hospitals = [
         id: 4,
         name: 'Brigham and Women\'s Main Hospital',
         address: '75 Francis St, Boston, MA 02115',
+        defaultParking: {lat: 42.33597732454244, lng: -71.10722288414479},
         phoneNumber: '(617) 732-5500',
         hours: 'Open 24 hours',
         image:'/HospitalCards/MGBMainCard.jpeg',
@@ -63,7 +67,11 @@ interface DirectoryItem {
 }
 
 interface HospitalSidebarProps {
-    onDirectionsRequest: (fromLocation:string, toLocation:string, travelMode: TravelModeType) => void;
+    onDirectionsRequest: (
+        fromLocation: string,
+        toLocation: { lat: number; lng: number },
+        travelMode: TravelModeType
+    ) => void;
     onHospitalSelect: (hospitalId: number) => void;
     onDepartmentSelect: (departmentNodeId: string) => void;
     onParkingSelect: (parkingId: string) => void;
@@ -122,7 +130,7 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
 
     const handleDirectionsSubmit = () => {
         if (selectedHospital && fromLocation) {
-            onDirectionsRequest(fromLocation, selectedHospital.address, travelMode);
+            onDirectionsRequest(fromLocation, selectedHospital.defaultParking, travelMode);
         }
     }
 

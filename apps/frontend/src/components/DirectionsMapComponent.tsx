@@ -322,6 +322,7 @@ const DirectionsMapComponent = () => {
             setLot('CH_C');
         }
     };
+
     const clearParking = () => {
         setLot('');
     };
@@ -329,7 +330,6 @@ const DirectionsMapComponent = () => {
 
     const customLineRef = useRef<google.maps.Polyline | null>(null);
     const customMarkersRef = useRef<google.maps.Marker[]>([]);
-    const animationRef = useRef<number | null>(null);
 
     function clearAllRoutes() {
         // Clear default Google route
@@ -344,12 +344,6 @@ const DirectionsMapComponent = () => {
         // Clear custom markers
         customMarkersRef.current.forEach((marker) => marker.setMap(null));
         customMarkersRef.current = [];
-
-        // Clear dash animation
-        if (animationRef.current !== null) {
-            clearInterval(animationRef.current);
-            animationRef.current = null;
-        }
     }
 
     const handleZoomToHospital = () => {
@@ -433,13 +427,12 @@ const DirectionsMapComponent = () => {
                     <HospitalMapComponent
                         startNodeId={fromNodeId}
                         endNodeId={toDirectoryNodeId}
-                      selectedAlgorithm={selectedAlgorithm}
+                        selectedAlgorithm={selectedAlgorithm}
                         visible={pathVisible}
 
-
-                      driveDirections={textDirections}
-                      drive2Directions={text2Directions}
-                      showTextDirections={!!toLocation}
+                        driveDirections={textDirections}
+                        drive2Directions={text2Directions}
+                        showTextDirections={!!toLocation}
                     />
                     {lot !== '' && (
                         <DisplayPathComponent coordinates={dropOffToParkPath}/>
