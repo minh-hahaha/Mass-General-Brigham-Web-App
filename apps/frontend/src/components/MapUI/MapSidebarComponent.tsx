@@ -210,7 +210,7 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
                             className="h-40 bg-cover bg-center"
                             style={{ backgroundImage: `url(${hospital.image || '/api/placeholder/400/320'})` }}
                         >
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-3">
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-3">
                                 <h3 className="text-white font-bold text-lg">{hospital.name}</h3>
                                 <p className="text-white/90 text-sm">{hospital.address}</p>
                             </div>
@@ -266,12 +266,12 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
                 </div>
 
                 <div className='space-y-3'>
-                    <MGBButton onClick={handleFindDirections} variant={"primary"} disabled={false}>
+                    <MGBButton onClick={handleFindDirections} variant={"secondary"} disabled={false}>
                         <div className="flex items-center">
-                            <Navigation size={18} className="text-mgbblue mr-3" />
+                            <Navigation size={18} className="text-mgbblue mr-3 fill-mgbblue" />
                             <span className="font-medium">Get Directions</span>
+                            <ChevronRight size={18} />
                         </div>
-                        <ChevronRight size={18} />
                     </MGBButton>
 
                 </div>
@@ -298,7 +298,7 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
                     </h2>
                 </div>
 
-                <div className="flex gap-4 relative -ml-6 -mt-7">
+                <div className="flex gap-4 relative -mt-7">
                     {/* Breadcrumb Line + Icons */}
                     <div className="flex flex-col items-center pt-1">
                         {/* Map icon */}
@@ -314,9 +314,9 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
                     </div>
 
                     {/* Form Inputs */}
-                    <div className="flex-1">
+                    <div className="flex-1 flex-col">
                         <div className="mt-5">
-                            <div className="flex flex-col items-center">
+                            <div className="flex flex-row items-center">
                                 <input
                                     type="text"
                                     id="fromLocation"
@@ -325,16 +325,15 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
                                     onChange={(e) => setFromLocation(e.target.value)}
                                     required
                                     placeholder="Choose a starting point..."
-                                    className="w-70 p-2 basis-4/5 border border-mgbblue rounded-sm bg-white text-codGray placeholder:text-codGray focus:ring-2 focus:ring-white"
+                                    className="w-70 mb-3 p-2 border border-mgbblue rounded-sm bg-white text-codGray placeholder:text-codGray focus:ring-2 focus:ring-white"
                                 />
-                                <div className="basis-1/5">
+                                <div >
                                     <MdOutlineMyLocation
                                         className="text-mgbblue min-w-[20px]"
                                         size={18}
                                         onClick={handleUseCurrentLocation}
                                     />
                                 </div>
-
                             </div>
 
                             <input

@@ -438,81 +438,81 @@ const DirectionsMapComponent = () => {
             {/* LEFT PANEL */}
             <div className="relative">
                 <aside className="relative top-6 left-6 z-10 w-[400px] max-h-[80vh] bg-white p-6 shadow-xl rounded-lg overflow-hidden flex flex-col">
-                    {/*<form>*/}
-                    {/*    /!* Blue Box Section *!/*/}
-                    {/*    <div className="py-5 pr-6 pl-4 rounded-lg -mt-6">*/}
-                    {/*        <h2 className="text-xl font-black text-codGray mb-6 text-center ml-4">*/}
-                    {/*            Hospital Directions*/}
-                    {/*        </h2>*/}
-                    {/*        <div className="flex gap-4 relative -ml-6 -mt-7">*/}
-                    {/*            /!* Breadcrumb Line + Icons *!/*/}
-                    {/*            <div className="flex flex-col items-center pt-1">*/}
-                    {/*                /!* Map icon *!/*/}
-                    {/*                <div className="text-codGray p-1 text-xl mt-6">*/}
-                    {/*                    <Circle size={18} />*/}
-                    {/*                </div>*/}
-                    {/*                /!* Line *!/*/}
-                    {/*                <div className="h-6 border-l-2 border-dotted border-codGray" />*/}
-                    {/*                /!* Pin icon *!/*/}
-                    {/*                <div className="text-codGray p-1 text-xl">*/}
-                    {/*                    <MapPin size={18} />*/}
-                    {/*                </div>*/}
-                    {/*            </div>*/}
+                    <form>
+                        {/* Blue Box Section */}
+                        {/*<div className="py-5 pr-6 pl-4 rounded-lg -mt-6">*/}
+                        {/*    <h2 className="text-xl font-black text-codGray mb-6 text-center ml-4">*/}
+                        {/*        Hospital Directions*/}
+                        {/*    </h2>*/}
+                        {/*    <div className="flex gap-4 relative -ml-6 -mt-7">*/}
+                        {/*        /!* Breadcrumb Line + Icons *!/*/}
+                        {/*        <div className="flex flex-col items-center pt-1">*/}
+                        {/*            /!* Map icon *!/*/}
+                        {/*            <div className="text-codGray p-1 text-xl mt-6">*/}
+                        {/*                <Circle size={18} />*/}
+                        {/*            </div>*/}
+                        {/*            /!* Line *!/*/}
+                        {/*            <div className="h-6 border-l-2 border-dotted border-codGray" />*/}
+                        {/*            /!* Pin icon *!/*/}
+                        {/*            <div className="text-codGray p-1 text-xl">*/}
+                        {/*                <MapPin size={18} />*/}
+                        {/*            </div>*/}
+                        {/*        </div>*/}
 
-                    {/*            /!* Form Inputs *!/*/}
-                    {/*            <div className="flex-1">*/}
-                    {/*                <div className="mt-5">*/}
-                    {/*                    <input*/}
-                    {/*                        type="text"*/}
-                    {/*                        id="fromLocation"*/}
-                    {/*                        ref={fromLocationRef}*/}
-                    {/*                        value={fromLocation}*/}
-                    {/*                        onChange={(e) => setFromLocation(e.target.value)}*/}
-                    {/*                        required*/}
-                    {/*                        placeholder="Choose a starting point..."*/}
-                    {/*                        className="w-70 p-2 border border-mgbblue rounded-sm bg-white text-codGray placeholder:text-codGray focus:ring-2 focus:ring-white"*/}
-                    {/*                    />*/}
-                    {/*                    <SelectElement*/}
-                    {/*                        label="To:"*/}
-                    {/*                        id="toLocation"*/}
-                    {/*                        value={toLocation}*/}
-                    {/*                        onChange={(e) => handleChangeToLocation(e)}*/}
-                    {/*                        options={Buildings}*/}
-                    {/*                        placeholder="Select destination"*/}
-                    {/*                        className="bg-white text-codGray border border-mgbblue -mt-3 w-70"*/}
-                    {/*                    />*/}
-                    {/*                </div>*/}
+                        {/*        /!* Form Inputs *!/*/}
+                        {/*        <div className="flex-1">*/}
+                        {/*            <div className="mt-5">*/}
+                        {/*                <input*/}
+                        {/*                    type="text"*/}
+                        {/*                    id="fromLocation"*/}
+                        {/*                    ref={fromLocationRef}*/}
+                        {/*                    value={fromLocation}*/}
+                        {/*                    onChange={(e) => setFromLocation(e.target.value)}*/}
+                        {/*                    required*/}
+                        {/*                    placeholder="Choose a starting point..."*/}
+                        {/*                    className="w-70 p-2 border border-mgbblue rounded-sm bg-white text-codGray placeholder:text-codGray focus:ring-2 focus:ring-white"*/}
+                        {/*                />*/}
+                        {/*                <SelectElement*/}
+                        {/*                    label="To:"*/}
+                        {/*                    id="toLocation"*/}
+                        {/*                    value={toLocation}*/}
+                        {/*                    onChange={(e) => handleChangeToLocation(e)}*/}
+                        {/*                    options={Buildings}*/}
+                        {/*                    placeholder="Select destination"*/}
+                        {/*                    className="bg-white text-codGray border border-mgbblue -mt-3 w-70"*/}
+                        {/*                />*/}
+                        {/*            </div>*/}
 
-                    {/*                <div className="mt-8 -ml-6">*/}
-                    {/*                    <div className="flex items-center gap-2 ml-6 -mt-3 w-70">*/}
-                    {/*                        <Hospital*/}
-                    {/*                            className="text-codGray mt-1 -ml-9.5 mr-2"*/}
-                    {/*                            size={22}*/}
-                    {/*                        />*/}
-                    {/*                        <SelectElement*/}
-                    {/*                            label=""*/}
-                    {/*                            id="toDirectory"*/}
-                    {/*                            value={currentDirectoryName}*/}
-                    {/*                            onChange={(e) =>*/}
-                    {/*                                setCurrentDirectoryName(e.target.value)*/}
-                    {/*                            }*/}
-                    {/*                            options={directoryList.map((dept) => dept.deptName)}*/}
-                    {/*                            placeholder="Select department"*/}
-                    {/*                            className="bg-white text-codGray border border-mgbblue flex-1"*/}
-                    {/*                        />*/}
-                    {/*                    </div>*/}
-                    {/*                    <div className="ml-15 mt-4">*/}
-                    {/*                        /!* Travel Mode *!/*/}
-                    {/*                        <TravelModeComponent*/}
-                    {/*                            selectedMode={travelMode}*/}
-                    {/*                            onChange={handleTravelModeChange}*/}
-                    {/*                        />*/}
-                    {/*                    </div>*/}
-                    {/*                </div>*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*</form>*/}
+                        {/*            <div className="mt-8 -ml-6">*/}
+                        {/*                <div className="flex items-center gap-2 ml-6 -mt-3 w-70">*/}
+                        {/*                    <Hospital*/}
+                        {/*                        className="text-codGray mt-1 -ml-9.5 mr-2"*/}
+                        {/*                        size={22}*/}
+                        {/*                    />*/}
+                        {/*                    <SelectElement*/}
+                        {/*                        label=""*/}
+                        {/*                        id="toDirectory"*/}
+                        {/*                        value={currentDirectoryName}*/}
+                        {/*                        onChange={(e) =>*/}
+                        {/*                            setCurrentDirectoryName(e.target.value)*/}
+                        {/*                        }*/}
+                        {/*                        options={directoryList.map((dept) => dept.deptName)}*/}
+                        {/*                        placeholder="Select department"*/}
+                        {/*                        className="bg-white text-codGray border border-mgbblue flex-1"*/}
+                        {/*                    />*/}
+                        {/*                </div>*/}
+                        {/*                <div className="ml-15 mt-4">*/}
+                        {/*                    /!* Travel Mode *!/*/}
+                        {/*                    <TravelModeComponent*/}
+                        {/*                        selectedMode={travelMode}*/}
+                        {/*                        onChange={handleTravelModeChange}*/}
+                        {/*                    />*/}
+                        {/*                </div>*/}
+                        {/*            </div>*/}
+                        {/*        </div>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
+                    </form>
 
                     {/*/!* Parking Lot Buttons *!/*/}
                     {/*{parking && (*/}
