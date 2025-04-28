@@ -490,8 +490,11 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                 path: [startPos, endPos],
             }),
         };
-        google.maps.event.addListener(mapEdge.drawnEdge, 'click', (e: google.maps.MapMouseEvent) =>
-            clickEdge(mapEdge.edge.edgeId)
+        google.maps.event.addListener(mapEdge.drawnEdge, 'click', (e: google.maps.MapMouseEvent) => {
+                if (modeRef.current === 'Node') {
+                    clickEdge(mapEdge.edge.edgeId)
+                }
+            }
         );
         setMapEdges((prev) => [...prev, mapEdge]);
     }
@@ -505,6 +508,14 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
             }
             toBeSelectedEdge.drawnEdge.setOptions(selectedEdgeProps);
             setClickedEdge(edgeId);
+        }
+    }
+
+    function resetEdge(){
+        const currentSelectedEdge = mapEdgesRef.current.find((edge) => edge.edge.edgeId === clickedEdgeRef.current);
+        if(currentSelectedEdge){
+            currentSelectedEdge.drawnEdge.setOptions(edgeProps);
+            setClickedEdge(null);
         }
     }
 
@@ -624,6 +635,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
             (e: google.maps.MapMouseEvent) => {
                 if (modeRef.current === 'Node') {
                     setClickedNode(null);
+                    resetEdge();
                 }
             }
         );
@@ -748,7 +760,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                             setMode('Node');
                             setClickedNode(null);
                         }}
-                        children={'Edit Nodes'}
+                        children={'Edit Nodes and Edges'}
                         variant={mode === 'Node' ? 'secondary' : 'primary'}
                         disabled={mode === 'Node'}
                     ></MGBButton>
@@ -758,6 +770,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                         onClick={() => {
                             setMode('Edge');
                             setClickedNode(null);
+                            resetEdge();
                         }}
                         children={'Create Edges'}
                         variant={mode === 'Edge' ? 'secondary' : 'primary'}
