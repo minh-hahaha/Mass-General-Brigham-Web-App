@@ -203,7 +203,7 @@ const TranslationServiceRequestPage = () => {
                                         id = 'meetingType'
                                         value = {typeMeeting}
                                         onChange = {(e) =>
-                                            setPriority(e.target.value as meetingType)
+                                            setTypeMeeting(e.target.value as meetingType)
                                         }
                                         required
                                         options = {meetingTypeArray}
