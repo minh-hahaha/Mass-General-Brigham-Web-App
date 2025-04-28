@@ -4,7 +4,6 @@ import MGBButton from "@/elements/MGBButton.tsx";
 import {ArrowLeft, Navigation, MapPin, Phone, Clock, ChevronRight, Circle, Hospital} from 'lucide-react';
 
 import clsx from "clsx";
-import SelectElement from "@/elements/SelectElement.tsx";
 import TravelModeComponent from "@/components/TravelModeComponent.tsx";
 import {MdOutlineMyLocation} from "react-icons/md";
 import {useMapsLibrary} from "@vis.gl/react-google-maps";
@@ -67,16 +66,23 @@ interface DirectoryItem {
 }
 
 interface HospitalSidebarProps {
-    onDirectionsRequest: (fromLocation:string, toLocation:string, travelMode: TravelModeType) => void;
+    onDirectionsRequest: (
+        fromLocation: string,
+        toLocation: string,
+        toHospital: string,
+        travelMode: TravelModeType
+    ) => void;
     onHospitalSelect: (hospitalId: number) => void;
     onDepartmentSelect: (departmentNodeId: string) => void;
     onParkingSelect: (parkingId: string) => void;
+    onClickingBack: () => void;
+    onClickFindDepartment: () => void;
     directoryList: DirectoryItem[];
 }
 
 
 
-const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmentSelect, onParkingSelect, directoryList}:HospitalSidebarProps) => {
+const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmentSelect, onParkingSelect, onClickingBack, onClickFindDepartment,directoryList}:HospitalSidebarProps) => {
     const [currentStep, setCurrentStep] = useState<Step>('SELECT_HOSPITAL');
     const [selectedHospital, setSelectedHospital] = useState<typeof hospitals[0] | null >(null);
 
@@ -88,7 +94,7 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
     const placesLibrary = useMapsLibrary('places');
 
     // refs for autocomplete
-    const fromLocationRef = useRef(null);
+    const fromLocationRef = useRef<HTMLInputElement | null>(null);
     // autocomplete
     useEffect(() => {
         if (!placesLibrary || !fromLocationRef.current) return;
@@ -120,17 +126,25 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
         setCurrentStep("DIRECTIONS")
     }
 
-    const handleTravelModeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTravelMode(e.target.value as TravelModeType);
+    const handleTravelModeChange = (mode: TravelModeType) => {
+        setTravelMode(mode);
+
+        // update mode
+        if (selectedHospital && fromLocation) {
+            const destination: string = selectedHospital.defaultParking.lat.toString() + "," + selectedHospital.defaultParking.lng.toString();
+            onDirectionsRequest(fromLocation, destination, selectedHospital.name, mode);
+        }
     }
 
     const handleDirectionsSubmit = () => {
         if (selectedHospital && fromLocation) {
-            onDirectionsRequest(fromLocation, selectedHospital.defaultParking, travelMode);
+            const destination: string = selectedHospital.defaultParking.lat.toString() + "," + selectedHospital.defaultParking.lng.toString();
+            onDirectionsRequest(fromLocation, destination, selectedHospital.name, travelMode);
         }
     }
 
     const handleFindDepartment = () => {
+        onClickFindDepartment()
         setCurrentStep("DEPARTMENT")
     }
 
@@ -154,10 +168,11 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
             setSelectedHospital(null);
         }
         else if (currentStep === "DIRECTIONS") {
+            onClickingBack();
             setCurrentStep('HOSPITAL_DETAIL')
         }
         else if (currentStep === "DEPARTMENT") {
-            setCurrentStep("HOSPITAL_DETAIL")
+            setCurrentStep("DIRECTIONS")
         }
     }
 
@@ -206,9 +221,9 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
             <div className='space-y-4 mt-4'>
                 {hospitals.map (hospital => (
                     <div
-                    key={hospital.id}
-                    onClick={() => handleHospitalSelect(hospital)}
-                    className="relative cursor-pointer rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+                        key={hospital.id}
+                        onClick={() => handleHospitalSelect(hospital)}
+                        className="relative cursor-pointer rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
                     >
                         <div
                             className="h-40 bg-cover bg-center"
@@ -232,7 +247,7 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
         if (!selectedHospital) return null;
 
         return (
-            <div className='w-full'>
+            <div className='w-full overflow-hidden'>
                 <div className='flex items-center mb-4'>
                     <button
                         onClick={handleBack}
@@ -269,28 +284,26 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
                     </div>
                 </div>
 
-                <div className="space-y-3">
-                    <MGBButton
-                        onClick={handleFindDirections}
-                        variant={'secondary'}
-                        disabled={false}
-                    >
+                <div className='space-y-3'>
+                    <MGBButton onClick={handleFindDirections} variant={"secondary"} disabled={false}>
                         <div className="flex items-center">
                             <Navigation size={18} className="text-mgbblue mr-3 fill-mgbblue" />
                             <span className="font-medium">Get Directions</span>
                             <ChevronRight size={18} />
                         </div>
                     </MGBButton>
+
                 </div>
+
             </div>
-        );
-    };
+        )
+    }
 
     // step 3 - google maps
     const renderDirections = () => {
         if (!selectedHospital) return null;
         return (
-            <div className='w-full'>
+            <div className='w-full overflow-hidden'>
                 {/* Back button */}
                 <div className='flex items-center mb-4'>
                     <button
@@ -356,7 +369,7 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
                             />
 
                             {/* Travel Mode */}
-                            <div className="mt-4 mb-4 ml-10">
+                            <div className="mt-4 mb-4">
                                 <TravelModeComponent
                                     selectedMode={travelMode}
                                     onChange={handleTravelModeChange}
@@ -364,24 +377,20 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
                             </div>
 
                             {/* Action buttons */}
-                            <div className="flex flex-row gap-2">
-                                <MGBButton
-                                    onClick={handleDirectionsSubmit}
-                                    disabled={!fromLocation}
-                                    variant={'primary'}
-                                    className="hover:bg-mgbblue/90 transition disabled:opacity-50 mb-4"
-                                >
-                                    Get Directions
-                                </MGBButton>
-                                <MGBButton
-                                    onClick={handleFindDepartment}
-                                    disabled={!fromLocation}
-                                    variant={'secondary'}
-                                    className="hover:bg-yellow-600/90 transition disabled:opacity-50 mb-4"
-                                >
-                                    Find Department
-                                </MGBButton>
-                            </div>
+                            <button
+                                onClick={handleDirectionsSubmit}
+                                disabled={!fromLocation}
+                                className="w-full bg-mgbblue text-white py-2 rounded-sm hover:bg-mgbblue/90 transition disabled:opacity-50 mb-4"
+                            >
+                                Get Directions
+                            </button>
+                            <button
+                                onClick={handleFindDepartment}
+                                disabled={!fromLocation}
+                                className="w-full bg-mgbblue text-white py-2 rounded-sm hover:bg-mgbblue/90 transition disabled:opacity-50 mb-4"
+                            >
+                                Find Department
+                            </button>
                             {/* TODO: add text direction */}
                         </div>
                     </div>
@@ -395,7 +404,7 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
         if (!selectedHospital) return null;
 
         return (
-            <div className='w-full'>
+            <div className='w-full overflow-hidden'>
                 {/*Back button*/}
                 <div className='flex items-center mb-4'>
                     <button
