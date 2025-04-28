@@ -8,7 +8,7 @@ interface MemberPairProps {
 
 const MemberPair: React.FC<MemberPairProps> = ({children, ordinal}) => {
 
-    const delaytime: number = 1 + (ordinal / 2);
+    const delaytime: number = 0.5 + (ordinal / 4);
 
     return (
         <motion.div className="grid grid-cols-2 gap-4"
