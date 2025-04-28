@@ -14,8 +14,6 @@ export interface outgoingTranslationRequest {
     department: string;
     location: string;
     priority: priorityType;
-    requestDate: string;
-    requestTime: string;
     duration: number;
     date: string;
     notes: string;
@@ -36,9 +34,8 @@ export interface incomingTranslationRequest {
         patientId: number;
     }
     priority: priorityType;
-    requestDate: string;
+    requestDateTime: string;
     requestId: number;
-    requestTime: string;
     serviceType: string;
     status: statusType;
 }

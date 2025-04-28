@@ -37,9 +37,9 @@ const TranslationServiceRequestPage = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const requestDate = "";
-        const requestTime = "";
 
+
+        const formattedDate = new Date(date).toISOString();
 
         //TODO: add LOCATION
         const newRequest: outgoingTranslationRequest = {
@@ -51,13 +51,11 @@ const TranslationServiceRequestPage = () => {
             language: patientLanguage,
             duration: duration,
             typeMeeting: typeMeeting as meetingType,
-            date: date,
             meetingLink: meetingLink,
             notes: notes,
             department: department,
             comments: comment,
-            requestDate: requestDate,
-            requestTime: requestTime
+            date: formattedDate
 
         };
 
@@ -96,7 +94,7 @@ const TranslationServiceRequestPage = () => {
         setPatientLanguage('');
         setPriority('');
         setLocation('');
-        setDate(new Date().toISOString().split('T')[0]);
+        setDate('');
         setDuration(0);
         setTypeMeeting('');
         setMeetingLink('');
