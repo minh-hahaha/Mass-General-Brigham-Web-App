@@ -282,12 +282,6 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
     }, [currentBuilding, currentFloorId]);
 
 
-
-    // useEffect(() => {
-    //     fetchDirectoryList();
-    // }, [currentBuilding])
-
-
     useEffect(() => {
         if (!clickedNode) return;
         const currentNode = mapNodes.find((node) => node.node.nodeId === clickedNode);

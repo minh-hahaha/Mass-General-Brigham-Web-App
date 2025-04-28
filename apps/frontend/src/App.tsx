@@ -15,7 +15,7 @@ import { MapPage } from '@/routes/MapPage.tsx';
 import MapViewPage from '@/routes/MapViewPage.tsx';
 import MaintenanceRequestPage from '@/routes/MaintenanceRequestPage.tsx';
 import Cookies from 'js-cookie';
-import TestNodeEditor from '@/routes/TestNodeEditor.tsx';
+import NodeEditor from '@/routes/NodeEditor.tsx';
 import AboutPage from '@/routes/AboutPage.tsx';
 import {Auth0Provider} from "@auth0/auth0-react";
 import {ROUTES} from "common/src/constants.ts";
@@ -64,7 +64,7 @@ function App() {
                                     path="/DirectoryDisplay"
                                     element={<DirectoryDisplayPage />}
                                 />
-                                <Route path="/MapEditorPage" element={<TestNodeEditor />} />
+                                <Route path="/MapEditorPage" element={<NodeEditor />} />
                                 <Route path="/MapPage" element={<MapPage />} />
                                 <Route path="/ViewMap" element={<MapViewPage />} />
 
