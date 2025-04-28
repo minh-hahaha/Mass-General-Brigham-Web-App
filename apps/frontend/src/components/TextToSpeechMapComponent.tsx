@@ -19,50 +19,16 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Direc
     //  const [textMode, setTextMode] = useState("Mode: Transport Directions");
     const [textToDisplay, setTextToDisplay] = useState(driveDirections);
     const audioRef = useRef(new Audio());  // Create audio object
-    //
-    // const handleMode1Switch = () => {
-    //     if (textMode === "Mode: Transport Directions") {
-    //         //setTextMode("Mode: Building Directions");
-    //         setTextToDisplay(walkDirections);
-    //     } else {
-    //         setTextMode("Mode: Transport Directions");
-    //        // setTextToDisplay(driveDirections);
-    //     }
-    // };
-
-
-    // function htmlToPlainText(html: string): string {
-    //     const div = document.createElement('div');
-    //     div.innerHTML = html;  // Set the HTML as the inner content of a div
-    //     return div.innerText || div.textContent || '';
-    // }
-    // const speakDirections = async () => {
-    //     const message = Array.isArray(textToSpeak) ? textToSpeak.join(' ') : textToSpeak;
-    //     let messageString=htmlToPlainText(message);
-    //     if (messageString.length==0) {
-    //         messageString="Empty of Directions, select a from, and, too location in order to receive directions.";
-    //     }
-    //     const response = await fetch('http://localhost:5001/api/tts', {
-    //         method: 'POST',
-    //         headers: { 'Content-Type': 'application/json' },
-    //         body: JSON.stringify({ text: messageString }),
-    //     });
-    //
-    //     const audioBlob = await response.blob();  // Get blob from server
-    //
-    //     // Log audioBlob size to confirm it's a valid file
-    //     console.log('Audio Blob size:', audioBlob.size);
-    //     console.log(textToSpeak);
-    //     const audioUrl = URL.createObjectURL(audioBlob);  // Create a URL for the audio
-    //     const audio = new Audio(audioUrl);  // Create audio object
-    //     audio.play();
-    // };
-
-
     const [textMode, setTextMode] = useState("Mode: Transport Directions");
     const [textToSpeak, setTextToSpeak] = useState(drive22Directions);
     const [iconToDisplay, setIconToDisplay] = useState<JSX.Element>(<GiNothingToSay />);
     const [counter, setCounter] = useState(0);
+
+    useEffect(() => {
+        // This is where you ensure initial text is displayed for driveDirections
+        setTextToDisplay(driveDirections);  // This could be redundant if it's already initialized, but useful for clarity.
+        setTextToSpeak(drive22Directions);  // Ensure textToSpeak is initialized as well
+    }, [driveDirections, drive22Directions]);
 
     const handleProgressReset = () => {
         setCounter(0); // Reset the counter when needed
@@ -76,12 +42,16 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Direc
             setTextMode("Mode: Building Directions");
             setTextToSpeak(walk22Directions);
             setTextToDisplay(walkDirections);
-            if(icons[counter]==='Turn Left then Continue Straight'){
-                setIconToDisplay(<BsArrow90DegLeft />);
-            }else if(icons[counter]==="Continue Straight"){
-                setIconToDisplay(<BsArrowUp />);
-            }else if(icons[counter]==='Turn Right then Continue Straight'){
-                setIconToDisplay(<BsArrow90DegRight />);
+            if(icons){
+                if(icons[counter]==='Turn Left then Continue Straight'){
+                    setIconToDisplay(<BsArrow90DegLeft />);
+                }else if(icons[counter]==="Continue Straight"){
+                    setIconToDisplay(<BsArrowUp />);
+                }else if(icons[counter]==='Turn Right then Continue Straight'){
+                    setIconToDisplay(<BsArrow90DegRight />);
+                }
+            }else{
+                setIconToDisplay(<GiNothingToSay />);
             }
 
 
@@ -123,6 +93,7 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Direc
         div.innerHTML = html;  // Set the HTML as the inner content of a div
         return div.innerText || div.textContent || '';
     }
+
 
     const speakDirections = async () => {
         console.log("1111111111111111111111");
@@ -182,23 +153,10 @@ const TextToSpeechMapComponent = ({walkDirections, driveDirections, drive22Direc
                         <MGBButton onClick={speakDirections} variant={"primary"} disabled={false}>
                             Speak
                         </MGBButton>
-                        {iconToDisplay}
+                        <div className="flex items-center justify-center p-2 bg-gray-200 rounded-md">
+                            {iconToDisplay}
+                        </div>
 
-                        {/*<button*/}
-                        {/*    id="mode-switch"*/}
-                        {/*    className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 transition"*/}
-                        {/*    onClick={handleModeSwitch}*/}
-                        {/*>*/}
-                        {/*    {textMode}*/}
-                        {/*</button>*/}
-
-                        {/*<button*/}
-                        {/*    id="speak"*/}
-                        {/*    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"*/}
-                        {/*    onClick={speakDirections}*/}
-                        {/*>*/}
-                        {/*    Speak*/}
-                        {/*</button>*/}
                     </div>
                 </div>
             </div>
