@@ -15,7 +15,7 @@ import {getDirectory} from "@/database/gettingDirectory.ts";
 interface MapNode {
     node: myNode;
     attachedDepartments: string[];
-    drawnNode: google.maps.Marker;
+    drawnNode: google.maps.marker.AdvancedMarkerElement;
 }
 
 interface MapEdge {
@@ -118,12 +118,12 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
 
     const nodeProps = {
         zIndex: 1,
-        clickable: true,
-        draggable: true,
-        icon: {
-            url: './minh ha icon.png',
-            scaledSize: new google.maps.Size(60, 60),
-        },
+        gmpClickable: true,
+        gmpDraggable: true,
+        // icon: {
+        //     url: './minh ha icon.png',
+        //     scaledSize: new google.maps.Size(60, 60),
+        // },
     };
 
     const edgeProps = {
@@ -222,7 +222,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
         const bldgData = availableFloors.find((f) => f.id === currentFloorId);
 
         // Clear map visuals
-        mapNodesRef.current.forEach((node) => node.drawnNode.setMap(null));
+        mapNodesRef.current.forEach((node) => node.drawnNode.map = null);
         mapEdgesRef.current.forEach((edge) => edge.drawnEdge.setMap(null));
         setMapEdges([]);
         setMapNodes([]);
@@ -268,7 +268,6 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                         createMapEdge(fromNode, toNode);
                     }
                 });
-
                 setMapNodes(newNodes);
             } catch (error) {
                 console.error('Error fetching directory/nodes/edges:', error);
@@ -334,7 +333,8 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                 } else if (event.type === google.maps.drawing.OverlayType.MARKER) {
                     const marker = event.overlay as google.maps.Marker;
                     if (!marker) return;
-                    mapNodeFromMarker(marker);
+                    mapNodeFromPosition(marker.getPosition() as google.maps.LatLng);
+                    marker.setMap(null);
                 }
             }
         );
@@ -345,7 +345,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
     }
 
     function createDrawnNode(position: google.maps.LatLng) {
-        return new google.maps.Marker({
+        return new google.maps.marker.AdvancedMarkerElement({
             ...nodeProps,
             position: position,
             map: map,
@@ -400,12 +400,12 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
     }
 
     // Creates a map node from a marker
-    function mapNodeFromMarker(marker: google.maps.Marker) {
+    function mapNodeFromMarker(marker: google.maps.marker.AdvancedMarkerElement) {
         const mapNode: MapNode = {
             node: new myNode(
                 incrementTempNodeID().toString(),
-                (marker.getPosition() as google.maps.LatLng).lat(),
-                (marker.getPosition() as google.maps.LatLng).lng(),
+                (marker.position as google.maps.LatLng).lat(),
+                (marker.position as google.maps.LatLng).lng(),
                 currentFloorId.charAt(currentFloorId.length - 1),
                 '1',
                 '1',
@@ -458,8 +458,8 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
     }
 
     function createMapEdge(startNode: MapNode, endNode: MapNode) {
-        const startPos = startNode.drawnNode.getPosition();
-        const endPos = endNode.drawnNode.getPosition();
+        const startPos = startNode.drawnNode.position as google.maps.LatLng;
+        const endPos = endNode.drawnNode.position as google.maps.LatLng;
         if (!startPos || !endPos) {
             return;
         }
@@ -494,7 +494,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
         const selectedNode = mapNodes.find((node) => node.node.nodeId === clickedNode);
         if (selectedNode) {
             removeEdgesFromNode(selectedNode);
-            selectedNode.drawnNode.setMap(null);
+            selectedNode.drawnNode.map = null;
             setClickedNode(null);
             setMapNodes(mapNodes.filter((mapNode) => mapNode.node.nodeId !== clickedNode));
         }
@@ -591,6 +591,9 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
 
     useEffect(() => {
         if (!map) return;
+        map.setOptions({
+            mapId: "73fda600718f172c"
+        })
         const listener = google.maps.event.addListener(
             map,
             'click',

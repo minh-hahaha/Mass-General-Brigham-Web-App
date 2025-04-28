@@ -77,7 +77,7 @@ const TestNodeEditor = () => {
 
     return (
         <div>
-            <APIProvider apiKey={API_KEY} libraries={['maps', 'drawing']}>
+            <APIProvider apiKey={API_KEY} libraries={['maps', 'drawing', 'marker']}>
                 <div style={{ height: '100vh', width: '100%' }}>
 
                     <Map
