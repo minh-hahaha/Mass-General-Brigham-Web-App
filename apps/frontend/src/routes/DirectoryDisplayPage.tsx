@@ -14,6 +14,7 @@ import MGBButton from '@/elements/MGBButton.tsx';
 import { FaBuilding, FaTools, FaPhoneAlt } from 'react-icons/fa';
 import { TbStairsUp } from 'react-icons/tb';
 import {ROUTES} from "common/src/constants.ts";
+import DirectoryInstructions from "@/components/DirectoryInstructions.tsx";
 
 interface DirectoryTableProps {
     data: DepartmentRequest[];
@@ -744,8 +745,18 @@ const FaulknerDirectory = ({ onImportClick }: { onImportClick: () => void }) => 
 
 const DirectoryDisplayPage = () => {
     const [showImportModal, setShowImportModal] = useState(false);
+    const [instructionVisible, setInstructionVisible] = useState(false);
     const searchParams = new URLSearchParams(window.location.search);
     const location = searchParams.get('location');
+
+    // Add useEffect for instructions timing
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setInstructionVisible(true);
+        }, 2000); // 2 seconds delay
+
+        return () => clearTimeout(timer); // Clean up
+    }, []);
 
     const handleOpenImport = () => setShowImportModal(true);
     const handleCloseImport = () => setShowImportModal(false);
@@ -779,11 +790,18 @@ const DirectoryDisplayPage = () => {
     })();
 
     return (
-        <div className="bg-gray-200">
-            <div className="">
-                <CarouselMenu tableTabs={tableTabs} initialIndex={initialTabIndex} />
+        <>
+            <div className="bg-gray-200">
+                <div className="">
+                    <CarouselMenu tableTabs={tableTabs} initialIndex={initialTabIndex} />
+                </div>
             </div>
-        </div>
+            {instructionVisible && (
+                <div className="fixed inset-0 z-50">
+                    <DirectoryInstructions onClose={() => setInstructionVisible(false)} />
+                </div>
+            )}
+        </>
     );
 };
 

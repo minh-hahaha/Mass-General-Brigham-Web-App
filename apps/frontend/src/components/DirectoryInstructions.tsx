@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import MGBButton from "@/elements/MGBButton.tsx";
-import add_node from '../assets/instructions/add_node.png';
+import filter from '../assets/instructions/filter.png';
 import create_edges from '../assets/instructions/create_edges.png';
-import edit_node from '../assets/instructions/edit_node.png';
 import save_changes from '../assets/instructions/save.png';
+import import_new from '../assets/instructions/import_new.png';
 
 interface MapInstructionsProps {
     onClose?: () => void;
@@ -12,13 +12,13 @@ interface MapInstructionsProps {
 
 const instructionPages = [
     {
-        title: "Add Node",
-        imagePath: add_node,
-        description: "Click \"Add Node\" button and then click on the map to place nodes."
+        title: "Filter",
+        imagePath: filter,
+        description: "Use our filter component to find departments information."
     },
     {
-        title: "Edit Node",
-        imagePath: edit_node,
+        title: "Import New Directories",
+        imagePath: import_new,
         description: "Click on the node to edit its name, room number, or remove node."
     },
     {
