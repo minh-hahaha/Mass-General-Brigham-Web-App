@@ -4,9 +4,9 @@ import MGBButton from '../elements/MGBButton.tsx';
 import InputElement from '@/elements/InputElement.tsx';
 import SelectElement from '@/elements/SelectElement.tsx';
 import { Label } from '@/components/ui/label.tsx';
+import { FaPlus } from 'react-icons/fa';
 
 const ImportExportDirectoryPage = () => {
-
     const [file, setFile] = useState<File | null>(null);
     const [uploadType, setUploadType] = useState<'Overwrite' | 'Update'>('Update');
     const [upload, setUpload] = useState(false);
@@ -67,48 +67,53 @@ const ImportExportDirectoryPage = () => {
     }
 
     return (
-        <div className="flex flex-col justify-center items-center mt-5">
-            <div className="flex flex-col items-center rounded-2xl p-8 w-full max-w-[700px] mt-10">
-                <input
-                    className="border border-gray-300 rounded-md p-2 w-full"
-                    type="file"
-                    onChange={handleFileChange}
-                    accept=".csv, text/csv"
-                />
+        <div className="flex flex-col justify-center items-center">
+            <div className="flex flex-col rounded-2xl p-4 w-full">
+                <div>
+                    <label className="block text-sm font-medium">Choose directory file</label>
+                    <input
+                        className="border border-mgbblue rounded-md p-2 w-full cursor-pointer"
+                        type="file"
+                        onChange={handleFileChange}
+                        accept=".csv, text/csv"
+                    />
+                </div>
+
+                <div className="mt-3">
+                    <label className="block text-sm font-medium">Choose upload type</label>
+                    <SelectElement
+                        className="border border-mgbblue"
+                        placeholder={'Select an upload type'}
+                        options={['Update', 'Overwrite']}
+                        label={''}
+                        id={'upload-type'}
+                        value={uploadType}
+                        onChange={(e) => setUploadType(e.target.value as 'Overwrite' | 'Update')}
+                    />
+                </div>
                 {/* Added margin-top to separate the buttons from the input */}
                 <div className="flex justify-between w-full space-x-4">
                     <div className="pt-6 gap-3 flex flex-row">
                         <div>
-                            <button
+                            <MGBButton
                                 onClick={handleFileUpload}
                                 disabled={false}
-                                className="py-4 px-4 cursor-pointer text-white rounded-sm text-sm tracking-wider bg-mgbblue hover:bg-blue-950"
+                                variant={'primary'}
+                                className="py-3 px-6 cursor-pointer text-white rounded-sm text-sm tracking-wider bg-mgbblue hover:bg-blue-950"
                             >
                                 Upload!
-                            </button>
+                            </MGBButton>
                         </div>
                         <div>
-                            <button
+                            <MGBButton
                                 onClick={handleExport}
                                 disabled={false}
-                                className="py-4 px-4 cursor-pointer text-white rounded-sm text-sm tracking-wider bg-mgbblue hover:bg-blue-950"
+                                variant={'secondary'}
+                                className="py-3 px-8 cursor-pointer rounded-sm text-sm tracking-wider bg-mgbblue hover:bg-blue-950"
                             >
                                 Export!
-                            </button>
+                            </MGBButton>
                         </div>
-                    </div>
-                    <div>
-                        <SelectElement
-                            className="border border-mgbblue py-4"
-                            placeholder={'Select an upload type'}
-                            options={['Update', 'Overwrite']}
-                            label={'Upload Type'}
-                            id={'upload-type'}
-                            value={uploadType}
-                            onChange={(e) =>
-                                setUploadType(e.target.value as 'Overwrite' | 'Update')
-                            }
-                        />
                     </div>
                 </div>
                 <div hidden={!upload}>
