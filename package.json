@@ -63,6 +63,7 @@
     "framer-motion": "^12.6.3",
     "js-cookie": "^3.0.5",
     "js.cookie": "^0.0.4",
+    "jszip": "^3.10.1",
     "lib-utils-ts": "^0.0.0-test",
     "lucide-react": "^0.487.0",
     "prisma": "^6.5.0",
