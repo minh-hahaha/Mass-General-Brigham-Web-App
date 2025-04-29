@@ -41,9 +41,8 @@ export async function dataToCSV(data: Record<string, any>[]) {
         row = data.pop();
     }
 
-    // Write all data to data.csv
-    await fs.promises.writeFile('data.csv', headers + '\r\n' + dataToWrite);
-    console.log('Successfully wrote file');
+    // Return csv data as string
+    return headers + '\r\n' + dataToWrite;
 }
 
 export async function readCSV(pathToFile: string): Promise<Record<string, any>[]> {

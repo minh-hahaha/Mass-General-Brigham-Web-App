@@ -17,6 +17,8 @@ import TableTranslationRequest from '@/components/tables/TableTranslatorRequest.
 import CarouselMenu from '@/components/CarouselMenu.tsx';
 import ImportExportDirectoryPage from '@/routes/ImportExportDirectoryPage';
 import {motion} from 'framer-motion';
+import {ExportCSV, ExportJSON, ImportCSV, ImportJSON} from "@/database/csvImportExport.ts";
+import {ROUTES} from "common/src/constants.ts";
 
 interface DirectoryTableProps {
     data: DepartmentRequest[];
@@ -57,7 +59,7 @@ const DirectoryTable: React.FC<DirectoryTableProps> = ({ data }) => {
                                     {department.building.buildingName}
                                 </TableCell>
                                 <TableCell className="text-left">
-                                    {department.node ? department.node.floor : 'no node'}
+                                    {department.departmentNodes ? department.departmentNodes.floor : 'no node'}
                                 </TableCell>
                                 <TableCell className="text-left">
                                     {department.deptPhone}
@@ -98,7 +100,7 @@ const AllDirectory = ({ onImportClick }: { onImportClick: () => void }) => {
             (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
             (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
             (!filters.building || department.building?.buildingName?.toLowerCase().includes(filters.building.toLowerCase())) &&
-            (!filters.floor || department.node?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
+            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
             (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
         );
     });
@@ -224,7 +226,7 @@ const ChestnutDirectory = ({ onImportClick }: { onImportClick: () => void }) => 
         return (
             (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
             (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
-            (!filters.floor || department.node?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
+            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
             (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
         );
     });
@@ -339,7 +341,7 @@ const Patriot20Directory = ({ onImportClick }: { onImportClick: () => void }) =>
         return (
             (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
             (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
-            (!filters.floor || department.node?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
+            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
             (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
         );
     });
@@ -454,7 +456,7 @@ const Patriot22Directory = ({ onImportClick }: { onImportClick: () => void }) =>
         return (
             (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
             (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
-            (!filters.floor || department.node?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
+            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
             (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
         );
     });
@@ -570,7 +572,7 @@ const FaulknerDirectory = ({ onImportClick }: { onImportClick: () => void }) => 
         return (
             (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
             (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
-            (!filters.floor || department.node?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
+            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
             (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
         );
     });
@@ -720,7 +722,7 @@ const DirectoryDisplayPage = () => {
                             <h1 className="text-center font-black">Import/Export New Directory</h1>
                         </div>
                         <div className="h-full overflow-y-auto p-6 -mt-22">
-                            <ImportExportDirectoryPage />
+                            <ImportExportDirectoryPage jsonRoute={ROUTES.DIRECTORY_JSON} csvRoute={ROUTES.DIRECTORY_CSV} />
                         </div>
                     </div>
                 </div>
