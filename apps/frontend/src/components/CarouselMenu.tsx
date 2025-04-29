@@ -1,42 +1,23 @@
-import {
-    Carousel,
-    CarouselApi,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from '@/components/ui/carousel.tsx';
 import { cn } from '@/lib/utils.ts';
-import { ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-// An interface that defines the props the component accepts
+// Interface for props
 interface CarouselProps {
     tableTabs: { label: string; component: React.FC }[];
     initialIndex?: number;
 }
 
 const CarouselMenu: React.FC<CarouselProps> = ({ tableTabs, initialIndex = 0 }) => {
-    const [api, setApi] = useState<CarouselApi | null>(null);
     const [selectedIndex, setSelectedIndex] = useState(initialIndex);
 
-    useEffect(() => {
-        if (!api) return;
-        api.scrollTo(initialIndex);
-        const onSelect = () => setSelectedIndex(api.selectedScrollSnap());
-        api.on('select', onSelect);
-        onSelect();
-        return () => {
-            api.off('select', onSelect);
-        };
-    }, [api]);
-
     return (
-        <div className="w-full px-6 pt-10">
-            <div className="flex justify-center mb-10">
-                <div className="relative flex w-full max-w-2xl overflow-hidden rounded-xl bg-white border border-mgbblue shadow-inner">
+        <div className="w-full pt-10 flex flex-col min-h-0">
+            {/* Tabs */}
+            <div className="flex justify-center mb-10 ml-75">
+                <div className="relative flex w-full max-w-2xl overflow-hidden rounded-xl bg-white border border-codGray shadow-inner">
                     {/* Highlight */}
                     <div
-                        className="absolute top-0 left-0 h-full rounded-xl transition-transform duration-300 ease-in-out bg-mgbblue"
+                        className="absolute top-0 left-0 h-full rounded-xl transition-transform duration-300 ease-in-out bg-fountainBlue"
                         style={{
                             width: `${100 / tableTabs.length}%`,
                             transform: `translateX(${selectedIndex * 100}%)`,
@@ -46,12 +27,12 @@ const CarouselMenu: React.FC<CarouselProps> = ({ tableTabs, initialIndex = 0 }) 
                     {tableTabs.map((tab, index) => (
                         <button
                             key={tab.label}
-                            onClick={() => api?.scrollTo(index)}
+                            onClick={() => setSelectedIndex(index)}
                             className={cn(
-                                'flex-1 z-10 px-4 py-3 text-sm font-medium transition-colors duration-200',
+                                'flex-1 z-10 px-4 py-3 text-sm font-medium transition-colors duration-200 cursor-pointer',
                                 selectedIndex === index
-                                    ? 'text-white'
-                                    : 'text-mgbblue hover:text-mgbblue/80'
+                                    ? 'text-codGray'
+                                    : 'text-codGray hover:text-mgbblue'
                             )}
                         >
                             {tab.label}
@@ -60,18 +41,13 @@ const CarouselMenu: React.FC<CarouselProps> = ({ tableTabs, initialIndex = 0 }) 
                 </div>
             </div>
 
-            <Carousel setApi={setApi} className="w-full">
-                <CarouselContent>
-                    {tableTabs.map((tab, index) => {
-                        const Component = tab.component;
-                        return (
-                            <CarouselItem key={index}>
-                                <Component />
-                            </CarouselItem>
-                        );
-                    })}
-                </CarouselContent>
-            </Carousel>
+            {/* Selected Content */}
+            <div className="w-full flex-grow min-h-0">
+                {(() => {
+                    const SelectedComponent = tableTabs[selectedIndex].component;
+                    return <SelectedComponent />;
+                })()}
+            </div>
         </div>
     );
 };

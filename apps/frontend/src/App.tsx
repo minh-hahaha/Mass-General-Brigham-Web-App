@@ -15,9 +15,10 @@ import {MapPage} from "@/routes/MapPage.tsx";
 import MapViewPage from "@/routes/MapViewPage.tsx";
 import MaintenanceRequestPage from "@/components/forms/MaintenanceRequestPage.tsx";
 import Cookies from "js-cookie";
-import TestNodeEditor from '@/routes/TestNodeEditor.tsx';
+import NodeEditor from '@/routes/NodeEditor.tsx';
 import AboutPage from '@/routes/AboutPage.tsx';
 import {Auth0Provider} from "@auth0/auth0-react";
+import {ROUTES} from "common/src/constants.ts";
 
 import CreditsPage from "@/routes/CreditsPage.tsx";
 
@@ -36,50 +37,52 @@ function App() {
             cacheLocation="localstorage"
             onRedirectCallback={() => (window.location.href = '/MapPage')}
         >
-                <div className="h-dvh flex flex-col w-full max-w-full">
-                    <div className="h-16 sticky top-0 z-50 bg-white shadow-md">
-                        <LogoBar />
-                    </div>
-                    <BrowserRouter>
-                        <div className="flex flex-row flex-1 overflow-hidden">
-                            <main className="flex-1 overflow-auto">
-                                <Routes>
-                                    <Route path="/" element={<HomePage />} />
-                                    <Route path="/Login" element={<LoginPage />} />
-                                    <Route path="/Home" element={<HomePage />} />
-                                    <Route
-                                        path="/TransportationRequestPage"
-                                        element={<TransportRequestPage />}
-                                    />
-                                    <Route
-                                        path="/ServiceRequestDisplay"
-                                        element={<ServiceRequestDisplayPage />}
-                                    />
-                                    <Route
-                                        path="/ImportExportDirectory"
-                                        element={<ImportExportDirectoryPage />}
-                                    />
-                                    <Route
-                                        path="/DirectoryDisplay"
-                                        element={<DirectoryDisplayPage />}
-                                    />
-                                    <Route path="/MapEditorPage" element={<TestNodeEditor />} />
-                                    <Route path="/MapPage" element={<MapPage />} />
-                                    <Route path="/ViewMap" element={<MapViewPage />} />
+            <div className="h-dvh flex flex-col w-full max-w-full">
+                <div className="h-16 sticky top-0 z-50 bg-white shadow-md">
+                    <LogoBar />
+                </div>
+                <BrowserRouter>
+                    <div className="flex flex-row flex-1 overflow-hidden">
+                        <main className="flex-1 overflow-auto">
+                            <Routes>
+                                <Route path="/" element={<HomePage />} />
+                                <Route path="/Login" element={<LoginPage />} />
+                                <Route path="/Home" element={<HomePage />} />
+                                <Route
+                                    path="/TransportationRequestPage"
+                                    element={<TransportRequestPage />}
+                                />
+                                <Route
+                                    path="/ServiceRequestDisplay"
+                                    element={<ServiceRequestDisplayPage />}
+                                />
+                                <Route
+                                    path="/ImportExportDirectory"
+                                    element={
+                                        <ImportExportDirectoryPage jsonRoute={ROUTES.DIRECTORY_JSON} csvRoute={ROUTES.DIRECTORY_CSV} />
+                                    }
+                                />
+                                <Route
+                                    path="/DirectoryDisplay"
+                                    element={<DirectoryDisplayPage />}
+                                />
+                                <Route path="/MapEditorPage" element={<NodeEditor />} />
+                                <Route path="/MapPage" element={<MapPage />} />
+                                <Route path="/ViewMap" element={<MapViewPage />} />
 
-                                    <Route
-                                        path="/TranslationServiceRequestPage"
-                                        element={<TranslationServiceRequestPage />}
-                                    />
+                                <Route
+                                    path="/TranslationServiceRequestPage"
+                                    element={<TranslationServiceRequestPage />}
+                                />
 
-                                    <Route
-                                        path="/SanitationRequest"
-                                        element={<SanitationRequestPage />}
-                                    />
-                                    <Route
-                                        path="/SanitationRequest"
-                                        element={<SanitationRequestPage />}
-                                    />
+                                <Route
+                                    path="/SanitationRequest"
+                                    element={<SanitationRequestPage />}
+                                />
+                                <Route
+                                    path="/SanitationRequest"
+                                    element={<SanitationRequestPage />}
+                                />
 
                                     <Route
                                         path="/MaintenancePage"
@@ -94,7 +97,7 @@ function App() {
                                         element={<MedicalDeviceServiceRequestPage />}
                                     />
                                     <Route
-                                        path="/AboutPage" 
+                                        path="/AboutPage"
                                         element={<AboutPage />}
                                     />
                                     <Route

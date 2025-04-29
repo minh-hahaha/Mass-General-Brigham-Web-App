@@ -7,8 +7,9 @@ export interface DepartmentRequest {
     deptName: string;
     buildingId: number;
     deptPhone: string;
+    nodeId: number;
     building: { buildingName: string };
-    node: { floor: string };
+    departmentNodes: { floor: string };
 }
 
 export interface DirectoryRequestName {

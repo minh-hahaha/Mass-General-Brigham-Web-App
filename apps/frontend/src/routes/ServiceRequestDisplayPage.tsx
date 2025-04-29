@@ -64,7 +64,7 @@ export default function RequestTablesCarousel() {
     })();
 
     return (
-        <>
+        <div>
             <CarouselMenu tableTabs={tableTabs(setActiveForm)} initialIndex={initialTabIndex} />
 
             {activeForm && (
@@ -96,6 +96,6 @@ export default function RequestTablesCarousel() {
                     </div>
                 </div>
             )}
-        </>
+        </div>
     );
 }
