@@ -82,7 +82,11 @@ const MedicalDeviceServiceRequestPage = () => {
                 console.error('Error fetching employee list:', e);
             }
         }
-    })
+
+        fetchEmployeeList();
+        console.log(employeeList);
+    }, [])
+
 
 
     useEffect(() => {
@@ -146,7 +150,7 @@ const MedicalDeviceServiceRequestPage = () => {
                                 <b>Assign Employee</b>
                             </h3>
                             <div className="flex flex-col gap-2">
-                                <div>
+                                <div className="flex gap-2">
                                     <label className='w=1/4'>Employee: </label>
                                     <select
                                         onChange={(e) => {

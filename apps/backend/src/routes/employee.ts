@@ -75,7 +75,9 @@ router.get('/name=id', async function (req, res) {
                 employeeName: employee.firstName + ' ' + employee.lastName,
             };
         });
-        res.sendStatus(200);
+
+        console.log('THIS IS THE LIST OF EMPLOYEES AND THEIR NAMES');
+        console.log(EMPLOYEE_LIST_SEND);
         res.json(EMPLOYEE_LIST_SEND);
     } catch (error) {
         console.log(error);

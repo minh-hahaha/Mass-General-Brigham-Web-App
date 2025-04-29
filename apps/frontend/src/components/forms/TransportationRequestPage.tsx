@@ -81,7 +81,11 @@ const TransportRequestPage = () => {
                 console.error('Error fetching employee list:', e);
             }
         }
-    })
+
+        fetchEmployeeList();
+        console.log(employeeList);
+    }, [])
+
 
 
     useEffect(() => {
