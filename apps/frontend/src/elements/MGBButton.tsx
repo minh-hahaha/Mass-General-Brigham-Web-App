@@ -1,28 +1,30 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
-// An interface that defines the props the component accepts
 interface ButtonProps {
     onClick: () => void;
     children: React.ReactNode;
-    variant: 'primary' | 'secondary'; // primary is BLUE, secondary is GRAY
-    disabled: boolean | undefined;
+    variant: 'primary' | 'secondary'; // primary is BLUE, secondary is YELLOW
+    disabled?: boolean;
+    className?: string;
 }
 
-// ExampleButton component definition
-const MGBButton = ({ onClick, children, variant, disabled }: ButtonProps) => {
+const MGBButton = ({ onClick, children, variant, disabled, className }: ButtonProps) => {
     return (
-        <button
-            className={`
-                ${variant === 'primary' ? 'bg-mgbblue hover:bg-blue-950' : 'bg-gray-500 hover:bg-gray-700'}
-                py-2 px-4 cursor-pointer text-white rounded-sm text-sm tracking-wider
+        <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
+            <button
+                className={`
+                ${variant === 'primary' ? 'bg-mgbblue hover:bg-blue-950 text-white' : 'bg-mgbyellow hover:bg-yellow-600 text-codGray'}
+                py-2 px-4 cursor-pointer rounded-sm text-sm tracking-wider
+                ${className ? className : ''}
             `}
-            onClick={onClick}
-            disabled={disabled}
-        >
-            {children}
-        </button>
+                onClick={onClick}
+                disabled={disabled}
+            >
+                {children}
+            </button>
+        </motion.button>
     );
 };
 
-// Export the component so it can be used in other files
 export default MGBButton;

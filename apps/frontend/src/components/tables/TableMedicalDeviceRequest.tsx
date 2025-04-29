@@ -20,10 +20,6 @@ interface Props {
 }
 
 const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => {
-    const loggedIn = sessionStorage.getItem('loggedIn');
-    if (!loggedIn) {
-        window.location.href = '/';
-    }
 
     const [loading, setLoading] = useState(true);
     const [requests, setRequests] = useState<incomingMedicalDeviceRequest[]>([]);
@@ -185,15 +181,15 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => 
                     <Table>
                         <TableHeader>
                             <TableRow className="bg-gray-50">
-                                <TableHead className="w-20 text-center font-semibold py-3">Request ID</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Medical Device</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Medical Device Serial Number</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Explanation</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Location</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Priority</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Status</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Request Date</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Department</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Request ID</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Medical Device</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Medical Device Serial Number</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Explanation</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Location</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Priority</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Status</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Request Date</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">Department</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -202,12 +198,12 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => 
                                     key={req.requestId}
                                     className="border-b hover:bg-gray-50"
                                 >
-                                    <TableCell className="text-center py-3">{req.requestId}</TableCell>
-                                    <TableCell className="text-center py-3">{req.medicalDeviceRequest.device}</TableCell>
-                                    <TableCell className="text-center py-3">
+                                    <TableCell className="text-left py-3">{req.requestId}</TableCell>
+                                    <TableCell className="text-left py-3">{req.medicalDeviceRequest.device}</TableCell>
+                                    <TableCell className="text-left py-3">
                                         {req.medicalDeviceRequest.deviceSerialNumber}
                                     </TableCell>
-                                    <TableCell className="text-center py-3">
+                                    <TableCell className="text-left py-3">
                                         {req.medicalDeviceRequest.deviceReasoning
                                             ?.match(/.{1,30}/g)
                                             ?.map((chunk, i) => (
@@ -217,11 +213,25 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => 
                                                 </span>
                                             ))}
                                     </TableCell>
-                                    <TableCell className="text-center py-3">{req.medicalDeviceRequest.location}</TableCell>
-                                    <TableCell className="text-center py-3">{req.priority}</TableCell>
-                                    <TableCell className="text-center py-3">{req.status}</TableCell>
-                                    <TableCell className="text-center py-3">{formatDate(req.requestDate)}</TableCell>
-                                    <TableCell className="text-center py-3">{req.medicalDeviceRequest.department}</TableCell>
+                                    <TableCell className="text-left py-3">{req.medicalDeviceRequest.location}</TableCell>
+                                    <TableCell className="text-left py-3">
+                                        <span
+                                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                                req.priority === 'High'
+                                                    ? 'bg-orange-100 text-orange-800'
+                                                    : req.priority === 'Medium'
+                                                        ? 'bg-yellow-100 text-yellow-800'
+                                                        : req.priority === 'Emergency'
+                                                            ? 'bg-red-100 text-red-800'
+                                                            : 'bg-green-100 text-green-800'
+                                            }`}
+                                        >
+                                            {req.priority}
+                                        </span>
+                                    </TableCell>
+                                    <TableCell className="text-left py-3">{req.status}</TableCell>
+                                    <TableCell className="text-left py-3">{formatDate(req.requestDate)}</TableCell>
+                                    <TableCell className="text-left py-3">{req.medicalDeviceRequest.department}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
