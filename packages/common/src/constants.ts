@@ -18,12 +18,15 @@ export const ROUTES = {
     DIRECTORY_NAMES: '/api/directory/names',
     DIRECTORY_NODE: '/api/directory/node',
     DIRECTORY_BUILDING: '/api/directory/byBuilding',
+    DIRECTORY_JSON: '/api/directory/json',
 
     //Algorithms
     FINDPATH: '/api/graph/traverse',
 
     NODE: '/api/node',
     EDGE: '/api/edge',
+    NODE_EDGE_CSV: '/api/node/csv',
+    NODE_EDGE_JSON: '/api/node/json',
 
     //Map page
     RECENT_ORIGINS: '/api/recentorigins',
