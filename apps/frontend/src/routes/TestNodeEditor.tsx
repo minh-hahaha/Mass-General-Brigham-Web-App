@@ -2,10 +2,8 @@ import NodeEditorComponent from '@/components/NodeEditorComponent.tsx';
 import { APIProvider, Map, RenderingType } from '@vis.gl/react-google-maps';
 import OverlayComponent from "@/components/OverlayMapComponent.tsx";
 import FloorSelector from "@/components/FloorSelector.tsx";
-import {useState} from "react";
+import { useState, useEffect } from "react";
 import MapInstructions from "@/components/MapInstructions.tsx";
-
-
 
 const ChestnutHillBounds = {
     southWest: { lat: 42.32543670863917, lng: -71.15022693442262 }, // Bottom-left corner
@@ -21,7 +19,6 @@ const FaulknerBounds = {
     southWest: { lat: 42.300487127183445, lng: -71.13067267701479 }, // Bottom-left corner
     northEast: { lat: 42.30301668867676, lng: -71.126350413866 }, // Top-right corner
 };
-
 
 // floor type
 interface Floor {
@@ -40,22 +37,29 @@ const availableFloors: Floor[] = [
     { id: "PP-2", floor: "2", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP02.svg" },
     { id: "PP-3", floor: "3", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP03.svg" },
     { id: "PP-4", floor: "4", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP04.svg" },
-
     { id: "FK-1", floor: "1", buildingId: "3", buildingName: "Faulkner Hospital",svgPath: "/FK01.svg" },
-
 ];
 
 const TestNodeEditor = () => {
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
     const [currentFloorId, setCurrentFloorId] = useState<string>("CH-1");
-    const [instructionVisible, setInstructionVisible] = useState(true);
+    const [instructionVisible, setInstructionVisible] = useState(false);
+    const [showMap, setShowMap] = useState(true);
 
+    // Use effect to show instructions after a delay
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setInstructionVisible(true);
+        }, 2000); // 2 seconds delay
+
+        return () => clearTimeout(timer); // Clean up
+    }, []);
 
     const handleFloorChange = (floorId: string) => {
         setCurrentFloorId(floorId);
     };
 
-    // seperate out current floor for PP and CH
+    // separate out current floor for PP and CH
     // Get the current Patriot Place floor data
     const getCurrentPatriotPlaceFloor = () => {
         let floorId = currentFloorId;
@@ -71,17 +75,14 @@ const TestNodeEditor = () => {
         return availableFloors.find(f => f.id === "CH-1")!;
     };
 
-
     const chestnutHillFloor = getChestnutHillFloor();
     const patriotPlaceFloor = getCurrentPatriotPlaceFloor();
 
     return (
         <>
-            {instructionVisible && (<MapInstructions onClose={() => setInstructionVisible(false)} />)}
-            {!instructionVisible && (<div>
+            <div>
                 <APIProvider apiKey={API_KEY} libraries={['maps', 'drawing']}>
                     <div style={{ height: '100vh', width: '100%' }}>
-
                         <Map
                             style={{ width: '100%', height: '100%' }}
                             defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
@@ -111,7 +112,12 @@ const TestNodeEditor = () => {
                         </Map>
                     </div>
                 </APIProvider>
-            </div>)}
+            </div>
+            {instructionVisible && (
+                <div className="fixed inset-0 z-50">
+                    <MapInstructions onClose={() => setInstructionVisible(false)} />
+                </div>
+            )}
         </>
     );
 }
