@@ -29,7 +29,7 @@ const aboutItems = [
     },
     {
         title: 'Credits',
-        href: '/',
+        href: '/CreditsPage',
         description: 'The tools behind the creation of this app',
     },
 ];

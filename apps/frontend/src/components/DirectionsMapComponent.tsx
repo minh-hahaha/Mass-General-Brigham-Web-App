@@ -14,18 +14,20 @@ import { GetRecentOrigins, RecentOrigin } from '@/database/recentOrigins.ts';
 import AlgorithmSelector from '@/components/AlgorithmSelector.tsx';
 import DisplayPathComponent from "@/components/DisplayPathComponent.tsx";
 import MapSidebarComponent from "@/components/MapUI/MapSidebarComponent.tsx";
+import FloorSelector from "@/components/FloorSelector.tsx";
 
 const HospitalLocations: Record<string, {lat: number, lng: number, zoom: number}> = {
-    'Chestnut Hill - 850 Boylston Street': {lat: 42.325988, lng: -71.149567, zoom: 18},
-    'Patriot Place': {lat: 42.092617, lng: -71.266492, zoom: 18},
-    'Faulkner Hospital': {lat: 42.301684739524546, lng: -71.12816396084828, zoom: 18}
+    'Chestnut Hill Healthcare Center': {lat: 42.325988, lng: -71.149567, zoom: 18},
+    'Foxborough Health Care Center': {lat: 42.092617, lng: -71.266492, zoom: 18},
+    'Brigham and Women\'s Faulkner Hospital': {lat: 42.301684739524546, lng: -71.12816396084828, zoom: 18},
+    'Brigham and Women\'s Main Hospital': {lat: 42.33550114249947, lng: -71.10727870473441, zoom: 18}
 };
 
 const BuildingIDMap: Record<string, number> = {
-    'Chestnut Hill - 850 Boylston Street': 1,
-    'Patriot Place': 2,
-    'Faulkner Hospital': 3,
-    'Main Hospital': 4
+    'Chestnut Hill Healthcare Center': 1,
+    'Foxborough Health Care Center': 2,
+    'Brigham and Women\'s Faulkner Hospital': 3,
+    'Brigham and Women\'s Main Hospital': 4
 };
 
 type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
@@ -42,6 +44,8 @@ const DirectionsMapComponent = () => {
     const routesLibrary = useMapsLibrary('routes');
     const [fromLocation, setFromLocation] = useState('');
     const [toLocation, setToLocation] = useState('');
+    const [toHospital, setToHospital] = useState('');
+
     const [travelMode, setTravelMode] = useState<TravelModeType>('DRIVING');
     const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>([]);
     const [distance, setDistance] = useState('');
@@ -55,17 +59,19 @@ const DirectionsMapComponent = () => {
     const [fromNodeId, setFromNodeId] = useState('');
     const [toDirectoryNodeId, setToDirectoryNodeId] = useState('');
 
-    // const [selectedBuildingId, setSelectedBuildingId] = useState('');
-
     const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
     const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
 
     const [buildingID, setBuildingID] = useState<number>(0);
+
     const [textDirections, setTextDirections] = useState<string>('No destination/start selected');
     const [text2Directions, setText2Directions] = useState<string[]>([]);
-    const [selectedAlgorithm, setSelectedAlgorithm] = useState('BFS');
+    const [selectedAlgorithm, setSelectedAlgorithm] = useState('');
+
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
+    const [currentFloorId, setCurrentFloorId] = useState<string | undefined>('PP-1');
+    const [showFloorSelector, setShowFloorSelector] = useState<boolean>(false);
 
     useEffect(() => {
         const checkAdmin = () => {
@@ -137,7 +143,18 @@ const DirectionsMapComponent = () => {
         }
     }, [fromLocation, toLocation]);
 
+    // update floor selector visibility
+    useEffect(() => {
+        setShowFloorSelector(buildingID === 2);
 
+        if(buildingID === 2) {
+            setCurrentFloorId("PP-1");
+
+        }
+        else{
+            setCurrentFloorId(undefined);
+        }
+    }, [buildingID]);
 
     // find directions
     const handleFindDirections = async () => {
@@ -148,31 +165,29 @@ const DirectionsMapComponent = () => {
         setSelectedAlgorithm(algorithm);
     };
 
+    const handleFloorChange = (floorId: string) => {
+        setCurrentFloorId(floorId);
+        console.log('changed floor to : ', floorId);
+    }
+
 
     const [lot, setLot] = useState('');
     const [parking, setParking] = useState(true);
     const [pathVisible, setPathVisible] = useState(false);
-    const [dropOffToParkPath, setDropOffToParkPath] = useState<Coordinate[]>([]);
-    const [dropOffLocation, setDropOffLocation] = useState<google.maps.LatLng>();
+
     // draw route
     const calculateRoute = () => {
         if (!directionsRenderer || !directionsService) return;
 
-        clearAllRoutes();
 
         directionsRenderer.setMap(map);
-
-        let actualLocation = toLocation;
-        if (toLocation === '22 Patriot Place') {
-            actualLocation = '42.092617243197296, -71.26649215663976';
-        }
 
         const googleTravelMode =
             google.maps.TravelMode[travelMode as keyof typeof google.maps.TravelMode];
         directionsService
             .route({
                 origin: fromLocation,
-                destination: actualLocation,
+                destination: toLocation,
                 travelMode: googleTravelMode,
                 provideRouteAlternatives: false,
             })
@@ -185,9 +200,6 @@ const DirectionsMapComponent = () => {
                     setDistance(leg.distance?.text || 'N/A');
                     setDuration(leg.duration?.text || 'N/A');
                     setShowRouteInfo(true);
-
-                    const dropOff = leg.end_location;
-                    setDropOffLocation(dropOff);
 
                     const htmlStr: string = leg.steps
                         .map(
@@ -203,181 +215,29 @@ const DirectionsMapComponent = () => {
             });
     };
 
-    // TODO: will have to delete this
-    useEffect(() => {
-        let selectedPath: { lat:number, lng: number }[];
-        switch(lot) { // You'll need to have this state variable
-            case 'CH_A':
-                selectedPath = CHtoLotA;
-                break;
-            case 'CH_B':
-                selectedPath = CHtoLotB;
-                break;
-            case 'CH_C':
-                selectedPath = CHtoLotC;
-                break;
-            case 'PP_A':
-                selectedPath = PPtoLotA;
-                break;
-            case 'PP_B':
-                selectedPath = PPtoLotB;
-                break;
-            case 'PP_C':
-                selectedPath = PPtoLotC;
-                break;
-            case 'FK_A':
-                selectedPath = FKtoLotA;
-                break;
-            case 'FK_B':
-                selectedPath = FKtoLotB;
-                break;
-            case 'FK_C':
-                selectedPath = FKtoLotC;
-                break;
-            default:
-                selectedPath = []; //NONE
-        }
-        // Get the current location and lot from state
-        const currentLot = lot; // Get the selected lot before clearing
+    const clearRoute = () =>{
+        if (!directionsRenderer) return;
+        directionsRenderer.setMap(null);
+    }
 
-        if (currentLot) {
-            // get prefix and lot letter
-            const [locationPrefix, lotLetter] = currentLot.split('_');
-
-            if (locationPrefix === 'PP') {
-                setFromNodeId(`PPFloor1Parking Lot${lotLetter}`);
-            } else if (locationPrefix === 'FK') {
-                if (lotLetter === 'A') {
-                    setFromNodeId('FKFloor1Parking Lot');
-                } else if (lotLetter === 'B') {
-                    setFromNodeId('FKFloor1Parking Lot_1');
-                } else if (lotLetter === 'C') {
-                    setFromNodeId('FKFloor1Parking Lot_2');
-                }
-            } else if (locationPrefix === 'CH') {
-                if (lotLetter === 'A') {
-                    setFromNodeId('CHFloor1Parking Lot1');
-                } else if (lotLetter === 'B') {
-                    setFromNodeId('CHFloor1Parking LotB');
-                } else if (lotLetter === 'C') {
-                    setFromNodeId('CHFloor1Parking LotC');
-                }
-            }
-        }
-
-        if (dropOffLocation != null){
-            const dropOffLat = dropOffLocation?.lat()
-            const dropOffLng = dropOffLocation?.lng();
-            const updatedPath: Coordinate[] = [
-                { lat: dropOffLat , lng: dropOffLng },
-                ...selectedPath
-            ];
-
-            console.log("to parking " + updatedPath);
-            setDropOffToParkPath(updatedPath);
-        }
-
-    }, [lot, dropOffLocation]);
-
-    // drop off to parking
-    const handleParkA = () => {
-        clearParking();
-        setPathVisible(false);
-        setDropOffToParkPath([]);
-        if (toLocation === '20 Patriot Place' || toLocation === '22 Patriot Place') {
-            setLot('PP_A');
-        }
-        else if (toLocation === 'Faulkner Hospital'){
-            setLot('FK_A');
-        }
-        else {
-            setLot('CH_A');
-        }
-    };
-    const handleParkB = () => {
-        clearParking();
-        setPathVisible(false);
-        setDropOffToParkPath([]);
-        if (toLocation === '20 Patriot Place' || toLocation === '22 Patriot Place') {
-            setLot('PP_B');
-        }
-        else if (toLocation === 'Faulkner Hospital'){
-            setLot('FK_B');
-        }
-        else {
-            setLot('CH_B');
-        }
-    };
-    const handleParkC = () => {
-        clearParking();
-        setPathVisible(false);
-        setDropOffToParkPath([]);
-        if (toLocation === '20 Patriot Place' || toLocation === '22 Patriot Place') {
-            setLot('PP_C');
-        }
-        else if (toLocation === 'Faulkner Hospital'){
-            setLot('FK_C');
-        }
-        else {
-            setLot('CH_C');
-        }
-    };
     const clearParking = () => {
         setLot('');
     };
 
 
-    const customLineRef = useRef<google.maps.Polyline | null>(null);
-    const customMarkersRef = useRef<google.maps.Marker[]>([]);
-    const animationRef = useRef<number | null>(null);
-
-    function clearAllRoutes() {
-        // Clear default Google route
-        directionsRenderer?.setMap(null);
-
-        // Clear custom micro route polyline
-        if (customLineRef.current) {
-            customLineRef.current.setMap(null);
-            customLineRef.current = null;
-        }
-
-        // Clear custom markers
-        customMarkersRef.current.forEach((marker) => marker.setMap(null));
-        customMarkersRef.current = [];
-
-        // Clear dash animation
-        if (animationRef.current !== null) {
-            clearInterval(animationRef.current);
-            animationRef.current = null;
-        }
-    }
 
     const handleZoomToHospital = () => {
-        if (!map || !toLocation) return;
+        if (!map || !toHospital) return;
 
-        const hospitalLocation = HospitalLocations[toLocation];
+        const hospitalLocation = HospitalLocations[toHospital];
         if (hospitalLocation) {
             map.panTo({ lat: hospitalLocation.lat, lng: hospitalLocation.lng });
             map.setZoom(hospitalLocation.zoom);
         }
     };
 
-    const handleDirectionRequest = (from: string, to: string, mode: TravelModeType) => {
-        setFromLocation(from);
-        setToLocation(to);
-        setTravelMode(mode);
-
-        if(mode === "DRIVING"){
-            setParking(true)
-        } else {
-            setParking(false)
-            setLot('')
-        }
-        calculateRoute()
-    }
 
     const handleHospitalSelect = (hospitalId: number)  => {
-        clearAllRoutes();
         setLot('');
         setPathVisible(false);
 
@@ -386,37 +246,81 @@ const DirectionsMapComponent = () => {
         )
 
         if(hospital){
-            setToLocation(hospital[0]); //hospital place
             setBuildingID(hospitalId);
+            if(hospitalId === 2){
+                setShowFloorSelector(true)
+            }
             if (map){
                 map.panTo({lat: hospital[1].lat, lng: hospital[1].lng}); // location
                 map.setZoom(hospital[1].zoom);
             }
+
         }
     }
 
+    const handleDirectionRequest = (from: string, to: string, toHospital: string, mode: TravelModeType) => {
+        setFromLocation(from);
+        setToLocation(to);
+        setTravelMode(mode);
+
+        setToHospital(toHospital);
+
+        if (mode === 'DRIVING') {
+            setParking(true);
+        } else {
+            setParking(false);
+            setLot('');
+        }
+        calculateRoute();
+    };
+
+    const handleFindDepartment = () =>{
+        handleZoomToHospital();
+    }
+
+
     const handleDepartmentSelect = (departmentNodeId: string) => {
-            setToDirectoryNodeId(departmentNodeId);
+        setToDirectoryNodeId(departmentNodeId);
     }
 
     const handleParkingSelect = (lotId: string) => {
         setLot(lotId)
     }
+
+    const handleBack =() => {
+        clearRoute();
+        clearParking();
+        setShowFloorSelector(false);
+    }
+
     return (
         <div className="flex w-screen h-screen">
             {/* LEFT PANEL */}
-            <div className="relative">
+            <div className="relative flex items-start">
                 <aside className="relative top-6 left-6 z-10 w-[400px] max-h-[80vh] bg-white p-6 shadow-xl rounded-lg overflow-hidden flex flex-col">
                     <MapSidebarComponent
                         onDirectionsRequest={handleDirectionRequest}
                         onHospitalSelect={handleHospitalSelect}
                         onDepartmentSelect={handleDepartmentSelect}
                         onParkingSelect={handleParkingSelect}
+                        onClickingBack={handleBack}
+                        onClickFindDepartment={handleFindDepartment}
+                        onChoosingAlgo={handleAlgorithmChange}
                         directoryList={directoryList}
                     />
                 </aside>
+                {showFloorSelector && (
+                    <div className="relative top-6 left-8 z-10 ">
+                        <FloorSelector
+                            currentFloorId={currentFloorId}
+                            onChange={handleFloorChange}
+                        />
+                    </div>
+                )
+                }
 
             </div>
+
 
             {/* MAP AREA */}
             <main className="absolute inset-0 z-0">
@@ -433,17 +337,14 @@ const DirectionsMapComponent = () => {
                     <HospitalMapComponent
                         startNodeId={fromNodeId}
                         endNodeId={toDirectoryNodeId}
-                      selectedAlgorithm={selectedAlgorithm}
+                        selectedAlgorithm={selectedAlgorithm}
                         visible={pathVisible}
+                        currentFloorId={currentFloorId}
 
-
-                      driveDirections={textDirections}
-                      drive2Directions={text2Directions}
-                      showTextDirections={!!toLocation}
+                        driveDirections={textDirections}
+                        drive2Directions={text2Directions}
+                        showTextDirections={!!toLocation}
                     />
-                    {lot !== '' && (
-                        <DisplayPathComponent coordinates={dropOffToParkPath}/>
-                    )}
                 </Map>
 
                 {/* Route Info Box */}
@@ -458,16 +359,7 @@ const DirectionsMapComponent = () => {
                         </p>
                     </div>
                 )}
-                {/* Zoom to Hospital Button */}
-                {toLocation && (
-                    <button
-                        onClick={handleZoomToHospital}
-                        className="absolute top-1/5 right-6 z-10 bg-white p-3 rounded-full shadow-lg hover:bg-gray-100 transition-colors"
-                        title="Zoom to hospital"
-                    >
-                        <ZoomIn size={26} className="text-mgbblue" />
-                    </button>
-                )}
+
             </main>
         </div>
     );
