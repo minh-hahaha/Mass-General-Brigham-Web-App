@@ -9,7 +9,7 @@ const CreditsPage = () => {
                     className='font-semibold text-4xl pb-20 text-center'
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 2, delay: 0.5 }}
+                    transition={{ duration: 2, delay: 0.25 }}
                 >
                     Credits Page
                 </motion.div>
@@ -19,7 +19,7 @@ const CreditsPage = () => {
                         className="grid grid-cols-2 gap-4"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 1, delay: 1 }}
+                        transition={{ duration: 1, delay: 0.5 }}
                     >
                         <CreditItem
                             picture="/Credits/PostgresSQL.png"
@@ -41,7 +41,7 @@ const CreditsPage = () => {
                             className="grid grid-cols-2 gap-4"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            transition={{ duration: 1, delay: 1.5 }}
+                            transition={{ duration: 1, delay: 0.75 }}
                         >
                             <CreditItem
                                 picture="/Credits/React.png"
@@ -62,7 +62,7 @@ const CreditsPage = () => {
                         className="grid grid-cols-2 gap-4"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 1, delay: 2 }}
+                        transition={{ duration: 1, delay: 1 }}
                     >
                         <CreditItem
                             picture="'/Credits/Shadcn.png'"
@@ -84,7 +84,7 @@ const CreditsPage = () => {
                         className="grid grid-cols-2 gap-4"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 1, delay: 2 }}
+                        transition={{ duration: 1, delay: 1.25 }}
                     >
                         <CreditItem
                             picture="'/Credits/Webstorm.png'"
@@ -106,7 +106,7 @@ const CreditsPage = () => {
                         className="grid grid-cols-2 gap-4"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 1, delay: 2 }}
+                        transition={{ duration: 1, delay: 1.5 }}
                     >
                     <CreditItem
                         picture="'/Credits/ReactGoogleMaps.png'"
