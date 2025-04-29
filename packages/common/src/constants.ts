@@ -9,7 +9,9 @@ export const ROUTES = {
     PATIENTTRANSPORT: '/api/patienttransport',
     EDITPATIENTTRANSPORT: '/api/patienttransport/edit',
     TRANSLATIONREQUEST: '/api/translation',
+    EDITTRANSLATIONREQUEST: '/api/translation/edit',
     SANITATION: '/api/sanitation',
+    EDITSANITATION: '/api/sanitation/edit',
     MAINTENANCEREQUEST: '/api/maintenance',
     MEDICALDEVICEREQUEST: '/api/medicaldevice',
 

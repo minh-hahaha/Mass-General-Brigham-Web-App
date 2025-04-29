@@ -3,11 +3,22 @@ import MGBButton from '../elements/MGBButton.tsx';
 import axios from 'axios';
 import { ROUTES } from 'common/src/constants.ts';
 import ConfirmMesg from '../components/ConfirmMessageComponent.tsx'; // Import the new component
-import { SubmitSanitationRequest, sanitationRequest } from '../database/sanitationRequest.ts';
+import {
+    SubmitSanitationRequest,
+    sanitationRequest,
+    EditSanitationRequest,
+    editSanitationRequest
+} from '../database/sanitationRequest.ts';
 import InputElement from "@/elements/InputElement.tsx";
+import {incomingRequest} from "@/database/transportRequest.ts";
+import {editTranslatorRequest} from "@/database/translationRequest.ts";
 
+
+interface SanitationRequestProps {
+    editData: incomingRequest | undefined;
+}
 // Component definition
-const SanitationRequestPage = () => {
+const SanitationRequestPage = ({editData}: SanitationRequestProps) => {
 
     //Service request fields
     const [status, setStatus] = useState<sanitationRequest ['status']>('Pending');
@@ -62,7 +73,15 @@ const SanitationRequestPage = () => {
             requesterRoomNumber,
         } //for Jack: I stopped here. There seems to be something off with the type declarations here
 
-        SubmitSanitationRequest(newRequest);
+        if(editData){
+            const editRequest: editSanitationRequest = {
+                sanitationRequest: newRequest,
+                requestId: editData.requestId
+            }
+            EditSanitationRequest(editRequest);
+        }else {
+            SubmitSanitationRequest(newRequest);
+        }
         setSubmittedRequest(newRequest);
         setShowConfirmation(true);
 
@@ -96,6 +115,29 @@ const SanitationRequestPage = () => {
         setRequester_department('');
         setRequester_roomnum('');
     };
+
+    useEffect(() => {
+        if(editData){
+            setStatus(editData.status);
+            setPriority(editData.priority);
+            setRequest_time('');
+            setLocation_id(editData.locationId ? editData.locationId.toString() : '');
+            setComments(editData.comments);
+            setRequest_date(editData.requestDate);
+            setEmployee_id(editData.employeeId);
+            setSanitationType(editData.sanitation.sanitationType);
+            setRecurring(editData.sanitation.recurring);
+            setHazardLevel(editData.sanitation.hazardLevel);
+            setDisposalRequired(editData.sanitation.disposalRequired);
+            setCompleteBy(editData.sanitation.completeBy);
+            setSanitation_location_id(editData.locationId ? editData.locationId.toString() : '');
+            setSanitation_department_id('');
+            setSanitation_roomNumber(0);
+            setEmployee_name(editData.locationId ? editData.locationId.toString() : '');
+            setRequester_department('');
+            setRequester_roomnum('');
+        }
+    }, []);
 
     // //Data is sent to the backend
     // async function DisplayTransportRequest(request: transportRequest) {

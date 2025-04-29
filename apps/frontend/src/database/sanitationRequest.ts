@@ -1,6 +1,8 @@
 import { ROUTES } from 'common/src/constants';
 
 import axios from 'axios';
+import {incomingRequest} from "@/database/transportRequest.ts";
+import {TranslationRequestData} from "@/routes/TranslationServiceRequestPage.tsx";
 
 export interface sanitationRequest {
     //Service Request fields
@@ -51,10 +53,19 @@ export interface incomingSanitationRequest {
     transportType: string;
 }
 
+export interface editSanitationRequest {
+    sanitationRequest: sanitationRequest;
+    requestId: number;
+}
+
 export async function SubmitSanitationRequest(request: sanitationRequest) {
     await axios.post(ROUTES.SANITATION, request);
 }
 
+export async function EditSanitationRequest(request: editSanitationRequest) {
+    await axios.post(ROUTES.EDITSANITATION, request);
+}
+
 export async function GetSanitationRequest() {
-    return (await axios.get<incomingSanitationRequest[]>(ROUTES.SANITATION)).data;
+    return (await axios.get<incomingRequest[]>(ROUTES.SANITATION)).data;
 }

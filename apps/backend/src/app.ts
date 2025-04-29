@@ -45,6 +45,7 @@ app.use(ROUTES.EMPLOYEE, employeeRouter);
 
 app.use(ROUTES.VALIDATE, validateRouter);
 app.use(ROUTES.SANITATION, sanitationRouter);
+app.use(ROUTES.EDITSANITATION, sanitationRouter);
 
 //Directory
 app.use(ROUTES.DIRECTORY, directoryRouter);
@@ -57,6 +58,7 @@ app.use(ROUTES.DIRECTORY_JSON, directoryRouter);
 //Service Requests
 app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
 app.use(ROUTES.TRANSLATIONREQUEST, translationRouter);
+app.use(ROUTES.EDITTRANSLATIONREQUEST, translationRouter);
 app.use(ROUTES.MAINTENANCEREQUEST, maintenanceRouter);
 app.use(ROUTES.PATIENTTRANSPORT, patientTransportRouter);
 app.use(ROUTES.EDITPATIENTTRANSPORT, patientTransportRouter);

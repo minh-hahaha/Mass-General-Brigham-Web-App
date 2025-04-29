@@ -33,7 +33,23 @@ export interface incomingRequest {
         pickupLocation: string;
         servReqId: number;
         transportType: 'Ambulance' | 'Helicopter' | 'Medical Van' | 'Other';
-    }
+    },
+    translationRequest: {
+        language: string;
+        patientName: string;
+        typeMeeting: string;
+        meetingLink: string;
+        department: string;
+        location: string;
+    },
+    sanitation: {
+        servReqId:          number;
+        sanitationType:      string;
+        recurring:           boolean;
+        hazardLevel:         'None' | 'Sharp' | 'Biohazard';
+        disposalRequired:    boolean;
+        completeBy:          string;
+    },
     priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     requestDate: string;
     requestId: number;

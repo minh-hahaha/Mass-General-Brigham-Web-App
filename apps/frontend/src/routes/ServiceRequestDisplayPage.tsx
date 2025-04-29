@@ -24,11 +24,11 @@ const tableTabs = (setActiveForm: (type: FormType) => void, setEditData: (data: 
     },
     {
         label: 'Translation',
-        component: () => <TableTranslatorRequest setActiveForm={setActiveForm} />,
+        component: () => <TableTranslatorRequest setActiveForm={setActiveForm} setEditData={setEditData} />,
     },
     {
         label: 'Sanitation',
-        component: () => <TableSanitationRequest setActiveForm={setActiveForm} />,
+        component: () => <TableSanitationRequest setActiveForm={setActiveForm} setEditData={setEditData} />,
     },
     {
         label: 'Medical Device',
@@ -89,8 +89,8 @@ export default function RequestTablesCarousel() {
                         {/* Scrollable Form Content */}
                         <div className="h-full overflow-y-auto">
                             {activeForm === 'transport' && <TransportationRequestPage editData={editData} />}
-                            {activeForm === 'translation' && <TranslationServiceRequestPage />}
-                            {activeForm === 'sanitation' && <SanitationRequestPage />}
+                            {activeForm === 'translation' && <TranslationServiceRequestPage editData={editData} />}
+                            {activeForm === 'sanitation' && <SanitationRequestPage editData={editData} />}
                             {activeForm === 'medical device' && <MedicalDeviceServiceRequestPage />}
                             {activeForm === 'maintenance' && <MaintenanceRequestPage />}
                             {/* Add other forms here as needed */}

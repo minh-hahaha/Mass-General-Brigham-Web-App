@@ -2,9 +2,14 @@ import InputElement from '@/elements/InputElement.tsx';
 import MGBButton from '@/elements/MGBButton.tsx';
 import ConfirmMessageComponent from '@/components/ConfirmMessageComponent.tsx';
 import {useEffect, useState} from 'react';
-import { SubmitTransportRequest } from '@/database/transportRequest.ts';
+import {
+    EditTransportRequest,
+    editTransportRequest,
+    incomingRequest,
+    SubmitTransportRequest
+} from '@/database/transportRequest.ts';
 import SelectElement from '@/elements/SelectElement.tsx';
-import { SubmitTranslatorRequest } from '@/database/translationRequest.ts';
+import {editTranslatorRequest, EditTranslatorRequest, SubmitTranslatorRequest} from '@/database/translationRequest.ts';
 
 export interface TranslationRequestData {
     employeeName: string;
@@ -22,7 +27,11 @@ export interface TranslationRequestData {
     department: string;
 }
 
-const TranslationServiceRequestPage = () => {
+interface TransportRequestProps {
+    editData: incomingRequest | undefined;
+}
+
+const TranslationServiceRequestPage = ({editData}: TransportRequestProps) => {
     const [employeeName, setEmployeeName] = useState('');
     const [employeeId, setEmployeeId] = useState<number>(0);
     const [patientName, setPatientName] = useState('');
@@ -52,13 +61,22 @@ const TranslationServiceRequestPage = () => {
             duration: duration,
             typeMeeting: typeMeeting as 'Remote (Online)' | 'On-site (In-Person)',
             date: date,
-            meetingLink: meetingLink,
+            meetingLink: typeMeeting === "On-site (In-Person)" ? "" : meetingLink,
             status: status as 'Pending' | 'In Progress' | 'Completed' | 'Cancelled',
             notes: notes,
             department: department,
         };
 
-        SubmitTranslatorRequest(newRequest);
+        if(editData){
+            const editRequest: editTranslatorRequest = {
+                translatorRequest: newRequest,
+                requestId: editData.requestId
+            }
+            console.log("edit data", editData);
+            EditTranslatorRequest(editRequest);
+        }else {
+            SubmitTranslatorRequest(newRequest);
+        }
         setShowConfirmation(true);
         handleReset();
     };
@@ -85,6 +103,24 @@ const TranslationServiceRequestPage = () => {
         setNotes('');
         setDepartment('');
     };
+
+    useEffect(() => {
+        if(editData){
+            setEmployeeName(editData.employeeId.toString());
+            setEmployeeId(editData.employeeId);
+            setPatientName(editData.translationRequest.patientName);
+            setPatientLanguage(editData.translationRequest.language);
+            setPriority(editData.priority);
+            setLocation(editData.translationRequest.location);
+            setDate(editData.requestDate);
+            setDuration(0);
+            setTypeMeeting(editData.translationRequest.typeMeeting);
+            setMeetingLink(editData.translationRequest.meetingLink);
+            setStatus(editData.status);
+            setNotes(editData.comments);
+            setDepartment(editData.translationRequest.department);
+        }
+    }, []);
 
     const handleConfirmationClose = () => {
         setShowConfirmation(false);

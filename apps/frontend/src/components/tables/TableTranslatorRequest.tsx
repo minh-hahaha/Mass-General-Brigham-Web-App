@@ -10,16 +10,18 @@ import {
 } from '@/components/ui/table.tsx';
 import { motion } from 'framer-motion';
 import MGBButton from "@/elements/MGBButton.tsx";
+import {incomingRequest} from "@/database/transportRequest.ts";
 
 interface Props {
     setActiveForm: (
         type: 'transport' | 'translation' | 'maintenance' | 'medical device' | 'sanitation'
     ) => void;
+    setEditData: (incomingRequest: incomingRequest) => void;
 }
 
-const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm }) => {
+const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm, setEditData }) => {
     const [loading, setLoading] = useState(true);
-    const [requests, setRequests] = useState<incomingTranslationRequest[]>([]);
+    const [requests, setRequests] = useState<incomingRequest[]>([]);
     const [filter, setShowFilters] = useState<boolean>(false);
     const [filters, setFilters] = useState({
         languageReq: '',
@@ -185,6 +187,7 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm }) => {
                                 <TableHead className="w-20 text-left font-semibold py-3">Request Date</TableHead>
                                 <TableHead className="w-20 text-left font-semibold py-3">Location</TableHead>
                                 <TableHead className="w-20 text-left font-semibold py-3">Department</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3"></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -198,7 +201,6 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm }) => {
                                     <TableCell className="text-left py-3">{req.translationRequest.typeMeeting}</TableCell>
                                     <TableCell className="text-left py-3">{req.translationRequest.meetingLink}</TableCell>
                                     <TableCell className="text-left py-3">{req.translationRequest.patientName}</TableCell>
-                                    <TableCell className="text-left py-3"></TableCell>
                                     <TableCell className="text-left py-3">
                                         <span
                                             className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -218,7 +220,7 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm }) => {
                                     <TableCell className="text-left py-3">{req.requestDate.split('T')[0]}</TableCell>
                                     <TableCell className="text-left py-3">{req.translationRequest.location}</TableCell>
                                     <TableCell className="text-left py-3">{req.translationRequest.department}</TableCell>
-                                    <TableCell className="text-left py-3"><MGBButton onClick={() => {}} variant={'primary'} children={'Edit'}/></TableCell>
+                                    <TableCell className="text-left py-3"><MGBButton onClick={()  => {setEditData(req); setActiveForm("translation");}} variant={'primary'} children={'Edit'}/></TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
