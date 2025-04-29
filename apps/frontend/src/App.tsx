@@ -18,6 +18,7 @@ import Cookies from 'js-cookie';
 import TestNodeEditor from '@/routes/TestNodeEditor.tsx';
 import AboutPage from '@/routes/AboutPage.tsx';
 import {Auth0Provider} from "@auth0/auth0-react";
+
 import CreditsPage from "@/routes/CreditsPage.tsx";
 
 function App() {
