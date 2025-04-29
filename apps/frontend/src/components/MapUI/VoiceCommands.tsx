@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { FaMicrophone } from "react-icons/fa";
 
 
-const MicrophoneButton: React.FC = () => {
+const VoiceCommands: React.FC = () => {
     const [clicked, setClicked] = useState(false)
     const handleClicked = () => {
         setClicked(!clicked);
@@ -16,4 +16,4 @@ const MicrophoneButton: React.FC = () => {
         </button>
     );
 };
-export default MicrophoneButton;
+export default VoiceCommands;

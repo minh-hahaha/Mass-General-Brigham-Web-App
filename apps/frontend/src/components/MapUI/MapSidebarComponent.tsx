@@ -9,7 +9,7 @@ import {useMapsLibrary} from "@vis.gl/react-google-maps";
 import {CiHospital1} from "react-icons/ci";
 import SelectElement from "@/elements/SelectElement.tsx";
 
-import MicrophoneButton from "@/components/MapUI/MicrophoneButton.tsx";
+import VoiceCommands from "@/components/MapUI/VoiceCommands.tsx";
 
 const hospitals = [
     {
@@ -231,7 +231,7 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
         <div className='w-full'>
             <div className='flex justify-center'>
                 <h2 className='text-2xl font-black mb-6 text-center mr-10 pt-2.5'>Select a Hospital</h2>
-                <MicrophoneButton />
+                <VoiceCommands />
 
             </div>
 
