@@ -26,7 +26,7 @@ const SelectElement: React.FC<SelectElementProps> = ({
                                                      }) => {
     return (
         <div className="flex flex-col space-y-1 w-full">
-            <label htmlFor={id} className="text-sm font-medium text-white">
+            <label htmlFor={id} className="text-sm font-medium text-codGray">
                 {label}
             </label>
             <select
@@ -34,7 +34,7 @@ const SelectElement: React.FC<SelectElementProps> = ({
                 value={value}
                 onChange={onChange}
                 required={required}
-                className={`px-3 py-2 rounded-sm focus:outline-none focus:ring-2 focus:ring-white ${className}`}
+                className={`px-3 py-2 rounded-sm border-1 border-mgbblue ${className}`}
             >
                 <option value="">{placeholder}</option>
                 {options.map((option, index) => (

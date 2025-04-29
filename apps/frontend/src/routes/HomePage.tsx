@@ -1,10 +1,32 @@
 import MGBButton from '@/elements/MGBButton.tsx';
+import DisclaimerPopup from '@/components/DisclaimerPopup.tsx';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { RiArrowRightSLine } from "react-icons/ri";
+
+
+import { useAuth0 } from '@auth0/auth0-react';
 
 const HomePage = () => {
+    const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
+
+    const [showDisclaimer, setShowDisclaimer] = useState(true);
+
     return (
         <>
-            <section className="h-screen relative bg-[url('/mgbhero.jpeg')] bg-cover bg-center flex flex-col justify-center">
+            <section className="h-screen relative overflow-hidden bg-center flex flex-col justify-center">
+                {/* Background Video */}
+                <div className="absolute inset-0 z-0">
+                    <video
+                        className="w-full h-full object-cover"
+                        autoPlay
+                        loop
+                        muted
+                    >
+                        <source src="/MGBIntro.mp4" type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-black/45 z-0"></div>
                 <motion.div
@@ -12,45 +34,34 @@ const HomePage = () => {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 2 }}
                 >
-                    <div className="relative z-10 flex flex-col items-center gap-3">
+                    <div className="absolute z-10 flex flex-col items-start gap-3 bottom-55 left-20">
                         <h1 className="text-white text-7xl font-semibold font-serif text-center drop-shadow-xl">
-                            Find Your Way.
+                            Find Your Way Today.
                         </h1>
-                        <h2 className="text-white text-2xl font-serif text-center drop-shadow-lg">
-                            Use the kiosk to quickly locate departments, clinics, and services
-                            throughout the hospital.
-                        </h2>
-                        <h4 className='text-white font-serif text-center drop-shadow-lg'>* Disclaimer: This web application
-                            is strictly a CS3733-D25 Software Engineering class project for Prof. Wilson Wong at WPI *</h4>
+                        <div className="flex flex-row mt-5">
+                            <h2 className="text-white text-2xl font-serif text-center drop-shadow-lg">
+                                Your guide to hospital locations and services
+                            </h2>
+                            <RiArrowRightSLine color="white" size={28} className="mt-1 ml-1 mr-2"/>
+                            <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
+                                <MGBButton
+                                    onClick={() => (window.location.href = '/MapPage')}
+                                    variant={'secondary'}
+                                    disabled={false}
+                                >
+                                    Get Directions
+                                </MGBButton>
+                            </motion.button>
+                        </div>
                     </div>
                 </motion.div>
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 1, delay: 1 }}
-                >
-                    <div className="relative z-10 flex flex-row justify-center items-center mt-5 gap-3">
-                        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                            <MGBButton
-                                onClick={() => window.location.href = '/MapPage'}
-                                variant={'primary'}
-                                disabled={false}
-                            >
-                                I Need Directions
-                            </MGBButton>
-                        </motion.button>
-                        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                            <MGBButton
-                                onClick={() => window.location.href = '/Login'}
-                                variant={'secondary'}
-                                disabled={false}
-                            >
-                                Log In
-                            </MGBButton>
-                        </motion.button>
-                    </div>
-                </motion.div>
+                    transition={{ duration: 0.5, delay: 1 }}
+                ></motion.div>
             </section>
+            {showDisclaimer && <DisclaimerPopup onClose={() => setShowDisclaimer(false)} />}
         </>
     );
 };
