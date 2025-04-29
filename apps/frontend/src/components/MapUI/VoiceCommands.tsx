@@ -1,13 +1,37 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { FaMicrophone } from "react-icons/fa";
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+
 
 
 const VoiceCommands: React.FC = () => {
+    const {
+        transcript,
+        listening,
+        resetTranscript,
+        browserSupportsSpeechRecognition
+    } = useSpeechRecognition();
+
+    if(!browserSupportsSpeechRecognition){
+        return <span>Your Browser Does Not Support Speech to Navigate.</span>;
+    }
+
     const [clicked, setClicked] = useState(false)
     const handleClicked = () => {
         setClicked(!clicked);
+        if(clicked){
+            SpeechRecognition.stopListening()
+        }
+        else{
+            SpeechRecognition.startListening()
+        }
 
     }
+    useEffect(() => {
+        console.log("clicked", clicked);
+        console.log("PLEASE WORK HERE IS THE TRANSCRIPT", transcript);
+    }, [transcript]);
+
 
     return (
         <button className=" p-2 rounded-sm h-10 w-10 bg-mgbyellow hover:bg-yellow-600  " onClick={handleClicked} >
