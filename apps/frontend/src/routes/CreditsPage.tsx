@@ -11,7 +11,7 @@ const CreditsPage = () => {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 2, delay: 0.5 }}
                 >
-                    Tech Stack
+                    Credits Page
                 </motion.div>
 
                 <div className='grid grid-cols-1 px-10 gap-4'>

@@ -29,7 +29,7 @@ const aboutItems = [
     },
     {
         title: 'Credits',
-        href: '/',
+        href: '/CreditsPage',
         description: 'The tools behind the creation of this app',
     },
 ];
@@ -42,11 +42,6 @@ const directories = [
     {
         title: '20 Patriot Place',
         description: 'View all 20 Patriot Place Directories',
-    },
-    {
-        title: 'Tech Stack',
-        href: '/CreditsPage',
-        description: 'The tools behind the creation of this app'
     },
     {
         title: '22 Patriot Place',
