@@ -18,9 +18,10 @@ const PatriotPlaceBounds = {
     northEast: { lat: 42.09342690806031, lng: -71.2649785507 }, // Top-right corner
 };
 const FaulknerBounds = {
-    southWest: { lat: 42.300487127183445, lng: -71.13067267701479 }, // Bottom-left corner
-    northEast: { lat: 42.30301668867676, lng: -71.126350413866 }, // Top-right corner
+    southWest: { lat: 42.300397452801334, lng: -71.13067929034223 }, // Bottom-left corner
+    northEast: { lat: 42.303013662584725, lng: -71.12649564266864}, // Top-right corner
 };
+
 
 // floor type
 interface Floor {
