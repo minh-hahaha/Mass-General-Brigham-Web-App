@@ -13,6 +13,7 @@ import {
     reqSanitationArray
 } from '@/database/forms/formTypes.ts'
 import SelectFormElement from "@/elements/SelectFormElement.tsx";
+import {employeeNameId, getEmployeeNameIds} from "@/database/getEmployee.ts";
 
 // Component definition
 const SanitationRequestPage = () => {
@@ -25,7 +26,7 @@ const SanitationRequestPage = () => {
     const [locationId, setLocation_id] = useState('');
     const [comments, setComments] = useState('');
     const [requestDate, setRequest_date] = useState(new Date().toISOString());
-    const [employeeId, setEmployee_id] = useState(0);
+    const [employeeId, setEmployeeId] = useState(0);
 
     //Sanitation fields
     const [sanitationType, setSanitationType] = useState('');
@@ -37,7 +38,7 @@ const SanitationRequestPage = () => {
     const [employeeName, setEmployee_name]=useState('');
 
     //until we get locations working as a singular dropdown
-    const [requesterDepartmentId, setRequester_department] = useState('');
+    const[requesterDepartmentId, setRequester_department] = useState('');
     const[requesterRoomNumber, setRequester_roomnum] = useState('');
 
     const [directoryList, setDirectoryList] = useState<string[]>([""]);
@@ -45,6 +46,10 @@ const SanitationRequestPage = () => {
 
     const [submittedRequest, setSubmittedRequest] = useState<sanitationRequest | null>(null);
     const [showConfirmation, setShowConfirmation] = useState(false);
+
+
+    const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
+
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -95,13 +100,25 @@ const SanitationRequestPage = () => {
         console.log('Updated Directory list');
     }, [locationId, directory]);
 
+
+    useEffect(() => {
+        const fetchEmployeeList = async () => {
+            try {
+                const data = await getEmployeeNameIds();
+                setEmployeeList(data); // list of employee names
+            } catch (e) {
+                console.error('Error fetching employee list:', e);
+            }
+        }
+    })
+
     const handleReset = () => {
         setPriority('Low');//done
         setRequest_time('');//done
         setLocation_id('');//done
         setComments('');//done
         setRequest_date(new Date().toISOString());//done
-        setEmployee_id(0);//done
+        setEmployeeId(0);//done
         setSanitationType('');//done
         setHazardLevel('Low');//done
         setCompleteBy(new Date().toISOString());//
@@ -126,6 +143,31 @@ const SanitationRequestPage = () => {
                 <p>Yael Whitson and Jack Morris</p>
                 <div>
                     <form onSubmit={handleSubmit} className="space-y-6">
+
+                        <div>
+                            <h3 className="text-xl font-semibold mb-4">
+                                <b>Assign Employee</b>
+                            </h3>
+                            <div className="flex flex-col gap-2">
+                                <div>
+                                    <label className='w=1/4'>Employee: </label>
+                                    <select
+                                        onChange={(e) => {
+                                            setEmployeeId(Number(e.target.value));
+                                        }}
+                                        value={employeeId}
+                                        className='w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300'
+                                    >
+                                        <option value="" disabled>Select an employee</option>
+                                        {employeeList.map((employee) => (
+                                            <option key={employee.employeeId} value={employee.employeeId}>
+                                                {employee.employeeName}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         <div className="flex flex-col gap-2">
                             <h3 className="text-xl font-semibold mb-4">
                                 <b>Request Location</b>

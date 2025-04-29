@@ -3,11 +3,11 @@ import axios from 'axios';
 import { priorityType, statusType, hospitalTransportType } from '@/database/forms/formTypes.ts';
 
 export interface transportRequest {
+    employeeId: number;
     patientId: number;
     patientName: string;
     transportType: hospitalTransportType;
     priority: string;
-    completeByDate: string;
     pickupLocation: string;
     dropoffLocation: string;
     notes: string;

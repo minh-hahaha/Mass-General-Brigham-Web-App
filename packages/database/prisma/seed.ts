@@ -723,13 +723,22 @@ async function main() {
     const createManyEmployees = await client.employee.createMany({
         data: [
             {
-
-                firstName: 'AdMinh',
+                firstName: 'Unassigned',
+                lastName: '',
+                position: 'Unassigned',
+                email: '<EMAIL>',
+                password: '<PASSWORD>',
+                departmentId: 1,
+                employeeId: 0
+            },
+            {
+                firstName: 'Adminh',
                 lastName: 'Ha',
                 position: 'WebAdmin',
-                email: 'admin',
-                password: 'admin',
+                email: 'softengD25X@gmail.com',
+                password: 'cs3733D25X', //TODO: remove?
                 departmentId: 1,
+                admin: true,
             },
             {
 

@@ -59,6 +59,31 @@ router.get('/email', async function (req, res) {
     }
 });
 
+router.get('/name=id', async function (req, res) {
+    try {
+        const EMPLOYEE_LIST = await PrismaClient.employee.findMany({
+            select: {
+                employeeId: true,
+                firstName: true,
+                lastName: true,
+            },
+        });
+
+        const EMPLOYEE_LIST_SEND = EMPLOYEE_LIST.map((employee) => {
+            return {
+                employeeId: employee.employeeId,
+                employeeName: employee.firstName + ' ' + employee.lastName,
+            };
+        });
+        res.sendStatus(200);
+        res.json(EMPLOYEE_LIST_SEND);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(204);
+        return;
+    }
+});
+
 //Note: Route not set up yet
 router.post('/csv', async function (req: Request, res: Response) {
     const csvData = await readCSV('./id.csv');

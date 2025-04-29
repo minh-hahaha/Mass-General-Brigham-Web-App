@@ -3,6 +3,10 @@ import axios from 'axios';
 import {mgbHospitalType, priorityType, statusType} from "@/database/forms/formTypes.ts";
 
 export interface maintenanceRequest {
+
+    //employee id
+    employeeId: number;
+
     // Maintenance Information
     maintenanceType: string;
     maintenanceDescription: string;

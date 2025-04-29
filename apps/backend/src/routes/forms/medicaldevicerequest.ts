@@ -29,6 +29,7 @@ router.post('/', async (req: Request, res: Response) => {
             //creates entry for service request
             const serviceRequest = await prisma.serviceRequest.create({
                 data: {
+                    employeeId: req.body.employeeId,
                     status: 'Pending',
                     comments: req.body.notes,
                     priority: req.body.priority,

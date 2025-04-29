@@ -49,6 +49,7 @@ app.use(ROUTES.EMPLOYEE, employeeRouter);
 app.use(ROUTES.EMPLOYEE_CSV, employeeRouter);
 app.use(ROUTES.EMPLOYEE_NAMES, employeeRouter);
 app.use(ROUTES.EMPLOYEE_EMAIL, employeeRouter);
+app.use(ROUTES.EMPLOYEE_NAME_ID, employeeRouter);
 
 //Building
 app.use(ROUTES.BUILDING, buildingRouter);

@@ -12,6 +12,7 @@ import {
 } from "@/database/forms/formTypes.ts";
 import {DirectoryRequestByBuilding, getDirectory} from "@/database/gettingDirectory.ts";
 import SelectFormElement from "@/elements/SelectFormElement.tsx";
+import {employeeNameId, getEmployeeNameIds} from "@/database/getEmployee.ts";
 
 const TranslationServiceRequestPage = () => {
     const [employeeName, setEmployeeName] = useState('');
@@ -34,6 +35,7 @@ const TranslationServiceRequestPage = () => {
 
     const [directoryList, setDirectoryList] = useState<string[]>([""]);
     const [directory, setDirectory] = useState<string>("");
+    const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -79,6 +81,16 @@ const TranslationServiceRequestPage = () => {
         console.log('Updated Directory list');
     }, [location, directory]);
 
+    useEffect(() => {
+        const fetchEmployeeList = async () => {
+            try {
+                const data = await getEmployeeNameIds();
+                setEmployeeList(data); // list of employee names
+            } catch (e) {
+                console.error('Error fetching employee list:', e);
+            }
+        }
+    })
 
     useEffect(() => {
         if (showConfirmation) {
@@ -116,7 +128,30 @@ const TranslationServiceRequestPage = () => {
                 <p> Krish Patel and Jake Lariviere </p>
                 <div>
                     <form onSubmit={handleSubmit} className="space-y-6">
-
+                        <div>
+                            <h3 className="text-xl font-semibold mb-4">
+                                <b>Assign Employee</b>
+                            </h3>
+                            <div className="flex flex-col gap-2">
+                                <div>
+                                    <label className='w=1/4'>Employee: </label>
+                                    <select
+                                        onChange={(e) => {
+                                            setEmployeeId(Number(e.target.value));
+                                        }}
+                                        value={employeeId}
+                                        className='w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300'
+                                    >
+                                        <option value="" disabled>Select an employee</option>
+                                        {employeeList.map((employee) => (
+                                            <option key={employee.employeeId} value={employee.employeeId}>
+                                                {employee.employeeName}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         <div>
                             <h3 className="text-xl font-semibold mb-4">
                                 <b>Patient Information</b>

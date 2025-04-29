@@ -11,6 +11,7 @@ import {
     mgbHospitalType, priorityArray
 } from '@/database/forms/formTypes.ts'
 import SelectFormElement from "@/elements/SelectFormElement.tsx";
+import { employeeNameId, getEmployeeNameIds } from '@/database/getEmployee.ts';
 
 // Component definition
 const TransportRequestPage = () => {
@@ -24,13 +25,13 @@ const TransportRequestPage = () => {
     const [priority, setPriority] = useState('Select Priority');
     const [pickupLocation, setPickupLocation] = useState('');
     const [dropoffLocation, setDropoffLocation] = useState('');
-    // const [pickupDate, setPickupDate] = useState(new Date().toISOString().split('T')[0]);
-    // const [pickupTime, setPickupTime] = useState('');
+    const [employeeId, setEmployeeId] = useState(0);
     const [transportDate, setTransportDate] = useState('');
     const [notes, setNotes] = useState('');
     const [assignedToId, setAssignedToId] = useState(0);
     const [submittedRequest, setSubmittedRequest] = useState<transportRequest | null>(null);
     const [showConfirmation, setShowConfirmation] = useState(false);
+    const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -39,6 +40,7 @@ const TransportRequestPage = () => {
         const formattedDate = new Date(transportDate).toISOString();
 
         const newRequest: transportRequest = {
+            employeeId,
             patientId,
             patientName,
             transportType,
@@ -64,12 +66,23 @@ const TransportRequestPage = () => {
         setPriority('Low');
         setPickupLocation('');
         setDropoffLocation('');
-        // setPickupDate(new Date().toISOString().split('T')[0]);
-        // setPickupTime(new Date().toISOString().split('T')[1]);
         setNotes('');
         setAssignedToId(0);
         setTransportDate('');
+        setEmployeeId(0);
     };
+
+    useEffect(() => {
+        const fetchEmployeeList = async () => {
+            try {
+                const data = await getEmployeeNameIds();
+                setEmployeeList(data); // list of employee names
+            } catch (e) {
+                console.error('Error fetching employee list:', e);
+            }
+        }
+    })
+
 
     useEffect(() => {
         if (showConfirmation) {
@@ -90,6 +103,31 @@ const TransportRequestPage = () => {
                 <h1 className="text-[30px] font-bold mb-6">Patient Transportation Request</h1>
                 <div>
                     <form onSubmit={handleSubmit} className="space-y-6">
+                        <div>
+                            <h3 className="text-xl font-semibold mb-4">
+                                <b>Assign Employee</b>
+                            </h3>
+                            {/*TODO: TURN THIS INTO A SelectEmployeeElement*/}
+                            <div className="flex flex-col gap-2">
+                                <div>
+                                    <label className='w=1/4'>Employee: </label>
+                                    <select
+                                        onChange={(e) => {
+                                            setEmployeeId(Number(e.target.value));
+                                        }}
+                                        value={employeeId}
+                                        className='w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300'
+                                    >
+                                        <option value="" disabled>Select an employee</option>
+                                        {employeeList.map((employee) => (
+                                            <option key={employee.employeeId} value={employee.employeeId}>
+                                                {employee.employeeName}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         <div>
                             <h3 className="text-xl font-semibold mb-4">
                                 <b>Patient Information</b>

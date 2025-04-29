@@ -10,6 +10,7 @@ export const ROUTES = {
     EMPLOYEE_CSV: '/api/employee/csv',
     EMPLOYEE_NAMES: '/api/employee/names',
     EMPLOYEE_EMAIL: '/api/employee/email',
+    EMPLOYEE_NAME_ID: '/api/employee/name=id',
 
     //Buildings
     BUILDING: '/api/building',

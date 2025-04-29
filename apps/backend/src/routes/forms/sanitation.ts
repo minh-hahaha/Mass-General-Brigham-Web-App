@@ -3,27 +3,6 @@ import PrismaClient from '../../bin/prisma-client.ts';
 
 const router: Router = express.Router();
 
-// sanitationRequest {
-//     //Service Request fields
-//     request_id:          number;
-//     status:              'Unassigned' | 'Assigned' | 'Working' | null;
-//     priority:            'Low' | 'Medium' | 'High' | 'Emergency';
-//     request_time:        string;
-//
-//     //Optional fields
-//     location_id:         string;
-//     comments:            string;
-//     request_date:        string;
-//     employee_id:         string;
-//
-//     //Sanitation fields
-//     sanitationType:      string;
-//     recurring:           boolean;
-//     hazardLevel:         'None' | 'Sharp' | 'Biohazard';
-//     disposalRequired:    boolean;
-//     completeBy:          string;
-// }
-
 router.get('/', async (req: Request, res: Response) => {
     try {
         const requests = await PrismaClient.serviceRequest.findMany({
@@ -61,7 +40,7 @@ router.post('/', async (req: Request, res: Response) => {
                     employeeName: req.body.employeeName,
                     requesterRoomNumber: req.body.requesterRoomNumber,
                     requesterDepartmentId: req.body.requesterDepartmentId,
-                    employeeId: req.body.employeeId || null, // change to user id in the future?
+                    employeeId: req.body.employeeId, // change to user id in the future?
                 },
             });
 
