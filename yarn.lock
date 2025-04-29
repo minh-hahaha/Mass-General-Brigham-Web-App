@@ -8703,6 +8703,7 @@ __metadata:
     husky: "npm:^9.1.7"
     js-cookie: "npm:^3.0.5"
     js.cookie: "npm:^0.0.4"
+    jszip: "npm:^3.10.1"
     lib-utils-ts: "npm:^0.0.0-test"
     lucide-react: "npm:^0.487.0"
     prettier: "npm:^3.5.3"
