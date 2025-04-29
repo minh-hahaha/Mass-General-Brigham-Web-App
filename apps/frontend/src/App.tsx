@@ -93,7 +93,14 @@ function App() {
                                         path={'/MedicalDevicePage'}
                                         element={<MedicalDeviceServiceRequestPage />}
                                     />
-                                    <Route path="/AboutPage" element={<AboutPage />} />
+                                    <Route
+                                        path="/AboutPage" 
+                                        element={<AboutPage />}
+                                    />
+                                    <Route
+                                        path="/CreditsPage"
+                                        element={<CreditsPage />}
+                                    />
                                 </Routes>
                             </main>
                         </div>
