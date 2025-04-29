@@ -2,13 +2,13 @@ import React, {useEffect, useState} from 'react';
 import { FaMicrophone } from "react-icons/fa";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
+interface VoiceCommandProps {
+    voiceTranscript: (transcript: string) => void;
+}
 
-
-const VoiceCommands: React.FC = () => {
+const VoiceCommands: React.FC<VoiceCommandProps> = ({voiceTranscript}) => {
     const {
         transcript,
-        listening,
-        resetTranscript,
         browserSupportsSpeechRecognition
     } = useSpeechRecognition();
 
@@ -20,17 +20,21 @@ const VoiceCommands: React.FC = () => {
     const handleClicked = () => {
         setClicked(!clicked);
         if(clicked){
-            SpeechRecognition.stopListening()
+            SpeechRecognition.stopListening();
         }
         else{
-            SpeechRecognition.startListening()
+            SpeechRecognition.startListening({ continuous: true });
         }
 
-    }
+    };
+
     useEffect(() => {
-        console.log("clicked", clicked);
-        console.log("PLEASE WORK HERE IS THE TRANSCRIPT", transcript);
+        voiceTranscript(transcript);
     }, [transcript]);
+    // useEffect(() => {
+    //     //console.log("clicked", clicked);
+    //     console.log("PLEASE WORK HERE IS THE TRANSCRIPT", transcript);
+    // }, [transcript]);
 
 
     return (

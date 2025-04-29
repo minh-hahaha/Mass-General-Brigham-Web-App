@@ -222,7 +222,40 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
             }
         );
 
-    };
+    }
+
+    //handle voice transcript
+    const handleVoiceTranscript = (transcript: string) => {
+        if (!transcript) {
+            return;
+        }
+        //console.log(transcript);
+        const transcriptLowercase = transcript.toLowerCase();
+
+        let foundHospital = undefined;
+
+        for(let i = 0; i < hospitals.length; i++) {
+
+            const currentHospital = hospitals[i];
+
+            const currentHospitalName = currentHospital.name.toLowerCase();
+
+            if(transcriptLowercase.includes(currentHospitalName)) {
+                foundHospital = currentHospital;
+                break;
+
+            }
+
+        }
+        console.log("Found your damn hospital" + foundHospital);
+
+        if (foundHospital) {
+            handleHospitalSelect(foundHospital);
+            renderStep()
+
+        }
+
+    }
 
 
 
@@ -231,7 +264,7 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
         <div className='w-full'>
             <div className='flex justify-center'>
                 <h2 className='text-2xl font-black mb-6 text-center mr-10 pt-2.5'>Select a Hospital</h2>
-                <VoiceCommands />
+                <VoiceCommands voiceTranscript={handleVoiceTranscript}/>
 
             </div>
 
