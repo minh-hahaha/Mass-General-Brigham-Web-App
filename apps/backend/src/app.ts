@@ -60,9 +60,11 @@ app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
 app.use(ROUTES.TRANSLATIONREQUEST, translationRouter);
 app.use(ROUTES.EDITTRANSLATIONREQUEST, translationRouter);
 app.use(ROUTES.MAINTENANCEREQUEST, maintenanceRouter);
+app.use(ROUTES.EDITMAINTENANCEREQUEST, maintenanceRouter);
 app.use(ROUTES.PATIENTTRANSPORT, patientTransportRouter);
 app.use(ROUTES.EDITPATIENTTRANSPORT, patientTransportRouter);
 app.use(ROUTES.MEDICALDEVICEREQUEST, medicalDeviceRouter);
+app.use(ROUTES.EDITMEDICALDEVICEREQUEST, medicalDeviceRouter);
 
 //Algorithms
 app.use(ROUTES.FINDPATH, graphRouter);

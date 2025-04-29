@@ -13,17 +13,19 @@ import {
 } from '@/components/ui/table.tsx';
 import {motion} from 'framer-motion';
 import MGBButton from "@/elements/MGBButton.tsx";
+import {incomingRequest} from "@/database/transportRequest.ts";
 
 interface Props {
     setActiveForm: (
         type: 'transport' | 'translation' | 'maintenance' | 'medical device' | 'sanitation'
     ) => void;
+    setEditData: (incomingRequest: incomingRequest) => void;
 }
 
-const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => {
+const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm, setEditData }) => {
 
     const [loading, setLoading] = useState(true);
-    const [requests, setRequests] = useState<incomingMedicalDeviceRequest[]>([]);
+    const [requests, setRequests] = useState<incomingRequest[]>([]);
     const [filter, setShowFilters] = useState<boolean>(false);
     const [filters, setFilters] = useState({
         device: '',
@@ -234,7 +236,7 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => 
                                     <TableCell className="text-left py-3">{req.status}</TableCell>
                                     <TableCell className="text-left py-3">{formatDate(req.requestDate)}</TableCell>
                                     <TableCell className="text-left py-3">{req.medicalDeviceRequest.department}</TableCell>
-                                    <TableCell className="text-left py-3"><MGBButton onClick={() => {}} variant={'primary'} children={'Edit'}/></TableCell>
+                                    <TableCell className="text-left py-3"><MGBButton onClick={() => {setEditData(req); setActiveForm("medical device")}} variant={'primary'} children={'Edit'}/></TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

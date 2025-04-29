@@ -1,12 +1,23 @@
 import {useEffect, useState} from 'react';
 import MGBButton from '@/elements/MGBButton.tsx';
 import ConfirmMessageComponent from '@/components/ConfirmMessageComponent.tsx';
-import { SubmitMaintenanceRequest, maintenanceRequest } from '@/database/maintenanceRequest.ts';
+import {
+    SubmitMaintenanceRequest,
+    maintenanceRequest,
+    editMaintenanceRequest,
+    EditMaintenanceRequest
+} from '@/database/maintenanceRequest.ts';
 import InputElement from '@/elements/InputElement.tsx';
 import SelectElement from '@/elements/SelectElement.tsx';
+import {incomingRequest} from "@/database/transportRequest.ts";
+import {EditMedicalDeviceRequest, editMedicalDeviceRequest} from "@/database/medicalDeviceRequest.ts";
+
+interface MaintenanceRequestProps {
+    editData: incomingRequest | undefined;
+}
 
 // Component definition
-const MaintenanceRequestPage = () => {
+const MaintenanceRequestPage = ({editData}: MaintenanceRequestProps) => {
 
     // Maintenance Information
     const [maintenanceType, setMaintenanceType] = useState('');
@@ -50,8 +61,15 @@ const MaintenanceRequestPage = () => {
             notes,
             locationId,
         };
-
-        SubmitMaintenanceRequest(newRequest);
+        if(editData){
+            const editRequest: editMaintenanceRequest = {
+                maintenanceRequest: newRequest,
+                requestId: editData.requestId
+            }
+            EditMaintenanceRequest(editRequest);
+        }else{
+            SubmitMaintenanceRequest(newRequest);
+        }
         setShowConfirmation(true);
 
         handleReset();
@@ -82,6 +100,23 @@ const MaintenanceRequestPage = () => {
             handleConfirmationClose(); // close the state after the alert
         }
     }, [showConfirmation]);
+
+    useEffect(() => {
+        if(editData){
+            setMaintenanceType(editData.maintenanceRequest.maintenanceType);
+            setMaintenanceDescription(editData.maintenanceRequest.maintenanceDescription);
+            setPriority(editData.priority);
+            setMaintenanceHospital('Chestnut Hill');
+            setMaintenanceLocation(editData.maintenanceRequest.maintenanceLocation);
+            setMaintenanceTime(editData.maintenanceRequest.maintenanceTime);
+            setStatus(editData.status as 'Pending' | 'In Progress' | 'Completed' | 'Canceled');
+            setEmployeeId(editData.employeeId);
+            setRequestDate(editData.requestDate);
+            setEmployeeName(editData.maintenanceRequest.employeeName);
+            setNotes(editData.comments);
+            setLocationId(editData.locationId);
+        }
+    }, []);
 
     const hospitalLocations = ['Chestnut Hill', '20 Patriot Place', '22 Patriot Place'];
 

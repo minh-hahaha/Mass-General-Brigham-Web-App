@@ -2,7 +2,13 @@ import {useEffect, useState} from 'react';
 import MGBButton from '../elements/MGBButton.tsx';
 import InputElement from '../elements/InputElement.tsx';
 import ConfirmMessageComponent from '../components/ConfirmMessageComponent.tsx';
-import { SubmitMedicalDeviceRequest } from '@/database/medicalDeviceRequest.ts';
+import {
+    EditMedicalDeviceRequest,
+    editMedicalDeviceRequest,
+    SubmitMedicalDeviceRequest
+} from '@/database/medicalDeviceRequest.ts';
+import {incomingRequest} from "@/database/transportRequest.ts";
+import {editTranslatorRequest} from "@/database/translationRequest.ts";
 
 type MedicalDeviceType =
     | 'ECG Monitor'
@@ -42,8 +48,12 @@ export interface MedicalDeviceRequestData {
     department: string;
 }
 
+interface MedicalDeviceRequestProps {
+    editData: incomingRequest | undefined;
+}
+
 // Medical Device Component Definition
-const MedicalDeviceServiceRequestPage = () => {
+const MedicalDeviceServiceRequestPage = ({editData}: MedicalDeviceRequestProps) => {
 
     const [employeeName, setEmployeeName] = useState('');
     const [employeeId, setEmployeeId] = useState<number>(0);
@@ -91,7 +101,15 @@ const MedicalDeviceServiceRequestPage = () => {
             notes: notes,
             department: department,
         }
-        SubmitMedicalDeviceRequest(newRequest);
+        if(editData) {
+            const editRequest: editMedicalDeviceRequest = {
+                medicalDeviceRequest: newRequest,
+                requestId: editData.requestId
+            }
+            EditMedicalDeviceRequest(editRequest);
+        }else {
+            SubmitMedicalDeviceRequest(newRequest);
+        }
         setShowConfirmation(true);
         handleReset();
     };
@@ -115,6 +133,24 @@ const MedicalDeviceServiceRequestPage = () => {
         setNotes('');
         setDepartment('');
     };
+
+    useEffect(() => {
+        if(editData){
+            setEmployeeName(editData.employeeId.toString());
+            setEmployeeId(editData.employeeId);
+            setRequestDate(editData.requestDate);
+            setPriority(editData.priority);
+            setLocation(editData.medicalDeviceRequest.location as location);
+            setMedicalDevice(editData.medicalDeviceRequest.device);
+            setDeviceModel(editData.medicalDeviceRequest.deviceModel);
+            setDeviceSerialNumber(editData.medicalDeviceRequest.deviceSerialNumber);
+            setQuantity(0);
+            setReasoning(editData.medicalDeviceRequest.deviceReasoning);
+            setStatus(editData.status);
+            setNotes(editData.comments);
+            setDepartment(editData.medicalDeviceRequest.department);
+        }
+    }, []);
 
     return (
         <div className="flex flex-col justify-center items-center min-h-screen">

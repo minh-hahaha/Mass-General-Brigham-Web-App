@@ -13,17 +13,19 @@ import {
 } from '@/components/ui/table.tsx';
 import { motion } from 'framer-motion';
 import MGBButton from "@/elements/MGBButton.tsx";
+import {incomingRequest} from "@/database/transportRequest.ts";
 
 interface Props {
     setActiveForm: (
         type: 'transport' | 'translation' | 'maintenance' | 'medical device' | 'sanitation'
     ) => void;
+    setEditData: (incomingRequest: incomingRequest) => void;
 }
 
-const TableMaintenanceRequest: React.FC<Props> = ({ setActiveForm }) => {
+const TableMaintenanceRequest: React.FC<Props> = ({ setActiveForm, setEditData }) => {
     // State management
     const [loading, setLoading] = useState(true);
-    const [requests, setRequests] = useState<incomingMaintenanceRequest[]>([]);
+    const [requests, setRequests] = useState<incomingRequest[]>([]);
     const [filter, setShowFilters] = useState<boolean>(false);
     const [filters, setFilters] = useState({
         type: '',
@@ -55,7 +57,7 @@ const TableMaintenanceRequest: React.FC<Props> = ({ setActiveForm }) => {
             (!filters.type || req.maintenanceRequest.maintenanceType?.toLowerCase().includes(filters.type.toLowerCase())) &&
             (!filters.location || req.maintenanceRequest.maintenanceLocation?.toLowerCase().includes(filters.location.toLowerCase())) &&
             (!filters.hospital || req.maintenanceRequest.maintenanceHospital?.toLowerCase().includes(filters.hospital.toLowerCase())) &&
-            (!filters.employeeName || req.employeeName?.toLowerCase().includes(filters.employeeName.toLowerCase())) &&
+            (!filters.employeeName || req.maintenanceRequest.employeeName?.toLowerCase().includes(filters.employeeName.toLowerCase())) &&
             (!filters.priority || req.priority?.toLowerCase().includes(filters.priority.toLowerCase())) &&
             (!filters.status || req.status?.toLowerCase().includes(filters.status.toLowerCase())) &&
             (!filters.reqDate || req.requestDate?.startsWith(filters.reqDate))
@@ -245,7 +247,7 @@ const TableMaintenanceRequest: React.FC<Props> = ({ setActiveForm }) => {
                                                 ?.substring(0, 5)}
                                         </TableCell>
                                         <TableCell className="text-left py-3 truncate">
-                                            {req.employeeName}
+                                            {req.maintenanceRequest.employeeName}
                                         </TableCell>
                                         <TableCell className="text-left py-3">
                                         <span
@@ -271,7 +273,7 @@ const TableMaintenanceRequest: React.FC<Props> = ({ setActiveForm }) => {
                                         <TableCell className="text-left py-3 truncate">
                                             {req.serviceType}
                                         </TableCell>
-                                        <TableCell className="text-left py-3"><MGBButton onClick={() => {}} variant={'primary'} children={'Edit'}/></TableCell>
+                                        <TableCell className="text-left py-3"><MGBButton onClick={() => {setEditData(req); setActiveForm("maintenance")}} variant={'primary'} children={'Edit'}/></TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

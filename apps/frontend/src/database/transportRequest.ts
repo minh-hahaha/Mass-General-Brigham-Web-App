@@ -50,6 +50,24 @@ export interface incomingRequest {
         disposalRequired:    boolean;
         completeBy:          string;
     },
+    medicalDeviceRequest: {
+        device: string;
+        deviceReasoning: string;
+        deviceSerialNumber: string;
+        deviceModel: string;
+        date: string;
+        location: string;
+        department: string;
+    },
+    maintenanceRequest: {
+        servMaintenanceId: number;
+        maintenanceType: string;
+        maintenanceDescription: string;
+        maintenanceHospital: 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital'
+        maintenanceLocation: string;
+        maintenanceTime: string;
+        employeeName: string;
+    },
     priority: 'Low' | 'Medium' | 'High' | 'Emergency';
     requestDate: string;
     requestId: number;

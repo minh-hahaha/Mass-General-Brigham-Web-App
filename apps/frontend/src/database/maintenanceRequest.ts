@@ -1,5 +1,7 @@
 import { ROUTES } from 'common/src/constants';
 import axios from 'axios';
+import {incomingRequest} from "@/database/transportRequest.ts";
+import {MedicalDeviceRequestData} from "@/routes/MedicalDeviceServiceRequestPage.tsx";
 
 export interface maintenanceRequest {
     // Maintenance Information
@@ -31,7 +33,6 @@ export interface incomingMaintenanceRequest {
     locationId: number;
     serviceType: string;
     requestTime: number;
-    employeeName: string;
     maintenanceRequest: {
         servMaintenanceId: number;
         maintenanceType: string;
@@ -39,7 +40,13 @@ export interface incomingMaintenanceRequest {
         maintenanceHospital: 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital'
         maintenanceLocation: string;
         maintenanceTime: string;
+        employeeName: string;
     }
+}
+
+export interface editMaintenanceRequest {
+    maintenanceRequest: maintenanceRequest;
+    requestId: number;
 }
 
 // POST request to submit a new maintenance request
@@ -47,7 +54,11 @@ export async function SubmitMaintenanceRequest(request: maintenanceRequest) {
     await axios.post(ROUTES.MAINTENANCEREQUEST, request);
 }
 
+export async function EditMaintenanceRequest(request: editMaintenanceRequest) {
+    await axios.post(ROUTES.EDITMAINTENANCEREQUEST, request);
+}
+
 // GET request to fetch all maintenance requests
 export async function GetMaintenanceRequest() {
-    return (await axios.get<incomingMaintenanceRequest[]>(ROUTES.MAINTENANCEREQUEST)).data;
+    return (await axios.get<incomingRequest[]>(ROUTES.MAINTENANCEREQUEST)).data;
 }

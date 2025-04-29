@@ -32,11 +32,11 @@ const tableTabs = (setActiveForm: (type: FormType) => void, setEditData: (data: 
     },
     {
         label: 'Medical Device',
-        component: () => <TableMedicalDeviceRequest setActiveForm={setActiveForm} />,
+        component: () => <TableMedicalDeviceRequest setActiveForm={setActiveForm} setEditData={setEditData} />,
     },
     {
         label: 'Maintenance',
-        component: () => <TableMaintenanceRequest setActiveForm={setActiveForm} />,
+        component: () => <TableMaintenanceRequest setActiveForm={setActiveForm} setEditData={setEditData} />,
     },
 ];
 
@@ -91,8 +91,8 @@ export default function RequestTablesCarousel() {
                             {activeForm === 'transport' && <TransportationRequestPage editData={editData} />}
                             {activeForm === 'translation' && <TranslationServiceRequestPage editData={editData} />}
                             {activeForm === 'sanitation' && <SanitationRequestPage editData={editData} />}
-                            {activeForm === 'medical device' && <MedicalDeviceServiceRequestPage />}
-                            {activeForm === 'maintenance' && <MaintenanceRequestPage />}
+                            {activeForm === 'medical device' && <MedicalDeviceServiceRequestPage editData={editData} />}
+                            {activeForm === 'maintenance' && <MaintenanceRequestPage editData={editData} />}
                             {/* Add other forms here as needed */}
                         </div>
                     </div>

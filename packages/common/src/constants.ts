@@ -13,7 +13,9 @@ export const ROUTES = {
     SANITATION: '/api/sanitation',
     EDITSANITATION: '/api/sanitation/edit',
     MAINTENANCEREQUEST: '/api/maintenance',
+    EDITMAINTENANCEREQUEST: '/api/maintenance/edit',
     MEDICALDEVICEREQUEST: '/api/medicaldevice',
+    EDITMEDICALDEVICEREQUEST: '/api/medicaldevice/edit',
 
     //Directory
     DIRECTORY: '/api/directory',
