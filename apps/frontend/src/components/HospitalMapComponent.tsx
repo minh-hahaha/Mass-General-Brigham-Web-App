@@ -21,6 +21,10 @@ const FaulknerBounds = {
     southWest: { lat: 42.300397452801334, lng: -71.13067929034223 }, // Bottom-left corner
     northEast: { lat: 42.303013662584725, lng: -71.12649564266864}, // Top-right corner
 };
+const BWHBounds = {
+    southWest: { lat: 42.33423529941985, lng: -71.10939107354605}, // Bottom-left corner
+    northEast: { lat: 42.33712348778656, lng: -71.10387302007483}, // Top-right corner
+};
 
 
 // floor type
@@ -43,6 +47,8 @@ const availableFloors: Floor[] = [
     { id: "PP-4", floor: "4", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP04.svg" },
 
     { id: "FK-1", floor: "1", buildingId: "3", buildingName: "Faulkner Hospital",svgPath: "/FK01.svg" },
+
+    { id: "BWH-2", floor: "2", buildingId: "4", buildingName: "Main Hospital",svgPath: "/BWH02.svg" },
 ];
 
 
@@ -374,6 +380,10 @@ const HospitalMapComponent = ({
             <OverlayComponent
                 bounds={FaulknerBounds}
                 imageSrc={'/FK01.svg'}
+            />
+            <OverlayComponent
+                bounds={BWHBounds}
+                imageSrc={'/BWH02.svg'}
             />
             {visible &&
             <DisplayPathComponent coordinates={GetPolylinePath(getCurrentFloorPath(buildingId, floor))} />
