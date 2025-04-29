@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import MGBButton from "@/elements/MGBButton.tsx";
 import filter from '../assets/instructions/filter.png';
-import create_edges from '../assets/instructions/create_edges.png';
-import save_changes from '../assets/instructions/save.png';
+import export_directory from '../assets/instructions/export_directory.png';
 import import_new from '../assets/instructions/import_new.png';
 
 interface MapInstructionsProps {
@@ -19,17 +18,12 @@ const instructionPages = [
     {
         title: "Import New Directories",
         imagePath: import_new,
-        description: "Click on the node to edit its name, room number, or remove node."
+        description: "Import new directory files through this procedure."
     },
     {
         title: "Create Edges",
-        imagePath: create_edges,
-        description: "Click the \"Create Edge\" button, then nodes can connected."
-    },
-    {
-        title: "Save Nodes and Edges",
-        imagePath: save_changes,
-        description: "Click the \"Save Nodes and Edges\" button to store your configuration."
+        imagePath: export_directory,
+        description: "Export the directory to a CSV file."
     }
 ];
 
