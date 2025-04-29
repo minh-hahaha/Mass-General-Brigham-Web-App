@@ -1,17 +1,16 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import Member from '../components/Member.tsx';
 import MemberPair from '../components/MemberPair.tsx';
 
 const AboutPage = () => {
     return (
         <div className="bg-gray-200 h-2full max-w-full overflow-x-hidden">
-            <div className="grid grid-cols-1 px-24 py-24">
+            <div className="grid grid-cols-1 px-24 py-12 text-center">
                 <motion.div
-                    className="font-semibold text-4xl pb-20"
+                    className="font-semibold text-4xl pb-10"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 2, delay: 0.5 }}
+                    transition={{ duration: 2, delay: 0.25 }}
                 >
                     Meet the Developers of Team C
                 </motion.div>
@@ -108,10 +107,10 @@ const AboutPage = () => {
                     </MemberPair>
 
                     <motion.div
-                        className="font-semibold text-4xl pb-20"
+                        className="font-semibold text-4xl pb-4"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 2, delay: 4 }}
+                        transition={{ duration: 2, delay: 2 }}
                     >
                         Special Thanks to:
                     </motion.div>

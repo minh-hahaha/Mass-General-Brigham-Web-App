@@ -20,6 +20,8 @@ import AboutPage from '@/routes/AboutPage.tsx';
 import {Auth0Provider} from "@auth0/auth0-react";
 import {ROUTES} from "common/src/constants.ts";
 
+import CreditsPage from "@/routes/CreditsPage.tsx";
+
 function App() {
     const defaultOpen = Cookies.get('sidebar_state') === 'true';
     const domain = import.meta.env.VITE_AUTH0_DOMAIN;
@@ -82,24 +84,31 @@ function App() {
                                     element={<SanitationRequestPage />}
                                 />
 
-                                <Route
-                                    path="/MaintenancePage"
-                                    element={<MaintenanceRequestPage />}
-                                />
-                                <Route
-                                    path="/TransportationRequestPage"
-                                    element={<TransportationRequestPage />}
-                                />
-                                <Route
-                                    path={'/MedicalDevicePage'}
-                                    element={<MedicalDeviceServiceRequestPage />}
-                                />
-                                <Route path="/AboutPage" element={<AboutPage />} />
-                            </Routes>
-                        </main>
-                    </div>
-                </BrowserRouter>
-            </div>
+                                    <Route
+                                        path="/MaintenancePage"
+                                        element={<MaintenanceRequestPage />}
+                                    />
+                                    <Route
+                                        path="/TransportationRequestPage"
+                                        element={<TransportationRequestPage />}
+                                    />
+                                    <Route
+                                        path={'/MedicalDevicePage'}
+                                        element={<MedicalDeviceServiceRequestPage />}
+                                    />
+                                    <Route
+                                        path="/AboutPage"
+                                        element={<AboutPage />}
+                                    />
+                                    <Route
+                                        path="/CreditsPage"
+                                        element={<CreditsPage />}
+                                    />
+                                </Routes>
+                            </main>
+                        </div>
+                    </BrowserRouter>
+                </div>
         </Auth0Provider>
     );
 }
