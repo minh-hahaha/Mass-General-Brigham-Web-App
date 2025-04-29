@@ -310,7 +310,7 @@ const HospitalMapComponent = ({
         if (!floorId?.startsWith('PP-')) {
             floorId = 'PP-1'; // Default to PP-1 if not a PP floor
         }
-        console.log("floorId here is " , floorId);
+        // console.log("floorId here is " , floorId);
         // Find the floor data
         return (
             availableFloors.find((f) => f.id === floorId) ||
