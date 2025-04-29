@@ -12,6 +12,7 @@ import { ROUTES } from 'common/src/constants.ts';
 import TagFilterBox from '@/elements/TagFilterBox.tsx';
 import {getDirectory} from "@/database/gettingDirectory.ts";
 import {GetNode} from "@/database/getDepartmentNode.ts";
+import FloorSelector from "@/components/FloorSelector.tsx";
 
 
 // A container for a Node on the map
@@ -92,7 +93,7 @@ interface Props {
     currentFloorId: string;
 }
 
-const NodeEditorComponent = ({ currentFloorId }: Props) => {
+const NodeEditorComponent = () => {
     const map = useMap();
     const drawingLibrary = useMapsLibrary('drawing');
     let drawingManager: google.maps.drawing.DrawingManager;
@@ -135,6 +136,58 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
     const lastFloor = useRef<string>('');
     // This will hold the nodeID of the elevator the node is connected to
     const [destinationElevator, setDestinationElevator] = useState<string>('');
+
+    // Current Floor/building
+    const [currentFloorId, setCurrentFloorId] = useState<string>('');
+
+    // For Hospital Selector
+    const [selectedHospital, setSelectedHospital] = useState<typeof hospitals[0] | null >(null);
+    const hospitals = [
+        {
+            id: 1,
+            name: 'Chestnut Hill Healthcare Center',
+            address: '850 Boylston Street, Chestnut Hill, MA 02467',
+            defaultParking: {lat: 42.326350183802454, lng: -71.14988541411569},
+            phoneNumber: '(800) 294-9999',
+            hours: 'Mon-Fri: 8:00 AM - 5:30 PM',
+            image:'/HospitalCards/ChestnutHillCard.jpg',
+            description: 'Very Cool Chestnut Hill Hospital',
+            coordinates: {lat: 42.325988, lng: -71.149567, zoom: 18},
+        },
+        {
+            id: 2,
+            name: 'Foxborough Health Care Center',
+            address: '20-22 Patriot Place, Foxborough, MA 02035',
+            defaultParking: {lat: 42.09222126540862, lng: -71.26646379537021},
+            phoneNumber: '(508) 718-4000',
+            hours: 'Mon-Sat: 8:00 AM - 8:00 PM',
+            image:'/HospitalCards/PatriotPlaceCard.jpg',
+            description: 'Very Cool Patriot Place',
+            coordinates: {lat: 42.092617, lng: -71.266492, zoom: 18},
+        },
+        {
+            id: 3,
+            name: 'Brigham and Women\'s Faulkner Hospital',
+            address: '1153 Centre St, Jamaica Plain, MA 02130',
+            defaultParking: {lat: 42.30110395876755, lng: -71.12754584282733},
+            phoneNumber: '(617) 983-7000',
+            hours: 'Open 24 hours',
+            image:'/HospitalCards/FaulknerHospitalCard.jpg',
+            description: 'Very Cool Faulkner Hospital',
+            coordinates: {lat: 42.301684739524546, lng: -71.12816396084828, zoom: 18},
+        },
+        {
+            id: 4,
+            name: 'Brigham and Women\'s Main Hospital',
+            address: '75 Francis St, Boston, MA 02115',
+            defaultParking: {lat: 42.33597732454244, lng: -71.10722288414479},
+            phoneNumber: '(617) 732-5500',
+            hours: 'Open 24 hours',
+            image:'/HospitalCards/MGBMainCard.jpeg',
+            description: 'Very Cool Main Hospital',
+            coordinates: {lat: 42.33629683337891, lng: -71.1067533432466, zoom: 18},
+        }
+    ]
 
     // Properties for the drawn nodes (AdvancedMarkers)
     const nodeProps = {
@@ -210,6 +263,10 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
 
     const getBuildingPropsByFloor = () => {
         return availableFloors.find(floor => floor.id === currentFloorId);
+    }
+
+    const getBuildingPropsById = (buildingID: number) => {
+        return availableFloors.find(floor => floor.buildingId === buildingID.toString());
     }
 
     const fetchNodeEdgeData = async (buildingProps: Floor) => {
@@ -634,26 +691,74 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
         'Faulkner Hospital': { lat: 42.301684739524546, lng: -71.12816396084828, zoom: 18 },
     };
 
-    const loc = availableFloors.find((f) => f.id === currentFloorId)?.buildingName || null;
-    const handleZoomToHospital = () => {
-        if (!map || !loc) return;
-
-        const hospitalLocation = HospitalLocations[loc];
-        if (hospitalLocation) {
-            map.panTo({ lat: hospitalLocation.lat, lng: hospitalLocation.lng });
-            map.setZoom(hospitalLocation.zoom);
+    const onHospitalSelect = (hospitalId: number) => {
+        const buildingProps = getBuildingPropsById(hospitalId);
+        if(buildingProps && map){
+            const hospitalLocation = HospitalLocations[buildingProps.buildingName];
+            if (hospitalLocation) {
+                map.panTo({ lat: hospitalLocation.lat, lng: hospitalLocation.lng });
+                map.setZoom(hospitalLocation.zoom);
+                setCurrentFloorId(buildingProps.id);
+            }
         }
+    }
+    // Handle Select Hospital
+    const handleHospitalSelect = (hospital: typeof hospitals[0]) => {
+        setSelectedHospital(hospital);
+        onHospitalSelect(hospital.id)
+    }
+
+    const renderHospitalSelection = () => {
+        return (
+            <div className='w-full'>
+            <h2 className='text-xl font-black mb-6 text-center'>Select a Hospital</h2>
+            <div className='space-y-4 mt-4'>
+                {hospitals.map(hospital => (
+                    <div
+                        key={hospital.id}
+                        onClick={() => handleHospitalSelect(hospital)}
+                        className="relative cursor-pointer rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+                    >
+                        <div
+                            className="h-20 bg-cover bg-center"
+                             style={{backgroundImage: `url(${hospital.image || '/api/placeholder/400/320'})`}}
+                        >
+                            <div
+                                className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-3">
+                                <h3 className="text-white font-bold text-lg">{hospital.name}</h3>
+                                {/*<p className="text-white/90 text-sm">{hospital.address}</p>*/}
+                            </div>
+                        </div>
+
+                     </div>
+                ))}
+            </div>
+        </div>)
     };
 
     return (
         <>
-            <button
-                onClick={handleZoomToHospital}
-                className="absolute top-1/5 right-6 z-10 bg-white p-3 rounded-full shadow-lg hover:bg-gray-100 transition-colors"
-                title="Zoom to hospital"
+            <div
+                className={
+                    'absolute top-4 left-8 p-4 bg-white rounded-xl shadow-lg text-sm text-gray-800 max-w-sm space-y-1 z-10 w-1/2'
+                }
+                hidden={clickedNode !== null || clickedEdge !== null}
             >
-                <ZoomIn size={26} className="text-mgbblue" />
-            </button>
+                {renderHospitalSelection()}
+            </div>
+            <div
+                className={
+                    'absolute top-8 left-108 bg-white rounded-xl shadow-lg text-sm text-gray-800 max-w-sm space-y-1 z-10 '
+                }
+                hidden={
+                    (clickedNode !== null || clickedEdge !== null) || selectedHospital?.id !== 2
+                }
+            >
+                <FloorSelector
+                    currentFloorId={currentFloorId}
+                    onChange={(id) => setCurrentFloorId(id)}
+                    />
+            </div>
             <div
                 hidden={clickedNode === null || mode === 'Edge'}
                 className="absolute bottom-18 left-8 p-4 bg-white rounded-xl shadow-lg text-sm text-gray-800 max-w-sm space-y-1 z-10"
@@ -662,17 +767,38 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                 <div>
                     <p>
                         Node ID:{' '}
-                        {mapNodesRef.current.find((node) => node.node.nodeId === clickedNode)?.node.nodeId}
+                        {
+                            mapNodesRef.current.find((node) => node.node.nodeId === clickedNode)
+                                ?.node.nodeId
+                        }
                     </p>
-                    <p>X: {mapNodesRef.current.find((node) => node.node.nodeId === clickedNode)?.node.x}</p>
-                    <p>Y: {mapNodesRef.current.find((node) => node.node.nodeId === clickedNode)?.node.y}</p>
+                    <p>
+                        X:{' '}
+                        {
+                            mapNodesRef.current.find((node) => node.node.nodeId === clickedNode)
+                                ?.node.x
+                        }
+                    </p>
+                    <p>
+                        Y:{' '}
+                        {
+                            mapNodesRef.current.find((node) => node.node.nodeId === clickedNode)
+                                ?.node.y
+                        }
+                    </p>
                     <p>
                         Floor:{' '}
-                        {mapNodesRef.current.find((node) => node.node.nodeId === clickedNode)?.node.floor}
+                        {
+                            mapNodesRef.current.find((node) => node.node.nodeId === clickedNode)
+                                ?.node.floor
+                        }
                     </p>
                     <p>
                         Building ID:{' '}
-                        {mapNodesRef.current.find((node) => node.node.nodeId === clickedNode)?.node.buildingId}
+                        {
+                            mapNodesRef.current.find((node) => node.node.nodeId === clickedNode)
+                                ?.node.buildingId
+                        }
                     </p>
                 </div>
 
@@ -710,24 +836,24 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                     ></InputElement>
                 </div>
                 <div hidden={nodeType !== 'Elevator'}>
-                <SelectElement
-                    label={'Select Destination Elevator'}
-                    id={'destinationElevator'}
-                    value={destinationElevator}
-                    placeholder={'Select Destination Elevator'}
-                    onChange={(e) => setDestinationElevator(e.target.value)}
-                    options={[
-                        'Elevator A',
-                        'Elevator B',
-                        'Elevator C',
-                        'Elevator D',
-                        'Elevator E',
-                        'Elevator F',
-                        'Elevator G',
-                        'Elevator H',
-                    ]}
-                ></SelectElement>
-                    </div>
+                    <SelectElement
+                        label={'Select Destination Elevator'}
+                        id={'destinationElevator'}
+                        value={destinationElevator}
+                        placeholder={'Select Destination Elevator'}
+                        onChange={(e) => setDestinationElevator(e.target.value)}
+                        options={[
+                            'Elevator A',
+                            'Elevator B',
+                            'Elevator C',
+                            'Elevator D',
+                            'Elevator E',
+                            'Elevator F',
+                            'Elevator G',
+                            'Elevator H',
+                        ]}
+                    ></SelectElement>
+                </div>
                 <MGBButton
                     onClick={() => removeSelectedNode()}
                     children={'Delete Node'}
@@ -739,7 +865,7 @@ const NodeEditorComponent = ({ currentFloorId }: Props) => {
                     selectTitle={'Select a Department'}
                     tags={tags}
                     setTags={setTags}
-                    options={departmentOptions.map(opt => opt.deptName)}
+                    options={departmentOptions.map((opt) => opt.deptName)}
                 ></TagFilterBox>
             </div>
 

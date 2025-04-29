@@ -100,7 +100,7 @@ const NodeEditor = () => {
                         <div
                             className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20"
                         >
-                            <FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />
+                            {/*<FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />*/}
                         </div>
                         <NodeEditorComponent currentFloorId={currentFloorId} ></NodeEditorComponent>
                     </Map>
