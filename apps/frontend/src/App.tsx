@@ -11,20 +11,10 @@ import SanitationRequestPage from './components/forms/SanitationRequestComponent
 import TransportRequestPage from "./components/forms/TransportationRequestPage.tsx";
 import TranslationServiceRequestPage from './components/forms/TranslationServiceRequestPage.tsx';
 import MedicalDeviceServiceRequestPage from './components/forms/MedicalDeviceServiceRequestPage.tsx'
-import { SidebarProvider } from '@/components/ui/sidebar';
-import { ShadSidebar } from '@/components/ui/shadsidebar.tsx';
 import {MapPage} from "@/routes/MapPage.tsx";
 import MapViewPage from "@/routes/MapViewPage.tsx";
 import MaintenanceRequestPage from "@/components/forms/MaintenanceRequestPage.tsx";
 import Cookies from "js-cookie";
-import SanitationRequestPage from './routes/SanitationRequestComponent.tsx';
-import TransportRequestPage from './routes/TransportationRequestPage.tsx';
-import TranslationServiceRequestPage from './routes/TranslationServiceRequestPage.tsx';
-import MedicalDeviceServiceRequestPage from './routes/MedicalDeviceServiceRequestPage.tsx';
-import { MapPage } from '@/routes/MapPage.tsx';
-import MapViewPage from '@/routes/MapViewPage.tsx';
-import MaintenanceRequestPage from '@/routes/MaintenanceRequestPage.tsx';
-import Cookies from 'js-cookie';
 import TestNodeEditor from '@/routes/TestNodeEditor.tsx';
 import AboutPage from '@/routes/AboutPage.tsx';
 import {Auth0Provider} from "@auth0/auth0-react";
