@@ -7,10 +7,6 @@ import SelectElement from '@/elements/SelectElement.tsx';
 
 // Component definition
 const MaintenanceRequestPage = () => {
-    const loggedIn = sessionStorage.getItem('loggedIn');
-    if (!loggedIn) {
-        window.location.href = '/';
-    }
 
     // Maintenance Information
     const [maintenanceType, setMaintenanceType] = useState('');

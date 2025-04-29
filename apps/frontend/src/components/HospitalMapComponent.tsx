@@ -68,11 +68,11 @@ class Vector {
     }
 }
 
-function createTextPath(traversalResult: myNode[] | undefined | null): string[] {
+function createTextPath(traversalResult: myNode[] | undefined | null): [string[], string[] ]{
     // Make sure a path exists
     if (!traversalResult) {
         console.log('No Path');
-        return [];
+        return [[],[]];
     }
 
     // Initial facing direction. TODO: need to be able to figure out direction for the first node
@@ -84,6 +84,7 @@ function createTextPath(traversalResult: myNode[] | undefined | null): string[] 
         { key: 'FK', dir: new Vector(traversalResult[0].x + 50, 0) },
     ];
     const directions = [];
+    const icons=[];
     const startDir = StartDirs.find((value) => traversalResult[0].nodeId.includes(value.key));
     let currentDirection;
     if (!startDir) {
@@ -127,6 +128,8 @@ function createTextPath(traversalResult: myNode[] | undefined | null): string[] 
             directions.push(
                 `Take the Elevator to the ${nextNode.floor}${getNumberSuffix(nextNode.floor)} floor`
             );
+            icons.push('elevator');
+
         }
         // The default instructions if not traversing floors or if getting off the elevator/stairs
         if (
@@ -137,9 +140,11 @@ function createTextPath(traversalResult: myNode[] | undefined | null): string[] 
             directions.push(
                 `From the ${currentNode.nodeId} ${determineDirection(angle)} for ${tempEdge.distance.toFixed(1)} feet until you reach the ${nextNode.nodeId}`
             );
+            icons.push(`${determineDirection(angle)}`);
         }
     }
-    return directions;
+
+    return [directions, icons];
 }
 
 function determineDirection(angle: number): string {
@@ -175,13 +180,8 @@ async function FindPath(start: myNode, end: myNode, strategy: string) {
     return nodes;
 }
 
-function GetPolylinePath(path: myNode[]): { lat: number; lng: number }[] {
-    return path.map((node) => ({
-        lat: Number(node.x),
-        lng: Number(node.y),
-    }));
-}
 
+// displaying Text Directions
 let directions1: string;
 function setDirections(directions: string) {
     directions1 = directions;
@@ -191,12 +191,25 @@ function setDirections2(directions: string[]) {
     directions11 = directions;
     console.log(directions11);
 }
+let iconsToPass:string[];
+function setIcons(icons: string[]) {
+    iconsToPass=icons;
+}
+
+function GetPolylinePath(path: myNode[]): { lat: number; lng: number }[] {
+    return path.map((node) => ({
+        lat: Number(node.x),
+        lng: Number(node.y),
+    }));
+}
+
 
 // interface for prop
 interface Props {
     startNodeId: string;
     endNodeId: string;
     selectedAlgorithm: string;
+    currentFloorId: string | undefined;
     visible: boolean;
     driveDirections: string;
     drive2Directions: string[];
@@ -207,6 +220,7 @@ const HospitalMapComponent = ({
     startNodeId,
     endNodeId,
     selectedAlgorithm,
+    currentFloorId,
     visible,
     driveDirections,
     drive2Directions,
@@ -215,7 +229,7 @@ const HospitalMapComponent = ({
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
     const [startNode, setStartNode] = useState<myNode>();
     const [endNode, setEndNode] = useState<myNode>();
-    const [currentFloorId, setCurrentFloorId] = useState<string>();
+    //const [currentFloorId, setCurrentFloorId] = useState<string>();
     const [textSpeech, setTextSpeech] = useState<HTMLElement | null>(null);
 
     console.log(startNodeId);
@@ -246,7 +260,8 @@ const HospitalMapComponent = ({
                     const result = await FindPath(startNode, endNode, selectedAlgorithm);
                     console.log('Path found:', result);
                     setBFSPath(result);
-                    const textDirection = createTextPath(result);
+                    const [textDirection, icons] = createTextPath(result);
+                    setIcons(icons);
                     const text = document.getElementById('text-directions');
                     if (text) {
                         //setTextSpeech(text);
@@ -257,8 +272,6 @@ const HospitalMapComponent = ({
                         setDirections(text.innerHTML);
                         console.log(text.innerHTML);
                         setDirections2(text.innerHTML.split('<br><br>'));
-
-
 
                     }
                 } catch (error) {
@@ -274,21 +287,22 @@ const HospitalMapComponent = ({
     }, [startNode, endNode, selectedAlgorithm]);
 
     // auto-select floor id for start node
-    useEffect(() => {
-        if (bfsPath.length > 0 && startNode) {
-            const startFloor = availableFloors.find(
-                (f) => f.buildingId === startNode.buildingId && f.floor === startNode.floor
-            );
-            if (startFloor) {
-                setCurrentFloorId(startFloor.id);
-            }
-        }
-    }, [bfsPath, startNode]);
+    // useEffect(() => {
+    //     if (bfsPath.length > 0 && startNode) {
+    //         const startFloor = availableFloors.find(
+    //             (f) => f.buildingId === startNode.buildingId && f.floor === startNode.floor
+    //         );
+    //         if (startFloor) {
+    //             setCurrentFloorId(startFloor.id);
+    //         }
+    //     }
+    // }, [bfsPath, startNode]);
 
     // Handle floor change
-    const handleFloorChange = (floorId: string) => {
-        setCurrentFloorId(floorId);
-    };
+    // const handleFloorChange = (floorId: string) => {
+    //     setCurrentFloorId(floorId);
+    // };
+
 
     // seperate out current floor for PP and CH
     // Get the current Patriot Place floor data
@@ -343,11 +357,12 @@ const HospitalMapComponent = ({
                     driveDirections={driveDirections}
                     drive22Directions={drive2Directions}
                     walk22Directions={directions11}
+                    icons={iconsToPass}
                 />
             )}
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20">
-                <FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />
-            </div>
+            {/*<div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20">*/}
+            {/*    <FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />*/}
+            {/*</div>*/}
         <div className="relative w-full h-full">
             <OverlayComponent
                 bounds={ChestnutHillBounds}
