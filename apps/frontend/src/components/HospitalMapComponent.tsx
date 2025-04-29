@@ -221,7 +221,7 @@ const HospitalMapComponent = ({
     startNodeId,
     endNodeId,
     selectedAlgorithm,
-    // currentFloorId,
+    currentFloorId,
     visible,
     driveDirections,
     drive2Directions,
@@ -230,11 +230,12 @@ const HospitalMapComponent = ({
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
     const [startNode, setStartNode] = useState<myNode>();
     const [endNode, setEndNode] = useState<myNode>();
-    const [currentFloorId, setCurrentFloorId] = useState<string>();
     const [textSpeech, setTextSpeech] = useState<HTMLElement | null>(null);
 
+    const [startFloor, setStartFloor] = useState<Floor>();
     console.log(startNodeId);
     console.log(endNodeId);
+    console.log("currentFloorId at start " , currentFloorId);
 
     // get node using nodeId
     useEffect(() => {
@@ -294,25 +295,22 @@ const HospitalMapComponent = ({
                 (f) => f.buildingId === startNode.buildingId && f.floor === startNode.floor
             );
             if (startFloor) {
-                setCurrentFloorId(startFloor.id);
+                setStartFloor(startFloor);
             }
         }
     }, [bfsPath, startNode]);
 
-    // // Handle floor change
-    // const handleFloorChange = (floorId: string) => {
-    //     setCurrentFloorId(floorId);
-    // };
 
 
     // seperate out current floor for PP and CH
     // Get the current Patriot Place floor data
+
     const getCurrentPatriotPlaceFloor = () => {
         let floorId = currentFloorId;
         if (!floorId?.startsWith('PP-')) {
             floorId = 'PP-1'; // Default to PP-1 if not a PP floor
         }
-
+        console.log("floorId here is " , floorId);
         // Find the floor data
         return (
             availableFloors.find((f) => f.id === floorId) ||
@@ -320,13 +318,14 @@ const HospitalMapComponent = ({
         );
     };
 
-    const getChestnutHillFloor = () => {
-        return availableFloors.find((f) => f.id === 'CH-1')!;
-    };
+    // const getChestnutHillFloor = () => {
+    //     return availableFloors.find((f) => f.id === 'CH-1')!;
+    // };
+    // const chestnutHillFloor = getChestnutHillFloor();
 
-
-    const chestnutHillFloor = getChestnutHillFloor();
     const patriotPlaceFloor = getCurrentPatriotPlaceFloor();
+
+    // console.log("floor at pp " + patriotPlaceFloor.id);
 
     const getCurrentFloorPath = (buildingId: string, floorNumber: string) => {
         return bfsPath.filter(
@@ -347,10 +346,10 @@ const HospitalMapComponent = ({
     };
 
     const { buildingId, floor } = getCurrentFloorInfo();
-    console.log("buildingId" , buildingId);
-    console.log("floor", floor);
-
-    console.log("THE PATH ", GetPolylinePath(getCurrentFloorPath(buildingId, floor)));
+    // console.log("buildingId" , buildingId);
+    // console.log("floor", floor);
+    //
+    // console.log("THE PATH ", GetPolylinePath(getCurrentFloorPath(buildingId, floor)));
     return (
         <>
             {showTextDirections && (
@@ -366,7 +365,7 @@ const HospitalMapComponent = ({
         <div className="relative w-full h-full">
             <OverlayComponent
                 bounds={ChestnutHillBounds}
-                imageSrc={chestnutHillFloor.svgPath}
+                imageSrc={"/CH01.svg"}
             />
             <OverlayComponent
                 bounds={PatriotPlaceBounds}

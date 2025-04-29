@@ -17,7 +17,7 @@ import MapSidebarComponent from "@/components/MapUI/MapSidebarComponent.tsx";
 import FloorSelector from "@/components/FloorSelector.tsx";
 
 const HospitalLocations: Record<string, {lat: number, lng: number, zoom: number}> = {
-    'Chestnut Hill Healthcare Center': {lat: 42.325988, lng: -71.149567, zoom: 20},
+    'Chestnut Hill Healthcare Center': {lat: 42.325988, lng: -71.149567, zoom: 19.5},
     'Foxborough Health Care Center': {lat: 42.092617, lng: -71.266492, zoom: 20},
     'Brigham and Women\'s Faulkner Hospital': {lat: 42.301684739524546, lng: -71.12816396084828, zoom: 19},
     'Brigham and Women\'s Main Hospital': {lat: 42.33550114249947, lng: -71.10727870473441, zoom: 18}
@@ -146,14 +146,13 @@ const DirectionsMapComponent = () => {
     // update floor selector visibility
     useEffect(() => {
         setShowFloorSelector(buildingID === 2);
-
-        if(buildingID === 2) {
-            setCurrentFloorId("PP-1");
-
-        }
-        else{
-            setCurrentFloorId(undefined);
-        }
+        //
+        // if(buildingID === 2) {
+        //     setCurrentFloorId("PP-1");
+        // }
+        // else{
+        //     setCurrentFloorId(undefined);
+        // }
     }, [buildingID]);
 
     // find directions
