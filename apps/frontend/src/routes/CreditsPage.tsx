@@ -48,7 +48,7 @@ const CreditsPage = () => {
                                 title="React"
                                 description="JavaScript Library"
                                 version="v19.1.0"
-                                link="https://www.postgresql.org/"
+                                link="https://react.dev"
                             />
                             <CreditItem
                                 picture="'/Credits/Nodejs.png'"
