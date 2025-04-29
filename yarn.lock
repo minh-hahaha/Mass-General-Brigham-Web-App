@@ -5545,7 +5545,7 @@ __metadata:
     js-cookie: "npm:^3.0.5"
     lib-utils-ts: "npm:^0.0.0-test"
     localforage: "npm:^1.10.0"
-    lucide-react: "npm:^0.487.0"
+    lucide-react: "npm:^0.503.0"
     match-sorter: "npm:^6.3.1"
     prettier: "npm:*"
     prettier-config-custom: "workspace:*"
@@ -5555,6 +5555,7 @@ __metadata:
     react-icons: "npm:^5.5.0"
     react-router-bootstrap: "npm:^0.26.2"
     react-router-dom: "npm:^6.11.2"
+    recharts: "npm:^2.15.3"
     serve: "npm:^14.2.0"
     shadcn-ui: "npm:^0.9.5"
     tailwind-merge: "npm:^3.2.0"
@@ -6637,6 +6638,15 @@ __metadata:
   peerDependencies:
     react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
   checksum: 10c0/7177778c584b8e9545957bef28e95841c4be1b3bf473f9e2e64454c3e183d7ed0bc977c9f7b5446088023c7000151b7a3b27398d4f70025bf343782192f653ca
+  languageName: node
+  linkType: hard
+
+"lucide-react@npm:^0.503.0":
+  version: 0.503.0
+  resolution: "lucide-react@npm:0.503.0"
+  peerDependencies:
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/97d282acf1a384da690cd973804d11737ebdba744cd11b2a3807a06d407e0f1f975723d9ce4afcb55058e6bd179d77029272cddcc726232339a3fde263b375b4
   languageName: node
   linkType: hard
 

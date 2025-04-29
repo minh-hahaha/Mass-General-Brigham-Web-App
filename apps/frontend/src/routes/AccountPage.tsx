@@ -1,63 +1,140 @@
 import account from "@/assets/icons/account.png";
-import React, {useState} from "react";
-import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import CarouselMenu from '@/components/CarouselMenu.tsx';
-import TableAllRequest from '@/components/tables/TableServiceRequest.tsx';
-import TableMaintenanceRequest from '@/components/tables/TableMaintenanceRequest.tsx';
-import TableSanitationRequest from '@/components/tables/TableSanitationRequest.tsx';
-import TableTransportRequest from '@/components/tables/TableTransportRequest.tsx';
-import TableMedicalDeviceRequest from '@/components/tables/TableMedicalDeviceRequest.tsx';
-import TableTranslatorRequest from "@/components/tables/TableTranslatorRequest.tsx";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table.tsx';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { Card, CardHeader, CardContent, CardTitle, CardFooter } from "@/components/ui/card";
+import { Pie, PieChart } from "recharts"
 
-const [selectedTab, setSelectedTab] = useState(0);
-const tableTabs = [
-    { label: 'All', component: TableAllRequest },
-    { label: 'Transport', component: TableTransportRequest },
-    { label: 'Translation', component: TableTranslatorRequest },
-    { label: 'Sanitation', component: TableSanitationRequest },
-    { label: 'Medical Device', component: TableMedicalDeviceRequest },
-    { label: 'Maintenance', component: TableMaintenanceRequest },
-];
+import {
+    ChartConfig,
+    ChartContainer,
+    ChartTooltip,
+    ChartTooltipContent,
+} from "@/components/ui/chart"
+
+// example chart stuff
+// colors are not good i know
+const chartData = [
+    { browser: "chrome", visitors: 275, fill: "#003A96" },
+    { browser: "safari", visitors: 200, fill: "red" },
+    { browser: "firefox", visitors: 187, fill: "yellow" },
+    { browser: "edge", visitors: 173, fill: "green" },
+    { browser: "other", visitors: 90, fill: "orange" },
+]
+
+const chartConfig = {
+    visitors: {
+        label: "Visitors",
+    },
+    chrome: {
+        label: "Chrome",
+        color: "hsl(var(--chart-1))",
+    },
+    safari: {
+        label: "Safari",
+        color: "hsl(var(--chart-2))",
+    },
+    firefox: {
+        label: "Firefox",
+        color: "hsl(var(--chart-3))",
+    },
+    edge: {
+        label: "Edge",
+        color: "hsl(var(--chart-4))",
+    },
+    other: {
+        label: "Other",
+        color: "hsl(var(--chart-5))",
+    },
+} satisfies ChartConfig
+
 
 const AccountPage = () => {
     return(
-        <div className="min-h-screen grid grid-cols-1 md:grid-cols-4 gap-4 p-4 overflow-auto">
+        <div className="min-h-[calc(100vh-6rem)] grid grid-cols-1 md:grid-cols-4 gap-4 p-4 overflow-auto">
             {/* Left Panel: Profile Card */}
             <Card className="h-full md:col-span-1 flex flex-col overflow-auto">
-                <CardHeader>
-                    <div className="flex flex-col items-center space-y-4">
-                        <div className="w-35 h-35 bg-gray-200 rounded-full">
-                            <img src={account} alt="account icon"></img>
-                        </div>
-                        <h1 className="text-xl font-bold">First Name Last Name</h1>
-                        <h3>Employee ID: 12345</h3>
+                <CardHeader className="flex flex-col space-y-4 items-center">
+                    {/* Title at the very top */}
+                    <div className="w-full md:w-auto">
+                        <CardTitle>Employee Details</CardTitle>
+                    </div>
+
+                    {/* Profile Image */}
+                    <div className="w-24 h-24 bg-gray-200 rounded-full overflow-hidden">
+                        <img src={account} alt="account icon" className="object-cover w-full h-full" />
+                    </div>
+
+                    {/* Name and ID */}
+                    <div className="flex flex-col items-center space-y-1">
+                        <h1 className="text-xl font-bold text-center">First Name Last Name</h1>
+                        <h3 className="text-center">Employee ID: 12345</h3>
                     </div>
                 </CardHeader>
-                <CardContent className="space-y-2 text-sm">
+                <CardContent className="space-y-25 text-xl">
                     <p><strong>Position:</strong> ------------------</p>
                     <p><strong>Department:</strong> -------------------</p>
                     <p><strong>Email:</strong> ----------------</p>
                 </CardContent>
             </Card>
             {/* Right Panel */}
-            <div className="md:col-span-2 flex flex-col space-y-6">
-                {/* Top Panel: Requests */}
-                <Card className="w-full">
-                    <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div className="md:col-span-3 flex flex-col space-y-4 h-full">
+                {/* Top Panel: Status and Priority */}
+                <Card className="w-full flex flex-col">
+                    <CardHeader className="text-xl flex flex-col md:flex-row md:items-center md:justify-between">
+                        <CardTitle>Status and Priority</CardTitle>
+                    </CardHeader>
+
+                    <CardContent className="flex flex-row gap-0">
+                        {/* First Chart with Label */}
+                        <div className="flex flex-col items-center flex-1">
+                            <ChartContainer
+                                config={chartConfig}
+                                className="aspect-square max-h-[230px] w-full"
+                            >
+                                <PieChart>
+                                    <ChartTooltip
+                                        cursor={false}
+                                        content={<ChartTooltipContent hideLabel />}
+                                    />
+                                    <Pie data={chartData} dataKey="visitors" nameKey="browser" />
+                                </PieChart>
+                            </ChartContainer>
+                            <div className="text-center mt-2 text-xl">
+                                <span><strong>Status</strong></span>
+                            </div>
+                        </div>
+
+                        {/* Second Chart with Label */}
+                        <div className="flex flex-col items-center flex-1">
+                            <ChartContainer
+                                config={chartConfig}
+                                className="aspect-square max-h-[230px] w-full"
+                            >
+                                <PieChart>
+                                    <ChartTooltip
+                                        cursor={false}
+                                        content={<ChartTooltipContent hideLabel />}
+                                    />
+                                    <Pie data={chartData} dataKey="visitors" nameKey="browser" />
+                                </PieChart>
+                            </ChartContainer>
+                            <div className="text-center mt-2 text-xl">
+                                <span><strong>Priority</strong></span>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+                {/* Bottom Panel: Requests */}
+                <Card className="w-full flex flex-col">
+                    <CardHeader className="text-xl flex flex-col md:flex-row md:items-center md:justify-between">
                         <CardTitle>Requests</CardTitle>
-                        <Tabs defaultValue="all">
-                            <TabsList>
-                                <TabsTrigger value="all">All</TabsTrigger>
-                                <TabsTrigger value="open">Open</TabsTrigger>
-                                <TabsTrigger value="closed">Closed</TabsTrigger>
-                            </TabsList>
-                        </Tabs>
                     </CardHeader>
                     <CardContent>
+                        <div className="overflow-x-auto">
+                            <div className="overflow-x-auto">
+                                <div className="w-full max-h-[500px] overflow-y-auto overflow-x-hidden rounded-lg pb-50">
 
+                                </div>
+                            </div>
+                        </div>
                     </CardContent>
                 </Card>
             </div>
