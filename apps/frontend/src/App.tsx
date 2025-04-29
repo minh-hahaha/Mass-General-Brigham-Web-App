@@ -18,6 +18,7 @@ import Cookies from 'js-cookie';
 import TestNodeEditor from '@/routes/TestNodeEditor.tsx';
 import AboutPage from '@/routes/AboutPage.tsx';
 import {Auth0Provider} from "@auth0/auth0-react";
+import MapInstructions from "@/components/MapInstructions.tsx";
 
 
 function App() {
@@ -91,6 +92,11 @@ function App() {
                                     <Route
                                         path={'/MedicalDevicePage'}
                                         element={<MedicalDeviceServiceRequestPage />}
+                                    />
+
+                                    <Route
+                                        path={'/MapInstructionPage'}
+                                        element={<MapInstructions />}
                                     />
                                     <Route path="/AboutPage" element={<AboutPage />} />
                                 </Routes>
