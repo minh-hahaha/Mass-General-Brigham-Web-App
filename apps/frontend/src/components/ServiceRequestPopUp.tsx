@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import MGBButton from "@/elements/MGBButton.tsx";
 
-// Customize your slides here
 const instructionPages = [
     {
         title: "Requester Information",
@@ -57,7 +56,6 @@ const HelpPopup: React.FC<HelpPopupProps> = ({ onClose }) => {
                 onClick={(e) => e.stopPropagation()}
                 className="bg-white bg-opacity-40 backdrop-blur-sm rounded-lg shadow-lg w-full max-w-3xl"
             >
-                {/* Header */}
                 <div className="bg-mgbblue bg-opacity-70 backdrop-blur-sm text-white p-4 flex justify-between items-center rounded-t-lg">
                     <h2 className="text-xl font-semibold">{instructionPages[currentPage].title}</h2>
                     <button
@@ -104,14 +102,17 @@ const HelpPopup: React.FC<HelpPopupProps> = ({ onClose }) => {
                         ))}
                     </div>
 
-                    <MGBButton
-                        variant="primary"
-                        onClick={goToNextPage}
-                        disabled={currentPage === instructionPages.length - 1}
-                    >
-                        Next
-                    </MGBButton>
+                    {currentPage === instructionPages.length - 1 ? (
+                        <MGBButton variant="primary" onClick={onClose}>
+                            Close
+                        </MGBButton>
+                    ) : (
+                        <MGBButton variant="primary" onClick={goToNextPage}>
+                            Next
+                        </MGBButton>
+                    )}
                 </div>
+
             </div>
         </motion.div>
     );
