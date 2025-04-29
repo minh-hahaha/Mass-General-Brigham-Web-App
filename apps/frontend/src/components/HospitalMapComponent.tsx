@@ -21,6 +21,10 @@ const FaulknerBounds = {
     southWest: { lat: 42.300397452801334, lng: -71.13067929034223 }, // Bottom-left corner
     northEast: { lat: 42.303013662584725, lng: -71.12649564266864}, // Top-right corner
 };
+const BWHBounds = {
+    southWest: { lat: 42.33423529941985, lng: -71.10939107354605}, // Bottom-left corner
+    northEast: { lat: 42.33712348778656, lng: -71.10387302007483}, // Top-right corner
+};
 
 
 // floor type
@@ -43,6 +47,8 @@ const availableFloors: Floor[] = [
     { id: "PP-4", floor: "4", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP04.svg" },
 
     { id: "FK-1", floor: "1", buildingId: "3", buildingName: "Faulkner Hospital",svgPath: "/FK01.svg" },
+
+    { id: "BWH-2", floor: "2", buildingId: "4", buildingName: "Main Hospital",svgPath: "/BWH02.svg" },
 ];
 
 
@@ -221,7 +227,7 @@ const HospitalMapComponent = ({
     startNodeId,
     endNodeId,
     selectedAlgorithm,
-    // currentFloorId,
+    currentFloorId,
     visible,
     driveDirections,
     drive2Directions,
@@ -230,11 +236,12 @@ const HospitalMapComponent = ({
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
     const [startNode, setStartNode] = useState<myNode>();
     const [endNode, setEndNode] = useState<myNode>();
-    const [currentFloorId, setCurrentFloorId] = useState<string>();
     const [textSpeech, setTextSpeech] = useState<HTMLElement | null>(null);
 
+    const [startFloor, setStartFloor] = useState<Floor>();
     console.log(startNodeId);
     console.log(endNodeId);
+    console.log("currentFloorId at start " , currentFloorId);
 
     // get node using nodeId
     useEffect(() => {
@@ -294,25 +301,22 @@ const HospitalMapComponent = ({
                 (f) => f.buildingId === startNode.buildingId && f.floor === startNode.floor
             );
             if (startFloor) {
-                setCurrentFloorId(startFloor.id);
+                setStartFloor(startFloor);
             }
         }
     }, [bfsPath, startNode]);
 
-    // // Handle floor change
-    // const handleFloorChange = (floorId: string) => {
-    //     setCurrentFloorId(floorId);
-    // };
 
 
     // seperate out current floor for PP and CH
     // Get the current Patriot Place floor data
+
     const getCurrentPatriotPlaceFloor = () => {
         let floorId = currentFloorId;
         if (!floorId?.startsWith('PP-')) {
             floorId = 'PP-1'; // Default to PP-1 if not a PP floor
         }
-
+        // console.log("floorId here is " , floorId);
         // Find the floor data
         return (
             availableFloors.find((f) => f.id === floorId) ||
@@ -320,13 +324,14 @@ const HospitalMapComponent = ({
         );
     };
 
-    const getChestnutHillFloor = () => {
-        return availableFloors.find((f) => f.id === 'CH-1')!;
-    };
+    // const getChestnutHillFloor = () => {
+    //     return availableFloors.find((f) => f.id === 'CH-1')!;
+    // };
+    // const chestnutHillFloor = getChestnutHillFloor();
 
-
-    const chestnutHillFloor = getChestnutHillFloor();
     const patriotPlaceFloor = getCurrentPatriotPlaceFloor();
+
+    // console.log("floor at pp " + patriotPlaceFloor.id);
 
     const getCurrentFloorPath = (buildingId: string, floorNumber: string) => {
         return bfsPath.filter(
@@ -347,10 +352,10 @@ const HospitalMapComponent = ({
     };
 
     const { buildingId, floor } = getCurrentFloorInfo();
-    console.log("buildingId" , buildingId);
-    console.log("floor", floor);
-
-    console.log("THE PATH ", GetPolylinePath(getCurrentFloorPath(buildingId, floor)));
+    // console.log("buildingId" , buildingId);
+    // console.log("floor", floor);
+    //
+    // console.log("THE PATH ", GetPolylinePath(getCurrentFloorPath(buildingId, floor)));
     return (
         <>
             {showTextDirections && (
@@ -366,7 +371,7 @@ const HospitalMapComponent = ({
         <div className="relative w-full h-full">
             <OverlayComponent
                 bounds={ChestnutHillBounds}
-                imageSrc={chestnutHillFloor.svgPath}
+                imageSrc={"/CH01.svg"}
             />
             <OverlayComponent
                 bounds={PatriotPlaceBounds}
@@ -375,6 +380,10 @@ const HospitalMapComponent = ({
             <OverlayComponent
                 bounds={FaulknerBounds}
                 imageSrc={'/FK01.svg'}
+            />
+            <OverlayComponent
+                bounds={BWHBounds}
+                imageSrc={'/BWH02.svg'}
             />
             {visible &&
             <DisplayPathComponent coordinates={GetPolylinePath(getCurrentFloorPath(buildingId, floor))} />
