@@ -10,6 +10,8 @@ import {useMapsLibrary} from "@vis.gl/react-google-maps";
 import {CiHospital1} from "react-icons/ci";
 import SelectElement from "@/elements/SelectElement.tsx";
 
+import Microphone from "@/assets/microphone.png";
+
 const hospitals = [
     {
         id: 1,
@@ -224,10 +226,16 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
     };
 
 
+
     // step 1: selection card
     const renderHospitalSelection = () => (
         <div className='w-full'>
-            <h2 className='text-xl font-black mb-6 text-center'>Select a Hospital</h2>
+            <div className='flex justify-center'>
+                <h2 className='text-xl font-black mb-6 text-center mr-30'>Select a Hospital</h2>
+
+                <img src={Microphone} alt = "speaker" className='h-6 w-6'/>
+            </div>
+
             <div className='space-y-4 mt-4'>
                 {hospitals.map (hospital => (
                     <div
