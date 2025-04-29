@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { IoIosInformationCircleOutline } from "react-icons/io";
-import HelpPopup from "@/components/ServiceRequestPopUp.tsx"; // adjust path as needed
+import HelpPopup from "@/components/ServiceRequestPopUp.tsx";
 
 const ServiceRequestHelp = () => {
     const [isOpen, setIsOpen] = useState(false);
