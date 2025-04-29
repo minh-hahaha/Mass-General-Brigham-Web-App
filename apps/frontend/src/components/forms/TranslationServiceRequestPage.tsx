@@ -90,8 +90,6 @@ const TranslationServiceRequestPage = () => {
                 console.error('Error fetching employee list:', e);
             }
         }
-
-
         fetchEmployeeList();
         console.log(employeeList);
     }, [])
@@ -106,6 +104,7 @@ const TranslationServiceRequestPage = () => {
     const handleReset = () => {
         setEmployeeName('');
         setEmployeeId(0);
+        setPatientId(0);
         setPatientName('');
         setPatientLanguage('');
         setPriority('');

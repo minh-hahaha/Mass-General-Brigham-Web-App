@@ -110,7 +110,10 @@ const SanitationRequestPage = () => {
                 console.error('Error fetching employee list:', e);
             }
         }
-    })
+        fetchEmployeeList();
+        console.log(employeeList);
+    }, [])
+
 
     const handleReset = () => {
         setPriority('Low');//done

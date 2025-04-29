@@ -82,7 +82,6 @@ const MedicalDeviceServiceRequestPage = () => {
                 console.error('Error fetching employee list:', e);
             }
         }
-
         fetchEmployeeList();
         console.log(employeeList);
     }, [])
@@ -149,8 +148,8 @@ const MedicalDeviceServiceRequestPage = () => {
                             <h3 className="text-xl font-semibold mb-4">
                                 <b>Assign Employee</b>
                             </h3>
-                            <div className="flex flex-col gap-2">
-                                <div className="flex gap-2">
+                            <div className="flex flex-row gap-2">
+                                <div className='flex flex-row gap-2'>
                                     <label className='w=1/4'>Employee: </label>
                                     <select
                                         onChange={(e) => {
@@ -159,7 +158,6 @@ const MedicalDeviceServiceRequestPage = () => {
                                         value={employeeId}
                                         className='w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300'
                                     >
-                                        <option value="" disabled>Select an employee</option>
                                         {employeeList.map((employee) => (
                                             <option key={employee.employeeId} value={employee.employeeId}>
                                                 {employee.employeeName}
@@ -168,7 +166,7 @@ const MedicalDeviceServiceRequestPage = () => {
                                     </select>
                                 </div>
                             </div>
-                        \</div>
+                        </div>
                         <div>
                             <h3 className="text-xl font-semibold mb-4">
                                 <b>Medical Device Information</b>
