@@ -163,7 +163,7 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
         setSelectedDepartment(deptName);
         const dept = directoryList.find(d => d.deptName === deptName);
         if (dept) {
-            onDepartmentSelect(dept.nodeId)
+            onDepartmentSelect(dept.nodeId) // send back nodeId
         }
     }
 

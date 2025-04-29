@@ -17,9 +17,9 @@ import MapSidebarComponent from "@/components/MapUI/MapSidebarComponent.tsx";
 import FloorSelector from "@/components/FloorSelector.tsx";
 
 const HospitalLocations: Record<string, {lat: number, lng: number, zoom: number}> = {
-    'Chestnut Hill Healthcare Center': {lat: 42.325988, lng: -71.149567, zoom: 18},
-    'Foxborough Health Care Center': {lat: 42.092617, lng: -71.266492, zoom: 18},
-    'Brigham and Women\'s Faulkner Hospital': {lat: 42.301684739524546, lng: -71.12816396084828, zoom: 18},
+    'Chestnut Hill Healthcare Center': {lat: 42.325988, lng: -71.149567, zoom: 20},
+    'Foxborough Health Care Center': {lat: 42.092617, lng: -71.266492, zoom: 20},
+    'Brigham and Women\'s Faulkner Hospital': {lat: 42.301684739524546, lng: -71.12816396084828, zoom: 19},
     'Brigham and Women\'s Main Hospital': {lat: 42.33550114249947, lng: -71.10727870473441, zoom: 18}
 };
 
@@ -66,7 +66,7 @@ const DirectionsMapComponent = () => {
 
     const [textDirections, setTextDirections] = useState<string>('No destination/start selected');
     const [text2Directions, setText2Directions] = useState<string[]>([]);
-    const [selectedAlgorithm, setSelectedAlgorithm] = useState('');
+    const [selectedAlgorithm, setSelectedAlgorithm] = useState('BFS');
 
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
@@ -281,16 +281,49 @@ const DirectionsMapComponent = () => {
 
     const handleDepartmentSelect = (departmentNodeId: string) => {
         setToDirectoryNodeId(departmentNodeId);
+        setPathVisible(true);
+        clearRoute();
     }
 
     const handleParkingSelect = (lotId: string) => {
         setLot(lotId)
     }
 
+    useEffect(() => {
+        if (lot !== "") {
+            // get prefix and lot letter
+            const [locationPrefix, lotLetter] = lot.split('_');
+
+            if (locationPrefix === 'PP') {
+                setFromNodeId(`PPFloor1Parking Lot${lotLetter}`);
+            } else if (locationPrefix === 'FK') {
+                if (lotLetter === 'A') {
+                    setFromNodeId('FKFloor1Parking Lot');
+                } else if (lotLetter === 'B') {
+                    setFromNodeId('FKFloor1Parking Lot_1');
+                } else if (lotLetter === 'C') {
+                    setFromNodeId('FKFloor1Parking Lot_2');
+                }
+            } else if (locationPrefix === 'CH') {
+                if (lotLetter === 'A') {
+                    setFromNodeId('CHFloor1Parking Lot1');
+                } else if (lotLetter === 'B') {
+                    setFromNodeId('CHFloor1Parking LotB');
+                } else if (lotLetter === 'C') {
+                    setFromNodeId('CHFloor1Parking LotC');
+                }
+            }
+        }
+
+    }, [lot]);
+
+
     const handleBack =() => {
         clearRoute();
         clearParking();
         setShowFloorSelector(false);
+        setFromNodeId("")
+        setToDirectoryNodeId("")
     }
 
     return (
