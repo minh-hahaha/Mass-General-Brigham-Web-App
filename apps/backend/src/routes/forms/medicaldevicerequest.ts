@@ -1,5 +1,5 @@
 import express, { Router, Request, Response } from 'express';
-import PrismaClient from '../bin/prisma-client';
+import PrismaClient from '../../bin/prisma-client.ts';
 
 const router: Router = express.Router();
 
@@ -30,8 +30,7 @@ router.post('/', async (req: Request, res: Response) => {
             const serviceRequest = await prisma.serviceRequest.create({
                 data: {
                     employeeId: req.body.employeeId,
-                    requestDate: new Date(req.body.requestDate).toISOString(), // Convert to full ISO string
-                    status: req.body.status,
+                    status: 'Pending',
                     comments: req.body.notes,
                     priority: req.body.priority,
                     serviceType: 'Medical Device',
@@ -43,11 +42,8 @@ router.post('/', async (req: Request, res: Response) => {
                 data: {
                     servReqId: serviceRequest.requestId,
                     device: req.body.device,
-                    deviceReasoning: req.body.deviceReasoning ?? '', // fallback to empty string if undefined
-                    deviceSerialNumber: req.body.deviceSerialNumber,
-                    deviceModel: req.body.model,
                     location: req.body.location,
-                    department: req.body.department,
+                    deliverDate: req.body.deliverDate,
                 },
             });
             return { serviceRequest, medicalDeviceRequest };
@@ -69,7 +65,9 @@ router.post('/edit', async (req: Request, res: Response) => {
                 where: { requestId: req.body.requestId },
                 data: {
                     employeeId: req.body.medicalDeviceRequest.employeeId,
-                    requestDate: new Date(req.body.medicalDeviceRequest.requestDate).toISOString(), // Convert to full ISO string
+                    requestDateTime: new Date(
+                        req.body.medicalDeviceRequest.requestDate
+                    ).toISOString(), // Convert to full ISO string
                     status: req.body.medicalDeviceRequest.status,
                     comments: req.body.medicalDeviceRequest.notes,
                     priority: req.body.medicalDeviceRequest.priority,
@@ -83,11 +81,11 @@ router.post('/edit', async (req: Request, res: Response) => {
                 data: {
                     servReqId: serviceRequest.requestId,
                     device: req.body.medicalDeviceRequest.device,
-                    deviceReasoning: req.body.medicalDeviceRequest.deviceReasoning ?? '', // fallback to empty string if undefined
-                    deviceSerialNumber: req.body.medicalDeviceRequest.deviceSerialNumber,
-                    deviceModel: req.body.medicalDeviceRequest.model,
+                    //deviceReasoning: req.body.medicalDeviceRequest.deviceReasoning ?? '', // fallback to empty string if undefined
+                    //deviceSerialNumber: req.body.medicalDeviceRequest.deviceSerialNumber,
+                    //deviceModel: req.body.medicalDeviceRequest.model,
                     location: req.body.medicalDeviceRequest.location,
-                    department: req.body.medicalDeviceRequest.department,
+                    //department: req.body.medicalDeviceRequest.department,
                 },
             });
             return { serviceRequest, medicalDeviceRequest };

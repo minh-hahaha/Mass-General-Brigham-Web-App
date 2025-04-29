@@ -1,9 +1,20 @@
 
 export const ROUTES = {
     ASSIGNED: '/api/assigned',
-    EMPLOYEE: '/api/employee',
+
     SERVICEREQUESTS: '/api/servicereqs',
     VALIDATE: '/api/validate',
+
+    //Employee
+    EMPLOYEE: '/api/employee',
+    EMPLOYEE_CSV: '/api/employee/csv',
+    EMPLOYEE_NAMES: '/api/employee/names',
+    EMPLOYEE_EMAIL: '/api/employee/email',
+    EMPLOYEE_NAME_ID: '/api/employee/name=id',
+
+    //Buildings
+    BUILDING: '/api/building',
+    BUILDING_NOT: '/api/building/not',
 
     ///Requests
     PATIENTTRANSPORT: '/api/patienttransport',
@@ -27,7 +38,6 @@ export const ROUTES = {
 
     //Algorithms
     FINDPATH: '/api/graph/traverse',
-
     NODE: '/api/node',
     EDGE: '/api/edge',
     NODE_EDGE_CSV: '/api/node/csv',

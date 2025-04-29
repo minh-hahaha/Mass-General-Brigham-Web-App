@@ -1,17 +1,14 @@
-import { ROUTES } from 'common/src/constants';
-
+import { ROUTES } from 'common/src/constants.ts';
 import axios from 'axios';
-import {incomingRequest} from "@/database/transportRequest.ts";
-import {TranslationRequestData} from "@/routes/TranslationServiceRequestPage.tsx";
+import { priorityType, hazardLevelType, statusType } from '@/database/forms/formTypes.ts';
+import {incomingRequest} from "@/database/forms/transportRequest.ts";
 
 export interface sanitationRequest {
     //Service Request fields
     employeeName:              string;
-    status:                     'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
-    priority:                   'Low' | 'Medium' | 'High' | 'Emergency';
+    priority:                   priorityType;
     requestTime:                string;
     locationId:                 string;
-
 
     //Optional fields
     comments:                   string;
@@ -20,15 +17,12 @@ export interface sanitationRequest {
     requesterDepartmentId:         string;
     requesterRoomNumber: string;
 
-
     //Sanitation fields
     sanitationLocationId:     string;
     sanitationDepartmentId:   string;
     sanitationRoomNumber:      number;
     sanitationType:             string;
-    recurring:                  boolean;
-    hazardLevel:                'None' | 'Sharp' | 'Biohazard';
-    disposalRequired:           boolean;
+    hazardLevel:                hazardLevelType;
     completeBy:                 string;
 }
 
@@ -40,16 +34,16 @@ export interface incomingSanitationRequest {
         servReqId:          number;
         sanitationType:      string;
         recurring:           boolean;
-        hazardLevel:         'None' | 'Sharp' | 'Biohazard';
+        hazardLevel:         hazardLevelType;
         disposalRequired:    boolean;
         completeBy:          string;
     }
-    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
+    priority: priorityType;
     requestDate: string;
     requestId: number;
     requestTime: number;
     serviceType: string;
-    status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
+    status: statusType;
     transportType: string;
 }
 

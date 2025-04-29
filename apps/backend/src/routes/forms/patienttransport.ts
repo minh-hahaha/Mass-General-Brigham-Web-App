@@ -1,5 +1,5 @@
 import express, { Router, Request, Response } from 'express';
-import PrismaClient from '../bin/prisma-client';
+import PrismaClient from '../../bin/prisma-client.ts';
 
 const router: Router = express.Router();
 
@@ -25,21 +25,20 @@ router.get('/', async (req: Request, res: Response) => {
 router.post('/', async (req: Request, res: Response) => {
     //Format for tempDate is  2025-04-04T01:44
     //(maybe on future iterations split the field?)
-
+    console.log('posting patient transport request');
     try {
+        console.log(req.body.dropOffDate);
         const result = await PrismaClient.$transaction(async (prisma) => {
             //creates entry for service request
             const serviceRequest = await prisma.serviceRequest.create({
                 data: {
                     priority: req.body.priority,
-                    status: req.body.status,
+                    status: 'Pending',
                     comments: req.body.notes,
                     serviceType: 'Patient Transportation',
 
                     //optional field
                     employeeId: req.body.employeeId ?? null, // change to user id in the future?
-                    requestDate: new Date(req.body.requestDate).toISOString() ?? null,
-                    requestTime: new Date(req.body.pickupTime) ?? null,
                 },
             });
 
@@ -48,15 +47,15 @@ router.post('/', async (req: Request, res: Response) => {
                 data: {
                     servReqId: serviceRequest.requestId,
                     patientId: req.body.patientId,
-                    patientName: req.body.patientName,
                     pickupLocation: req.body.pickupLocation,
                     transportType: req.body.transportType,
-                    dropoffLocation: 'nowhere',
+                    dropoffLocation: req.body.dropoffLocation,
+                    transportDate: req.body.formattedDate,
                 },
                 select: {
                     servReqId: true,
                     patientId: true,
-                    patientName: true,
+                    dropoffLocation: true,
                     pickupLocation: true,
                 },
             });
@@ -86,9 +85,9 @@ router.post('/edit', async (req: Request, res: Response) => {
 
                     //optional field
                     employeeId: req.body.transportRequest.employeeId ?? null, // change to user id in the future?
-                    requestDate:
+                    requestDateTime:
                         new Date(req.body.transportRequest.requestDate).toISOString() ?? null,
-                    requestTime: new Date(req.body.transportRequest.pickupTime) ?? null,
+                    //requestTime: new Date(req.body.transportRequest.pickupTime) ?? null,
                 },
             });
 
@@ -97,7 +96,7 @@ router.post('/edit', async (req: Request, res: Response) => {
                 where: { servReqId: req.body.requestId },
                 data: {
                     patientId: req.body.transportRequest.patientId,
-                    patientName: req.body.transportRequest.patientName,
+                    //patientName: req.body.transportRequest.patientName,
                     pickupLocation: req.body.transportRequest.pickupLocation,
                     transportType: req.body.transportRequest.transportType,
                     dropoffLocation: 'nowhere',
@@ -105,7 +104,7 @@ router.post('/edit', async (req: Request, res: Response) => {
                 select: {
                     servReqId: true,
                     patientId: true,
-                    patientName: true,
+                    //patientName: true,
                     pickupLocation: true,
                 },
             });

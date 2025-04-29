@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/table.tsx';
 import { motion } from 'framer-motion';
 import MGBButton from "@/elements/MGBButton.tsx";
+import { splitDateTime } from '@/database/forms/formTypes.ts';
 
 interface Props {
     setActiveForm: (
@@ -27,7 +28,7 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
         roomNumber: '',
         status: '',
         priority: '',
-        requestDate: '',
+        requestDateTime: '',
     });
     const [showNewRequests, setShowNewRequests] = useState<boolean>(false);
 
@@ -63,7 +64,7 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
             (!filters.status || req.status?.toLowerCase().includes(filters.status.toLowerCase())) &&
             (!filters.priority ||
                 req.priority?.toLowerCase().includes(filters.priority.toLowerCase())) &&
-            (!filters.requestDate || req.requestDate?.startsWith(filters.requestDate))
+            (!filters.requestDateTime || req.requestDateTime?.startsWith(filters.requestDateTime))
         );
     });
 
@@ -77,6 +78,7 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
         setShowNewRequests(false);
     };
 
+    // const [requestDate, requestTime] = splitDateTime(filters.requestDateTime);
     return (
         <>
             <div className={`w-full flex flex-row justify-between px-10`}>
@@ -157,9 +159,9 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                                 <input
                                     type="datetime-local"
                                     className="border border-mgbblue rounded-sm w-40 p-1"
-                                    value={filters.requestDate}
+                                    value={filters.requestDateTime}
                                     onChange={(e) =>
-                                        setFilters({ ...filters, requestDate: e.target.value })
+                                        setFilters({ ...filters, requestDateTime: e.target.value })
                                     }
                                 />
                             </div>
@@ -220,75 +222,34 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                     <Table>
                         <TableHeader>
                             <TableRow className="bg-gray-50">
-                                <TableHead className="w-20 text-left font-semibold py-3">
-                                    Request ID
-                                </TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">
-                                    Employee Name
-                                </TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">
-                                    Department
-                                </TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">
-                                    Room
-                                </TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">
-                                    Status
-                                </TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">
-                                    Priority
-                                </TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">
-                                    Request Date
-                                </TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">
-                                    Request Time
-                                </TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">
-                                    Service Type
-                                </TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Request ID</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Employee Name</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Department</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Room</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Status</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Priority</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Request Date</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Request Time</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Service Type</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {filteredRequests.map((req) => (
-                                <TableRow key={req.requestId} className="border-b hover:bg-gray-50">
-                                    <TableCell className="text-left py-3">
-                                        {req.requestId}
+                                <TableRow
+                                    key={req.requestId}
+                                    className="border-b hover:bg-gray-50"
+                                >
+                                    <TableCell className="text-center py-3">{req.requestId}</TableCell>
+                                    <TableCell className="text-center py-3">{req.employeeName ?? 'Unassigned'}</TableCell>
+                                    <TableCell className="text-center py-3">{req.requesterDepartmentId}</TableCell>
+                                    <TableCell className="text-center py-3">{req.requesterRoomNumber}</TableCell>
+                                    <TableCell className="text-center py-3">{req.status}</TableCell>
+                                    <TableCell className="text-center py-3">{req.priority}</TableCell>
+                                    <TableCell className="text-center py-3">{req.requestDateTime?.split('T')[0]}</TableCell>
+                                    <TableCell className="text-center py-3">
+                                        {req.requestDateTime?.split('T')[1]?.substring(0, 5)}
                                     </TableCell>
-                                    <TableCell className="text-left py-3">
-                                        {req.employeeName ?? 'Unassigned'}
-                                    </TableCell>
-                                    <TableCell className="text-left py-3">
-                                        {req.requesterDepartmentId}
-                                    </TableCell>
-                                    <TableCell className="text-left py-3">
-                                        {req.requesterRoomNumber}
-                                    </TableCell>
-                                    <TableCell className="text-left py-3">{req.status}</TableCell>
-                                    <TableCell className="text-left py-3">
-                                        <span
-                                            className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                                req.priority === 'High'
-                                                    ? 'bg-orange-100 text-orange-800'
-                                                    : req.priority === 'Medium'
-                                                      ? 'bg-yellow-100 text-yellow-800'
-                                                      : req.priority === 'Emergency'
-                                                        ? 'bg-red-100 text-red-800'
-                                                        : 'bg-green-100 text-green-800'
-                                            }`}
-                                        >
-                                            {req.priority}
-                                        </span>
-                                    </TableCell>
-                                    <TableCell className="text-left py-3">
-                                        {req.requestDate?.split('T')[0]}
-                                    </TableCell>
-                                    <TableCell className="text-left py-3">
-                                        {req.requestTime?.split('T')[1]?.substring(0, 5)}
-                                    </TableCell>
-                                    <TableCell className="text-left py-3">
-                                        {req.serviceType}
-                                    </TableCell>
+                                    <TableCell className="text-center py-3">{req.serviceType}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

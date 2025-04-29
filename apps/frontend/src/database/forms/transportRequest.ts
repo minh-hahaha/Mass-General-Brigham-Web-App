@@ -1,21 +1,18 @@
-import { ROUTES } from 'common/src/constants';
-
+import { ROUTES } from 'common/src/constants.ts';
 import axios from 'axios';
+import { priorityType, statusType, hospitalTransportType } from '@/database/forms/formTypes.ts';
 
 export interface transportRequest {
+    employeeId: number;
     patientId: number;
     patientName: string;
-    transportType: 'Ambulance' | 'Helicopter' | 'Medical Van' | 'Other';
-    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
+    transportType: hospitalTransportType;
+    priority: string;
     pickupLocation: string;
-    dropOffLocation: string;
-    pickupDate: string;
-    pickupTime: string;
-    status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
+    dropoffLocation: string;
     notes: string;
-    requesterId: number;
-    requestDate: string;
     assignedToId: number;
+    formattedDate: string;
 }
 
 export interface editTransportRequest {
@@ -29,12 +26,14 @@ export interface incomingRequest {
     locationId: number;
     patientTransport: {
         patientId: number;
-        patientName: string;
         pickupLocation: string;
+        dropoffLocation: string;
         servReqId: number;
-        transportType: 'Ambulance' | 'Helicopter' | 'Medical Van' | 'Other';
-    },
+        transportDate:  string;
+        transportType: hospitalTransportType;
+    };
     translationRequest: {
+        patientId: number;
         language: string;
         patientName: string;
         typeMeeting: string;
@@ -68,12 +67,12 @@ export interface incomingRequest {
         maintenanceTime: string;
         employeeName: string;
     },
-    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
+    priority: priorityType;
     requestDate: string;
     requestId: number;
     requestTime: number;
     serviceType: string;
-    status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
+    status: statusType;
 }
 
 

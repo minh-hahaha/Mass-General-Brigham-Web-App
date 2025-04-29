@@ -1,5 +1,5 @@
 import express, { Router, Request, Response } from 'express';
-import PrismaClient from '../bin/prisma-client';
+import PrismaClient from '../../bin/prisma-client.ts';
 
 const router: Router = express.Router();
 
@@ -22,7 +22,7 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 router.post('/', async (req: Request, res: Response) => {
-    //Format for tempDate is  2025-04-04T01:44
+    //Format for tempDate is 2025-04-04T01:44
     console.log(req.body);
     const tempDate = new Date(req.body.maintenanceDate || req.body.pickupDate);
 
@@ -31,13 +31,12 @@ router.post('/', async (req: Request, res: Response) => {
             //creates entry for service request
             const serviceRequest = await prisma.serviceRequest.create({
                 data: {
-                    employeeId: req.body.employeeId || req.body.assignedToId,
-                    // requestDate: tempDate ?? null,
-                    status: req.body.status,
+                    employeeId: req.body.employeeId,
+                    status: 'Pending',
                     comments: req.body.notes,
                     priority: req.body.priority,
                     serviceType: 'Maintenance Request',
-                    employeeName: req.body.employeeName,
+                    // employeeName: req.body.employeeName,
                 },
             });
 
@@ -46,9 +45,7 @@ router.post('/', async (req: Request, res: Response) => {
                 data: {
                     servMaintenanceId: serviceRequest.requestId,
                     maintenanceType: req.body.maintenanceType,
-                    maintenanceDescription: req.body.maintenanceDescription,
                     maintenanceHospital: req.body.maintenanceHospital,
-                    maintenanceLocation: req.body.maintenanceLocation,
                     maintenanceTime: new Date(req.body.maintenanceTime) ?? null,
                 },
             });
@@ -93,9 +90,9 @@ router.post('/edit', async (req: Request, res: Response) => {
                 where: { servMaintenanceId: req.body.requestId },
                 data: {
                     maintenanceType: req.body.maintenanceRequest.maintenanceType,
-                    maintenanceDescription: req.body.maintenanceRequest.maintenanceDescription,
+                    //maintenanceDescription: req.body.maintenanceRequest.maintenanceDescription,
                     maintenanceHospital: req.body.maintenanceRequest.maintenanceHospital,
-                    maintenanceLocation: req.body.maintenanceRequest.maintenanceLocation,
+                    //maintenanceLocation: req.body.maintenanceRequest.maintenanceLocation,
                     maintenanceTime: new Date(req.body.maintenanceRequest.maintenanceTime) ?? null,
                 },
             });

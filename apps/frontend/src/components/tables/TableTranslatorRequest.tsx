@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { GetTranslatorRequest, incomingTranslationRequest } from '@/database/translationRequest.ts';
+import { GetTranslatorRequest, incomingTranslationRequest } from '@/database/forms/translationRequest.ts';
 import {
     Table,
     TableBody,
@@ -9,8 +9,8 @@ import {
     TableRow,
 } from '@/components/ui/table.tsx';
 import { motion } from 'framer-motion';
+import {incomingRequest} from "@/database/forms/transportRequest.ts";
 import MGBButton from "@/elements/MGBButton.tsx";
-import {incomingRequest} from "@/database/transportRequest.ts";
 
 interface Props {
     setActiveForm: (
@@ -24,13 +24,12 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm, setEditData })
     const [requests, setRequests] = useState<incomingRequest[]>([]);
     const [filter, setShowFilters] = useState<boolean>(false);
     const [filters, setFilters] = useState({
-        languageReq: '',
-        patientName: '',
+        patientId: '',
         priority: '',
         status: '',
-        requestDate: '',
+        meetingType: '',
+        languageReq: '',
         location: '',
-        department: '',
     });
 
     useEffect(() => {
@@ -50,13 +49,12 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm, setEditData })
 
     const filteredRequests = requests.filter((req) => {
         return (
-            (!filters.languageReq || req.translationRequest.language?.toLowerCase().includes(filters.languageReq.toLowerCase())) &&
-            (!filters.patientName || req.translationRequest.patientName?.toLowerCase().includes(filters.patientName.toLowerCase())) &&
+            (!filters.patientId || String(req.translationRequest.patientId) === filters.patientId) &&
             (!filters.priority || req.priority?.toLowerCase().includes(filters.priority.toLowerCase())) &&
             (!filters.status || req.status?.toLowerCase().includes(filters.status.toLowerCase())) &&
-            (!filters.requestDate || req.requestDate?.startsWith(filters.requestDate)) &&
-            (!filters.location || req.translationRequest.location?.toLowerCase().includes(filters.location.toLowerCase())) &&
-            (!filters.department || req.translationRequest.department?.toLowerCase().includes(filters.department.toLowerCase()))
+            (!filters.meetingType || req.translationRequest.typeMeeting?.toLowerCase().includes(filters.meetingType.toLowerCase())) &&
+            (!filters.languageReq || req.translationRequest.language?.toLowerCase().includes(filters.languageReq.toLowerCase())) &&
+            (!filters.location || req.translationRequest.location?.toLowerCase().includes(filters.location.toLowerCase()))
         );
     });
     return (
@@ -78,24 +76,13 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm, setEditData })
                             className="relative left-[10px] rounded flex flex-row gap-5"
                         >
                             <div>
-                                <label className="block text-sm font-medium">Language</label>
+                                <label className="block text-sm font-medium">Patient ID</label>
                                 <input
-                                    type="text"
-                                    className="border border-mgbblue rounded-sm w-30 p-1"
-                                    value={filters.languageReq}
+                                    type="number"
+                                    className="border border-mgbblue rounded-sm w-15 p-1"
+                                    value={filters.patientId}
                                     onChange={(e) =>
-                                        setFilters({ ...filters, languageReq: e.target.value })
-                                    }
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium">Patient Name</label>
-                                <input
-                                    type="text"
-                                    className="border border-mgbblue rounded-sm w-30 p-1"
-                                    value={filters.patientName}
-                                    onChange={(e) =>
-                                        setFilters({ ...filters, patientName: e.target.value })
+                                        setFilters({ ...filters, patientId: e.target.value })
                                     }
                                 />
                             </div>
@@ -122,13 +109,24 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm, setEditData })
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium">Request Date</label>
+                                <label className="block text-sm font-medium">Meeting Type</label>
                                 <input
-                                    type="datetime-local"
-                                    className="border border-mgbblue rounded-sm w-35 p-1"
-                                    value={filters.requestDate}
+                                    type="text"
+                                    className="border border-mgbblue rounded-sm w-15 p-1"
+                                    value={filters.meetingType}
                                     onChange={(e) =>
-                                        setFilters({ ...filters, requestDate: e.target.value })
+                                        setFilters({ ...filters, meetingType: e.target.value })
+                                    }
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium">Language</label>
+                                <input
+                                    type="text"
+                                    className="border border-mgbblue rounded-sm w-30 p-1"
+                                    value={filters.languageReq}
+                                    onChange={(e) =>
+                                        setFilters({ ...filters, languageReq: e.target.value })
                                     }
                                 />
                             </div>
@@ -142,20 +140,6 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm, setEditData })
                                         setFilters({
                                             ...filters,
                                             location: e.target.value,
-                                        })
-                                    }
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium">Department</label>
-                                <input
-                                    type="text"
-                                    className="border border-mgbblue rounded-sm w-25 p-1"
-                                    value={filters.department}
-                                    onChange={(e) =>
-                                        setFilters({
-                                            ...filters,
-                                            department: e.target.value,
                                         })
                                     }
                                 />
@@ -177,17 +161,13 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm, setEditData })
                     <Table>
                         <TableHeader>
                             <TableRow className="bg-gray-50">
-                                <TableHead className="w-20 text-left font-semibold py-3">Request ID</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Language Required</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Meeting Type</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Meeting Link</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Patient Name</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Priority</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Status</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Request Date</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Location</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Department</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3"></TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Patient ID</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Priority</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Status</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Meeting Type</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Language Required</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Location</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3"></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -196,31 +176,13 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm, setEditData })
                                     key={req.requestId}
                                     className="border-b hover:bg-gray-50"
                                 >
-                                    <TableCell className="text-left py-3">{req.requestId}</TableCell>
-                                    <TableCell className="text-left py-3">{req.translationRequest.language}</TableCell>
-                                    <TableCell className="text-left py-3">{req.translationRequest.typeMeeting}</TableCell>
-                                    <TableCell className="text-left py-3">{req.translationRequest.meetingLink}</TableCell>
-                                    <TableCell className="text-left py-3">{req.translationRequest.patientName}</TableCell>
-                                    <TableCell className="text-left py-3">
-                                        <span
-                                            className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                                req.priority === 'High'
-                                                    ? 'bg-orange-100 text-orange-800'
-                                                    : req.priority === 'Medium'
-                                                        ? 'bg-yellow-100 text-yellow-800'
-                                                        : req.priority === 'Emergency'
-                                                            ? 'bg-red-100 text-red-800'
-                                                            : 'bg-green-100 text-green-800'
-                                            }`}
-                                        >
-                                            {req.priority}
-                                        </span>
-                                    </TableCell>
-                                    <TableCell className="text-left py-3">{req.status}</TableCell>
-                                    <TableCell className="text-left py-3">{req.requestDate.split('T')[0]}</TableCell>
-                                    <TableCell className="text-left py-3">{req.translationRequest.location}</TableCell>
-                                    <TableCell className="text-left py-3">{req.translationRequest.department}</TableCell>
-                                    <TableCell className="text-left py-3"><MGBButton onClick={()  => {setEditData(req); setActiveForm("translation");}} variant={'primary'} children={'Edit'}/></TableCell>
+                                    <TableCell className="text-center py-3">{req.translationRequest.patientId}</TableCell>
+                                    <TableCell className="text-center py-3">{req.priority}</TableCell>
+                                    <TableCell className="text-center py-3">{req.status}</TableCell>
+                                    <TableCell className="text-center py-3">{req.translationRequest.typeMeeting}</TableCell>
+                                    <TableCell className="text-center py-3">{req.translationRequest.language}</TableCell>
+                                    <TableCell className="text-center py-3">{req.translationRequest.location}</TableCell>
+                                    <TableCell className="text-center py-3"><MGBButton onClick={() => {setEditData(req); setActiveForm("translation")}} variant={'secondary'} children={'Edit'}/></TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

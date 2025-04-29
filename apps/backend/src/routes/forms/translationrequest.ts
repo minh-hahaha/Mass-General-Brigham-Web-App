@@ -1,5 +1,5 @@
 import express, { Router, Request, Response } from 'express';
-import PrismaClient from '../bin/prisma-client';
+import PrismaClient from '../../bin/prisma-client.ts';
 
 const router: Router = express.Router();
 
@@ -33,9 +33,7 @@ router.post('/', async (req: Request, res: Response) => {
             //creates entry for service request
             const serviceRequest = await prisma.serviceRequest.create({
                 data: {
-                    employeeId: req.body.employeeId,
-                    requestDate: tempDate,
-                    status: req.body.status,
+                    status: 'Pending',
                     comments: req.body.notes,
                     priority: req.body.priority,
                     serviceType: 'Translation',
@@ -46,9 +44,8 @@ router.post('/', async (req: Request, res: Response) => {
             const translationRequest = await prisma.translationRequest.create({
                 data: {
                     serviceReqId: serviceRequest.requestId,
-                    patientName: req.body.patientName,
+                    patientId: req.body.patientId,
                     language: req.body.language,
-                    duration: req.body.duration,
                     typeMeeting: req.body.typeMeeting,
                     date: new Date(req.body.date),
                     meetingLink: req.body.meetingLink,
@@ -80,7 +77,7 @@ router.post('/edit', async (req: Request, res: Response) => {
                 where: { requestId: req.body.requestId },
                 data: {
                     employeeId: req.body.translatorRequest.employeeId,
-                    requestDate: tempDate,
+                    requestDateTime: tempDate,
                     status: req.body.translatorRequest.status,
                     comments: req.body.translatorRequest.notes,
                     priority: req.body.translatorRequest.priority,
@@ -91,9 +88,9 @@ router.post('/edit', async (req: Request, res: Response) => {
             const translationRequest = await prisma.translationRequest.update({
                 where: { serviceReqId: req.body.requestId },
                 data: {
-                    patientName: req.body.translatorRequest.patientName,
+                    //patientName: req.body.translatorRequest.patientName,
                     language: req.body.translatorRequest.language,
-                    duration: req.body.translatorRequest.duration,
+                    //duration: req.body.translatorRequest.duration,
                     typeMeeting: req.body.translatorRequest.typeMeeting,
                     date: new Date(req.body.translatorRequest.date),
                     meetingLink: req.body.translatorRequest.meetingLink,
