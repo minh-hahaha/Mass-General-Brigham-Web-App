@@ -167,7 +167,7 @@ const TableSanitationRequest: React.FC<Props> = ({ setActiveForm }) => {
                 <div className="flex flex-row items-center gap-2 mt-2">
                     <button
                         onClick={() => setActiveForm('sanitation')}
-                        className="bg-gray-500 hover:bg-gray-700 text-white px-9 py-3 rounded text-sm relative top-1"
+                        className="bg-mgbyellow hover:bg-yellow-600 text-codGray px-9 py-3 rounded text-sm relative top-1"
                     >
                         New Request +
                     </button>
