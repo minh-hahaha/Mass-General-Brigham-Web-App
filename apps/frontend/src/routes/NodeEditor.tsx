@@ -43,7 +43,7 @@ const availableFloors: Floor[] = [
 
 ];
 
-const TestNodeEditor = () => {
+const NodeEditor = () => {
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
     const [currentFloorId, setCurrentFloorId] = useState<string>("CH-1");
 
@@ -73,7 +73,7 @@ const TestNodeEditor = () => {
 
     return (
         <div>
-            <APIProvider apiKey={API_KEY} libraries={['maps', 'drawing']}>
+            <APIProvider apiKey={API_KEY} libraries={['maps', 'drawing', 'marker']}>
                 <div style={{ height: '100vh', width: '100%' }}>
 
                     <Map
@@ -83,6 +83,7 @@ const TestNodeEditor = () => {
                         defaultZoom={15}
                         renderingType={RenderingType.RASTER}
                         mapTypeControl={false}
+                        mapId={"10f50e6c04bae897"}
                     >
                         <OverlayComponent
                             bounds={ChestnutHillBounds}
@@ -99,9 +100,9 @@ const TestNodeEditor = () => {
                         <div
                             className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20"
                         >
-                            <FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />
+                            {/*<FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />*/}
                         </div>
-                        <NodeEditorComponent currentFloorId={currentFloorId} ></NodeEditorComponent>
+                        <NodeEditorComponent ></NodeEditorComponent>
                     </Map>
                 </div>
             </APIProvider>
@@ -109,4 +110,4 @@ const TestNodeEditor = () => {
     );
 }
 
-export default TestNodeEditor;
+export default NodeEditor;
