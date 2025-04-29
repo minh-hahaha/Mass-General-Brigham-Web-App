@@ -46,11 +46,11 @@ const TestNodeEditor = () => {
     const [instructionVisible, setInstructionVisible] = useState(false);
     const [showMap, setShowMap] = useState(true);
 
-    // Use effect to show instructions after a delay
+    // show instructions after a delay
     useEffect(() => {
         const timer = setTimeout(() => {
             setInstructionVisible(true);
-        }, 2000); // 2 seconds delay
+        }, 1500);
 
         return () => clearTimeout(timer); // Clean up
     }, []);
