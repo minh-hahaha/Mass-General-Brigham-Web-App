@@ -10,11 +10,13 @@ import {
 } from '@/components/ui/table';
 import CarouselMenu from '@/components/CarouselMenu.tsx';
 import ImportExportDirectoryPage from '@/routes/ImportExportDirectoryPage';
-import { motion } from 'framer-motion';
 import MGBButton from '@/elements/MGBButton.tsx';
 import { FaBuilding, FaTools, FaPhoneAlt } from 'react-icons/fa';
 import { TbStairsUp } from 'react-icons/tb';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
+import {motion} from 'framer-motion';
+import {ExportCSV, ExportJSON, ImportCSV, ImportJSON} from "@/database/csvImportExport.ts";
+import {ROUTES} from "common/src/constants.ts";
 
 interface DirectoryTableProps {
     data: DepartmentRequest[];
@@ -58,7 +60,7 @@ const DirectoryTable: React.FC<DirectoryTableProps> = ({ data }) => {
                                     {department.building.buildingName}
                                 </TableCell>
                                 <TableCell className="text-left">
-                                    {department.node ? department.node.floor : 'no node'}
+                                    {department.departmentNodes ? department.departmentNodes.floor : 'no node'}
                                 </TableCell>
                                 <TableCell className="text-left">{department.deptPhone}</TableCell>
                             </TableRow>
@@ -95,20 +97,11 @@ const AllDirectory = ({ onImportClick }: { onImportClick: () => void }) => {
 
     const filteredData = data.filter((department) => {
         return (
-            (!filters.deptName ||
-                department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
-            (!filters.deptServices ||
-                department.deptServices
-                    ?.toLowerCase()
-                    .includes(filters.deptServices.toLowerCase())) &&
-            (!filters.building ||
-                department.building?.buildingName
-                    ?.toLowerCase()
-                    .includes(filters.building.toLowerCase())) &&
-            (!filters.floor ||
-                department.node?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
-            (!filters.phone ||
-                department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
+            (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
+            (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
+            (!filters.building || department.building?.buildingName?.toLowerCase().includes(filters.building.toLowerCase())) &&
+            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
+            (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
         );
     });
 
@@ -240,16 +233,10 @@ const ChestnutDirectory = ({ onImportClick }: { onImportClick: () => void }) => 
 
     const filteredData = data.filter((department) => {
         return (
-            (!filters.deptName ||
-                department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
-            (!filters.deptServices ||
-                department.deptServices
-                    ?.toLowerCase()
-                    .includes(filters.deptServices.toLowerCase())) &&
-            (!filters.floor ||
-                department.node?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
-            (!filters.phone ||
-                department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
+            (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
+            (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
+            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
+            (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
         );
     });
     return (
@@ -380,16 +367,10 @@ const Patriot20Directory = ({ onImportClick }: { onImportClick: () => void }) =>
 
     const filteredData = data.filter((department) => {
         return (
-            (!filters.deptName ||
-                department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
-            (!filters.deptServices ||
-                department.deptServices
-                    ?.toLowerCase()
-                    .includes(filters.deptServices.toLowerCase())) &&
-            (!filters.floor ||
-                department.node?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
-            (!filters.phone ||
-                department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
+            (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
+            (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
+            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
+            (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
         );
     });
     return (
@@ -520,16 +501,10 @@ const Patriot22Directory = ({ onImportClick }: { onImportClick: () => void }) =>
 
     const filteredData = data.filter((department) => {
         return (
-            (!filters.deptName ||
-                department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
-            (!filters.deptServices ||
-                department.deptServices
-                    ?.toLowerCase()
-                    .includes(filters.deptServices.toLowerCase())) &&
-            (!filters.floor ||
-                department.node?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
-            (!filters.phone ||
-                department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
+            (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
+            (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
+            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
+            (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
         );
     });
     return (
@@ -660,16 +635,10 @@ const FaulknerDirectory = ({ onImportClick }: { onImportClick: () => void }) => 
 
     const filteredData = data.filter((department) => {
         return (
-            (!filters.deptName ||
-                department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
-            (!filters.deptServices ||
-                department.deptServices
-                    ?.toLowerCase()
-                    .includes(filters.deptServices.toLowerCase())) &&
-            (!filters.floor ||
-                department.node?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
-            (!filters.phone ||
-                department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
+            (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
+            (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
+            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
+            (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
         );
     });
     return (
@@ -801,7 +770,7 @@ const DirectoryDisplayPage = () => {
         {
             label: 'Faulkner',
             component: () => <FaulknerDirectory onImportClick={handleOpenImport} />,
-        },
+        }
     ];
 
     const initialTabIndex = (() => {
