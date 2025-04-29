@@ -1,5 +1,4 @@
 import {useEffect, useRef, useState} from "react";
-
 import MGBButton from "@/elements/MGBButton.tsx";
 import {ArrowLeft, Navigation, MapPin, Phone, Clock, ChevronRight, Circle, Hospital} from 'lucide-react';
 
@@ -10,7 +9,7 @@ import {useMapsLibrary} from "@vis.gl/react-google-maps";
 import {CiHospital1} from "react-icons/ci";
 import SelectElement from "@/elements/SelectElement.tsx";
 
-import Microphone from "@/assets/microphone.png";
+import MicrophoneButton from "@/components/MapUI/MicrophoneButton.tsx";
 
 const hospitals = [
     {
@@ -231,9 +230,9 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
     const renderHospitalSelection = () => (
         <div className='w-full'>
             <div className='flex justify-center'>
-                <h2 className='text-xl font-black mb-6 text-center mr-30'>Select a Hospital</h2>
+                <h2 className='text-2xl font-black mb-6 text-center mr-10 pt-2.5'>Select a Hospital</h2>
+                <MicrophoneButton />
 
-                <img src={Microphone} alt = "speaker" className='h-6 w-6'/>
             </div>
 
             <div className='space-y-4 mt-4'>
