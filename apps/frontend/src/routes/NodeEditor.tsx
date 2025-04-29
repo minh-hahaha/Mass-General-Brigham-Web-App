@@ -53,7 +53,7 @@ const NodeEditor = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setInstructionVisible(true);
-        }, 2000);
+        }, 1000);
 
         return () => clearTimeout(timer); // Clean up
     }, []);
@@ -83,41 +83,48 @@ const NodeEditor = () => {
     const patriotPlaceFloor = getCurrentPatriotPlaceFloor();
 
     return (
-        <div>
-            <APIProvider apiKey={API_KEY} libraries={['maps', 'drawing', 'marker']}>
-                <div style={{ height: '100vh', width: '100%' }}>
+        <>
+            <div>
+                <APIProvider apiKey={API_KEY} libraries={['maps', 'drawing', 'marker']}>
+                    <div style={{ height: '100vh', width: '100%' }}>
 
-                    <Map
-                        style={{ width: '100%', height: '100%' }}
-                        defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
-                        // MGB at Chestnut hill 42.325988270594415, -71.1495669288061
-                        defaultZoom={15}
-                        renderingType={RenderingType.RASTER}
-                        mapTypeControl={false}
-                        mapId={"10f50e6c04bae897"}
-                    >
-                        <OverlayComponent
-                            bounds={ChestnutHillBounds}
-                            imageSrc={chestnutHillFloor.svgPath}
-                        />
-                        <OverlayComponent
-                            bounds={PatriotPlaceBounds}
-                            imageSrc={patriotPlaceFloor.svgPath}
-                        />
-                        <OverlayComponent
-                            bounds={FaulknerBounds}
-                            imageSrc={'/FK01.svg'}
-                        />
-                        <div
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20"
+                        <Map
+                            style={{ width: '100%', height: '100%' }}
+                            defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
+                            // MGB at Chestnut hill 42.325988270594415, -71.1495669288061
+                            defaultZoom={15}
+                            renderingType={RenderingType.RASTER}
+                            mapTypeControl={false}
+                            mapId={"10f50e6c04bae897"}
                         >
-                            {/*<FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />*/}
-                        </div>
-                        <NodeEditorComponent ></NodeEditorComponent>
-                    </Map>
+                            <OverlayComponent
+                                bounds={ChestnutHillBounds}
+                                imageSrc={chestnutHillFloor.svgPath}
+                            />
+                            <OverlayComponent
+                                bounds={PatriotPlaceBounds}
+                                imageSrc={patriotPlaceFloor.svgPath}
+                            />
+                            <OverlayComponent
+                                bounds={FaulknerBounds}
+                                imageSrc={'/FK01.svg'}
+                            />
+                            <div
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20"
+                            >
+                                {/*<FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />*/}
+                            </div>
+                            <NodeEditorComponent></NodeEditorComponent>
+                        </Map>
+                    </div>
+                </APIProvider>
+            </div>
+            {instructionVisible && (
+                <div className="fixed inset-0 z-50">
+                    <MapInstructions onClose={() => setInstructionVisible(false)} />
                 </div>
-            </APIProvider>
-        </div>
+            )}
+        </>
     );
 }
 
