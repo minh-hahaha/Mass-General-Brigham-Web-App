@@ -66,7 +66,7 @@ const DirectionsMapComponent = () => {
 
     const [textDirections, setTextDirections] = useState<string>('No destination/start selected');
     const [text2Directions, setText2Directions] = useState<string[]>([]);
-    const [selectedAlgorithm, setSelectedAlgorithm] = useState('');
+    const [selectedAlgorithm, setSelectedAlgorithm] = useState('BFS');
 
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
@@ -281,16 +281,49 @@ const DirectionsMapComponent = () => {
 
     const handleDepartmentSelect = (departmentNodeId: string) => {
         setToDirectoryNodeId(departmentNodeId);
+        setPathVisible(true);
+        clearRoute();
     }
 
     const handleParkingSelect = (lotId: string) => {
         setLot(lotId)
     }
 
+    useEffect(() => {
+        if (lot !== "") {
+            // get prefix and lot letter
+            const [locationPrefix, lotLetter] = lot.split('_');
+
+            if (locationPrefix === 'PP') {
+                setFromNodeId(`PPFloor1Parking Lot${lotLetter}`);
+            } else if (locationPrefix === 'FK') {
+                if (lotLetter === 'A') {
+                    setFromNodeId('FKFloor1Parking Lot');
+                } else if (lotLetter === 'B') {
+                    setFromNodeId('FKFloor1Parking Lot_1');
+                } else if (lotLetter === 'C') {
+                    setFromNodeId('FKFloor1Parking Lot_2');
+                }
+            } else if (locationPrefix === 'CH') {
+                if (lotLetter === 'A') {
+                    setFromNodeId('CHFloor1Parking Lot1');
+                } else if (lotLetter === 'B') {
+                    setFromNodeId('CHFloor1Parking LotB');
+                } else if (lotLetter === 'C') {
+                    setFromNodeId('CHFloor1Parking LotC');
+                }
+            }
+        }
+
+    }, [lot]);
+
+
     const handleBack =() => {
         clearRoute();
         clearParking();
         setShowFloorSelector(false);
+        setFromNodeId("")
+        setToDirectoryNodeId("")
     }
 
     return (
