@@ -1,73 +1,71 @@
-import { useEffect, useRef, useState } from 'react';
-import HospitalCardComponent from '@/components/MapUI/HospitalCardComponent.tsx';
-import MGBButton from '@/elements/MGBButton.tsx';
-import {
-    ArrowLeft,
-    Navigation,
-    MapPin,
-    Phone,
-    Clock,
-    ChevronRight,
-    Circle,
-    Hospital,
-} from 'lucide-react';
+import {useEffect, useRef, useState} from "react";
 
-import clsx from 'clsx';
-import SelectElement from '@/elements/SelectElement.tsx';
-import TravelModeComponent from '@/components/TravelModeComponent.tsx';
-import { MdOutlineMyLocation } from 'react-icons/md';
-import { useMapsLibrary } from '@vis.gl/react-google-maps';
+import MGBButton from "@/elements/MGBButton.tsx";
+import {ArrowLeft, Navigation, MapPin, Phone, Clock, ChevronRight, Circle, Hospital} from 'lucide-react';
+
+import clsx from "clsx";
+import TravelModeComponent from "@/components/TravelModeComponent.tsx";
+import {MdOutlineMyLocation} from "react-icons/md";
+import {useMapsLibrary} from "@vis.gl/react-google-maps";
+import {CiHospital1} from "react-icons/ci";
+import SelectElement from "@/elements/SelectElement.tsx";
 
 const hospitals = [
     {
         id: 1,
         name: 'Chestnut Hill Healthcare Center',
         address: '850 Boylston Street, Chestnut Hill, MA 02467',
+        defaultParking: {lat: 42.326350183802454, lng: -71.14988541411569},
         phoneNumber: '(800) 294-9999',
         hours: 'Mon-Fri: 8:00 AM - 5:30 PM',
-        image: '/HospitalCards/ChestnutHillCard.jpg',
+        image:'/HospitalCards/ChestnutHillCard.jpg',
         description: 'Very Cool Chestnut Hill Hospital',
-        coordinates: { lat: 42.325988, lng: -71.149567, zoom: 18 },
+        coordinates: {lat: 42.325988, lng: -71.149567, zoom: 18},
     },
     {
         id: 2,
         name: 'Foxborough Health Care Center',
         address: '20-22 Patriot Place, Foxborough, MA 02035',
+        defaultParking: {lat: 42.09222126540862, lng: -71.26646379537021},
         phoneNumber: '(508) 718-4000',
         hours: 'Mon-Sat: 8:00 AM - 8:00 PM',
-        image: '/HospitalCards/PatriotPlaceCard.jpg',
+        image:'/HospitalCards/PatriotPlaceCard.jpg',
         description: 'Very Cool Patriot Place',
-        coordinates: { lat: 42.092617, lng: -71.266492, zoom: 18 },
+        coordinates: {lat: 42.092617, lng: -71.266492, zoom: 18},
     },
     {
         id: 3,
-        name: "Brigham and Women's Faulkner Hospital",
+        name: 'Brigham and Women\'s Faulkner Hospital',
         address: '1153 Centre St, Jamaica Plain, MA 02130',
+        defaultParking: {lat: 42.30110395876755, lng: -71.12754584282733},
         phoneNumber: '(617) 983-7000',
         hours: 'Open 24 hours',
-        image: '/HospitalCards/FaulknerHospitalCard.jpg',
+        image:'/HospitalCards/FaulknerHospitalCard.jpg',
         description: 'Very Cool Faulkner Hospital',
-        coordinates: { lat: 42.301684739524546, lng: -71.12816396084828, zoom: 18 },
+        coordinates: {lat: 42.301684739524546, lng: -71.12816396084828, zoom: 18},
     },
     {
         id: 4,
-        name: "Brigham and Women's Main Hospital",
+        name: 'Brigham and Women\'s Main Hospital',
         address: '75 Francis St, Boston, MA 02115',
+        defaultParking: {lat: 42.33597732454244, lng: -71.10722288414479},
         phoneNumber: '(617) 732-5500',
         hours: 'Open 24 hours',
-        image: '/HospitalCards/MGBMainCard.jpeg',
+        image:'/HospitalCards/MGBMainCard.jpeg',
         description: 'Very Cool Main Hospital',
-        coordinates: { lat: 42.33629683337891, lng: -71.1067533432466, zoom: 18 },
-    },
-];
+        coordinates: {lat: 42.33629683337891, lng: -71.1067533432466, zoom: 18},
+    }
+]
 
-type Step = 'SELECT_HOSPITAL' | 'HOSPITAL_DETAIL' | 'DIRECTIONS' | 'DEPARTMENT';
+type Step = 'SELECT_HOSPITAL' | 'HOSPITAL_DETAIL' | 'DIRECTIONS' | 'DEPARTMENT'
 
-type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
+type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING'
+
+type Algorithm = 'BFS' | 'DFS'
 
 interface DirectoryItem {
-    deptName: string;
-    nodeId: string;
+    deptName: string
+    nodeId: string
     // TODO: can add more here
 }
 
@@ -75,37 +73,37 @@ interface HospitalSidebarProps {
     onDirectionsRequest: (
         fromLocation: string,
         toLocation: string,
+        toHospital: string,
         travelMode: TravelModeType
     ) => void;
     onHospitalSelect: (hospitalId: number) => void;
     onDepartmentSelect: (departmentNodeId: string) => void;
     onParkingSelect: (parkingId: string) => void;
+    onClickingBack: () => void;
+    onClickFindDepartment: () => void;
+    onChoosingAlgo: (algorithm: string) => void;
     directoryList: DirectoryItem[];
 }
 
-const MapSidebarComponent = ({
-    onDirectionsRequest,
-    onHospitalSelect,
-    onDepartmentSelect,
-    onParkingSelect,
-    directoryList,
-}: HospitalSidebarProps) => {
+
+
+const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmentSelect, onParkingSelect, onClickingBack, onClickFindDepartment, onChoosingAlgo, directoryList}:HospitalSidebarProps) => {
     const [currentStep, setCurrentStep] = useState<Step>('SELECT_HOSPITAL');
-    const [selectedHospital, setSelectedHospital] = useState<(typeof hospitals)[0] | null>(null);
+    const [selectedHospital, setSelectedHospital] = useState<typeof hospitals[0] | null >(null);
 
     const [selectedDepartment, setSelectedDepartment] = useState('');
     const [fromLocation, setFromLocation] = useState('');
     const [travelMode, setTravelMode] = useState<TravelModeType>('DRIVING');
-    const [selectedLot, setSelectedLot] = useState('');
+    const [selectedLot, setSelectedLot] = useState('')
+    const [selectedAlgorithm, setSelectedAlgorithm] = useState<Algorithm>("BFS");
 
     const placesLibrary = useMapsLibrary('places');
 
     // refs for autocomplete
-    const fromLocationRef = useRef(null);
+    const fromLocationRef = useRef<HTMLInputElement | null>(null);
     // autocomplete
     useEffect(() => {
         if (!placesLibrary || !fromLocationRef.current) return;
-
         // autocomplete for origin
         const fromAutocomplete = new placesLibrary.Autocomplete(fromLocationRef.current, {
             types: ['geocode', 'establishment'],
@@ -123,53 +121,70 @@ const MapSidebarComponent = ({
     }, [placesLibrary]);
 
     // Handle Select Hospital
-    const handleHospitalSelect = (hospital: (typeof hospitals)[0]) => {
+    const handleHospitalSelect = (hospital: typeof hospitals[0]) => {
         setSelectedHospital(hospital);
-        setCurrentStep('HOSPITAL_DETAIL');
-        onHospitalSelect(hospital.id);
-    };
+        setCurrentStep("HOSPITAL_DETAIL");
+        onHospitalSelect(hospital.id)
+    }
 
     const handleFindDirections = () => {
-        setCurrentStep('DIRECTIONS');
-    };
+        setCurrentStep("DIRECTIONS")
+    }
 
-    const handleTravelModeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTravelMode(e.target.value as TravelModeType);
-    };
+    const handleTravelModeChange = (mode: TravelModeType) => {
+        setTravelMode(mode);
+
+        // update mode
+        if (selectedHospital && fromLocation) {
+            const destination: string = selectedHospital.defaultParking.lat.toString() + "," + selectedHospital.defaultParking.lng.toString();
+            onDirectionsRequest(fromLocation, destination, selectedHospital.name, mode);
+        }
+    }
 
     const handleDirectionsSubmit = () => {
         if (selectedHospital && fromLocation) {
-            onDirectionsRequest(fromLocation, selectedHospital.address, travelMode);
+            const destination: string = selectedHospital.defaultParking.lat.toString() + "," + selectedHospital.defaultParking.lng.toString();
+            onDirectionsRequest(fromLocation, destination, selectedHospital.name, travelMode);
         }
-    };
+    }
 
     const handleFindDepartment = () => {
-        setCurrentStep('DEPARTMENT');
-    };
+        onClickFindDepartment()
+        setCurrentStep("DEPARTMENT")
+    }
+
 
     const handleLotSelect = (lot: string) => {
         setSelectedLot(lot);
         onParkingSelect(lot);
-    };
+    }
 
-    const handleDepartmentSelect = (deptName: string) => {
+    const handleDepartmentSelect = (deptName:string) => {
         setSelectedDepartment(deptName);
-        const dept = directoryList.find((d) => d.deptName === deptName);
+        const dept = directoryList.find(d => d.deptName === deptName);
         if (dept) {
-            onDepartmentSelect(dept.nodeId);
+            onDepartmentSelect(dept.nodeId)
         }
-    };
+    }
 
-    const handleBack = () => {
-        if (currentStep === 'HOSPITAL_DETAIL') {
+    const handleAlgorithmChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedAlgorithm(e.target.value as Algorithm);
+        onChoosingAlgo(selectedAlgorithm);
+    }
+
+    const handleBack = () =>{
+        if (currentStep === "HOSPITAL_DETAIL") {
             setCurrentStep('SELECT_HOSPITAL');
             setSelectedHospital(null);
-        } else if (currentStep === 'DIRECTIONS') {
-            setCurrentStep('HOSPITAL_DETAIL');
-        } else if (currentStep === 'DEPARTMENT') {
-            setCurrentStep('HOSPITAL_DETAIL');
+            onClickingBack();
         }
-    };
+        else if (currentStep === "DIRECTIONS") {
+            setCurrentStep('HOSPITAL_DETAIL')
+        }
+        else if (currentStep === "DEPARTMENT") {
+            setCurrentStep("DIRECTIONS")
+        }
+    }
 
     const handleUseCurrentLocation = () => {
         if (!navigator.geolocation) {
@@ -183,7 +198,7 @@ const MapSidebarComponent = ({
                 const latLng = `${latitude}, ${longitude}`;
                 setFromLocation(latLng); // this triggers map routing
 
-                // Optional: reverse geocode to get a human-readable address
+                //reverse geocode to get a human-readable address
                 try {
                     const geocoder = new google.maps.Geocoder();
                     geocoder.geocode(
@@ -205,14 +220,16 @@ const MapSidebarComponent = ({
                 alert('Unable to retrieve your location.');
             }
         );
+
     };
+
 
     // step 1: selection card
     const renderHospitalSelection = () => (
-        <div className="w-full">
-            <h2 className="text-xl font-black mb-6 text-center">Select a Hospital</h2>
-            <div className="space-y-4 mt-4">
-                {hospitals.map((hospital) => (
+        <div className='w-full'>
+            <h2 className='text-xl font-black mb-6 text-center'>Select a Hospital</h2>
+            <div className='space-y-4 mt-4'>
+                {hospitals.map (hospital => (
                     <div
                         key={hospital.id}
                         onClick={() => handleHospitalSelect(hospital)}
@@ -220,45 +237,45 @@ const MapSidebarComponent = ({
                     >
                         <div
                             className="h-40 bg-cover bg-center"
-                            style={{
-                                backgroundImage: `url(${hospital.image || '/api/placeholder/400/320'})`,
-                            }}
+                            style={{ backgroundImage: `url(${hospital.image || '/api/placeholder/400/320'})` }}
                         >
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-3">
                                 <h3 className="text-white font-bold text-lg">{hospital.name}</h3>
                                 <p className="text-white/90 text-sm">{hospital.address}</p>
                             </div>
                         </div>
+
                     </div>
                 ))}
             </div>
         </div>
     );
 
+
     // step 2 - hospital details
     const renderHospitalDetail = () => {
         if (!selectedHospital) return null;
 
         return (
-            <div className="w-full">
-                <div className="flex items-center mb-4">
+            <div className='w-full overflow-hidden'>
+                <div className='flex items-center mb-4'>
                     <button
                         onClick={handleBack}
                         className="p-1 rounded-full hover:bg-gray-200 transition-colors"
                     >
                         <ArrowLeft size={18} />
                     </button>
-                    <h2 className="text-lg font-bold text-codGray ml-2 truncate">
+                    <h2 className='text-lg font-bold text-codGray ml-2 truncate'>
                         {selectedHospital.name}
                     </h2>
                 </div>
 
                 <div
-                    className="h-40 bg-cover bg-center rounded-md mb-4 relative"
-                    style={{ backgroundImage: `url(${selectedHospital.image})` }}
+                    className='h-40 bg-cover bg-center rounded-md mb-4 relative'
+                    style={{backgroundImage: `url(${selectedHospital.image})`}}
                 />
-                <div className="space-y-4 mb-6">
-                    <p className="text-sm text-codGray">"{selectedHospital.description}</p>
+                <div className='space-y-4 mb-6'>
+                    <p className='text-sm text-codGray'>"{selectedHospital.description}</p>
                     <div className="space-y-2 bg-gray-50 p-3 rounded-md">
                         <div className="flex items-start">
                             <MapPin size={16} className="text-mgbblue mt-0.5 mr-2 flex-shrink-0" />
@@ -277,37 +294,35 @@ const MapSidebarComponent = ({
                     </div>
                 </div>
 
-                <div className="space-y-3">
-                    <MGBButton
-                        onClick={handleFindDirections}
-                        variant={'secondary'}
-                        disabled={false}
-                    >
+                <div className='space-y-3 flex justify-center'>
+                    <MGBButton onClick={handleFindDirections} variant={"secondary"} disabled={false}>
                         <div className="flex items-center">
                             <Navigation size={18} className="text-mgbblue mr-3 fill-mgbblue" />
                             <span className="font-medium">Get Directions</span>
                             <ChevronRight size={18} />
                         </div>
                     </MGBButton>
+
                 </div>
+
             </div>
-        );
-    };
+        )
+    }
 
     // step 3 - google maps
     const renderDirections = () => {
         if (!selectedHospital) return null;
         return (
-            <div className="w-full">
+            <div className='w-full overflow-hidden'>
                 {/* Back button */}
-                <div className="flex items-center mb-4">
+                <div className='flex items-center mb-4'>
                     <button
                         onClick={handleBack}
                         className="p-1 rounded-full hover:bg-gray-200 transition-colors"
                     >
                         <ArrowLeft size={18} />
                     </button>
-                    <h2 className="text-lg font-bold text-codGray ml-2 truncate">
+                    <h2 className='text-lg font-bold text-codGray ml-2 truncate'>
                         Directions to {selectedHospital.name}
                     </h2>
                 </div>
@@ -364,7 +379,7 @@ const MapSidebarComponent = ({
                             />
 
                             {/* Travel Mode */}
-                            <div className="mt-4 mb-4 ml-10">
+                            <div className="mt-4 mb-4 ml-8">
                                 <TravelModeComponent
                                     selectedMode={travelMode}
                                     onChange={handleTravelModeChange}
@@ -373,13 +388,14 @@ const MapSidebarComponent = ({
 
                             {/* Action buttons */}
                             <div className="flex flex-row gap-2">
+
                                 <MGBButton
                                     onClick={handleDirectionsSubmit}
                                     disabled={!fromLocation}
                                     variant={'primary'}
                                     className="hover:bg-mgbblue/90 transition disabled:opacity-50 mb-4"
                                 >
-                                    Get Directions
+                                    <span className="font-medium">Get Directions</span>
                                 </MGBButton>
                                 <MGBButton
                                     onClick={handleFindDepartment}
@@ -387,7 +403,7 @@ const MapSidebarComponent = ({
                                     variant={'secondary'}
                                     className="hover:bg-yellow-600/90 transition disabled:opacity-50 mb-4"
                                 >
-                                    Find Department
+                                    <span className="font-medium">Find Department</span>
                                 </MGBButton>
                             </div>
                             {/* TODO: add text direction */}
@@ -403,19 +419,20 @@ const MapSidebarComponent = ({
         if (!selectedHospital) return null;
 
         return (
-            <div className="w-full">
+            <div className='w-full overflow-hidden'>
                 {/*Back button*/}
-                <div className="flex items-center mb-4">
+                <div className='flex items-center mb-4'>
                     <button
                         onClick={handleBack}
                         className="p-1 rounded-full hover:bg-gray-200 transition-colors"
                     >
                         <ArrowLeft size={18} />
                     </button>
-                    <h2 className="text-lg font-bold text-codGray ml-2 truncate">
+                    <h2 className='text-lg font-bold text-codGray ml-2 truncate'>
                         Directions to {selectedHospital.name}
                     </h2>
                 </div>
+
 
                 {/*Parking Lot Choosing*/}
                 {travelMode === 'DRIVING' && (
@@ -427,29 +444,14 @@ const MapSidebarComponent = ({
                             {['A', 'B', 'C'].map((lot) => (
                                 <button
                                     key={lot}
-                                    onClick={() =>
-                                        handleLotSelect(
-                                            `${
-                                                selectedHospital.id === 1
-                                                    ? 'CH'
-                                                    : selectedHospital.id === 3
-                                                      ? 'FK'
-                                                      : 'PP'
-                                            }_${lot}`
-                                        )
-                                    }
+                                    onClick={() => handleLotSelect(`${selectedHospital.id === 1 ? 'CH' :
+                                        selectedHospital.id === 3 ? 'FK' : 'PP'}_${lot}`)}
                                     className={clsx(
-                                        'py-1 rounded-sm transition',
-                                        selectedLot ===
-                                            `${
-                                                selectedHospital.id === 1
-                                                    ? 'CH'
-                                                    : selectedHospital.id === 3
-                                                      ? 'FK'
-                                                      : 'PP'
-                                            }_${lot}`
-                                            ? 'bg-mgbblue text-white'
-                                            : 'bg-white text-codGray border border-mgbblue hover:bg-mgbblue hover:text-white'
+                                        "py-1 rounded-sm transition",
+                                        selectedLot === `${selectedHospital.id === 1 ? 'CH' :
+                                            selectedHospital.id === 3 ? 'FK' : 'PP'}_${lot}`
+                                            ? "bg-mgbblue text-white"
+                                            : "bg-white text-codGray border border-mgbblue hover:bg-mgbblue hover:text-white"
                                     )}
                                 >
                                     Lot {lot}
@@ -461,12 +463,12 @@ const MapSidebarComponent = ({
 
                 {/*Select Department for Pathfinding*/}
                 <div className="mb-6">
-                    <p className="mb-2 text-sm text-codGray font-bold">Select Department:</p>
+                    <p className="mb-2 text-sm text-codGray font-bold">
+                        Select Department:
+                    </p>
                     <div className="max-h-[300px] overflow-y-auto border border-gray-300 rounded-md">
                         {directoryList.length === 0 ? (
-                            <p className="p-4 text-center text-gray-500">
-                                No departments available
-                            </p>
+                            <p className="p-4 text-center text-gray-500">No departments available</p>
                         ) : (
                             <ul className="divide-y divide-gray-200">
                                 {directoryList.map((dept, index) => (
@@ -474,12 +476,13 @@ const MapSidebarComponent = ({
                                         key={index}
                                         onClick={() => handleDepartmentSelect(dept.deptName)}
                                         className={clsx(
-                                            'p-3 cursor-pointer hover:bg-gray-100',
-                                            selectedDepartment === dept.deptName ? 'bg-blue-50' : ''
+                                            "p-3 cursor-pointer hover:bg-gray-100",
+                                            selectedDepartment === dept.deptName ? "bg-blue-50" : ""
                                         )}
                                     >
                                         <div className="flex items-center">
-                                            <Hospital size={16} className="text-mgbblue mr-2" />
+                                            <CiHospital1  size={18} className="text-mgbblue mr-5 w-5 h-5"/>
+
                                             <span>{dept.deptName}</span>
                                         </div>
                                     </li>
@@ -488,26 +491,43 @@ const MapSidebarComponent = ({
                         )}
                     </div>
                 </div>
+
+                <div >
+                    <SelectElement
+                        label={'Select Algorithm'}
+                        id={'algorithm'}
+                        value={selectedAlgorithm}
+                        onChange={handleAlgorithmChange}
+                        options={["BFS", "DFS"]}
+                    />
+                </div>
+
+
             </div>
-        );
-    };
+        )
+    }
+
 
     const renderStep = () => {
         switch (currentStep) {
             case 'SELECT_HOSPITAL':
-                return renderHospitalSelection();
+                return renderHospitalSelection()
             case 'HOSPITAL_DETAIL':
-                return renderHospitalDetail();
+                return renderHospitalDetail()
             case 'DIRECTIONS':
-                return renderDirections();
+                return renderDirections()
             case 'DEPARTMENT':
-                return renderDepartments();
+                return renderDepartments()
             default:
-                return renderHospitalSelection();
+                return renderHospitalSelection()
         }
-    };
+    }
 
-    return <div className="overflow-y-auto">{renderStep()}</div>;
-};
+    return (
+        <div className="overflow-y-auto">
+            {renderStep()}
+        </div>
+    )
+}
 
 export default MapSidebarComponent;
