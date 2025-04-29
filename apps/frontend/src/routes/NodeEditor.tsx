@@ -20,6 +20,7 @@ const FaulknerBounds = {
     northEast: { lat: 42.30301668867676, lng: -71.126350413866 }, // Top-right corner
 };
 
+
 // floor type
 interface Floor {
     id: string;
@@ -37,10 +38,12 @@ const availableFloors: Floor[] = [
     { id: "PP-2", floor: "2", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP02.svg" },
     { id: "PP-3", floor: "3", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP03.svg" },
     { id: "PP-4", floor: "4", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP04.svg" },
+
     { id: "FK-1", floor: "1", buildingId: "3", buildingName: "Faulkner Hospital",svgPath: "/FK01.svg" },
+
 ];
 
-const TestNodeEditor = () => {
+const NodeEditor = () => {
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
     const [currentFloorId, setCurrentFloorId] = useState<string>("CH-1");
     const [instructionVisible, setInstructionVisible] = useState(false);
@@ -59,7 +62,7 @@ const TestNodeEditor = () => {
         setCurrentFloorId(floorId);
     };
 
-    // separate out current floor for PP and CH
+    // seperate out current floor for PP and CH
     // Get the current Patriot Place floor data
     const getCurrentPatriotPlaceFloor = () => {
         let floorId = currentFloorId;
@@ -75,51 +78,47 @@ const TestNodeEditor = () => {
         return availableFloors.find(f => f.id === "CH-1")!;
     };
 
+
     const chestnutHillFloor = getChestnutHillFloor();
     const patriotPlaceFloor = getCurrentPatriotPlaceFloor();
 
     return (
-        <>
-            <div>
-                <APIProvider apiKey={API_KEY} libraries={['maps', 'drawing']}>
-                    <div style={{ height: '100vh', width: '100%' }}>
-                        <Map
-                            style={{ width: '100%', height: '100%' }}
-                            defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
-                            // MGB at Chestnut hill 42.325988270594415, -71.1495669288061
-                            defaultZoom={15}
-                            renderingType={RenderingType.RASTER}
-                            mapTypeControl={false}
+        <div>
+            <APIProvider apiKey={API_KEY} libraries={['maps', 'drawing', 'marker']}>
+                <div style={{ height: '100vh', width: '100%' }}>
+
+                    <Map
+                        style={{ width: '100%', height: '100%' }}
+                        defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
+                        // MGB at Chestnut hill 42.325988270594415, -71.1495669288061
+                        defaultZoom={15}
+                        renderingType={RenderingType.RASTER}
+                        mapTypeControl={false}
+                        mapId={"10f50e6c04bae897"}
+                    >
+                        <OverlayComponent
+                            bounds={ChestnutHillBounds}
+                            imageSrc={chestnutHillFloor.svgPath}
+                        />
+                        <OverlayComponent
+                            bounds={PatriotPlaceBounds}
+                            imageSrc={patriotPlaceFloor.svgPath}
+                        />
+                        <OverlayComponent
+                            bounds={FaulknerBounds}
+                            imageSrc={'/FK01.svg'}
+                        />
+                        <div
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20"
                         >
-                            <OverlayComponent
-                                bounds={ChestnutHillBounds}
-                                imageSrc={chestnutHillFloor.svgPath}
-                            />
-                            <OverlayComponent
-                                bounds={PatriotPlaceBounds}
-                                imageSrc={patriotPlaceFloor.svgPath}
-                            />
-                            <OverlayComponent
-                                bounds={FaulknerBounds}
-                                imageSrc={'/FK01.svg'}
-                            />
-                            <div
-                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20"
-                            >
-                                <FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />
-                            </div>
-                            <NodeEditorComponent currentFloorId={currentFloorId} ></NodeEditorComponent>
-                        </Map>
-                    </div>
-                </APIProvider>
-            </div>
-            {instructionVisible && (
-                <div className="fixed inset-0 z-50">
-                    <MapInstructions onClose={() => setInstructionVisible(false)} />
+                            {/*<FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />*/}
+                        </div>
+                        <NodeEditorComponent ></NodeEditorComponent>
+                    </Map>
                 </div>
-            )}
-        </>
+            </APIProvider>
+        </div>
     );
 }
 
-export default TestNodeEditor;
+export default NodeEditor;

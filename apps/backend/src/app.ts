@@ -52,6 +52,7 @@ app.use(ROUTES.DIRECTORY_CSV, directoryRouter);
 app.use(ROUTES.DIRECTORY_NAMES, directoryRouter);
 app.use(ROUTES.DIRECTORY_NODE, directoryNodeRouter);
 app.use(ROUTES.DIRECTORY_BUILDING, directoryRouter);
+app.use(ROUTES.DIRECTORY_JSON, directoryRouter);
 
 //Service Requests
 app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
@@ -64,6 +65,8 @@ app.use(ROUTES.MEDICALDEVICEREQUEST, medicalDeviceRouter);
 app.use(ROUTES.FINDPATH, graphRouter);
 app.use(ROUTES.NODE, nodeRouter);
 app.use(ROUTES.EDGE, edgeRouter);
+app.use(ROUTES.NODE_EDGE_CSV, nodeRouter);
+app.use(ROUTES.NODE_EDGE_JSON, nodeRouter);
 
 app.use(ROUTES.RECENT_ORIGINS, originRouter);
 

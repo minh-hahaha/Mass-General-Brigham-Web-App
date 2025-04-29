@@ -15,9 +15,10 @@ import { MapPage } from '@/routes/MapPage.tsx';
 import MapViewPage from '@/routes/MapViewPage.tsx';
 import MaintenanceRequestPage from '@/routes/MaintenanceRequestPage.tsx';
 import Cookies from 'js-cookie';
-import TestNodeEditor from '@/routes/TestNodeEditor.tsx';
+import NodeEditor from '@/routes/NodeEditor.tsx';
 import AboutPage from '@/routes/AboutPage.tsx';
 import {Auth0Provider} from "@auth0/auth0-react";
+import {ROUTES} from "common/src/constants.ts";
 
 import CreditsPage from "@/routes/CreditsPage.tsx";
 
@@ -57,13 +58,15 @@ function App() {
                                 />
                                 <Route
                                     path="/ImportExportDirectory"
-                                    element={<ImportExportDirectoryPage />}
+                                    element={
+                                        <ImportExportDirectoryPage jsonRoute={ROUTES.DIRECTORY_JSON} csvRoute={ROUTES.DIRECTORY_CSV} />
+                                    }
                                 />
                                 <Route
                                     path="/DirectoryDisplay"
                                     element={<DirectoryDisplayPage />}
                                 />
-                                <Route path="/MapEditorPage" element={<TestNodeEditor />} />
+                                <Route path="/MapEditorPage" element={<NodeEditor />} />
                                 <Route path="/MapPage" element={<MapPage />} />
                                 <Route path="/ViewMap" element={<MapViewPage />} />
 
@@ -81,31 +84,31 @@ function App() {
                                     element={<SanitationRequestPage />}
                                 />
 
-                                <Route
-                                    path="/MaintenancePage"
-                                    element={<MaintenanceRequestPage />}
-                                />
-                                <Route
-                                    path="/TransportationRequestPage"
-                                    element={<TransportationRequestPage />}
-                                />
-                                <Route
-                                    path={'/MedicalDevicePage'}
-                                    element={<MedicalDeviceServiceRequestPage />}
-                                />
-                                <Route
-                                    path="/AboutPage"
-                                    element={<AboutPage />}
-                                />
-                                <Route
-                                    path="/CreditsPage"
-                                    element={<CreditsPage />}
-                                />
-                            </Routes>
-                        </main>
-                    </div>
-                </BrowserRouter>
-            </div>
+                                    <Route
+                                        path="/MaintenancePage"
+                                        element={<MaintenanceRequestPage />}
+                                    />
+                                    <Route
+                                        path="/TransportationRequestPage"
+                                        element={<TransportationRequestPage />}
+                                    />
+                                    <Route
+                                        path={'/MedicalDevicePage'}
+                                        element={<MedicalDeviceServiceRequestPage />}
+                                    />
+                                    <Route
+                                        path="/AboutPage"
+                                        element={<AboutPage />}
+                                    />
+                                    <Route
+                                        path="/CreditsPage"
+                                        element={<CreditsPage />}
+                                    />
+                                </Routes>
+                            </main>
+                        </div>
+                    </BrowserRouter>
+                </div>
         </Auth0Provider>
     );
 }
