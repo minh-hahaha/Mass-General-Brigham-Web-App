@@ -17,9 +17,9 @@ import MapSidebarComponent from "@/components/MapUI/MapSidebarComponent.tsx";
 import FloorSelector from "@/components/FloorSelector.tsx";
 
 const HospitalLocations: Record<string, {lat: number, lng: number, zoom: number}> = {
-    'Chestnut Hill Healthcare Center': {lat: 42.325988, lng: -71.149567, zoom: 18},
-    'Foxborough Health Care Center': {lat: 42.092617, lng: -71.266492, zoom: 18},
-    'Brigham and Women\'s Faulkner Hospital': {lat: 42.301684739524546, lng: -71.12816396084828, zoom: 18},
+    'Chestnut Hill Healthcare Center': {lat: 42.325988, lng: -71.149567, zoom: 20},
+    'Foxborough Health Care Center': {lat: 42.092617, lng: -71.266492, zoom: 20},
+    'Brigham and Women\'s Faulkner Hospital': {lat: 42.301684739524546, lng: -71.12816396084828, zoom: 19},
     'Brigham and Women\'s Main Hospital': {lat: 42.33550114249947, lng: -71.10727870473441, zoom: 18}
 };
 
