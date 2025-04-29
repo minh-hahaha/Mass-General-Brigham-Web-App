@@ -4,6 +4,7 @@ import { protos, TextToSpeechClient } from '@google-cloud/text-to-speech';
 const router: Router = express.Router();
 
 const API_KEY = process.env.TTS_API_KEY_PATH;
+
 const client = new TextToSpeechClient({
     keyFilename: API_KEY, // path to your service account key
 });

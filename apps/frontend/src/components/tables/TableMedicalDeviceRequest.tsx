@@ -20,10 +20,6 @@ interface Props {
 }
 
 const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => {
-    const loggedIn = sessionStorage.getItem('loggedIn');
-    if (!loggedIn) {
-        window.location.href = '/';
-    }
 
     const [loading, setLoading] = useState(true);
     const [requests, setRequests] = useState<incomingMedicalDeviceRequest[]>([]);

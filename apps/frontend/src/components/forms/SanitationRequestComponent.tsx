@@ -16,8 +16,6 @@ import SelectFormElement from "@/elements/SelectFormElement.tsx";
 
 // Component definition
 const SanitationRequestPage = () => {
-    const loggedIn = sessionStorage.getItem('loggedIn');
-    if (!loggedIn) {window.location.href = '/';}
 
     //Service request fields
     const [priority, setPriority] = useState<priorityType>('Low');
