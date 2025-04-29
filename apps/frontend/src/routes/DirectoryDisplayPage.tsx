@@ -13,9 +13,6 @@ import ImportExportDirectoryPage from '@/routes/ImportExportDirectoryPage';
 import MGBButton from '@/elements/MGBButton.tsx';
 import { FaBuilding, FaTools, FaPhoneAlt } from 'react-icons/fa';
 import { TbStairsUp } from 'react-icons/tb';
-import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-import {motion} from 'framer-motion';
-import {ExportCSV, ExportJSON, ImportCSV, ImportJSON} from "@/database/csvImportExport.ts";
 import {ROUTES} from "common/src/constants.ts";
 
 interface DirectoryTableProps {
@@ -197,12 +194,12 @@ const AllDirectory = ({ onImportClick }: { onImportClick: () => void }) => {
 
                 <div className="flex flex-col bg-gray-200 rounded-sm mt-3 pt-2">
                     <h1 className="font-black text-lg ml-2">Import New Directory</h1>
-                    <ImportExportDirectoryPage />
+                    <ImportExportDirectoryPage csvRoute={ROUTES.DIRECTORY_CSV} jsonRoute={ROUTES.DIRECTORY_JSON}  />
                 </div>
             </div>
 
             {/* Main Content (Table) */}
-            <div className="ml-75 w-full p-6">
+            <div className="ml-75 w-full p-6 min-h-screen bg-gray-200">
                 <DirectoryTable data={filteredData} />
             </div>
         </div>
@@ -331,12 +328,12 @@ const ChestnutDirectory = ({ onImportClick }: { onImportClick: () => void }) => 
 
                 <div className="flex flex-col bg-gray-200 rounded-sm mt-3 pt-2">
                     <h1 className="font-black text-lg ml-2">Import New Directory</h1>
-                    <ImportExportDirectoryPage />
+                    <ImportExportDirectoryPage csvRoute={ROUTES.DIRECTORY_CSV} jsonRoute={ROUTES.DIRECTORY_JSON} />
                 </div>
             </div>
 
             {/* Main Content (Table) */}
-            <div className="ml-75 w-full p-6">
+            <div className="ml-75 w-full p-6 min-h-screen bg-gray-200">
                 <DirectoryTable data={filteredData} />
             </div>
         </div>
@@ -465,12 +462,12 @@ const Patriot20Directory = ({ onImportClick }: { onImportClick: () => void }) =>
 
                 <div className="flex flex-col bg-gray-200 rounded-sm mt-3 pt-2">
                     <h1 className="font-black text-lg ml-2">Import New Directory</h1>
-                    <ImportExportDirectoryPage />
+                    <ImportExportDirectoryPage csvRoute={ROUTES.DIRECTORY_CSV} jsonRoute={ROUTES.DIRECTORY_JSON} />
                 </div>
             </div>
 
             {/* Main Content (Table) */}
-            <div className="ml-75 w-full p-6">
+            <div className="ml-75 w-full p-6 min-h-screen bg-gray-200">
                 <DirectoryTable data={filteredData} />
             </div>
         </div>
@@ -599,12 +596,12 @@ const Patriot22Directory = ({ onImportClick }: { onImportClick: () => void }) =>
 
                 <div className="flex flex-col bg-gray-200 rounded-sm mt-3 pt-2">
                     <h1 className="font-black text-lg ml-2">Import New Directory</h1>
-                    <ImportExportDirectoryPage />
+                    <ImportExportDirectoryPage csvRoute={ROUTES.DIRECTORY_CSV} jsonRoute={ROUTES.DIRECTORY_JSON} />
                 </div>
             </div>
 
             {/* Main Content (Table) */}
-            <div className="ml-75 w-full p-6">
+            <div className="ml-75 w-full p-6 min-h-screen bg-gray-200">
                 <DirectoryTable data={filteredData} />
             </div>
         </div>
@@ -733,12 +730,12 @@ const FaulknerDirectory = ({ onImportClick }: { onImportClick: () => void }) => 
 
                 <div className="flex flex-col bg-gray-200 rounded-sm mt-3 pt-2">
                     <h1 className="font-black text-lg ml-2">Import New Directory</h1>
-                    <ImportExportDirectoryPage />
+                    <ImportExportDirectoryPage csvRoute={ROUTES.DIRECTORY_CSV} jsonRoute={ROUTES.DIRECTORY_JSON} />
                 </div>
             </div>
 
             {/* Main Content (Table) */}
-            <div className="ml-75 w-full p-6">
+            <div className="ml-75 w-full p-6 min-h-screen bg-gray-200">
                 <DirectoryTable data={filteredData} />
             </div>
         </div>
