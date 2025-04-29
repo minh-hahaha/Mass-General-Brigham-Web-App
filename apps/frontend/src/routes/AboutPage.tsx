@@ -5,7 +5,7 @@ import MemberPair from '../components/MemberPair.tsx';
 const AboutPage = () => {
     return (
         <div className="bg-gray-200 h-2full max-w-full overflow-x-hidden">
-            <div className="grid grid-cols-1 px-24 py-12">
+            <div className="grid grid-cols-1 px-24 py-12 text-center">
                 <motion.div
                     className="font-semibold text-4xl pb-10"
                     initial={{ opacity: 0 }}

@@ -6,7 +6,6 @@ import { dataToCSV, readCSV } from '../CSVImportExport.ts';
 const router: Router = express.Router();
 
 router.get('/', async function (req: Request, res: Response) {
-    console.log('sup');
     // Attempt to get list of employees
     try {
         //Attempt to pull from employee
@@ -15,7 +14,7 @@ router.get('/', async function (req: Request, res: Response) {
                 lastName: 'asc',
             },
         });
-        console.info('Successfully pulled employees score'); // Log that it was successful
+        console.info('Successfully pulled employees'); // Log that it was successful
         console.log(EMPLOYEE_LIST);
         res.send(EMPLOYEE_LIST);
     } catch (error) {
@@ -23,6 +22,40 @@ router.get('/', async function (req: Request, res: Response) {
         console.error(`NO EMPLOYEES: ${error}`);
         res.sendStatus(204); // Send error
         return; // Don't try to send duplicate statuses
+    }
+});
+
+router.get('/names', async function (req, res) {
+    console.log("what's up danger");
+    try {
+        const EMPLOYEE_NAMES = await PrismaClient.employee.findMany({
+            select: {
+                firstName: true,
+                lastName: true,
+            },
+        });
+        res.json(EMPLOYEE_NAMES);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(204);
+        return;
+    }
+});
+
+router.get('/email', async function (req, res) {
+    try {
+        let emailFilter: string = req.query.emailFilter as string;
+
+        const EMPLOYEE = await PrismaClient.employee.findMany({
+            where: {
+                email: emailFilter,
+            },
+        });
+        res.json(EMPLOYEE);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(204);
+        return;
     }
 });
 

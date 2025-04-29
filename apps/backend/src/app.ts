@@ -42,10 +42,13 @@ app.use(cookieParser()); // Cookie parser
 // won't be reached by the default proxy and prod setup
 
 app.use(ROUTES.ASSIGNED, assignedRouter);
-app.use(ROUTES.EMPLOYEE, employeeRouter);
-
 app.use(ROUTES.VALIDATE, validateRouter);
-app.use(ROUTES.SANITATION, sanitationRouter);
+
+//Employee
+app.use(ROUTES.EMPLOYEE, employeeRouter);
+app.use(ROUTES.EMPLOYEE_CSV, employeeRouter);
+app.use(ROUTES.EMPLOYEE_NAMES, employeeRouter);
+app.use(ROUTES.EMPLOYEE_EMAIL, employeeRouter);
 
 //Building
 app.use(ROUTES.BUILDING, buildingRouter);
@@ -60,10 +63,11 @@ app.use(ROUTES.DIRECTORY_BUILDING, directoryRouter);
 
 //Service Requests
 app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
-app.use(ROUTES.TRANSLATIONREQUEST, translationRouter);
 app.use(ROUTES.MAINTENANCEREQUEST, maintenanceRouter);
-app.use(ROUTES.PATIENTTRANSPORT, patientTransportRouter);
 app.use(ROUTES.MEDICALDEVICEREQUEST, medicalDeviceRouter);
+app.use(ROUTES.SANITATION, sanitationRouter);
+app.use(ROUTES.TRANSLATIONREQUEST, translationRouter);
+app.use(ROUTES.PATIENTTRANSPORT, patientTransportRouter);
 
 //Algorithms
 app.use(ROUTES.FINDPATH, graphRouter);

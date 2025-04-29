@@ -1,9 +1,15 @@
 
 export const ROUTES = {
     ASSIGNED: '/api/assigned',
-    EMPLOYEE: '/api/employee',
+
     SERVICEREQUESTS: '/api/servicereqs',
     VALIDATE: '/api/validate',
+
+    //Employee
+    EMPLOYEE: '/api/employee',
+    EMPLOYEE_CSV: '/api/employee/csv',
+    EMPLOYEE_NAMES: '/api/employee/names',
+    EMPLOYEE_EMAIL: '/api/employee/email',
 
     //Buildings
     BUILDING: '/api/building',
