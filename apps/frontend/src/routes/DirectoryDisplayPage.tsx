@@ -753,7 +753,7 @@ const DirectoryDisplayPage = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setInstructionVisible(true);
-        }, 2000); // 2 seconds delay
+        }, 1000); // 2 seconds delay
 
         return () => clearTimeout(timer); // Clean up
     }, []);
