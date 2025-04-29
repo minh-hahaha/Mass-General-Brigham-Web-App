@@ -50,7 +50,7 @@ const TestNodeEditor = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setInstructionVisible(true);
-        }, 1500);
+        }, 2000);
 
         return () => clearTimeout(timer); // Clean up
     }, []);
