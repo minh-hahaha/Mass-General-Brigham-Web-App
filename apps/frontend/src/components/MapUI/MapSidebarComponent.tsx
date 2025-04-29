@@ -230,7 +230,9 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
             return;
         }
         //console.log(transcript);
-        const transcriptLowercase = transcript.toLowerCase();
+        const transcriptLowercase = transcript.toLowerCase()
+        console.log(transcriptLowercase);
+
 
         let foundHospital = undefined;
 
@@ -239,6 +241,7 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
             const currentHospital = hospitals[i];
 
             const currentHospitalName = currentHospital.name.toLowerCase();
+
 
             if(transcriptLowercase.includes(currentHospitalName)) {
                 foundHospital = currentHospital;
@@ -251,7 +254,6 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
 
         if (foundHospital) {
             handleHospitalSelect(foundHospital);
-            renderStep()
 
         }
 
