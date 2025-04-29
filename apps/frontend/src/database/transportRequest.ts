@@ -18,6 +18,11 @@ export interface transportRequest {
     assignedToId: number;
 }
 
+export interface editTransportRequest {
+    transportRequest: transportRequest;
+    requestId: number;
+}
+
 export interface incomingRequest {
     comments: string;
     employeeId: number;
@@ -40,6 +45,9 @@ export interface incomingRequest {
 
 export async function SubmitTransportRequest(request: transportRequest) {
     await axios.post(ROUTES.PATIENTTRANSPORT, request);
+}
+export async function EditTransportRequest(request: editTransportRequest) {
+    await axios.post(ROUTES.EDITPATIENTTRANSPORT, request);
 }
 
 export async function GetTransportRequest() {

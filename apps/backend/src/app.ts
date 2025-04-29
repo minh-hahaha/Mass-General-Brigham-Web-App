@@ -59,6 +59,7 @@ app.use(ROUTES.SERVICEREQUESTS, servicereqsRouter);
 app.use(ROUTES.TRANSLATIONREQUEST, translationRouter);
 app.use(ROUTES.MAINTENANCEREQUEST, maintenanceRouter);
 app.use(ROUTES.PATIENTTRANSPORT, patientTransportRouter);
+app.use(ROUTES.EDITPATIENTTRANSPORT, patientTransportRouter);
 app.use(ROUTES.MEDICALDEVICEREQUEST, medicalDeviceRouter);
 
 //Algorithms

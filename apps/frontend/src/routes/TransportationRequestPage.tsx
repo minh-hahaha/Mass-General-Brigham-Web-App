@@ -2,7 +2,12 @@ import {useEffect, useState} from 'react';
 import MGBButton from '../elements/MGBButton.tsx';
 import InputElement from '../elements/InputElement.tsx';
 import ConfirmMessageComponent from '../components/ConfirmMessageComponent.tsx'; // Import the new component
-import { SubmitTransportRequest } from '../database/transportRequest.ts';
+import {
+    EditTransportRequest,
+    editTransportRequest,
+    incomingRequest,
+    SubmitTransportRequest
+} from '../database/transportRequest.ts';
 
 interface transportRequest {
     patientId: number;
@@ -21,8 +26,12 @@ interface transportRequest {
     assignedToId: number;
 }
 
+interface TransportRequestProps {
+    editData: incomingRequest | undefined;
+}
+
 // Component definition
-const TransportRequestPage = () => {
+const TransportRequestPage = ({editData}: TransportRequestProps) => {
 
     const [patientId, setPatientId] = useState(0);
     const [patientName, setPatientName] = useState('');
@@ -62,8 +71,16 @@ const TransportRequestPage = () => {
             requestDate,
             assignedToId,
         };
-
-        SubmitTransportRequest(newRequest);
+        if(editData){
+            const editRequest: editTransportRequest = {
+                transportRequest: newRequest,
+                requestId: editData.requestId
+            }
+            console.log("edit data", editData);
+            EditTransportRequest(editRequest);
+        }else {
+            SubmitTransportRequest(newRequest);
+        }
         setSubmittedRequest(newRequest);
         setShowConfirmation(true);
 
@@ -103,6 +120,24 @@ const TransportRequestPage = () => {
     };
 
     const mgbLocations = ['Chestnut Hill', '20 Patriot Place', '22 Patriot Place'];
+
+    useEffect(() => {
+        if(editData){
+            setPatientId(editData.patientTransport.patientId);
+            setPatientName(editData.patientTransport.patientName);
+            setTransportType(editData.patientTransport.transportType);
+            setPriority(editData.priority);
+            setPickupLocation(editData.patientTransport.pickupLocation);
+            setDropOffLocation(editData.patientTransport.pickupLocation); //TODO: Where this?
+            setPickupDate(editData.requestDate); //TODO: where this?
+            setPickupTime(''); //TODO: fix later
+            setStatus(editData.status);
+            setNotes(editData.comments);
+            setRequesterId(editData.employeeId); //TODO: make sure this is requester and not assigned
+            setRequestDate(editData.requestDate);
+            setAssignedToId(editData.employeeId); //TODO: figure out what employeeId refers to
+        }
+    }, []);
 
     return (
         // flex row container

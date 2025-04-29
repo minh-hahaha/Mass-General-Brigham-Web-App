@@ -10,6 +10,7 @@ import {
     TableRow,
 } from '@/components/ui/table.tsx';
 import {motion} from 'framer-motion';
+import MGBButton from "@/elements/MGBButton.tsx";
 
 interface Props {
     setActiveForm: (
@@ -193,6 +194,7 @@ const TableSanitationRequest: React.FC<Props> = ({ setActiveForm }) => {
                                 <TableHead className="w-20 text-left font-semibold py-3">Status</TableHead>
                                 <TableHead className="w-20 text-left font-semibold py-3">Request Date</TableHead>
                                 <TableHead className="w-20 text-left font-semibold py-3">Service Type</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3"></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -226,6 +228,7 @@ const TableSanitationRequest: React.FC<Props> = ({ setActiveForm }) => {
                                     <TableCell className="text-left py-3">{req.status}</TableCell>
                                     <TableCell className="text-left py-3">{req.requestDate.split('T')[0]}</TableCell>
                                     <TableCell className="text-left py-3">{req.serviceType}</TableCell>
+                                    <TableCell className="text-left py-3"><MGBButton onClick={() => {}} variant={'primary'} children={'Edit'}/></TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

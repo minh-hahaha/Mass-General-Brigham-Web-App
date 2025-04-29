@@ -12,14 +12,15 @@ import MedicalDeviceServiceRequestPage from '@/routes/MedicalDeviceServiceReques
 import MaintenanceRequestPage from '@/routes/MaintenanceRequestPage.tsx';
 import TableTranslatorRequest from "@/components/tables/TableTranslatorRequest.tsx";
 import TranslationServiceRequestPage from "@/routes/TranslationServiceRequestPage.tsx";
+import {incomingRequest} from "@/database/transportRequest.ts";
 // ...other imports...
 
 
-const tableTabs = (setActiveForm: (type: FormType) => void) => [
+const tableTabs = (setActiveForm: (type: FormType) => void, setEditData: (data: incomingRequest) => void) => [
     { label: 'All', component: () => <TableAllRequest setActiveForm={setActiveForm} /> },
     {
         label: 'Transport',
-        component: () => <TableTransportRequest setActiveForm={setActiveForm} />,
+        component: () => <TableTransportRequest setActiveForm={setActiveForm} setEditData={setEditData} />,
     },
     {
         label: 'Translation',
@@ -51,9 +52,10 @@ type FormType =
 
 export default function RequestTablesCarousel() {
     const [activeForm, setActiveForm] = useState<FormType>(null);
+    const [editData, setEditData] = useState<incomingRequest | undefined>();
     const searchParams = new URLSearchParams(window.location.search);
     const form = searchParams.get('form');
-    const tabs = tableTabs(setActiveForm);
+    const tabs = tableTabs(setActiveForm, setEditData);
 
     const initialTabIndex = (() => {
         if (!form) return 0;
@@ -65,7 +67,7 @@ export default function RequestTablesCarousel() {
 
     return (
         <div>
-            <CarouselMenu tableTabs={tableTabs(setActiveForm)} initialIndex={initialTabIndex} />
+            <CarouselMenu tableTabs={tableTabs(setActiveForm, setEditData)} initialIndex={initialTabIndex} />
 
             {activeForm && (
                 <div
@@ -78,7 +80,7 @@ export default function RequestTablesCarousel() {
                     >
                         {/* Close Button */}
                         <button
-                            onClick={() => setActiveForm(null)}
+                            onClick={() => {setActiveForm(null); setEditData(undefined)}}
                             className="absolute top-2 right-3 text-gray-600 hover:text-black text-2xl font-bold z-10"
                         >
                             &times;
@@ -86,7 +88,7 @@ export default function RequestTablesCarousel() {
 
                         {/* Scrollable Form Content */}
                         <div className="h-full overflow-y-auto">
-                            {activeForm === 'transport' && <TransportationRequestPage />}
+                            {activeForm === 'transport' && <TransportationRequestPage editData={editData} />}
                             {activeForm === 'translation' && <TranslationServiceRequestPage />}
                             {activeForm === 'sanitation' && <SanitationRequestPage />}
                             {activeForm === 'medical device' && <MedicalDeviceServiceRequestPage />}

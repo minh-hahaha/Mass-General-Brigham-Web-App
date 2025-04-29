@@ -12,14 +12,16 @@ import {
     TableRow,
 } from '@/components/ui/table.tsx';
 import { motion, AnimatePresence } from 'framer-motion';
+import MGBButton from "@/elements/MGBButton.tsx";
 
 interface Props {
     setActiveForm: (
         type: 'transport' | 'translation' | 'maintenance' | 'medical device' | 'sanitation'
     ) => void;
+    setEditData: (incomingRequest: incomingRequest) => void;
 }
 
-const TableTransportRequest: React.FC<Props> = ({ setActiveForm }) => {
+const TableTransportRequest: React.FC<Props> = ({ setActiveForm, setEditData }) => {
     const [loading, setLoading] = useState(true);
     const [requests, setRequests] = useState<incomingRequest[]>([]);
     const [filters, setFilters] = useState({
@@ -196,6 +198,7 @@ const TableTransportRequest: React.FC<Props> = ({ setActiveForm }) => {
                                 <TableHead className="w-20 text-left font-semibold py-3">Request Date</TableHead>
                                 <TableHead className="w-20 text-left font-semibold py-3">Service Type</TableHead>
                                 <TableHead className="w-20 text-left font-semibold py-3">Transport Type</TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3"></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -227,6 +230,7 @@ const TableTransportRequest: React.FC<Props> = ({ setActiveForm }) => {
                                     <TableCell className="text-left py-3">{formatDate(req.requestDate)}</TableCell>
                                     <TableCell className="text-left py-3">{req.serviceType}</TableCell>
                                     <TableCell className="text-left py-3">{req.patientTransport.transportType}</TableCell>
+                                    <TableCell className="text-left py-3"><MGBButton onClick={() => {setEditData(req); setActiveForm("transport");}} variant={'primary'} children={'Edit'}/></TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

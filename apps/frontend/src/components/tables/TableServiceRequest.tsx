@@ -9,6 +9,7 @@ import {
     TableRow,
 } from '@/components/ui/table.tsx';
 import { motion } from 'framer-motion';
+import MGBButton from "@/elements/MGBButton.tsx";
 
 interface Props {
     setActiveForm: (
@@ -246,6 +247,8 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                                 <TableHead className="w-20 text-left font-semibold py-3">
                                     Service Type
                                 </TableHead>
+                                <TableHead className="w-20 text-left font-semibold py-3">
+                                </TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -288,6 +291,7 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                                     <TableCell className="text-left py-3">
                                         {req.serviceType}
                                     </TableCell>
+                                    <TableCell className="text-left py-3"><MGBButton onClick={() => {}} variant={'primary'} children={'Edit'}/></TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

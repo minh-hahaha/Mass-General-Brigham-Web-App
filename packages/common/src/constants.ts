@@ -7,6 +7,7 @@ export const ROUTES = {
 
     ///Requests
     PATIENTTRANSPORT: '/api/patienttransport',
+    EDITPATIENTTRANSPORT: '/api/patienttransport/edit',
     TRANSLATIONREQUEST: '/api/translation',
     SANITATION: '/api/sanitation',
     MAINTENANCEREQUEST: '/api/maintenance',

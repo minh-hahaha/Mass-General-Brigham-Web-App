@@ -9,6 +9,7 @@ import {
     TableRow,
 } from '@/components/ui/table.tsx';
 import { motion } from 'framer-motion';
+import MGBButton from "@/elements/MGBButton.tsx";
 
 interface Props {
     setActiveForm: (
@@ -197,6 +198,7 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm }) => {
                                     <TableCell className="text-left py-3">{req.translationRequest.typeMeeting}</TableCell>
                                     <TableCell className="text-left py-3">{req.translationRequest.meetingLink}</TableCell>
                                     <TableCell className="text-left py-3">{req.translationRequest.patientName}</TableCell>
+                                    <TableCell className="text-left py-3"></TableCell>
                                     <TableCell className="text-left py-3">
                                         <span
                                             className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -216,6 +218,7 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm }) => {
                                     <TableCell className="text-left py-3">{req.requestDate.split('T')[0]}</TableCell>
                                     <TableCell className="text-left py-3">{req.translationRequest.location}</TableCell>
                                     <TableCell className="text-left py-3">{req.translationRequest.department}</TableCell>
+                                    <TableCell className="text-left py-3"><MGBButton onClick={() => {}} variant={'primary'} children={'Edit'}/></TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
