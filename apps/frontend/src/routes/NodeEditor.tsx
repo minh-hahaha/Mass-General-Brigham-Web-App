@@ -102,7 +102,7 @@ const NodeEditor = () => {
                         >
                             {/*<FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />*/}
                         </div>
-                        <NodeEditorComponent currentFloorId={currentFloorId} ></NodeEditorComponent>
+                        <NodeEditorComponent ></NodeEditorComponent>
                     </Map>
                 </div>
             </APIProvider>
