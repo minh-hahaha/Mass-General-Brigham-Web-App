@@ -19,6 +19,7 @@ import TestNodeEditor from '@/routes/TestNodeEditor.tsx';
 import AboutPage from '@/routes/AboutPage.tsx';
 import {Auth0Provider} from "@auth0/auth0-react";
 
+import CreditsPage from "@/routes/CreditsPage.tsx";
 
 function App() {
     const defaultOpen = Cookies.get('sidebar_state') === 'true';
@@ -92,7 +93,14 @@ function App() {
                                         path={'/MedicalDevicePage'}
                                         element={<MedicalDeviceServiceRequestPage />}
                                     />
-                                    <Route path="/AboutPage" element={<AboutPage />} />
+                                    <Route
+                                        path="/AboutPage" 
+                                        element={<AboutPage />}
+                                    />
+                                    <Route
+                                        path="/CreditsPage"
+                                        element={<CreditsPage />}
+                                    />
                                 </Routes>
                             </main>
                         </div>
