@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, JSX } from "react";
+import React, { useState, useEffect, JSX, useRef } from "react";
 import { ROUTES } from "common/src/constants.ts";
 import axios from "axios";
 import MGBButton from "@/elements/MGBButton.tsx";
@@ -26,41 +26,42 @@ const TextToSpeechMapComponent = ({
                                       walk22Directions,
                                       icons,
                                   }: State) => {
+    const audioRef = useRef(new Audio());
     const [textMode, setTextMode] = useState("Mode: Transport Directions");
     const [textToSpeak, setTextToSpeak] = useState<string[]>(drive22Directions);
+    const [textDisplayList, setTextDisplayList] = useState<string[]>(drive22Directions);
     const [counter, setCounter] = useState(0);
     const [iconToDisplay, setIconToDisplay] = useState<JSX.Element>(<GiNothingToSay />);
-    const audioRef = useRef(new Audio());
 
     useEffect(() => {
-        setTextToSpeak(drive22Directions);
-    }, [drive22Directions]);
-
-    const htmlToPlainText = (html: string): string => {
-        const div = document.createElement("div");
-        div.innerHTML = html;
-        return div.innerText || div.textContent || "";
-    };
-
-    const handleProgressReset = () => {
+        if (textMode === "Mode: Transport Directions") {
+            setTextToSpeak(drive22Directions);
+            setTextDisplayList(drive22Directions);
+        } else {
+            setTextToSpeak(walk22Directions || []);
+            setTextDisplayList(walk22Directions || []);
+        }
         setCounter(0);
-    };
+        updateIcon(0);
+    }, [drive22Directions, walk22Directions, textMode]);
 
     const handleModeSwitch = () => {
-        handleProgressReset();
+        setCounter(0);
         if (textMode === "Mode: Transport Directions") {
             setTextMode("Mode: Building Directions");
-            setTextToSpeak(walk22Directions);
+            setTextToSpeak(walk22Directions || []);
+            setTextDisplayList(walk22Directions || []);
         } else {
             setTextMode("Mode: Transport Directions");
             setTextToSpeak(drive22Directions);
+            setTextDisplayList(drive22Directions);
         }
-        setIconToDisplay(<GiNothingToSay />);
+        updateIcon(0);
     };
 
-    const handleIconSwitch = (index: number) => {
+    const updateIcon = (index: number) => {
+        const direction = icons?.[index];
         if (textMode === "Mode: Building Directions") {
-            const direction = icons[index];
             if (direction === "Turn Left then Continue Straight") {
                 setIconToDisplay(<BsArrow90DegLeft />);
             } else if (direction === "Continue Straight") {
@@ -75,24 +76,26 @@ const TextToSpeechMapComponent = ({
         }
     };
 
+    const htmlToPlainText = (html: string): string => {
+        const div = document.createElement("div");
+        div.innerHTML = html;
+        return div.innerText || div.textContent || "";
+    };
+
     const speakDirections = async () => {
         const message = textToSpeak[counter];
-        const messageString = htmlToPlainText(message || "");
-        handleIconSwitch(counter);
+        updateIcon(counter);
 
-        const safeMessage =
-            messageString.length > 0
-                ? messageString
-                : "Empty of Directions, select a from, and, too location in order to receive directions.";
+        let messageString = htmlToPlainText(message || "");
+        if (!messageString) {
+            messageString = "Empty of Directions, select a from, and, too location in order to receive directions.";
+        }
 
-        const response = await axios.post(
-            ROUTES.TTS,
-            { text: safeMessage },
-            { responseType: "blob" }
-        );
+        const response = await axios.post(ROUTES.TTS, { text: messageString }, {
+            responseType: "blob",
+        });
 
         const audioBlob = await response.data;
-
         if (!audioRef.current.paused) {
             audioRef.current.pause();
             audioRef.current.currentTime = 0;
@@ -103,64 +106,55 @@ const TextToSpeechMapComponent = ({
         audioRef.current.play();
     };
 
+    const goLeft = () => {
+        if (counter > 0) {
+            setCounter(counter - 1);
+            updateIcon(counter - 1);
+        }
+    };
+
+    const goRight = () => {
+        if (counter < textDisplayList.length - 1) {
+            setCounter(counter + 1);
+            updateIcon(counter + 1);
+        }
+    };
+
     return (
-        <div className="absolute top-100 left-6 z-11">
-            <div className="p-5 flex flex-col items-end space-y-3 w-100 bg-white rounded-b-lg">
-                <div className="border border-codGray w-full"></div>
-                {/* Direction Step Row */}
-                <div className="flex items-center justify-center w-full space-x-4">
-                    {/* Left Arrow */}
+        <div className="absolute top-100 left-6 z-10">
+            <div className="p-5 shadow-md flex flex-col items-center space-y-4 w-100 z-10 bg-white rounded-b-lg">
+                {/* Horizontal Carousel Controls */}
+                <div className="flex items-center justify-between w-full space-x-4">
                     <button
-                        onClick={() => {
-                            if (counter > 0) {
-                                const newIndex = counter - 1;
-                                setCounter(newIndex);
-                                handleIconSwitch(newIndex);
-                            }
-                        }}
+                        onClick={goLeft}
                         disabled={counter === 0}
-                        className={`text-2xl ${
-                            counter === 0 ? "text-gray-300" : "text-mgbblue hover:text-blue-800"
-                        }`}
+                        className="text-2xl text-mgbblue hover:text-blue-800 disabled:text-gray-300"
                     >
                         <BsChevronLeft />
                     </button>
 
-                    {/* Direction Text */}
-                    <div className="text-black text-center w-80 px-2 h-20 flex items-center justify-center">
-                        {htmlToPlainText(textToSpeak[counter] || "")}
-                    </div>
+                    <div
+                        className="text-black text-center whitespace-pre-line break-words px-4 py-2 w-[300px]"
+                        dangerouslySetInnerHTML={{ __html: textDisplayList[counter] || '' }}
+                    ></div>
 
-                    {/* Right Arrow */}
                     <button
-                        onClick={() => {
-                            if (counter < textToSpeak.length - 1) {
-                                const newIndex = counter + 1;
-                                setCounter(newIndex);
-                                handleIconSwitch(newIndex);
-                            }
-                        }}
-                        disabled={counter === textToSpeak.length - 1}
-                        className={`text-2xl ${
-                            counter === textToSpeak.length - 1
-                                ? "text-gray-300"
-                                : "text-mgbblue hover:text-blue-800"
-                        }`}
+                        onClick={goRight}
+                        disabled={counter === textDisplayList.length - 1}
+                        className="text-2xl text-mgbblue hover:text-blue-800 disabled:text-gray-300"
                     >
                         <BsChevronRight />
                     </button>
                 </div>
 
-                {/* Bottom Controls */}
-                <div className="flex space-x-2 items-center justify-end">
-                    <MGBButton onClick={handleModeSwitch} variant="secondary" disabled={false}>
+                {/* Controls */}
+                <div className="flex space-x-2">
+                    <MGBButton onClick={handleModeSwitch} variant="primary" disabled={false}>
                         {textMode}
                     </MGBButton>
-
-                    <MGBButton onClick={speakDirections} variant="primary" disabled={false}>
+                    <MGBButton onClick={speakDirections} variant="secondary" disabled={false}>
                         Speak
                     </MGBButton>
-
                     <div className="flex items-center justify-center p-2 bg-gray-200 rounded-md">
                         {iconToDisplay}
                     </div>

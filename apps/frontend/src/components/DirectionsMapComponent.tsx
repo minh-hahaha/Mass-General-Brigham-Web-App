@@ -372,8 +372,11 @@ const DirectionsMapComponent = () => {
 
     const handleBack =(currentStep: string) => {
         if (currentStep === "DEPARTMENT") {
-            setPathVisible(false)
+            setPathVisible(false);
             clearParking();
+        }
+        if (currentStep === "DIRECTIONS") {
+            setToLocation('');
         }
         else{
             clearRoute();
