@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import MGBButton from "@/elements/MGBButton.tsx";
 import filter from '../assets/instructions/filter.png';
 import export_directory from '../assets/instructions/export_directory.png';
-import import_new from '../assets/instructions/import_new.png';
+import import_new_directory from '../assets/instructions/import_new_directory.png';
 
 interface MapInstructionsProps {
     onClose?: () => void;
@@ -17,7 +17,7 @@ const instructionPages = [
     },
     {
         title: "Import New Directories",
-        imagePath: import_new,
+        imagePath: import_new_directory,
         description: "Import new directory files through this procedure."
     },
     {
