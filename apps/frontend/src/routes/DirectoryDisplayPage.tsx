@@ -760,6 +760,7 @@ const DirectoryDisplayPage = () => {
 
     const handleOpenImport = () => setShowImportModal(true);
     const handleCloseImport = () => setShowImportModal(false);
+    const handleShowInstructions = () => setInstructionVisible(true);
 
     const tableTabs = [
         { label: 'All', component: () => <AllDirectory onImportClick={handleOpenImport} /> },
@@ -794,6 +795,14 @@ const DirectoryDisplayPage = () => {
             <div className="bg-gray-200">
                 <div className="">
                     <CarouselMenu tableTabs={tableTabs} initialIndex={initialTabIndex} />
+                </div>
+                <div className="fixed bottom-4 right-4">
+                    <MGBButton
+                        onClick={() => handleShowInstructions()}
+                        children={'Help'}
+                        variant={'primary'}
+                        disabled={false}
+                    ></MGBButton>
                 </div>
             </div>
             {instructionVisible && (
