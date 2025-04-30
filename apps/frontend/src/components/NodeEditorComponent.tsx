@@ -12,7 +12,9 @@ import { ROUTES } from 'common/src/constants.ts';
 import TagFilterBox from '@/elements/TagFilterBox.tsx';
 import {getDirectory} from "@/database/gettingDirectory.ts";
 import {GetNode} from "@/database/getDepartmentNode.ts";
-import FloorSelector from "@/components/MapUI/FloorSelector.tsx";
+import FloorSelector from "@/components/FloorSelector.tsx";
+import MapInstructions from "@/components/MapInstructions.tsx";
+import { FaRegQuestionCircle } from "react-icons/fa";
 
 
 // A container for a Node on the map
@@ -128,9 +130,16 @@ const NodeEditorComponent = () => {
     // Determines if the import/export popup is displayed
     const [showImportModal, setShowImportModal] = useState(false);
 
+    // Determines if the instructions are displayed
+    const [instructionVisible, setInstructionVisible] = useState(false);
+
     // Handles opening and closing the import/export popup
     const handleOpenImport = () => setShowImportModal(true);
     const handleCloseImport = () => setShowImportModal(false);
+
+    // Handles showing and hiding instructions
+    const handleShowInstructions = () => setInstructionVisible(true);
+    const handleHideInstructions = () => setInstructionVisible(false);
 
     // This to make sure we don't double up on nodes when rendering nodes and edges
     const lastFloor = useRef<string>('');
@@ -925,6 +934,18 @@ const NodeEditorComponent = () => {
                         disabled={false}
                     ></MGBButton>
                 </div>
+                <div>
+                    <MGBButton
+                        onClick={() => setInstructionVisible(true)}
+                        variant={'primary'}
+                        disabled={false}
+                    >
+                        <div className="flex items-center gap-2">
+                            <span>Help</span>
+                            <FaRegQuestionCircle size={18} />
+                        </div>
+                    </MGBButton>
+                </div>
             </div>
             {showImportModal && (
                 <div
@@ -953,6 +974,11 @@ const NodeEditorComponent = () => {
                             />
                         </div>
                     </div>
+                </div>
+            )}
+            {instructionVisible && (
+                <div className="fixed inset-0 z-50">
+                    <MapInstructions onClose={() => handleHideInstructions()} />
                 </div>
             )}
         </>

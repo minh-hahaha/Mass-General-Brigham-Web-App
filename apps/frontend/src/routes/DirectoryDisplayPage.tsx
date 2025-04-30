@@ -14,6 +14,8 @@ import MGBButton from '@/elements/MGBButton.tsx';
 import { FaBuilding, FaTools, FaPhoneAlt } from 'react-icons/fa';
 import { TbStairsUp } from 'react-icons/tb';
 import {ROUTES} from "common/src/constants.ts";
+import DirectoryInstructions from "@/components/DirectoryInstructions.tsx";
+import { FaRegQuestionCircle } from "react-icons/fa";
 
 interface DirectoryTableProps {
     data: DepartmentRequest[];
@@ -744,11 +746,22 @@ const FaulknerDirectory = ({ onImportClick }: { onImportClick: () => void }) => 
 
 const DirectoryDisplayPage = () => {
     const [showImportModal, setShowImportModal] = useState(false);
+    const [instructionVisible, setInstructionVisible] = useState(false);
     const searchParams = new URLSearchParams(window.location.search);
     const location = searchParams.get('location');
 
+    // Add useEffect for instructions timing
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setInstructionVisible(true);
+        }, 1000); // 2 seconds delay
+
+        return () => clearTimeout(timer); // Clean up
+    }, []);
+
     const handleOpenImport = () => setShowImportModal(true);
     const handleCloseImport = () => setShowImportModal(false);
+    const handleShowInstructions = () => setInstructionVisible(true);
 
     const tableTabs = [
         { label: 'All', component: () => <AllDirectory onImportClick={handleOpenImport} /> },
@@ -779,11 +792,30 @@ const DirectoryDisplayPage = () => {
     })();
 
     return (
-        <div className="bg-gray-200">
-            <div className="">
-                <CarouselMenu tableTabs={tableTabs} initialIndex={initialTabIndex} />
+        <>
+            <div className="bg-gray-200">
+                <div className="">
+                    <CarouselMenu tableTabs={tableTabs} initialIndex={initialTabIndex} />
+                </div>
+                <div className="fixed bottom-4 right-2">
+                    <MGBButton
+                        onClick={() => setInstructionVisible(true)}
+                        variant={'primary'}
+                        disabled={false}
+                    >
+                        <div className="flex items-center gap-2">
+                            <span>Help</span>
+                            <FaRegQuestionCircle size={18} />
+                        </div>
+                    </MGBButton>
+                </div>
             </div>
-        </div>
+            {instructionVisible && (
+                <div className="fixed inset-0 z-50">
+                    <DirectoryInstructions onClose={() => setInstructionVisible(false)} />
+                </div>
+            )}
+        </>
     );
 };
 
