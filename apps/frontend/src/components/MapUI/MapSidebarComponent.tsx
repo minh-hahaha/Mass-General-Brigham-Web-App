@@ -17,6 +17,7 @@ const hospitals = [
         name: 'Chestnut Hill Healthcare Center',
         address: '850 Boylston Street, Chestnut Hill, MA 02467',
         defaultParking: {lat: 42.326350183802454, lng: -71.14988541411569},
+        noneParking:{lat: 42.32629762650177, lng: -71.14951386955477},
         phoneNumber: '(800) 294-9999',
         hours: 'Mon-Fri: 8:00 AM - 5:30 PM',
         image:'/HospitalCards/ChestnutHillCard.jpg',
@@ -28,6 +29,7 @@ const hospitals = [
         name: 'Foxborough Health Care Center',
         address: '20-22 Patriot Place, Foxborough, MA 02035',
         defaultParking: {lat: 42.09222126540862, lng: -71.26646379537021},
+        noneParking:{lat: 42.09250362335946, lng: -71.26652247380247},
         phoneNumber: '(508) 718-4000',
         hours: 'Mon-Sat: 8:00 AM - 8:00 PM',
         image:'/HospitalCards/PatriotPlaceCard.jpg',
@@ -39,6 +41,7 @@ const hospitals = [
         name: 'Brigham and Women\'s Faulkner Hospital',
         address: '1153 Centre St, Jamaica Plain, MA 02130',
         defaultParking: {lat: 42.30110395876755, lng: -71.12754584282733},
+        noneParking: {lat: 1, lng: 1},
         phoneNumber: '(617) 983-7000',
         hours: 'Open 24 hours',
         image:'/HospitalCards/FaulknerHospitalCard.jpg',
@@ -50,6 +53,7 @@ const hospitals = [
         name: 'Brigham and Women\'s Main Hospital',
         address: '75 Francis St, Boston, MA 02115',
         defaultParking: {lat: 42.33597732454244, lng: -71.10722288414479},
+        noneParking: {lat: 1, lng: 1},
         phoneNumber: '(617) 732-5500',
         hours: 'Open 24 hours',
         image:'/HospitalCards/MGBMainCard.jpeg',
@@ -80,7 +84,7 @@ interface HospitalSidebarProps {
     onHospitalSelect: (hospitalId: number) => void;
     onDepartmentSelect: (departmentNodeId: string) => void;
     onParkingSelect: (parkingId: string) => void;
-    onClickingBack: () => void;
+    onClickingBack: (currentStep: string) => void;
     onClickFindDepartment: () => void;
     onChoosingAlgo: (algorithm: string) => void;
     directoryList: DirectoryItem[];
@@ -137,14 +141,29 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
 
         // update mode
         if (selectedHospital && fromLocation) {
-            const destination: string = selectedHospital.defaultParking.lat.toString() + "," + selectedHospital.defaultParking.lng.toString();
-            onDirectionsRequest(fromLocation, destination, selectedHospital.name, mode);
+            let destination;
+            if(mode != "DRIVING"){
+                destination = selectedHospital.noneParking.lat.toString() + "," + selectedHospital.noneParking.lng.toString();
+            }
+            else {
+                destination = selectedHospital.defaultParking.lat.toString() + "," + selectedHospital.defaultParking.lng.toString();
+            }
+            setTimeout(() => {
+                onDirectionsRequest(fromLocation, destination, selectedHospital.name, mode);
+            }, 100);
         }
     }
 
     const handleDirectionsSubmit = () => {
         if (selectedHospital && fromLocation) {
-            const destination: string = selectedHospital.defaultParking.lat.toString() + "," + selectedHospital.defaultParking.lng.toString();
+            let destination;
+            // Use the current travel mode to determine destination
+            if(travelMode !== "DRIVING"){
+                destination = selectedHospital.noneParking.lat.toString() + "," + selectedHospital.noneParking.lng.toString();
+            }
+            else {
+                destination = selectedHospital.defaultParking.lat.toString() + "," + selectedHospital.defaultParking.lng.toString();
+            }
             onDirectionsRequest(fromLocation, destination, selectedHospital.name, travelMode);
         }
     }
@@ -164,7 +183,7 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
         setSelectedDepartment(deptName);
         const dept = directoryList.find(d => d.deptName === deptName);
         if (dept) {
-            onDepartmentSelect(dept.nodeId)
+            onDepartmentSelect(dept.nodeId) // send back nodeId
         }
     }
 
@@ -175,14 +194,15 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
 
     const handleBack = () =>{
         if (currentStep === "HOSPITAL_DETAIL") {
+            onClickingBack(currentStep);
             setCurrentStep('SELECT_HOSPITAL');
             setSelectedHospital(null);
-            onClickingBack();
         }
         else if (currentStep === "DIRECTIONS") {
             setCurrentStep('HOSPITAL_DETAIL')
         }
         else if (currentStep === "DEPARTMENT") {
+            onClickingBack(currentStep);
             setCurrentStep("DIRECTIONS")
         }
     }
@@ -441,7 +461,7 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
                                 </MGBButton>
                                 <MGBButton
                                     onClick={handleFindDepartment}
-                                    disabled={!fromLocation}
+                                    disabled={false}
                                     variant={'secondary'}
                                     className="hover:bg-yellow-600/90 transition disabled:opacity-50 mb-4"
                                 >
