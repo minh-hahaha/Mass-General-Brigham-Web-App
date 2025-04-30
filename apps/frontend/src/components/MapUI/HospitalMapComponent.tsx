@@ -236,6 +236,8 @@ const HospitalMapComponent = ({
     const [directions11, setDirections11] = useState<string[]>([]);
     const [iconsToPass, setIconsToPass] = useState<string[]>([]);
 
+    console.log("startNodeId - ", startNodeId);
+    console.log("endNodeId - ", endNodeId);
     useEffect(() => {
         const fetchNode = async () => {
             try {
@@ -257,9 +259,8 @@ const HospitalMapComponent = ({
                 try {
                     const result = await FindPath(startNode, endNode, selectedAlgorithm);
                     setBFSPath(result);
-
+                    console.log("Path is " + result);
                     highlightDestinationFloor(result);
-
 
                     // text directions
                     const [textDirection, icons] = createTextPath(result);
@@ -366,6 +367,8 @@ const HospitalMapComponent = ({
     };
 
     const { buildingId, floor } = getCurrentFloorInfo();
+    console.log( " buildingId " + buildingId);
+    console.log( " floor " + floor);
 
     return (
         <>

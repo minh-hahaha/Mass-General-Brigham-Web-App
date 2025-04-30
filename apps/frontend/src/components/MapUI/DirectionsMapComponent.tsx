@@ -50,6 +50,9 @@ const availableFloors: Floor[] = [
     { id: "PP-4", floor: "4", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP04.svg" },
 
     { id: "FK-1", floor: "1", buildingId: "3", buildingName: "Faulkner Hospital",svgPath: "/FK01.svg" },
+
+    { id: "BWH-2", floor: "2", buildingId: "4", buildingName: "Main Hospital",svgPath: "/BWH02.svg" },
+
 ];
 
 
@@ -195,13 +198,6 @@ const DirectionsMapComponent = () => {
     // update floor selector visibility
     useEffect(() => {
         setShowFloorSelector(buildingID === 2);
-        //
-        // if(buildingID === 2) {
-        //     setCurrentFloorId("PP-1");
-        // }
-        // else{
-        //     setCurrentFloorId(undefined);
-        // }
     }, [buildingID]);
 
     // find directions
@@ -291,14 +287,24 @@ const DirectionsMapComponent = () => {
 
 
     const handleZoomToHospital = () => {
-        if (!map || !toHospital) return;
+        const hospital = Object.entries(HospitalLocations).find(
+            ([name]) => BuildingIDMap[name] === buildingID
+        )
+        if(hospital){
+            if (map){
+                map.panTo({lat: hospital[1].lat, lng: hospital[1].lng}); // location
+                map.setZoom(hospital[1].zoom);
+            }
 
-        console.log("toHospital name " + toHospital);
-        const hospitalLocation = HospitalLocations[toHospital];
-        if (hospitalLocation) {
-            map.panTo({ lat: hospitalLocation.lat, lng: hospitalLocation.lng });
-            map.setZoom(hospitalLocation.zoom);
         }
+        // if (!map || !toHospital) return;
+        //
+        // console.log("toHospital name " + toHospital);
+        // const hospitalLocation = HospitalLocations[toHospital];
+        // if (hospitalLocation) {
+        //     map.panTo({ lat: hospitalLocation.lat, lng: hospitalLocation.lng });
+        //     map.setZoom(hospitalLocation.zoom);
+        // }
     };
 
 
@@ -435,20 +441,24 @@ const DirectionsMapComponent = () => {
     }, [lot, buildingID]);
 
 
+
     const handleBack = (currentStep: string) => {
         if (currentStep === "DEPARTMENT") {
             setPathVisible(false);
             clearParking();
+            setToDirectoryNodeId("")
         }
         if (currentStep === "DIRECTIONS") {
             setToLocation('');
         }
+        if (currentStep === "HOSPITAL_DETAIL") {
+            setFromNodeId("")
+            setShowFloorSelector(false);
+            setBuildingID(0)
+        }
         else{
             clearRoute();
             clearParking();
-            setShowFloorSelector(false);
-            setFromNodeId("")
-            setToDirectoryNodeId("")
         }
 
     }

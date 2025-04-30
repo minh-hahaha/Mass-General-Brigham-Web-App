@@ -394,7 +394,7 @@ const MapSidebarComponent = ({
                     style={{ backgroundImage: `url(${selectedHospital.image})` }}
                 />
                 <div className="space-y-4 mb-6">
-                    <p className="text-sm text-codGray">"{selectedHospital.description}</p>
+                    <p className="text-sm text-codGray">{selectedHospital.description}</p>
                     <div className="space-y-2 bg-gray-50 p-3 rounded-md">
                         <div className="flex items-start">
                             <MapPin size={16} className="text-mgbblue mt-0.5 mr-2 flex-shrink-0" />

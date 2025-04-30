@@ -42,7 +42,7 @@ const VoiceCommands: React.FC<VoiceCommandProps> = ({voiceTranscript}) => {
 
 
     return (
-        <button className=" p-2 rounded-sm h-10 w-10 bg-mgbyellow hover:bg-yellow-600  " onClick={handleClicked} >
+        <button className="p-2 rounded-sm h-10 w-10 bg-mgbyellow hover:bg-yellow-600 mt-1.5 -ml-5" onClick={handleClicked} >
             <FaMicrophone
                 className={`h-5 w-6 transition-colors duration-300 ${clicked ? 'text-mgbblue' : 'text-black'}`}/>
         </button>
