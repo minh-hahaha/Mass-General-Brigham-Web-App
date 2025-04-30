@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
 import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google-maps';
 import HospitalMapComponent from '@/components/HospitalMapComponent';
 import {ZoomIn } from 'lucide-react';
-import {CHtoLotA, CHtoLotB, CHtoLotC, PPtoLotA, PPtoLotB, PPtoLotC, FKtoLotA, FKtoLotB, FKtoLotC}  from '../assets/parkingCoords.tsx'
-
 
 import {
     DirectoryRequestByBuilding,
@@ -17,9 +15,9 @@ import MapSidebarComponent from "@/components/MapUI/MapSidebarComponent.tsx";
 import FloorSelector from "@/components/FloorSelector.tsx";
 
 const HospitalLocations: Record<string, {lat: number, lng: number, zoom: number}> = {
-    'Chestnut Hill Healthcare Center': {lat: 42.325988, lng: -71.149567, zoom: 18},
-    'Foxborough Health Care Center': {lat: 42.092617, lng: -71.266492, zoom: 18},
-    'Brigham and Women\'s Faulkner Hospital': {lat: 42.301684739524546, lng: -71.12816396084828, zoom: 18},
+    'Chestnut Hill Healthcare Center': {lat: 42.325988, lng: -71.149567, zoom: 19.5},
+    'Foxborough Health Care Center': {lat: 42.092617, lng: -71.266492, zoom: 20},
+    'Brigham and Women\'s Faulkner Hospital': {lat: 42.301684739524546, lng: -71.12816396084828, zoom: 19},
     'Brigham and Women\'s Main Hospital': {lat: 42.33550114249947, lng: -71.10727870473441, zoom: 18}
 };
 
@@ -30,7 +28,30 @@ const BuildingIDMap: Record<string, number> = {
     'Brigham and Women\'s Main Hospital': 4
 };
 
-type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
+type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING' | '';
+
+// floor type
+interface Floor {
+    id: string;
+    floor: string;
+    buildingId: string;
+    buildingName: string; // for display
+    svgPath: string;
+}
+
+// All available floors across buildings
+const availableFloors: Floor[] = [
+    // Chestnut Hill
+    { id: "CH-1", floor: "1", buildingId: "1", buildingName: "Chestnut Hill",svgPath: "/CH01.svg" },
+    // 20 Patriot Place
+    { id: "PP-1", floor: "1", buildingId: "2", buildingName: "Patriot Place", svgPath: "/PP01.svg" },
+    { id: "PP-2", floor: "2", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP02.svg" },
+    { id: "PP-3", floor: "3", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP03.svg" },
+    { id: "PP-4", floor: "4", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP04.svg" },
+
+    { id: "FK-1", floor: "1", buildingId: "3", buildingName: "Faulkner Hospital",svgPath: "/FK01.svg" },
+];
+
 
 
 // Define the interface
@@ -42,11 +63,11 @@ interface Coordinate {
 const DirectionsMapComponent = () => {
     const map = useMap();
     const routesLibrary = useMapsLibrary('routes');
-    const [fromLocation, setFromLocation] = useState('');
-    const [toLocation, setToLocation] = useState('');
-    const [toHospital, setToHospital] = useState('');
+    const [fromLocation, setFromLocation] = useState('DRIVING');
+    const [toLocation, setToLocation] = useState(''); // coordinates of the hospital
+    const [toHospital, setToHospital] = useState(''); // name of the hospital
 
-    const [travelMode, setTravelMode] = useState<TravelModeType>('DRIVING');
+    const [travelMode, setTravelMode] = useState<TravelModeType>('');
     const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>([]);
     const [distance, setDistance] = useState('');
     const [duration, setDuration] = useState('');
@@ -66,11 +87,11 @@ const DirectionsMapComponent = () => {
 
     const [textDirections, setTextDirections] = useState<string>('No destination/start selected');
     const [text2Directions, setText2Directions] = useState<string[]>([]);
-    const [selectedAlgorithm, setSelectedAlgorithm] = useState('');
+    const [selectedAlgorithm, setSelectedAlgorithm] = useState('BFS');
 
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
-    const [currentFloorId, setCurrentFloorId] = useState<string | undefined>('PP-1');
+    const [currentFloorId, setCurrentFloorId] = useState<string | undefined>('');
     const [showFloorSelector, setShowFloorSelector] = useState<boolean>(false);
 
     useEffect(() => {
@@ -146,14 +167,13 @@ const DirectionsMapComponent = () => {
     // update floor selector visibility
     useEffect(() => {
         setShowFloorSelector(buildingID === 2);
-
-        if(buildingID === 2) {
-            setCurrentFloorId("PP-1");
-
-        }
-        else{
-            setCurrentFloorId(undefined);
-        }
+        //
+        // if(buildingID === 2) {
+        //     setCurrentFloorId("PP-1");
+        // }
+        // else{
+        //     setCurrentFloorId(undefined);
+        // }
     }, [buildingID]);
 
     // find directions
@@ -169,12 +189,6 @@ const DirectionsMapComponent = () => {
         setCurrentFloorId(floorId);
         console.log('changed floor to : ', floorId);
     }
-
-
-    const [lot, setLot] = useState('');
-    const [parking, setParking] = useState(true);
-    const [pathVisible, setPathVisible] = useState(false);
-
     // draw route
     const calculateRoute = () => {
         if (!directionsRenderer || !directionsService) return;
@@ -220,11 +234,6 @@ const DirectionsMapComponent = () => {
         directionsRenderer.setMap(null);
     }
 
-    const clearParking = () => {
-        setLot('');
-    };
-
-
 
     const handleZoomToHospital = () => {
         if (!map || !toHospital) return;
@@ -237,6 +246,11 @@ const DirectionsMapComponent = () => {
     };
 
 
+    // step 1: choose a hospital
+    // set building Id 1,2,3,4
+    // set currentFloorId
+    // show Floor Selector if Patriot Place
+    // zoom in to hospital
     const handleHospitalSelect = (hospitalId: number)  => {
         setLot('');
         setPathVisible(false);
@@ -246,7 +260,8 @@ const DirectionsMapComponent = () => {
         )
 
         if(hospital){
-            setBuildingID(hospitalId);
+            setBuildingID(hospitalId); // set building
+            setCurrentFloorId(availableFloors.find(f => f.buildingId === hospitalId.toString())?.id)
             if(hospitalId === 2){
                 setShowFloorSelector(true)
             }
@@ -265,13 +280,24 @@ const DirectionsMapComponent = () => {
 
         setToHospital(toHospital);
 
-        if (mode === 'DRIVING') {
-            setParking(true);
-        } else {
-            setParking(false);
-            setLot('');
-        }
-        calculateRoute();
+        // Use setTimeout to ensure state updates have been processed
+        setTimeout(() => {
+            if (mode === 'DRIVING') {
+                setParking(true);
+            } else {
+                setParking(false);
+                setLot('');
+            }
+
+            // Make sure the map is clear before recalculating
+            if (directionsRenderer) {
+                directionsRenderer.setMap(null);
+            }
+
+            // Now calculate the route with the updated values
+            calculateRoute();
+        }, 100);
+
     };
 
     const handleFindDepartment = () =>{
@@ -281,16 +307,82 @@ const DirectionsMapComponent = () => {
 
     const handleDepartmentSelect = (departmentNodeId: string) => {
         setToDirectoryNodeId(departmentNodeId);
+        setPathVisible(true);
+        clearRoute();
     }
+
+    const [lot, setLot] = useState('');
+    const [parking, setParking] = useState(true);
+    const [pathVisible, setPathVisible] = useState(false);
+
+    const clearParking = () => {
+        setLot('');
+    };
 
     const handleParkingSelect = (lotId: string) => {
         setLot(lotId)
     }
 
-    const handleBack =() => {
-        clearRoute();
-        clearParking();
-        setShowFloorSelector(false);
+    // get start node
+    useEffect(() => {
+        if (lot !== "") {
+            // get prefix and lot letter
+            const [locationPrefix, lotLetter] = lot.split('_');
+
+            if (locationPrefix === 'PP') {
+                setFromNodeId(`PPFloor1Parking Lot${lotLetter}`);
+            } else if (locationPrefix === 'FK') {
+                if (lotLetter === 'A') {
+                    setFromNodeId('FKFloor1Parking Lot');
+                } else if (lotLetter === 'B') {
+                    setFromNodeId('FKFloor1Parking Lot_1');
+                } else if (lotLetter === 'C') {
+                    setFromNodeId('FKFloor1Parking Lot_2');
+                }
+            } else if (locationPrefix === 'CH') {
+                if (lotLetter === 'A') {
+                    setFromNodeId('CHFloor1Parking Lot1');
+                } else if (lotLetter === 'B') {
+                    setFromNodeId('CHFloor1Parking LotB');
+                } else if (lotLetter === 'C') {
+                    setFromNodeId('CHFloor1Parking LotC');
+                }
+            }
+        }
+
+        else{
+            switch (buildingID){
+                case 1:
+                    setFromNodeId("CHFloor1Road3")
+                    break;
+                case 2:
+                    setFromNodeId("PPFloor1Road10")
+                    break;
+                case 3:
+                    setFromNodeId("")
+                    break;
+                case 4:
+                    setFromNodeId("")
+                    break;
+            }
+        }
+
+    }, [lot, buildingID]);
+
+
+    const handleBack =(currentStep: string) => {
+        if (currentStep === "DEPARTMENT") {
+            setPathVisible(false)
+            clearParking();
+        }
+        else{
+            clearRoute();
+            clearParking();
+            setShowFloorSelector(false);
+            setFromNodeId("")
+            setToDirectoryNodeId("")
+        }
+
     }
 
     return (
@@ -321,14 +413,11 @@ const DirectionsMapComponent = () => {
 
             </div>
 
-
             {/* MAP AREA */}
             <main className="absolute inset-0 z-0">
-
                 <Map
                     style={{ width: '100%', height: '100%' }}
                     defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
-                    // MGB at Chestnut hill 42.325988270594415, -71.1495669288061
                     defaultZoom={15}
                     renderingType={RenderingType.RASTER}
                     disableDefaultUI={true}
