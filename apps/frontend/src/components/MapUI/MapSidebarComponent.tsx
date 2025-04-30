@@ -19,6 +19,8 @@ import { useMapsLibrary } from '@vis.gl/react-google-maps';
 import { CiHospital1 } from 'react-icons/ci';
 import SelectElement from '@/elements/SelectElement.tsx';
 
+import VoiceCommands from "@/components/MapUI/VoiceCommands.tsx";
+
 const hospitals = [
     {
         id: 1,
@@ -30,11 +32,12 @@ const hospitals = [
         hours: 'Mon-Fri: 8:00 AM - 5:30 PM',
         image: '/HospitalCards/ChestnutHillCard.jpg',
         description: 'Very Cool Chestnut Hill Hospital',
-        coordinates: { lat: 42.325988, lng: -71.149567, zoom: 18 },
+        coordinates: {lat: 42.325988, lng: -71.149567, zoom: 18},
+        voiceSearchKeywords: ['chestnut hill', 'chestnut', 'chestnut hill healthcare center'],
     },
     {
         id: 2,
-        name: 'Foxborough Health Care Center',
+        name: 'Foxborough Healthcare Center',
         address: '20-22 Patriot Place, Foxborough, MA 02035',
         defaultParking: { lat: 42.09222126540862, lng: -71.26646379537021 },
         noneParking: { lat: 42.09250362335946, lng: -71.26652247380247 },
@@ -42,7 +45,9 @@ const hospitals = [
         hours: 'Mon-Sat: 8:00 AM - 8:00 PM',
         image: '/HospitalCards/PatriotPlaceCard.jpg',
         description: 'Very Cool Patriot Place',
-        coordinates: { lat: 42.092617, lng: -71.266492, zoom: 18 },
+        coordinates: {lat: 42.092617, lng: -71.266492, zoom: 18},
+        voiceSearchKeywords: ['foxborough', 'patriot place', 'foxborough healthcare center'],
+
     },
     {
         id: 3,
@@ -54,7 +59,9 @@ const hospitals = [
         hours: 'Open 24 hours',
         image: '/HospitalCards/FaulknerHospitalCard.jpg',
         description: 'Very Cool Faulkner Hospital',
-        coordinates: { lat: 42.301684739524546, lng: -71.12816396084828, zoom: 18 },
+        coordinates: {lat: 42.301684739524546, lng: -71.12816396084828, zoom: 18},
+        voiceSearchKeywords: ['faulkner hospital', 'faulkner'],
+
     },
     {
         id: 4,
@@ -66,9 +73,11 @@ const hospitals = [
         hours: 'Open 24 hours',
         image: '/HospitalCards/MGBMainCard.jpeg',
         description: 'Very Cool Main Hospital',
-        coordinates: { lat: 42.33629683337891, lng: -71.1067533432466, zoom: 18 },
-    },
-];
+        coordinates: {lat: 42.33629683337891, lng: -71.1067533432466, zoom: 18},
+        voiceSearchKeywords: ['main hospital', 'main'],
+
+    }
+]
 
 type Step = 'SELECT_HOSPITAL' | 'HOSPITAL_DETAIL' | 'DIRECTIONS' | 'DEPARTMENT';
 
@@ -275,14 +284,70 @@ const MapSidebarComponent = ({
                 alert('Unable to retrieve your location.');
             }
         );
-    };
+
+    }
+
+    //handle voice transcript
+    const handleVoiceTranscript = (transcript: string) => {
+        if (!transcript) {
+            return;
+        }
+        const transcriptLowercase = transcript.toLowerCase()
+       // console.log(transcriptLowercase);
+
+
+
+        let foundHospital = undefined;
+
+        for(let i = 0; i < hospitals.length; i++) {
+
+            const currentHospital = hospitals[i];
+
+            const currentHospitalKeywordArray = currentHospital.voiceSearchKeywords;
+
+            for (let j = 0; j < currentHospitalKeywordArray.length; j++) {
+
+                const currentHospitalKeyword = currentHospitalKeywordArray[j];
+
+                if (transcriptLowercase.includes(currentHospitalKeyword.toLowerCase())) {
+
+                    foundHospital = currentHospital;
+
+                    // console.log("FOUND YOU DAMN KEYWORD: ", currentHospitalKeyword);
+                    //
+                    // console.log(foundHospital);
+
+                    break;
+
+                }
+
+            }
+            if(foundHospital) {
+                break;
+            }
+        }
+
+        if (foundHospital) {
+            handleHospitalSelect(foundHospital);
+            handleFindDirections();
+            handleUseCurrentLocation();
+        }
+
+    }
+
+
 
     // step 1: selection card
     const renderHospitalSelection = () => (
-        <div className="w-full">
-            <h2 className="text-xl font-black mb-6 text-center">Select a Hospital</h2>
-            <div className="space-y-4 mt-4">
-                {hospitals.map((hospital) => (
+        <div className='w-full'>
+            <div className='flex justify-center'>
+                <h2 className='text-2xl font-black mb-6 text-center mr-10 pt-2.5'>Select a Hospital</h2>
+                <VoiceCommands voiceTranscript={handleVoiceTranscript}/>
+
+            </div>
+
+            <div className='space-y-4 mt-4'>
+                {hospitals.map (hospital => (
                     <div
                         key={hospital.id}
                         onClick={() => handleHospitalSelect(hospital)}
