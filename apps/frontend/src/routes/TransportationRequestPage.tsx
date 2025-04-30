@@ -3,6 +3,7 @@ import MGBButton from '../elements/MGBButton.tsx';
 import InputElement from '../elements/InputElement.tsx';
 import ConfirmMessageComponent from '../components/ConfirmMessageComponent.tsx'; // Import the new component
 import { SubmitTransportRequest } from '../database/transportRequest.ts';
+import HelpButton from "@/components/ServiceRequestHelp.tsx";
 
 interface transportRequest {
     patientId: number;
@@ -108,8 +109,14 @@ const TransportRequestPage = () => {
         // flex row container
         <div className="flex flex-col justify-center items-center min-h-screen">
             {/* make the form left side */}
-            <div className="flex flex-col items-center bg-white rounded-2xl p-8 w-full max-w-[700px] mt-10 mb-10">
-                <h1 className="text-[30px] font-bold mb-6">Patient Transportation Request</h1>
+            <div className="flex flex-col items-center rounded-2xl p-8 w-full max-w-[700px] mt-10 mb-10">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                    <h1 className="text-[30px] font-bold leading-none">Patient Transport Request</h1>
+                    <div className="pt-[11.5px]">
+                        <HelpButton />
+                    </div>
+                </div>
+                <br />
                 <div>
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
