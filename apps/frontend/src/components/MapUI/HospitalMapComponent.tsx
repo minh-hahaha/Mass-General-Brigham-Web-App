@@ -259,9 +259,8 @@ const HospitalMapComponent = ({
                 try {
                     const result = await FindPath(startNode, endNode, selectedAlgorithm);
                     setBFSPath(result);
-
+                    console.log("Path is " + result);
                     highlightDestinationFloor(result);
-
 
                     // text directions
                     const [textDirection, icons] = createTextPath(result);
@@ -368,6 +367,8 @@ const HospitalMapComponent = ({
     };
 
     const { buildingId, floor } = getCurrentFloorInfo();
+    console.log( " buildingId " + buildingId);
+    console.log( " floor " + floor);
 
     return (
         <>
