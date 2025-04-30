@@ -38,6 +38,8 @@ interface Floor {
     buildingName: string; // for display
     svgPath: string;
 }
+type Step = 'SELECT_HOSPITAL' | 'HOSPITAL_DETAIL' | 'DIRECTIONS' | 'DEPARTMENT';
+
 
 // All available floors across buildings
 const availableFloors: Floor[] = [
@@ -97,6 +99,8 @@ const DirectionsMapComponent = () => {
     const [currentFloorId, setCurrentFloorId] = useState<string | undefined>('');
     const [showFloorSelector, setShowFloorSelector] = useState<boolean>(false);
     const [highlightFloorId, setHighlightFloorId] = useState<string | undefined>();
+
+    const [currentStep, setCurrentStep] = useState<Step>('SELECT_HOSPITAL');
 
     useEffect(() => {
         const checkAdmin = () => {
@@ -477,6 +481,8 @@ const DirectionsMapComponent = () => {
                         onClickFindDepartment={handleFindDepartment}
                         onChoosingAlgo={handleAlgorithmChange}
                         directoryList={directoryList}
+                        setCurrentStepProp={setCurrentStep}
+                        currentStep={currentStep}
                     />
                 </aside>
                 {showFloorSelector && (
@@ -513,6 +519,7 @@ const DirectionsMapComponent = () => {
                         driveDirections={textDirections}
                         drive2Directions={text2Directions}
                         showTextDirections={!!toLocation}
+                        currentStep={currentStep}
                     />
                 </Map>
 

@@ -104,6 +104,8 @@ interface HospitalSidebarProps {
     onClickFindDepartment: () => void;
     onChoosingAlgo: (algorithm: string) => void;
     directoryList: DirectoryItem[];
+    setCurrentStepProp: React.Dispatch<React.SetStateAction<Step>>
+    currentStep: Step;
 }
 
 const MapSidebarComponent = ({
@@ -115,8 +117,9 @@ const MapSidebarComponent = ({
     onClickFindDepartment,
     onChoosingAlgo,
     directoryList,
+    setCurrentStepProp,
+    currentStep,
 }: HospitalSidebarProps) => {
-    const [currentStep, setCurrentStep] = useState<Step>('SELECT_HOSPITAL');
     const [selectedHospital, setSelectedHospital] = useState<(typeof hospitals)[0] | null>(null);
 
     const [selectedDepartment, setSelectedDepartment] = useState('');
@@ -151,7 +154,7 @@ const MapSidebarComponent = ({
 
     const updateStep = (step: Step) => {
         sessionStorage.setItem('MAP_STEP', step);
-        setCurrentStep(step);
+        setCurrentStepProp(step);
     };
 
     // Handle Select Hospital

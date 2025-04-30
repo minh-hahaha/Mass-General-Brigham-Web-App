@@ -209,6 +209,7 @@ interface Props {
     driveDirections: string;
     drive2Directions: string[];
     showTextDirections: boolean;
+    currentStep: string;
 }
 
 const HospitalMapComponent = ({
@@ -221,6 +222,7 @@ const HospitalMapComponent = ({
     driveDirections,
     drive2Directions,
     showTextDirections,
+    currentStep,
 }: Props) => {
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
     const [startNode, setStartNode] = useState<myNode>();
@@ -373,13 +375,25 @@ const HospitalMapComponent = ({
     return (
         <>
             {showTextDirections && (
-                <TextToSpeechMapComponent
-                    walkDirections={directions1}
-                    driveDirections={driveDirections}
-                    drive22Directions={drive2Directions}
-                    walk22Directions={directions11}
-                    icons={iconsToPass}
-                />
+                currentStep === 'DEPARTMENT' ? (
+                    <TextToSpeechMapComponent
+                        walkDirections={directions1}
+                        driveDirections={driveDirections}
+                        drive22Directions={drive2Directions}
+                        walk22Directions={directions11}
+                        icons={iconsToPass}
+                    />
+                ) : (
+                    <div className="fixed -top-34">
+                        <TextToSpeechMapComponent
+                            walkDirections={directions1}
+                            driveDirections={driveDirections}
+                            drive22Directions={drive2Directions}
+                            walk22Directions={directions11}
+                            icons={iconsToPass}
+                        />
+                    </div>
+                )
             )}
 
             {/* Destination Floor Alert */}

@@ -121,8 +121,8 @@ const TextToSpeechMapComponent = ({
     };
 
     return (
-        <div className="absolute top-148 left-6 z-10">
-            <div className="p-5 shadow-md flex flex-col items-center space-y-4 w-100 z-10 bg-white rounded-lg">
+        <div className="absolute top-149 left-6 z-10">
+            <div className="p-5 shadow-md flex flex-col items-center space-y-4 w-100 z-10 bg-white rounded-b-lg">
                 {/* Horizontal Carousel Controls */}
                 <div className="flex items-center justify-between w-full space-x-4">
                     <button
