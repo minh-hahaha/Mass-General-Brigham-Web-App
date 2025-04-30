@@ -460,9 +460,6 @@ const MapSidebarComponent = ({
                                     <span className="font-medium">Find Department</span>
                                 </MGBButton>
                             </div>
-                            {showLine && (
-                                <div className="fixed border border-codGray w-100 left-6 mt-2"></div>
-                            )}
                         </div>
                     </div>
                 </div>
@@ -574,9 +571,6 @@ const MapSidebarComponent = ({
                         options={['BFS', 'DFS']}
                     />
                 </div>
-                {showLine && (
-                    <div className="fixed border border-codGray w-100 left-6 mt-3"></div>
-                )}
             </div>
         );
     };
