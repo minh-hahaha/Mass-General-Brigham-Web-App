@@ -16,14 +16,14 @@ import FloorSelector from "@/components/MapUI/FloorSelector.tsx";
 
 const HospitalLocations: Record<string, {lat: number, lng: number, zoom: number}> = {
     'Chestnut Hill Healthcare Center': {lat: 42.32597821672779, lng: -71.15010553538171, zoom: 19.5},
-    'Foxborough Health Care Center': {lat: 42.09269784233279, lng: -71.26699731871597, zoom: 19},
+    'Foxborough Healthcare Center': {lat: 42.09269784233279, lng: -71.26699731871597, zoom: 19},
     'Brigham and Women\'s Faulkner Hospital': {lat: 42.301831397258184, lng: -71.12930670737964, zoom: 18},
     'Brigham and Women\'s Main Hospital': {lat: 42.33568522412911, lng: -71.10787475448217, zoom: 18}
 };
 
 const BuildingIDMap: Record<string, number> = {
     'Chestnut Hill Healthcare Center': 1,
-    'Foxborough Health Care Center': 2,
+    'Foxborough Healthcare Center': 2,
     'Brigham and Women\'s Faulkner Hospital': 3,
     'Brigham and Women\'s Main Hospital': 4
 };
@@ -276,6 +276,7 @@ const DirectionsMapComponent = () => {
     const handleZoomToHospital = () => {
         if (!map || !toHospital) return;
 
+        console.log("toHospital name " + toHospital);
         const hospitalLocation = HospitalLocations[toHospital];
         if (hospitalLocation) {
             map.panTo({ lat: hospitalLocation.lat, lng: hospitalLocation.lng });
