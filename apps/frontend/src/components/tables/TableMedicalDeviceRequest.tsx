@@ -12,6 +12,7 @@ import {
     TableRow,
 } from '@/components/ui/table.tsx';
 import {motion} from 'framer-motion';
+import { employeeNameId, getEmployeeNameIds } from '@/database/getEmployee.ts';
 
 interface Props {
     setActiveForm: (
@@ -31,6 +32,7 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => 
         location: '',
         deliverDate: '',
     });
+    const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
 
     useEffect(() => {
         async function fetchReqs() {
@@ -40,6 +42,14 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => 
         }
         fetchReqs();
     }, []);
+
+    useEffect(() => {
+        async function fetchEmployeeList() {
+            const data = await getEmployeeNameIds();
+            setEmployeeList(data);
+        }
+        fetchEmployeeList();
+    }, [])
 
     if (loading) {
         return <p>Loading Requests...</p>;

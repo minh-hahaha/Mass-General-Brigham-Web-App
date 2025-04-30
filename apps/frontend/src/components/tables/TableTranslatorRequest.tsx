@@ -9,6 +9,7 @@ import {
     TableRow,
 } from '@/components/ui/table.tsx';
 import { motion } from 'framer-motion';
+import { employeeNameId, getEmployeeNameIds } from '@/database/getEmployee.ts';
 
 interface Props {
     setActiveForm: (
@@ -28,6 +29,7 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm }) => {
         languageReq: '',
         location: '',
     });
+    const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
 
     useEffect(() => {
         async function fetchReqs() {
@@ -40,9 +42,19 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm }) => {
         fetchReqs();
     }, []);
 
+    useEffect(() => {
+        async function fetchEmployeeList() {
+            const data = await getEmployeeNameIds();
+            setEmployeeList(data);
+        }
+        fetchEmployeeList();
+    }, [])
+
     if (loading) {
         return <p>Loading Requests...</p>;
     }
+
+
 
     const filteredRequests = requests.filter((req) => {
         return (

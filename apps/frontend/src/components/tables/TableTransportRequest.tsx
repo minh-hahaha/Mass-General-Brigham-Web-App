@@ -12,6 +12,7 @@ import {
     TableRow,
 } from '@/components/ui/table.tsx';
 import { motion, AnimatePresence } from 'framer-motion';
+import { employeeNameId, getEmployeeNameIds } from '@/database/getEmployee.ts';
 
 interface Props {
     setActiveForm: (
@@ -32,6 +33,7 @@ const TableTransportRequest: React.FC<Props> = ({ setActiveForm }) => {
         transportType: '',
     });
     const [filter, setShowFilters] = useState<boolean>(false);
+    const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
 
     useEffect(() => {
         async function fetchReqs() {
@@ -43,9 +45,21 @@ const TableTransportRequest: React.FC<Props> = ({ setActiveForm }) => {
         fetchReqs();
     }, []);
 
+    useEffect(() => {
+        async function fetchEmployeeList() {
+            const data = await getEmployeeNameIds();
+            setEmployeeList(data);
+        }
+        fetchEmployeeList();
+    }, [])
+
+
     if (loading) {
         return <p>Loading Requests...</p>;
     }
+
+
+
 
     // Format date for display
     const formatDate = (dateString: string) => {

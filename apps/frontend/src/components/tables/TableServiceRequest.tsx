@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/table.tsx';
 import { motion } from 'framer-motion';
 import { splitDateTime } from '@/database/forms/formTypes.ts';
+import { employeeNameId, getEmployeeNameIds } from '@/database/getEmployee.ts';
 
 interface Props {
     setActiveForm: (
@@ -31,6 +32,9 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
     });
     const [showNewRequests, setShowNewRequests] = useState<boolean>(false);
 
+    const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
+    // const [receivedRequests, setReceivedRequests] = useState<incomingServiceRequest[]>([]);
+
     useEffect(() => {
         async function fetchReqs() {
             const data = await getServiceRequest();
@@ -42,11 +46,28 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
         fetchReqs();
     }, []);
 
+    useEffect(() => {
+        async function fetchEmployeeList() {
+            const data = await getEmployeeNameIds();
+            setEmployeeList(data);
+        }
+        fetchEmployeeList();
+    }, [])
+
     if (loading) {
         return <p>Loading Requests...</p>;
     }
 
-    const filteredRequests = requests.filter((req) => {
+
+
+    const requestsUpdated = requests.map((req) => {
+        const employeeName = employeeList.find((emp) => emp.employeeId === req.employeeId);
+        return {
+            ...req,
+            employeeName: employeeName?.employeeName,
+        };
+    })
+    const filteredRequests = requestsUpdated.filter((req) => {
         return (
             (!filters.employeeName ||
                 (req.employeeName
@@ -233,6 +254,7 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
+
                             {filteredRequests.map((req) => (
                                 <TableRow
                                     key={req.requestId}
