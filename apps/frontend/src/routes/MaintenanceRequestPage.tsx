@@ -4,6 +4,7 @@ import ConfirmMessageComponent from '@/components/ConfirmMessageComponent.tsx';
 import { SubmitMaintenanceRequest, maintenanceRequest } from '@/database/maintenanceRequest.ts';
 import InputElement from '@/elements/InputElement.tsx';
 import SelectElement from '@/elements/SelectElement.tsx';
+import HelpButton from "@/components/ServiceRequestHelp.tsx";
 
 // Component definition
 const MaintenanceRequestPage = () => {
@@ -90,7 +91,13 @@ const MaintenanceRequestPage = () => {
         <div className="flex flex-col justify-center items-center min-h-screen">
             {/* make the form left side */}
             <div className="flex flex-col items-center rounded-2xl p-8 w-full max-w-[700px] mt-10 mb-10">
-                <h1 className="text-[30px] font-bold mb-6">Maintenance Request</h1>
+                <div className="flex items-center justify-center gap-2 mb-2">
+                    <h1 className="text-[30px] font-bold leading-none">Maintenance Request</h1>
+                    <div className="pt-[11.5px]">
+                        <HelpButton />
+                    </div>
+                </div>
+                <br />
                 <h2 className="text-[15px] font-semibold mb-6">Max Jeronimo and Haotian Liu</h2>
                 <div className="flex flex-col gap-2 mb-6">
                     <h3 className="text-xl font-semibold mb-4">
