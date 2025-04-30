@@ -239,9 +239,9 @@ const HospitalMapComponent = ({
     const [textSpeech, setTextSpeech] = useState<HTMLElement | null>(null);
 
     const [startFloor, setStartFloor] = useState<Floor>();
-    console.log(startNodeId);
-    console.log(endNodeId);
-    console.log("currentFloorId at start " , currentFloorId);
+    // console.log(startNodeId);
+    // console.log(endNodeId);
+    // console.log("currentFloorId at start " , currentFloorId);
 
     // get node using nodeId
     useEffect(() => {

@@ -23,10 +23,11 @@ const hospitals = [
         image:'/HospitalCards/ChestnutHillCard.jpg',
         description: 'Very Cool Chestnut Hill Hospital',
         coordinates: {lat: 42.325988, lng: -71.149567, zoom: 18},
+        voiceSearchKeywords: ['chestnut hill', 'chestnut', 'chestnut hill healthcare center'],
     },
     {
         id: 2,
-        name: 'Foxborough Health Care Center',
+        name: 'Foxborough Healthcare Center',
         address: '20-22 Patriot Place, Foxborough, MA 02035',
         defaultParking: {lat: 42.09222126540862, lng: -71.26646379537021},
         noneParking:{lat: 42.09250362335946, lng: -71.26652247380247},
@@ -35,6 +36,8 @@ const hospitals = [
         image:'/HospitalCards/PatriotPlaceCard.jpg',
         description: 'Very Cool Patriot Place',
         coordinates: {lat: 42.092617, lng: -71.266492, zoom: 18},
+        voiceSearchKeywords: ['foxborough', 'patriot place', 'foxborough healthcare center'],
+
     },
     {
         id: 3,
@@ -47,6 +50,8 @@ const hospitals = [
         image:'/HospitalCards/FaulknerHospitalCard.jpg',
         description: 'Very Cool Faulkner Hospital',
         coordinates: {lat: 42.301684739524546, lng: -71.12816396084828, zoom: 18},
+        voiceSearchKeywords: ['faulkner hospital', 'faulkner'],
+
     },
     {
         id: 4,
@@ -59,6 +64,8 @@ const hospitals = [
         image:'/HospitalCards/MGBMainCard.jpeg',
         description: 'Very Cool Main Hospital',
         coordinates: {lat: 42.33629683337891, lng: -71.1067533432466, zoom: 18},
+        voiceSearchKeywords: ['main hospital', 'main'],
+
     }
 ]
 
@@ -249,9 +256,9 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
         if (!transcript) {
             return;
         }
-        //console.log(transcript);
         const transcriptLowercase = transcript.toLowerCase()
-        console.log(transcriptLowercase);
+       // console.log(transcriptLowercase);
+
 
 
         let foundHospital = undefined;
@@ -260,21 +267,34 @@ const MapSidebarComponent = ({onDirectionsRequest, onHospitalSelect, onDepartmen
 
             const currentHospital = hospitals[i];
 
-            const currentHospitalName = currentHospital.name.toLowerCase();
+            const currentHospitalKeywordArray = currentHospital.voiceSearchKeywords;
 
+            for (let j = 0; j < currentHospitalKeywordArray.length; j++) {
 
-            if(transcriptLowercase.includes(currentHospitalName)) {
-                foundHospital = currentHospital;
-                break;
+                const currentHospitalKeyword = currentHospitalKeywordArray[j];
+
+                if (transcriptLowercase.includes(currentHospitalKeyword.toLowerCase())) {
+
+                    foundHospital = currentHospital;
+
+                    // console.log("FOUND YOU DAMN KEYWORD: ", currentHospitalKeyword);
+                    //
+                    // console.log(foundHospital);
+
+                    break;
+
+                }
 
             }
-
+            if(foundHospital) {
+                break;
+            }
         }
-        console.log("Found your damn hospital" + foundHospital);
 
         if (foundHospital) {
             handleHospitalSelect(foundHospital);
-
+            handleFindDirections();
+            handleUseCurrentLocation();
         }
 
     }

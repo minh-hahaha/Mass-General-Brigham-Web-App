@@ -9,7 +9,8 @@ interface VoiceCommandProps {
 const VoiceCommands: React.FC<VoiceCommandProps> = ({voiceTranscript}) => {
     const {
         transcript,
-        browserSupportsSpeechRecognition
+        browserSupportsSpeechRecognition,
+        resetTranscript,
     } = useSpeechRecognition();
 
     if(!browserSupportsSpeechRecognition){
@@ -18,18 +19,21 @@ const VoiceCommands: React.FC<VoiceCommandProps> = ({voiceTranscript}) => {
 
     const [clicked, setClicked] = useState(false)
     const handleClicked = () => {
-        setClicked(!clicked);
         if(clicked){
             SpeechRecognition.stopListening();
+            setClicked(false);
+            voiceTranscript(transcript);
+            resetTranscript();
         }
         else{
+            resetTranscript();
             SpeechRecognition.startListening({ continuous: true });
+            setClicked(true);
         }
-
     };
 
     useEffect(() => {
-        voiceTranscript(transcript);
+
     }, [transcript]);
     // useEffect(() => {
     //     //console.log("clicked", clicked);
