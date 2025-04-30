@@ -12,17 +12,20 @@ import {
     TableRow,
 } from '@/components/ui/table.tsx';
 import { motion } from 'framer-motion';
+import MGBButton from "@/elements/MGBButton.tsx";
+import {incomingRequest} from "@/database/forms/transportRequest.ts";
 
 interface Props {
     setActiveForm: (
         type: 'transport' | 'translation' | 'maintenance' | 'medical device' | 'sanitation'
     ) => void;
+    setEditData: (incomingRequest: incomingRequest) => void;
 }
 
-const TableMaintenanceRequest: React.FC<Props> = ({ setActiveForm }) => {
+const TableMaintenanceRequest: React.FC<Props> = ({ setActiveForm, setEditData }) => {
     // State management
     const [loading, setLoading] = useState(true);
-    const [requests, setRequests] = useState<incomingMaintenanceRequest[]>([]);
+    const [requests, setRequests] = useState<incomingRequest[]>([]);
     const [filter, setShowFilters] = useState<boolean>(false);
     const [filters, setFilters] = useState({
         type: '',
@@ -172,6 +175,9 @@ const TableMaintenanceRequest: React.FC<Props> = ({ setActiveForm }) => {
                                     <TableHead className="w-32 text-center font-semibold py-3">
                                         Complete By Date
                                     </TableHead>
+                                    <TableHead className="w-28 text-left font-semibold py-3">
+                                    </TableHead>
+
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -195,6 +201,7 @@ const TableMaintenanceRequest: React.FC<Props> = ({ setActiveForm }) => {
                                         <TableCell className="text-center py-3">
                                             {formatDate(req.maintenanceRequest.maintenanceTime)}
                                         </TableCell>
+                                        <TableCell className="text-left py-3"><MGBButton onClick={() => {setEditData(req); setActiveForm("maintenance")}} variant={'secondary'} children={'Edit'}/></TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

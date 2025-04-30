@@ -71,4 +71,55 @@ router.post('/', async (req: Request, res: Response) => {
     }
 });
 
+router.post('/edit', async (req: Request, res: Response) => {
+    try {
+        const result = await PrismaClient.$transaction(async (prisma) => {
+            //creates entry for service request
+            const serviceRequest = await prisma.serviceRequest.update({
+                where: { requestId: req.body.requestId },
+                data: {
+                    priority: req.body.transportRequest.priority,
+                    status: req.body.transportRequest.status,
+                    comments: req.body.transportRequest.notes,
+                    serviceType: 'Patient Transportation',
+
+                    //optional field
+                    employeeId: req.body.transportRequest.employeeId ?? null, // change to user id in the future?
+                    requestDateTime: req.body.transportRequest.requestDate
+                        ? new Date(req.body.transportRequest.requestDate).toISOString()
+                        : new Date(),
+                    //requestTime: new Date(req.body.transportRequest.pickupTime) ?? null,
+                },
+            });
+
+            //create entry for patient transport table
+            const patientTransport = await prisma.patientTransport.update({
+                where: { servReqId: req.body.requestId },
+                data: {
+                    patientId: req.body.transportRequest.patientId,
+                    //patientName: req.body.transportRequest.patientName,
+                    pickupLocation: req.body.transportRequest.pickupLocation,
+                    transportType: req.body.transportRequest.transportType,
+                    dropoffLocation: req.body.transportRequest.dropoffLocation,
+                    transportDate: req.body.transportRequest.transportDate,
+                },
+                select: {
+                    servReqId: true,
+                    patientId: true,
+                    //patientName: true,
+                    pickupLocation: true,
+                },
+            });
+
+            console.log(serviceRequest);
+            return { serviceRequest, patientTransport };
+        });
+
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Something went wrong' });
+    }
+});
+
 export default router;

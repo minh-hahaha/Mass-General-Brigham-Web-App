@@ -13,8 +13,11 @@ import {
 import {DirectoryRequestByBuilding, getDirectory} from "@/database/gettingDirectory.ts";
 import SelectFormElement from "@/elements/SelectFormElement.tsx";
 import {employeeNameId, getEmployeeNameIds} from "@/database/getEmployee.ts";
+import {RequestPageProps} from "@/routes/ServiceRequestDisplayPage.tsx";
+import {editMedicalDeviceRequest} from "@/database/forms/medicalDeviceRequest.ts";
+import {EditTranslatorRequest, editTranslatorRequest} from "@/database/translationRequest.ts";
 
-const TranslationServiceRequestPage = () => {
+const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
     const [employeeName, setEmployeeName] = useState('');
     const [employeeId, setEmployeeId] = useState<number>(0);
     const [patientId, setPatientId] = useState<number>(0);
@@ -60,8 +63,15 @@ const TranslationServiceRequestPage = () => {
             date: formattedDate
 
         };
-
-        SubmitTranslatorRequest(newRequest);
+        if(editData){
+            const editRequest: editTranslatorRequest = {
+                translatorRequest: newRequest,
+                requestId: editData.requestId
+            }
+            EditTranslatorRequest(editRequest);
+        }else{
+            SubmitTranslatorRequest(newRequest);
+        }
         setShowConfirmation(true);
         handleReset();
     };
@@ -109,7 +119,7 @@ const TranslationServiceRequestPage = () => {
         setPatientLanguage('');
         setPriority('');
         setLocation('');
-        setDate('');
+        setDate(new Date().toISOString());
         setDuration(0);
         setTypeMeeting('');
         setMeetingLink('');
@@ -121,6 +131,26 @@ const TranslationServiceRequestPage = () => {
     const handleConfirmationClose = () => {
         setShowConfirmation(false);
     };
+
+    useEffect(() => {
+        if(editData){
+            const employee = employeeList.find(e => e.employeeId === editData.employeeId);
+            setEmployeeName(employee ? employee.employeeName : "");
+            setEmployeeId(editData.employeeId);
+            setPatientId(editData.translationRequest.patientId);
+            setPatientName(editData.translationRequest.patientName);
+            setPatientLanguage(editData.translationRequest.language);
+            setPriority(editData.priority);
+            setLocation(editData.translationRequest.location);
+            setDate(new Date(editData.requestDateTime).toISOString());
+            setDuration(editData.translationRequest.duration);
+            setTypeMeeting(editData.translationRequest.typeMeeting);
+            setMeetingLink(editData.translationRequest.meetingLink);
+            setStatus(editData.status);
+            setNotes(editData.comments);
+            setDepartment(editData.translationRequest.department);
+        }
+    }, []);
 
     return (
         // flex row container

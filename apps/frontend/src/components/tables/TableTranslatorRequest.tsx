@@ -9,17 +9,20 @@ import {
     TableRow,
 } from '@/components/ui/table.tsx';
 import { motion } from 'framer-motion';
+import {incomingRequest} from "@/database/forms/transportRequest.ts";
+import MGBButton from "@/elements/MGBButton.tsx";
 import { employeeNameId, getEmployeeNameIds } from '@/database/getEmployee.ts';
 
 interface Props {
     setActiveForm: (
         type: 'transport' | 'translation' | 'maintenance' | 'medical device' | 'sanitation'
     ) => void;
+    setEditData: (incomingRequest: incomingRequest) => void;
 }
 
-const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm }) => {
+const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm, setEditData }) => {
     const [loading, setLoading] = useState(true);
-    const [requests, setRequests] = useState<incomingTranslationRequest[]>([]);
+    const [requests, setRequests] = useState<incomingRequest[]>([]);
     const [filter, setShowFilters] = useState<boolean>(false);
     const [filters, setFilters] = useState({
         patientId: '',
@@ -176,6 +179,7 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm }) => {
                                 <TableHead className="w-20 text-center font-semibold py-3">Meeting Type</TableHead>
                                 <TableHead className="w-20 text-center font-semibold py-3">Language Required</TableHead>
                                 <TableHead className="w-20 text-center font-semibold py-3">Location</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3"></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -190,6 +194,7 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm }) => {
                                     <TableCell className="text-center py-3">{req.translationRequest.typeMeeting}</TableCell>
                                     <TableCell className="text-center py-3">{req.translationRequest.language}</TableCell>
                                     <TableCell className="text-center py-3">{req.translationRequest.location}</TableCell>
+                                    <TableCell className="text-center py-3"><MGBButton onClick={() => {setEditData(req); setActiveForm("translation")}} variant={'secondary'} children={'Edit'}/></TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

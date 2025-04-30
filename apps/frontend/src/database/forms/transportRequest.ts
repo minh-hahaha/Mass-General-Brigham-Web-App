@@ -1,6 +1,6 @@
 import { ROUTES } from 'common/src/constants.ts';
 import axios from 'axios';
-import { priorityType, statusType, hospitalTransportType } from '@/database/forms/formTypes.ts';
+import {priorityType, statusType, hospitalTransportType, translateLangugeType} from '@/database/forms/formTypes.ts';
 
 export interface transportRequest {
     employeeId: number;
@@ -12,7 +12,12 @@ export interface transportRequest {
     dropoffLocation: string;
     notes: string;
     assignedToId: number;
-    formattedDate: string;
+    transportDate: string;
+}
+
+export interface editTransportRequest {
+    transportRequest: transportRequest;
+    requestId: number;
 }
 
 export interface incomingRequest {
@@ -27,10 +32,45 @@ export interface incomingRequest {
         transportDate:  string;
         transportType: hospitalTransportType;
     };
+    translationRequest: {
+        patientId: number;
+        language: translateLangugeType;
+        patientName: string;
+        typeMeeting: string;
+        meetingLink: string;
+        department: string;
+        location: string;
+        duration: number;
+    },
+    sanitation: {
+        servReqId:          number;
+        sanitationType:      string;
+        recurring:           boolean;
+        hazardLevel:         'None' | 'Sharp' | 'Biohazard';
+        disposalRequired:    boolean;
+        completeBy:          string;
+    },
+    medicalDeviceRequest: {
+        device: string;
+        deviceReasoning: string;
+        deviceSerialNumber: string;
+        deviceModel: string;
+        date: string;
+        location: string;
+        department: string;
+    },
+    maintenanceRequest: {
+        servMaintenanceId: number;
+        maintenanceType: string;
+        maintenanceDescription: string;
+        maintenanceHospital: 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital'
+        maintenanceLocation: string;
+        maintenanceTime: string;
+        employeeName: string;
+    },
     priority: priorityType;
-    requestDate: string;
+    requestDateTime: string;
     requestId: number;
-    requestTime: number;
     serviceType: string;
     status: statusType;
 }
@@ -38,6 +78,9 @@ export interface incomingRequest {
 
 export async function SubmitTransportRequest(request: transportRequest) {
     await axios.post(ROUTES.PATIENTTRANSPORT, request);
+}
+export async function EditTransportRequest(request: editTransportRequest) {
+    await axios.post(ROUTES.EDITPATIENTTRANSPORT, request);
 }
 
 export async function GetTransportRequest() {

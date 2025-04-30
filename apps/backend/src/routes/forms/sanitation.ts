@@ -74,4 +74,68 @@ router.post('/', async (req: Request, res: Response) => {
     }
 });
 
+router.post('/edit', async (req: Request, res: Response) => {
+    //Format for tempDate is  2025-04-04T01:44
+    //(maybe on future iterations split the field?)
+    const tempDate = new Date(req.body.sanitationRequest.pickupDate);
+    const pickupDate = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate());
+
+    try {
+        const result = await PrismaClient.$transaction(async (prisma) => {
+            //creates entry for service request
+            const serviceRequest = await prisma.serviceRequest.update({
+                where: { requestId: req.body.requestId },
+                data: {
+                    priority: req.body.sanitationRequest.priority,
+                    status: req.body.sanitationRequest.status,
+                    comments: req.body.sanitationRequest.notes,
+                    serviceType: 'Sanitation',
+
+                    //9 commandments
+                    employeeName: req.body.sanitationRequest.employeeName,
+                    requesterRoomNumber: req.body.sanitationRequest.requesterRoomNumber,
+                    requesterDepartmentId: req.body.sanitationRequest.requesterDepartmentId,
+
+                    //optional fields
+                    //location_id: req.body.locationId ?? null,
+                    employeeId: req.body.sanitationRequest.employeeId || null, // change to user id in the future?
+                    //request_date: new Date(pickupDate) ?? null,
+                    //request_time: new Date(req.body.pickupTime) ?? null,
+                },
+            });
+
+            //create entry for patient transport table
+            const sanitation = await prisma.sanitation.update({
+                where: { servReqId: req.body.requestId },
+                data: {
+                    sanitationType: req.body.sanitationRequest.sanitationType,
+                    //recurring: req.body.sanitationRequest.recurring,
+                    hazardLevel: req.body.sanitationRequest.hazardLevel,
+                    //disposalRequired: req.body.sanitationRequest.disposalRequired,
+
+                    sanitationDepartmentId: req.body.sanitationRequest.sanitationDepartmentId,
+                    sanitationLocationId: req.body.sanitationRequest.sanitationLocationId,
+                    sanitationRoomNumber: req.body.sanitationRequest.sanitationRoomNumber,
+                    completeBy: new Date(req.body.sanitationRequest.completeBy).toISOString(),
+                },
+                select: {
+                    servReqId: true,
+                    sanitationType: true,
+                    //recurring: true,
+                    hazardLevel: true,
+                    //disposalRequired: true,
+                    completeBy: true,
+                },
+            });
+            console.log(sanitation);
+            return { serviceRequest, sanitation };
+        });
+
+        res.status(201).json(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Something went wrong' });
+    }
+});
+
 export default router;

@@ -2,7 +2,12 @@ import {useEffect, useState} from 'react';
 import MGBButton from '../../elements/MGBButton.tsx';
 import InputElement from '../../elements/InputElement.tsx';
 import ConfirmMessageComponent from '../ConfirmMessageComponent.tsx'; // Import the new component
-import { SubmitTransportRequest, transportRequest} from '@/database/forms/transportRequest.ts';
+import {
+    EditTransportRequest,
+    editTransportRequest,
+    SubmitTransportRequest,
+    transportRequest
+} from '@/database/forms/transportRequest.ts';
 import {
     hospitalTransportType,
     priorityType,
@@ -12,9 +17,12 @@ import {
 } from '@/database/forms/formTypes.ts'
 import SelectFormElement from "@/elements/SelectFormElement.tsx";
 import { employeeNameId, getEmployeeNameIds } from '@/database/getEmployee.ts';
+import {RequestPageProps} from "@/routes/ServiceRequestDisplayPage.tsx";
+import {editMedicalDeviceRequest} from "@/database/forms/medicalDeviceRequest.ts";
+
 
 // Component definition
-const TransportRequestPage = () => {
+const TransportRequestPage = ({editData}: RequestPageProps) => {
     // const loggedIn = sessionStorage.getItem('loggedIn');
     // if (!loggedIn) {window.location.href = '/';}
 
@@ -47,12 +55,21 @@ const TransportRequestPage = () => {
             priority,
             pickupLocation,
             dropoffLocation,
-            formattedDate,
+            transportDate: formattedDate,
             notes,
             assignedToId,
         };
 
-        SubmitTransportRequest(newRequest);
+        if(editData) {
+            const editRequest: editTransportRequest = {
+                transportRequest: newRequest,
+                requestId: editData.requestId
+            }
+            EditTransportRequest(editRequest);
+        }else{
+            SubmitTransportRequest(newRequest);
+        }
+
         setSubmittedRequest(newRequest);
         setShowConfirmation(true);
 
@@ -98,6 +115,21 @@ const TransportRequestPage = () => {
     const handleConfirmationClose = () => {
         setShowConfirmation(false);
     };
+
+    useEffect(() => {
+        if(editData){
+            setPatientId(editData.patientTransport.patientId);
+            setPatientName('');
+            setTransportType(editData.patientTransport.transportType);
+            setPriority(editData.priority);
+            setPickupLocation(editData.patientTransport.pickupLocation);
+            setDropoffLocation(editData.patientTransport.dropoffLocation);
+            setNotes(editData.comments);
+            setAssignedToId(0);
+            setTransportDate(editData.patientTransport.transportDate);
+            setEmployeeId(editData.employeeId);
+        }
+    }, []);
 
     return (
         // flex row container

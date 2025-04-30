@@ -1,24 +1,7 @@
 import {ROUTES} from "common/src/constants.ts";
 import axios from "axios";
-import {priorityType, statusType} from "@/database/forms/formTypes.ts";
 import {incomingRequest} from "@/database/forms/transportRequest.ts";
-
-export interface outgoingTranslationRequest {
-    comments: string;
-    employeeName: string;
-    employeeId: number;
-    language: string;
-    patientId: number;
-    typeMeeting: string;
-    meetingLink: string;
-    department: string;
-    location: string;
-    priority: priorityType;
-    duration: number;
-    date: string;
-    notes: string;
-}
-
+import {outgoingTranslationRequest} from "@/database/forms/translationRequest.ts";
 
 export interface incomingTranslationRequest {
     comments: string;
@@ -31,19 +14,27 @@ export interface incomingTranslationRequest {
         meetingLink: string;
         department: string;
         location: string;
-        patientId: number;
-        duration: number;
     }
-    priority: priorityType;
-    requestDateTime: string;
+    priority: 'Low' | 'Medium' | 'High' | 'Emergency';
+    requestDate: string;
     requestId: number;
+    requestTime: number;
     serviceType: string;
-    status: statusType;
+    status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
+}
+
+export interface editTranslatorRequest {
+    translatorRequest: outgoingTranslationRequest;
+    requestId: number;
 }
 
 
 export async function SubmitTranslatorRequest(request: outgoingTranslationRequest) {
     await axios.post(ROUTES.TRANSLATIONREQUEST, request);
+}
+
+export async function EditTranslatorRequest(request: editTranslatorRequest) {
+    await axios.post(ROUTES.EDITTRANSLATIONREQUEST, request);
 }
 
 export async function GetTranslatorRequest() {

@@ -18,10 +18,15 @@ export const ROUTES = {
 
     ///Requests
     PATIENTTRANSPORT: '/api/patienttransport',
+    EDITPATIENTTRANSPORT: '/api/patienttransport/edit',
     TRANSLATIONREQUEST: '/api/translation',
+    EDITTRANSLATIONREQUEST: '/api/translation/edit',
     SANITATION: '/api/sanitation',
+    EDITSANITATION: '/api/sanitation/edit',
     MAINTENANCEREQUEST: '/api/maintenance',
+    EDITMAINTENANCEREQUEST: '/api/maintenance/edit',
     MEDICALDEVICEREQUEST: '/api/medicaldevice',
+    EDITMEDICALDEVICEREQUEST: '/api/medicaldevice/edit',
 
     //Directory
     DIRECTORY: '/api/directory',

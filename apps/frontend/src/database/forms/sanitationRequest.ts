@@ -1,6 +1,7 @@
 import { ROUTES } from 'common/src/constants.ts';
 import axios from 'axios';
 import { priorityType, hazardLevelType, statusType } from '@/database/forms/formTypes.ts';
+import {incomingRequest} from "@/database/forms/transportRequest.ts";
 
 export interface sanitationRequest {
     //Service Request fields
@@ -46,10 +47,19 @@ export interface incomingSanitationRequest {
     transportType: string;
 }
 
+export interface editSanitationRequest {
+    sanitationRequest: sanitationRequest;
+    requestId: number;
+}
+
 export async function SubmitSanitationRequest(request: sanitationRequest) {
     await axios.post(ROUTES.SANITATION, request);
 }
 
+export async function EditSanitationRequest(request: editSanitationRequest) {
+    await axios.post(ROUTES.EDITSANITATION, request);
+}
+
 export async function GetSanitationRequest() {
-    return (await axios.get<incomingSanitationRequest[]>(ROUTES.SANITATION)).data;
+    return (await axios.get<incomingRequest[]>(ROUTES.SANITATION)).data;
 }

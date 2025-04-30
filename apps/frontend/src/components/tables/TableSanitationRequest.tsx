@@ -11,16 +11,19 @@ import {
 } from '@/components/ui/table.tsx';
 import {motion} from 'framer-motion';
 import { employeeNameId, getEmployeeNameIds } from '@/database/getEmployee.ts';
+import MGBButton from "@/elements/MGBButton.tsx";
+import {incomingRequest} from "@/database/forms/transportRequest.ts";
 
 interface Props {
     setActiveForm: (
         type: 'transport' | 'translation' | 'maintenance' | 'medical device' | 'sanitation'
     ) => void;
+    setEditData: (incomingRequest: incomingRequest) => void;
 }
 
-const TableSanitationRequest: React.FC<Props> = ({ setActiveForm }) => {
+const TableSanitationRequest: React.FC<Props> = ({ setActiveForm, setEditData }) => {
     const [loading, setLoading] = useState(true);
-    const [requests, setRequests] = useState<incomingSanitationRequest[]>([]);
+    const [requests, setRequests] = useState<incomingRequest[]>([]);
     const [filter, setShowFilters] = useState<boolean>(false);
     const [filters, setFilters] = useState({
         priority: '',
@@ -173,6 +176,7 @@ const TableSanitationRequest: React.FC<Props> = ({ setActiveForm }) => {
                                 <TableHead className="w-20 text-center font-semibold py-3">Sanitation Type</TableHead>
                                 <TableHead className="w-20 text-center font-semibold py-3">Hazard Level</TableHead>
                                 <TableHead className="w-20 text-center font-semibold py-3">Complete By Date</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3"></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -186,6 +190,7 @@ const TableSanitationRequest: React.FC<Props> = ({ setActiveForm }) => {
                                     <TableCell className="text-center py-3">{req.sanitation.sanitationType}</TableCell>
                                     <TableCell className="text-center py-3">{req.sanitation.hazardLevel}</TableCell>
                                     <TableCell className="text-center py-3">{req.sanitation.completeBy.split('T')[0]}</TableCell>
+                                    <TableCell className="text-center py-3"><MGBButton onClick={() => {setEditData(req); setActiveForm("sanitation")}} variant={'secondary'} children={'Edit'}/></TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

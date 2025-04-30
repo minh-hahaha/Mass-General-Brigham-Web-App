@@ -1,7 +1,11 @@
 import {useEffect, useState} from 'react';
 import MGBButton from '@/elements/MGBButton.tsx';
 import ConfirmMessageComponent from '@/components/ConfirmMessageComponent.tsx';
-import { SubmitMaintenanceRequest, maintenanceRequest } from '@/database/forms/maintenanceRequest.ts';
+import {
+    SubmitMaintenanceRequest,
+    maintenanceRequest,
+    EditMaintenanceRequest, editMaintenanceRequest
+} from '@/database/forms/maintenanceRequest.ts';
 import InputElement from '@/elements/InputElement.tsx';
 import SelectElement from '@/elements/SelectElement.tsx';
 import {DirectoryRequestByBuilding, getDirectory} from "@/database/gettingDirectory.ts";
@@ -15,10 +19,11 @@ import {
 } from "@/database/forms/formTypes.ts";
 import SelectFormElement from "@/elements/SelectFormElement.tsx";
 import {employeeNameId, getEmployee, getEmployeeNameIds, getEmployeeNames} from "@/database/getEmployee.ts";
+import {RequestPageProps} from "@/routes/ServiceRequestDisplayPage.tsx";
+import {editMedicalDeviceRequest} from "@/database/forms/medicalDeviceRequest.ts";
 
 // Component definition
-const MaintenanceRequestPage = () => {
-   // TODO: CHECK ADMIN AGAIN
+const MaintenanceRequestPage = ({editData}: RequestPageProps) => {
     // const loggedIn = sessionStorage.getItem('loggedIn');
     // if (!loggedIn) {
     //     window.location.href = '/';
@@ -62,8 +67,15 @@ const MaintenanceRequestPage = () => {
             notes,
             locationId,
         };
-
-        SubmitMaintenanceRequest(newRequest);
+        if(editData){
+            const editRequest: editMaintenanceRequest = {
+                maintenanceRequest: newRequest,
+                requestId: editData.requestId
+            }
+            EditMaintenanceRequest(editRequest);
+        }else{
+            SubmitMaintenanceRequest(newRequest);
+        }
         setShowConfirmation(true);
 
         handleReset();
@@ -119,6 +131,21 @@ const MaintenanceRequestPage = () => {
             handleConfirmationClose(); // close the state after the alert
         }
     }, [showConfirmation]);
+
+    useEffect(() => {
+        if(editData){
+            setMaintenanceType(editData.maintenanceRequest.maintenanceType);
+            setMaintenanceDescription(editData.maintenanceRequest.maintenanceDescription);
+            setPriority(editData.priority);
+            setMaintenanceHospital(editData.maintenanceRequest.maintenanceHospital);
+            setMaintenanceLocation(editData.maintenanceRequest.maintenanceLocation);
+            setMaintenanceTime(editData.maintenanceRequest.maintenanceTime);
+            setEmployeeId(editData.employeeId);
+            setEmployeeName('');
+            setNotes(editData.comments);
+            setLocationId(editData.locationId);
+        }
+    }, []);
 
 
 

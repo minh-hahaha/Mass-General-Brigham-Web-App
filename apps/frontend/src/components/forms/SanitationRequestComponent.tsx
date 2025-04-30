@@ -1,9 +1,6 @@
 import {useEffect, useState} from 'react';
 import MGBButton from '../../elements/MGBButton.tsx';
-import ConfirmMesg from '../ConfirmMessageComponent.tsx'; // Import the new component
-import { SubmitSanitationRequest, sanitationRequest } from '../../database/forms/sanitationRequest.ts';
 import InputElement from "@/elements/InputElement.tsx";
-import SelectElement from '@/elements/SelectElement.tsx';
 import {DirectoryRequestByBuilding, getDirectory} from '@/database/gettingDirectory.ts';
 import {
     hazardLevelArray,
@@ -14,9 +11,17 @@ import {
 } from '@/database/forms/formTypes.ts'
 import SelectFormElement from "@/elements/SelectFormElement.tsx";
 import {employeeNameId, getEmployeeNameIds} from "@/database/getEmployee.ts";
+import {editTranslatorRequest} from "@/database/translationRequest.ts";
+import {RequestPageProps} from "@/routes/ServiceRequestDisplayPage.tsx";
+import {
+    EditSanitationRequest,
+    editSanitationRequest,
+    sanitationRequest,
+    SubmitSanitationRequest
+} from "@/database/forms/sanitationRequest.ts";
 
 // Component definition
-const SanitationRequestPage = () => {
+const SanitationRequestPage = ({editData}: RequestPageProps) => {
 
     //Service request fields
     const [priority, setPriority] = useState<priorityType>('Low');
@@ -72,7 +77,15 @@ const SanitationRequestPage = () => {
             requesterRoomNumber,
         } //for Jack: I stopped here. There seems to be something off with the type declarations here
 
-        SubmitSanitationRequest(newRequest);
+        if(editData){
+            const editRequest: editSanitationRequest = {
+                sanitationRequest: newRequest,
+                requestId: editData.requestId
+            }
+            EditSanitationRequest(editRequest);
+        }else {
+            SubmitSanitationRequest(newRequest);
+        }
         setSubmittedRequest(newRequest);
         setShowConfirmation(true);
 
@@ -132,6 +145,30 @@ const SanitationRequestPage = () => {
         setRequester_department('');
         setRequester_roomnum('');
     };
+
+    useEffect(() => {
+        if(editData){
+            setPriority(editData.priority);
+            setRequest_time('');
+            setLocation_id(editData.locationId ? editData.locationId.toString() : '');
+            setComments(editData.comments);
+            setRequest_date(editData.requestDate);
+            setSanitationType(editData.sanitation.sanitationType);
+            setHazardLevel(editData.sanitation.hazardLevel as hazardLevelType);
+            setCompleteBy(editData.sanitation.completeBy);
+            setSanitation_location_id(editData.locationId ? editData.locationId.toString() : '');
+            setSanitation_department_id('');
+            setSanitation_roomNumber(0);
+            setEmployee_name(editData.locationId ? editData.locationId.toString() : '');
+            setRequester_department('');
+            setRequester_roomnum('');
+        }
+    }, []);
+
+    // //Data is sent to the backend
+    // async function DisplayTransportRequest(request: transportRequest) {
+    //     await axios.post(ROUTES.PATIENTTRANSPORT, request);
+    // }
 
     const handleConfirmationClose = () => {
         setShowConfirmation(false);
