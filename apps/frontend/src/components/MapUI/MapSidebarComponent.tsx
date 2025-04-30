@@ -602,6 +602,47 @@ const MapSidebarComponent = ({
                                 </div>
                             </div>
                         )}
+                        {(selectedHospital.id === 4 &&
+                            <div>
+                                <p className="mb-2 text-sm text-codGray text-center font-bold">
+                                    Where did you park?
+                                </p>
+                                <div className="w-full mb-4">
+                                    <button
+                                        onClick={() =>
+                                            handleLotSelect(
+                                                `${
+                                                    selectedHospital.id === 1
+                                                        ? 'CH'
+                                                        : selectedHospital.id === 3
+                                                            ? 'FK'
+                                                            : selectedHospital.id === 2
+                                                                ? 'PP'
+                                                                : 'BWH'
+                                                }_A`
+                                            )
+                                        }
+                                        className={clsx(
+                                            'w-full py-2 rounded-sm transition text-center',
+                                            selectedLot ===
+                                            `${
+                                                selectedHospital.id === 1
+                                                    ? 'CH'
+                                                    : selectedHospital.id === 3
+                                                        ? 'FK'
+                                                        : selectedHospital.id === 2
+                                                            ? 'PP'
+                                                            : 'BWH'
+                                            }_A`
+                                                ? 'bg-mgbblue text-white'
+                                                : 'bg-white text-codGray border border-mgbblue hover:bg-mgbblue hover:text-white'
+                                        )}
+                                    >
+                                        Lot A
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
 
