@@ -28,8 +28,9 @@ export interface incomingServiceRequest {
     priority: string;
     locationId?: number;
     serviceType: string;
-    requestDate?: string; // ISO string format (e.g., "2025-04-16T00:00:00Z")
-    requestTime?: string;
+    // requestDate?: string; // ISO string format (e.g., "2025-04-16T00:00:00Z")
+    // requestTime?: string;
+    requestDateTime: string;
 }
 
 // POST request to submit a new maintenance request

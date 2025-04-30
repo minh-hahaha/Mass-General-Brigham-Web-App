@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import {
     GetMedicalDeviceRequest,
     incomingMedicalDeviceRequest,
-} from '@/database/medicalDeviceRequest.ts';
+} from '@/database/forms/medicalDeviceRequest.ts';
 import {
     Table,
     TableBody,
@@ -12,36 +12,49 @@ import {
     TableRow,
 } from '@/components/ui/table.tsx';
 import {motion} from 'framer-motion';
+import MGBButton from "@/elements/MGBButton.tsx";
+import {incomingRequest} from "@/database/forms/transportRequest.ts";
+import { employeeNameId, getEmployeeNameIds } from '@/database/getEmployee.ts';
 
 interface Props {
     setActiveForm: (
         type: 'transport' | 'translation' | 'maintenance' | 'medical device' | 'sanitation'
     ) => void;
+    setEditData: (incomingRequest: incomingRequest) => void;
 }
 
-const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => {
+const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm, setEditData }) => {
 
     const [loading, setLoading] = useState(true);
-    const [requests, setRequests] = useState<incomingMedicalDeviceRequest[]>([]);
+    const [requests, setRequests] = useState<incomingRequest[]>([]);
     const [filter, setShowFilters] = useState<boolean>(false);
     const [filters, setFilters] = useState({
-        device: '',
-        serNum: '',
-        location: '',
         priority: '',
         status: '',
-        reqDate: '',
-        department: '',
+        device: '',
+        location: '',
+        deliverDate: '',
     });
+    const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
 
     useEffect(() => {
         async function fetchReqs() {
             const data = await GetMedicalDeviceRequest();
             setRequests(data);
+            console.log(data);
             setLoading(false);
         }
         fetchReqs();
+
     }, []);
+
+    useEffect(() => {
+        async function fetchEmployeeList() {
+            const data = await getEmployeeNameIds();
+            setEmployeeList(data);
+        }
+        fetchEmployeeList();
+    }, [])
 
     if (loading) {
         return <p>Loading Requests...</p>;
@@ -49,16 +62,14 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => 
 
     const filteredRequests = requests.filter((req) => {
         return (
-            (!filters.device || req.medicalDeviceRequest.device?.toLowerCase().includes(filters.device.toLowerCase())) &&
-            (!filters.serNum || req.medicalDeviceRequest.deviceSerialNumber?.toLowerCase().includes(filters.serNum.toLowerCase())) &&
-            (!filters.location || req.medicalDeviceRequest.location?.toLowerCase().includes(filters.location.toLowerCase())) &&
             (!filters.priority || req.priority?.toLowerCase().includes(filters.priority.toLowerCase())) &&
             (!filters.status || req.status?.toLowerCase().includes(filters.status.toLowerCase())) &&
-            (!filters.reqDate || req.medicalDeviceRequest.date?.startsWith(filters.reqDate)) &&
-            (!filters.department || req.medicalDeviceRequest.department?.toLowerCase().includes(filters.department.toLowerCase()))
+            (!filters.device || req.medicalDeviceRequest.device?.toLowerCase().includes(filters.device.toLowerCase())) &&
+            (!filters.location || req.medicalDeviceRequest.location?.toLowerCase().includes(filters.location.toLowerCase())) &&
+            (!filters.status || req.status?.toLowerCase().includes(filters.status.toLowerCase()))
         );
     });
-    // Format date for display
+    // // Format date for display
     const formatDate = (dateString: string) => {
         return dateString.split('T')[0];
     };
@@ -81,39 +92,6 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => 
                             transition={{ type: 'spring', stiffness: 200, damping: 20 }}
                             className="relative left-[10px] rounded flex flex-row gap-5"
                         >
-                            <div>
-                                <label className="block text-sm font-medium">Device</label>
-                                <input
-                                    type="text"
-                                    className="border border-mgbblue rounded-sm w-30 p-1"
-                                    value={filters.device}
-                                    onChange={(e) =>
-                                        setFilters({ ...filters, device: e.target.value })
-                                    }
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium">Serial Num</label>
-                                <input
-                                    type="text"
-                                    className="border border-mgbblue rounded-sm w-25 p-1"
-                                    value={filters.serNum}
-                                    onChange={(e) =>
-                                        setFilters({ ...filters, serNum: e.target.value })
-                                    }
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium">Location</label>
-                                <input
-                                    type="text"
-                                    className="border border-mgbblue rounded-sm w-25 p-1"
-                                    value={filters.reqDate}
-                                    onChange={(e) =>
-                                        setFilters({ ...filters, reqDate: e.target.value })
-                                    }
-                                />
-                            </div>
                             <div>
                                 <label className="block text-sm font-medium">Priority</label>
                                 <input
@@ -140,27 +118,41 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => 
                                 />
                             </div>
                             <div>
+                                <label className="block text-sm font-medium">Device</label>
+                                <input
+                                    type="text"
+                                    className="border border-mgbblue rounded-sm w-30 p-1"
+                                    value={filters.device}
+                                    onChange={(e) =>
+                                        setFilters({ ...filters, device: e.target.value })
+                                    }
+                                />
+                            </div>
+                            <div>
                                 <label className="block text-sm font-medium">Request Date</label>
                                 <input
                                     type="datetime-local"
                                     className="border border-mgbblue rounded-sm w-35 p-1"
-                                    value={filters.reqDate}
+                                    value={filters.deliverDate}
                                     onChange={(e) =>
                                         setFilters({
                                             ...filters,
-                                            reqDate: e.target.value,
+                                            deliverDate: e.target.value,
                                         })
                                     }
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium">Department</label>
+                                <label className="block text-sm font-medium">Location</label>
                                 <input
                                     type="text"
-                                    className="border border-mgbblue rounded-sm w-30 p-1"
-                                    value={filters.department}
+                                    className="border border-mgbblue rounded-sm w-25 p-1"
+                                    value={filters.location}
                                     onChange={(e) =>
-                                        setFilters({ ...filters, department: e.target.value })
+                                        setFilters({
+                                            ...filters,
+                                            location: e.target.value,
+                                        })
                                     }
                                 />
                             </div>
@@ -181,15 +173,12 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => 
                     <Table>
                         <TableHeader>
                             <TableRow className="bg-gray-50">
-                                <TableHead className="w-20 text-left font-semibold py-3">Request ID</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Medical Device</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Medical Device Serial Number</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Explanation</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Location</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Priority</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Status</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Request Date</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Department</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Priority</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Status</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Medical Device</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Location</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Deliver By Date</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3"></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -198,40 +187,12 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm }) => 
                                     key={req.requestId}
                                     className="border-b hover:bg-gray-50"
                                 >
-                                    <TableCell className="text-left py-3">{req.requestId}</TableCell>
-                                    <TableCell className="text-left py-3">{req.medicalDeviceRequest.device}</TableCell>
-                                    <TableCell className="text-left py-3">
-                                        {req.medicalDeviceRequest.deviceSerialNumber}
-                                    </TableCell>
-                                    <TableCell className="text-left py-3">
-                                        {req.medicalDeviceRequest.deviceReasoning
-                                            ?.match(/.{1,30}/g)
-                                            ?.map((chunk, i) => (
-                                                <span key={i}>
-                                                    {chunk}
-                                                    <br />
-                                                </span>
-                                            ))}
-                                    </TableCell>
-                                    <TableCell className="text-left py-3">{req.medicalDeviceRequest.location}</TableCell>
-                                    <TableCell className="text-left py-3">
-                                        <span
-                                            className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                                req.priority === 'High'
-                                                    ? 'bg-orange-100 text-orange-800'
-                                                    : req.priority === 'Medium'
-                                                        ? 'bg-yellow-100 text-yellow-800'
-                                                        : req.priority === 'Emergency'
-                                                            ? 'bg-red-100 text-red-800'
-                                                            : 'bg-green-100 text-green-800'
-                                            }`}
-                                        >
-                                            {req.priority}
-                                        </span>
-                                    </TableCell>
-                                    <TableCell className="text-left py-3">{req.status}</TableCell>
-                                    <TableCell className="text-left py-3">{formatDate(req.requestDate)}</TableCell>
-                                    <TableCell className="text-left py-3">{req.medicalDeviceRequest.department}</TableCell>
+                                    <TableCell className="text-center py-3">{req.priority}</TableCell>
+                                    <TableCell className="text-center py-3">{req.status}</TableCell>
+                                    <TableCell className="text-center py-3">{req.medicalDeviceRequest.device}</TableCell>
+                                    <TableCell className="text-center py-3">{req.medicalDeviceRequest.location}</TableCell>
+                                    <TableCell className="text-center py-3">{req.medicalDeviceRequest.deliverDate.split('T')[0]}</TableCell>
+                                    <TableCell className="text-center py-3"><MGBButton onClick={() => {setEditData(req); setActiveForm("medical device")}} variant={'secondary'} children={'Edit'}/></TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
