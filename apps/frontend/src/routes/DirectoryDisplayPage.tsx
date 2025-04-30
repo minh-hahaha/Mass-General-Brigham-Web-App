@@ -15,6 +15,7 @@ import { FaBuilding, FaTools, FaPhoneAlt } from 'react-icons/fa';
 import { TbStairsUp } from 'react-icons/tb';
 import {ROUTES} from "common/src/constants.ts";
 import DirectoryInstructions from "@/components/DirectoryInstructions.tsx";
+import { FaRegQuestionCircle } from "react-icons/fa";
 
 interface DirectoryTableProps {
     data: DepartmentRequest[];
@@ -796,13 +797,17 @@ const DirectoryDisplayPage = () => {
                 <div className="">
                     <CarouselMenu tableTabs={tableTabs} initialIndex={initialTabIndex} />
                 </div>
-                <div className="fixed bottom-4 right-4">
+                <div className="fixed bottom-4 right-2">
                     <MGBButton
-                        onClick={() => handleShowInstructions()}
-                        children={'Help'}
+                        onClick={() => setInstructionVisible(true)}
                         variant={'primary'}
                         disabled={false}
-                    ></MGBButton>
+                    >
+                        <div className="flex items-center gap-2">
+                            <span>Help</span>
+                            <FaRegQuestionCircle size={18} />
+                        </div>
+                    </MGBButton>
                 </div>
             </div>
             {instructionVisible && (

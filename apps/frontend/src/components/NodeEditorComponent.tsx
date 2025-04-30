@@ -14,6 +14,7 @@ import {getDirectory} from "@/database/gettingDirectory.ts";
 import {GetNode} from "@/database/getDepartmentNode.ts";
 import FloorSelector from "@/components/FloorSelector.tsx";
 import MapInstructions from "@/components/MapInstructions.tsx";
+import { FaRegQuestionCircle } from "react-icons/fa";
 
 
 // A container for a Node on the map
@@ -935,11 +936,15 @@ const NodeEditorComponent = () => {
                 </div>
                 <div>
                     <MGBButton
-                        onClick={() => handleShowInstructions()}
-                        children={'Instructions for Help'}
+                        onClick={() => setInstructionVisible(true)}
                         variant={'primary'}
                         disabled={false}
-                    ></MGBButton>
+                    >
+                        <div className="flex items-center gap-2">
+                            <span>Help</span>
+                            <FaRegQuestionCircle size={18} />
+                        </div>
+                    </MGBButton>
                 </div>
             </div>
             {showImportModal && (
