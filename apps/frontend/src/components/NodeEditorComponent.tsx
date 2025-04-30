@@ -316,16 +316,15 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
      */
     const fetchAvailableDepartments = async (buildingProps: Floor) => {
         let building = Number(buildingProps.buildingId);
-        if(buildingProps.buildingName === "Patriot Place"){
-            building = 2;
-        }else if(buildingProps.buildingName === "Faulkner Hospital"){
-            building = 4;
+        if(building !== 1){
+            building++;
         }
         const departments = await getDirectory(building);
         console.log("before depts:",departments);
         // This is because the directory counts the two PP bldgs separately as ids 2 and 3 with other buildings being 4 and beyond
-        if(building === 2){
-            departments.concat(await getDirectory(3));
+        if(building === 3){
+            const data = await getDirectory(2);
+            data.map(d => departments.push(d));
             console.log("depts:",departments);
         }
         setDepartmentOptions(departments.map(dept => ({deptName: dept.deptName, deptId: dept.deptId})));

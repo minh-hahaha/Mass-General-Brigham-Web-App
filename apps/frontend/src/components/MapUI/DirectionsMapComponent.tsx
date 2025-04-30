@@ -126,14 +126,41 @@ const DirectionsMapComponent = () => {
     }, [map, routesLibrary]);
 
 
+    /*
+        CH - 1
+        PP22 - 2
+        PP20 -3
+        FK -4
+        MG - 5
+     */
+
+    /*
+        CH -1
+        PP - 2
+        FK -3
+        MG -4
+     */
 
     // API CALLS
     // get directory list
     useEffect(() => {
         const fetchDirectoryList = async () => {
             try {
-                const data = await getDirectory(buildingID);
-                setDirectoryList(data);
+                let realBuildingID = buildingID;
+                if(realBuildingID !== 1){
+                    realBuildingID++;
+                }
+                console.log(realBuildingID);
+                const directories: DirectoryRequestByBuilding[] = [];
+                const data = await getDirectory(realBuildingID);
+                console.log(data);
+                data.map(d => directories.push(d));
+                if(realBuildingID === 3){
+                    const otherPP = await getDirectory(2);
+                    otherPP.map(d => directories.push(d));
+                }
+                console.log(directories);
+                setDirectoryList(directories);
             } catch (error) {
                 console.error('Error fetching building names:', error);
             }

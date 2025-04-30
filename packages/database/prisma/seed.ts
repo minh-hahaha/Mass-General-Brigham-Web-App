@@ -30,6 +30,10 @@ async function main() {
                 buildingId: 4,
                 buildingName: 'Faulkner Hospital',
             },
+            {
+                buildingId: 5,
+                buildingName: 'Main Hospital',
+            },
 
         ],
         skipDuplicates: true,
@@ -42,680 +46,1174 @@ async function main() {
     const createManyDepartments = await client.department.createMany({
         data: [
             {
-                deptId: 1,
-                deptName: 'Allergy and Clinical Immunology',
-                buildingId: 1,
-                deptPhone: '617-732-9850',
-                deptServices: 'Allergy (environmental, food, medication and venoms), asthma, anaphylaxis, angioedema, sinusitis, and immunodeficiencyy',
+                "deptId": 12,
+                "deptServices": "Orthopedic surgery, Vascular surgery, Contact Dermatitis and Occupational Dermatology Program, Pain Medicine and Travel Medicine",
+                "deptName": "Multi-Specialty Clinic",
+                "buildingId": 1,
+                "deptPhone": "617-732-9500",
+                "nodeId": "CHFloor1Road130"
+            },
+            {
+                "deptId": 11,
+                "deptServices": "Blood work, lab services",
+                "deptName": "Laboratory (Monday-Friday 7am-6:30pm, Saturday 9am-1pm, excluding holidays)",
+                "buildingId": 1,
+                "deptPhone": "617-732-9841",
+                "nodeId": "CHFloor1Room100"
+            },
+            {
+                "deptId": 17,
+                "deptServices": "CT scan, MRI, X-Ray",
+                "deptName": "Radiology, MRI/CT scan",
+                "buildingId": 1,
+                "deptPhone": "617-732-9821",
+                "nodeId": "CHFloor1Room102"
+            },
+            {
+                "deptId": 10,
+                "deptServices": "Cardiology, dermatology, (cosmetic, medical, and surgical), endocrinology, gastroenterology, gynecology, hematology, infectious diseases, mental health (social work), general neurology, nutrition, primary care, pulmonary, renal, rheumatology, sleep medicine, Womens Health (Menopause and Midlife Clinic, Obstetric Internal Medicine)",
+                "deptName": "Gretchen S. and Edward A.Fish Center for Womens Health",
+                "buildingId": 1,
+                "deptPhone": "617-732-9300",
+                "nodeId": "CHFloor1Hallway9"
+            },
+            {
+                "deptId": 18,
+                "deptServices": "Orthopedic, sports, neurologic and vestibular Physical Therapy, Mens and Womens pelvic floor Physical Therapy. Hand/Occupational Therapy Speech Language Pathology",
+                "deptName": "Rehabilitation Services",
+                "buildingId": 1,
+                "deptPhone": "617-732-9525",
+                "nodeId": "CHFloor1Hallway9"
+            },
+            {
+                "deptId": 15,
+                "deptServices": "Outpatient pharmacy services",
+                "deptName": "Pharmacy (Monday-Friday 9am-4pm, excluding holidays)",
+                "buildingId": 1,
+                "deptPhone": "617-732-9040",
+                "nodeId": "CHFloor1Hallway9"
+            },
+            {
+                "deptId": 16,
+                "deptServices": "Bone density, Breast imaging/Mammography, ultrasound, X-Ray",
+                "deptName": "Radiology",
+                "buildingId": 1,
+                "deptPhone": "617-732-9801",
+                "nodeId": "CHFloor1Hallway9"
+            },
+            {
+                "deptId": 13,
+                "deptServices": "Acupuncture, health coaching, chiropractic, craniosacral therapy, integrative medicine, structural massage and movement therapies, neurology (movement disorders and headache), echocardiography, and pulmonary. Educational courses: Integrative wellness courses are also offered.",
+                "deptName": "Osher Clinical Center for Integrative Health",
+                "buildingId": 1,
+                "deptPhone": "617-732-9700",
+                "nodeId": "CHFloor1Hallway9"
+            },
+            {
+                "deptId": 14,
+                "deptServices": "Patient financial counseling",
+                "deptName": "Patient Financial Services",
+                "buildingId": 1,
+                "deptPhone": "617-732-9677",
+                "nodeId": "CHFloor1Hallway9"
+            },
+            {
+                "deptId": 1,
+                "deptServices": "Allergy (environmental, food, medication and venoms), asthma, anaphylaxis, angioedema, sinusitis, and immunodeficiencyy",
+                "deptName": "Allergy and Clinical Immunology",
+                "buildingId": 1,
+                "deptPhone": "617-732-9850",
+                "nodeId": "CHFloor1Hallway9"
+            },
+            {
+                "deptId": 2,
+                "deptServices": "Backup childcare for employees",
+                "deptName": "Backup Child Care Center (Monday-Friday, 8am-4:30pm)",
+                "buildingId": 1,
+                "deptPhone": "617-732-9543",
+                "nodeId": "CHFloor1Hallway9"
+            },
+            {
+                "deptId": 3,
+                "deptServices": "Medical and surgical dermatology",
+                "deptName": "Brigham Dermatology Associates (BDA)",
+                "buildingId": 1,
+                "deptPhone": "617-732-9080",
+                "nodeId": "CHFloor1Hallway9"
+            },
+            {
+                "deptId": 4,
+                "deptServices": "Gynecology, obstetrics",
+                "deptName": "Brigham Obstetrics and Gynecology Group (BPG)",
+                "buildingId": 1,
+                "deptPhone": "617-732-9100",
+                "nodeId": "CHFloor1Hallway9"
             },
             {
-                deptId: 2,
-                deptName: 'Backup Child Care Center (Monday-Friday, 8am-4:30pm)',
-                buildingId: 1,
-                deptPhone: '617-732-9543',
-                deptServices: 'Backup childcare for employees',
+                "deptId": 5,
+                "deptServices": "Adult primary care",
+                "deptName": "Brigham Physicians Group",
+                "buildingId": 1,
+                "deptPhone": "617-732-9900",
+                "nodeId": "CHFloor1Hallway9"
             },
             {
-                deptId: 3,
-                deptName: 'Brigham Dermatology Associates (BDA)',
-                buildingId: 1,
-                deptPhone: '617-732-9080',
-                deptServices: 'Medical and surgical dermatology',
+                "deptId": 6,
+                "deptServices": "Psychiatry, psychology, social work",
+                "deptName": "Brigham Psychiatric Specialties",
+                "buildingId": 1,
+                "deptPhone": "617-732-9811",
+                "nodeId": "CHFloor1Hallway9"
             },
             {
-                deptId: 4,
-                deptName: 'Brigham Obstetrics and Gynecology Group (BPG)',
-                buildingId: 1,
-                deptPhone: '617-732-9100',
-                deptServices: 'Gynecology, obstetrics',
+                "deptId": 7,
+                "deptServices": "Multidisciplinary pain management",
+                "deptName": "Center for Pain Medicine",
+                "buildingId": 1,
+                "deptPhone": "617-732-9060",
+                "nodeId": "CHFloor1Hallway9"
             },
             {
-                deptId: 5,
-                deptName: 'Brigham Physicians Group',
-                buildingId: 1,
-                deptPhone: '617-732-9900',
-                deptServices: 'Adult primary care',
+                "deptId": 8,
+                "deptServices": "Crohns disease, inflammatory bowel disease, infusion services, microscopic colitis, pulmonary, rheumatology, ulcerative colitis",
+                "deptName": "Crohns and Colitis Center",
+                "buildingId": 1,
+                "deptPhone": "617-732-6389",
+                "nodeId": "CHFloor1Hallway9"
             },
             {
-                deptId: 6,
-                deptName: 'Brigham Psychiatric Specialties',
-                buildingId: 1,
-                deptPhone: '617-732-9811',
-                deptServices: 'Psychiatry, psychology, social work',
+                "deptId": 9,
+                "deptServices": "Bacterial overgrowth breath test, colonoscopy, H.Pylori breath test, lactose malabsorbtion breath test, upper endoscopy",
+                "deptName": "Endoscopy Center",
+                "buildingId": 1,
+                "deptPhone": "617-732-7426",
+                "nodeId": "CHFloor1Hallway9"
             },
             {
-                deptId: 7,
-                deptName: 'Center for Pain Medicine',
-                buildingId: 1,
-                deptPhone: '617-732-9060',
-                deptServices: 'Multidisciplinary pain management',
+                "deptId": 19,
+                "deptServices": "Blood Draw / Phlebotomy",
+                "deptName": "Blood Draw / Phlebotomy",
+                "buildingId": 2,
+                "deptPhone": "N/A",
+                "nodeId": "PPFloor4Room3_1"
             },
             {
-                deptId: 8,
-                deptName: 'Crohns and Colitis Center',
-                buildingId: 1,
-                deptPhone: '617-732-6389',
-                deptServices: 'Crohns disease, inflammatory bowel disease, infusion services, microscopic colitis, pulmonary, rheumatology, ulcerative colitis',
+                "deptId": 33,
+                "deptServices": "interventional spine procedures, electrodiagnostic medicine consultations and alternative therapies such as medical acupuncture",
+                "deptName": "Physiatry",
+                "buildingId": 2,
+                "deptPhone": "N/A",
+                "nodeId": "PPFloor2Room"
             },
             {
-                deptId: 9,
-                deptName: 'Endoscopy Center',
-                buildingId: 1,
-                deptPhone: '617-732-7426',
-                deptServices: 'Bacterial overgrowth breath test, colonoscopy, H.Pylori breath test, lactose malabsorbtion breath test, upper endoscopy',
+                "deptId": 25,
+                "deptServices": "Hand and Upper Extremity, Arthroplasty, Pediatric Trauma, Physiatry, Podiatry",
+                "deptName": "Orthopedics",
+                "buildingId": 2,
+                "deptPhone": "1-866-378-9164",
+                "nodeId": "PPFloor2Room"
             },
             {
-                deptId: 10,
-                deptName: 'Gretchen S. and Edward A.Fish Center for Womens Health',
-                buildingId: 1,
-                deptPhone: '617-732-9300',
-                deptServices: 'Cardiology, dermatology, (cosmetic, medical, and surgical), endocrinology, gastroenterology, gynecology, hematology, infectious diseases, mental health (social work), general neurology, nutrition, primary care, pulmonary, renal, rheumatology, sleep medicine, Womens Health (Menopause and Midlife Clinic, Obstetric Internal Medicine)',
+                "deptId": 28,
+                "deptServices": "arm, elbow and hand disorders, athletic injuries, spine disorders, foot and ankle problems, hip and knee disorders, shoulder issues, joint replacement, musculoskeletal oncology",
+                "deptName": "Sports Medicine Center",
+                "buildingId": 2,
+                "deptPhone": "1-866-378-9164",
+                "nodeId": "PPFloor3Room"
             },
             {
-                deptId: 11,
-                deptName: 'Laboratory (Monday-Friday 7am-6:30pm, Saturday 9am-1pm, excluding holidays)',
-                buildingId: 1,
-                deptPhone: '617-732-9841',
-                deptServices: 'Blood work, lab services',
-                nodeId: "CHFloor1Room100"
+                "deptId": 29,
+                "deptServices": "X-Ray",
+                "deptName": "X-Ray Suite",
+                "buildingId": 2,
+                "deptPhone": "N/A",
+                "nodeId": "PPFloor3Room"
             },
             {
-                deptId: 12,
-                deptName: 'Multi-Specialty Clinic',
-                buildingId: 1,
-                deptPhone: '617-732-9500',
-                deptServices: 'Orthopedic surgery, Vascular surgery, Contact Dermatitis and Occupational Dermatology Program, Pain Medicine and Travel Medicine',
-                nodeId: "CHFloor1Road130"
+                "deptId": 26,
+                "deptServices": "Cardiac Rehab, Occupational Therapy(Hand Therapy, Upper Extremity), Physical Therapy, Speech - Language, Clinical Lab, Surgi-Care",
+                "deptName": "Rehabilitation Services",
+                "buildingId": 2,
+                "deptPhone": " 1-866-378-9164",
+                "nodeId": "PPFloor2Room"
             },
             {
-                deptId: 13,
-                deptName: 'Osher Clinical Center for Integrative Health',
-                buildingId: 1,
-                deptPhone: '617-732-9700',
-                deptServices: 'Acupuncture, health coaching, chiropractic, craniosacral therapy, integrative medicine, structural massage and movement therapies, neurology (movement disorders and headache), echocardiography, and pulmonary. Educational courses: Integrative wellness courses are also offered.',
+                "deptId": 27,
+                "deptServices": "Audiology, ENT, General and Gastrointestinal Surgery, Plastic Surgery, Thoracic Surgery, Vascular Surgery, Weight Management and Wellness",
+                "deptName": "Surgical Specialties",
+                "buildingId": 2,
+                "deptPhone": "N/A",
+                "nodeId": "PPFloor3Room_1"
             },
             {
-                deptId: 14,
-                deptName: 'Patient Financial Services',
-                buildingId: 1,
-                deptPhone: '617-732-9677',
-                deptServices: 'Patient financial counseling',
+                "deptId": 21,
+                "deptServices": "magnetic resonance imaging (MRI), computed tomography (CT), single photon emission computed tomography (SPECT) imaging, ultrasound, digital mammography, x-ray, bone densitometry. Available twice a week: arthrograms, magnetic resonance (MR) arthrograms, computed tomography (CT) arthrograms, diagnostic and therapeutic joint injections",
+                "deptName": "Radiology",
+                "buildingId": 2,
+                "deptPhone": "Via Fax: 508-718-4026",
+                "nodeId": "PPFloor1Room110"
             },
             {
-                deptId: 15,
-                deptName: 'Pharmacy (Monday-Friday 9am-4pm, excluding holidays)',
-                buildingId: 1,
-                deptPhone: '617-732-9040',
-                deptServices: 'Outpatient pharmacy services',
-            },
-            {
-                deptId: 16,
-                deptName: 'Radiology',
-                buildingId: 1,
-                deptPhone: '617-732-9801',
-                deptServices: 'Bone density, Breast imaging/Mammography, ultrasound, X-Ray',
-
-            },
-            {
-                deptId: 17,
-                deptName: 'Radiology, MRI/CT scan',
-                buildingId: 1,
-                deptPhone: '617-732-9821',
-                deptServices: 'CT scan, MRI, X-Ray',
-                nodeId: "CHFloor1Room102"
-            },
-            {
-                deptId: 18,
-                deptName: 'Rehabilitation Services',
-                buildingId: 1,
-                deptPhone: '617-732-9525',
-                deptServices: 'Orthopedic, sports, neurologic and vestibular Physical Therapy, Mens and Womens pelvic floor Physical Therapy. Hand/Occupational Therapy Speech Language Pathology',
+                "deptId": 22,
+                "deptServices": "Transthoracic echocardiography, Holter monitoring, Electrocardiogram (ECG), Exercise tolerance testing, Exercise stress echocardiography, Vascular and arterial studies",
+                "deptName": "Cardiovascular Services",
+                "buildingId": 2,
+                "deptPhone": "1-866-378-9164",
+                "nodeId": "PPFloor1Room150"
             },
-            {
-                deptId: 19,
-                deptName: 'Blood Draw / Phlebotomy',
-                buildingId: 2,
-                deptPhone: 'N/A',
-                deptServices: 'Blood Draw / Phlebotomy',
-                nodeId: "PPFloor1Room130"
+            {
+                "deptId": 23,
+                "deptServices": "diagnostic cystoscopy (cysto), retrograde pyelogram, transurethral resection of bladder tumor, cold knife urethrotomy, bladder stone removal, fulguration, bladder biopsy, ureteroscopy, chemotherapy and formalin instillation, laser lithotripsy, electrohydraulic lithotripsy (EHL), urethral or bladder neck contracture dilation, circumcision, suprapubic tube (catheter) change, ureteral stent placement and removal, prostate needle biopsy, varicocelectomy, hydrocelectomy, vasectomy, testicular biopsy, orchiectomy, SPARC™ procedures",
+                "deptName": "Urology",
+                "buildingId": 2,
+                "deptPhone": "1-866-378-9164",
+                "nodeId": "PPFloor1Hallway Intersection1"
+            },
+            {
+                "deptId": 24,
+                "deptServices": "Urgent Care",
+                "deptName": "Urgent Care Center",
+                "buildingId": 2,
+                "deptPhone": "508-718-4400",
+                "nodeId": "PPFloor1Room120"
+            },
+            {
+                "deptId": 20,
+                "deptServices": "Pharmacy",
+                "deptName": "Pharmacy",
+                "buildingId": 2,
+                "deptPhone": "N/A",
+                "nodeId": "PPFloor1Room130"
+            },
+            {
+                "deptId": 35,
+                "deptServices": "Day Surgery Center",
+                "deptName": "Day Surgery Center",
+                "buildingId": 2,
+                "deptPhone": "N/A",
+                "nodeId": "PPFloor4Room1_1"
+            },
+            {
+                "deptId": 30,
+                "deptServices": "Electromyography (EMG)",
+                "deptName": "Electromyography (EMG)",
+                "buildingId": 2,
+                "deptPhone": "N/A",
+                "nodeId": "PPFloor4Room1_1"
+            },
+            {
+                "deptId": 31,
+                "deptServices": "Nutrition",
+                "deptName": "Nutrition",
+                "buildingId": 2,
+                "deptPhone": "N/A",
+                "nodeId": "PPFloor4Room1_1"
+            },
+            {
+                "deptId": 32,
+                "deptServices": "diagnosis and treatment of spine-related low-back and neck pain, complex regional pain syndrome, post-herpetic neuralgia (shingles), other neuropathic syndromes, chronic pelvic pain, chronic pain in young adults, comprehensive evaluation for patients with cancer-related pain, headaches, arthritis",
+                "deptName": "Pain Medicine",
+                "buildingId": 2,
+                "deptPhone": "1-866-378-9164",
+                "nodeId": "PPFloor4Room1_1"
+            },
+            {
+                "deptId": 34,
+                "deptServices": "Plumonary Function Testing",
+                "deptName": "Plumonary Function Testing",
+                "buildingId": 2,
+                "deptPhone": "N/A",
+                "nodeId": "PPFloor4Room1_1"
+            },
+            {
+                "deptId": 40,
+                "deptServices": "Blood Draw / Phlebotomy",
+                "deptName": "Blood Draw / Phlebotomy",
+                "buildingId": 3,
+                "deptPhone": "N/A",
+                "nodeId": "PPFloor1Room130"
+            },
+            {
+                "deptId": 39,
+                "deptServices": "Patient Financial Services",
+                "deptName": "Patient Financial Services",
+                "buildingId": 3,
+                "deptPhone": "N/A",
+                "nodeId": "PPFloor3Room_2"
+            },
+            {
+                "deptId": 38,
+                "deptServices": "Allergy, Cardiac Arrhythmia, Dermatology, Endocrinology, Gastroenterology, Kidney (Renal) Medicine, Neurology, Neurosurgery, Ophthalmology, Optometry, Pulmonology, Rheumatology, Vein Care Services, Women's Health",
+                "deptName": "Multi Specialty Clinic",
+                "buildingId": 3,
+                "deptPhone": "1-866-378-9164",
+                "nodeId": "PPFloor3Room_2"
+            },
+            {
+                "deptId": 37,
+                "deptServices": "Spaulding Outpatient Center for Children",
+                "deptName": "Spaulding Outpatient Center for Children",
+                "buildingId": 3,
+                "deptPhone": "(857) 307-3202",
+                "nodeId": "PPFloor11"
+            },
+            {
+                "deptId": 36,
+                "deptServices": "Mass General Hospital for Children",
+                "deptName": "Mass General Hospital for Children",
+                "buildingId": 3,
+                "deptPhone": "888-644-3248",
+                "nodeId": "PPFloor11"
+            },
+            {
+                "deptId": 41,
+                "deptServices": "Community Room",
+                "deptName": "Community Room",
+                "buildingId": 3,
+                "deptPhone": "N/A",
+                "nodeId": "PPFloor4Room2"
+            },
+            {
+                "deptId": 42,
+                "deptServices": "Primary Care",
+                "deptName": "Primary Care",
+                "buildingId": 3,
+                "deptPhone": "(508) 718-4050",
+                "nodeId": "PPFloor4Room2"
+            },
+            {
+                "deptId": 103,
+                "deptServices": null,
+                "deptName": "Headache",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
+            },
+            {
+                "deptId": 50,
+                "deptServices": null,
+                "deptName": "GI Endoscopy",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
+            },
+            {
+                "deptId": 94,
+                "deptServices": null,
+                "deptName": "Primary Care Physicians",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
+            },
+            {
+                "deptId": 48,
+                "deptServices": null,
+                "deptName": "Emergency Department",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
+            },
+            {
+                "deptId": 98,
+                "deptServices": null,
+                "deptName": "Social Work",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
+            },
+            {
+                "deptId": 93,
+                "deptServices": null,
+                "deptName": "Neurology",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
+            },
+            {
+                "deptId": 60,
+                "deptServices": null,
+                "deptName": "Valet Parking",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
+            },
+            {
+                "deptId": 81,
+                "deptServices": null,
+                "deptName": "Outdoor Dining Terrace",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
+            },
+            {
+                "deptId": 82,
+                "deptServices": null,
+                "deptName": "Roslindale Pediatric Associates",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
+            },
+            {
+                "deptId": 53,
+                "deptServices": null,
+                "deptName": "Patient Finances",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
+            },
+            {
+                "deptId": 66,
+                "deptServices": null,
+                "deptName": "Otolaryngology",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
+            },
+            {
+                "deptId": 107,
+                "deptServices": null,
+                "deptName": "Orthopaedics Associates",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
+            },
+            {
+                "deptId": 70,
+                "deptServices": null,
+                "deptName": "Psychiatric Inpatient Care",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
+            },
+            {
+                "deptId": 69,
+                "deptServices": null,
+                "deptName": "Plastic Surgery",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
+            },
+            {
+                "deptId": 86,
+                "deptServices": null,
+                "deptName": "Foot and Ankle Center",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
+            },
+            {
+                "deptId": 106,
+                "deptServices": null,
+                "deptName": "Oncology Clinic",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
-            {
-                deptId: 20,
-                deptName: 'Pharmacy',
-                buildingId: 2,
-                deptPhone: 'N/A',
-                deptServices: 'Pharmacy',
-                nodeId: "PPFloor1Room130"
+            {
+                "deptId": 105,
+                "deptServices": null,
+                "deptName": "Internal Medicine",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
-            {
-                deptId: 21,
-                deptName: 'Radiology',
-                buildingId: 2,
-                deptPhone: 'Via Fax: 508-718-4026',
-                deptServices: 'magnetic resonance imaging (MRI), computed tomography (CT), single photon emission computed tomography (SPECT) imaging, ultrasound, digital mammography, x-ray, bone densitometry. Available twice a week: arthrograms, magnetic resonance (MR) arthrograms, computed tomography (CT) arthrograms, diagnostic and therapeutic joint injections',
-                nodeId:"PPFloor1Room110"
+            {
+                "deptId": 63,
+                "deptServices": null,
+                "deptName": "Food Services",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
-            {
-                deptId: 22,
-                deptName: 'Cardiovascular Services',
-                buildingId: 2,
-                deptPhone: '1-866-378-9164',
-                deptServices: 'Transthoracic echocardiography, Holter monitoring, Electrocardiogram (ECG), Exercise tolerance testing, Exercise stress echocardiography, Vascular and arterial studies',
-                nodeId:"PPFloor1Room150"
+            {
+                "deptId": 49,
+                "deptServices": null,
+                "deptName": "Emergency Entrance",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
-            {
-                deptId: 23,
-                deptName: 'Urology',
-                buildingId: 2,
-                deptPhone: '1-866-378-9164',
-                deptServices: 'diagnostic cystoscopy (cysto), retrograde pyelogram, transurethral resection of bladder tumor, cold knife urethrotomy, bladder stone removal, fulguration, bladder biopsy, ureteroscopy, chemotherapy and formalin instillation, laser lithotripsy, electrohydraulic lithotripsy (EHL), urethral or bladder neck contracture dilation, circumcision, suprapubic tube (catheter) change, ureteral stent placement and removal, prostate needle biopsy, varicocelectomy, hydrocelectomy, vasectomy, testicular biopsy, orchiectomy, SPARC™ procedures',
+            {
+                "deptId": 57,
+                "deptServices": null,
+                "deptName": "Special Testing",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 24,
-                deptName: 'Urgent Care Center',
-                buildingId: 2,
-                deptPhone: '508-718-4400',
-                deptServices: 'Urgent Care',
-                nodeId: "PPFloor1Room120"
+                "deptId": 61,
+                "deptServices": null,
+                "deptName": "Vascular Lab",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 25,
-                deptName: 'Orthopedics',
-                buildingId: 2,
-                deptPhone: '1-866-378-9164',
-                deptServices: 'Hand and Upper Extremity, Arthroplasty, Pediatric Trauma, Physiatry, Podiatry',
-                nodeId: "PPFloor2Room"
+                "deptId": 83,
+                "deptServices": null,
+                "deptName": "Shuttle Pickup",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 26,
-                deptName: 'Rehabilitation Services',
-                buildingId: 2,
-                deptPhone: ' 1-866-378-9164',
-                deptServices: 'Cardiac Rehab, Occupational Therapy(Hand Therapy, Upper Extremity), Physical Therapy, Speech - Language, Clinical Lab, Surgi-Care',
-                nodeId: "PPFloor2Room"
+                "deptId": 85,
+                "deptServices": null,
+                "deptName": "Cardiology",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 27,
-                deptName: 'Surgical Specialties',
-                buildingId: 2,
-                deptPhone: 'N/A',
-                deptServices: 'Audiology, ENT, General and Gastrointestinal Surgery, Plastic Surgery, Thoracic Surgery, Vascular Surgery, Weight Management and Wellness',
-                nodeId: "PPFloor3Room_1"
+                "deptId": 59,
+                "deptServices": null,
+                "deptName": "Taiclet Family Center",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 28,
-                deptName: 'Sports Medicine Center',
-                buildingId: 2,
-                deptPhone: '1-866-378-9164',
-                deptServices: 'arm, elbow and hand disorders, athletic injuries, spine disorders, foot and ankle problems, hip and knee disorders, shoulder issues, joint replacement, musculoskeletal oncology',
-                nodeId: "PPFloor3Room"
+                "deptId": 109,
+                "deptServices": null,
+                "deptName": "Primary Care Physicians",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 29,
-                deptName: 'X-Ray Suite',
-                buildingId: 2,
-                deptPhone: 'N/A',
-                deptServices: 'X-Ray',
-                nodeId: "PPFloor3Room"
+                "deptId": 111,
+                "deptServices": null,
+                "deptName": "X-Ray",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 30,
-                deptName: 'Electromyography (EMG)',
-                buildingId: 2,
-                deptPhone: 'N/A',
-                deptServices: 'Electromyography (EMG)',
-                nodeId: "PPFloor4Room1_1"
+                "deptId": 108,
+                "deptServices": null,
+                "deptName": "Outpatient Infusion Center",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 31,
-                deptName: 'Nutrition',
-                buildingId: 2,
-                deptPhone: 'N/A',
-                deptServices: 'Nutrition',
-                nodeId: "PPFloor4Room1_1"
+                "deptId": 110,
+                "deptServices": null,
+                "deptName": "Surgical Specialties",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 32,
-                deptName: 'Pain Medicine',
-                buildingId: 2,
-                deptPhone: '1-866-378-9164',
-                deptServices: 'diagnosis and treatment of spine-related low-back and neck pain, complex regional pain syndrome, post-herpetic neuralgia (shingles), other neuropathic syndromes, chronic pelvic pain, chronic pain in young adults, comprehensive evaluation for patients with cancer-related pain, headaches, arthritis',
-                nodeId: "PPFloor4Room1_1"
+                "deptId": 97,
+                "deptServices": null,
+                "deptName": "Sadowsky Conference Room",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 33,
-                deptName: 'Physiatry',
-                buildingId: 2,
-                deptPhone: 'N/A',
-                deptServices: 'interventional spine procedures, electrodiagnostic medicine consultations and alternative therapies such as medical acupuncture',
-                nodeId: "PPFloor4Room1_1"
+                "deptId": 43,
+                "deptServices": null,
+                "deptName": "Admitting/Registration",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 34,
-                deptName: 'Plumonary Function Testing',
-                buildingId: 2,
-                deptPhone: 'N/A',
-                deptServices: 'Plumonary Function Testing',
-                nodeId: "PPFloor4Room1_1"
+                "deptId": 44,
+                "deptServices": null,
+                "deptName": "Atrium Cafe",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 35,
-                deptName: 'Day Surgery Center',
-                buildingId: 2,
-                deptPhone: 'N/A',
-                deptServices: 'Day Surgery Center',
-                nodeId: "PPFloor4Room1_1"
+                "deptId": 62,
+                "deptServices": null,
+                "deptName": "Biomedical Engineering",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 36,
-                deptName: 'Mass General Hospital for Children',
-                buildingId: 3,
-                deptPhone: '888-644-3248',
-                deptServices: 'Mass General Hospital for Children',
+                "deptId": 46,
+                "deptServices": null,
+                "deptName": "Blood Drawing Lab",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 37,
-                deptName: 'Spaulding Outpatient Center for Children',
-                buildingId: 3,
-                deptPhone: '(857) 307-3202',
-                deptServices: 'Spaulding Outpatient Center for Children',
+                "deptId": 47,
+                "deptServices": null,
+                "deptName": "Cardiac Rehab",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 38,
-                deptName: 'Multi Specialty Clinic',
-                buildingId: 3,
-                deptPhone: '1-866-378-9164',
-                deptServices: "Allergy, Cardiac Arrhythmia, Dermatology, Endocrinology, Gastroenterology, Kidney (Renal) Medicine, Neurology, Neurosurgery, Ophthalmology, Optometry, Pulmonology, Rheumatology, Vein Care Services, Women's Health",
-                nodeId: "PPFloor3Room_2"
+                "deptId": 73,
+                "deptServices": null,
+                "deptName": "Cafeteria",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 39,
-                deptName: 'Patient Financial Services',
-                buildingId: 3,
-                deptPhone: 'N/A',
-                deptServices: 'Patient Financial Services',
+                "deptId": 45,
+                "deptServices": null,
+                "deptName": "Audiology",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 40,
-                deptName: 'Blood Draw / Phlebotomy',
-                buildingId: 3,
-                deptPhone: 'N/A',
-                deptServices: 'Blood Draw / Phlebotomy',
-                nodeId: "PPFloor4Room3_1"
+                "deptId": 51,
+                "deptServices": null,
+                "deptName": "Information",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 41,
-                deptName: 'Community Room',
-                buildingId: 3,
-                deptPhone: 'N/A',
-                deptServices: 'Community Room',
-                nodeId: "PPFloor4Room2"
+                "deptId": 101,
+                "deptServices": null,
+                "deptName": "Boston ENT Associates",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 42,
-                deptName: 'Primary Care',
-                buildingId: 3,
-                deptPhone: '(508) 718-4050',
-                deptServices: 'Primary Care',
-                nodeId: "PPFloor4Room2"
+                "deptId": 89,
+                "deptServices": null,
+                "deptName": "HVMA Neurology",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
-
             {
-                deptId: 43,
-                deptName: "Admitting/Registration",
-                buildingId: 4
+                "deptId": 68,
+                "deptServices": null,
+                "deptName": "Physical Therapy",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 44,
-                deptName: "Atrium Cafe",
-                buildingId: 4
+                "deptId": 104,
+                "deptServices": null,
+                "deptName": "ICU",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 45,
-                deptName: "Audiology",
-                buildingId: 4,
-                nodeId: "FKFloor1Room"
+                "deptId": 91,
+                "deptServices": null,
+                "deptName": "Medical Records",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 46,
-                deptName: "Blood Drawing Lab",
-                buildingId: 4,
-                nodeId: "FKFloor1Room"
+                "deptId": 80,
+                "deptServices": null,
+                "deptName": "Obstetrics and Gynecology Associates",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 47,
-                deptName: "Cardiac Rehab",
-                buildingId: 4,
-                nodeId: "FKFloor1Room"
+                "deptId": 74,
+                "deptServices": null,
+                "deptName": "Chapel",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 48,
-                deptName: "Emergency Department",
-                buildingId: 4
+                "deptId": 75,
+                "deptServices": null,
+                "deptName": "Family/Patient Resources",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 49,
-                deptName: "Emergency Entrance",
-                buildingId: 4
+                "deptId": 67,
+                "deptServices": null,
+                "deptName": "Pharmacy",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 50,
-                deptName: "GI Endoscopy",
-                buildingId: 4
+                "deptId": 64,
+                "deptServices": null,
+                "deptName": "Morgue",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 51,
-                deptName: "Information",
-                buildingId: 4
+                "deptId": 90,
+                "deptServices": null,
+                "deptName": "Medical Library",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 52,
-                deptName: "MRI/CT",
-                buildingId: 4,
-                nodeId: "FKFloor1Room"
+                "deptId": 88,
+                "deptServices": null,
+                "deptName": "HVMA Internal Medicine",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 53,
-                deptName: "Patient Finances",
-                buildingId: 4
+                "deptId": 52,
+                "deptServices": null,
+                "deptName": "MRI/CT",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 54,
-                deptName: "Pre-Admittance Screening",
-                buildingId: 4
+                "deptId": 99,
+                "deptServices": null,
+                "deptName": "Tynan Conference Room",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 55,
-                deptName: "Pulmonary Lab",
-                buildingId: 4
+                "deptId": 96,
+                "deptServices": null,
+                "deptName": "Rheumatology Center",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 56,
-                deptName: "Radiology",
-                buildingId: 4
+                "deptId": 55,
+                "deptServices": null,
+                "deptName": "Pulmonary Lab",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 57,
-                deptName: "Special Testing",
-                buildingId: 4
+                "deptId": 54,
+                "deptServices": null,
+                "deptName": "Pre-Admittance Screening",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 58,
-                deptName: "Starbucks",
-                buildingId: 4
+                "deptId": 102,
+                "deptServices": null,
+                "deptName": "Endocrinology/Diabetes/Hemotology",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 59,
-                deptName: "Taiclet Family Center",
-                buildingId: 4
+                "deptId": 77,
+                "deptServices": null,
+                "deptName": "Gynocology & Oncology",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 60,
-                deptName: "Valet Parking",
-                buildingId: 4
+                "deptId": 72,
+                "deptServices": null,
+                "deptName": "Rehabilitation Services",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 61,
-                deptName: "Vascular Lab",
-                buildingId: 4,
-                nodeId: "FKFloor1Room"
+                "deptId": 76,
+                "deptServices": null,
+                "deptName": "Gift Shop",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 62,
-                deptName: "Biomedical Engineering",
-                buildingId: 4
+                "deptId": 65,
+                "deptServices": null,
+                "deptName": "Occupational Therapy",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 63,
-                deptName: "Food Services",
-                buildingId: 4
+                "deptId": 112,
+                "deptServices": null,
+                "deptName": "X-Ray Waiting Room",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 64,
-                deptName: "Morgue",
-                buildingId: 4
+                "deptId": 56,
+                "deptServices": null,
+                "deptName": "Radiology",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room_1"
             },
             {
-                deptId: 65,
-                deptName: "Occupational Therapy",
-                buildingId: 4
+                "deptId": 58,
+                "deptServices": null,
+                "deptName": "Starbucks",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 66,
-                deptName: "Otolaryngology",
-                buildingId: 4
+                "deptId": 95,
+                "deptServices": null,
+                "deptName": "Pulmonary Services",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 67,
-                deptName: "Pharmacy",
-                buildingId: 4
+                "deptId": 71,
+                "deptServices": null,
+                "deptName": "Psychiatric/Addiction Recovery",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 68,
-                deptName: "Physical Therapy",
-                buildingId: 4
+                "deptId": 100,
+                "deptServices": null,
+                "deptName": "Urology",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 69,
-                deptName: "Plastic Surgery",
-                buildingId: 4
+                "deptId": 78,
+                "deptServices": null,
+                "deptName": "Huvos Auditorium",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 70,
-                deptName: "Psychiatric Inpatient Care",
-                buildingId: 4
+                "deptId": 87,
+                "deptServices": null,
+                "deptName": "Gastroenterology Associates",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 71,
-                deptName: "Psychiatric/Addiction Recovery",
-                buildingId: 4
+                "deptId": 79,
+                "deptServices": null,
+                "deptName": "Information",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 72,
-                deptName: "Rehabilitation Services",
-                buildingId: 4
+                "deptId": 84,
+                "deptServices": null,
+                "deptName": "Volunteer Services",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 73,
-                deptName: "Cafeteria",
-                buildingId: 4
+                "deptId": 92,
+                "deptServices": null,
+                "deptName": "MOHS Clinic",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room"
             },
             {
-                deptId: 74,
-                deptName: "Chapel",
-                buildingId: 4
+                "deptId": 113,
+                "deptName": "Brigham Circle Medical Associates (BCMA)",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 75,
-                deptName: "Family/Patient Resources",
-                buildingId: 4
+                "deptId": 114,
+                "deptName": "Brigham Medical Specialties / Schuster Transplant",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 76,
-                deptName: "Gift Shop",
-                buildingId: 4
+                "deptId": 115,
+                "deptName": "Center for Weight Management & Metabolic Surgery",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 77,
-                deptName: "Gynocology & Oncology",
-                buildingId: 4
+                "deptId": 116,
+                "deptName": "Endocrine - Diabetes",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 78,
-                deptName: "Huvos Auditorium",
-                buildingId: 4
+                "deptId": 117,
+                "deptName": "Gastroenterology & Hepatology",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 79,
-                deptName: "Information",
-                buildingId: 4
+                "deptId": 118,
+                "deptName": "Genetics & Genomics Medicine",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 80,
-                deptName: "Obstetrics and Gynecology Associates",
-                buildingId: 4
+                "deptId": 119,
+                "deptName": "Kidney / Pancreas Transplant",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 81,
-                deptName: "Outdoor Dining Terrace",
-                buildingId: 4
+                "deptId": 120,
+                "deptName": "Kidney Medicine",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 82,
-                deptName: "Roslindale Pediatric Associates",
-                buildingId: 4
+                "deptId": 121,
+                "deptName": "Nutrition",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 83,
-                deptName: "Shuttle Pickup",
-                buildingId: 4
+                "deptId": 122,
+                "deptName": "Chest Diseases, Center for",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 84,
-                deptName: "Volunteer Services",
-                buildingId: 4
+                "deptId": 123,
+                "deptName": "Comprehensive Breast Health Center",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 85,
-                deptName: "Cardiology",
-                buildingId: 4
+                "deptId": 124,
+                "deptName": "Dental Group / Oral Medicine",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 86,
-                deptName: "Foot and Ankle Center",
-                buildingId: 4
+                "deptId": 125,
+                "deptName": "Ear, Nose and Throat (ENT)",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 87,
-                deptName: "Gastroenterology Associates",
-                buildingId: 4
+                "deptId": 126,
+                "deptName": "Echocardiography Lab (ECHO)",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 88,
-                deptName: "HVMA Internal Medicine",
-                buildingId: 4
+                "deptId": 127,
+                "deptName": "Electrophysiology",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 89,
-                deptName: "HVMA Neurology",
-                buildingId: 4
+                "deptId": 128,
+                "deptName": "International Patient Center / Executive Health",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 90,
-                deptName: "Medical Library",
-                buildingId: 4
+                "deptId": 129,
+                "deptName": "Jen Center for Primary Care",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 91,
-                deptName: "Medical Records",
-                buildingId: 4
+                "deptId": 130,
+                "deptName": "Lung Center",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 92,
-                deptName: "MOHS Clinic",
-                buildingId: 4
+                "deptId": 131,
+                "deptName": "Orthopedics",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 93,
-                deptName: "Neurology",
-                buildingId: 4
+                "deptId": 132,
+                "deptName": "Plastic & Reconstructive Surgery",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 94,
-                deptName: "Primary Care Physicians",
-                buildingId: 4
+                "deptId": 133,
+                "deptName": "Podiatry",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 95,
-                deptName: "Pulmonary Services",
-                buildingId: 4
+                "deptId": 134,
+                "deptName": "Rheumatology",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 96,
-                deptName: "Rheumatology Center",
-                buildingId: 4
+                "deptId": 135,
+                "deptName": "Thoracic Surgery Clinic",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 97,
-                deptName: "Sadowsky Conference Room",
-                buildingId: 4
+                "deptId": 136,
+                "deptName": "Watkins Cardiovascular Clinic",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 98,
-                deptName: "Social Work",
-                buildingId: 4
+                "deptId": 137,
+                "deptName": "Weiner Center for Pre-Op Evaluation",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 99,
-                deptName: "Tynan Conference Room",
-                buildingId: 4
+                "deptId": 138,
+                "deptName": "Bornstein Amphitheater",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 100,
-                deptName: "Urology",
-                buildingId: 4
+                "deptId": 139,
+                "deptName": "Boston Children's Hospital, Bridge to",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 101,
-                deptName: "Boston ENT Associates",
-                buildingId: 4
+                "deptId": 140,
+                "deptName": "Cafeteria",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 102,
-                deptName: "Endocrinology/Diabetes/Hemotology",
-                buildingId: 4
+                "deptId": 141,
+                "deptName": "Carrie Hall Conference Room",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 103,
-                deptName: "Headache",
-                buildingId: 4
+                "deptId": 142,
+                "deptName": "Patient Financial Registration",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 104,
-                deptName: "ICU",
-                buildingId: 4
+                "deptId": 143,
+                "deptName": "Pharmacy",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 105,
-                deptName: "Internal Medicine",
-                buildingId: 4
+                "deptId": 144,
+                "deptName": "Radiation Procedural Check-in",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 106,
-                deptName: "Oncology Clinic",
-                buildingId: 4
+                "deptId": 145,
+                "deptName": "Shapiro Family Center",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 107,
-                deptName: "Orthopaedics Associates",
-                buildingId: 4
+                "deptId": 146,
+                "deptName": "Ambulatory Radiology (X-ray & CT scan)",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 108,
-                deptName: "Outpatient Infusion Center",
-                buildingId: 4
+                "deptId": 147,
+                "deptName": "Breast Imaging, Lee Bell Center",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 109,
-                deptName: "Primary Care Physicians",
-                buildingId: 4
+                "deptId": 148,
+                "deptName": "Endoscopy",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 110,
-                deptName: "Surgical Specialties",
-                buildingId: 4
+                "deptId": 149,
+                "deptName": "Mammography",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 111,
-                deptName: "X-Ray",
-                buildingId: 4
+                "deptId": 150,
+                "deptName": "Phlebotomy, Outpatient",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             },
             {
-                deptId: 112,
-                deptName: "X-Ray Waiting Room",
-                buildingId: 4
+                "deptId": 151,
+                "deptName": "Shapiro Procedural Check-in",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "deptServices": "N/A"
             }
-
         ],
         skipDuplicates: true,
     });

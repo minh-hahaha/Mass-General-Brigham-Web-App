@@ -12,7 +12,7 @@ type ImportExportProps = {
 const ImportExportDirectoryPage = ({ jsonRoute, csvRoute }: ImportExportProps) => {
     const [file, setFile] = useState<File | null>(null);
     const [uploadType, setUploadType] = useState<'Overwrite' | 'Update'>('Update');
-    const [downloadType, setDownloadType] = useState<'CSV' | 'JSON'>('JSON');
+    const [downloadType, setDownloadType] = useState<'CSV' | 'JSON'>('CSV');
     const [upload, setUpload] = useState(false);
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
