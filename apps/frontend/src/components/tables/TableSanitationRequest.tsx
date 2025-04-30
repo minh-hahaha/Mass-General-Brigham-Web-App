@@ -10,6 +10,7 @@ import {
     TableRow,
 } from '@/components/ui/table.tsx';
 import {motion} from 'framer-motion';
+import { employeeNameId, getEmployeeNameIds } from '@/database/getEmployee.ts';
 import MGBButton from "@/elements/MGBButton.tsx";
 import {incomingRequest} from "@/database/forms/transportRequest.ts";
 
@@ -31,6 +32,7 @@ const TableSanitationRequest: React.FC<Props> = ({ setActiveForm, setEditData })
         hazard: '',
         completeBy: '',
     });
+    const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
 
     useEffect(() => {
         async function fetchReqs() {
@@ -41,6 +43,14 @@ const TableSanitationRequest: React.FC<Props> = ({ setActiveForm, setEditData })
         }
         fetchReqs();
     }, []);
+
+    useEffect(() => {
+        async function fetchEmployeeList() {
+            const data = await getEmployeeNameIds();
+            setEmployeeList(data);
+        }
+        fetchEmployeeList();
+    }, [])
 
     if (loading) {
         return <p>Loading Requests...</p>;

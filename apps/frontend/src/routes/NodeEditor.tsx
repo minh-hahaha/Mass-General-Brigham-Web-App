@@ -2,8 +2,8 @@ import NodeEditorComponent from '@/components/NodeEditorComponent.tsx';
 import { APIProvider, Map, RenderingType } from '@vis.gl/react-google-maps';
 import OverlayComponent from "@/components/OverlayMapComponent.tsx";
 import FloorSelector from "@/components/FloorSelector.tsx";
-import {useState} from "react";
-
+import { useState, useEffect } from "react";
+import MapInstructions from "@/components/MapInstructions.tsx";
 
 const ChestnutHillBounds = {
     southWest: { lat: 42.32543670863917, lng: -71.15022693442262 }, // Bottom-left corner
@@ -53,6 +53,17 @@ const availableFloors: Floor[] = [
 const NodeEditor = () => {
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
     const [currentFloorId, setCurrentFloorId] = useState<string>("CH-1");
+    const [instructionVisible, setInstructionVisible] = useState(false);
+    const [showMap, setShowMap] = useState(true);
+
+    // show instructions after a delay
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setInstructionVisible(true);
+        }, 1000);
+
+        return () => clearTimeout(timer); // Clean up
+    }, []);
 
     const handleFloorChange = (floorId: string) => {
         console.log("handleFloorChange", floorId);
@@ -84,45 +95,52 @@ const NodeEditor = () => {
     const patriotPlaceFloor = getCurrentPatriotPlaceFloor();
     console.log("PPFloor", patriotPlaceFloor);
     return (
-        <div>
-            <APIProvider apiKey={API_KEY} libraries={['maps', 'drawing', 'marker']}>
-                <div style={{ height: '100vh', width: '100%' }}>
+        <>
+            <div>
+                <APIProvider apiKey={API_KEY} libraries={['maps', 'drawing', 'marker']}>
+                    <div style={{ height: '100vh', width: '100%' }}>
 
-                    <Map
-                        style={{ width: '100%', height: '100%' }}
-                        defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
-                        // MGB at Chestnut hill 42.325988270594415, -71.1495669288061
-                        defaultZoom={15}
-                        renderingType={RenderingType.RASTER}
-                        mapTypeControl={false}
-                        mapId={"10f50e6c04bae897"}
-                    >
-                        <OverlayComponent
-                            bounds={ChestnutHillBounds}
-                            imageSrc={chestnutHillFloor.svgPath}
-                        />
-                        <OverlayComponent
-                            bounds={PatriotPlaceBounds}
-                            imageSrc={patriotPlaceFloor.svgPath}
-                        />
-                        <OverlayComponent
-                            bounds={FaulknerBounds}
-                            imageSrc={'/FK01.svg'}
-                        />
-                        <OverlayComponent
-                            bounds={BWHBounds}
-                            imageSrc={'/BWH02.svg'}
-                        />
-                        <div
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20"
+                        <Map
+                            style={{ width: '100%', height: '100%' }}
+                            defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
+                            // MGB at Chestnut hill 42.325988270594415, -71.1495669288061
+                            defaultZoom={15}
+                            renderingType={RenderingType.RASTER}
+                            mapTypeControl={false}
+                            mapId={"10f50e6c04bae897"}
                         >
-                            {/*<FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />*/}
-                        </div>
-                        <NodeEditorComponent updateFloor={handleFloorChange}></NodeEditorComponent>
-                    </Map>
+                            <OverlayComponent
+                                bounds={ChestnutHillBounds}
+                                imageSrc={chestnutHillFloor.svgPath}
+                            />
+                            <OverlayComponent
+                                bounds={PatriotPlaceBounds}
+                                imageSrc={patriotPlaceFloor.svgPath}
+                            />
+                            <OverlayComponent
+                                bounds={FaulknerBounds}
+                                imageSrc={'/FK01.svg'}
+                            />
+                            <OverlayComponent
+                                bounds={BWHBounds}
+                                imageSrc={'/BWH02.svg'}
+                            />
+                            <div
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r-md cursor-pointer z-20"
+                            >
+                                {/*<FloorSelector currentFloorId={currentFloorId} onChange={handleFloorChange} />*/}
+                            </div>
+                            <NodeEditorComponent updateFloor={handleFloorChange}></NodeEditorComponent>
+                        </Map>
+                    </div>
+                </APIProvider>
+            </div>
+            {instructionVisible && (
+                <div className="fixed inset-0 z-50">
+                    <MapInstructions onClose={() => setInstructionVisible(false)} />
                 </div>
-            </APIProvider>
-        </div>
+            )}
+        </>
     );
 }
 

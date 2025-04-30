@@ -14,6 +14,7 @@ import {
 import {motion} from 'framer-motion';
 import MGBButton from "@/elements/MGBButton.tsx";
 import {incomingRequest} from "@/database/forms/transportRequest.ts";
+import { employeeNameId, getEmployeeNameIds } from '@/database/getEmployee.ts';
 
 interface Props {
     setActiveForm: (
@@ -34,15 +35,26 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm, setEd
         location: '',
         deliverDate: '',
     });
+    const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
 
     useEffect(() => {
         async function fetchReqs() {
             const data = await GetMedicalDeviceRequest();
             setRequests(data);
+            console.log(data);
             setLoading(false);
         }
         fetchReqs();
+
     }, []);
+
+    useEffect(() => {
+        async function fetchEmployeeList() {
+            const data = await getEmployeeNameIds();
+            setEmployeeList(data);
+        }
+        fetchEmployeeList();
+    }, [])
 
     if (loading) {
         return <p>Loading Requests...</p>;
@@ -57,7 +69,7 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm, setEd
             (!filters.status || req.status?.toLowerCase().includes(filters.status.toLowerCase()))
         );
     });
-    // Format date for display
+    // // Format date for display
     const formatDate = (dateString: string) => {
         return dateString.split('T')[0];
     };
@@ -179,7 +191,7 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm, setEd
                                     <TableCell className="text-center py-3">{req.status}</TableCell>
                                     <TableCell className="text-center py-3">{req.medicalDeviceRequest.device}</TableCell>
                                     <TableCell className="text-center py-3">{req.medicalDeviceRequest.location}</TableCell>
-                                    <TableCell className="text-center py-3">{formatDate(req.medicalDeviceRequest.date)}</TableCell>
+                                    <TableCell className="text-center py-3">{req.medicalDeviceRequest.deliverDate.split('T')[0]}</TableCell>
                                     <TableCell className="text-center py-3"><MGBButton onClick={() => {setEditData(req); setActiveForm("medical device")}} variant={'secondary'} children={'Edit'}/></TableCell>
                                 </TableRow>
                             ))}

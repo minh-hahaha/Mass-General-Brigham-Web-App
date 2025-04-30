@@ -11,6 +11,7 @@ import {
 import { motion } from 'framer-motion';
 import {incomingRequest} from "@/database/forms/transportRequest.ts";
 import MGBButton from "@/elements/MGBButton.tsx";
+import { employeeNameId, getEmployeeNameIds } from '@/database/getEmployee.ts';
 
 interface Props {
     setActiveForm: (
@@ -31,6 +32,7 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm, setEditData })
         languageReq: '',
         location: '',
     });
+    const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
 
     useEffect(() => {
         async function fetchReqs() {
@@ -43,9 +45,19 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm, setEditData })
         fetchReqs();
     }, []);
 
+    useEffect(() => {
+        async function fetchEmployeeList() {
+            const data = await getEmployeeNameIds();
+            setEmployeeList(data);
+        }
+        fetchEmployeeList();
+    }, [])
+
     if (loading) {
         return <p>Loading Requests...</p>;
     }
+
+
 
     const filteredRequests = requests.filter((req) => {
         return (

@@ -31,7 +31,6 @@ const TableMaintenanceRequest: React.FC<Props> = ({ setActiveForm, setEditData }
         type: '',
         location: '',
         hospital: '',
-        employeeName: '',
         priority: '',
         status: '',
         completeBy: '',

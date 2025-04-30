@@ -55,7 +55,7 @@ export interface incomingRequest {
         deviceReasoning: string;
         deviceSerialNumber: string;
         deviceModel: string;
-        date: string;
+        deliverDate: string;
         location: string;
         department: string;
     },
