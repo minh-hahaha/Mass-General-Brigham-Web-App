@@ -385,9 +385,17 @@ const DirectionsMapComponent = () => {
                 } else if (lotLetter === 'C') {
                     setFromNodeId('CHFloor1Parking LotC');
                 }
+            }else if (locationPrefix === 'BWH') {
+                if (lotLetter === 'A') {
+                    setFromNodeId('BWFloor2Parking Lot');
+                } else if (lotLetter === 'B') {
+                    setFromNodeId('BWFloor2Parking Lot');
+                } else if (lotLetter === 'C') {
+                    setFromNodeId('BWFloor2Parking Lot');
+                }
             }
         }
-
+        // for no parking lot
         else{
             switch (buildingID){
                 case 1:
@@ -397,10 +405,10 @@ const DirectionsMapComponent = () => {
                     setFromNodeId("PPFloor1Road10")
                     break;
                 case 3:
-                    setFromNodeId("")
+                    setFromNodeId("FKFloor1Road")
                     break;
                 case 4:
-                    setFromNodeId("")
+                    setFromNodeId("BWFloor2Road_1")
                     break;
             }
         }
