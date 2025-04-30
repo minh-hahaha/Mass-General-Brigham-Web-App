@@ -51,6 +51,7 @@ router.post('/', async (req: Request, res: Response) => {
                     meetingLink: req.body.meetingLink,
                     location: req.body.location,
                     department: req.body.department,
+                    duration: req.body.duration,
                 },
             });
 

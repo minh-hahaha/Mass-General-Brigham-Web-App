@@ -15,8 +15,8 @@ import { employeeNameId, getEmployeeNameIds } from '@/database/getEmployee.ts';
 
 // Component definition
 const TransportRequestPage = () => {
-    const loggedIn = sessionStorage.getItem('loggedIn');
-    if (!loggedIn) {window.location.href = '/';}
+    // const loggedIn = sessionStorage.getItem('loggedIn');
+    // if (!loggedIn) {window.location.href = '/';}
 
     const [patientId, setPatientId] = useState(0);
     const [patientName, setPatientName] = useState('');
