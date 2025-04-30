@@ -98,7 +98,6 @@ router.post('/edit', async (req: Request, res: Response) => {
                     meetingLink: req.body.translatorRequest.meetingLink,
                     location: req.body.translatorRequest.location,
                     department: req.body.translatorRequest.department,
-                    duration: req.body.duration,
                 },
             });
 

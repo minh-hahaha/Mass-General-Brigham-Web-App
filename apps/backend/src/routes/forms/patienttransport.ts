@@ -50,7 +50,7 @@ router.post('/', async (req: Request, res: Response) => {
                     pickupLocation: req.body.pickupLocation,
                     transportType: req.body.transportType,
                     dropoffLocation: req.body.dropoffLocation,
-                    transportDate: req.body.formattedDate,
+                    transportDate: req.body.transportDate,
                 },
                 select: {
                     servReqId: true,

@@ -41,9 +41,11 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm, setEd
         async function fetchReqs() {
             const data = await GetMedicalDeviceRequest();
             setRequests(data);
+            console.log(data);
             setLoading(false);
         }
         fetchReqs();
+
     }, []);
 
     useEffect(() => {
@@ -67,7 +69,7 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm, setEd
             (!filters.status || req.status?.toLowerCase().includes(filters.status.toLowerCase()))
         );
     });
-    // Format date for display
+    // // Format date for display
     const formatDate = (dateString: string) => {
         return dateString.split('T')[0];
     };
@@ -189,7 +191,7 @@ const MedicalDeviceRequestDisplayPage: React.FC<Props> = ({ setActiveForm, setEd
                                     <TableCell className="text-center py-3">{req.status}</TableCell>
                                     <TableCell className="text-center py-3">{req.medicalDeviceRequest.device}</TableCell>
                                     <TableCell className="text-center py-3">{req.medicalDeviceRequest.location}</TableCell>
-                                    <TableCell className="text-center py-3">{formatDate(req.medicalDeviceRequest.date)}</TableCell>
+                                    <TableCell className="text-center py-3">{req.medicalDeviceRequest.deliverDate.split('T')[0]}</TableCell>
                                     <TableCell className="text-center py-3"><MGBButton onClick={() => {setEditData(req); setActiveForm("medical device")}} variant={'secondary'} children={'Edit'}/></TableCell>
                                 </TableRow>
                             ))}
