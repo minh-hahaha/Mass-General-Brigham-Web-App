@@ -23,7 +23,7 @@ import CreditsPage from "@/routes/CreditsPage.tsx";
 
 import Screensaver from './ScreenSaver.tsx';
 
-const IDLE_TIMEOUT = 10000; // 30 seconds
+const IDLE_TIMEOUT = 15000; // 30 seconds
 
 function App() {
     const defaultOpen = Cookies.get('sidebar_state') === 'true';
@@ -81,7 +81,7 @@ function App() {
 
             <div className="h-dvh flex flex-col w-full max-w-full">
                 <div className="h-16 sticky top-0 z-50 bg-white shadow-md">
-                    {/*{isIdle && <Screensaver />}*/}
+                    {isIdle && <Screensaver />}
                     <LogoBar />
                 </div>
                 <BrowserRouter>
