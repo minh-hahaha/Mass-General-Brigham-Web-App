@@ -946,7 +946,7 @@ const NodeEditorComponent = () => {
                                 Import/Export New Nodes and Edges
                             </h1>
                         </div>
-                        <div className="h-full overflow-y-auto p-6 -mt-22">
+                        <div className="h-60 overflow-y-auto">
                             <ImportExportDirectoryPage
                                 jsonRoute={ROUTES.NODE_EDGE_JSON}
                                 csvRoute={ROUTES.NODE_EDGE_CSV}
