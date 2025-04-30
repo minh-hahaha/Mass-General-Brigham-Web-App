@@ -87,13 +87,20 @@ const availableFloors: Floor[] = [
         buildingName: 'Faulkner Hospital',
         svgPath: '/FK01.svg',
     },
+    {
+        id: 'BWH-2',
+        floor: '2',
+        buildingId: '4',
+        buildingName: 'Main Hospital',
+        svgPath: '/BWH02.svg',
+    },
 ];
 
 interface Props {
-    currentFloorId: string;
+    updateFloor: (floorId: string) => void;
 }
 
-const NodeEditorComponent = () => {
+const NodeEditorComponent = ({updateFloor}: Props) => {
     const map = useMap();
     const drawingLibrary = useMapsLibrary('drawing');
     let drawingManager: google.maps.drawing.DrawingManager;
@@ -148,6 +155,7 @@ const NodeEditorComponent = () => {
             name: 'Chestnut Hill Healthcare Center',
             address: '850 Boylston Street, Chestnut Hill, MA 02467',
             defaultParking: {lat: 42.326350183802454, lng: -71.14988541411569},
+            noneParking:{lat: 42.32629762650177, lng: -71.14951386955477},
             phoneNumber: '(800) 294-9999',
             hours: 'Mon-Fri: 8:00 AM - 5:30 PM',
             image:'/HospitalCards/ChestnutHillCard.jpg',
@@ -159,6 +167,7 @@ const NodeEditorComponent = () => {
             name: 'Foxborough Health Care Center',
             address: '20-22 Patriot Place, Foxborough, MA 02035',
             defaultParking: {lat: 42.09222126540862, lng: -71.26646379537021},
+            noneParking:{lat: 42.09250362335946, lng: -71.26652247380247},
             phoneNumber: '(508) 718-4000',
             hours: 'Mon-Sat: 8:00 AM - 8:00 PM',
             image:'/HospitalCards/PatriotPlaceCard.jpg',
@@ -170,6 +179,7 @@ const NodeEditorComponent = () => {
             name: 'Brigham and Women\'s Faulkner Hospital',
             address: '1153 Centre St, Jamaica Plain, MA 02130',
             defaultParking: {lat: 42.30110395876755, lng: -71.12754584282733},
+            noneParking: {lat: 1, lng: 1},
             phoneNumber: '(617) 983-7000',
             hours: 'Open 24 hours',
             image:'/HospitalCards/FaulknerHospitalCard.jpg',
@@ -181,6 +191,7 @@ const NodeEditorComponent = () => {
             name: 'Brigham and Women\'s Main Hospital',
             address: '75 Francis St, Boston, MA 02115',
             defaultParking: {lat: 42.33597732454244, lng: -71.10722288414479},
+            noneParking: {lat: 1, lng: 1},
             phoneNumber: '(617) 732-5500',
             hours: 'Open 24 hours',
             image:'/HospitalCards/MGBMainCard.jpeg',
@@ -242,7 +253,7 @@ const NodeEditorComponent = () => {
 
     const fetchElevators = async (buildingProps: Floor) => {
         const elevators = await getNodes(buildingProps.floor, buildingProps.buildingId, 'Elevator');
-        console.log(elevators);
+        //console.log(elevators);
     }
 
     // Sync useRefs and useStates
@@ -302,9 +313,11 @@ const NodeEditorComponent = () => {
             building = 4;
         }
         const departments = await getDirectory(building);
+        console.log("before depts:",departments);
         // This is because the directory counts the two PP bldgs separately as ids 2 and 3 with other buildings being 4 and beyond
         if(building === 2){
             departments.concat(await getDirectory(3));
+            console.log("depts:",departments);
         }
         setDepartmentOptions(departments.map(dept => ({deptName: dept.deptName, deptId: dept.deptId})));
     }
@@ -689,6 +702,8 @@ const NodeEditorComponent = () => {
         'Chestnut Hill': { lat: 42.325988, lng: -71.149567, zoom: 18 },
         'Patriot Place': { lat: 42.092617, lng: -71.266492, zoom: 18 },
         'Faulkner Hospital': { lat: 42.301684739524546, lng: -71.12816396084828, zoom: 18 },
+        'Main Hospital': {lat: 42.33568522412911, lng: -71.10787475448217, zoom: 18}
+
     };
 
     const onHospitalSelect = (hospitalId: number) => {
@@ -756,7 +771,7 @@ const NodeEditorComponent = () => {
             >
                 <FloorSelector
                     currentFloorId={currentFloorId}
-                    onChange={(id) => setCurrentFloorId(id)}
+                    onChange={(id) => {setCurrentFloorId(id); updateFloor(id);}}
                     />
             </div>
             <div
