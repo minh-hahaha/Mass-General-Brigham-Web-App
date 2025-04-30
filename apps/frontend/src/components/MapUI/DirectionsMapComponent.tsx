@@ -93,6 +93,7 @@ const DirectionsMapComponent = () => {
 
     const [currentFloorId, setCurrentFloorId] = useState<string | undefined>('');
     const [showFloorSelector, setShowFloorSelector] = useState<boolean>(false);
+    const [highlightFloorId, setHighlightFloorId] = useState<string | undefined>();
 
     useEffect(() => {
         const checkAdmin = () => {
@@ -189,6 +190,16 @@ const DirectionsMapComponent = () => {
         setCurrentFloorId(floorId);
         console.log('changed floor to : ', floorId);
     }
+    // Handler for floor changes from HospitalMapComponent
+    const handleFloorHighlight = (floorId: string) => {
+        // Set the floor to highlight
+        setHighlightFloorId(floorId);
+
+        // Clear highlight after 5 seconds
+        setTimeout(() => {
+            setHighlightFloorId(undefined);
+        }, 2000);
+    };
     // draw route
     const calculateRoute = () => {
         if (!directionsRenderer || !directionsService) return;
@@ -406,6 +417,7 @@ const DirectionsMapComponent = () => {
                         <FloorSelector
                             currentFloorId={currentFloorId}
                             onChange={handleFloorChange}
+                            highlightFloorId={highlightFloorId}
                         />
                     </div>
                 )
@@ -429,6 +441,7 @@ const DirectionsMapComponent = () => {
                         selectedAlgorithm={selectedAlgorithm}
                         visible={pathVisible}
                         currentFloorId={currentFloorId}
+                        onFloorChange={handleFloorHighlight}
 
                         driveDirections={textDirections}
                         drive2Directions={text2Directions}

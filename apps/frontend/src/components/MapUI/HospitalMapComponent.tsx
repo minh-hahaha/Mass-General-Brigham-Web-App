@@ -217,6 +217,9 @@ interface Props {
     endNodeId: string;
     selectedAlgorithm: string;
     currentFloorId: string | undefined;
+    onFloorChange?: (floorId: string) => void;
+
+
     visible: boolean;
     driveDirections: string;
     drive2Directions: string[];
@@ -228,6 +231,7 @@ const HospitalMapComponent = ({
     endNodeId,
     selectedAlgorithm,
     currentFloorId,
+    onFloorChange,
     visible,
     driveDirections,
     drive2Directions,
@@ -237,6 +241,10 @@ const HospitalMapComponent = ({
     const [startNode, setStartNode] = useState<myNode>();
     const [endNode, setEndNode] = useState<myNode>();
     const [textSpeech, setTextSpeech] = useState<HTMLElement | null>(null);
+
+    const [destinationFloorId, setDestinationFloorId] = useState<string | undefined>();
+    const [showDestinationFloorAlert, setShowDestinationFloorAlert] = useState<boolean>(false);
+
 
     const [startFloor, setStartFloor] = useState<Floor>();
     console.log(startNodeId);
@@ -268,6 +276,11 @@ const HospitalMapComponent = ({
                     const result = await FindPath(startNode, endNode, selectedAlgorithm);
                     console.log('Path found:', result);
                     setBFSPath(result);
+
+                    highlightDestinationFloor(result);
+
+
+                    // text directions
                     const [textDirection, icons] = createTextPath(result);
                     setIcons(icons);
                     const text = document.getElementById('text-directions');
@@ -293,6 +306,48 @@ const HospitalMapComponent = ({
         };
         getMyPaths();
     }, [startNode, endNode, selectedAlgorithm]);
+
+    // function to highlight the destination floor
+    const highlightDestinationFloor = (path: myNode[]) => {
+        if (!path || path.length === 0) return;
+
+        // get last node info
+        const destination = path[path.length - 1];
+        const destinationBuildingId = destination.buildingId;
+        const destinationFloorNumber = destination.floor;
+
+        // Find the corresponding floor ID
+        const destinationFloor = availableFloors.find(
+            f => f.buildingId === destinationBuildingId && f.floor === destinationFloorNumber
+        );
+
+        if (destinationFloor && destinationFloor.id !== currentFloorId) {
+            setDestinationFloorId(destinationFloor.id);
+            setShowDestinationFloorAlert(true);
+
+            // pass back to directions map component
+            if (onFloorChange) {
+                onFloorChange(destinationFloor.id);
+            }
+
+            //hide
+            setTimeout(() => {
+                setShowDestinationFloorAlert(false);
+            }, 3000);
+        } else {
+            setShowDestinationFloorAlert(false);
+        }
+    };
+
+    // Get destination floor name for alert
+    const getDestinationFloorName = () => {
+        if (!destinationFloorId) return "";
+
+        const floor = availableFloors.find(f => f.id === destinationFloorId);
+        if (!floor) return "";
+
+        return `Floor ${floor.floor}`;
+    };
 
     // auto-select floor id for start node
     useEffect(() => {
@@ -367,6 +422,15 @@ const HospitalMapComponent = ({
                     icons={iconsToPass}
                 />
             )}
+
+            {/* Destination Floor Alert */}
+            {showDestinationFloorAlert && destinationFloorId && (
+                <div className="fixed top-20 right-6 bg-mgbblue text-white p-4 rounded-lg shadow-lg z-50 animate-bounce">
+                    <p className="font-bold">Destination Floor</p>
+                    <p>Your destination is on {getDestinationFloorName()}</p>
+                </div>
+            )}
+
 
         <div className="relative w-full h-full">
             <OverlayComponent
