@@ -60,6 +60,7 @@
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "express": "^5.1.0",
+    "express-oauth2-jwt-bearer": "^1.6.1",
     "framer-motion": "^12.6.3",
     "js-cookie": "^3.0.5",
     "js.cookie": "^0.0.4",

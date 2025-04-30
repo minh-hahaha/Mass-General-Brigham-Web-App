@@ -17,6 +17,7 @@ import MaintenanceRequestPage from '@/routes/MaintenanceRequestPage.tsx';
 import Cookies from 'js-cookie';
 import TestNodeEditor from '@/routes/TestNodeEditor.tsx';
 import AboutPage from '@/routes/AboutPage.tsx';
+import AccountPage from '@/routes/AccountPage.tsx'
 import {Auth0Provider} from "@auth0/auth0-react";
 
 import CreditsPage from "@/routes/CreditsPage.tsx";
@@ -32,6 +33,7 @@ function App() {
             domain={domain}
             authorizationParams={{
                 redirect_uri: window.location.origin,
+                scope: 'openid profile email'
             }}
             cacheLocation="localstorage"
             onRedirectCallback={() => (window.location.href = '/MapPage')}
@@ -100,6 +102,11 @@ function App() {
                                     <Route
                                         path="/CreditsPage"
                                         element={<CreditsPage />}
+                                    />
+
+                                    <Route
+                                        path="/AccountPage"
+                                        element={<AccountPage />}
                                     />
                                 </Routes>
                             </main>

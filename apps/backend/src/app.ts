@@ -18,6 +18,9 @@ import nodeRouter from './routes/node.ts';
 import edgeRouter from './routes/edge.ts';
 import originRouter from './routes/recentorigins.ts';
 import textToSpeechRouter from './routes/textToSpeech.ts';
+import loggedInRouter from './routes/loggedin.ts';
+import serviceSummaryRouter from './routes/servicesummary.ts';
+import { checkJwt } from './routes/auth.ts';
 
 import { ROUTES } from 'common/src/constants';
 
@@ -68,6 +71,9 @@ app.use(ROUTES.EDGE, edgeRouter);
 app.use(ROUTES.RECENT_ORIGINS, originRouter);
 
 app.use(ROUTES.TTS, textToSpeechRouter);
+
+app.use(ROUTES.LOGGEDIN, checkJwt, loggedInRouter);
+app.use(ROUTES.SERVICESUMMARY, checkJwt, serviceSummaryRouter);
 
 /**
  * Catch all 404 errors, and forward them to the error handler

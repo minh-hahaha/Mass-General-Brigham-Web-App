@@ -8,8 +8,11 @@ router.get('/', async (req: Request, res: Response) => {
     try {
         // get userEmail from Auth0
         let userEmail = req.auth?.payload?.email;
+        console.log(req.auth?.payload);
+
         if (!userEmail) {
             res.status(401).json({ error: 'Unauthorized' });
+            return;
         }
         // find employee with same email from table
         const employee = await PrismaClient.employee.findUnique({

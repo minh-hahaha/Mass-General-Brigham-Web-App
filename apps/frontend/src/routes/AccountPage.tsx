@@ -1,23 +1,25 @@
 import account from "@/assets/icons/account.png";
 import { Card, CardHeader, CardContent, CardTitle, CardFooter } from "@/components/ui/card";
 import { Pie, PieChart } from "recharts"
-
 import {
     ChartConfig,
     ChartContainer,
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart"
+import TableEmployeeRequest from '@/components/tables/TableEmployeeRequest.tsx'
+import {getAccount, incomingAccount} from '@/database/loggedIn.ts'
+import {useEffect, useState} from "react";
+import {getServiceSummary, SummaryItem} from "@/database/serviceSummary.ts"
+
+interface ChartDataItem {
+    label: string;
+    visitors: number;
+    fill: string;
+}
 
 // example chart stuff
 // colors are not good i know
-const chartData = [
-    { browser: "chrome", visitors: 275, fill: "#003A96" },
-    { browser: "safari", visitors: 200, fill: "red" },
-    { browser: "firefox", visitors: 187, fill: "yellow" },
-    { browser: "edge", visitors: 173, fill: "green" },
-    { browser: "other", visitors: 90, fill: "orange" },
-]
 
 const chartConfig = {
     visitors: {
@@ -45,98 +47,138 @@ const chartConfig = {
     },
 } satisfies ChartConfig
 
+function mapToChartData(summary: SummaryItem[]) {
+    const colorMap = ['#003A96', 'red', 'yellow', 'green', 'orange', '#8884d8'];
+    return summary.map((item, idx) => ({
+        label: item.label,
+        visitors: item.count,
+        fill: colorMap[idx % colorMap.length],
+    }));
+}
 
 const AccountPage = () => {
+
+    const [details, setDetails] = useState<incomingAccount | null>(null);
+    const [statusChartData, setStatusChartData] = useState<ChartDataItem[]>([]);
+    const [priorityChartData, setPriorityChartData] = useState<ChartDataItem[]>([]);
+
+    useEffect(() => {
+        async function fetchDetails() {
+            try {
+                const data = await getAccount();
+                setDetails(data);
+            } catch (error) {
+                console.error("Failed to fetch account details:", error);
+            }
+        }
+
+        fetchDetails();
+    }, []); // <- only run once on mount
+
+    useEffect(() => {
+        async function fetchSummary() {
+            const { statusSummary, prioritySummary } = await getServiceSummary();
+            setStatusChartData(mapToChartData(statusSummary));
+            setPriorityChartData(mapToChartData(prioritySummary));
+        }
+
+        fetchSummary();
+    }, []);
+
     return(
         <div className="min-h-[calc(100vh-6rem)] grid grid-cols-1 md:grid-cols-4 gap-4 p-4 overflow-auto">
             {/* Left Panel: Profile Card */}
             <Card className="h-full md:col-span-1 flex flex-col overflow-auto">
                 <CardHeader className="flex flex-col space-y-4 items-center">
-                    {/* Title at the very top */}
-                    <div className="w-full md:w-auto">
-                        <CardTitle>Employee Details</CardTitle>
-                    </div>
-
                     {/* Profile Image */}
-                    <div className="w-24 h-24 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="w-30 h-30 bg-gray-200 rounded-full overflow-hidden">
                         <img src={account} alt="account icon" className="object-cover w-full h-full" />
                     </div>
 
                     {/* Name and ID */}
                     <div className="flex flex-col items-center space-y-1">
-                        <h1 className="text-xl font-bold text-center">First Name Last Name</h1>
-                        <h3 className="text-center">Employee ID: 12345</h3>
+                        <h1 className="text-xl font-bold text-center">
+                            {details ? `${details.firstName} ${details.lastName}` : "Loading..."}
+                        </h1>
+                        <h3 className="text-center">
+                            Employee ID: {details ? details.employeeId : "Loading..."}
+                        </h3>
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-25 text-xl">
-                    <p><strong>Position:</strong> ------------------</p>
-                    <p><strong>Department:</strong> -------------------</p>
-                    <p><strong>Email:</strong> ----------------</p>
+                    <p><strong>Position:</strong> {details?.position ?? "Loading..."}</p>
+                    <p><strong>Department:</strong> {details?.department?.deptName ?? "Loading..."}</p>
+                    <p><strong>Email:</strong> {details?.email ?? "Loading..."}</p>
                 </CardContent>
             </Card>
             {/* Right Panel */}
             <div className="md:col-span-3 flex flex-col space-y-4 h-full">
                 {/* Top Panel: Status and Priority */}
-                <Card className="w-full flex flex-col">
-                    <CardHeader className="text-xl flex flex-col md:flex-row md:items-center md:justify-between">
-                        <CardTitle>Status and Priority</CardTitle>
-                    </CardHeader>
+                {/* Right Panel (takes up 3/4 of the grid) */}
+                <div className="md:col-span-3 flex flex-col gap-4 h-full">
+                    {/* Container to split vertical space equally */}
+                    <div className="flex flex-col gap-4 h-full">
+                        {/* Top Panel: Status and Priority */}
+                        <Card className="flex flex-col flex-1">
+                            <CardHeader className="text-xl flex flex-col md:flex-row md:items-center md:justify-between">
+                                <CardTitle>Status and Priority</CardTitle>
+                            </CardHeader>
 
-                    <CardContent className="flex flex-row gap-0">
-                        {/* First Chart with Label */}
-                        <div className="flex flex-col items-center flex-1">
-                            <ChartContainer
-                                config={chartConfig}
-                                className="aspect-square max-h-[230px] w-full"
-                            >
-                                <PieChart>
-                                    <ChartTooltip
-                                        cursor={false}
-                                        content={<ChartTooltipContent hideLabel />}
-                                    />
-                                    <Pie data={chartData} dataKey="visitors" nameKey="browser" />
-                                </PieChart>
-                            </ChartContainer>
-                            <div className="text-center mt-2 text-xl">
-                                <span><strong>Status</strong></span>
-                            </div>
-                        </div>
-
-                        {/* Second Chart with Label */}
-                        <div className="flex flex-col items-center flex-1">
-                            <ChartContainer
-                                config={chartConfig}
-                                className="aspect-square max-h-[230px] w-full"
-                            >
-                                <PieChart>
-                                    <ChartTooltip
-                                        cursor={false}
-                                        content={<ChartTooltipContent hideLabel />}
-                                    />
-                                    <Pie data={chartData} dataKey="visitors" nameKey="browser" />
-                                </PieChart>
-                            </ChartContainer>
-                            <div className="text-center mt-2 text-xl">
-                                <span><strong>Priority</strong></span>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
-                {/* Bottom Panel: Requests */}
-                <Card className="w-full flex flex-col">
-                    <CardHeader className="text-xl flex flex-col md:flex-row md:items-center md:justify-between">
-                        <CardTitle>Requests</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="overflow-x-auto">
-                            <div className="overflow-x-auto">
-                                <div className="w-full max-h-[500px] overflow-y-auto overflow-x-hidden rounded-lg pb-50">
-
+                            <CardContent className="flex flex-row justify-between gap-1">
+                                {/* First Chart with Label */}
+                                <div className="flex flex-col items-center w-1/2">
+                                    <ChartContainer
+                                        config={chartConfig}
+                                        className="aspect-square max-h-[190px] w-full"
+                                    >
+                                        <PieChart>
+                                            <ChartTooltip
+                                                cursor={false}
+                                                content={<ChartTooltipContent hideLabel />}
+                                            />
+                                            <Pie data={statusChartData} dataKey="visitors" nameKey="status" />
+                                        </PieChart>
+                                    </ChartContainer>
+                                    <div className="text-center mt-2 text-xl">
+                                        <span><strong>Status</strong></span>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
+
+                                {/* Second Chart with Label */}
+                                <div className="flex flex-col items-center w-1/2">
+                                    <ChartContainer
+                                        config={chartConfig}
+                                        className="aspect-square max-h-[190px] w-full"
+                                    >
+                                        <PieChart>
+                                            <ChartTooltip
+                                                cursor={false}
+                                                content={<ChartTooltipContent hideLabel />}
+                                            />
+                                            <Pie data={priorityChartData} dataKey="visitors" nameKey="priority" />
+                                        </PieChart>
+                                    </ChartContainer>
+                                    <div className="text-center mt-2 text-xl">
+                                        <span><strong>Priority</strong></span>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        {/* Bottom Panel: Requests */}
+                        <Card className="flex flex-col flex-1">
+                            <CardHeader className="text-xl flex flex-col md:flex-row md:items-center md:justify-between">
+                                <CardTitle>Requests</CardTitle>
+                            </CardHeader>
+                            <CardContent className="overflow-auto">
+                                <div className="w-full max-h-full overflow-y-auto rounded-lg">
+                                    {/* Table or request content goes here */}
+                                    <TableEmployeeRequest />
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </div>
+                </div>
             </div>
         </div>
     )

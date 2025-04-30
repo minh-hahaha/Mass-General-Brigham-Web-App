@@ -4,29 +4,27 @@ import { dataToCSV } from '../CSVImportExport.ts';
 
 const router: Router = express.Router();
 
-//TODO: NUKE
 router.get('/', async function (req: Request, res: Response) {
-    // Attempt to get list of assigned service requests
+    const { employeeId } = req.query;
+
+    if (!employeeId) {
+        res.status(400).json({ error: 'Missing employeeId' });
+        return;
+    }
+
     try {
-        //Attempt to pull from
         const ASSIGNED_LIST = await PrismaClient.serviceRequest.findMany({
             where: {
-                employeeId: {
-                    not: null,
-                },
+                employeeId: Number(employeeId),
             },
             include: {
                 assignedId: true,
             },
         });
-        console.info('Successfully pulled service requests assigned'); // Log that it was successful
-        console.log(ASSIGNED_LIST);
         res.send(ASSIGNED_LIST);
     } catch (error) {
-        // Log any failures
-        console.error(`NO EMPLOYEES: ${error}`);
-        res.sendStatus(204); // Send error
-        return; // Don't try to send duplicate statuses
+        console.error(`Error fetching assigned requests: ${error}`);
+        res.sendStatus(500);
     }
 });
 

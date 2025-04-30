@@ -5069,7 +5069,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-oauth2-jwt-bearer@npm:^1.5.0":
+"express-oauth2-jwt-bearer@npm:^1.5.0, express-oauth2-jwt-bearer@npm:^1.6.1":
   version: 1.6.1
   resolution: "express-oauth2-jwt-bearer@npm:1.6.1"
   dependencies:
@@ -8937,6 +8937,7 @@ __metadata:
     eslint: "npm:^9.23.0"
     eslint-config-custom: "workspace:*"
     express: "npm:^5.1.0"
+    express-oauth2-jwt-bearer: "npm:^1.6.1"
     framer-motion: "npm:^12.6.3"
     husky: "npm:^9.1.7"
     js-cookie: "npm:^3.0.5"

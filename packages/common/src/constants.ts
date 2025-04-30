@@ -30,5 +30,6 @@ export const ROUTES = {
 
     TTS: "/api/tts",
 
-
+    LOGGEDIN: "/api/loggedin",
+    SERVICESUMMARY: "/api/servicesummary",
 }

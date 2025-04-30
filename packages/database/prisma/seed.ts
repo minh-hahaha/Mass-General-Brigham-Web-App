@@ -727,8 +727,8 @@ async function main() {
                 firstName: 'AdMinh',
                 lastName: 'Ha',
                 position: 'WebAdmin',
-                email: 'admin',
-                password: 'admin',
+                email: 'softengD25X@gmail.com',
+                password: 'cs3733D25X',
                 departmentId: 1,
             },
             {
@@ -738,8 +738,8 @@ async function main() {
                 lastName: 'Person',
                 position: 'Surgeon',
                 dateHired: new Date(2025, 4, 5),
-                email: 'surgeon1@gmail.com',
-                password: 'surgeon',
+                email: 'staffD25X@gmail.com',
+                password: 'cs3733D25X',
                 departmentId: 1,
             },
             {
