@@ -18,6 +18,11 @@ import {
 } from "@/database/forms/medicalDeviceRequest.ts";
 import InputElement from "@/elements/InputElement.tsx";
 import MGBButton from "@/elements/MGBButton.tsx";
+import MGBButton from '../elements/MGBButton.tsx';
+import InputElement from '../elements/InputElement.tsx';
+import ConfirmMessageComponent from '../components/ConfirmMessageComponent.tsx';
+import { SubmitMedicalDeviceRequest } from '@/database/medicalDeviceRequest.ts';
+import HelpButton from "@/components/ServiceRequestHelp.tsx";
 
 
 export interface MedicalDeviceRequestData {
@@ -168,8 +173,13 @@ const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
     return (
         <div className="flex flex-col justify-center items-center min-h-screen">
             <div className="flex flex-col items-center rounded-2xl p-8 w-full max-w-[700px] mt-10 mb-10">
-                <h1 className="text-[30px] font-bold mb-6">Medical Device Request Form</h1>
-                <p> Vinam Nguyen </p>
+                <div className="flex items-center justify-center gap-2 mb-2">
+                    <h1 className="text-[30px] font-bold leading-none">Medical Device Request</h1>
+                    <div className="pt-[11.5px]">
+                        <HelpButton />
+                    </div>
+                </div>
+                <br /><p> Vinam Nguyen </p>
                 <div>
                     <form onSubmit={handleSubmit} className={"space-y-6"}>
                         <div>

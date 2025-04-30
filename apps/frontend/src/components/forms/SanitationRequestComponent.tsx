@@ -19,6 +19,7 @@ import {
     sanitationRequest,
     SubmitSanitationRequest
 } from "@/database/forms/sanitationRequest.ts";
+import HelpButton from "@/components/ServiceRequestHelp.tsx";
 
 // Component definition
 const SanitationRequestPage = ({editData}: RequestPageProps) => {
@@ -179,7 +180,13 @@ const SanitationRequestPage = ({editData}: RequestPageProps) => {
         // flex row container
         <div className="flex flex-col justify-center items-center min-h-screen">
             <div className="flex flex-col items-center rounded-2xl p-8 w-full max-w-[700px] mt-10 mb-10">
-                <h1 className="text-[30px] font-bold mb-6">Sanitation Request</h1>
+                <div className="flex items-center justify-center gap-2 mb-2">
+                    <h1 className="text-[30px] font-bold leading-none">Sanitation Request</h1>
+                    <div className="pt-[11.5px]">
+                        <HelpButton />
+                    </div>
+                </div>
+                <br />
                 <p>Yael Whitson and Jack Morris</p>
                 <div>
                     <form onSubmit={handleSubmit} className="space-y-6">
