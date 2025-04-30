@@ -76,7 +76,7 @@ export default function RequestTablesCarousel() {
             {activeForm && (
                 <div
                     className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50"
-                    onClick={() => setActiveForm(null)}
+                    onClick={() => {setActiveForm(null);}}
                 >
                     <div
                         className="relative bg-white rounded-lg w-full max-w-2xl h-[90vh] overflow-hidden"

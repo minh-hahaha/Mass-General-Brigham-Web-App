@@ -24,10 +24,10 @@ import {editMedicalDeviceRequest} from "@/database/forms/medicalDeviceRequest.ts
 
 // Component definition
 const MaintenanceRequestPage = ({editData}: RequestPageProps) => {
-    const loggedIn = sessionStorage.getItem('loggedIn');
-    if (!loggedIn) {
-        window.location.href = '/';
-    }
+    // const loggedIn = sessionStorage.getItem('loggedIn');
+    // if (!loggedIn) {
+    //     window.location.href = '/';
+    // }
 
     // Maintenance Information
     const [maintenanceType, setMaintenanceType] = useState('');

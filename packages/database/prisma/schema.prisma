@@ -57,19 +57,19 @@ model MaintenanceRequest {
 }
 
 model MedicalDeviceRequest {
-  servReqId      Int            @id
-  servRequestId  ServiceRequest @relation(name: "MedicalDeviceRequest", fields: [servReqId], references: [requestId])
-  device         String
-  location       String
-  deliverDate    DateTime
+  servReqId     Int            @id
+  servRequestId ServiceRequest @relation(name: "MedicalDeviceRequest", fields: [servReqId], references: [requestId])
+  device        String
+  location      String
+  deliverDate   DateTime
 }
 
 //TODO: FIX LOCATION FIELDS
 model PatientTransport {
   servReqId       Int            @id
   patientId       Int
-  pickupLocation  String        //pick up hospital
-  dropoffLocation String        //drop off hospital
+  pickupLocation  String //pick up hospital
+  dropoffLocation String //drop off hospital
   transportType   String
   transportDate   DateTime
   servRequestId   ServiceRequest @relation(name: "ServicePatientTransport", fields: [servReqId], references: [requestId])
@@ -84,7 +84,8 @@ model TranslationRequest {
   date          DateTime
   meetingLink   String?
   location      String
-  department    String //fix it later - Jake
+  department    String
+  duration      Int
 }
 
 model Department {

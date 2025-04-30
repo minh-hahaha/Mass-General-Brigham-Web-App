@@ -119,7 +119,7 @@ const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
         setPatientLanguage('');
         setPriority('');
         setLocation('');
-        setDate('');
+        setDate(new Date().toISOString());
         setDuration(0);
         setTypeMeeting('');
         setMeetingLink('');
@@ -134,15 +134,16 @@ const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
 
     useEffect(() => {
         if(editData){
-            setEmployeeName('');
+            const employee = employeeList.find(e => e.employeeId === editData.employeeId);
+            setEmployeeName(employee ? employee.employeeName : "");
             setEmployeeId(editData.employeeId);
             setPatientId(editData.translationRequest.patientId);
             setPatientName(editData.translationRequest.patientName);
             setPatientLanguage(editData.translationRequest.language);
             setPriority(editData.priority);
             setLocation(editData.translationRequest.location);
-            setDate(editData.requestDate);
-            setDuration(0);
+            setDate(new Date(editData.requestDateTime).toISOString());
+            setDuration(editData.translationRequest.duration);
             setTypeMeeting(editData.translationRequest.typeMeeting);
             setMeetingLink(editData.translationRequest.meetingLink);
             setStatus(editData.status);

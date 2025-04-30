@@ -1,6 +1,6 @@
 import { ROUTES } from 'common/src/constants.ts';
 import axios from 'axios';
-import { priorityType, statusType, hospitalTransportType } from '@/database/forms/formTypes.ts';
+import {priorityType, statusType, hospitalTransportType, translateLangugeType} from '@/database/forms/formTypes.ts';
 
 export interface transportRequest {
     employeeId: number;
@@ -12,7 +12,7 @@ export interface transportRequest {
     dropoffLocation: string;
     notes: string;
     assignedToId: number;
-    formattedDate: string;
+    transportDate: string;
 }
 
 export interface editTransportRequest {
@@ -34,12 +34,13 @@ export interface incomingRequest {
     };
     translationRequest: {
         patientId: number;
-        language: string;
+        language: translateLangugeType;
         patientName: string;
         typeMeeting: string;
         meetingLink: string;
         department: string;
         location: string;
+        duration: number;
     },
     sanitation: {
         servReqId:          number;
@@ -68,9 +69,8 @@ export interface incomingRequest {
         employeeName: string;
     },
     priority: priorityType;
-    requestDate: string;
+    requestDateTime: string;
     requestId: number;
-    requestTime: number;
     serviceType: string;
     status: statusType;
 }

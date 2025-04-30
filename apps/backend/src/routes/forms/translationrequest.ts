@@ -14,7 +14,6 @@ router.get('/', async (req: Request, res: Response) => {
                 translationRequest: true, // includes Translation entry
             },
         });
-
         res.status(200).json(requests);
     } catch (error) {
         console.error(error);
@@ -37,6 +36,8 @@ router.post('/', async (req: Request, res: Response) => {
                     comments: req.body.notes,
                     priority: req.body.priority,
                     serviceType: 'Translation',
+                    employeeId: req.body.employeeId,
+                    requestDateTime: req.body.date,
                 },
             });
 
@@ -51,6 +52,7 @@ router.post('/', async (req: Request, res: Response) => {
                     meetingLink: req.body.meetingLink,
                     location: req.body.location,
                     department: req.body.department,
+                    duration: req.body.duration,
                 },
             });
 
@@ -90,7 +92,7 @@ router.post('/edit', async (req: Request, res: Response) => {
                 data: {
                     //patientName: req.body.translatorRequest.patientName,
                     language: req.body.translatorRequest.language,
-                    //duration: req.body.translatorRequest.duration,
+                    duration: req.body.translatorRequest.duration,
                     typeMeeting: req.body.translatorRequest.typeMeeting,
                     date: new Date(req.body.translatorRequest.date),
                     meetingLink: req.body.translatorRequest.meetingLink,

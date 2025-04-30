@@ -32,6 +32,7 @@ export interface incomingTranslationRequest {
         department: string;
         location: string;
         patientId: number;
+        duration: number;
     }
     priority: priorityType;
     requestDateTime: string;

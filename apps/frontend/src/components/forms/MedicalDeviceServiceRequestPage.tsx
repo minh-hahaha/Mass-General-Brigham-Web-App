@@ -37,10 +37,10 @@ export interface MedicalDeviceRequestData {
 
 // Medical Device Component Definition
 const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
-    const loggedIn = sessionStorage.getItem('loggedIn');
-    if (!loggedIn) {
-        window.location.href = '/';
-    }
+    // const loggedIn = sessionStorage.getItem('loggedIn');
+    // if (!loggedIn) {
+    //     window.location.href = '/';
+    // }
 
     const [employeeName, setEmployeeName] = useState('');
     const [employeeId, setEmployeeId] = useState<number>(0);

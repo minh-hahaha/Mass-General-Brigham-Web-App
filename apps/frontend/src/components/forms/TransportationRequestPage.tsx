@@ -23,8 +23,8 @@ import {editMedicalDeviceRequest} from "@/database/forms/medicalDeviceRequest.ts
 
 // Component definition
 const TransportRequestPage = ({editData}: RequestPageProps) => {
-    const loggedIn = sessionStorage.getItem('loggedIn');
-    if (!loggedIn) {window.location.href = '/';}
+    // const loggedIn = sessionStorage.getItem('loggedIn');
+    // if (!loggedIn) {window.location.href = '/';}
 
     const [patientId, setPatientId] = useState(0);
     const [patientName, setPatientName] = useState('');
@@ -55,7 +55,7 @@ const TransportRequestPage = ({editData}: RequestPageProps) => {
             priority,
             pickupLocation,
             dropoffLocation,
-            formattedDate,
+            transportDate: formattedDate,
             notes,
             assignedToId,
         };

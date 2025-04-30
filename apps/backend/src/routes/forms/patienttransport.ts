@@ -85,8 +85,9 @@ router.post('/edit', async (req: Request, res: Response) => {
 
                     //optional field
                     employeeId: req.body.transportRequest.employeeId ?? null, // change to user id in the future?
-                    requestDateTime:
-                        new Date(req.body.transportRequest.requestDate).toISOString() ?? null,
+                    requestDateTime: req.body.transportRequest.requestDate
+                        ? new Date(req.body.transportRequest.requestDate).toISOString()
+                        : new Date(),
                     //requestTime: new Date(req.body.transportRequest.pickupTime) ?? null,
                 },
             });
@@ -99,7 +100,8 @@ router.post('/edit', async (req: Request, res: Response) => {
                     //patientName: req.body.transportRequest.patientName,
                     pickupLocation: req.body.transportRequest.pickupLocation,
                     transportType: req.body.transportRequest.transportType,
-                    dropoffLocation: 'nowhere',
+                    dropoffLocation: req.body.transportRequest.dropoffLocation,
+                    transportDate: req.body.transportRequest.transportDate,
                 },
                 select: {
                     servReqId: true,
