@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import MGBButton from "@/elements/MGBButton.tsx";
-import add_node from '../assets/instructions/add_node.png';
 import create_edges from '../assets/instructions/create_edges.png';
 import edit_node from '../assets/instructions/edit_node.png';
 import save_changes from '../assets/instructions/save.png';
+import select from '../assets/instructions/select_hospital.png'
+import delete_edges from '../assets/instructions/delete_edge.png'
+import import_export_nodes from '../assets/instructions/import_export_nodes.png'
 
 interface MapInstructionsProps {
     onClose?: () => void;
@@ -12,13 +14,18 @@ interface MapInstructionsProps {
 
 const instructionPages = [
     {
-        title: "Add Node",
-        imagePath: add_node,
-        description: "Click \"Add Node\" button and then click on the map to place nodes."
+        title: "Select Hospital",
+        imagePath: select,
+        description: "Select the hospital you want to edit."
     },
     {
         title: "Edit Node",
         imagePath: edit_node,
+        description: "Click \"Add Node\" button and then click on the map to place nodes."
+    },
+    {
+        title: "Delete Edges",
+        imagePath: delete_edges,
         description: "Click on the node to edit its name, room number, or remove node."
     },
     {
@@ -30,6 +37,11 @@ const instructionPages = [
         title: "Save Nodes and Edges",
         imagePath: save_changes,
         description: "Click the \"Save Nodes and Edges\" button to store your configuration."
+    },
+    {
+        title: "Import/Export Nodes",
+        imagePath: import_export_nodes,
+        description: "Click the \"Import/Export Nodes\" button to import or export nodes."
     }
 ];
 
