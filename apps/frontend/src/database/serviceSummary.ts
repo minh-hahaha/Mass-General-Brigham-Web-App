@@ -11,6 +11,12 @@ export interface incomingServiceSummary {
     prioritySummary: SummaryItem[];
 }
 
-export async function getServiceSummary() {
-    return (await axios.get<incomingServiceSummary>(ROUTES.SERVICESUMMARY)).data;
+export async function getServiceSummary(token: string): Promise<{ statusSummary: SummaryItem[], prioritySummary: SummaryItem[] }> {
+    const res = await fetch(ROUTES.SERVICESUMMARY, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    if (!res.ok) throw new Error('Failed to fetch service summary');
+    return res.json();
 }

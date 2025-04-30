@@ -41,6 +41,12 @@ export interface incomingAccount {
 }
 
 // get employee that is logged in right now
-export async function getAccount() {
-    return (await axios.get<incomingAccount>(ROUTES.LOGGEDIN)).data;
+export async function getAccount(token: string): Promise<incomingAccount> {
+    const res = await fetch(ROUTES.LOGGEDIN, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    if (!res.ok) throw new Error('Failed to fetch account');
+    return res.json();
 }

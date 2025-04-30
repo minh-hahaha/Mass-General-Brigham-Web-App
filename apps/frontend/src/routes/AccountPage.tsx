@@ -11,6 +11,7 @@ import TableEmployeeRequest from '@/components/tables/TableEmployeeRequest.tsx'
 import {getAccount, incomingAccount} from '@/database/loggedIn.ts'
 import {useEffect, useState} from "react";
 import {getServiceSummary, SummaryItem} from "@/database/serviceSummary.ts"
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface ChartDataItem {
     label: string;
@@ -61,30 +62,42 @@ const AccountPage = () => {
     const [details, setDetails] = useState<incomingAccount | null>(null);
     const [statusChartData, setStatusChartData] = useState<ChartDataItem[]>([]);
     const [priorityChartData, setPriorityChartData] = useState<ChartDataItem[]>([]);
+    const { getAccessTokenSilently, isAuthenticated } = useAuth0();
 
+    // get account details
     useEffect(() => {
         async function fetchDetails() {
             try {
-                const data = await getAccount();
+                const token = await getAccessTokenSilently();
+                const data = await getAccount(token); // pass token here
                 setDetails(data);
             } catch (error) {
                 console.error("Failed to fetch account details:", error);
             }
         }
 
-        fetchDetails();
-    }, []); // <- only run once on mount
+        if (isAuthenticated) {
+            fetchDetails();
+        }
+    }, [getAccessTokenSilently, isAuthenticated]);
 
+    // get stats for charts
     useEffect(() => {
         async function fetchSummary() {
-            const { statusSummary, prioritySummary } = await getServiceSummary();
-            setStatusChartData(mapToChartData(statusSummary));
-            setPriorityChartData(mapToChartData(prioritySummary));
+            try {
+                const token = await getAccessTokenSilently();
+                const { statusSummary, prioritySummary } = await getServiceSummary(token); // pass token
+                setStatusChartData(mapToChartData(statusSummary));
+                setPriorityChartData(mapToChartData(prioritySummary));
+            } catch (err) {
+                console.error("Failed to fetch service summary:", err);
+            }
         }
 
-        fetchSummary();
-    }, []);
-
+        if (isAuthenticated) {
+            fetchSummary();
+        }
+    }, [getAccessTokenSilently, isAuthenticated]);
     return(
         <div className="min-h-[calc(100vh-6rem)] grid grid-cols-1 md:grid-cols-4 gap-4 p-4 overflow-auto">
             {/* Left Panel: Profile Card */}
