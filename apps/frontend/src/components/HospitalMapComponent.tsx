@@ -308,18 +308,6 @@ const HospitalMapComponent = ({
                 />
             )}
 
-            {visible && (
-                <div className="absolute top-50 z-10 -mt-2">
-                    <TextToSpeechMapComponent
-                        walkDirections={directions1}
-                        driveDirections={driveDirections}
-                        drive22Directions={drive2Directions}
-                        walk22Directions={directions11}
-                        icons={iconsToPass}
-                    />
-                </div>
-            )}
-
             <div className="relative w-full h-full">
                 <OverlayComponent bounds={ChestnutHillBounds} imageSrc={"/CH01.svg"} />
                 <OverlayComponent bounds={PatriotPlaceBounds} imageSrc={patriotPlaceFloor.svgPath} />
