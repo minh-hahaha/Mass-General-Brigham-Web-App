@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {sanitationRequest} from "@/database/sanitationRequest.ts";
+import {sanitationRequest} from "@/database/forms/sanitationRequest.ts";
 
 interface TransportRequest {
     id: number;

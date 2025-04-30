@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { GetSanitationRequest, incomingSanitationRequest } from '@/database/sanitationRequest.ts';
+import { GetSanitationRequest, incomingSanitationRequest } from '@/database/forms/sanitationRequest.ts';
 import {
     Table,
     TableBody,
@@ -10,26 +10,29 @@ import {
     TableRow,
 } from '@/components/ui/table.tsx';
 import {motion} from 'framer-motion';
+import { employeeNameId, getEmployeeNameIds } from '@/database/getEmployee.ts';
+import MGBButton from "@/elements/MGBButton.tsx";
+import {incomingRequest} from "@/database/forms/transportRequest.ts";
 
 interface Props {
     setActiveForm: (
         type: 'transport' | 'translation' | 'maintenance' | 'medical device' | 'sanitation'
     ) => void;
+    setEditData: (incomingRequest: incomingRequest) => void;
 }
 
-const TableSanitationRequest: React.FC<Props> = ({ setActiveForm }) => {
+const TableSanitationRequest: React.FC<Props> = ({ setActiveForm, setEditData }) => {
     const [loading, setLoading] = useState(true);
-    const [requests, setRequests] = useState<incomingSanitationRequest[]>([]);
+    const [requests, setRequests] = useState<incomingRequest[]>([]);
     const [filter, setShowFilters] = useState<boolean>(false);
     const [filters, setFilters] = useState({
-        disposal: '',
-        hazard: '',
-        recurring: '',
-        sanType: '',
         priority: '',
         status: '',
-        reqDate: '',
+        sanType: '',
+        hazard: '',
+        completeBy: '',
     });
+    const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
 
     useEffect(() => {
         async function fetchReqs() {
@@ -41,6 +44,14 @@ const TableSanitationRequest: React.FC<Props> = ({ setActiveForm }) => {
         fetchReqs();
     }, []);
 
+    useEffect(() => {
+        async function fetchEmployeeList() {
+            const data = await getEmployeeNameIds();
+            setEmployeeList(data);
+        }
+        fetchEmployeeList();
+    }, [])
+
     if (loading) {
         return <p>Loading Requests...</p>;
     }
@@ -50,13 +61,11 @@ const TableSanitationRequest: React.FC<Props> = ({ setActiveForm }) => {
         const recurringText = req.sanitation.recurring ? 'yes' : 'no';
 
         return (
-            (!filters.disposal || disposalText.includes(filters.disposal.toLowerCase())) &&
-            (!filters.hazard || req.sanitation.hazardLevel?.toLowerCase().includes(filters.hazard.toLowerCase())) &&
-            (!filters.recurring || recurringText.includes(filters.recurring.toLowerCase())) &&
-            (!filters.sanType || req.sanitation.sanitationType?.toLowerCase().includes(filters.sanType.toLowerCase())) &&
             (!filters.priority || req.priority?.toLowerCase().includes(filters.priority.toLowerCase())) &&
             (!filters.status || req.status?.toLowerCase().includes(filters.status.toLowerCase())) &&
-            (!filters.reqDate || req.requestDate?.startsWith(filters.reqDate))
+            (!filters.sanType || req.sanitation.sanitationType?.toLowerCase().includes(filters.sanType.toLowerCase())) &&
+            (!filters.hazard || req.sanitation.hazardLevel?.toLowerCase().includes(filters.hazard.toLowerCase())) &&
+            (!filters.completeBy || req.sanitation.completeBy?.startsWith(filters.completeBy))
         );
     });
 
@@ -78,50 +87,6 @@ const TableSanitationRequest: React.FC<Props> = ({ setActiveForm }) => {
                             transition={{ type: 'spring', stiffness: 200, damping: 20 }}
                             className="relative left-[10px] rounded flex flex-row gap-5"
                         >
-                            <div>
-                                <label className="block text-sm font-medium">Disposal?</label>
-                                <input
-                                    type="text"
-                                    className="border border-mgbblue rounded-sm w-15 p-1"
-                                    value={filters.disposal}
-                                    onChange={(e) =>
-                                        setFilters({ ...filters, disposal: e.target.value })
-                                    }
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium">Hazard Level</label>
-                                <input
-                                    type="text"
-                                    className="border border-mgbblue rounded-sm w-30 p-1"
-                                    value={filters.hazard}
-                                    onChange={(e) =>
-                                        setFilters({ ...filters, hazard: e.target.value })
-                                    }
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium">Recurring?</label>
-                                <input
-                                    type="text"
-                                    className="border border-mgbblue rounded-sm w-20 p-1"
-                                    value={filters.recurring}
-                                    onChange={(e) =>
-                                        setFilters({ ...filters, recurring: e.target.value })
-                                    }
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium">Sanitation</label>
-                                <input
-                                    type="text"
-                                    className="border border-mgbblue rounded-sm w-30 p-1"
-                                    value={filters.sanType}
-                                    onChange={(e) =>
-                                        setFilters({ ...filters, sanType: e.target.value })
-                                    }
-                                />
-                            </div>
                             <div>
                                 <label className="block text-sm font-medium">Priority</label>
                                 <input
@@ -148,15 +113,37 @@ const TableSanitationRequest: React.FC<Props> = ({ setActiveForm }) => {
                                 />
                             </div>
                             <div>
+                                <label className="block text-sm font-medium">Sanitation</label>
+                                <input
+                                    type="text"
+                                    className="border border-mgbblue rounded-sm w-30 p-1"
+                                    value={filters.sanType}
+                                    onChange={(e) =>
+                                        setFilters({ ...filters, sanType: e.target.value })
+                                    }
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium">Hazard Level</label>
+                                <input
+                                    type="text"
+                                    className="border border-mgbblue rounded-sm w-30 p-1"
+                                    value={filters.hazard}
+                                    onChange={(e) =>
+                                        setFilters({ ...filters, hazard: e.target.value })
+                                    }
+                                />
+                            </div>
+                            <div>
                                 <label className="block text-sm font-medium">Request Date</label>
                                 <input
                                     type="datetime-local"
                                     className="border border-mgbblue rounded-sm w-35 p-1"
-                                    value={filters.reqDate}
+                                    value={filters.completeBy}
                                     onChange={(e) =>
                                         setFilters({
                                             ...filters,
-                                            reqDate: e.target.value,
+                                            completeBy: e.target.value,
                                         })
                                     }
                                 />
@@ -167,7 +154,7 @@ const TableSanitationRequest: React.FC<Props> = ({ setActiveForm }) => {
                 <div className="flex flex-row items-center gap-2 mt-2">
                     <button
                         onClick={() => setActiveForm('sanitation')}
-                        className="bg-gray-500 hover:bg-gray-700 text-white px-9 py-3 rounded text-sm relative top-1"
+                        className="bg-mgbyellow hover:bg-yellow-600 text-codGray px-9 py-3 rounded text-sm relative top-1"
                     >
                         New Request +
                     </button>
@@ -184,15 +171,12 @@ const TableSanitationRequest: React.FC<Props> = ({ setActiveForm }) => {
                             hazardLevel: string
                             recurring: boolean
                             sanitationType: string*/}
-                                <TableHead className="w-20 text-left font-semibold py-3">Request ID</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Disposal Required</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Hazard Level</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Recurring</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Sanitation Type</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Priority</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Status</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Request Date</TableHead>
-                                <TableHead className="w-20 text-left font-semibold py-3">Service Type</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Priority</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Status</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Sanitation Type</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Hazard Level</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3">Complete By Date</TableHead>
+                                <TableHead className="w-20 text-center font-semibold py-3"></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -201,31 +185,12 @@ const TableSanitationRequest: React.FC<Props> = ({ setActiveForm }) => {
                                     key={req.requestId}
                                     className="border-b hover:bg-gray-50"
                                 >
-                                    <TableCell className="text-left py-3">{req.requestId}</TableCell>
-                                    <TableCell className="text-left py-3">
-                                        {req.sanitation.disposalRequired ? 'Yes' : 'No'}
-                                    </TableCell>
-                                    <TableCell className="text-left py-3">{req.sanitation.hazardLevel}</TableCell>
-                                    <TableCell className="text-left py-3">{req.sanitation.recurring ? 'Yes' : 'No'}</TableCell>
-                                    <TableCell className="text-left py-3">{req.sanitation.sanitationType}</TableCell>
-                                    <TableCell className="text-left py-3">
-                                        <span
-                                            className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                                req.priority === 'High'
-                                                    ? 'bg-orange-100 text-orange-800'
-                                                    : req.priority === 'Medium'
-                                                        ? 'bg-yellow-100 text-yellow-800'
-                                                        : req.priority === 'Emergency'
-                                                            ? 'bg-red-100 text-red-800'
-                                                            : 'bg-green-100 text-green-800'
-                                            }`}
-                                        >
-                                            {req.priority}
-                                        </span>
-                                    </TableCell>
-                                    <TableCell className="text-left py-3">{req.status}</TableCell>
-                                    <TableCell className="text-left py-3">{req.requestDate.split('T')[0]}</TableCell>
-                                    <TableCell className="text-left py-3">{req.serviceType}</TableCell>
+                                    <TableCell className="text-center py-3">{req.priority}</TableCell>
+                                    <TableCell className="text-center py-3">{req.status}</TableCell>
+                                    <TableCell className="text-center py-3">{req.sanitation.sanitationType}</TableCell>
+                                    <TableCell className="text-center py-3">{req.sanitation.hazardLevel}</TableCell>
+                                    <TableCell className="text-center py-3">{req.sanitation.completeBy.split('T')[0]}</TableCell>
+                                    <TableCell className="text-center py-3"><MGBButton onClick={() => {setEditData(req); setActiveForm("sanitation")}} variant={'secondary'} children={'Edit'}/></TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

@@ -1,6 +1,7 @@
 import {ROUTES} from "common/src/constants.ts";
 import axios from "axios";
-import {TranslationRequestData} from "@/routes/TranslationServiceRequestPage.tsx";
+import {incomingRequest} from "@/database/forms/transportRequest.ts";
+import {outgoingTranslationRequest} from "@/database/forms/translationRequest.ts";
 
 export interface incomingTranslationRequest {
     comments: string;
@@ -22,11 +23,20 @@ export interface incomingTranslationRequest {
     status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
 }
 
+export interface editTranslatorRequest {
+    translatorRequest: outgoingTranslationRequest;
+    requestId: number;
+}
 
-export async function SubmitTranslatorRequest(request: TranslationRequestData) {
+
+export async function SubmitTranslatorRequest(request: outgoingTranslationRequest) {
     await axios.post(ROUTES.TRANSLATIONREQUEST, request);
 }
 
+export async function EditTranslatorRequest(request: editTranslatorRequest) {
+    await axios.post(ROUTES.EDITTRANSLATIONREQUEST, request);
+}
+
 export async function GetTranslatorRequest() {
-    return (await axios.get<incomingTranslationRequest[]>(ROUTES.TRANSLATIONREQUEST)).data;
+    return (await axios.get<incomingRequest[]>(ROUTES.TRANSLATIONREQUEST)).data;
 }

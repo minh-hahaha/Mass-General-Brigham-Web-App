@@ -2,8 +2,11 @@ import express, { Router, Request, Response } from 'express';
 import PrismaClient from '../bin/prisma-client';
 import { CSVtoData, dataToCSV, readCSV } from '../CSVImportExport.ts';
 import * as path from 'node:path';
+import multer from 'multer';
 
 const router: Router = express.Router();
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 const DIRECTORY_SORT_OPTIONS: object[] = [];
 DIRECTORY_SORT_OPTIONS.push({ deptName: 'asc' });
@@ -52,10 +55,8 @@ router.get('/', async function (req: Request, res: Response) {
             where: Object.assign({}, ...filters),
             orderBy: sorts,
         };
-        //console.log(args);
         //Attempt to pull from directory
         const DIRECTORY = await PrismaClient.department.findMany(args);
-        console.log(DIRECTORY);
         res.send(DIRECTORY);
     } catch (error) {
         // Log any failures
@@ -92,6 +93,9 @@ router.get('/byBuilding', async function (req: Request, res: Response) {
                 buildingId: {
                     equals: buildingFilter,
                 },
+                nodeId: {
+                    not: null,
+                },
             },
         });
         res.json(DIRECTORY_NAMES);
@@ -126,34 +130,30 @@ router.get('/csv', async function (req: Request, res: Response) {
     try {
         //Attempt to pull from directory
         const DIRECTORY = await PrismaClient.department.findMany({
-            include: {
-                departmentNodes: true,
-            },
+            include: { departmentNodes: true },
             orderBy: {
                 deptId: 'desc',
             },
         });
         // Take the joined Node fields and flatten them for CSV parsing {xx:xx, yy:yy, zz:{aa:aa, bb:bb}} => {xx:xx, yy:yy, aa:aa, bb:bb}
-        // const flattenedDirectories = DIRECTORY.flatMap(() => {} );
-        // directory.departmentNodes.map((node) => ({
-        //     ...directory,
-        //     nodeId: node.nodeId,
-        //     x: node.x,
-        //     y: node.y,
-        //     floor: node.floor,
-        //     buildingId: node.buildingId,
-        //     nodeType: node.nodeType,
-        //     name: node.name,
-        //     roomNumber: node.roomNumber,
-        //     departmentId: node.departmentId,
-        // }))
-
-        await dataToCSV(DIRECTORY); //the big boy
-        // Uses the first key as the name of the file EX: dep_id.csv
-        const fileName = Object.keys(DIRECTORY[0])[0].toString();
-        res.sendFile('data.csv', {
-            root: path.join(__dirname, '../../'),
-        });
+        const flattenedDirectories = DIRECTORY.flatMap((dir) => [
+            {
+                deptId: dir.deptId,
+                deptServices: dir.deptServices,
+                deptName: dir.deptName,
+                buildingId: dir.buildingId,
+                deptPhone: dir.deptPhone,
+                nodeId: dir.nodeId,
+                floor: dir.departmentNodes ? dir.departmentNodes.floor : null,
+                nodeType: dir.departmentNodes ? dir.departmentNodes.nodeType : null,
+                name: dir.departmentNodes ? dir.departmentNodes.name : null,
+                roomNumber: dir.departmentNodes ? dir.departmentNodes.roomNumber : null,
+                x: dir.departmentNodes ? dir.departmentNodes.x : null,
+                y: dir.departmentNodes ? dir.departmentNodes.y : null,
+            },
+        ]);
+        const csvData = await dataToCSV(flattenedDirectories); //the big boy
+        res.status(200).send(csvData);
         console.info('Successfully sent directory csv');
     } catch (error) {
         // Log any failures
@@ -163,10 +163,13 @@ router.get('/csv', async function (req: Request, res: Response) {
     }
 });
 
-router.post('/csv', async function (req: Request, res: Response) {
+router.post('/csv', upload.single('file'), async function (req: Request, res: Response) {
+    if (!req.file) {
+        res.status(400).send('No file uploaded.');
+        return;
+    }
     const overwrite = req.query.overwrite as string;
-    const [data, empty] = Object.entries(req.body);
-    const csvData = CSVtoData(data[0].toString());
+    const csvData = CSVtoData(req.file.buffer.toString('utf-8'));
     try {
         if (overwrite === 'Overwrite') {
             await PrismaClient.department.deleteMany();
@@ -178,19 +181,17 @@ router.post('/csv', async function (req: Request, res: Response) {
                 deptName: data.deptName,
                 buildingId: data.buildingId,
                 deptPhone: data.deptPhone || null,
-                nodeId: data.nodeId,
+                nodeId: data.nodeId || null,
             };
-
             const dataToUpsertNode = {
                 nodeId: data.nodeId,
                 x: data.x,
                 y: data.y,
-                floor: data.floor,
-                buildingId: data.buildingId,
+                floor: data.floor?.toString() || null,
+                buildingId: data.buildingId.toString(),
                 nodeType: data.nodeType,
                 name: data.name,
-                roomNumber: data.roomNumber,
-                departments: data.deptId ?? null,
+                roomNumber: data.roomNumber?.toString() || null,
             };
             if (overwrite === 'Overwrite') {
                 console.log('Overwriting');
@@ -198,11 +199,12 @@ router.post('/csv', async function (req: Request, res: Response) {
                     data: dataToUpsertDirectory,
                     skipDuplicates: true, // Will occur when a department is in two locations
                 });
-
-                await PrismaClient.node.createMany({
-                    data: dataToUpsertNode,
-                    skipDuplicates: true,
-                });
+                if (dataToUpsertNode.nodeId) {
+                    await PrismaClient.node.createMany({
+                        data: dataToUpsertNode,
+                        skipDuplicates: true,
+                    });
+                }
             } else {
                 console.log('updating');
                 await PrismaClient.department.upsert({
@@ -210,11 +212,13 @@ router.post('/csv', async function (req: Request, res: Response) {
                     update: dataToUpsertDirectory,
                     create: dataToUpsertDirectory,
                 });
-                await PrismaClient.node.upsert({
-                    where: { nodeId: data.nodeId },
-                    update: dataToUpsertNode,
-                    create: dataToUpsertNode,
-                });
+                if (dataToUpsertDirectory.nodeId) {
+                    await PrismaClient.node.upsert({
+                        where: { nodeId: data.nodeId },
+                        update: dataToUpsertNode,
+                        create: dataToUpsertNode,
+                    });
+                }
             }
         }
         res.sendStatus(200);
@@ -222,6 +226,90 @@ router.post('/csv', async function (req: Request, res: Response) {
         console.log(err);
         res.sendStatus(400);
     }
+});
+
+router.get('/json', async function (req: Request, res: Response) {
+    try {
+        const DIRECTORY = await PrismaClient.department.findMany({
+            include: { departmentNodes: true },
+            orderBy: {
+                deptId: 'asc',
+            },
+        });
+        res.status(200).json({ directories: DIRECTORY });
+    } catch (error) {
+        res.sendStatus(500);
+    }
+});
+
+router.post('/json', upload.single('file'), async function (req: Request, res: Response) {
+    if (!req.file) {
+        res.status(400).send('No file uploaded.');
+        return;
+    }
+    const overwrite = req.query.overwrite as string;
+    const jsonData = JSON.parse(req.file.buffer.toString('utf-8')).directories;
+    try {
+        if (overwrite === 'Overwrite') {
+            await PrismaClient.department.deleteMany();
+        }
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(500).send('Could not find department table');
+    }
+    for (const data of jsonData) {
+        const dataToUpsertDirectory = {
+            deptId: data.deptId,
+            deptServices: data.deptServices || null,
+            deptName: data.deptName,
+            buildingId: data.buildingId,
+            deptPhone: data.deptPhone || null,
+            nodeId: data.nodeId || null,
+        };
+        const dataToUpsertNode = {
+            nodeId: data.nodeId,
+            x: data.departmentNodes?.x,
+            y: data.departmentNodes?.y,
+            floor: data.departmentNodes?.floor?.toString() || null,
+            buildingId: data.departmentNodes?.buildingId.toString(),
+            nodeType: data.departmentNodes?.nodeType,
+            name: data.departmentNodes?.name,
+            roomNumber: data.departmentNodes?.roomNumber?.toString() || null,
+        };
+        try {
+            if (overwrite === 'Overwrite') {
+                console.log('Overwriting');
+                await PrismaClient.department.createMany({
+                    data: dataToUpsertDirectory,
+                    skipDuplicates: true, // Will occur when a department is in two locations
+                });
+                if (dataToUpsertNode.nodeId) {
+                    await PrismaClient.node.createMany({
+                        data: dataToUpsertNode,
+                        skipDuplicates: true,
+                    });
+                }
+            } else {
+                console.log('updating');
+                await PrismaClient.department.upsert({
+                    where: { deptId: data.deptId },
+                    update: dataToUpsertDirectory,
+                    create: dataToUpsertDirectory,
+                });
+                if (dataToUpsertDirectory.nodeId) {
+                    await PrismaClient.node.upsert({
+                        where: { nodeId: data.nodeId },
+                        update: dataToUpsertNode,
+                        create: dataToUpsertNode,
+                    });
+                }
+            }
+        } catch (err) {
+            console.log(err);
+            res.sendStatus(400);
+        }
+    }
+    res.sendStatus(200);
 });
 
 export default router;
