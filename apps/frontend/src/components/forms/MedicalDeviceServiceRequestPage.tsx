@@ -1,67 +1,101 @@
 import {useEffect, useState} from 'react';
+import {DirectoryRequestByBuilding, getDirectory} from "@/database/gettingDirectory.ts";
+import {
+    medicalDevices,
+    medicalDeviceType, meetingType, meetingTypeArray,
+    mgbHospitals,
+    mgbHospitalType, priorityArray,
+    priorityType,
+} from '@/database/forms/formTypes.ts';
+import SelectFormElement from "@/elements/SelectFormElement.tsx";
+import {employeeNameId, getEmployeeNameIds} from "@/database/getEmployee.ts";
+import {incomingRequest} from "@/database/forms/transportRequest.ts";
+import {RequestPageProps} from "@/routes/ServiceRequestDisplayPage.tsx";
+import {
+    EditMedicalDeviceRequest,
+    editMedicalDeviceRequest,
+    SubmitMedicalDeviceRequest
+} from "@/database/forms/medicalDeviceRequest.ts";
+import InputElement from "@/elements/InputElement.tsx";
+import MGBButton from "@/elements/MGBButton.tsx";
 import MGBButton from '../elements/MGBButton.tsx';
 import InputElement from '../elements/InputElement.tsx';
 import ConfirmMessageComponent from '../components/ConfirmMessageComponent.tsx';
 import { SubmitMedicalDeviceRequest } from '@/database/medicalDeviceRequest.ts';
 import HelpButton from "@/components/ServiceRequestHelp.tsx";
 
-type MedicalDeviceType =
-    | 'ECG Monitor'
-    | 'Vital Signs Monitor'
-    | 'Pulse Oximeter'
-    | 'Infusion Pump'
-    | 'Syringe Pump'
-    | 'Defibrillator'
-    | 'Ventilator'
-    | 'Nebulizer'
-    | 'Anesthesia Machine'
-    | 'Wheelchair'
-    | 'IV Stand'
-    | 'Suction Machine'
-    | 'Warming Blanket System'
-    | 'Oxygen Concentrator'
-    | 'Portable Suction Unit'
-    | 'Crash Cart';
-
-type location = 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place';
-type status = 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
-type priority = 'Low' | 'Medium' | 'High' | 'Emergency';
 
 export interface MedicalDeviceRequestData {
-    employeeName: string;
     employeeId: number;
     requestDate: string;
-    priority: priority
-    location: location;
+    priority: priorityType;
+    location: mgbHospitalType;
     device: string;
     deviceModel?: string;
     deviceSerialNumber?: string;
     deviceReasoning: string;
     quantity: number;
-    status: status;
     notes?: string;
     department: string;
+    deliverDate: string;
 }
 
 // Medical Device Component Definition
-const MedicalDeviceServiceRequestPage = () => {
+const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
+    // const loggedIn = sessionStorage.getItem('loggedIn');
+    // if (!loggedIn) {
+    //     window.location.href = '/';
+    // }
 
     const [employeeName, setEmployeeName] = useState('');
     const [employeeId, setEmployeeId] = useState<number>(0);
     const [requestDate, setRequestDate] = useState('');
     const [priority, setPriority] = useState<MedicalDeviceRequestData['priority']>('Low');
     const [location, setLocation] =
-        useState<MedicalDeviceRequestData['location']>('Chestnut Hill');
+        useState<mgbHospitalType>('Chestnut Hill');
     const [device, setMedicalDevice] = useState<MedicalDeviceRequestData['device']>('ECG Monitor');
     const [deviceModel, setDeviceModel] = useState('');
     const [deviceSerialNumber, setDeviceSerialNumber] = useState('');
     const [quantity, setQuantity] = useState(1);
     const [reasoning, setReasoning] = useState('');
-    const [status, setStatus] = useState<MedicalDeviceRequestData['status']>('Pending');
     const [notes, setNotes] = useState('');
     const [department, setDepartment] = useState('');
 
     const [showConfirmation, setShowConfirmation] = useState(false);
+
+    const [directoryList, setDirectoryList] = useState<string[]>([""]);
+    const [directory, setDirectory] = useState<string>("");
+    const [deliverDate, setDeliverDate] = useState('');
+    const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
+
+    useEffect(() => {
+        const fetchDirectoryList = async () => {
+            try {
+                const data = await getDirectory(mgbHospitals.indexOf(location) + 1);
+                const names = data.map((item: DirectoryRequestByBuilding) => item.deptName);
+                setDirectoryList(names);
+            } catch (error) {
+                console.error('Error fetching building names:', error);
+            }
+        };
+        fetchDirectoryList();
+        console.log('Updated Directory list');
+    }, [location, directory]);
+
+    useEffect(() => {
+        const fetchEmployeeList = async () => {
+            try {
+                const data = await getEmployeeNameIds();
+                setEmployeeList(data); // list of employee names
+            } catch (e) {
+                console.error('Error fetching employee list:', e);
+            }
+        }
+        fetchEmployeeList();
+        console.log(employeeList);
+    }, [])
+
+
 
     useEffect(() => {
         if (showConfirmation) {
@@ -73,26 +107,30 @@ const MedicalDeviceServiceRequestPage = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        const formattedDate = new Date(deliverDate).toISOString();
         const newRequest: MedicalDeviceRequestData = {
-            employeeName: employeeName,
             employeeId: employeeId,
             requestDate: requestDate,
-            priority: priority as 'Low' | 'Medium' | 'High' | 'Emergency',
-            location: location as 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place',
-            device: device as 'ECG Monitor' | 'Vital Signs Monitor' | 'Pulse Oximeter' |
-                'Infusion Pump' | 'Syringe Pump' | 'Defibrillator' |
-                'Ventilator' | 'Nebulizer' | 'Anesthesia Machine' |
-                'Wheelchair' | 'IV Stand' | 'Suction Machine' |
-                'Warming Blanket System' | 'Oxygen Concentrator' | 'Portable Suction Unit' | 'Crash Cart',
+            priority: priority as priorityType,
+            location: location as mgbHospitalType,
+            device: device as medicalDeviceType,
             deviceModel: deviceModel,
             deviceSerialNumber: deviceSerialNumber,
             quantity: quantity,
             deviceReasoning: reasoning,
-            status: status as 'Pending' | 'In Progress' | 'Completed' | 'Cancelled',
             notes: notes,
             department: department,
+            deliverDate: formattedDate,
         }
-        SubmitMedicalDeviceRequest(newRequest);
+        if(editData) {
+            const editRequest: editMedicalDeviceRequest = {
+                medicalDeviceRequest: newRequest,
+                requestId: editData.requestId
+            }
+            EditMedicalDeviceRequest(editRequest);
+        }else {
+            SubmitMedicalDeviceRequest(newRequest);
+        }
         setShowConfirmation(true);
         handleReset();
     };
@@ -112,10 +150,25 @@ const MedicalDeviceServiceRequestPage = () => {
         setDeviceSerialNumber('');
         setQuantity(0);
         setReasoning('');
-        setStatus('Pending');
         setNotes('');
         setDepartment('');
     };
+
+    useEffect(() => {
+        if(editData){
+            setEmployeeName(editData.employeeId.toString());
+            setEmployeeId(editData.employeeId);
+            setPriority(editData.priority);
+            setLocation(editData.medicalDeviceRequest.location as mgbHospitalType);
+            setMedicalDevice(editData.medicalDeviceRequest.device);
+            setDeviceModel(editData.medicalDeviceRequest.deviceModel);
+            setDeviceSerialNumber(editData.medicalDeviceRequest.deviceSerialNumber);
+            setQuantity(0);
+            setReasoning(editData.medicalDeviceRequest.deviceReasoning);
+            setNotes(editData.comments);
+            setDepartment(editData.medicalDeviceRequest.department);
+        }
+    }, []);
 
     return (
         <div className="flex flex-col justify-center items-center min-h-screen">
@@ -131,77 +184,44 @@ const MedicalDeviceServiceRequestPage = () => {
                     <form onSubmit={handleSubmit} className={"space-y-6"}>
                         <div>
                             <h3 className="text-xl font-semibold mb-4">
-                                <b>Requester Information</b>
+                                <b>Assign Employee</b>
                             </h3>
-                            <div className="flex flex-col gap-2">
-                                <div className="flex items-center gap-2">
-                                    <InputElement
-                                        label={"Requester Name "}
-                                        type={"text"}
-                                        id={"employeeName"}
-                                        placeholder={"Please enter your full name"}
-                                        value={employeeName}
-                                        onChange={(e) => setEmployeeName(e.target.value)}
-                                        required={true}
-                                    />
-                                </div>
-
-                                <div className="flex items-center gap-2">
-                                    <InputElement
-                                        label={"Requester ID "}
-                                        type={"text"}
-                                        id={"employeeID"}
-                                        placeholder={"Please enter your ID"}
+                            <div className="flex flex-row gap-2">
+                                <div className='flex flex-row gap-2'>
+                                    <label className='w=1/4'>Employee: </label>
+                                    <select
+                                        onChange={(e) => {
+                                            setEmployeeId(Number(e.target.value));
+                                        }}
                                         value={employeeId}
-                                        onChange={(e) => setEmployeeId(Number(e.target.value))}
-                                        required={true}
-                                    />
-                                </div>
-
-                                <div className="flex items-center gap-2">
-                                    <InputElement
-                                        label={"Request Date "}
-                                        type={"datetime-local"}
-                                        id={"date"}
-                                        value={requestDate}
-                                        onChange={(e) => setRequestDate(e.target.value)}
-                                        required={true}
-                                    />
+                                        className='w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300'
+                                    >
+                                        {employeeList.map((employee) => (
+                                            <option key={employee.employeeId} value={employee.employeeId}>
+                                                {employee.employeeName}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
                             </div>
                         </div>
-
                         <div>
                             <h3 className="text-xl font-semibold mb-4">
                                 <b>Medical Device Information</b>
                             </h3>
                             <div className={"flex flex-col gap-2"}>
                                 <div className="flex flex-col gap-2">
-                                    <div className="flex items-center gap-2">
-                                        <label className="w-1/4">Medical Device</label>
-                                        <select
-                                            id={"device"}
-                                            value={device}
-                                            onChange={(e) => setMedicalDevice(e.target.value as MedicalDeviceType)}
-                                            required={true}
-                                            className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                        >
-                                            <option value="">Select Device</option>
-                                            {['ECG Monitor', 'Vital Signs Monitor', 'Pulse Oximeter', 'Infusion Pump', 'Syringe Pump',
-                                                'Defibrillator', 'Ventilator', 'Nebulizer', 'Anesthesia Machine',
-                                                'Wheelchair', 'IV Stand', 'Suction Machine', 'Warming Blanket System',
-                                                'Oxygen Concentrator', 'Portable Suction Unit', 'Crash Cart'].map(
-                                                    (medicalDevices) => (
-                                                        <option
-                                                            key={`medicalDevices-${medicalDevices}`}
-                                                            value={medicalDevices}
-                                                        >
-                                                            {medicalDevices}
-                                                        </option>
-                                                    )
-                                            )}
-                                        </select>
-                                    </div>
+                                    <SelectFormElement
+                                        label = 'MedicalDevice'
+                                        id = 'medicalDevice'
+                                        value = {device}
+                                        onChange = {(e) =>
+                                            setMedicalDevice(e.target.value as medicalDeviceType)
+                                        }
+                                        required
+                                        options = {medicalDevices}
+                                        placeholder = 'Select Medical Device'
+                                    />
                                 </div>
 
                                 <div className="flex flex-col gap-2">
@@ -269,87 +289,64 @@ const MedicalDeviceServiceRequestPage = () => {
                                 <h3 className="text-xl font-semibold mb-4 mt-3">
                                     <b>Request Details</b>
                                 </h3>
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Location</label>
-                                    <select
-                                        id="location"
-                                        value={location}
-                                        onChange={(e) => setLocation(e.target.value as location)}
-                                        required
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    >
-                                        <option value="">Select Location</option>
-                                        {['Chestnut Hill', '20 Patriot Place', '22 Patriot Place'].map(
-                                            (location) => (
-                                                <option
-                                                    key={`location-${location}`}
-                                                    value={location}
-                                                >
-                                                    {location}
-                                                </option>
-                                            )
-                                        )}
-                                    </select>
-                                </div>
                             <div className="flex flex-col pt-2">
-                                <div className="flex items-center gap-2">
-                                    <InputElement
-                                        id="department"
-                                        name="department"
-                                        label="Department: "
-                                        placeholder="Please enter the department"
-                                        required={true}
-                                        type="text"
-                                        value={department}
-                                        onChange={(e) => setDepartment(e.target.value)}
+                                <div className="flex flex-col pt-2">
+                                    <SelectFormElement
+                                        label = 'Hospital'
+                                        id = 'location'
+                                        value = {location}
+                                        onChange = {(e) =>
+                                            setLocation(e.target.value as mgbHospitalType)
+                                        }
+                                        required
+                                        options = {mgbHospitals}
+                                        placeholder = 'Select Hospital'
                                     />
                                 </div>
                             </div>
+
+                            {/*Department Dropdown*/}
                             <div className="flex flex-col pt-2">
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Status</label>
-                                    <select
-                                        id="status"
-                                        value={status}
-                                        onChange={(e) => setStatus(e.target.value as status)}
-                                        required
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    >
-                                        <option value="">Select Status</option>
-                                        {['Pending', 'In Progress', 'Completed', 'Cancelled'].map(
-                                            (status) => (
-                                                <option
-                                                    key={`status-${status}`}
-                                                    value={status}
-                                                >
-                                                    {status}
-                                                </option>
-                                            )
-                                        )}
-                                    </select>
-                                </div>
+                                <SelectFormElement
+                                    label = 'Department'
+                                    id = 'department'
+                                    value = {department}
+                                    onChange = {(e) =>
+                                        setDepartment(e.target.value)
+                                    }
+                                    required
+                                    options = {directoryList}
+                                    placeholder = 'Select Department'
+                                />
                             </div>
 
                             <div className="flex flex-col pt-2">
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Priority</label>
-                                    <select
-                                        id="priority"
-                                        value={priority}
-                                        onChange={(e) =>
-                                            setPriority(
-                                                e.target.value as priority
-                                            )
+                                <div className="flex flex-col pt-2">
+                                    <SelectFormElement
+                                        label = 'Priority'
+                                        id = 'priority'
+                                        value = {priority}
+                                        onChange = {(e) =>
+                                            setPriority(e.target.value as priorityType)
                                         }
                                         required
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    >
-                                        <option value="Low">Low</option>
-                                        <option value="Medium">Medium</option>
-                                        <option value="High">High</option>
-                                        <option value="Emergency">Emergency</option>
-                                    </select>
+                                        options = {priorityArray}
+                                        placeholder = 'Select Priority'
+                                    />
                                 </div>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                                <InputElement
+                                    id="date"
+                                    name="date"
+                                    label="Delivery By: "
+                                    placeholder="Please choose a date to deliver:"
+                                    required={true}
+                                    type="datetime-local"
+                                    value={deliverDate}
+                                    onChange={(e) => setDeliverDate(e.target.value)}
+                                />
                             </div>
                         </div>
 
