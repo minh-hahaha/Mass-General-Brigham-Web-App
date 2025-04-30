@@ -1,12 +1,12 @@
-import FloorSelector from '@/components/FloorSelector.tsx';
+import FloorSelector from '@/components/MapUI/FloorSelector.tsx';
 import { useState, useEffect } from 'react';
 import { ROUTES } from 'common/src/constants.ts';
 import axios from 'axios';
 import TextToSpeechMapComponent from '@/components/TextToSpeechMapComponent.tsx';
 import {myEdge, myNode} from 'common/src/classes/classes.ts';
-import OverlayComponent from '@/components/OverlayMapComponent.tsx';
+import OverlayComponent from '@/components/MapUI/OverlayMapComponent.tsx';
 import { GetNode } from '@/database/getDepartmentNode.ts';
-import DisplayPathComponent from '@/components/DisplayPathComponent.tsx';
+import DisplayPathComponent from '@/components/MapUI/DisplayPathComponent.tsx';
 
 const ChestnutHillBounds = {
     southWest: { lat: 42.32543670863917, lng: -71.15022693442262 }, // Bottom-left corner
@@ -202,6 +202,9 @@ interface Props {
     endNodeId: string;
     selectedAlgorithm: string;
     currentFloorId: string | undefined;
+    onFloorChange?: (floorId: string) => void;
+
+
     visible: boolean;
     driveDirections: string;
     drive2Directions: string[];
@@ -209,18 +212,25 @@ interface Props {
 }
 
 const HospitalMapComponent = ({
-                                  startNodeId,
-                                  endNodeId,
-                                  selectedAlgorithm,
-                                  currentFloorId,
-                                  visible,
-                                  driveDirections,
-                                  drive2Directions,
-                                  showTextDirections,
-                              }: Props) => {
+    startNodeId,
+    endNodeId,
+    selectedAlgorithm,
+    currentFloorId,
+    onFloorChange,
+    visible,
+    driveDirections,
+    drive2Directions,
+    showTextDirections,
+}: Props) => {
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
     const [startNode, setStartNode] = useState<myNode>();
     const [endNode, setEndNode] = useState<myNode>();
+    const [textSpeech, setTextSpeech] = useState<HTMLElement | null>(null);
+
+    const [destinationFloorId, setDestinationFloorId] = useState<string | undefined>();
+    const [showDestinationFloorAlert, setShowDestinationFloorAlert] = useState<boolean>(false);
+
+
     const [startFloor, setStartFloor] = useState<Floor>();
     const [directions1, setDirections1] = useState('');
     const [directions11, setDirections11] = useState<string[]>([]);
@@ -240,12 +250,18 @@ const HospitalMapComponent = ({
         fetchNode();
     }, [startNodeId, endNodeId]);
 
+    // Find path and text directions
     useEffect(() => {
         const getMyPaths = async () => {
             if (startNode && endNode) {
                 try {
                     const result = await FindPath(startNode, endNode, selectedAlgorithm);
                     setBFSPath(result);
+
+                    highlightDestinationFloor(result);
+
+
+                    // text directions
                     const [textDirection, icons] = createTextPath(result);
                     setIconsToPass(icons);
                     setDirections1(textDirection.join('<br><br>'));
@@ -261,14 +277,64 @@ const HospitalMapComponent = ({
         getMyPaths();
     }, [startNode, endNode, selectedAlgorithm]);
 
+    // function to highlight the destination floor
+    const highlightDestinationFloor = (path: myNode[]) => {
+        if (!path || path.length === 0) return;
+
+        // get last node info
+        const destination = path[path.length - 1];
+        const destinationBuildingId = destination.buildingId;
+        const destinationFloorNumber = destination.floor;
+
+        // Find the corresponding floor ID
+        const destinationFloor = availableFloors.find(
+            f => f.buildingId === destinationBuildingId && f.floor === destinationFloorNumber
+        );
+
+        if (destinationFloor && destinationFloor.id !== currentFloorId) {
+            setDestinationFloorId(destinationFloor.id);
+            setShowDestinationFloorAlert(true);
+
+            // pass back to directions map component
+            if (onFloorChange) {
+                onFloorChange(destinationFloor.id);
+            }
+
+            //hide
+            setTimeout(() => {
+                setShowDestinationFloorAlert(false);
+            }, 3000);
+        } else {
+            setShowDestinationFloorAlert(false);
+        }
+    };
+
+    // Get destination floor name for alert
+    const getDestinationFloorName = () => {
+        if (!destinationFloorId) return "";
+
+        const floor = availableFloors.find(f => f.id === destinationFloorId);
+        if (!floor) return "";
+
+        return `Floor ${floor.floor}`;
+    };
+
+    // auto-select floor id for start node
     useEffect(() => {
         if (bfsPath.length > 0 && startNode) {
             const startFloor = availableFloors.find(
                 (f) => f.buildingId === startNode.buildingId && f.floor === startNode.floor
             );
-            if (startFloor) setStartFloor(startFloor);
+            if (startFloor) {
+                setStartFloor(startFloor);
+            }
         }
     }, [bfsPath, startNode]);
+
+
+
+    // seperate out current floor for PP and CH
+    // Get the current Patriot Place floor data
 
     const getCurrentPatriotPlaceFloor = () => {
         let floorId = currentFloorId;
@@ -288,10 +354,15 @@ const HospitalMapComponent = ({
     };
 
     const getCurrentFloorInfo = () => {
-        if (!currentFloorId) return { buildingId: '1', floor: '1' };
-        const currentFloor = availableFloors.find((f) => f.id === currentFloorId);
-        if (!currentFloor) return { buildingId: '1', floor: '1' };
-        return { buildingId: currentFloor.buildingId, floor: currentFloor.floor };
+        if (!currentFloorId) return { buildingId: "1", floor: "1" };
+
+        const currentFloor = availableFloors.find(f => f.id === currentFloorId);
+        if (!currentFloor) return { buildingId: "1", floor: "1" };
+
+        return {
+            buildingId: currentFloor.buildingId,
+            floor: currentFloor.floor
+        };
     };
 
     const { buildingId, floor } = getCurrentFloorInfo();
@@ -308,17 +379,36 @@ const HospitalMapComponent = ({
                 />
             )}
 
-            <div className="relative w-full h-full">
-                <OverlayComponent bounds={ChestnutHillBounds} imageSrc={"/CH01.svg"} />
-                <OverlayComponent bounds={PatriotPlaceBounds} imageSrc={patriotPlaceFloor.svgPath} />
-                <OverlayComponent bounds={FaulknerBounds} imageSrc={'/FK01.svg'} />
-                <OverlayComponent bounds={BWHBounds} imageSrc={'/BWH02.svg'} />
-                {visible && (
-                    <DisplayPathComponent
-                        coordinates={GetPolylinePath(getCurrentFloorPath(buildingId, floor))}
-                    />
-                )}
-            </div>
+            {/* Destination Floor Alert */}
+            {showDestinationFloorAlert && destinationFloorId && (
+                <div className="fixed top-20 right-6 bg-mgbblue text-white p-4 rounded-lg shadow-lg z-50 animate-bounce">
+                    <p className="font-bold">Destination Floor</p>
+                    <p>Your destination is on {getDestinationFloorName()}</p>
+                </div>
+            )}
+
+
+        <div className="relative w-full h-full">
+            <OverlayComponent
+                bounds={ChestnutHillBounds}
+                imageSrc={"/CH01.svg"}
+            />
+            <OverlayComponent
+                bounds={PatriotPlaceBounds}
+                imageSrc={patriotPlaceFloor.svgPath}
+            />
+            <OverlayComponent
+                bounds={FaulknerBounds}
+                imageSrc={'/FK01.svg'}
+            />
+            <OverlayComponent
+                bounds={BWHBounds}
+                imageSrc={'/BWH02.svg'}
+            />
+            {visible &&
+            <DisplayPathComponent coordinates={GetPolylinePath(getCurrentFloorPath(buildingId, floor))} />
+            }
+        </div>
         </>
     );
 };
