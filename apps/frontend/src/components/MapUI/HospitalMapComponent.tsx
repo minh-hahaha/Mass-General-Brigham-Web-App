@@ -1,12 +1,12 @@
-import FloorSelector from '@/components/FloorSelector.tsx';
+import FloorSelector from '@/components/MapUI/FloorSelector.tsx';
 import { useState, useEffect } from 'react';
 import { ROUTES } from 'common/src/constants.ts';
 import axios from 'axios';
 import TextToSpeechMapComponent from '@/components/TextToSpeechMapComponent.tsx';
 import {myEdge, myNode} from 'common/src/classes/classes.ts';
-import OverlayComponent from '@/components/OverlayMapComponent.tsx';
+import OverlayComponent from '@/components/MapUI/OverlayMapComponent.tsx';
 import { GetNode } from '@/database/getDepartmentNode.ts';
-import DisplayPathComponent from '@/components/DisplayPathComponent.tsx';
+import DisplayPathComponent from '@/components/MapUI/DisplayPathComponent.tsx';
 
 const ChestnutHillBounds = {
     southWest: { lat: 42.32543670863917, lng: -71.15022693442262 }, // Bottom-left corner

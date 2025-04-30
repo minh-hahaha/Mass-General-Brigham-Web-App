@@ -1,7 +1,7 @@
 import NodeEditorComponent from '@/components/NodeEditorComponent.tsx';
 import { APIProvider, Map, RenderingType } from '@vis.gl/react-google-maps';
-import OverlayComponent from "@/components/OverlayMapComponent.tsx";
-import FloorSelector from "@/components/FloorSelector.tsx";
+import OverlayComponent from "@/components/MapUI/OverlayMapComponent.tsx";
+import FloorSelector from "@/components/MapUI/FloorSelector.tsx";
 import {useState} from "react";
 
 

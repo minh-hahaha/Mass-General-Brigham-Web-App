@@ -12,7 +12,7 @@ import { ROUTES } from 'common/src/constants.ts';
 import TagFilterBox from '@/elements/TagFilterBox.tsx';
 import {getDirectory} from "@/database/gettingDirectory.ts";
 import {GetNode} from "@/database/getDepartmentNode.ts";
-import FloorSelector from "@/components/FloorSelector.tsx";
+import FloorSelector from "@/components/MapUI/FloorSelector.tsx";
 
 
 // A container for a Node on the map

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
 import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google-maps';
-import HospitalMapComponent from '@/components/HospitalMapComponent';
+import HospitalMapComponent from '@/components/MapUI/HospitalMapComponent.tsx';
 import {ZoomIn } from 'lucide-react';
 
 import {
@@ -10,9 +10,9 @@ import {
 import { GetRecentOrigins, RecentOrigin } from '@/database/recentOrigins.ts';
 
 import AlgorithmSelector from '@/components/AlgorithmSelector.tsx';
-import DisplayPathComponent from "@/components/DisplayPathComponent.tsx";
+import DisplayPathComponent from "@/components/MapUI/DisplayPathComponent.tsx";
 import MapSidebarComponent from "@/components/MapUI/MapSidebarComponent.tsx";
-import FloorSelector from "@/components/FloorSelector.tsx";
+import FloorSelector from "@/components/MapUI/FloorSelector.tsx";
 
 const HospitalLocations: Record<string, {lat: number, lng: number, zoom: number}> = {
     'Chestnut Hill Healthcare Center': {lat: 42.32597821672779, lng: -71.15010553538171, zoom: 19.5},
