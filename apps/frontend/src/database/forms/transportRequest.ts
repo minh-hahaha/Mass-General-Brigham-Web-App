@@ -49,6 +49,9 @@ export interface incomingRequest {
         hazardLevel:         'None' | 'Sharp' | 'Biohazard';
         disposalRequired:    boolean;
         completeBy:          string;
+        sanitationDepartmentId: string;
+        sanitationLocationId: string;
+        sanitationRoomNumber: number;
     },
     medicalDeviceRequest: {
         device: string;
@@ -64,6 +67,7 @@ export interface incomingRequest {
         maintenanceType: string;
         maintenanceDescription: string;
         maintenanceHospital: 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital'
+        maintenanceDepartment: string;
         maintenanceLocation: string;
         maintenanceTime: string;
         employeeName: string;

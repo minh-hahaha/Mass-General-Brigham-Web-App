@@ -87,6 +87,16 @@ model TranslationRequest {
   department    String
   duration      Int
 }
+model Sanitation {
+  servReqId              Int            @id
+  sanitationLocationId   String
+  sanitationDepartmentId String
+  sanitationRoomNumber   Int
+  sanitationType         String
+  hazardLevel            String
+  completeBy             DateTime
+  servRequestId          ServiceRequest @relation(name: "ServiceSanitation", fields: [servReqId], references: [requestId])
+}
 
 model Department {
   deptId          Int        @id @default(autoincrement())
@@ -129,16 +139,7 @@ model Edge {
   nodeFrom Node   @relation("NodeToEdgeFrom", fields: [from], references: [nodeId])
 }
 
-model Sanitation {
-  servReqId              Int            @id
-  sanitationLocationId   String
-  sanitationDepartmentId String
-  sanitationRoomNumber   Int
-  sanitationType         String
-  hazardLevel            String
-  completeBy             DateTime
-  servRequestId          ServiceRequest @relation(name: "ServiceSanitation", fields: [servReqId], references: [requestId])
-}
+
 
 model RecentOrigins {
   location String @id
