@@ -558,46 +558,50 @@ const MapSidebarComponent = ({
                 {/*Parking Lot Choosing*/}
                 {travelMode === 'DRIVING' && (
                     <div className="mb-6">
-                        <p className="mb-2 text-sm text-codGray text-center font-bold">
-                            Where did you park?
-                        </p>
-                        <div className="grid grid-cols-3 gap-2 mb-4">
-                            {['A', 'B', 'C'].map((lot) => (
-                                <button
-                                    key={lot}
-                                    onClick={() =>
-                                        handleLotSelect(
-                                            `${
-                                                selectedHospital.id === 1
-                                                    ? 'CH'
-                                                    : selectedHospital.id === 3
-                                                      ? 'FK'
-                                                      : selectedHospital.id === 2
-                                                        ? 'PP' 
-                                                        : "BWH"
-                                            }_${lot}`
-                                        )
-                                    }
-                                    className={clsx(
-                                        'py-1 rounded-sm transition',
-                                        selectedLot ===
-                                            `${
-                                                selectedHospital.id === 1
-                                                    ? 'CH'
-                                                    : selectedHospital.id === 3
-                                                        ? 'FK'
-                                                        : selectedHospital.id === 2
-                                                            ? 'PP'
-                                                            : "BWH"
-                                            }_${lot}`
-                                            ? 'bg-mgbblue text-white'
-                                            : 'bg-white text-codGray border border-mgbblue hover:bg-mgbblue hover:text-white'
-                                    )}
-                                >
-                                    Lot {lot}
-                                </button>
-                            ))}
-                        </div>
+                        {(selectedHospital.id !== 4 &&
+                            <div>
+                                <p className="mb-2 text-sm text-codGray text-center font-bold">
+                                Where did you park?
+                                </p>
+                                <div className="grid grid-cols-3 gap-2 mb-4">
+                                    {['A', 'B', 'C'].map((lot) => (
+                                        <button
+                                            key={lot}
+                                            onClick={() =>
+                                                handleLotSelect(
+                                                    `${
+                                                        selectedHospital.id === 1
+                                                            ? 'CH'
+                                                            : selectedHospital.id === 3
+                                                                ? 'FK'
+                                                                : selectedHospital.id === 2
+                                                                    ? 'PP'
+                                                                    : "BWH"
+                                                    }_${lot}`
+                                                )
+                                            }
+                                            className={clsx(
+                                                'py-1 rounded-sm transition',
+                                                selectedLot ===
+                                                `${
+                                                    selectedHospital.id === 1
+                                                        ? 'CH'
+                                                        : selectedHospital.id === 3
+                                                            ? 'FK'
+                                                            : selectedHospital.id === 2
+                                                                ? 'PP'
+                                                                : "BWH"
+                                                }_${lot}`
+                                                    ? 'bg-mgbblue text-white'
+                                                    : 'bg-white text-codGray border border-mgbblue hover:bg-mgbblue hover:text-white'
+                                            )}
+                                        >
+                                            Lot {lot}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
 
