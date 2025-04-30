@@ -236,6 +236,8 @@ const HospitalMapComponent = ({
     const [directions11, setDirections11] = useState<string[]>([]);
     const [iconsToPass, setIconsToPass] = useState<string[]>([]);
 
+    console.log("startNodeId - ", startNodeId);
+    console.log("endNodeId - ", endNodeId);
     useEffect(() => {
         const fetchNode = async () => {
             try {
