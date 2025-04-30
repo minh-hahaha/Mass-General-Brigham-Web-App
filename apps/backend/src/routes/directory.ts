@@ -27,6 +27,7 @@ DIRECTORY_FILTER_OPTIONS.push({
     ],
 });
 DIRECTORY_FILTER_OPTIONS.push({ building: { buildingName: 'Faulkner Hospital' } });
+DIRECTORY_FILTER_OPTIONS.push({ building: { buildingName: 'Main Hospital' } });
 
 // GET Send Data
 router.get('/', async function (req: Request, res: Response) {
