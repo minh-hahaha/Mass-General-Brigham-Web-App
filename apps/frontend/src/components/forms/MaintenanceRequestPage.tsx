@@ -18,10 +18,11 @@ import {employeeNameId, getEmployee, getEmployeeNameIds, getEmployeeNames} from 
 
 // Component definition
 const MaintenanceRequestPage = () => {
-    const loggedIn = sessionStorage.getItem('loggedIn');
-    if (!loggedIn) {
-        window.location.href = '/';
-    }
+   // TODO: CHECK ADMIN AGAIN
+    // const loggedIn = sessionStorage.getItem('loggedIn');
+    // if (!loggedIn) {
+    //     window.location.href = '/';
+    // }
 
     // Maintenance Information
     const [maintenanceType, setMaintenanceType] = useState('');
