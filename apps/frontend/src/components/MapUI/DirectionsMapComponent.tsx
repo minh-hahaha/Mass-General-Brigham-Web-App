@@ -28,7 +28,7 @@ const BuildingIDMap: Record<string, number> = {
     'Brigham and Women\'s Main Hospital': 4
 };
 
-type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING' | '';
+type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
 
 // floor type
 interface Floor {
@@ -63,11 +63,11 @@ interface Coordinate {
 const DirectionsMapComponent = () => {
     const map = useMap();
     const routesLibrary = useMapsLibrary('routes');
-    const [fromLocation, setFromLocation] = useState('DRIVING');
+    const [fromLocation, setFromLocation] = useState('');
     const [toLocation, setToLocation] = useState(''); // coordinates of the hospital
     const [toHospital, setToHospital] = useState(''); // name of the hospital
 
-    const [travelMode, setTravelMode] = useState<TravelModeType>('');
+    const [travelMode, setTravelMode] = useState<TravelModeType>('DRIVING');
     const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>([]);
     const [distance, setDistance] = useState('');
     const [duration, setDuration] = useState('');
@@ -230,12 +230,10 @@ const DirectionsMapComponent = () => {
     // draw route
     const calculateRoute = () => {
         if (!directionsRenderer || !directionsService) return;
-
-
         directionsRenderer.setMap(map);
-
         const googleTravelMode =
             google.maps.TravelMode[travelMode as keyof typeof google.maps.TravelMode];
+
         directionsService
             .route({
                 origin: fromLocation,
@@ -267,10 +265,29 @@ const DirectionsMapComponent = () => {
             });
     };
 
-    const clearRoute = () =>{
+    const clearRoute = () => {
         if (!directionsRenderer) return;
+
+        // First set the map to null to clear the route
         directionsRenderer.setMap(null);
-    }
+
+        // Create a minimal valid DirectionsResult object
+        const emptyResult = {
+            routes: [],
+            geocoded_waypoints: [],
+            request: {} as google.maps.DirectionsRequest
+        } as google.maps.DirectionsResult;
+
+        // Reset the directions with valid empty result
+        directionsRenderer.setDirections(emptyResult);
+
+        // Reset the route info
+        setShowRouteInfo(false);
+        setDistance('');
+        setDuration('');
+        setTextDirections('No destination/start selected');
+        setText2Directions([]);
+    };
 
 
     const handleZoomToHospital = () => {
@@ -313,14 +330,15 @@ const DirectionsMapComponent = () => {
     }
 
     const handleDirectionRequest = (from: string, to: string, toHospital: string, mode: TravelModeType) => {
+        console.log("Direction request received:", from, to, toHospital, mode);
+
+        clearRoute()
+
         setFromLocation(from);
         setToLocation(to);
         setTravelMode(mode);
-
         setToHospital(toHospital);
 
-        // Use setTimeout to ensure state updates have been processed
-        setTimeout(() => {
             if (mode === 'DRIVING') {
                 setParking(true);
             } else {
@@ -328,15 +346,15 @@ const DirectionsMapComponent = () => {
                 setLot('');
             }
 
-            // Make sure the map is clear before recalculating
-            if (directionsRenderer) {
-                directionsRenderer.setMap(null);
-            }
+            // // Make sure the map is clear before recalculating
+            // if (directionsRenderer) {
+            //     directionsRenderer.setMap(null);
+            // }
 
-            // Now calculate the route with the updated values
-            calculateRoute();
-        }, 100);
+            setTimeout(() => {
+                calculateRoute();
 
+            },300)
     };
 
     const handleFindDepartment = () =>{
@@ -417,7 +435,7 @@ const DirectionsMapComponent = () => {
     }, [lot, buildingID]);
 
 
-    const handleBack =(currentStep: string) => {
+    const handleBack = (currentStep: string) => {
         if (currentStep === "DEPARTMENT") {
             setPathVisible(false);
             clearParking();
