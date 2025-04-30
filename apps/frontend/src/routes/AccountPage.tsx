@@ -69,6 +69,7 @@ const AccountPage = () => {
         async function fetchDetails() {
             try {
                 const token = await getAccessTokenSilently();
+                console.log("TOKEN", token); // Check it looks like a valid JWT (three parts)
                 const data = await getAccount(token); // pass token here
                 setDetails(data);
             } catch (error) {
@@ -86,6 +87,7 @@ const AccountPage = () => {
         async function fetchSummary() {
             try {
                 const token = await getAccessTokenSilently();
+                console.log("TOKEN", token); // Check it looks like a valid JWT (three parts)
                 const { statusSummary, prioritySummary } = await getServiceSummary(token); // pass token
                 setStatusChartData(mapToChartData(statusSummary));
                 setPriorityChartData(mapToChartData(prioritySummary));

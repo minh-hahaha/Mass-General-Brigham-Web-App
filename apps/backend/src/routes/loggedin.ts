@@ -1,7 +1,9 @@
 import express, { Router, Request, Response } from 'express';
 import PrismaClient from '../bin/prisma-client';
+import { checkJwt } from '../routes/auth.ts';
 
 const router: Router = express.Router();
+router.use(checkJwt);
 
 // Protected route to get logged-in employee info
 router.get('/', async (req: Request, res: Response) => {

@@ -20,7 +20,6 @@ import originRouter from './routes/recentorigins.ts';
 import textToSpeechRouter from './routes/textToSpeech.ts';
 import loggedInRouter from './routes/loggedin.ts';
 import serviceSummaryRouter from './routes/servicesummary.ts';
-import { checkJwt } from './routes/auth.ts';
 import buildingRouter from './routes/building.ts';
 
 import { ROUTES } from 'common/src/constants';
@@ -94,8 +93,8 @@ app.use(ROUTES.RECENT_ORIGINS, originRouter);
 app.use(ROUTES.TTS, textToSpeechRouter);
 
 //Account
-app.use(ROUTES.LOGGEDIN, checkJwt, loggedInRouter);
-app.use(ROUTES.SERVICESUMMARY, checkJwt, serviceSummaryRouter);
+app.use(ROUTES.LOGGEDIN, loggedInRouter);
+app.use(ROUTES.SERVICESUMMARY, serviceSummaryRouter);
 
 /**
  * Catch all 404 errors, and forward them to the error handler

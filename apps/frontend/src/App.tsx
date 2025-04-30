@@ -26,6 +26,7 @@ function App() {
     const defaultOpen = Cookies.get('sidebar_state') === 'true';
     const domain = import.meta.env.VITE_AUTH0_DOMAIN;
     const clientID = import.meta.env.VITE_AUTH0_CLIENT_ID;
+    const audience = import.meta.env.VITE_AUTH0_AUDIENCE
 
     return (
         <Auth0Provider
@@ -33,7 +34,8 @@ function App() {
             domain={domain}
             authorizationParams={{
                 redirect_uri: window.location.origin,
-                scope: 'openid profile email'
+                scope: 'openid profile email',
+                audience: audience,
             }}
             cacheLocation="localstorage"
             onRedirectCallback={() => (window.location.href = '/MapPage')}
