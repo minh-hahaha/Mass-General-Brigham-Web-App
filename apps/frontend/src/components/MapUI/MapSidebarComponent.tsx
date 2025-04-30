@@ -54,21 +54,20 @@ const hospitals = [
         name: "Brigham and Women's Faulkner Hospital",
         address: '1153 Centre St, Jamaica Plain, MA 02130',
         defaultParking: { lat: 42.30110395876755, lng: -71.12754584282733 },
-        noneParking: { lat: 1, lng: 1 },
+        noneParking: { lat: 42.30115920549337,lng: -71.1276378759752},
         phoneNumber: '(617) 983-7000',
         hours: 'Open 24 hours',
         image: '/HospitalCards/FaulknerHospitalCard.jpg',
         description: 'Very Cool Faulkner Hospital',
         coordinates: {lat: 42.301684739524546, lng: -71.12816396084828, zoom: 18},
         voiceSearchKeywords: ['faulkner hospital', 'faulkner'],
-
     },
     {
         id: 4,
         name: "Brigham and Women's Main Hospital",
         address: '75 Francis St, Boston, MA 02115',
-        defaultParking: { lat: 42.33597732454244, lng: -71.10722288414479 },
-        noneParking: { lat: 1, lng: 1 },
+        defaultParking: { lat: 42.335379397690076,lng: -71.10618363603308 },
+        noneParking: { lat: 42.33539581679885, lng: -71.10609959004725 },
         phoneNumber: '(617) 732-5500',
         hours: 'Open 24 hours',
         image: '/HospitalCards/MGBMainCard.jpeg',
@@ -186,7 +185,7 @@ const MapSidebarComponent = ({
             }
             setTimeout(() => {
                 onDirectionsRequest(fromLocation, destination, selectedHospital.name, mode);
-            }, 100);
+            }, 300);
         }
     };
 
@@ -244,8 +243,10 @@ const MapSidebarComponent = ({
             onClickingBack(currentStep);
             updateStep('HOSPITAL_DETAIL');
             setShowLine(false);
+            setTravelMode("DRIVING")
         } else if (currentStep === 'DEPARTMENT') {
             onClickingBack(currentStep);
+            setSelectedLot('')
             updateStep('DIRECTIONS');
         }
     };
@@ -581,8 +582,10 @@ const MapSidebarComponent = ({
                                                 selectedHospital.id === 1
                                                     ? 'CH'
                                                     : selectedHospital.id === 3
-                                                      ? 'FK'
-                                                      : 'PP'
+                                                        ? 'FK'
+                                                        : selectedHospital.id === 2
+                                                            ? 'PP'
+                                                            : "BWH"
                                             }_${lot}`
                                             ? 'bg-mgbblue text-white'
                                             : 'bg-white text-codGray border border-mgbblue hover:bg-mgbblue hover:text-white'

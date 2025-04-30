@@ -1,15 +1,28 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
 
 interface ButtonProps {
-    onClick: () => void;
+    onClick?: () => void;
+    onTravelModeClick?: (mode: TravelModeType) => void;
+    travelMode?: TravelModeType;
     children: React.ReactNode;
     variant: 'primary' | 'secondary'; // primary is BLUE, secondary is YELLOW
     disabled?: boolean;
     className?: string;
 }
 
-const MGBButton = ({ onClick, children, variant, disabled, className }: ButtonProps) => {
+const MGBButton = ({ onClick,onTravelModeClick, travelMode, children, variant, disabled, className }: ButtonProps) => {
+    const handleClick = () => {
+        // If onTravelModeClick and travelMode are provided, call that function
+        if (onTravelModeClick && travelMode) {
+            onTravelModeClick(travelMode);
+        }
+        // Otherwise call the regular onClick if provided
+        else if (onClick) {
+            onClick();
+        }
+    };
     return (
         <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
             <button
