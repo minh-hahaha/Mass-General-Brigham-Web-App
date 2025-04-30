@@ -175,13 +175,13 @@ const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
                             </h3>
                             <div className="flex flex-row gap-2">
                                 <div className='flex flex-row gap-2'>
-                                    <label className='w=1/4'>Employee: </label>
+                                    <label>Employee </label>
                                     <select
                                         onChange={(e) => {
                                             setEmployeeId(Number(e.target.value));
                                         }}
                                         value={employeeId}
-                                        className='w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300'
+                                        className='ml-15 w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300'
                                     >
                                         {employeeList.map((employee) => (
                                             <option key={employee.employeeId} value={employee.employeeId}>
