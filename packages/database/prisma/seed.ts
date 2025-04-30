@@ -942,277 +942,316 @@ async function main() {
                 "nodeId": "FKFloor1Room"
             },
             {
-                "deptId": 113,
-                "deptName": "Brigham Circle Medical Associates (BCMA)",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 114,
-                "deptName": "Brigham Medical Specialties / Schuster Transplant",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 115,
-                "deptName": "Center for Weight Management & Metabolic Surgery",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 116,
-                "deptName": "Endocrine - Diabetes",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 117,
-                "deptName": "Gastroenterology & Hepatology",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 118,
-                "deptName": "Genetics & Genomics Medicine",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 119,
-                "deptName": "Kidney / Pancreas Transplant",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 120,
-                "deptName": "Kidney Medicine",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 121,
-                "deptName": "Nutrition",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 122,
-                "deptName": "Chest Diseases, Center for",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 123,
-                "deptName": "Comprehensive Breast Health Center",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
                 "deptId": 124,
+                "deptServices": "N/A",
                 "deptName": "Dental Group / Oral Medicine",
                 "buildingId": 5,
                 "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 125,
-                "deptName": "Ear, Nose and Throat (ENT)",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 126,
-                "deptName": "Echocardiography Lab (ECHO)",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 127,
-                "deptName": "Electrophysiology",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 128,
-                "deptName": "International Patient Center / Executive Health",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
+                "nodeId": "BWFloor2Room_2"
             },
             {
                 "deptId": 129,
+                "deptServices": "N/A",
                 "deptName": "Jen Center for Primary Care",
                 "buildingId": 5,
                 "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 130,
-                "deptName": "Lung Center",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 131,
-                "deptName": "Orthopedics",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 132,
-                "deptName": "Plastic & Reconstructive Surgery",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 133,
-                "deptName": "Podiatry",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 134,
-                "deptName": "Rheumatology",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 135,
-                "deptName": "Thoracic Surgery Clinic",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 136,
-                "deptName": "Watkins Cardiovascular Clinic",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 137,
-                "deptName": "Weiner Center for Pre-Op Evaluation",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 138,
-                "deptName": "Bornstein Amphitheater",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 139,
-                "deptName": "Boston Children's Hospital, Bridge to",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 140,
-                "deptName": "Cafeteria",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 141,
-                "deptName": "Carrie Hall Conference Room",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 142,
-                "deptName": "Patient Financial Registration",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 143,
-                "deptName": "Pharmacy",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
-            },
-            {
-                "deptId": 144,
-                "deptName": "Radiation Procedural Check-in",
-                "buildingId": 5,
-                "deptPhone": "N/A",
-                "deptServices": "N/A"
+                "nodeId": "BWFloor2Room_4"
             },
             {
                 "deptId": 145,
+                "deptServices": "N/A",
                 "deptName": "Shapiro Family Center",
                 "buildingId": 5,
                 "deptPhone": "N/A",
-                "deptServices": "N/A"
+                "nodeId": "BWFloor2Room_5"
             },
             {
-                "deptId": 146,
-                "deptName": "Ambulatory Radiology (X-ray & CT scan)",
+                "deptId": 143,
+                "deptServices": "N/A",
+                "deptName": "Pharmacy",
                 "buildingId": 5,
                 "deptPhone": "N/A",
-                "deptServices": "N/A"
+                "nodeId": "BWFloor2Room_6"
             },
             {
-                "deptId": 147,
-                "deptName": "Breast Imaging, Lee Bell Center",
+                "deptId": 135,
+                "deptServices": "N/A",
+                "deptName": "Thoracic Surgery Clinic",
                 "buildingId": 5,
                 "deptPhone": "N/A",
-                "deptServices": "N/A"
+                "nodeId": "BWFloor2Room_8"
+            },
+            {
+                "deptId": 122,
+                "deptServices": "N/A",
+                "deptName": "Chest Diseases, Center for",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Room_9"
+            },
+            {
+                "deptId": 132,
+                "deptServices": "N/A",
+                "deptName": "Plastic & Reconstructive Surgery",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Room_10"
+            },
+            {
+                "deptId": 137,
+                "deptServices": "N/A",
+                "deptName": "Weiner Center for Pre-Op Evaluation",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Room_13"
+            },
+            {
+                "deptId": 136,
+                "deptServices": "N/A",
+                "deptName": "Watkins Cardiovascular Clinic",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Room_14"
             },
             {
                 "deptId": 148,
+                "deptServices": "N/A",
                 "deptName": "Endoscopy",
                 "buildingId": 5,
                 "deptPhone": "N/A",
-                "deptServices": "N/A"
+                "nodeId": "BWFloor2Room_15"
             },
             {
-                "deptId": 149,
-                "deptName": "Mammography",
+                "deptId": 142,
+                "deptServices": "N/A",
+                "deptName": "Patient Financial Registration",
                 "buildingId": 5,
                 "deptPhone": "N/A",
-                "deptServices": "N/A"
+                "nodeId": "BWFloor2Room_19"
             },
             {
-                "deptId": 150,
-                "deptName": "Phlebotomy, Outpatient",
+                "deptId": 125,
+                "deptServices": "N/A",
+                "deptName": "Ear, Nose and Throat (ENT)",
                 "buildingId": 5,
                 "deptPhone": "N/A",
-                "deptServices": "N/A"
+                "nodeId": "BWFloor2Room_20"
+            },
+            {
+                "deptId": 147,
+                "deptServices": "N/A",
+                "deptName": "Breast Imaging, Lee Bell Center",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Room_21"
+            },
+            {
+                "deptId": 123,
+                "deptServices": "N/A",
+                "deptName": "Comprehensive Breast Health Center",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Room_22"
+            },
+            {
+                "deptId": 140,
+                "deptServices": "N/A",
+                "deptName": "Cafeteria",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Room_23"
+            },
+            {
+                "deptId": 113,
+                "deptServices": "N/A",
+                "deptName": "Brigham Circle Medical Associates (BCMA)",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Room_25"
+            },
+            {
+                "deptId": 141,
+                "deptServices": "N/A",
+                "deptName": "Carrie Hall Conference Room",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Room_27"
+            },
+            {
+                "deptId": 130,
+                "deptServices": "N/A",
+                "deptName": "Lung Center",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Hallway_52"
+            },
+            {
+                "deptId": 114,
+                "deptServices": "N/A",
+                "deptName": "Brigham Medical Specialties / Schuster Transplant",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Room_17"
             },
             {
                 "deptId": 151,
+                "deptServices": "N/A",
                 "deptName": "Shapiro Procedural Check-in",
                 "buildingId": 5,
                 "deptPhone": "N/A",
-                "deptServices": "N/A"
+                "nodeId": "BWFloor2Room_24"
+            },
+            {
+                "deptId": 128,
+                "deptServices": "N/A",
+                "deptName": "International Patient Center / Executive Health",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Hallway_52"
+            },
+            {
+                "deptId": 119,
+                "deptServices": "N/A",
+                "deptName": "Kidney / Pancreas Transplant",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Hallway_52"
+            },
+            {
+                "deptId": 139,
+                "deptServices": "N/A",
+                "deptName": "Boston Children's Hospital, Bridge to",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Hallway_52"
+            },
+            {
+                "deptId": 134,
+                "deptServices": "N/A",
+                "deptName": "Rheumatology",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Hallway_52"
+            },
+            {
+                "deptId": 121,
+                "deptServices": "N/A",
+                "deptName": "Nutrition",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Hallway_52"
+            },
+            {
+                "deptId": 115,
+                "deptServices": "N/A",
+                "deptName": "Center for Weight Management & Metabolic Surgery",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Hallway_52"
+            },
+            {
+                "deptId": 117,
+                "deptServices": "N/A",
+                "deptName": "Gastroenterology & Hepatology",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Hallway_52"
+            },
+            {
+                "deptId": 126,
+                "deptServices": "N/A",
+                "deptName": "Echocardiography Lab (ECHO)",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Hallway_52"
+            },
+            {
+                "deptId": 120,
+                "deptServices": "N/A",
+                "deptName": "Kidney Medicine",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Hallway_52"
+            },
+            {
+                "deptId": 150,
+                "deptServices": "N/A",
+                "deptName": "Phlebotomy, Outpatient",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Hallway_52"
+            },
+            {
+                "deptId": 133,
+                "deptServices": "N/A",
+                "deptName": "Podiatry",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Hallway_52"
+            },
+            {
+                "deptId": 127,
+                "deptServices": "N/A",
+                "deptName": "Electrophysiology",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Hallway_52"
+            },
+            {
+                "deptId": 118,
+                "deptServices": "N/A",
+                "deptName": "Genetics & Genomics Medicine",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Hallway_52"
+            },
+            {
+                "deptId": 116,
+                "deptServices": "N/A",
+                "deptName": "Endocrine - Diabetes",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Hallway_52"
+            },
+            {
+                "deptId": 131,
+                "deptServices": "N/A",
+                "deptName": "Orthopedics",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Hallway_52"
+            },
+            {
+                "deptId": 138,
+                "deptServices": "N/A",
+                "deptName": "Bornstein Amphitheater",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Hallway_52"
+            },
+            {
+                "deptId": 149,
+                "deptServices": "N/A",
+                "deptName": "Mammography",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Hallway_52"
+            },
+            {
+                "deptId": 146,
+                "deptServices": "N/A",
+                "deptName": "Ambulatory Radiology (X-ray & CT scan)",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Hallway_52"
+            },
+            {
+                "deptId": 144,
+                "deptServices": "N/A",
+                "deptName": "Radiation Procedural Check-in",
+                "buildingId": 5,
+                "deptPhone": "N/A",
+                "nodeId": "BWFloor2Hallway_52"
             }
         ],
         skipDuplicates: true,
