@@ -3,18 +3,17 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LogoBar from './components/LogoBar.tsx';
 import LoginPage from './routes/LoginPage.tsx';
 import HomePage from './routes/HomePage.tsx';
-import TransportationRequestPage from './routes/TransportationRequestPage.tsx';
+import TransportationRequestPage from './components/forms/TransportationRequestPage.tsx';
 import ServiceRequestDisplayPage from './routes/ServiceRequestDisplayPage.tsx';
 import DirectoryDisplayPage from './routes/DirectoryDisplayPage.tsx';
 import ImportExportDirectoryPage from './routes/ImportExportDirectoryPage.tsx';
-import SanitationRequestPage from './routes/SanitationRequestComponent.tsx';
-import TransportRequestPage from './routes/TransportationRequestPage.tsx';
-import TranslationServiceRequestPage from './routes/TranslationServiceRequestPage.tsx';
-import MedicalDeviceServiceRequestPage from './routes/MedicalDeviceServiceRequestPage.tsx';
-import { MapPage } from '@/routes/MapPage.tsx';
-import MapViewPage from '@/routes/MapViewPage.tsx';
-import MaintenanceRequestPage from '@/routes/MaintenanceRequestPage.tsx';
-import Cookies from 'js-cookie';
+import SanitationRequestPage from './components/forms/SanitationRequestComponent.tsx';
+import TranslationServiceRequestPage from './components/forms/TranslationServiceRequestPage.tsx';
+import MedicalDeviceServiceRequestPage from './components/forms/MedicalDeviceServiceRequestPage.tsx'
+import {MapPage} from "@/routes/MapPage.tsx";
+import MapViewPage from "@/routes/MapViewPage.tsx";
+import MaintenanceRequestPage from "@/components/forms/MaintenanceRequestPage.tsx";
+import Cookies from "js-cookie";
 import NodeEditor from '@/routes/NodeEditor.tsx';
 import AboutPage from '@/routes/AboutPage.tsx';
 import {Auth0Provider} from "@auth0/auth0-react";
@@ -49,17 +48,16 @@ function App() {
                                 <Route path="/Login" element={<LoginPage />} />
                                 <Route path="/Home" element={<HomePage />} />
                                 <Route
-                                    path="/TransportationRequestPage"
-                                    element={<TransportRequestPage />}
-                                />
-                                <Route
                                     path="/ServiceRequestDisplay"
                                     element={<ServiceRequestDisplayPage />}
                                 />
                                 <Route
                                     path="/ImportExportDirectory"
                                     element={
-                                        <ImportExportDirectoryPage jsonRoute={ROUTES.DIRECTORY_JSON} csvRoute={ROUTES.DIRECTORY_CSV} />
+                                        <ImportExportDirectoryPage
+                                            jsonRoute={ROUTES.DIRECTORY_JSON}
+                                            csvRoute={ROUTES.DIRECTORY_CSV}
+                                        />
                                     }
                                 />
                                 <Route
@@ -72,43 +70,35 @@ function App() {
 
                                 <Route
                                     path="/TranslationServiceRequestPage"
-                                    element={<TranslationServiceRequestPage />}
+                                    element={<TranslationServiceRequestPage editData={undefined} />}
                                 />
 
                                 <Route
                                     path="/SanitationRequest"
-                                    element={<SanitationRequestPage />}
-                                />
-                                <Route
-                                    path="/SanitationRequest"
-                                    element={<SanitationRequestPage />}
+                                    element={<SanitationRequestPage editData={undefined} />}
                                 />
 
-                                    <Route
-                                        path="/MaintenancePage"
-                                        element={<MaintenanceRequestPage />}
-                                    />
-                                    <Route
-                                        path="/TransportationRequestPage"
-                                        element={<TransportationRequestPage />}
-                                    />
-                                    <Route
-                                        path={'/MedicalDevicePage'}
-                                        element={<MedicalDeviceServiceRequestPage />}
-                                    />
-                                    <Route
-                                        path="/AboutPage"
-                                        element={<AboutPage />}
-                                    />
-                                    <Route
-                                        path="/CreditsPage"
-                                        element={<CreditsPage />}
-                                    />
-                                </Routes>
-                            </main>
-                        </div>
-                    </BrowserRouter>
-                </div>
+                                <Route
+                                    path="/MaintenancePage"
+                                    element={<MaintenanceRequestPage editData={undefined} />}
+                                />
+                                <Route
+                                    path="/TransportationRequestPage"
+                                    element={<TransportationRequestPage editData={undefined} />}
+                                />
+                                <Route
+                                    path={'/MedicalDevicePage'}
+                                    element={
+                                        <MedicalDeviceServiceRequestPage editData={undefined} />
+                                    }
+                                />
+                                <Route path="/AboutPage" element={<AboutPage />} />
+                                <Route path="/CreditsPage" element={<CreditsPage />} />
+                            </Routes>
+                        </main>
+                    </div>
+                </BrowserRouter>
+            </div>
         </Auth0Provider>
     );
 }
