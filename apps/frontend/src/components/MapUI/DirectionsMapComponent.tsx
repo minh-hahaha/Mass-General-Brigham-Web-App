@@ -50,6 +50,9 @@ const availableFloors: Floor[] = [
     { id: "PP-4", floor: "4", buildingId: "2", buildingName: "Patriot Place",svgPath: "/PP04.svg" },
 
     { id: "FK-1", floor: "1", buildingId: "3", buildingName: "Faulkner Hospital",svgPath: "/FK01.svg" },
+
+    { id: "BWH-2", floor: "2", buildingId: "4", buildingName: "Main Hospital",svgPath: "/BWH02.svg" },
+
 ];
 
 
@@ -438,6 +441,7 @@ const DirectionsMapComponent = () => {
     }, [lot, buildingID]);
 
 
+
     const handleBack = (currentStep: string) => {
         if (currentStep === "DEPARTMENT") {
             setPathVisible(false);
@@ -449,11 +453,12 @@ const DirectionsMapComponent = () => {
         }
         if (currentStep === "HOSPITAL_DETAIL") {
             setFromNodeId("")
+            setShowFloorSelector(false);
+            setBuildingID(0)
         }
         else{
             clearRoute();
             clearParking();
-            setShowFloorSelector(false);
         }
 
     }
