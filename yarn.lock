@@ -2681,6 +2681,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/recharts@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@types/recharts@npm:2.0.1"
+  dependencies:
+    recharts: "npm:*"
+  checksum: 10c0/d79ddc5c3b34864f4ae48d3678b9771fd0f274a55cdf5e424990010e4465e94f7da656df34280c1a1024de17fe66435b9dc7ffe94311baa4732d7a04d7ac38aa
+  languageName: node
+  linkType: hard
+
 "@types/request@npm:^2.48.12":
   version: 2.48.12
   resolution: "@types/request@npm:2.48.12"
@@ -8347,7 +8356,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"recharts@npm:^2.15.3":
+"recharts@npm:*, recharts@npm:^2.15.3":
   version: 2.15.3
   resolution: "recharts@npm:2.15.3"
   dependencies:
@@ -8957,6 +8966,7 @@ __metadata:
     "@types/node": "npm:^22.13.13"
     "@types/react": "npm:^19"
     "@types/react-dom": "npm:^19"
+    "@types/recharts": "npm:^2.0.1"
     "@vis.gl/react-google-maps": "npm:^1.5.2"
     "@vitest/ui": "npm:^3.0.9"
     "@yarnpkg/pnpify": "npm:^4.1.4"

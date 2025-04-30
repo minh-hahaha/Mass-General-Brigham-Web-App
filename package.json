@@ -27,6 +27,7 @@
     "@types/node": "^22.13.13",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/recharts": "^2.0.1",
     "@vitest/ui": "^3.0.9",
     "@yarnpkg/pnpify": "^4.1.4",
     "eslint": "^9.23.0",

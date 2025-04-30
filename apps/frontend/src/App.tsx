@@ -96,6 +96,7 @@ function App() {
                                 />
                                 <Route path="/AboutPage" element={<AboutPage />} />
                                 <Route path="/CreditsPage" element={<CreditsPage />} />
+                                <Route path="/AccountPage" element={<AccountPage />} />
                             </Routes>
                         </main>
                     </div>
