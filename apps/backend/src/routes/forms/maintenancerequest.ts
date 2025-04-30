@@ -36,7 +36,6 @@ router.post('/', async (req: Request, res: Response) => {
                     comments: req.body.notes,
                     priority: req.body.priority,
                     serviceType: 'Maintenance Request',
-                    // employeeName: req.body.employeeName,
                 },
             });
 

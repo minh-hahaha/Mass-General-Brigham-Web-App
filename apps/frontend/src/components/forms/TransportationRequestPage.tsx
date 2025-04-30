@@ -13,7 +13,7 @@ import {
     priorityType,
     mgbHospitals,
     hospitalTransportArray,
-    mgbHospitalType, priorityArray
+    mgbHospitalType, priorityArray, formatDateForEdit
 } from '@/database/forms/formTypes.ts'
 import SelectFormElement from "@/elements/SelectFormElement.tsx";
 import { employeeNameId, getEmployeeNameIds } from '@/database/getEmployee.ts';
@@ -116,6 +116,7 @@ const TransportRequestPage = ({editData}: RequestPageProps) => {
         setShowConfirmation(false);
     };
 
+
     useEffect(() => {
         if(editData){
             setPatientId(editData.patientTransport.patientId);
@@ -126,7 +127,7 @@ const TransportRequestPage = ({editData}: RequestPageProps) => {
             setDropoffLocation(editData.patientTransport.dropoffLocation);
             setNotes(editData.comments);
             setAssignedToId(0);
-            setTransportDate(editData.patientTransport.transportDate);
+            setTransportDate(formatDateForEdit(editData.patientTransport.transportDate));
             setEmployeeId(editData.employeeId);
         }
     }, []);
