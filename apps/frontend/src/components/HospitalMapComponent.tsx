@@ -188,21 +188,6 @@ async function FindPath(start: myNode, end: myNode, strategy: string) {
 }
 
 
-// displaying Text Directions
-let directions1: string;
-function setDirections(directions: string) {
-    directions1 = directions;
-}
-let directions11: string[];
-function setDirections2(directions: string[]) {
-    directions11 = directions;
-    console.log(directions11);
-}
-let iconsToPass:string[];
-function setIcons(icons: string[]) {
-    iconsToPass=icons;
-}
-
 function GetPolylinePath(path: myNode[]): { lat: number; lng: number }[] {
     return path.map((node) => ({
         lat: Number(node.x),
@@ -224,114 +209,77 @@ interface Props {
 }
 
 const HospitalMapComponent = ({
-    startNodeId,
-    endNodeId,
-    selectedAlgorithm,
-    currentFloorId,
-    visible,
-    driveDirections,
-    drive2Directions,
-    showTextDirections,
-}: Props) => {
+                                  startNodeId,
+                                  endNodeId,
+                                  selectedAlgorithm,
+                                  currentFloorId,
+                                  visible,
+                                  driveDirections,
+                                  drive2Directions,
+                                  showTextDirections,
+                              }: Props) => {
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
     const [startNode, setStartNode] = useState<myNode>();
     const [endNode, setEndNode] = useState<myNode>();
-    const [textSpeech, setTextSpeech] = useState<HTMLElement | null>(null);
-
     const [startFloor, setStartFloor] = useState<Floor>();
-    // console.log(startNodeId);
-    // console.log(endNodeId);
-    // console.log("currentFloorId at start " , currentFloorId);
+    const [directions1, setDirections1] = useState('');
+    const [directions11, setDirections11] = useState<string[]>([]);
+    const [iconsToPass, setIconsToPass] = useState<string[]>([]);
 
-    // get node using nodeId
     useEffect(() => {
         const fetchNode = async () => {
             try {
                 const start = await GetNode(startNodeId);
-                setStartNode(start);
                 const end = await GetNode(endNodeId);
+                setStartNode(start);
                 setEndNode(end);
             } catch (error) {
                 console.error('Error fetching building names:', error);
             }
         };
         fetchNode();
-
-        console.log('Got Department Node');
     }, [startNodeId, endNodeId]);
 
-    // Find path and text directions
     useEffect(() => {
         const getMyPaths = async () => {
             if (startNode && endNode) {
                 try {
                     const result = await FindPath(startNode, endNode, selectedAlgorithm);
-                    console.log('Path found:', result);
                     setBFSPath(result);
                     const [textDirection, icons] = createTextPath(result);
-                    setIcons(icons);
-                    const text = document.getElementById('text-directions');
-                    if (text) {
-                        //setTextSpeech(text);
-                        //console.log(text);
-                        console.log(textDirection);
-                        //console.log(textDirection.toString().replace(/,/g, '<br><br>'));
-                        text.innerHTML = textDirection.toString().replace(/,/g, '<br><br>');
-                        setDirections(text.innerHTML);
-                        console.log(text.innerHTML);
-                        setDirections2(text.innerHTML.split('<br><br>'));
-
-                    }
+                    setIconsToPass(icons);
+                    setDirections1(textDirection.join('<br><br>'));
+                    setDirections11(textDirection);
                 } catch (error) {
                     console.error('Error finding path:', error);
                     setBFSPath([]);
                 }
             } else {
-                // Clear path if no start/end nodes
                 setBFSPath([]);
             }
         };
         getMyPaths();
     }, [startNode, endNode, selectedAlgorithm]);
 
-    // auto-select floor id for start node
     useEffect(() => {
         if (bfsPath.length > 0 && startNode) {
             const startFloor = availableFloors.find(
                 (f) => f.buildingId === startNode.buildingId && f.floor === startNode.floor
             );
-            if (startFloor) {
-                setStartFloor(startFloor);
-            }
+            if (startFloor) setStartFloor(startFloor);
         }
     }, [bfsPath, startNode]);
 
-
-
-    // seperate out current floor for PP and CH
-    // Get the current Patriot Place floor data
-
     const getCurrentPatriotPlaceFloor = () => {
         let floorId = currentFloorId;
-        if (!floorId?.startsWith('PP-')) {
-            floorId = 'PP-1'; // Default to PP-1 if not a PP floor
-        }
-        // console.log("floorId here is " , floorId);
-        // Find the floor data
+        if (!floorId?.startsWith('PP-')) floorId = 'PP-1';
         return (
             availableFloors.find((f) => f.id === floorId) ||
             availableFloors.find((f) => f.id === 'PP-1')!
         );
     };
 
-    // const getChestnutHillFloor = () => {
-    //     return availableFloors.find((f) => f.id === 'CH-1')!;
-    // };
-    // const chestnutHillFloor = getChestnutHillFloor();
-
     const patriotPlaceFloor = getCurrentPatriotPlaceFloor();
-
-    // console.log("floor at pp " + patriotPlaceFloor.id);
 
     const getCurrentFloorPath = (buildingId: string, floorNumber: string) => {
         return bfsPath.filter(
@@ -340,22 +288,14 @@ const HospitalMapComponent = ({
     };
 
     const getCurrentFloorInfo = () => {
-        if (!currentFloorId) return { buildingId: "1", floor: "1" };
-
-        const currentFloor = availableFloors.find(f => f.id === currentFloorId);
-        if (!currentFloor) return { buildingId: "1", floor: "1" };
-
-        return {
-            buildingId: currentFloor.buildingId,
-            floor: currentFloor.floor
-        };
+        if (!currentFloorId) return { buildingId: '1', floor: '1' };
+        const currentFloor = availableFloors.find((f) => f.id === currentFloorId);
+        if (!currentFloor) return { buildingId: '1', floor: '1' };
+        return { buildingId: currentFloor.buildingId, floor: currentFloor.floor };
     };
 
     const { buildingId, floor } = getCurrentFloorInfo();
-    // console.log("buildingId" , buildingId);
-    // console.log("floor", floor);
-    //
-    // console.log("THE PATH ", GetPolylinePath(getCurrentFloorPath(buildingId, floor)));
+
     return (
         <>
             {showTextDirections && (
@@ -368,27 +308,29 @@ const HospitalMapComponent = ({
                 />
             )}
 
-        <div className="relative w-full h-full">
-            <OverlayComponent
-                bounds={ChestnutHillBounds}
-                imageSrc={"/CH01.svg"}
-            />
-            <OverlayComponent
-                bounds={PatriotPlaceBounds}
-                imageSrc={patriotPlaceFloor.svgPath}
-            />
-            <OverlayComponent
-                bounds={FaulknerBounds}
-                imageSrc={'/FK01.svg'}
-            />
-            <OverlayComponent
-                bounds={BWHBounds}
-                imageSrc={'/BWH02.svg'}
-            />
-            {visible &&
-            <DisplayPathComponent coordinates={GetPolylinePath(getCurrentFloorPath(buildingId, floor))} />
-            }
-        </div>
+            {visible && (
+                <div className="absolute top-50 z-10 -mt-2">
+                    <TextToSpeechMapComponent
+                        walkDirections={directions1}
+                        driveDirections={driveDirections}
+                        drive22Directions={drive2Directions}
+                        walk22Directions={directions11}
+                        icons={iconsToPass}
+                    />
+                </div>
+            )}
+
+            <div className="relative w-full h-full">
+                <OverlayComponent bounds={ChestnutHillBounds} imageSrc={"/CH01.svg"} />
+                <OverlayComponent bounds={PatriotPlaceBounds} imageSrc={patriotPlaceFloor.svgPath} />
+                <OverlayComponent bounds={FaulknerBounds} imageSrc={'/FK01.svg'} />
+                <OverlayComponent bounds={BWHBounds} imageSrc={'/BWH02.svg'} />
+                {visible && (
+                    <DisplayPathComponent
+                        coordinates={GetPolylinePath(getCurrentFloorPath(buildingId, floor))}
+                    />
+                )}
+            </div>
         </>
     );
 };
