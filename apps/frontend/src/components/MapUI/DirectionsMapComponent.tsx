@@ -383,8 +383,11 @@ const DirectionsMapComponent = () => {
 
     const handleBack =(currentStep: string) => {
         if (currentStep === "DEPARTMENT") {
-            setPathVisible(false)
+            setPathVisible(false);
             clearParking();
+        }
+        if (currentStep === "DIRECTIONS") {
+            setToLocation('');
         }
         else{
             clearRoute();
@@ -400,7 +403,7 @@ const DirectionsMapComponent = () => {
         <div className="flex w-screen h-screen">
             {/* LEFT PANEL */}
             <div className="relative flex items-start">
-                <aside className="relative top-6 left-6 z-10 w-[400px] max-h-[80vh] bg-white p-6 shadow-xl rounded-lg overflow-hidden flex flex-col">
+                <aside className="relative top-6 left-6 z-10 w-[400px] max-h-[80vh] bg-white p-6 rounded-t-lg rounded-r-lg rounded-l-lg overflow-hidden flex flex-col">
                     <MapSidebarComponent
                         onDirectionsRequest={handleDirectionRequest}
                         onHospitalSelect={handleHospitalSelect}
