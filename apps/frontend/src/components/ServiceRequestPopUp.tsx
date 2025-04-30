@@ -49,14 +49,14 @@ const HelpPopup: React.FC<HelpPopupProps> = ({ onClose }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-gray-300 bg-opacity-10 backdrop-blur-sm flex items-center justify-center z-50"
+            className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center"
             onClick={onClose}
         >
             <div
                 onClick={(e) => e.stopPropagation()}
-                className="bg-white bg-opacity-40 backdrop-blur-sm rounded-lg shadow-lg w-full max-w-3xl"
+                className="bg-white rounded-lg shadow-lg w-full max-w-3xl overflow-hidden"
             >
-                <div className="bg-mgbblue bg-opacity-70 backdrop-blur-sm text-white p-4 flex justify-between items-center rounded-t-lg">
+                <div className="bg-mgbblue text-white p-4 flex justify-between items-center rounded-t-lg">
                     <h2 className="text-xl font-semibold">{instructionPages[currentPage].title}</h2>
                     <button
                         onClick={onClose}
@@ -67,9 +67,9 @@ const HelpPopup: React.FC<HelpPopupProps> = ({ onClose }) => {
                     </button>
                 </div>
 
-                <div className="p-6 flex flex-col items-center">
+                <div className="p-6 bg-white flex flex-col items-center">
                     {instructionPages[currentPage].imagePath && (
-                        <div className="w-full h-80 rounded-md mb-4 flex items-center justify-center overflow-hidden">
+                        <div className="w-full h-96 rounded-md mb-4 flex items-center justify-center overflow-hidden">
                             <img
                                 src={instructionPages[currentPage].imagePath}
                                 alt={instructionPages[currentPage].title}
@@ -82,7 +82,7 @@ const HelpPopup: React.FC<HelpPopupProps> = ({ onClose }) => {
                     </p>
                 </div>
 
-                <div className="p-4 flex justify-between items-center border-t border-gray-200 border-opacity-30">
+                <div className="p-4 flex justify-between items-center border-t border-gray-200">
                     <MGBButton
                         variant="secondary"
                         onClick={goToPrevPage}
@@ -112,7 +112,6 @@ const HelpPopup: React.FC<HelpPopupProps> = ({ onClose }) => {
                         </MGBButton>
                     )}
                 </div>
-
             </div>
         </motion.div>
     );
