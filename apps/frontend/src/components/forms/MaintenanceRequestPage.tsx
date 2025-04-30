@@ -10,6 +10,7 @@ import InputElement from '@/elements/InputElement.tsx';
 import SelectElement from '@/elements/SelectElement.tsx';
 import {DirectoryRequestByBuilding, getDirectory} from "@/database/gettingDirectory.ts";
 import {
+    formatDateForEdit,
     maintenanceTypeArray,
     mgbHospitals,
     mgbHospitalType,
@@ -140,11 +141,12 @@ const MaintenanceRequestPage = ({editData}: RequestPageProps) => {
             setPriority(editData.priority);
             setMaintenanceHospital(editData.maintenanceRequest.maintenanceHospital);
             setMaintenanceLocation(editData.maintenanceRequest.maintenanceLocation);
-            setMaintenanceTime(editData.maintenanceRequest.maintenanceTime);
+            setMaintenanceTime(formatDateForEdit(editData.maintenanceRequest.maintenanceTime));
             setEmployeeId(editData.employeeId);
             setEmployeeName('');
             setNotes(editData.comments);
             setLocationId(editData.locationId);
+
         }
     }, []);
 

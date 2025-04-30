@@ -3,6 +3,7 @@ import MGBButton from '../../elements/MGBButton.tsx';
 import InputElement from "@/elements/InputElement.tsx";
 import {DirectoryRequestByBuilding, getDirectory} from '@/database/gettingDirectory.ts';
 import {
+    formatDateForEdit,
     hazardLevelArray,
     hazardLevelType,
     mgbHospitals,
@@ -154,7 +155,7 @@ const SanitationRequestPage = ({editData}: RequestPageProps) => {
             setComments(editData.comments);
             setSanitationType(editData.sanitation.sanitationType);
             setHazardLevel(editData.sanitation.hazardLevel as hazardLevelType);
-            setCompleteBy(editData.sanitation.completeBy);
+            setCompleteBy(formatDateForEdit(editData.sanitation.completeBy));
             setSanitation_location_id(editData.sanitation.sanitationLocationId ? editData.sanitation.sanitationLocationId.toString() : '');
             setSanitation_department_id('');
             setSanitation_roomNumber(editData.sanitation.sanitationRoomNumber ? editData.sanitation.sanitationRoomNumber : 0);
