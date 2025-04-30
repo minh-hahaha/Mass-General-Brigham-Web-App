@@ -568,7 +568,7 @@ const MapSidebarComponent = ({
                                                     ? 'CH'
                                                     : selectedHospital.id === 3
                                                       ? 'FK'
-                                                      : selectedHospital.id === 4
+                                                      : selectedHospital.id === 2
                                                         ? 'PP' 
                                                         : "BWH"
                                             }_${lot}`
