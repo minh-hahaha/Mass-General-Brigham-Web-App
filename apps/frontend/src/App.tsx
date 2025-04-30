@@ -80,36 +80,6 @@ function App() {
                                     element={<SanitationRequestPage editData={undefined} />}
                                 />
 
-                                    <Route
-                                        path="/MaintenancePage"
-                                        element={<MaintenanceRequestPage />}
-                                    />
-                                    <Route
-                                        path="/TransportationRequestPage"
-                                        element={<TransportationRequestPage />}
-                                    />
-                                    <Route
-                                        path={'/MedicalDevicePage'}
-                                        element={<MedicalDeviceServiceRequestPage />}
-                                    />
-                                    <Route
-                                        path="/AboutPage" 
-                                        element={<AboutPage />}
-                                    />
-                                    <Route
-                                        path="/CreditsPage"
-                                        element={<CreditsPage />}
-                                    />
-
-                                    <Route
-                                        path="/AccountPage"
-                                        element={<AccountPage />}
-                                    />
-                                </Routes>
-                            </main>
-                        </div>
-                    </BrowserRouter>
-                </div>
                                 <Route
                                     path="/MaintenancePage"
                                     element={<MaintenanceRequestPage editData={undefined} />}
