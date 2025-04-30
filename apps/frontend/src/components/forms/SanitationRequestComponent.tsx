@@ -134,7 +134,6 @@ const SanitationRequestPage = ({editData}: RequestPageProps) => {
         setRequest_time('');//done
         setLocation_id('');//done
         setComments('');//done
-        setRequest_date(new Date().toISOString());//done
         setEmployeeId(0);//done
         setSanitationType('');//done
         setHazardLevel('Low');//done
@@ -153,7 +152,6 @@ const SanitationRequestPage = ({editData}: RequestPageProps) => {
             setRequest_time('');
             setLocation_id(editData.locationId ? editData.locationId.toString() : '');
             setComments(editData.comments);
-            setRequest_date(editData.requestDate);
             setSanitationType(editData.sanitation.sanitationType);
             setHazardLevel(editData.sanitation.hazardLevel as hazardLevelType);
             setCompleteBy(editData.sanitation.completeBy);

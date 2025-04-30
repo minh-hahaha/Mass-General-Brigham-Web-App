@@ -18,10 +18,6 @@ import {
 } from "@/database/forms/medicalDeviceRequest.ts";
 import InputElement from "@/elements/InputElement.tsx";
 import MGBButton from "@/elements/MGBButton.tsx";
-import MGBButton from '../elements/MGBButton.tsx';
-import InputElement from '../elements/InputElement.tsx';
-import ConfirmMessageComponent from '../components/ConfirmMessageComponent.tsx';
-import { SubmitMedicalDeviceRequest } from '@/database/medicalDeviceRequest.ts';
 import HelpButton from "@/components/ServiceRequestHelp.tsx";
 
 
