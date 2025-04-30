@@ -121,8 +121,8 @@ const TextToSpeechMapComponent = ({
     };
 
     return (
-        <div className="absolute top-100 left-6 z-10">
-            <div className="p-5 shadow-md flex flex-col items-center space-y-4 w-100 z-10 bg-white rounded-b-lg">
+        <div className="absolute top-148 left-6 z-10">
+            <div className="p-5 shadow-md flex flex-col items-center space-y-4 w-100 z-10 bg-white rounded-lg">
                 {/* Horizontal Carousel Controls */}
                 <div className="flex items-center justify-between w-full space-x-4">
                     <button
@@ -134,9 +134,13 @@ const TextToSpeechMapComponent = ({
                     </button>
 
                     <div
-                        className="text-black text-center whitespace-pre-line break-words px-4 py-2 w-[300px]"
-                        dangerouslySetInnerHTML={{ __html: textDisplayList[counter] || '' }}
-                    ></div>
+                        className="w-[300px] h-[88px] px-4 py-2 flex items-center justify-center text-black text-center text-base"
+                    >
+                        <div
+                            className="whitespace-pre-line break-words"
+                            dangerouslySetInnerHTML={{ __html: textDisplayList[counter] || '' }}
+                        />
+                    </div>
 
                     <button
                         onClick={goRight}
