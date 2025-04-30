@@ -1279,7 +1279,7 @@ async function main() {
             },
             {
 
-                firstName: 'Test',
+                firstName: 'TestA',
                 middleName: 'A',
                 lastName: 'Person',
                 position: 'Surgeon',
@@ -1290,7 +1290,7 @@ async function main() {
             },
             {
 
-                firstName: 'Test',
+                firstName: 'TestB',
                 middleName: 'B',
                 lastName: 'Person',
                 position: 'Nurse',
@@ -1301,7 +1301,7 @@ async function main() {
             },
             {
 
-                firstName: 'Test',
+                firstName: 'TestC',
                 middleName: 'C',
                 lastName: 'Person',
                 position: 'Doctor',
@@ -1312,7 +1312,7 @@ async function main() {
             },
             {
 
-                firstName: 'Test',
+                firstName: 'TestD',
                 middleName: 'D',
                 lastName: 'Person',
                 position: 'Surgeon',
@@ -1323,7 +1323,7 @@ async function main() {
             },
             {
 
-                firstName: 'Test',
+                firstName: 'TestE',
                 middleName: 'E',
                 lastName: 'Person',
                 position: 'Nurse',
@@ -1336,15 +1336,150 @@ async function main() {
         skipDuplicates: true,
     });
 
-    const createManyServiceReqs = await client.serviceRequest.createMany({
+    // Create Service Requests (auto-incremented IDs assumed)
+    const createManyServiceRequests = await client.serviceRequest.createMany({
         data: [
+            {
+                employeeId: 0,
+                status: "Pending",
+                priority: "High",
+                serviceType: "Maintenance Request",
+            },
+            {
+                employeeId: 0,
+                status: "In Progress",
+                priority: "Medium",
+                serviceType: "Sanitation",
+            },
+            {
+                employeeId: 0,
+                status: "Completed",
+                priority: "Low",
+                serviceType: "Translation",
+            },
+            {
+                employeeId: 1,
+                status: "Pending",
+                priority: "High",
+                serviceType: "Patient Transportation",
+            },
+            {
+                employeeId: 2,
+                status: "Pending",
+                priority: "Medium",
+                serviceType: "Medical Device",
+            },
+            {
+                employeeId: 3,
+                status: "In Progress",
+                priority: "Low",
+                serviceType: "Maintenance Request",
+            },
+            {
+                employeeId: 0,
+                status: "Completed",
+                priority: "High",
+                serviceType: "Sanitation",
+            },
+        ],
+        skipDuplicates: true,
+    });
 
+// Create Maintenance Requests
+    const createMaintenanceRequests = await client.maintenanceRequest.createMany({
+        data: [
+            {
+                servMaintenanceId: 1,
+                maintenanceType: "Electrical",
+                maintenanceHospital: "Faulkner Hospital",
+                maintenanceTime: new Date("2025-01-10T10:30:00"),
+            },
+            {
+                servMaintenanceId: 6,
+                maintenanceType: "HVAC",
+                maintenanceHospital: "Chestnut Hill",
+                maintenanceTime: new Date("2025-03-12T15:45:00"),
+            },
+        ],
+        skipDuplicates: true,
+    });
+
+// Create Sanitation Requests
+    const createSanitationRequests = await client.sanitation.createMany({
+        data: [
+            {
+                servReqId: 2,
+                sanitationLocationId: "Faulkner Hospital",
+                sanitationDepartmentId: "Headache",
+                sanitationRoomNumber: 103,
+                sanitationType: "Chemical Spill Cleanup",
+                hazardLevel: "Moderate",
+                completeBy: new Date("2025-02-15T14:00:00"),
+            },
+            {
+                servReqId: 7,
+                sanitationLocationId: "Chestnut Hill",
+                sanitationDepartmentId: "Radiology, MRI/CT scan",
+                sanitationRoomNumber: 17,
+                sanitationType: "Biohazard Cleanup",
+                hazardLevel: "High",
+                completeBy: new Date("2025-01-28T13:20:00"),
+            },
+        ],
+        skipDuplicates: true,
+    });
+
+// Create Translation Requests
+    const createTranslationRequests = await client.translationRequest.createMany({
+        data: [
+            {
+                serviceReqId: 3,
+                patientId: 1234,
+                language: "Spanish",
+                typeMeeting: "On-site (In-Person)",
+                date: new Date("2025-03-01T09:00:00"),
+                location: "22 Patriot Place",
+                department: "Oncology",
+                duration: 30,
+            },
+        ],
+        skipDuplicates: true,
+    });
+
+// Create Patient Transport Requests
+    const createPatientTransportRequests = await client.patientTransport.createMany({
+        data: [
+            {
+                servReqId: 4,
+                patientId: 5678,
+                pickupLocation: "Chestnut Hill",
+                dropoffLocation: "22 Patriot Place",
+                transportType: "Ambulance (ALS)",
+                transportDate: new Date("2025-02-03T11:15:00"),
+            },
+        ],
+        skipDuplicates: true,
+    });
+
+// Create Medical Device Requests
+    const createMedicalDeviceRequests = await client.medicalDeviceRequest.createMany({
+        data: [
+            {
+                servReqId: 5,
+                device: "Crash Cart",
+                location: "20 Patriot Place",
+                deliverDate: new Date("2025-01-20T08:00:00"),
+            },
         ],
         skipDuplicates: true,
     });
 
 
-    console.log({ createManyDepartments, createManyBuildings , createManyEmployees , createManyServiceReqs});
+
+
+
+
+    console.log({ createManyDepartments, createManyBuildings , createManyEmployees , createManyServiceRequests, createMaintenanceRequests, createSanitationRequests, createTranslationRequests, createPatientTransportRequests, createMedicalDeviceRequests });
 }
 
 

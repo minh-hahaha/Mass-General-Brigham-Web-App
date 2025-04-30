@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {DirectoryRequestByBuilding, getDirectory} from "@/database/gettingDirectory.ts";
 import {
+    formatDateForEdit,
     medicalDevices,
     medicalDeviceType, meetingType, meetingTypeArray,
     mgbHospitals,
@@ -163,6 +164,7 @@ const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
             setReasoning(editData.medicalDeviceRequest.deviceReasoning);
             setNotes(editData.comments);
             setDepartment(editData.medicalDeviceRequest.department);
+            setDeliverDate(formatDateForEdit(editData.medicalDeviceRequest.deliverDate));
         }
     }, []);
 
