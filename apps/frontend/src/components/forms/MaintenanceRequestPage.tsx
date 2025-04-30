@@ -21,6 +21,7 @@ import SelectFormElement from "@/elements/SelectFormElement.tsx";
 import {employeeNameId, getEmployee, getEmployeeNameIds, getEmployeeNames} from "@/database/getEmployee.ts";
 import {RequestPageProps} from "@/routes/ServiceRequestDisplayPage.tsx";
 import {editMedicalDeviceRequest} from "@/database/forms/medicalDeviceRequest.ts";
+import HelpButton from "@/components/ServiceRequestHelp.tsx";
 
 // Component definition
 const MaintenanceRequestPage = ({editData}: RequestPageProps) => {
@@ -154,8 +155,15 @@ const MaintenanceRequestPage = ({editData}: RequestPageProps) => {
                 <div className="flex flex-col justify-center items-center min-h-screen">
                     {/* make the form left side */}
                     <div className="flex flex-col items-center rounded-2xl p-8 w-full max-w-[700px] mt-10 mb-10">
-                        <h1 className="text-[30px] font-bold mb-6">Maintenance Request</h1>
+                        <div className="flex items-center justify-center gap-2 mb-2">
+                            <h1 className="text-[30px] font-bold leading-none">Maintenance Request</h1>
+                            <div className="pt-[11.5px]">
+                                <HelpButton />
+                            </div>
+                        </div>
+                        <br />
                         <h2 className="text-[15px] font-semibold mb-6">Max Jeronimo and Haotian Liu</h2>
+
 
                         <div>
                             <form onSubmit={handleSubmit} className="space-y-6">
