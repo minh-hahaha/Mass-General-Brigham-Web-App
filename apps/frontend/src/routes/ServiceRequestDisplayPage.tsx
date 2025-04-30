@@ -70,7 +70,7 @@ export default function RequestTablesCarousel() {
     })();
 
     return (
-        <div>
+        <div className="bg-gray-200">
             <CarouselMenu tableTabs={tableTabs(setActiveForm, setEditData)} initialIndex={initialTabIndex} />
 
             {activeForm && (
