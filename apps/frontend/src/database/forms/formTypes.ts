@@ -14,6 +14,15 @@ export const splitDateTime = (dateTime: string) => {
     return { date, time };
 };
 
+
+export function formatDateForEdit(dateString: string): string {
+    const date = new Date(dateString);
+    const offset = date.getTimezoneOffset();
+    const localDate = new Date(date.getTime() - offset * 60 * 1000);
+    return localDate.toISOString().slice(0, 16); // gets YYYY-MM-DDTHH:MM
+}
+
+
 //Maintenance Request
 export type reqMaintenanceType =
     | "Routine Facility"

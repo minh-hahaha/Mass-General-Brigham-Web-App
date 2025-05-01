@@ -744,6 +744,141 @@ const FaulknerDirectory = ({ onImportClick }: { onImportClick: () => void }) => 
     );
 };
 
+const MainCampusDirectory = ({ onImportClick }: { onImportClick: () => void }) => {
+    const [filter, setShowFilters] = useState<boolean>(false);
+    const [filters, setFilters] = useState({
+        deptName: '',
+        deptServices: '',
+        building: '',
+        floor: '',
+        phone: '',
+    });
+    const [data, setData] = useState<DepartmentRequest[]>([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await GetDirectory('Ascending', 'Descending', 'Main Campus');
+                setData(result);
+            } catch (error) {
+                console.error('Failed to fetch directory data:', error);
+            }
+        };
+        fetchData();
+    }, []);
+
+    const filteredData = data.filter((department) => {
+        return (
+            (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
+            (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
+            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
+            (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
+        );
+    });
+    return (
+        <div className="flex">
+            {/* Fixed Sidebar */}
+            <div className="fixed top-0 left-0 h-screen w-75 bg-white border-r border-gray-300 p-4 flex flex-col gap-4 mt-10">
+                <h1 className="mt-10 font-black text-2xl">Filters</h1>
+                <div className="flex flex-col gap-3 mt-1">
+                    {/* Filter Inputs */}
+                    {/* Dept Name Input */}
+                    <div>
+                        <label className="block text-sm font-medium">Dept Name</label>
+                        <FaBuilding className="absolute mt-2 ml-1 text-codGray" size={15} />
+                        <input
+                            type="text"
+                            className="border border-mgbblue rounded-sm w-full p-1 px-6"
+                            placeholder="Filter department name"
+                            value={filters.deptName}
+                            onChange={(e) =>
+                                setFilters((prev) => ({ ...prev, deptName: e.target.value }))
+                            }
+                        />
+                    </div>
+
+                    {/* Services Input */}
+                    <div>
+                        <label className="block text-sm font-medium">Services</label>
+                        <FaTools className="absolute mt-2 ml-1 text-codGray" size={15} />
+                        <input
+                            type="text"
+                            className="border border-mgbblue rounded-sm w-full p-1 px-6"
+                            placeholder="Filter services"
+                            value={filters.deptServices}
+                            onChange={(e) =>
+                                setFilters((prev) => ({
+                                    ...prev,
+                                    deptServices: e.target.value,
+                                }))
+                            }
+                        />
+                    </div>
+
+                    {/* Floor Input */}
+                    <div>
+                        <label className="block text-sm font-medium">Floor</label>
+                        <TbStairsUp className="absolute mt-2 ml-1 text-codGray" size={15} />
+                        <input
+                            type="text"
+                            className="border border-mgbblue rounded-sm w-full p-1 px-6"
+                            placeholder="Filter floor"
+                            value={filters.floor}
+                            onChange={(e) =>
+                                setFilters((prev) => ({ ...prev, floor: e.target.value }))
+                            }
+                        />
+                    </div>
+
+                    {/* Phone Input */}
+                    <div>
+                        <label className="block text-sm font-medium">Phone</label>
+                        <FaPhoneAlt className="absolute mt-2 ml-1 text-codGray" size={15} />
+                        <input
+                            type="text"
+                            className="border border-mgbblue rounded-sm w-full p-1 px-6"
+                            placeholder="Filter phone"
+                            value={filters.phone}
+                            onChange={(e) =>
+                                setFilters((prev) => ({ ...prev, phone: e.target.value }))
+                            }
+                        />
+                    </div>
+                </div>
+
+                {/* Clear Filters Button */}
+                <div className="justify-start">
+                    <MGBButton
+                        onClick={() =>
+                            setFilters({
+                                deptName: '',
+                                deptServices: '',
+                                building: '',
+                                floor: '',
+                                phone: '',
+                            })
+                        }
+                        variant={'secondary'}
+                        className="py-2 px-4 rounded text-sm"
+                    >
+                        Clear Filters
+                    </MGBButton>
+                </div>
+
+                <div className="flex flex-col bg-gray-200 rounded-sm mt-3 pt-2">
+                    <h1 className="font-black text-lg ml-2">Import New Directory</h1>
+                    <ImportExportDirectoryPage csvRoute={ROUTES.DIRECTORY_CSV} jsonRoute={ROUTES.DIRECTORY_JSON} />
+                </div>
+            </div>
+
+            {/* Main Content (Table) */}
+            <div className="ml-75 w-full p-6 min-h-screen bg-gray-200">
+                <DirectoryTable data={filteredData} />
+            </div>
+        </div>
+    );
+};
+
+
 const DirectoryDisplayPage = () => {
     const [showImportModal, setShowImportModal] = useState(false);
     const [instructionVisible, setInstructionVisible] = useState(false);
@@ -780,6 +915,10 @@ const DirectoryDisplayPage = () => {
         {
             label: 'Faulkner',
             component: () => <FaulknerDirectory onImportClick={handleOpenImport} />,
+        },
+        {
+            label: 'Main Campus',
+            component: () => <MainCampusDirectory onImportClick={handleOpenImport} />,
         }
     ];
 

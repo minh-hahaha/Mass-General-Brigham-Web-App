@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
-import { GetSanitationRequest, incomingSanitationRequest } from '@/database/forms/sanitationRequest.ts';
+import {
+    GetSanitationRequest,
+    incomingSanitationRequest,
+} from '@/database/forms/sanitationRequest.ts';
 import {
     Table,
     TableBody,
@@ -9,10 +12,13 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table.tsx';
-import {motion} from 'framer-motion';
+import { motion } from 'framer-motion';
 import { employeeNameId, getEmployeeNameIds } from '@/database/getEmployee.ts';
-import MGBButton from "@/elements/MGBButton.tsx";
-import {incomingRequest} from "@/database/forms/transportRequest.ts";
+import MGBButton from '@/elements/MGBButton.tsx';
+import { incomingRequest } from '@/database/forms/transportRequest.ts';
+import { MdOutlinePriorityHigh } from 'react-icons/md';
+import { FaListCheck } from 'react-icons/fa6';
+import { FaSprayCan, FaBiohazard, FaCalendarAlt } from 'react-icons/fa';
 
 interface Props {
     setActiveForm: (
@@ -50,7 +56,7 @@ const TableSanitationRequest: React.FC<Props> = ({ setActiveForm, setEditData })
             setEmployeeList(data);
         }
         fetchEmployeeList();
-    }, [])
+    }, []);
 
     if (loading) {
         return <p>Loading Requests...</p>;
@@ -61,140 +67,202 @@ const TableSanitationRequest: React.FC<Props> = ({ setActiveForm, setEditData })
         const recurringText = req.sanitation.recurring ? 'yes' : 'no';
 
         return (
-            (!filters.priority || req.priority?.toLowerCase().includes(filters.priority.toLowerCase())) &&
+            (!filters.priority ||
+                req.priority?.toLowerCase().includes(filters.priority.toLowerCase())) &&
             (!filters.status || req.status?.toLowerCase().includes(filters.status.toLowerCase())) &&
-            (!filters.sanType || req.sanitation.sanitationType?.toLowerCase().includes(filters.sanType.toLowerCase())) &&
-            (!filters.hazard || req.sanitation.hazardLevel?.toLowerCase().includes(filters.hazard.toLowerCase())) &&
+            (!filters.sanType ||
+                req.sanitation.sanitationType
+                    ?.toLowerCase()
+                    .includes(filters.sanType.toLowerCase())) &&
+            (!filters.hazard ||
+                req.sanitation.hazardLevel?.toLowerCase().includes(filters.hazard.toLowerCase())) &&
             (!filters.completeBy || req.sanitation.completeBy?.startsWith(filters.completeBy))
         );
     });
 
     return (
         <>
-            <div className={`w-full flex flex-row justify-between px-10`}>
-                <div className="flex flex-row items-center gap-2 mt-2">
-                    <button
-                        onClick={() => setShowFilters((prev) => !prev)}
-                        className="bg-mgbblue hover:bg-blue-950 text-white px-9 py-3 rounded text-sm relative top-1"
-                    >
-                        Filters
-                    </button>
-                    {filter && (
-                        <motion.div
-                            initial={{ x: -30, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            exit={{ x: -30, opacity: 0 }}
-                            transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-                            className="relative left-[10px] rounded flex flex-row gap-5"
-                        >
-                            <div>
-                                <label className="block text-sm font-medium">Priority</label>
-                                <input
-                                    type="text"
-                                    className="border border-mgbblue rounded-sm w-20 p-1"
-                                    value={filters.priority}
-                                    onChange={(e) =>
-                                        setFilters({ ...filters, priority: e.target.value })
-                                    }
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium">Status</label>
-                                <input
-                                    type="text"
-                                    className="border border-mgbblue rounded-sm w-20 p-1"
-                                    value={filters.status}
-                                    onChange={(e) =>
-                                        setFilters({
-                                            ...filters,
-                                            status: e.target.value,
-                                        })
-                                    }
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium">Sanitation</label>
-                                <input
-                                    type="text"
-                                    className="border border-mgbblue rounded-sm w-30 p-1"
-                                    value={filters.sanType}
-                                    onChange={(e) =>
-                                        setFilters({ ...filters, sanType: e.target.value })
-                                    }
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium">Hazard Level</label>
-                                <input
-                                    type="text"
-                                    className="border border-mgbblue rounded-sm w-30 p-1"
-                                    value={filters.hazard}
-                                    onChange={(e) =>
-                                        setFilters({ ...filters, hazard: e.target.value })
-                                    }
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium">Request Date</label>
-                                <input
-                                    type="datetime-local"
-                                    className="border border-mgbblue rounded-sm w-35 p-1"
-                                    value={filters.completeBy}
-                                    onChange={(e) =>
-                                        setFilters({
-                                            ...filters,
-                                            completeBy: e.target.value,
-                                        })
-                                    }
-                                />
-                            </div>
-                        </motion.div>
-                    )}
+            <div className="fixed top-0 left-0 h-screen w-75 bg-white border-r border-gray-300 p-4 flex flex-col gap-4 mt-7">
+                <h1 className="mt-10 font-black text-2xl">Filters</h1>
+                <div className="flex flex-col gap-3">
+                    {/* Filter Inputs */}
+                    <div>
+                        <label className="block text-sm font-medium">Priority</label>
+                        <MdOutlinePriorityHigh
+                            className="absolute mt-2 ml-1 text-codGray"
+                            size={15}
+                        />
+                        <input
+                            type="text"
+                            className="border border-mgbblue rounded-sm w-full p-1 px-6"
+                            placeholder="Filter priority"
+                            value={filters.priority}
+                            onChange={(e) =>
+                                setFilters((prev) => ({
+                                    ...prev,
+                                    priority: e.target.value,
+                                }))
+                            }
+                        />
+                    </div>
+
+                    {/* rmNum Input */}
+                    <div>
+                        <label className="block text-sm font-medium">Status</label>
+                        <FaListCheck className="absolute mt-2 ml-1 text-codGray" size={15} />
+                        <input
+                            type="text"
+                            className="border border-mgbblue rounded-sm w-full p-1 px-6"
+                            placeholder="Filter status"
+                            value={filters.status}
+                            onChange={(e) =>
+                                setFilters((prev) => ({ ...prev, status: e.target.value }))
+                            }
+                        />
+                    </div>
+
+                    {/* status Input */}
+                    <div>
+                        <label className="block text-sm font-medium">Sanitation Type</label>
+                        <FaSprayCan className="absolute mt-2 ml-1 text-codGray" size={15} />
+                        <input
+                            type="text"
+                            className="border border-mgbblue rounded-sm w-full p-1 px-6"
+                            placeholder="Filter sanitation type"
+                            value={filters.sanType}
+                            onChange={(e) =>
+                                setFilters((prev) => ({ ...prev, sanType: e.target.value }))
+                            }
+                        />
+                    </div>
+
+                    {/* priority Input */}
+                    <div>
+                        <label className="block text-sm font-medium">Hazard</label>
+                        <FaBiohazard className="absolute mt-2 ml-1 text-codGray" size={15} />
+                        <input
+                            type="text"
+                            className="border border-mgbblue rounded-sm w-full p-1 px-6"
+                            placeholder="Filter hazard"
+                            value={filters.hazard}
+                            onChange={(e) =>
+                                setFilters((prev) => ({ ...prev, hazard: e.target.value }))
+                            }
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium">Complete By</label>
+                        <FaCalendarAlt className="absolute mt-2 ml-1 text-codGray" size={15} />
+                        <input
+                            type="datetime-local"
+                            className="border border-mgbblue rounded-sm w-full p-1 px-6"
+                            placeholder="Filter complete by"
+                            value={filters.completeBy}
+                            onChange={(e) =>
+                                setFilters((prev) => ({ ...prev, completeBy: e.target.value }))
+                            }
+                        />
+                    </div>
                 </div>
-                <div className="flex flex-row items-center gap-2 mt-2">
-                    <button
-                        onClick={() => setActiveForm('sanitation')}
-                        className="bg-mgbyellow hover:bg-yellow-600 text-codGray px-9 py-3 rounded text-sm relative top-1"
+
+                {/* Clear Filters Button */}
+                <div className="justify-start">
+                    <MGBButton
+                        onClick={() =>
+                            setFilters({
+                                priority: '',
+                                status: '',
+                                sanType: '',
+                                hazard: '',
+                                completeBy: '',
+                            })
+                        }
+                        variant={'secondary'}
+                        className="py-2 px-4 rounded text-sm"
                     >
-                        New Request +
-                    </button>
+                        Clear Filters
+                    </MGBButton>
+                </div>
+
+                <div className="flex flex-col bg-gray-200 rounded-sm pt-2 pb-5 px-3 mt-4">
+                    <h1 className="font-black text-lg ml-2">Create New Request</h1>
+                    <div className="flex flex-col items-center gap-2 mt-1 w-full">
+                        <button
+                            onClick={() => setActiveForm('sanitation')}
+                            className="bg-mgbblue hover:bg-blue-950 text-white px-4 py-4 mt-2 rounded text-sm w-full max-w-xs"
+                        >
+                            New Sanitation Request +
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div className="flex justify-center mt-3 px-4">
-                <div className="w-350 border border-gray-300 rounded-2xl shadow-md overflow-hidden bg-white">
-                    <Table>
-                        <TableHeader>
-                            <TableRow className="bg-gray-50">
-                                {/*
+            <div className="ml-38 w-full p-6 min-h-screen bg-gray-200">
+                <div className="flex justify-center">
+                    <div className="w-full max-w-6xl border border-gray-300 rounded-2xl shadow-md overflow-hidden bg-white">
+                        <Table>
+                            <TableHeader>
+                                <TableRow className="bg-fountainBlue hover:bg-fountainBlue">
+                                    {/*
                             completeBy: number
                             disposalRequired: boolean
                             hazardLevel: string
                             recurring: boolean
                             sanitationType: string*/}
-                                <TableHead className="w-20 text-center font-semibold py-3">Priority</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Status</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Sanitation Type</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Hazard Level</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3">Complete By Date</TableHead>
-                                <TableHead className="w-20 text-center font-semibold py-3"></TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {filteredRequests.map((req) => (
-                                <TableRow
-                                    key={req.requestId}
-                                    className="border-b hover:bg-gray-50"
-                                >
-                                    <TableCell className="text-center py-3">{req.priority}</TableCell>
-                                    <TableCell className="text-center py-3">{req.status}</TableCell>
-                                    <TableCell className="text-center py-3">{req.sanitation.sanitationType}</TableCell>
-                                    <TableCell className="text-center py-3">{req.sanitation.hazardLevel}</TableCell>
-                                    <TableCell className="text-center py-3">{req.sanitation.completeBy.split('T')[0]}</TableCell>
-                                    <TableCell className="text-center py-3"><MGBButton onClick={() => {setEditData(req); setActiveForm("sanitation")}} variant={'secondary'} children={'Edit'}/></TableCell>
+                                    <TableHead className="w-20 text-left font-semibold py-3">
+                                        Priority
+                                    </TableHead>
+                                    <TableHead className="w-20 text-left font-semibold py-3">
+                                        Status
+                                    </TableHead>
+                                    <TableHead className="w-20 text-left font-semibold py-3">
+                                        Sanitation Type
+                                    </TableHead>
+                                    <TableHead className="w-20 text-left font-semibold py-3">
+                                        Hazard Level
+                                    </TableHead>
+                                    <TableHead className="w-20 text-left font-semibold py-3">
+                                        Complete By Date
+                                    </TableHead>
+                                    <TableHead className="w-20 text-left font-semibold py-3"></TableHead>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                            </TableHeader>
+                            <TableBody>
+                                {filteredRequests.map((req) => (
+                                    <TableRow
+                                        key={req.requestId}
+                                        className="border-b hover:bg-gray-200 odd:bg-gray-100"
+                                    >
+                                        <TableCell className="text-left py-3">
+                                            {req.priority}
+                                        </TableCell>
+                                        <TableCell className="text-left py-3">
+                                            {req.status}
+                                        </TableCell>
+                                        <TableCell className="text-left py-3">
+                                            {req.sanitation.sanitationType}
+                                        </TableCell>
+                                        <TableCell className="text-left py-3">
+                                            {req.sanitation.hazardLevel}
+                                        </TableCell>
+                                        <TableCell className="text-left py-3">
+                                            {req.sanitation.completeBy.split('T')[0]}
+                                        </TableCell>
+                                        <TableCell className="text-left py-3">
+                                            <MGBButton
+                                                onClick={() => {
+                                                    setEditData(req);
+                                                    setActiveForm('sanitation');
+                                                }}
+                                                variant={'secondary'}
+                                                children={'Edit'}
+                                            />
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </div>
                 </div>
             </div>
         </>

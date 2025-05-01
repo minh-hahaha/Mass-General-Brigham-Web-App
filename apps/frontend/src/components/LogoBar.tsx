@@ -51,6 +51,10 @@ const directories = [
         title: 'Faulkner',
         description: 'View all Faulkner Directories',
     },
+    {
+        title: 'Main Campus',
+        description: 'View all Main Campus Directories',
+    },
 ];
 
 const servicereqs = [

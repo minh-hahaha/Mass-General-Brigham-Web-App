@@ -7,7 +7,7 @@
 **/.prisma
 **/dist
 .pnp.cjs
-serviceKey.json
+apps/backend/serviceKey.json
 
 out
 

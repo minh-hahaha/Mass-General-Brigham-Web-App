@@ -1,5 +1,5 @@
 import React from 'react';
-import DirectionsMapComponent from "@/components/DirectionsMapComponent.tsx";
+import DirectionsMapComponent from "@/components/MapUI/DirectionsMapComponent.tsx";
 import {APIProvider} from "@vis.gl/react-google-maps";
 
 export const MapPage = () => {

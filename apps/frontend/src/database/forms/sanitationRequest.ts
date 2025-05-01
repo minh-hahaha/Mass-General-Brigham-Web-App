@@ -14,7 +14,7 @@ export interface sanitationRequest {
     comments:                   string;
     requestDate:                string;
     employeeId:                 number;
-    requesterDepartmentId:         string;
+    requesterDepartmentId:      string;
     requesterRoomNumber: string;
 
     //Sanitation fields
@@ -37,6 +37,9 @@ export interface incomingSanitationRequest {
         hazardLevel:         hazardLevelType;
         disposalRequired:    boolean;
         completeBy:          string;
+        sanitationDepartmentId: string;
+        sanitationLocationId: string;
+        sanitationRoomNumber: number;
     }
     priority: priorityType;
     requestDate: string;

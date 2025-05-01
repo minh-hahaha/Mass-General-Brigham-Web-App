@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-// add , , , react-googlemaps, radix-ui, google-text-to-speech
 const CreditsPage = () => {
     return (
         <div className="bg-gray-200 min-h-screen max-w-full overflow-x-hidden">

@@ -4,6 +4,7 @@ import {useEffect, useState} from 'react';
 import SelectElement from '@/elements/SelectElement.tsx';
 import { SubmitTranslatorRequest, outgoingTranslationRequest } from '@/database/forms/translationRequest.ts';
 import {
+    formatDateForEdit,
     meetingType,
     meetingTypeArray, mgbHospitals,
     mgbHospitalType,
@@ -143,7 +144,7 @@ const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
             setPatientLanguage(editData.translationRequest.language);
             setPriority(editData.priority);
             setLocation(editData.translationRequest.location);
-            setDate(new Date(editData.requestDateTime).toISOString());
+            setDate(formatDateForEdit(editData.requestDateTime));
             setDuration(editData.translationRequest.duration);
             setTypeMeeting(editData.translationRequest.typeMeeting);
             setMeetingLink(editData.translationRequest.meetingLink);
