@@ -6,22 +6,22 @@ const instructionPages = [
     {
         title: "Requester Information",
         description: "Fill in your full name and employee ID accurately.",
-        imagePath: "/TheTeam/Pakorn.jpg",
+        imagePath: "",
     },
     {
         title: "Patient Information",
         description: "Enter the patient's name and their primary language.",
-        imagePath: "/TheTeam/AdMinh.jpg",
+        imagePath: "",
     },
     {
         title: "Meeting Details",
         description: "Choose the meeting type, select the priority, and set date/time/location.",
-        imagePath: "/TheTeam/wwong2.jpg",
+        imagePath: "",
     },
     {
         title: "Submit Request",
         description: "Click 'Submit Request' to send your form once complete.",
-        imagePath: "/TheTeam/gigawong.jpg",
+        imagePath: "",
     }
 ];
 
