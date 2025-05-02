@@ -101,6 +101,8 @@ function createTextPath(traversalResult: myNode[] | undefined | null): [string[]
     }
     // Traversing floors: when the user is taking the elevator or stairs
     let traversingFloors = false;
+    let traversingSameNodeTypes = false;
+    let totalTraverseDistance = 0;
     // Loop through each node in the list
     for (let i = 0; i < traversalResult.length; i++) {
         // Get the current and next node
@@ -138,16 +140,32 @@ function createTextPath(traversalResult: myNode[] | undefined | null): [string[]
             icons.push('elevator');
 
         }
-        // The default instructions if not traversing floors or if getting off the elevator/stairs
-        if (
-            !traversingFloors ||
-            (traversingFloors && nextNode.nodeType !== 'Elevator' && nextNode.nodeType !== 'Stairs')
-        ) {
+        if(nextNode.nodeType === currentNode.nodeType && determineDirection(angle).includes("Left") || determineDirection(angle).includes("Right")) {
+            console.log(nextNode.nodeId, "same as", currentNode.nodeId, "and is not turn");
             const tempEdge = new myEdge(-1, currentNode, nextNode);
+            traversingSameNodeTypes = true;
+            totalTraverseDistance += tempEdge.distanceFeet;
+        }else if(traversingSameNodeTypes && nextNode.nodeType !== currentNode.nodeType){
+            console.log(nextNode.nodeId, "not same as", currentNode.nodeId, " finish");
+            traversingSameNodeTypes = false;
             directions.push(
-                `From the ${currentNode.nodeId} ${determineDirection(angle)} for ${tempEdge.distanceFeet.toFixed(1)} feet until you reach the ${nextNode.nodeId}`
+                `From the ${currentNode.nodeId} continue straight for ${totalTraverseDistance.toFixed(1)} feet until you reach the ${nextNode.nodeId}`
             );
-            icons.push(`${determineDirection(angle)}`);
+            totalTraverseDistance = 0;
+        }
+        // The default instructions if not traversing floors or if getting off the elevator/stairs
+        if(!traversingSameNodeTypes) {
+            if (
+                !traversingFloors ||
+                (traversingFloors && nextNode.nodeType !== 'Elevator' && nextNode.nodeType !== 'Stairs')
+            ) {
+                console.log("trav same node", traversingSameNodeTypes, 'but doing it anyway');
+                const tempEdge = new myEdge(-1, currentNode, nextNode);
+                directions.push(
+                    `From the ${currentNode.nodeId} ${determineDirection(angle)} for ${tempEdge.distanceFeet.toFixed(1)} feet until you reach the ${nextNode.nodeId}`
+                );
+                icons.push(`${determineDirection(angle)}`);
+            }
         }
     }
 
