@@ -610,30 +610,12 @@ const MapSidebarComponent = ({
                                 <div className="w-full mb-4">
                                     <button
                                         onClick={() =>
-                                            handleLotSelect(
-                                                `${
-                                                    selectedHospital.id === 1
-                                                        ? 'CH'
-                                                        : selectedHospital.id === 3
-                                                            ? 'FK'
-                                                            : selectedHospital.id === 2
-                                                                ? 'PP'
-                                                                : 'BWH'
-                                                }_A`
-                                            )
+                                            handleLotSelect("BWH_A")
                                         }
                                         className={clsx(
                                             'w-full py-2 rounded-sm transition text-center',
                                             selectedLot ===
-                                            `${
-                                                selectedHospital.id === 1
-                                                    ? 'CH'
-                                                    : selectedHospital.id === 3
-                                                        ? 'FK'
-                                                        : selectedHospital.id === 2
-                                                            ? 'PP'
-                                                            : 'BWH'
-                                            }_A`
+                                            "BWH_A"
                                                 ? 'bg-mgbblue text-white'
                                                 : 'bg-white text-codGray border border-mgbblue hover:bg-mgbblue hover:text-white'
                                         )}
