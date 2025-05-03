@@ -116,8 +116,8 @@ const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-[#f5faff] px-4">
-            <div className="bg-white border border-[#d0ebff] rounded-2xl shadow-lg px-10 py-10 w-full max-w-lg">
+        <div className="flex justify-center items-start pt-16 pb-16 min-h-screen bg-[#f5faff] px-4">
+            <div className="bg-white border border-[#d0ebff] rounded-2xl shadow-lg px-10 py-10 w-full max-w-[500px]">
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-2xl font-bold text-mgbblue">Maintenance Request</h1>
                     <HelpButton />
