@@ -24,7 +24,7 @@ const Member = ({image, name, title, github, schoolYear, quote}: MemberProps) =>
         }
     };
 
-    // For non-flippable cards or when either field is "None"
+    // no-flip card 'None'
     if (noFlip) {
         return (
             <div className='grid grid-cols-[200px_minmax(900px,_1fr)_100px] bg-gray-300 px-4 py-4 rounded-2xl'>
@@ -47,7 +47,7 @@ const Member = ({image, name, title, github, schoolYear, quote}: MemberProps) =>
         );
     }
 
-    // For flippable cards
+    // flip cards
     return (
         <div className="relative h-52 cursor-pointer" onClick={handleFlip}>
             <div className="absolute w-full h-full [perspective:1000px]">
