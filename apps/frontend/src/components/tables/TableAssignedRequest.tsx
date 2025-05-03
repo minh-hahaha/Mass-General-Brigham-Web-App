@@ -3,62 +3,84 @@ import { getAssignedRequests, incomingAssignedRequest } from '@/database/assigne
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table.tsx";
 import { useAuth0 } from "@auth0/auth0-react";
 
+interface UserInfo {
+    name: string;
+    email: string;
+    picture: string;
+}
+
 const TableAssignedRequest = () => {
     const [loading, setLoading] = useState(true);
     const [requests, setRequests] = useState<incomingAssignedRequest[]>([]);
+    const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
     useEffect(() => {
-        async function fetchReqs() {
-            const { getAccessTokenSilently } = useAuth0();
+        const fetchReqs = async () => {
+            try {
+                const token = await getAccessTokenSilently();
 
-            const data = await getAssignedRequests(getAccessTokenSilently);
-            setRequests(data);
-            setLoading(false);
+                const res = await fetch(`https://${import.meta.env.VITE_AUTH0_DOMAIN}/userinfo`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (!res.ok) throw new Error('Failed to fetch user info');
+
+                const userInfo: UserInfo = await res.json();
+                const email = userInfo.email;
+
+                if (!email) throw new Error('Email not found');
+
+                const data = await getAssignedRequests(email);
+                setRequests(data);
+            } catch (err) {
+                console.error('Error fetching assigned requests:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (isAuthenticated) {
+            fetchReqs();
         }
-
-        fetchReqs();
-    }, []);
+    }, [getAccessTokenSilently, isAuthenticated]);
 
     if (loading) {
         return <p>Loading Requests...</p>;
     }
-    if (!requests || requests.length === 0) {
-        return <p>No service requests found!</p>;
-    }
 
     return (
-        <div className="flex justify-center mt-10">
-            <div className="w-full max-w-6xl border border-gray-300 rounded-2xl shadow-md overflow-auto p-4 bg-white">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableCell>Request ID</TableCell>
-                            <TableCell>Department ID</TableCell>
-                            <TableCell>Room Number</TableCell>
-                            <TableCell>Status</TableCell>
-                            <TableCell>Priority</TableCell>
-                            <TableCell>Request Date</TableCell>
-                            <TableCell>Request Time</TableCell>
-                            <TableCell>Service Type</TableCell>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {requests.map((req) => (
-                            <TableRow key={req.requestId}>
-                                <TableCell>{req.requestId}</TableCell>
-                                <TableCell>{req.requesterDepartmentId}</TableCell>
-                                <TableCell>{req.requesterRoomNumber}</TableCell>
-                                <TableCell>{req.status}</TableCell>
-                                <TableCell>{req.priority}</TableCell>
-                                <TableCell>{req.requestDate?.split('T')[0]}</TableCell>
-                                <TableCell>{req.requestTime?.split('T')[1]?.substring(0, 5)}</TableCell>
-                                <TableCell>{req.serviceType}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </div>
-        </div>
+        <Table className="w-full">
+            <TableHeader>
+                <TableRow className="bg-fountainBlue hover:bg-fountainBlue">
+                    <TableHead className="text-left font-semibold py-3">Request ID</TableHead>
+                    <TableHead className="text-left font-semibold py-3">Employee Name</TableHead>
+                    <TableHead className="text-left font-semibold py-3">Department</TableHead>
+                    <TableHead className="text-left font-semibold py-3">Room</TableHead>
+                    <TableHead className="text-left font-semibold py-3">Status</TableHead>
+                    <TableHead className="text-left font-semibold py-3">Priority</TableHead>
+                    <TableHead className="text-left font-semibold py-3">Request Date</TableHead>
+                    <TableHead className="text-left font-semibold py-3">Request Time</TableHead>
+                    <TableHead className="text-left font-semibold py-3">Service Type</TableHead>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                {requests.map((req) => (
+                    <TableRow key={req.requestId} className="border-b hover:bg-gray-200 odd:bg-gray-100">
+                        <TableCell className="text-left py-3">{req.requestId}</TableCell>
+                        <TableCell className="text-left py-3">{req.employeeName ?? 'Unassigned'}</TableCell>
+                        <TableCell className="text-left py-3">{req.requesterDepartmentId}</TableCell>
+                        <TableCell className="text-left py-3">{req.requesterRoomNumber}</TableCell>
+                        <TableCell className="text-left py-3">{req.status}</TableCell>
+                        <TableCell className="text-left py-3">{req.priority}</TableCell>
+                        <TableCell className="text-left py-3">{req.requestDate?.split('T')[0]}</TableCell>
+                        <TableCell className="text-left py-3">{req.requestDate?.split('T')[1]?.substring(0, 5)}</TableCell>
+                        <TableCell className="text-left py-3">{req.serviceType}</TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
     )
 }
 
