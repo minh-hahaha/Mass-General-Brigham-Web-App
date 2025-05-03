@@ -8,14 +8,15 @@ interface MemberProps {
     title: string,
     github: string,
     schoolYear?: string,
+    major?: string,
     quote?: string
 }
 
-const Member = ({image, name, title, github, schoolYear, quote}: MemberProps) => {
+const Member = ({image, name, title, github, schoolYear, major, quote}: MemberProps) => {
     const [isFlipped, setIsFlipped] = useState(false);
 
     // Check if flipping should be disabled
-    const noFlip = schoolYear === "None" || quote === "None";
+    const noFlip = schoolYear === "None" || quote === "None" || major === "None";
 
     // Handle the flip action
     const handleFlip = () => {
@@ -28,7 +29,6 @@ const Member = ({image, name, title, github, schoolYear, quote}: MemberProps) =>
     if (noFlip) {
         return (
             <div className='grid grid-cols-[200px_minmax(900px,_1fr)_100px] bg-gray-300 px-4 py-4 rounded-2xl'>
-                {/*<div className={`rounded-full size-32 bg-cover bg-center transition-[delay-150 duration-300 ease-in-out] hover:shadow-lg hover:scale-150`} style={{ backgroundImage: `url(/TheTeam/${image})` }} />*/}
                 <div className={`rounded-full size-32 bg-cover bg-center transition-[delay-150 duration-300 ease-in-out] hover:shadow-[0_0_15px_5px_rgba(37,70,146,0.8)] hover:scale-150`}
                      style={{ backgroundImage: `url(/TheTeam/${image})` }} />
                 <div className='grid grid-cols-1 text-codgray text-bold'>
@@ -58,7 +58,6 @@ const Member = ({image, name, title, github, schoolYear, quote}: MemberProps) =>
                 >
                     {/* Front of card */}
                     <div className='absolute w-full h-full grid grid-cols-[200px_minmax(900px,_1fr)_100px] bg-gray-300 px-4 py-4 rounded-2xl [backface-visibility:hidden]'>
-                        {/*<div className={`rounded-full size-32 bg-cover bg-center transition-[delay-150 duration-300 ease-in-out] hover:shadow-lg hover:scale-150`} style={{ backgroundImage: `url(/TheTeam/${image})` }} />*/}
                         <div className={`rounded-full size-32 bg-cover bg-center transition-[delay-150 duration-300 ease-in-out] hover:shadow-[0_0_15px_5px_rgba(37,70,146,0.8)] hover:scale-150`}
                              style={{ backgroundImage: `url(/TheTeam/${image})` }} />
                         <div className='grid grid-cols-1 text-codgray text-bold'>
@@ -81,7 +80,10 @@ const Member = ({image, name, title, github, schoolYear, quote}: MemberProps) =>
                     <div className='absolute w-full h-full bg-gray-300 p-6 rounded-2xl flex flex-col justify-center items-center [backface-visibility:hidden] [transform:rotateY(180deg)]'>
                         <div className="text-xl font-semibold mb-2 text-center text-codgray">{name}</div>
                         {schoolYear && schoolYear !== "None" && (
-                            <div className="text-lg mb-4 text-center text-codgray">School Year: {schoolYear}</div>
+                            <div className="text-lg mb-2 text-center text-codgray">School Year: {schoolYear}</div>
+                        )}
+                        {major && major !== "None" && (
+                            <div className="text-lg mb-4 text-center text-codgray">Major: {major}</div>
                         )}
                         {quote && quote !== "None" && (
                             <div className="text-base italic text-center text-codgray">"{quote}"</div>

@@ -23,6 +23,7 @@ const AboutPage = () => {
                             title={'Lead Software Engineer'}
                             github={'minh-hahaha'}
                             schoolYear={'xxx'}
+                            major={'xxx'}
                             quote={'xxx'}
                         />
                         <Member
@@ -31,6 +32,7 @@ const AboutPage = () => {
                             title={'Assistant Lead Software Engineer'}
                             github={'4ndrew13'}
                             schoolYear={'xxx'}
+                            major={'xxx'}
                             quote={'xxx'}
                         />
                     </MemberPair>
@@ -42,6 +44,7 @@ const AboutPage = () => {
                             title={'Assistant Lead Software Engineer'}
                             github={'pako490'}
                             schoolYear={'xxx'}
+                            major={'xxx'}
                             quote={'xxx'}
                         />
                         <Member
@@ -50,6 +53,7 @@ const AboutPage = () => {
                             title={'Backend / Databases'}
                             github={'max-jeronimo'}
                             schoolYear={'xxx'}
+                            major={'xxx'}
                             quote={'xxx'}
                         />
                     </MemberPair>
@@ -61,6 +65,7 @@ const AboutPage = () => {
                             title={'Backend / Databases'}
                             github={'jlariv11'}
                             schoolYear={'xxx'}
+                            major={'xxx'}
                             quote={'xxx'}
                         />
                         <Member
@@ -69,6 +74,7 @@ const AboutPage = () => {
                             title={'Backend / Databases'}
                             github={'JackMorris1234'}
                             schoolYear={'xxx'}
+                            major={'xxx'}
                             quote={'xxx'}
                         />
                     </MemberPair>
@@ -80,6 +86,7 @@ const AboutPage = () => {
                             title={'Algorithms / Project Manager'}
                             github={'vinamnguyen'}
                             schoolYear={'xxx'}
+                            major={'xxx'}
                             quote={'xxx'}
                         />
                         <Member
@@ -88,6 +95,7 @@ const AboutPage = () => {
                             title={'Algorithms / Scrum Master'}
                             github={'krishpate1'}
                             schoolYear={'xxx'}
+                            major={'xxx'}
                             quote={'xxx'}
                         />
                     </MemberPair>
@@ -99,15 +107,17 @@ const AboutPage = () => {
                             title={'Frontend / Documentation Analyst'}
                             github={'whywhitson'}
                             schoolYear={'xxx'}
+                            major={'xxx'}
                             quote={'xxx'}
                         />
                         <Member
                             image={'Sean.jpg'}
-                            name={'Haotian Liu'}
+                            name={'Haotian(Sean) Liu'}
                             title={'Frontend / Product Owner'}
                             github={'seanliu7081'}
-                            schoolYear={'xxx'}
-                            quote={'xxx'}
+                            schoolYear={'Senior'}
+                            major={'Robotics Engineering'}
+                            quote={'I need sleep'}
                         />
                     </MemberPair>
 
@@ -118,6 +128,7 @@ const AboutPage = () => {
                             title={'Team Coach'}
                             github={'None'}
                             schoolYear={'None'}
+                            major={'None'}
                             quote={'None'}
                         />
                         <Member
@@ -126,6 +137,7 @@ const AboutPage = () => {
                             title={'Professor'}
                             github={'None'}
                             schoolYear={'None'}
+                            major={'None'}
                             quote={'None'}
                         />
                     </MemberPair>
@@ -146,6 +158,7 @@ const AboutPage = () => {
                             title={'Provided maps and data'}
                             github={'None'}
                             schoolYear={'None'}
+                            major={'None'}
                             quote={'None'}
                         />
                         <Member
@@ -154,6 +167,7 @@ const AboutPage = () => {
                             title={'Brigham and Women\'s Representative'}
                             github={'None'}
                             schoolYear={'None'}
+                            major={'None'}
                             quote={'None'}
                         />
                     </MemberPair>
