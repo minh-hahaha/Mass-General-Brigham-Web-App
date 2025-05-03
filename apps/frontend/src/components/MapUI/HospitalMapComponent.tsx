@@ -328,7 +328,6 @@ const HospitalMapComponent = ({
         return `Floor ${floor.floor}`;
     };
 
-    const [initialFloorSwitchDone, setInitialFloorSwitchDone] = useState<boolean>(false);
     useEffect(() => {
         console.log("auto " + autoFloorSwitchEnabled)
         if (bfsPath.length > 0 && startNode && autoFloorSwitchEnabled) {
