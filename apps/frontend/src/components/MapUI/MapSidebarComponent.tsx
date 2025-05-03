@@ -87,7 +87,6 @@ type Algorithm = 'BFS' | 'DFS';
 interface DirectoryItem {
     deptName: string;
     nodeId: string;
-    // TODO: can add more here
 }
 
 interface HospitalSidebarProps {
