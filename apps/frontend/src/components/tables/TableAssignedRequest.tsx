@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
 import { getAssignedRequests, incomingAssignedRequest } from '@/database/assignedRequest.ts';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table.tsx";
-import { incomingAccount, getAccount } from "@/database/loggedIn.ts";
+import { useAuth0 } from "@auth0/auth0-react";
 
-const TableEmployeeRequest = () => {
+const TableAssignedRequest = () => {
     const [loading, setLoading] = useState(true);
     const [requests, setRequests] = useState<incomingAssignedRequest[]>([]);
 
     useEffect(() => {
         async function fetchReqs() {
-            const details = await getAccount();
-            const employeeId = details.employeeId;
-            const data = await getAssignedRequests(employeeId);
+            const { getAccessTokenSilently } = useAuth0();
+
+            const data = await getAssignedRequests(getAccessTokenSilently);
             setRequests(data);
             setLoading(false);
         }
@@ -62,4 +62,4 @@ const TableEmployeeRequest = () => {
     )
 }
 
-export default TableEmployeeRequest;
+export default TableAssignedRequest;

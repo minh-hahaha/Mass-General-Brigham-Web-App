@@ -40,6 +40,7 @@ export interface incomingAccount {
     admin: boolean;
 }
 
+// Maybe not needed anymore
 // get employee that is logged in right now
 export async function getAccount(token: string): Promise<incomingAccount> {
     const res = await fetch(ROUTES.LOGGEDIN, {

@@ -1,5 +1,4 @@
 import { ROUTES } from 'common/src/constants';
-import axios from 'axios';
 
 export interface incomingAssignedRequest {
     requestId: number;
@@ -17,6 +16,14 @@ export interface incomingAssignedRequest {
 }
 
 // GET request to fetch all assigned requests from employee
-export async function getAssignedRequests(employeeId: number) {
-    return (await axios.get<incomingAssignedRequest[]>(ROUTES.ASSIGNED)).data;
+export async function getAssignedRequests(getToken: () => Promise<string>): Promise<incomingAssignedRequest[]> {
+    const token = await getToken(); // this calls getAccessTokenSilently
+
+    const res = await fetch(ROUTES.SERVICESUMMARY, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    if (!res.ok) throw new Error('Failed to fetch service summary');
+    return res.json();
 }

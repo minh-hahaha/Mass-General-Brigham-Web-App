@@ -1,6 +1,46 @@
 import {ROUTES} from "common/src/constants.ts";
-import axios from "axios";
 
+// account details
+export interface Department {
+    deptId: number;
+    deptServices: string | null;
+    deptName: string;
+    buildingId: number;
+    deptPhone: string | null;
+    nodeId: string | null;
+}
+
+export interface ServiceRequest {
+    requestId: number;
+    requesterDepartmentId: string | null;
+    requesterRoomNumber: string | null;
+    assignedId: number | null;
+    employeeId: number | null;
+    employeeName: string | null;
+    requestDate: string;
+    requestTime: string;
+    status: string;
+    comments: string | null;
+    priority: string;
+    serviceType: string;
+}
+
+export interface incomingAccount {
+    employeeId: number;
+    firstName: string;
+    middleName: string | null;
+    lastName: string;
+    position: string;
+    dateHired: string;
+    serviceRequest: ServiceRequest[];
+    email: string;
+    password: string;
+    department: Department | null;
+    departmentId: number | null;
+    admin: boolean;
+}
+
+// service request charts
 export interface SummaryItem {
     label: string;
     count: number;
@@ -11,7 +51,12 @@ export interface incomingServiceSummary {
     prioritySummary: SummaryItem[];
 }
 
-export async function getServiceSummary(token: string): Promise<{ statusSummary: SummaryItem[], prioritySummary: SummaryItem[] }> {
+export async function getSummary(getToken: () => Promise<string>): Promise<{
+    account: incomingAccount,
+    statusSummary: SummaryItem[],
+    prioritySummary: SummaryItem[] }> {
+    const token = await getToken(); // this calls getAccessTokenSilently
+
     const res = await fetch(ROUTES.SERVICESUMMARY, {
         headers: {
             Authorization: `Bearer ${token}`,

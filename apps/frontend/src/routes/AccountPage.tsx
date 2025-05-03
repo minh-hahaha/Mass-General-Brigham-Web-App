@@ -7,10 +7,9 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart"
-import TableEmployeeRequest from '@/components/tables/TableEmployeeRequest.tsx'
-import {getAccount, incomingAccount} from '@/database/loggedIn.ts'
+import TableAssignedRequest from '@/components/tables/TableAssignedRequest.tsx'
 import {useEffect, useState} from "react";
-import {getServiceSummary, SummaryItem} from "@/database/serviceSummary.ts"
+import {getSummary, SummaryItem, incomingAccount} from "@/database/serviceSummary.ts"
 import { useAuth0 } from "@auth0/auth0-react";
 
 interface ChartDataItem {
@@ -57,49 +56,72 @@ function mapToChartData(summary: SummaryItem[]) {
     }));
 }
 
+interface UserInfo {
+    sub: string;
+    name: string;
+    email: string;
+    picture: string;
+}
+
 const AccountPage = () => {
 
     const [details, setDetails] = useState<incomingAccount | null>(null);
     const [statusChartData, setStatusChartData] = useState<ChartDataItem[]>([]);
     const [priorityChartData, setPriorityChartData] = useState<ChartDataItem[]>([]);
     const { getAccessTokenSilently, isAuthenticated } = useAuth0();
+    const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
-    // get account details
     useEffect(() => {
-        async function fetchDetails() {
+        const fetchUserInfo = async () => {
             try {
-                const token = await getAccessTokenSilently();
-                console.log("TOKEN", token); // Check it looks like a valid JWT (three parts)
-                const data = await getAccount(token); // pass token here
-                setDetails(data);
-            } catch (error) {
-                console.error("Failed to fetch account details:", error);
-            }
-        }
+                const accessToken = await getAccessTokenSilently();
+                const res = await fetch(`https://${import.meta.env.VITE_AUTH0_DOMAIN}/userinfo`, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                });
 
-        if (isAuthenticated) {
-            fetchDetails();
-        }
-    }, [getAccessTokenSilently, isAuthenticated]);
+                if (!res.ok) {
+                    throw new Error('Failed to fetch user info');
+                }
 
-    // get stats for charts
-    useEffect(() => {
-        async function fetchSummary() {
-            try {
-                const token = await getAccessTokenSilently();
-                console.log("TOKEN", token); // Check it looks like a valid JWT (three parts)
-                const { statusSummary, prioritySummary } = await getServiceSummary(token); // pass token
-                setStatusChartData(mapToChartData(statusSummary));
-                setPriorityChartData(mapToChartData(prioritySummary));
+                const data: UserInfo = await res.json();
+                console.log(data)
+                setUserInfo(data);
             } catch (err) {
-                console.error("Failed to fetch service summary:", err);
+                console.error('Error fetching user info:', err);
             }
-        }
+        };
 
         if (isAuthenticated) {
-            fetchSummary();
+            fetchUserInfo();
         }
     }, [getAccessTokenSilently, isAuthenticated]);
+
+    // useEffect(() => {
+    //     async function fetchDetails() {
+    //         try {
+    //             const accessToken = await getAccessTokenSilently();
+    //             const res = await fetch('https://YOUR_DOMAIN/userinfo', {
+    //                 headers: {
+    //                     Authorization: `Bearer ${accessToken}`,
+    //                 },
+    //             });
+    //
+    //             const data = await getSummary(getAccessTokenSilently);
+    //             setDetails(data.account);
+    //             setStatusChartData(mapToChartData(data.statusSummary))
+    //             setPriorityChartData(mapToChartData(data.prioritySummary))
+    //         } catch (err) {
+    //             console.error('Error fetching user info:', err);
+    //         }
+    //     }
+    //
+    //     if (isAuthenticated) {
+    //         fetchDetails();
+    //     }
+    // }, [getAccessTokenSilently, isAuthenticated]);
+
     return(
         <div className="min-h-[calc(100vh-6rem)] grid grid-cols-1 md:grid-cols-4 gap-4 p-4 overflow-auto">
             {/* Left Panel: Profile Card */}
@@ -188,7 +210,7 @@ const AccountPage = () => {
                             <CardContent className="overflow-auto">
                                 <div className="w-full max-h-full overflow-y-auto rounded-lg">
                                     {/* Table or request content goes here */}
-                                    <TableEmployeeRequest />
+                                    <TableAssignedRequest />
                                 </div>
                             </CardContent>
                         </Card>

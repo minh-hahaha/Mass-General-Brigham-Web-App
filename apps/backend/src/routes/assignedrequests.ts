@@ -1,32 +1,34 @@
 import express, { Router, Request, Response } from 'express';
 import PrismaClient from '../bin/prisma-client';
-import { checkJwt } from './auth.ts';
 
 const router: Router = express.Router();
-router.use(checkJwt);
 
-// Maybe not needed anymore
-// Protected route to get logged-in employee info
 router.get('/', async (req: Request, res: Response) => {
+    const email = req.auth?.payload?.email;
+
+    if (!email) {
+        res.status(401).json({ error: 'Unauthorized' });
+        return;
+    }
+
     try {
-        // get email from Auth0
-
-        const email = req.auth?.payload.email;
-
-        if (!email) {
-            res.status(401).json({ error: 'Unauthorized' });
-            return;
-        }
-        // find employee with same email from table
         const employee = await PrismaClient.employee.findUnique({
             where: { email: String(email) },
         });
+
         if (!employee) {
             res.status(404).json({ error: 'Employee not found' });
+            return;
         }
-        res.json(employee);
+
+        const requests = await PrismaClient.serviceRequest.findMany({
+            where: { employeeId: employee.employeeId },
+            include: { assignedId: true },
+        });
+
+        res.json(requests);
     } catch (error) {
-        console.error('Error fetching employee:', error);
+        console.error('Error fetching assigned requests:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
