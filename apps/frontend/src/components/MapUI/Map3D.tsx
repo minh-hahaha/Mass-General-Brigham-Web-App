@@ -1,9 +1,33 @@
 import { useEffect } from 'react';
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
+import {myNode} from "common/src/classes/classes.ts";
 
 
-const Map3D = ({ map }: { map: google.maps.Map | null }) => {
+function AddAltitudeToPath(path: PathPoint[]): { lat: number; lng: number }[] {
+    return path.map((point) => ({
+        lat: point.lat,
+        lng: point.lng,
+        altitude: 2
+    }));
+}
+
+interface PathPoint {
+    lat: number;
+    lng: number;
+}
+
+
+interface Map3DProps {
+    map: google.maps.Map | null;
+    pathPoints?: PathPoint[];
+}
+
+const Map3D = ({map,
+                   pathPoints = [],
+               }: Map3DProps) =>{
+
+
     useEffect(() => {
         let scene: THREE.Scene,
             renderer: THREE.WebGLRenderer,

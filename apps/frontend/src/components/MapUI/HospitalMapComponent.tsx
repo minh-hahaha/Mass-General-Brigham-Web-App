@@ -8,7 +8,6 @@ import OverlayComponent from '@/components/MapUI/OverlayMapComponent.tsx';
 import { GetNode } from '@/database/getDepartmentNode.ts';
 import DisplayPathComponent from '@/components/MapUI/DisplayPathComponent.tsx';
 import Map3D from "@/components/MapUI/Map3D.tsx";
-import Path3D from "@/components/MapUI/Path3D.tsx";
 
 const ChestnutHillBounds = {
     southWest: { lat: 42.32543670863917, lng: -71.15022693442262 }, // Bottom-left corner
@@ -410,11 +409,12 @@ const HospitalMapComponent = ({
 
 
         <div className="relative w-full h-full">
-            {map && <Map3D map={map} />}
+            {map && <Map3D map={map}/>}
             {/*<OverlayComponent*/}
             {/*    bounds={ChestnutHillBounds}*/}
             {/*    imageSrc={"/CH01.svg"}*/}
             {/*/>*/}
+
 
             <OverlayComponent
                 bounds={PatriotPlaceBounds}
