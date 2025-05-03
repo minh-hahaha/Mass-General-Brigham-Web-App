@@ -263,6 +263,7 @@ const DirectionsMapComponent = () => {
         setSelectedAlgorithm(algorithm);
     };
 
+    const [autoFloorSwitchEnabled, setAutoFloorSwitchEnabled] = useState<boolean>(true);
     const handleFloorChange = (floorId: string) => {
         setCurrentFloorId(floorId);
         console.log('changed floor to : ', floorId);
@@ -410,10 +411,6 @@ const DirectionsMapComponent = () => {
             setLot('');
         }
 
-        // // Make sure the map is clear before recalculating
-        // if (directionsRenderer) {
-        //     directionsRenderer.setMap(null);
-        // }
 
         setTimeout(() => {
             calculateRoute();
@@ -495,6 +492,11 @@ const DirectionsMapComponent = () => {
         }
     }, [lot, buildingID]);
 
+
+    const handleAutoSwitchFloor = (startFloorId: string) => {
+        setCurrentFloorId(startFloorId);
+    }
+
     const handleBack = (currentStep: string) => {
         if (currentStep === 'DEPARTMENT') {
             setPathVisible(false);
@@ -560,6 +562,10 @@ const DirectionsMapComponent = () => {
                         visible={pathVisible}
                         currentFloorId={currentFloorId}
                         onFloorChange={handleFloorHighlight}
+                        onAutoSwitchFloor={handleAutoSwitchFloor}
+                        autoFloorSwitchEnabled={autoFloorSwitchEnabled}
+
+
                         driveDirections={textDirections}
                         drive2Directions={text2Directions}
                         showTextDirections={!!toLocation}

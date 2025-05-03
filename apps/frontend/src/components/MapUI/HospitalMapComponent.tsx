@@ -223,8 +223,9 @@ interface Props {
     endNodeId: string;
     selectedAlgorithm: string;
     currentFloorId: string | undefined;
-    onFloorChange?: (floorId: string) => void;
-
+    onFloorChange: (floorId: string) => void;
+    onAutoSwitchFloor: (startFloorId: string) => void;
+    autoFloorSwitchEnabled: boolean; // New prop to control auto floor switching
 
     visible: boolean;
     driveDirections: string;
@@ -242,6 +243,8 @@ const HospitalMapComponent = ({
     selectedAlgorithm,
     currentFloorId,
     onFloorChange,
+    onAutoSwitchFloor,
+    autoFloorSwitchEnabled,
     visible,
     driveDirections,
     drive2Directions,
@@ -348,14 +351,20 @@ const HospitalMapComponent = ({
         return `Floor ${floor.floor}`;
     };
 
-    // auto-select floor id for start node
+    const [initialFloorSwitchDone, setInitialFloorSwitchDone] = useState<boolean>(false);
     useEffect(() => {
-        if (bfsPath.length > 0 && startNode) {
+        console.log("auto " + autoFloorSwitchEnabled)
+        if (bfsPath.length > 0 && startNode && autoFloorSwitchEnabled) {
             const startFloor = availableFloors.find(
                 (f) => f.buildingId === startNode.buildingId && f.floor === startNode.floor
             );
             if (startFloor) {
                 setStartFloor(startFloor);
+                // Only trigger the auto floor switch if enabled and not already done
+                onAutoSwitchFloor(startFloor.id);
+                highlightDestinationFloor(bfsPath);
+                console.log("auto switch floor to " + startFloor.id);
+
             }
         }
     }, [bfsPath, startNode]);
@@ -366,7 +375,11 @@ const HospitalMapComponent = ({
     // Get the current Patriot Place floor data
 
     const getCurrentPatriotPlaceFloor = () => {
-        let floorId = currentFloorId;
+        let floorId
+        if (currentFloorId){
+            floorId = currentFloorId; // dont change
+            onAutoSwitchFloor(currentFloorId);
+        }
         if (!floorId?.startsWith('PP-')) floorId = 'PP-1';
         return (
             availableFloors.find((f) => f.id === floorId) ||
