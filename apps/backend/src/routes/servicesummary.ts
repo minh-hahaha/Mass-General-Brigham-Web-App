@@ -4,41 +4,41 @@ import PrismaClient from '../bin/prisma-client';
 const router: Router = express.Router();
 
 router.get('/', async (req: Request, res: Response) => {
+    const email = req.query.email as string;
+
+    if (!email) {
+        res.status(401).json({ error: 'Unauthorized', msg: res.statusMessage });
+        return;
+    }
+
     try {
-        const email = req.auth?.payload?.email;
-
-        if (!email) {
-            res.status(401).json({ error: 'Unauthorized', msg: res.statusMessage });
-            return;
-        }
-
         const employee = await PrismaClient.employee.findUnique({
             where: { email: String(email) },
+            include: {
+                department: true,
+            },
         });
 
         if (!employee) {
-            res.status(404).json({ error: 'Employee not found', msg: res.statusMessage });
+            res.status(404).json({ error: 'Employee not found' });
             return;
         }
 
-        const [details, statusSummary, prioritySummary] = await Promise.all([
-            PrismaClient.employee.findUnique({
-                where: { email: String(email) },
-            }),
+        const [statusSummary, prioritySummary] = await Promise.all([
             PrismaClient.serviceRequest.groupBy({
                 by: ['status'],
-                where: { employeeId: employee?.employeeId },
+                where: { employeeId: employee.employeeId },
                 _count: { _all: true },
             }),
             PrismaClient.serviceRequest.groupBy({
                 by: ['priority'],
-                where: { employeeId: employee?.employeeId },
+                where: { employeeId: employee.employeeId },
                 _count: { _all: true },
             }),
         ]);
 
         res.json({
-            details,
+            employee,
             statusSummary,
             prioritySummary,
         });

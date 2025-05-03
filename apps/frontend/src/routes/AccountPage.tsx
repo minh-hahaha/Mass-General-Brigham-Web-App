@@ -14,7 +14,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 interface ChartDataItem {
     label: string;
-    visitors: number;
+    requests: number;
     fill: string;
 }
 
@@ -22,8 +22,8 @@ interface ChartDataItem {
 // colors are not good i know
 
 const chartConfig = {
-    visitors: {
-        label: "Visitors",
+    requests: {
+        label: "requests",
     },
     chrome: {
         label: "Chrome",
@@ -51,25 +51,23 @@ function mapToChartData(summary: SummaryItem[]) {
     const colorMap = ['#003A96', 'red', 'yellow', 'green', 'orange', '#8884d8'];
     return summary.map((item, idx) => ({
         label: item.label,
-        visitors: item.count,
+        requests: item.count,
         fill: colorMap[idx % colorMap.length],
     }));
 }
 
 interface UserInfo {
-    sub: string;
-    name: string;
     email: string;
     picture: string;
 }
 
 const AccountPage = () => {
 
-    const [details, setDetails] = useState<incomingAccount | null>(null);
+    const [employee, setEmployee] = useState<incomingAccount | null>(null);
     const [statusChartData, setStatusChartData] = useState<ChartDataItem[]>([]);
     const [priorityChartData, setPriorityChartData] = useState<ChartDataItem[]>([]);
     const { getAccessTokenSilently, isAuthenticated } = useAuth0();
-    const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+    const [ profilePicture, setProfilePicture ] = useState<string>();
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -85,9 +83,21 @@ const AccountPage = () => {
                     throw new Error('Failed to fetch user info');
                 }
 
-                const data: UserInfo = await res.json();
-                console.log(data)
-                setUserInfo(data);
+                const userInfo: UserInfo = await res.json();
+                const email = userInfo.email;
+                setProfilePicture(userInfo.picture);
+
+                if (!email) {
+                    throw new Error('Email not found in user info');
+                }
+
+                const summary = await getSummary(email);
+
+                setEmployee(summary.employee)
+                setStatusChartData(mapToChartData(summary.statusSummary))
+                console.log(summary.statusSummary)
+                setPriorityChartData(mapToChartData(summary.prioritySummary))
+                console.log(summary.prioritySummary)
             } catch (err) {
                 console.error('Error fetching user info:', err);
             }
@@ -98,30 +108,6 @@ const AccountPage = () => {
         }
     }, [getAccessTokenSilently, isAuthenticated]);
 
-    // useEffect(() => {
-    //     async function fetchDetails() {
-    //         try {
-    //             const accessToken = await getAccessTokenSilently();
-    //             const res = await fetch('https://YOUR_DOMAIN/userinfo', {
-    //                 headers: {
-    //                     Authorization: `Bearer ${accessToken}`,
-    //                 },
-    //             });
-    //
-    //             const data = await getSummary(getAccessTokenSilently);
-    //             setDetails(data.account);
-    //             setStatusChartData(mapToChartData(data.statusSummary))
-    //             setPriorityChartData(mapToChartData(data.prioritySummary))
-    //         } catch (err) {
-    //             console.error('Error fetching user info:', err);
-    //         }
-    //     }
-    //
-    //     if (isAuthenticated) {
-    //         fetchDetails();
-    //     }
-    // }, [getAccessTokenSilently, isAuthenticated]);
-
     return(
         <div className="min-h-[calc(100vh-6rem)] grid grid-cols-1 md:grid-cols-4 gap-4 p-4 overflow-auto">
             {/* Left Panel: Profile Card */}
@@ -129,23 +115,23 @@ const AccountPage = () => {
                 <CardHeader className="flex flex-col space-y-4 items-center">
                     {/* Profile Image */}
                     <div className="w-30 h-30 bg-gray-200 rounded-full overflow-hidden">
-                        <img src={account} alt="account icon" className="object-cover w-full h-full" />
+                        <img src={profilePicture} alt="account icon" className="object-cover w-full h-full" />
                     </div>
 
                     {/* Name and ID */}
-                    <div className="flex flex-col items-center space-y-1">
+                    <div className="flex flex-col items-center space-y-1 mb-10">
                         <h1 className="text-xl font-bold text-center">
-                            {details ? `${details.firstName} ${details.lastName}` : "Loading..."}
+                            {employee ? `${employee.firstName} ${employee.lastName}` : "Loading..."}
                         </h1>
                         <h3 className="text-center">
-                            Employee ID: {details ? details.employeeId : "Loading..."}
+                            Employee ID: {employee ? employee.employeeId : "Loading..."}
                         </h3>
                     </div>
                 </CardHeader>
-                <CardContent className="space-y-25 text-xl">
-                    <p><strong>Position:</strong> {details?.position ?? "Loading..."}</p>
-                    <p><strong>Department:</strong> {details?.department?.deptName ?? "Loading..."}</p>
-                    <p><strong>Email:</strong> {details?.email ?? "Loading..."}</p>
+                <CardContent className="space-y-20 text-xl">
+                    <p><strong>Position:</strong> {employee?.position ?? "Loading..."}</p>
+                    <p><strong>Department:</strong> {employee?.department.deptName ?? "Loading..."}</p>
+                    <p><strong>Email:</strong> {employee?.email ?? "Loading..."}</p>
                 </CardContent>
             </Card>
             {/* Right Panel */}
@@ -173,7 +159,7 @@ const AccountPage = () => {
                                                 cursor={false}
                                                 content={<ChartTooltipContent hideLabel />}
                                             />
-                                            <Pie data={statusChartData} dataKey="visitors" nameKey="status" />
+                                            <Pie data={statusChartData} dataKey="requests" nameKey="status" />
                                         </PieChart>
                                     </ChartContainer>
                                     <div className="text-center mt-2 text-xl">
@@ -192,7 +178,7 @@ const AccountPage = () => {
                                                 cursor={false}
                                                 content={<ChartTooltipContent hideLabel />}
                                             />
-                                            <Pie data={priorityChartData} dataKey="visitors" nameKey="priority" />
+                                            <Pie data={priorityChartData} dataKey="requests" nameKey="priority" />
                                         </PieChart>
                                     </ChartContainer>
                                     <div className="text-center mt-2 text-xl">
@@ -207,9 +193,8 @@ const AccountPage = () => {
                             <CardHeader className="text-xl flex flex-col md:flex-row md:items-center md:justify-between">
                                 <CardTitle>Requests</CardTitle>
                             </CardHeader>
-                            <CardContent className="overflow-auto">
-                                <div className="w-full max-h-full overflow-y-auto rounded-lg">
-                                    {/* Table or request content goes here */}
+                            <CardContent className="flex-1 min-h-0">
+                                <div className="h-full w-full overflow-y-auto rounded-lg">
                                     <TableAssignedRequest />
                                 </div>
                             </CardContent>

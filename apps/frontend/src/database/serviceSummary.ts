@@ -1,6 +1,5 @@
 import {ROUTES} from "common/src/constants.ts";
-
-// account details
+// accounts
 export interface Department {
     deptId: number;
     deptServices: string | null;
@@ -28,14 +27,14 @@ export interface ServiceRequest {
 export interface incomingAccount {
     employeeId: number;
     firstName: string;
-    middleName: string | null;
+    middleName?: string | null;
     lastName: string;
     position: string;
     dateHired: string;
     serviceRequest: ServiceRequest[];
     email: string;
     password: string;
-    department: Department | null;
+    department: Department;
     departmentId: number | null;
     admin: boolean;
 }
@@ -46,22 +45,18 @@ export interface SummaryItem {
     count: number;
 }
 
-export interface incomingServiceSummary {
-    statusSummary: SummaryItem[];
-    prioritySummary: SummaryItem[];
-}
-
-export async function getSummary(getToken: () => Promise<string>): Promise<{
-    account: incomingAccount,
+export async function getSummary(email: string): Promise<{
+    employee: incomingAccount,
     statusSummary: SummaryItem[],
-    prioritySummary: SummaryItem[] }> {
-    const token = await getToken(); // this calls getAccessTokenSilently
-
-    const res = await fetch(ROUTES.SERVICESUMMARY, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
+    prioritySummary: SummaryItem[],
+}> {
+    const res = await fetch(`${ROUTES.SERVICESUMMARY}?email=${encodeURIComponent(email)}`, {
+        method: 'GET',
     });
-    if (!res.ok) throw new Error('Failed to fetch service summary');
+
+    if (!res.ok) {
+        throw new Error('Failed to fetch service summary');
+    }
+
     return res.json();
 }
