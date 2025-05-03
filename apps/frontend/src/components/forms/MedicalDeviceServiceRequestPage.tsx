@@ -236,7 +236,7 @@ const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
 
                     <input
                         type="datetime-local"
-                        className="w-full border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300 px-2 py-1 text-sm"
+                        className="border-b-2 border-mgbblue focus:outline-none focus:border-mgbblue px-2 py-1 text-sm"
                         value={deliverDate}
                         onChange={(e) => setDeliverDate(e.target.value)}
                         required
