@@ -23,7 +23,6 @@ import serviceSummaryRouter from './routes/servicesummary.ts';
 import buildingRouter from './routes/building.ts';
 
 import { ROUTES } from 'common/src/constants';
-import { checkJwt } from './routes/auth.ts';
 
 const app: Express = express(); // Setup the backend
 
@@ -94,8 +93,8 @@ app.use(ROUTES.RECENT_ORIGINS, originRouter);
 app.use(ROUTES.TTS, textToSpeechRouter);
 
 //Account
-app.use(ROUTES.SERVICESUMMARY, checkJwt, serviceSummaryRouter);
-app.use(ROUTES.ASSIGNEDREQUESTS, checkJwt, assignedRequestsRouter);
+app.use(ROUTES.SERVICESUMMARY, serviceSummaryRouter);
+app.use(ROUTES.ASSIGNEDREQUESTS, assignedRequestsRouter);
 
 /**
  * Catch all 404 errors, and forward them to the error handler

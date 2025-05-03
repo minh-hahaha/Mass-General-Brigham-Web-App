@@ -1272,7 +1272,7 @@ async function main() {
                 firstName: 'Adminh',
                 lastName: 'Ha',
                 position: 'WebAdmin',
-                email: 'softengd25X@gmail.com',
+                email: 'softengd25x@gmail.com',
                 password: 'cs3733D25X', //TODO: remove?
                 departmentId: 1,
                 admin: true,
