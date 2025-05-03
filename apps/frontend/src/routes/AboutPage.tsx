@@ -117,16 +117,16 @@ const AboutPage = () => {
                             name={'Kai Davidson'}
                             title={'Team Coach'}
                             github={'None'}
-                            schoolYear={'xxx'}
-                            quote={'xxx'}
+                            schoolYear={'None'}
+                            quote={'None'}
                         />
                         <Member
                             image={'wwong2.jpg'}
                             name={'Wilson Wong'}
                             title={'Professor'}
                             github={'None'}
-                            schoolYear={'xxx'}
-                            quote={'xxx'}
+                            schoolYear={'None'}
+                            quote={'None'}
                         />
                     </MemberPair>
 
@@ -145,16 +145,16 @@ const AboutPage = () => {
                             name={'Brigham and Women\'s Hospital'}
                             title={'Provided maps and data'}
                             github={'None'}
-                            schoolYear={'xxx'}
-                            quote={'xxx'}
+                            schoolYear={'None'}
+                            quote={'None'}
                         />
                         <Member
                             image={'AndrewShinn.jpg'}
                             name={'Andrew Shinn'}
                             title={'Brigham and Women\'s Representative'}
                             github={'None'}
-                            schoolYear={'xxx'}
-                            quote={'xxx'}
+                            schoolYear={'None'}
+                            quote={'None'}
                         />
                     </MemberPair>
                 </div>
