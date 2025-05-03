@@ -76,6 +76,62 @@ class Vector {
     }
 }
 
+function createTextPath2(traversalResult: myNode[] | undefined | null, units: 'Feet' | 'Meters'): [string[], string[] ]{
+    // Make sure a path exists
+    if (!traversalResult) {
+        console.log('No Path');
+        return [[],[]];
+    }
+    const directions = [];
+    const icons=[];
+    let currentFacing = new Vector(0, 0);
+    let skipTraversing = false;
+    let startingSkipNode = undefined;
+    let startingSkipDirections = '';
+    
+    // Loop through all nodes
+    for(let i = 0; i < traversalResult.length; i++) {
+        const currentNode = traversalResult[i];
+        const nextNode = traversalResult[i + 1];
+
+        if (!nextNode) {
+            directions.push(`You have arrived at ${currentNode.name}`);
+            break;
+        }
+        const edge = new myEdge(-1, currentNode, nextNode);
+        const distance = units === "Meters" ? edge.distanceMeters : edge.distanceFeet;
+        const dy = nextNode.y - currentNode.y;
+        const dx = nextNode.x - currentNode.x;
+        // Get the direction the user will be facing
+        const newFacing = new Vector(dx, dy);
+        const textDirection = determineDirection(currentFacing.angleTo(newFacing));
+        // Make the user's current direction the new direction
+        currentFacing = newFacing;
+        console.log(textDirection);
+        if(!skipTraversing && currentNode.nodeType === nextNode.nodeType && (!textDirection.includes("left") || !textDirection.includes("right"))) {
+           skipTraversing = true;
+           startingSkipNode = currentNode;
+           startingSkipDirections = textDirection;
+        }else if(skipTraversing && currentNode.nodeType !== nextNode.nodeType || (textDirection.includes("left") || textDirection.includes("right"))) {
+            if(startingSkipNode) {
+                skipTraversing = false;
+                directions.push(`From the ${startingSkipNode.nodeId} ${startingSkipDirections} for ${distance.toFixed(1)} ${units.toLowerCase()} until you reach the ${currentNode.nodeId}`);
+                icons.push('continue straight');
+                directions.push(`From the ${currentNode.nodeId} ${textDirection} for ${distance.toFixed(1)} ${units.toLowerCase()} until you reach the ${nextNode.nodeId}`);
+                icons.push(`${textDirection}`);
+                startingSkipNode = undefined;
+                startingSkipDirections = '';
+            }
+        }else if(!skipTraversing){
+            directions.push(`From the ${currentNode.nodeId} ${textDirection} for ${distance.toFixed(1)} ${units.toLowerCase()} until you reach the ${nextNode.nodeId}`);
+            icons.push(`${textDirection}`);
+        }
+        
+    }
+    console.log("DIRECTIONS",directions);
+    return [directions, icons];
+    
+}
 function createTextPath(traversalResult: myNode[] | undefined | null, units: 'Feet' | 'Meters'): [string[], string[] ]{
     // Make sure a path exists
     if (!traversalResult) {
@@ -139,7 +195,6 @@ function createTextPath(traversalResult: myNode[] | undefined | null, units: 'Fe
                 `Take the Elevator to the ${nextNode.floor}${getNumberSuffix(nextNode.floor)} floor`
             );
             icons.push('elevator');
-
         }
         if(nextNode.nodeType === currentNode.nodeType && determineDirection(angle).includes("Left") || determineDirection(angle).includes("Right")) {
             console.log(nextNode.nodeId, "same as", currentNode.nodeId, "and is not turn");
@@ -177,11 +232,11 @@ function createTextPath(traversalResult: myNode[] | undefined | null, units: 'Fe
 function determineDirection(angle: number): string {
     let prefix = '';
     if (angle < -75 && angle > -105) {
-        prefix = 'Turn Left then ';
+        prefix = 'turn left then ';
     } else if (angle > 75 && angle < 105) {
-        prefix = 'Turn Right then ';
+        prefix = 'turn right then ';
     }
-    return prefix + 'Continue Straight';
+    return prefix + 'continue straight';
 }
 
 function getNumberSuffix(num: string): string {
@@ -291,7 +346,7 @@ const HospitalMapComponent = ({
                     highlightDestinationFloor(result);
 
                     // text directions
-                    const [textDirection, icons] = createTextPath(result, distanceUnits);
+                    const [textDirection, icons] = createTextPath2(result, distanceUnits);
                     setIconsToPass(icons);
                     setDirections1(textDirection.join('<br><br>'));
                     setDirections11(textDirection);
