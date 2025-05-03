@@ -11,19 +11,18 @@ export interface incomingAssignedRequest {
     priority: string;
     locationId?: number;
     serviceType: string;
-    requestDate?: string; // ISO string format (e.g., "2025-04-16T00:00:00Z")
-    requestTime?: string;
+    requestDateTime?: string; // ISO string format (e.g., "2025-04-16T00:00:00Z")
 }
 
 // GET request to fetch all assigned requests from employee
-export async function getAssignedRequests(getToken: () => Promise<string>): Promise<incomingAssignedRequest[]> {
-    const token = await getToken(); // this calls getAccessTokenSilently
-
-    const res = await fetch(ROUTES.SERVICESUMMARY, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
+export async function getAssignedRequests(email: string): Promise<incomingAssignedRequest[]> {
+    const res = await fetch(`${ROUTES.ASSIGNEDREQUESTS}?email=${encodeURIComponent(email)}`, {
+        method: 'GET',
     });
-    if (!res.ok) throw new Error('Failed to fetch service summary');
+
+    if (!res.ok) {
+        throw new Error('Failed to fetch assigned requests');
+    }
+
     return res.json();
 }

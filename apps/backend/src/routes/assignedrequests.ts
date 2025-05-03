@@ -4,7 +4,7 @@ import PrismaClient from '../bin/prisma-client';
 const router: Router = express.Router();
 
 router.get('/', async (req: Request, res: Response) => {
-    const email = req.auth?.payload?.email;
+    const email = req.query.email as string;
 
     if (!email) {
         res.status(401).json({ error: 'Unauthorized' });

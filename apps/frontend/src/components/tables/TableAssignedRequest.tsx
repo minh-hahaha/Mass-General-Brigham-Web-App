@@ -55,7 +55,6 @@ const TableAssignedRequest = () => {
             <TableHeader>
                 <TableRow className="bg-fountainBlue hover:bg-fountainBlue">
                     <TableHead className="text-left font-semibold py-3">Request ID</TableHead>
-                    <TableHead className="text-left font-semibold py-3">Employee Name</TableHead>
                     <TableHead className="text-left font-semibold py-3">Department</TableHead>
                     <TableHead className="text-left font-semibold py-3">Room</TableHead>
                     <TableHead className="text-left font-semibold py-3">Status</TableHead>
@@ -69,13 +68,12 @@ const TableAssignedRequest = () => {
                 {requests.map((req) => (
                     <TableRow key={req.requestId} className="border-b hover:bg-gray-200 odd:bg-gray-100">
                         <TableCell className="text-left py-3">{req.requestId}</TableCell>
-                        <TableCell className="text-left py-3">{req.employeeName ?? 'Unassigned'}</TableCell>
                         <TableCell className="text-left py-3">{req.requesterDepartmentId}</TableCell>
                         <TableCell className="text-left py-3">{req.requesterRoomNumber}</TableCell>
                         <TableCell className="text-left py-3">{req.status}</TableCell>
                         <TableCell className="text-left py-3">{req.priority}</TableCell>
-                        <TableCell className="text-left py-3">{req.requestDate?.split('T')[0]}</TableCell>
-                        <TableCell className="text-left py-3">{req.requestDate?.split('T')[1]?.substring(0, 5)}</TableCell>
+                        <TableCell className="text-left py-3">{req.requestDateTime?.split('T')[0]}</TableCell>
+                        <TableCell className="text-left py-3">{req.requestDateTime?.split('T')[1]?.substring(0, 5)}</TableCell>
                         <TableCell className="text-left py-3">{req.serviceType}</TableCell>
                     </TableRow>
                 ))}
