@@ -76,7 +76,7 @@ class Vector {
     }
 }
 
-function createTextPath(traversalResult: myNode[] | undefined | null): [string[], string[] ]{
+function createTextPath(traversalResult: myNode[] | undefined | null, units: 'Feet' | 'Meters'): [string[], string[] ]{
     // Make sure a path exists
     if (!traversalResult) {
         console.log('No Path');
@@ -102,6 +102,8 @@ function createTextPath(traversalResult: myNode[] | undefined | null): [string[]
     }
     // Traversing floors: when the user is taking the elevator or stairs
     let traversingFloors = false;
+    let traversingSameNodeTypes = false;
+    let totalTraverseDistance = 0;
     // Loop through each node in the list
     for (let i = 0; i < traversalResult.length; i++) {
         // Get the current and next node
@@ -139,16 +141,33 @@ function createTextPath(traversalResult: myNode[] | undefined | null): [string[]
             icons.push('elevator');
 
         }
-        // The default instructions if not traversing floors or if getting off the elevator/stairs
-        if (
-            !traversingFloors ||
-            (traversingFloors && nextNode.nodeType !== 'Elevator' && nextNode.nodeType !== 'Stairs')
-        ) {
+        if(nextNode.nodeType === currentNode.nodeType && determineDirection(angle).includes("Left") || determineDirection(angle).includes("Right")) {
+            console.log(nextNode.nodeId, "same as", currentNode.nodeId, "and is not turn");
             const tempEdge = new myEdge(-1, currentNode, nextNode);
+            traversingSameNodeTypes = true;
+            totalTraverseDistance += tempEdge.distanceFeet;
+        }else if(traversingSameNodeTypes && nextNode.nodeType !== currentNode.nodeType){
+            console.log(nextNode.nodeId, "not same as", currentNode.nodeId, " finish");
+            traversingSameNodeTypes = false;
             directions.push(
-                `From the ${currentNode.nodeId} ${determineDirection(angle)} for ${tempEdge.distance.toFixed(1)} feet until you reach the ${nextNode.nodeId}`
+                `From the ${currentNode.nodeId} continue straight for ${totalTraverseDistance.toFixed(1)} feet until you reach the ${nextNode.nodeId}`
             );
-            icons.push(`${determineDirection(angle)}`);
+            totalTraverseDistance = 0;
+        }
+        // The default instructions if not traversing floors or if getting off the elevator/stairs
+        if(!traversingSameNodeTypes) {
+            if (
+                !traversingFloors ||
+                (traversingFloors && nextNode.nodeType !== 'Elevator' && nextNode.nodeType !== 'Stairs')
+            ) {
+                console.log("trav same node", traversingSameNodeTypes, 'but doing it anyway');
+                const tempEdge = new myEdge(-1, currentNode, nextNode);
+                const distance = units === 'Meters' ? tempEdge.distanceMeters : tempEdge.distanceFeet;
+                directions.push(
+                    `From the ${currentNode.nodeId} ${determineDirection(angle)} for ${distance.toFixed(1)} ${units.toLowerCase()} until you reach the ${nextNode.nodeId}`
+                );
+                icons.push(`${determineDirection(angle)}`);
+            }
         }
     }
 
@@ -213,6 +232,8 @@ interface Props {
     drive2Directions: string[];
     showTextDirections: boolean;
     currentStep: string;
+    distanceUnits: 'Feet' | 'Meters';
+    setDistanceUnits: (units: 'Feet' | 'Meters') => void;
 }
 
 const HospitalMapComponent = ({
@@ -229,6 +250,8 @@ const HospitalMapComponent = ({
     drive2Directions,
     showTextDirections,
     currentStep,
+    distanceUnits,
+    setDistanceUnits
 }: Props) => {
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
     const [startNode, setStartNode] = useState<myNode>();
@@ -271,7 +294,7 @@ const HospitalMapComponent = ({
                     highlightDestinationFloor(result);
 
                     // text directions
-                    const [textDirection, icons] = createTextPath(result);
+                    const [textDirection, icons] = createTextPath(result, distanceUnits);
                     setIconsToPass(icons);
                     setDirections1(textDirection.join('<br><br>'));
                     setDirections11(textDirection);
@@ -284,7 +307,7 @@ const HospitalMapComponent = ({
             }
         };
         getMyPaths();
-    }, [startNode, endNode, selectedAlgorithm]);
+    }, [startNode, endNode, selectedAlgorithm, distanceUnits]);
 
     // function to highlight the destination floor
     const highlightDestinationFloor = (path: myNode[]) => {
@@ -397,6 +420,8 @@ const HospitalMapComponent = ({
                         driveDirections={driveDirections}
                         drive22Directions={drive2Directions}
                         walk22Directions={directions11}
+                        distanceUnits={distanceUnits}
+                        setDistanceUnits={setDistanceUnits}
                         icons={iconsToPass}
                     />
                 ) : (
@@ -406,6 +431,8 @@ const HospitalMapComponent = ({
                             driveDirections={driveDirections}
                             drive22Directions={drive2Directions}
                             walk22Directions={directions11}
+                            distanceUnits={distanceUnits}
+                            setDistanceUnits={setDistanceUnits}
                             icons={iconsToPass}
                         />
                     </div>
