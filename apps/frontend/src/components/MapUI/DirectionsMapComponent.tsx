@@ -241,7 +241,13 @@ const DirectionsMapComponent = () => {
         if (toLocation && fromLocation) {
             handleFindDirections();
         }
-    }, [fromLocation, toLocation, distanceUnits]);
+    }, [fromLocation, toLocation]);
+
+    useEffect(() => {
+        if(currentStep !== "DEPARTMENT") {
+            handleFindDirections();
+        }
+    }, [distanceUnits]);
 
     // update floor selector visibility
     useEffect(() => {
@@ -543,11 +549,11 @@ const DirectionsMapComponent = () => {
                     style={{ width: '100%', height: '100%' }}
                     defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
                     defaultZoom={15}
-                    renderingType={RenderingType.RASTER}
                     disableDefaultUI={true}
                     mapId={'73fda600718f172c'}
                 >
-                    <HospitalMapComponent
+                    {map && <HospitalMapComponent
+                        map={map}
                         startNodeId={fromNodeId}
                         endNodeId={toDirectoryNodeId}
                         selectedAlgorithm={selectedAlgorithm}
@@ -560,7 +566,7 @@ const DirectionsMapComponent = () => {
                         currentStep={currentStep}
                         distanceUnits={distanceUnits}
                         setDistanceUnits={setDistanceUnits}
-                    />
+                    />}
                 </Map>
 
                 {/* Route Info Box */}

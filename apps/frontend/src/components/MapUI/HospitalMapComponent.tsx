@@ -7,6 +7,7 @@ import {myEdge, myNode} from 'common/src/classes/classes.ts';
 import OverlayComponent from '@/components/MapUI/OverlayMapComponent.tsx';
 import { GetNode } from '@/database/getDepartmentNode.ts';
 import DisplayPathComponent from '@/components/MapUI/DisplayPathComponent.tsx';
+import Map3D from "@/components/MapUI/Map3D.tsx";
 
 const ChestnutHillBounds = {
     southWest: { lat: 42.32543670863917, lng: -71.15022693442262 }, // Bottom-left corner
@@ -217,6 +218,7 @@ function GetPolylinePath(path: myNode[]): { lat: number; lng: number }[] {
 
 // interface for prop
 interface Props {
+    map: google.maps.Map;
     startNodeId: string;
     endNodeId: string;
     selectedAlgorithm: string;
@@ -234,6 +236,7 @@ interface Props {
 }
 
 const HospitalMapComponent = ({
+    map,
     startNodeId,
     endNodeId,
     selectedAlgorithm,
@@ -433,10 +436,13 @@ const HospitalMapComponent = ({
 
 
         <div className="relative w-full h-full">
-            <OverlayComponent
-                bounds={ChestnutHillBounds}
-                imageSrc={"/CH01.svg"}
-            />
+            {map && <Map3D map={map}/>}
+            {/*<OverlayComponent*/}
+            {/*    bounds={ChestnutHillBounds}*/}
+            {/*    imageSrc={"/CH01.svg"}*/}
+            {/*/>*/}
+
+
             <OverlayComponent
                 bounds={PatriotPlaceBounds}
                 imageSrc={patriotPlaceFloor.svgPath}
@@ -450,7 +456,8 @@ const HospitalMapComponent = ({
                 imageSrc={'/BWH02.svg'}
             />
             {visible &&
-            <DisplayPathComponent coordinates={GetPolylinePath(getCurrentFloorPath(buildingId, floor))} />
+                <DisplayPathComponent coordinates={GetPolylinePath(getCurrentFloorPath(buildingId, floor))} />
+                // <Path3D map={map} path={GetPolylinePath(getCurrentFloorPath(buildingId, floor))}/>
             }
         </div>
         </>
