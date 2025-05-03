@@ -103,21 +103,6 @@ const DirectionsMapComponent = () => {
     const [currentStep, setCurrentStep] = useState<Step>('SELECT_HOSPITAL');
 
     useEffect(() => {
-        const checkAdmin = () => {
-            console.log(sessionStorage.getItem('position'))
-            if (sessionStorage.getItem('position') === "WebAdmin") {
-                setIsAdmin(true);
-                console.log('admin', isAdmin);
-                return;
-            }
-            setIsAdmin(false);
-            console.log('admin', isAdmin);
-            return;
-        };
-        checkAdmin();
-    }, []);
-
-    useEffect(() => {
         const fetchOrigins = async () => {
             const data: RecentOrigin[] = await GetRecentOrigins();
             console.log('Origins: ' + data);
