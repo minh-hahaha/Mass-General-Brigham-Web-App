@@ -1,5 +1,5 @@
 import React, {ChangeEvent} from 'react';
-import Buildings from "../components/DirectionsMapComponent"
+// import Buildings from "../components/DirectionsMapComponent"
 
 // An interface that defines the props the component accepts
 interface SelectElementProps {
