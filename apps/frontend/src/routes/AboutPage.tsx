@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
-import Member from '../components/Member.tsx';
-import MemberPair from '../components/MemberPair.tsx';
+import Member from '../components/Member';
+import MemberPair from '../components/MemberPair';
 
 const AboutPage = () => {
     return (
@@ -22,12 +22,16 @@ const AboutPage = () => {
                             name={'Minh Ha'}
                             title={'Lead Software Engineer'}
                             github={'minh-hahaha'}
+                            schoolYear={'xxx'}
+                            quote={'xxx'}
                         />
                         <Member
                             image={'Andrew.png'}
                             name={'Andrew Melton'}
                             title={'Assistant Lead Software Engineer'}
                             github={'4ndrew13'}
+                            schoolYear={'xxx'}
+                            quote={'xxx'}
                         />
                     </MemberPair>
 
@@ -37,12 +41,16 @@ const AboutPage = () => {
                             name={'Pakorn Liengsawangwong'}
                             title={'Assistant Lead Software Engineer'}
                             github={'pako490'}
+                            schoolYear={'xxx'}
+                            quote={'xxx'}
                         />
                         <Member
                             image={'max.png'}
                             name={'Max Jeronimo'}
                             title={'Backend / Databases'}
                             github={'max-jeronimo'}
+                            schoolYear={'xxx'}
+                            quote={'xxx'}
                         />
                     </MemberPair>
 
@@ -52,12 +60,16 @@ const AboutPage = () => {
                             name={'Jake Lariviere'}
                             title={'Backend / Databases'}
                             github={'jlariv11'}
+                            schoolYear={'xxx'}
+                            quote={'xxx'}
                         />
                         <Member
                             image={'Jack.png'}
                             name={'Jack Morris'}
                             title={'Backend / Databases'}
                             github={'JackMorris1234'}
+                            schoolYear={'xxx'}
+                            quote={'xxx'}
                         />
                     </MemberPair>
 
@@ -67,12 +79,16 @@ const AboutPage = () => {
                             name={'Vinam Nguyen'}
                             title={'Algorithms / Project Manager'}
                             github={'vinamnguyen'}
+                            schoolYear={'xxx'}
+                            quote={'xxx'}
                         />
                         <Member
                             image={'Krish.png'}
                             name={'Krish Patel'}
                             title={'Algorithms / Scrum Master'}
                             github={'krishpate1'}
+                            schoolYear={'xxx'}
+                            quote={'xxx'}
                         />
                     </MemberPair>
 
@@ -82,12 +98,16 @@ const AboutPage = () => {
                             name={'Yael Whitson'}
                             title={'Frontend / Documentation Analyst'}
                             github={'whywhitson'}
+                            schoolYear={'xxx'}
+                            quote={'xxx'}
                         />
                         <Member
                             image={'Sean.jpg'}
                             name={'Haotian Liu'}
                             title={'Frontend / Product Owner'}
                             github={'seanliu7081'}
+                            schoolYear={'xxx'}
+                            quote={'xxx'}
                         />
                     </MemberPair>
 
@@ -97,12 +117,16 @@ const AboutPage = () => {
                             name={'Kai Davidson'}
                             title={'Team Coach'}
                             github={'None'}
+                            schoolYear={'xxx'}
+                            quote={'xxx'}
                         />
                         <Member
                             image={'wwong2.jpg'}
                             name={'Wilson Wong'}
                             title={'Professor'}
                             github={'None'}
+                            schoolYear={'xxx'}
+                            quote={'xxx'}
                         />
                     </MemberPair>
 
@@ -121,17 +145,21 @@ const AboutPage = () => {
                             name={'Brigham and Women\'s Hospital'}
                             title={'Provided maps and data'}
                             github={'None'}
+                            schoolYear={'xxx'}
+                            quote={'xxx'}
                         />
                         <Member
                             image={'AndrewShinn.jpg'}
                             name={'Andrew Shinn'}
                             title={'Brigham and Women\'s Representative'}
                             github={'None'}
+                            schoolYear={'xxx'}
+                            quote={'xxx'}
                         />
                     </MemberPair>
                 </div>
                 <div className="pt-8">
-                    The Brigham & Women’s Hospital maps and data used in this application are
+                    The Brigham & Women's Hospital maps and data used in this application are
                     copyrighted and provided for the sole use of educational purposes.
                 </div>
             </div>
