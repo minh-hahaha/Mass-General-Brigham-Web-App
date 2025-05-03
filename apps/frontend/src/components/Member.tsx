@@ -28,21 +28,24 @@ const Member = ({image, name, title, github, schoolYear, major, quote}: MemberPr
     // no-flip card 'None'
     if (noFlip) {
         return (
-            <div className='grid grid-cols-[200px_minmax(900px,_1fr)_100px] bg-gray-300 px-4 py-4 rounded-2xl'>
-                <div className={`rounded-full size-32 bg-cover bg-center transition-[delay-150 duration-300 ease-in-out] hover:shadow-[0_0_15px_5px_rgba(37,70,146,0.8)] hover:scale-150`}
-                     style={{ backgroundImage: `url(/TheTeam/${image})` }} />
-                <div className='grid grid-cols-1 text-codgray text-bold'>
+            <div className='flex items-center bg-gray-300 px-4 py-4 rounded-2xl'>
+                <div className='w-[200px] flex justify-center'>
+                    <div className={`rounded-full size-32 bg-cover bg-center transition-[delay-150 duration-300 ease-in-out] hover:shadow-[0_0_15px_5px_rgba(37,70,146,0.8)] hover:scale-150`}
+                         style={{ backgroundImage: `url(/TheTeam/${image})` }} />
+                </div>
+                <div className='flex-1 text-center text-codgray font-bold'>
                     <div className='text-lg'>{name}</div>
                     <div className='text-sm'>{title}</div>
                     {github !== "None" && (
                         <div className='text-sm'>Github: <Link
                             to={`https://github.com/${github}`}
-                            className='text-mgbblue underline transition-[delay-150 duration-300 ease-in-out] hover:text-teal-500 hover:text-lg'
+                            className='text-mgbblue underline transition-[delay-150 duration-300 ease-in-out] hover:text-teal-500'
                         >
                             @{github}
                         </Link></div>
                     )}
                 </div>
+                <div className='w-[100px]'></div>
             </div>
         );
     }
@@ -57,22 +60,25 @@ const Member = ({image, name, title, github, schoolYear, major, quote}: MemberPr
                     transition={{ duration: 0.6 }}
                 >
                     {/* Front of card */}
-                    <div className='absolute w-full h-full grid grid-cols-[200px_minmax(900px,_1fr)_100px] bg-gray-300 px-4 py-4 rounded-2xl [backface-visibility:hidden]'>
-                        <div className={`rounded-full size-32 bg-cover bg-center transition-[delay-150 duration-300 ease-in-out] hover:shadow-[0_0_15px_5px_rgba(37,70,146,0.8)] hover:scale-150`}
-                             style={{ backgroundImage: `url(/TheTeam/${image})` }} />
-                        <div className='grid grid-cols-1 text-codgray text-bold'>
+                    <div className='absolute w-full h-full flex items-center bg-gray-300 px-4 py-4 rounded-2xl [backface-visibility:hidden]'>
+                        <div className='w-[200px] flex justify-center'>
+                            <div className={`rounded-full size-32 bg-cover bg-center transition-[delay-150 duration-300 ease-in-out] hover:shadow-[0_0_15px_5px_rgba(37,70,146,0.8)] hover:scale-150`}
+                                 style={{ backgroundImage: `url(/TheTeam/${image})` }} />
+                        </div>
+                        <div className='flex-1 text-center text-codgray font-bold'>
                             <div className='text-lg'>{name}</div>
                             <div className='text-sm'>{title}</div>
                             {github !== "None" && (
                                 <div className='text-sm'>Github: <Link
                                     to={`https://github.com/${github}`}
-                                    className='text-mgbblue underline transition-[delay-150 duration-300 ease-in-out] hover:text-teal-500 hover:text-lg'
+                                    className='text-mgbblue underline transition-[delay-150 duration-300 ease-in-out] hover:text-teal-500'
                                     onClick={(e) => e.stopPropagation()} // Prevent card flip when clicking the link
                                 >
                                     @{github}
                                 </Link></div>
                             )}
                         </div>
+                        <div className='w-[100px]'></div>
                         <div className="absolute bottom-2 right-4 text-xs text-gray-600">Click to flip</div>
                     </div>
 
