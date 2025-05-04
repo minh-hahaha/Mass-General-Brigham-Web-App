@@ -140,6 +140,16 @@ const ImportExportDirectoryPage = ({ jsonRoute, csvRoute }: ImportExportProps) =
                         value={uploadType}
                         onChange={(e) => setUploadType(e.target.value as 'Overwrite' | 'Update')}
                     />
+                    <label className="block text-sm font-medium">Choose export format</label>
+                    <SelectElement
+                        className="border border-mgbblue"
+                        placeholder={'Select an upload type'}
+                        options={['CSV', 'JSON']}
+                        label={''}
+                        id={'export-type'}
+                        value={downloadType}
+                        onChange={(e) => setDownloadType(e.target.value as 'CSV' | 'JSON')}
+                    />
                 </div>
                 {/* Added margin-top to separate the buttons from the input */}
                 <div className="flex justify-between w-full space-x-4">
