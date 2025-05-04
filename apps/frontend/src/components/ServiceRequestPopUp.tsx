@@ -11,27 +11,27 @@ const instructionPages = [
     {
         title: "Fill Required Fields",
         description: "Enter the essential details for your request. This may include things like patient ID, item type, request type, or service needed.",
-        imagePath: "",
+        imagePath: "/ServiceRequestHelp/FillFields.png",
     },
     {
         title: "Set Location and Department",
         description: "Choose the correct hospital and department to ensure the request is directed appropriately.",
-        imagePath: "",
+        imagePath: "/ServiceRequestHelp/Department.png",
     },
     {
         title: "Add Scheduling Info",
         description: "Provide any relevant dates or timeframes when the service should be completed or scheduled.",
-        imagePath: "",
+        imagePath: "/ServiceRequestHelp/Appointment.png",
     },
     {
         title: "Include Additional Notes",
         description: "Use the comments or notes section to provide extra context or instructions to staff.",
-        imagePath: "",
+        imagePath: "/ServiceRequestHelp/Notes.png",
     },
     {
         title: "Review and Submit",
         description: "Double-check your form. Once complete, click 'Submit Request' to send it.",
-        imagePath: "",
+        imagePath: "/ServiceRequestHelp/Submit.png",
     }
 ];
 
