@@ -220,13 +220,13 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
     const edgeProps = {
         zIndex: 0,
         clickable: true,
-        strokeColor: '#000000',
+        strokeColor: 'red',
         strokeWeight: 5
     };
     // Properties for the drawn edges (Polylines) when selected
     const selectedEdgeProps = {
         ...edgeProps,
-        strokeColor: '#ff0000',
+        strokeColor: '#162456',
     };
 
     // Node Property Use States
@@ -443,10 +443,17 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
     }
 
     function createDrawnNode(position: google.maps.LatLng) {
+        const pinCustomize = new  google.maps.marker.PinElement({
+            background: '#20499C',
+            glyphColor: "white",
+            borderColor: "#20499C",
+        });
+
         return new google.maps.marker.AdvancedMarkerElement({
             ...nodeProps,
             position: position,
             map: map,
+            content: pinCustomize.element,
         });
     }
 
