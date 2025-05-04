@@ -24,23 +24,45 @@ router.get('/', async (req: Request, res: Response) => {
             return;
         }
 
-        const [statusSummary, prioritySummary] = await Promise.all([
-            PrismaClient.serviceRequest.groupBy({
-                by: ['status'],
-                where: { employeeId: employee.employeeId },
-                _count: { _all: true },
-            }),
-            PrismaClient.serviceRequest.groupBy({
-                by: ['priority'],
-                where: { employeeId: employee.employeeId },
-                _count: { _all: true },
-            }),
-        ]);
+        const statusSummaryRaw = await PrismaClient.serviceRequest.groupBy({
+            by: ['status'],
+            where: { employeeId: employee.employeeId },
+            _count: { _all: true },
+        });
 
+        const prioritySummaryRaw = await PrismaClient.serviceRequest.groupBy({
+            by: ['priority'],
+            where: { employeeId: employee.employeeId },
+            _count: { _all: true },
+        });
+
+        const serviceTypeSummaryRaw = await PrismaClient.serviceRequest.groupBy({
+            by: ['serviceType'],
+            where: { employeeId: employee.employeeId },
+            _count: { _all: true },
+        });
+
+        const statusSummary = statusSummaryRaw.map((item) => ({
+            label: item.status,
+            count: item._count._all,
+        }));
+
+        const prioritySummary = prioritySummaryRaw.map((item) => ({
+            label: item.priority,
+            count: item._count._all,
+        }));
+
+        const serviceTypeSummary = serviceTypeSummaryRaw.map((item) => ({
+            label: item.serviceType,
+            count: item._count._all,
+        }));
+
+        console.log(serviceTypeSummary);
         res.json({
             employee,
             statusSummary,
             prioritySummary,
+            serviceTypeSummary,
         });
     } catch (error) {
         console.error('Error fetching service summary:', error);

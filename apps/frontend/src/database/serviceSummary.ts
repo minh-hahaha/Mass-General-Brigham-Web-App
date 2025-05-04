@@ -49,6 +49,7 @@ export async function getSummary(email: string): Promise<{
     employee: incomingAccount,
     statusSummary: SummaryItem[],
     prioritySummary: SummaryItem[],
+    serviceTypeSummary: SummaryItem[],
 }> {
     const res = await fetch(`${ROUTES.SERVICESUMMARY}?email=${encodeURIComponent(email)}`, {
         method: 'GET',

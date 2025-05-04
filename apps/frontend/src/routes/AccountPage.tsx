@@ -1,58 +1,58 @@
-import account from "@/assets/icons/account.png";
-import { Card, CardHeader, CardContent, CardTitle, CardFooter } from "@/components/ui/card";
-import { Pie, PieChart } from "recharts"
+import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
+import {
+    Pie,
+    PieChart,
+    Cell,
+    Bar,
+    BarChart,
+    CartesianGrid,
+    LabelList,
+    XAxis } from "recharts"
 import {
     ChartConfig,
     ChartContainer,
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart"
+
 import TableAssignedRequest from '@/components/tables/TableAssignedRequest.tsx'
 import {useEffect, useState} from "react";
 import {getSummary, SummaryItem, incomingAccount} from "@/database/serviceSummary.ts"
 import { useAuth0 } from "@auth0/auth0-react";
 
 interface ChartDataItem {
+    key: string;
     label: string;
     requests: number;
-    fill: string;
 }
 
-// example chart stuff
-// colors are not good i know
+const statusChartConfig = {
+    pending: { label: "Pending", color: "#20499C" },
+    inprogress: { label: "In Progress", color: "#4D74B7" },
+    completed: { label: "Completed", color: "#809BCC" },
+    canceled: { label: "Canceled", color: "#99AFD7" },
+} satisfies ChartConfig;
 
-const chartConfig = {
-    requests: {
-        label: "requests",
-    },
-    chrome: {
-        label: "Chrome",
-        color: "hsl(var(--chart-1))",
-    },
-    safari: {
-        label: "Safari",
-        color: "hsl(var(--chart-2))",
-    },
-    firefox: {
-        label: "Firefox",
-        color: "hsl(var(--chart-3))",
-    },
-    edge: {
-        label: "Edge",
-        color: "hsl(var(--chart-4))",
-    },
-    other: {
-        label: "Other",
-        color: "hsl(var(--chart-5))",
-    },
-} satisfies ChartConfig
+const priorityChartConfig = {
+    low: { label: "Low", color: "#66A6FF" },
+    medium: { label: "Medium", color: "#3388FF" },
+    high: { label: "High", color: "#0E5EFF" },
+    emergency: { label: "Emergency", color: "#20499C" },
+} satisfies ChartConfig;
+
+const serviceTypeChartConfig = {
+    patienttransportation: { label: "Patient Transporation", color: "#20499C" },
+    translation: { label: "Translation", color: "#20499C" },
+    sanitation: { label: "Sanitation", color: "#20499C" },
+    medicaldevice: { label: "Medical Device", color: "#20499C" },
+    maintenancerequest: { label: "Maintenance", color: "#20499C" },
+} satisfies ChartConfig;
 
 function mapToChartData(summary: SummaryItem[]) {
-    const colorMap = ['#003A96', 'red', 'yellow', 'green', 'orange', '#8884d8'];
-    return summary.map((item, idx) => ({
+    return summary.map((item) => ({
+        key: item.label.toLowerCase().replace(/\s/g, ""), // matches config keys
         label: item.label,
         requests: item.count,
-        fill: colorMap[idx % colorMap.length],
     }));
 }
 
@@ -66,6 +66,7 @@ const AccountPage = () => {
     const [employee, setEmployee] = useState<incomingAccount | null>(null);
     const [statusChartData, setStatusChartData] = useState<ChartDataItem[]>([]);
     const [priorityChartData, setPriorityChartData] = useState<ChartDataItem[]>([]);
+    const [serviceTypeChartData, setServiceTypeChartData] = useState<ChartDataItem[]>([]);
     const { getAccessTokenSilently, isAuthenticated } = useAuth0();
     const [ profilePicture, setProfilePicture ] = useState<string>();
 
@@ -94,9 +95,16 @@ const AccountPage = () => {
                 const summary = await getSummary(email);
 
                 setEmployee(summary.employee)
-                setStatusChartData(mapToChartData(summary.statusSummary))
+                setStatusChartData(
+                    mapToChartData(summary.statusSummary).sort(
+                        (a, b) => b.requests - a.requests))
                 console.log(summary.statusSummary)
-                setPriorityChartData(mapToChartData(summary.prioritySummary))
+                setPriorityChartData(
+                    mapToChartData(summary.prioritySummary).sort(
+                        (a, b) => b.requests - a.requests))
+                setServiceTypeChartData(
+                    mapToChartData(summary.serviceTypeSummary).sort(
+                        (a, b) => b.requests - a.requests))
                 console.log(summary.prioritySummary)
             } catch (err) {
                 console.error('Error fetching user info:', err);
@@ -120,7 +128,7 @@ const AccountPage = () => {
 
                     {/* Name and ID */}
                     <div className="flex flex-col items-center space-y-1 mb-10">
-                        <h1 className="text-xl font-bold text-center">
+                        <h1 className="text-3xl font-bold text-center">
                             {employee ? `${employee.firstName} ${employee.lastName}` : "Loading..."}
                         </h1>
                         <h3 className="text-center">
@@ -137,21 +145,20 @@ const AccountPage = () => {
             {/* Right Panel */}
             <div className="md:col-span-3 flex flex-col space-y-4 h-full">
                 {/* Top Panel: Status and Priority */}
-                {/* Right Panel (takes up 3/4 of the grid) */}
                 <div className="md:col-span-3 flex flex-col gap-4 h-full">
                     {/* Container to split vertical space equally */}
                     <div className="flex flex-col gap-4 h-full">
                         {/* Top Panel: Status and Priority */}
                         <Card className="flex flex-col flex-1">
                             <CardHeader className="text-xl flex flex-col md:flex-row md:items-center md:justify-between">
-                                <CardTitle>Status and Priority</CardTitle>
+                                <CardTitle>Request Breakdown</CardTitle>
                             </CardHeader>
 
-                            <CardContent className="flex flex-row justify-between gap-1">
+                            <CardContent className="flex flex-row justify-between gap-1 mt-8">
                                 {/* First Chart with Label */}
                                 <div className="flex flex-col items-center w-1/2">
                                     <ChartContainer
-                                        config={chartConfig}
+                                        config={statusChartConfig}
                                         className="aspect-square max-h-[190px] w-full"
                                     >
                                         <PieChart>
@@ -159,7 +166,15 @@ const AccountPage = () => {
                                                 cursor={false}
                                                 content={<ChartTooltipContent hideLabel />}
                                             />
-                                            <Pie data={statusChartData} dataKey="requests" nameKey="status" />
+                                            <Pie
+                                                data={statusChartData}
+                                                dataKey="requests"
+                                                nameKey="label"
+                                            >
+                                                {statusChartData.map((entry) => (
+                                                    <Cell key={entry.key} fill={statusChartConfig[entry.key as keyof typeof statusChartConfig]?.color || "#ccc"} />
+                                                ))}
+                                            </Pie>
                                         </PieChart>
                                     </ChartContainer>
                                     <div className="text-center mt-2 text-xl">
@@ -170,7 +185,7 @@ const AccountPage = () => {
                                 {/* Second Chart with Label */}
                                 <div className="flex flex-col items-center w-1/2">
                                     <ChartContainer
-                                        config={chartConfig}
+                                        config={priorityChartConfig}
                                         className="aspect-square max-h-[190px] w-full"
                                     >
                                         <PieChart>
@@ -178,13 +193,68 @@ const AccountPage = () => {
                                                 cursor={false}
                                                 content={<ChartTooltipContent hideLabel />}
                                             />
-                                            <Pie data={priorityChartData} dataKey="requests" nameKey="priority" />
+                                            <Pie
+                                                data={priorityChartData}
+                                                dataKey="requests"
+                                                nameKey="label"
+                                            >
+                                                {priorityChartData.map((entry) => (
+                                                    <Cell key={entry.key} fill={priorityChartConfig[entry.key as keyof typeof priorityChartConfig]?.color || "#ccc"} />
+                                                ))}
+                                            </Pie>
                                         </PieChart>
                                     </ChartContainer>
                                     <div className="text-center mt-2 text-xl">
                                         <span><strong>Priority</strong></span>
                                     </div>
                                 </div>
+
+                                <div className="flex flex-col items-center w-1/2">
+                                    <ChartContainer
+                                        config={serviceTypeChartConfig}
+                                        className="aspect-square max-h-[190px] w-full"
+                                    >
+                                        <BarChart
+                                            data={serviceTypeChartData}
+                                            margin={{ top: 30, right: 10, left: 10, bottom: 10 }}
+                                        >
+                                            <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                                            <XAxis
+                                                dataKey="label"
+                                                tickLine={false}
+                                                tickMargin={8}
+                                                axisLine={false}
+                                            />
+                                            <ChartTooltip
+                                                cursor={false}
+                                                content={<ChartTooltipContent hideLabel />}
+                                            />
+                                            <Bar dataKey="requests" radius={6} barSize={80}>
+                                                {serviceTypeChartData.map((entry) => (
+                                                    <Cell
+                                                        key={entry.key}
+                                                        fill={
+                                                            serviceTypeChartConfig[entry.key as keyof typeof serviceTypeChartConfig]?.color ||
+                                                            "#ccc"
+                                                        }
+                                                    />
+                                                ))}
+                                                <LabelList
+                                                    dataKey="requests"
+                                                    position="top"
+                                                    offset={8}
+                                                    className="fill-foreground"
+                                                    fontSize={12}
+                                                />
+                                            </Bar>
+                                        </BarChart>
+                                    </ChartContainer>
+
+                                    <div className="text-center mt-2 text-xl">
+                                        <span><strong>Service Type</strong></span>
+                                    </div>
+                                </div>
+
                             </CardContent>
                         </Card>
 
@@ -205,5 +275,38 @@ const AccountPage = () => {
         </div>
     )
 }
+//
+// export function Component() {
+//   return (
+//     <Card className="flex flex-col">
+//       <CardHeader className="items-center pb-0">
+//         <CardTitle>Pie Chart</CardTitle>
+//         <CardDescription>January - June 2024</CardDescription>
+//       </CardHeader>
+//       <CardContent className="flex-1 pb-0">
+//         <ChartContainer
+//           config={chartConfig}
+//           className="mx-auto aspect-square max-h-[250px]"
+//         >
+//           <PieChart>
+//             <ChartTooltip
+//               cursor={false}
+//               content={<ChartTooltipContent hideLabel />}
+//             />
+//             <Pie data={chartData} dataKey="visitors" nameKey="browser" />
+//           </PieChart>
+//         </ChartContainer>
+//       </CardContent>
+//       <CardFooter className="flex-col gap-2 text-sm">
+//         <div className="flex items-center gap-2 font-medium leading-none">
+//           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+//         </div>
+//         <div className="leading-none text-muted-foreground">
+//           Showing total visitors for the last 6 months
+//         </div>
+//       </CardFooter>
+//     </Card>
+//   )
+// }
 
 export default AccountPage;
