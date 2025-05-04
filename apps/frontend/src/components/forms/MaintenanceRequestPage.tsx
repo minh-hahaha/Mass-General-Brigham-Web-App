@@ -31,8 +31,8 @@ import { RequestPageProps } from '@/routes/ServiceRequestDisplayPage.tsx';
 const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
     const [maintenanceType, setMaintenanceType] = useState('');
     const [maintenanceDescription, setMaintenanceDescription] = useState('');
-    const [priority, setPriority] = useState<priorityType>('Low');
-    const [maintenanceHospital, setMaintenanceHospital] = useState<mgbHospitalType>('Chestnut Hill');
+    const [priority, setPriority] = useState<priorityType>('');
+    const [maintenanceHospital, setMaintenanceHospital] = useState<mgbHospitalType>('');
     const [directory, setDirectory] = useState('');
     const [maintenanceTime, setMaintenanceTime] = useState('');
     const [employeeId, setEmployeeId] = useState(0);

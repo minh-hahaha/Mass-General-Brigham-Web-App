@@ -27,7 +27,7 @@ import HelpButton from "@/components/ServiceRequestHelp.tsx";
 const SanitationRequestPage = ({editData}: RequestPageProps) => {
 
     //Service request fields
-    const [priority, setPriority] = useState<priorityType>('Low');
+    const [priority, setPriority] = useState<priorityType>('');
     const [requestTime, setRequest_time] = useState('');
 
     //Optional fields
@@ -38,7 +38,7 @@ const SanitationRequestPage = ({editData}: RequestPageProps) => {
 
     //Sanitation fields
     const [sanitationType, setSanitationType] = useState('');
-    const [hazardLevel, setHazardLevel] = useState<sanitationRequest['hazardLevel']>('Low');
+    const [hazardLevel, setHazardLevel] = useState<sanitationRequest['hazardLevel']>('');
     const [completeBy, setCompleteBy] = useState('');
     const [sanitationLocationId, setSanitation_location_id] = useState('');
     const [sanitationDepartmentId, setSanitation_department_id] = useState('');
@@ -138,7 +138,7 @@ const SanitationRequestPage = ({editData}: RequestPageProps) => {
         setComments('');//done
         setEmployeeId(0);//done
         setSanitationType('');//done
-        setHazardLevel('Low');//done
+        setHazardLevel('');//done
         setCompleteBy(new Date().toISOString());//
         setSanitation_location_id ('');
         setSanitation_department_id('');
@@ -220,6 +220,7 @@ const SanitationRequestPage = ({editData}: RequestPageProps) => {
                         value={requesterRoomNumber}
                         onChange={(e) => setRequester_roomnum(e.target.value)}
                         required
+                        placeholder="Enter Room Number"
                     />
                     <FormFieldElement
                         label="Priority"

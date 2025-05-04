@@ -24,8 +24,8 @@ import HelpButton from '@/components/ServiceRequestHelp.tsx';
 const TransportRequestPage = ({ editData }: RequestPageProps) => {
     const [patientId, setPatientId] = useState(0);
     const [patientName, setPatientName] = useState('');
-    const [transportType, setTransportType] = useState<hospitalTransportType>('Ambulance (BLS)');
-    const [priority, setPriority] = useState('Select Priority');
+    const [transportType, setTransportType] = useState<hospitalTransportType>('');
+    const [priority, setPriority] = useState('');
     const [pickupLocation, setPickupLocation] = useState('');
     const [dropoffLocation, setDropoffLocation] = useState('');
     const [employeeId, setEmployeeId] = useState(0);
@@ -71,8 +71,8 @@ const TransportRequestPage = ({ editData }: RequestPageProps) => {
     const handleReset = () => {
         setPatientId(0);
         setPatientName('');
-        setTransportType('Ambulance (BLS)');
-        setPriority('Low');
+        setTransportType("");
+        setPriority('');
         setPickupLocation('');
         setDropoffLocation('');
         setNotes('');

@@ -39,9 +39,9 @@ export interface MedicalDeviceRequestData {
 
 const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
     const [employeeId, setEmployeeId] = useState<number>(0);
-    const [priority, setPriority] = useState<priorityType>('Low');
-    const [location, setLocation] = useState<mgbHospitalType>('Chestnut Hill');
-    const [device, setMedicalDevice] = useState<MedicalDeviceRequestData['device']>('ECG Monitor');
+    const [priority, setPriority] = useState<priorityType>('');
+    const [location, setLocation] = useState<mgbHospitalType>('');
+    const [device, setMedicalDevice] = useState<MedicalDeviceRequestData['device']>('');
     const [deviceModel, setDeviceModel] = useState('');
     const [deviceSerialNumber, setDeviceSerialNumber] = useState('');
     const [quantity, setQuantity] = useState(1);
@@ -202,6 +202,8 @@ const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
                         value={reasoning}
                         onChange={(e) => setReasoning(e.target.value)}
                         required
+                        placeholder="Enter a reasoning for device needed"
+
                     />
 
                     <FormFieldElement
