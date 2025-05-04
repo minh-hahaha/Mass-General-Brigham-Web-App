@@ -3,7 +3,8 @@ import DisclaimerPopup from '@/components/DisclaimerPopup.tsx';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { RiArrowRightSLine } from "react-icons/ri";
-
+import { useNavigate } from 'react-router-dom';
+import { classifyInput } from 'utils/classifyInput.ts';
 
 import { useAuth0 } from '@auth0/auth0-react';
 

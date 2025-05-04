@@ -18,8 +18,48 @@ import {motion} from 'framer-motion';
 import { FaRegUserCircle } from "react-icons/fa";
 import {clsx} from 'clsx';
 import {useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom";
+import {classifyInput} from "../../utils/classifyInput.ts";
+
+const [input, setInput] = useState<string>('');
 
 
+const handleSearch = async (input: string) => {
+    const result = await classifyInput(input);
+    const navigate = useNavigate();
+
+    switch (result.intent) {
+        case "create_request":
+            navigate("/requests", {
+                state: {
+                    requestType: result.requestType,
+                    location: result.location,
+                },
+            });
+            break;
+
+        case "get_hospital_directions":
+            navigate("/MapPage", {
+                state: { hospital: result.hospital }
+            });
+            break;
+
+        case "get_department_directions":
+            navigate("/MapPage", {
+                state: { destination: result.department }
+            });
+            break;
+
+        case "view_department_info":
+            navigate("/directory", {
+                state: { department: result.department }
+            });
+            break;
+
+        default:
+            alert("Sorry, I couldn’t understand that request.");
+    }
+};
 
 const aboutItems = [
     {

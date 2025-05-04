@@ -19,6 +19,7 @@ import edgeRouter from './routes/edge.ts';
 import originRouter from './routes/recentorigins.ts';
 import textToSpeechRouter from './routes/textToSpeech.ts';
 import buildingRouter from './routes/building.ts';
+import classifyRouter from './routes/classify.ts';
 
 import { ROUTES } from 'common/src/constants';
 
@@ -89,6 +90,8 @@ app.use(ROUTES.NODE_EDGE_JSON, nodeRouter);
 app.use(ROUTES.RECENT_ORIGINS, originRouter);
 
 app.use(ROUTES.TTS, textToSpeechRouter);
+
+app.use(ROUTES.CLASSIFY, classifyRouter);
 
 /**
  * Catch all 404 errors, and forward them to the error handler
