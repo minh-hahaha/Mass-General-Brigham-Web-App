@@ -15,7 +15,6 @@ import {DirectoryRequestByBuilding, getDirectory} from "@/database/gettingDirect
 import SelectFormElement from "@/elements/SelectFormElement.tsx";
 import {employeeNameId, getEmployeeNameIds} from "@/database/getEmployee.ts";
 import {RequestPageProps} from "@/routes/ServiceRequestDisplayPage.tsx";
-import {editMedicalDeviceRequest} from "@/database/forms/medicalDeviceRequest.ts";
 import {EditTranslatorRequest, editTranslatorRequest} from "@/database/translationRequest.ts";
 import HelpButton from '@/components/ServiceRequestHelp.tsx'; // adjust path if needed
 import Confetti from 'react-confetti'
