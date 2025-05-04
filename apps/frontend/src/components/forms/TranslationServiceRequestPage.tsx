@@ -1,5 +1,6 @@
 import InputElement from '@/elements/InputElement.tsx';
 import MGBButton from '@/elements/MGBButton.tsx';
+import FormFieldElement from '@/elements/FormFieldElement.tsx';
 import {useEffect, useState} from 'react';
 import SelectElement from '@/elements/SelectElement.tsx';
 import { SubmitTranslatorRequest, outgoingTranslationRequest } from '@/database/forms/translationRequest.ts';
@@ -155,222 +156,150 @@ const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
     }, []);
 
     return (
-        // flex row container
-        <div className="flex flex-col justify-center items-center min-h-screen">
-            {/* make the form left side */}
-            <div className="flex flex-col items-center rounded-2xl p-8 w-full max-w-[700px] mt-10 mb-10">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                    <h1 className="text-[30px] font-bold leading-none">Translation Service Request</h1>
-                    <div className="pt-[11.5px]">
-                        <HelpButton />
+        <div className="flex justify-center items-start pt-16 pb-16 min-h-screen bg-[#f5faff] px-4">
+            <div className="bg-white border border-[#d0ebff] rounded-2xl shadow-lg px-10 py-10 w-full max-w-[500px]">
+                <div className="flex justify-between items-center mb-6">
+                    <h1 className="text-2xl font-bold text-mgbblue">Translation Request</h1>
+                    <HelpButton />
+                </div>
+
+                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                    <FormFieldElement
+                        label="Employee"
+                        id="employee"
+                        type="select"
+                        value={employeeId}
+                        onChange={(e) => setEmployeeId(Number(e.target.value))}
+                        options={["", ...employeeList.map(emp => emp.employeeId.toString())]}
+                        placeholder="Select Employee"
+                    />
+
+                    <FormFieldElement
+                        label="Patient ID"
+                        id="patientId"
+                        type="number"
+                        value={patientId}
+                        onChange={(e) => setPatientId(Number(e.target.value))}
+                        required
+                        placeholder="Enter patient ID"
+                    />
+
+                    <FormFieldElement
+                        label="Language"
+                        id="language"
+                        type="select"
+                        value={patientLanguage}
+                        onChange={(e) => setPatientLanguage(e.target.value)}
+                        options={translateLangugeArray}
+                        placeholder="Select Language"
+                    />
+
+                    <FormFieldElement
+                        label="Priority"
+                        id="priority"
+                        type="select"
+                        value={priority}
+                        onChange={(e) => setPriority(e.target.value as priorityType)}
+                        required
+                        options={priorityArray}
+                        placeholder="Select Priority"
+                    />
+
+                    <FormFieldElement
+                        label="Appointment Time"
+                        id="date"
+                        type="datetime-local"
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                        required
+                    />
+
+                    <FormFieldElement
+                        label="Duration (hours)"
+                        id="duration"
+                        type="number"
+                        value={duration}
+                        onChange={(e) => setDuration(Number(e.target.value))}
+                        required
+                    />
+
+                    <FormFieldElement
+                        label="Meeting Type"
+                        id="meetingType"
+                        type="select"
+                        value={typeMeeting}
+                        onChange={(e) => setTypeMeeting(e.target.value as meetingType)}
+                        options={meetingTypeArray}
+                        placeholder="Select Meeting Type"
+                        required
+                    />
+
+                    {typeMeeting === 'Remote (Online)' && (
+                        <FormFieldElement
+                            label="Meeting Link"
+                            id="meetingLink"
+                            type="text"
+                            value={meetingLink}
+                            onChange={(e) => setMeetingLink(e.target.value)}
+                            placeholder="Enter meeting link"
+                        />
+                    )}
+
+                    <FormFieldElement
+                        label="Hospital"
+                        id="location"
+                        type="select"
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value as mgbHospitalType)}
+                        options={mgbHospitals}
+                        placeholder="Select Hospital"
+                        required
+                    />
+
+                    <FormFieldElement
+                        label="Department"
+                        id="department"
+                        type="select"
+                        value={department}
+                        onChange={(e) => setDepartment(e.target.value)}
+                        options={directoryList}
+                        placeholder="Select Department"
+                        required
+                    />
+
+                    <div className="flex flex-col">
+                        <label className="text-sm font-medium text-gray-700 mb-1">Additional Comments:</label>
+                        <textarea
+                            id="notes"
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
+                            rows={3}
+                            placeholder="Additional Notes:"
+                            className="px-4 py-2 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                        />
                     </div>
-                </div>
-                <br />
-                <p> Krish Patel and Jake Lariviere </p>
-                <div>
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div>
-                            <h3 className="text-xl font-semibold mb-4">
-                                <b>Assign Employee</b>
-                            </h3>
-                            <div className="flex flex-row gap-2">
-                                <div className='flex flex-row gap-2'>
-                                    <label className='w=1/4'>Employee: </label>
-                                    <select
-                                        onChange={(e) => {
-                                            setEmployeeId(Number(e.target.value));
-                                        }}
-                                        value={employeeId}
-                                        className='w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300'
-                                    >
-                                        {employeeList.map((employee) => (
-                                            <option key={employee.employeeId} value={employee.employeeId}>
-                                                {employee.employeeName}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <h3 className="text-xl font-semibold mb-4">
-                                <b>Patient Information</b>
-                            </h3>
-                            <div className="flex flex-col gap-2">
-                                <div className="flex items-center gap-2">
-                                    <InputElement
-                                        id="patientId"
-                                        name="patientId"
-                                        label="Patient Id: "
-                                        placeholder="Please enter the patient id"
-                                        required={true}
-                                        type="number"
-                                        value={patientId}
-                                        onChange={(e) => setPatientId(Number(e.target.value as string))}
-                                    />
-                                </div>
-                                <SelectFormElement
-                                    label="Language"
-                                    id="language"
-                                    value= {patientLanguage}
-                                    onChange={(e) => setPatientLanguage(e.target.value)}
-                                    options={translateLangugeArray}
-                                    placeholder="Select Language"
-                                />
-                            </div>
-                        </div>
 
-                        <div>
-                            <h3 className="text-xl font-semibold mb-4">
-                                <b>Translator Information</b>
-                            </h3>
-                            <div className="flex flex-col gap-2">
-                                <SelectFormElement
-                                    label = 'Priority'
-                                    id = 'priority'
-                                    value = {priority}
-                                    onChange = {(e) =>
-                                        setPriority(e.target.value as priorityType)
-                                    }
-                                    required
-                                    options = {priorityArray}
-                                    placeholder = 'Select Priority'
-                                />
-                            </div>
-
-                                <div className="flex items-center gap-2">
-                                    <InputElement
-                                        id="date"
-                                        name="date"
-                                        label="Date and Time of Appointment: "
-                                        placeholder="Please choose the date and time of Appointment: "
-                                        required={true}
-                                        type="datetime-local"
-                                        value={date}
-                                        onChange={(e) => setDate(e.target.value)}
-                                    />
-                                </div>
-
-                                <div className="flex items-center gap-2">
-                                    <InputElement
-                                        id="duration"
-                                        name="duration"
-                                        label="Duration: (Number of hour) "
-                                        placeholder="Please enter the duration of the Appointment: "
-                                        required={true}
-                                        type="number"
-                                        value={duration}
-                                        onChange={(e) => setDuration(Number(e.target.value))}
-                                    />
-                                </div>
-                        </div>
-
-                        <div>
-                            <h3 className="text-xl font-semibold mb-4">
-                                <b>Meeting Information</b>
-                            </h3>
-                            <div className="flex flex-col gap-2">
-                                <div className="flex flex-col pt-2">
-                                    <SelectFormElement
-                                        label = 'Meeting Type'
-                                        id = 'meetingType'
-                                        value = {typeMeeting}
-                                        onChange = {(e) =>
-                                            setTypeMeeting(e.target.value as meetingType)
-                                        }
-                                        required
-                                        options = {meetingTypeArray}
-                                        placeholder = 'Select Meeting Type'
-                                    />
-                                </div>
-
-                                <div
-                                    className="flex items-center gap-2"
-                                    hidden={typeMeeting !== 'Remote (Online)'}
-                                >
-                                    <InputElement
-                                        id="meetingLink"
-                                        name="meetingLink"
-                                        label="Meeting Link (If Remote): "
-                                        placeholder="Please enter the Meeting Link (if Online): "
-                                        required={false}
-                                        type="text"
-                                        value={meetingLink}
-                                        onChange={(e) => setMeetingLink(e.target.value)}
-                                    />
-                                </div>
-
-                                <div className="flex flex-col pt-2">
-                                    <div className="flex flex-col pt-2">
-                                        <SelectFormElement
-                                            label = 'Hospital'
-                                            id = 'location'
-                                            value = {location}
-                                            onChange = {(e) =>
-                                                setLocation(e.target.value as mgbHospitalType)
-                                            }
-                                            required
-                                            options = {mgbHospitals}
-                                            placeholder = 'Select Hospital'
-                                        />
-                                    </div>
-                                </div>
-                                <div className="flex flex-col pt-2">
-                                    {/*Department Dropdown*/}
-
-                                        <SelectFormElement
-                                            label = 'Department'
-                                            id = 'department'
-                                            value = {department}
-                                            onChange = {(e) =>
-                                                setDepartment(e.target.value)
-                                            }
-                                            required
-                                            options = {directoryList}
-                                            placeholder = 'Select Department'
-                                        />
-
-                                </div>
-                                <h3 className="text-xl font-semibold mb-4 mt-3">
-                                    <b>Additional Information</b>
-                                </h3>
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4" htmlFor={'notes'}>
-                                        Additional Notes
-                                    </label>
-                                    <textarea
-                                        id="notes"
-                                        placeholder="Additional Notes"
-                                        value={notes}
-                                        onChange={(e) => setNotes(e.target.value)}
-                                        cols={3}
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        {/* submit button and confirmation message */}
-                        <div className="flex items-center justify-center space-x-4">
-                            <MGBButton
-                                onClick={() => handleSubmit}
-                                variant={'primary'}
-                                disabled={false}
-                            >
-                                Submit Request
-                            </MGBButton>
-                            <MGBButton
-                                onClick={() => handleReset()}
-                                variant={'secondary'}
-                                disabled={false}
-                            >
-                                Clear Form
-                            </MGBButton>
-                        </div>
-                    </form>
-                </div>
+                    <div className="flex items-center justify-center space-x-4">
+                        <MGBButton
+                            onClick={() => handleSubmit}
+                            variant={'primary'}
+                            disabled={false}
+                        >
+                            Submit Request
+                        </MGBButton>
+                        <MGBButton
+                            onClick={() => handleReset()}
+                            variant={'secondary'}
+                            disabled={false}
+                        >
+                            Clear Form
+                        </MGBButton>
+                    </div>
+                </form>
             </div>
         </div>
     );
 };
 
 export default TranslationServiceRequestPage;
+

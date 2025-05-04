@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import MGBButton from '@/elements/MGBButton.tsx';
+import FormFieldElement from '@/elements/FormFieldElement.tsx';
 import {
     SubmitMaintenanceRequest,
     EditMaintenanceRequest,
@@ -124,18 +125,20 @@ const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
                 </div>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                    <SelectFormElement
+                    <FormFieldElement
                         label="Employee"
                         id="employee"
+                        type="select"
                         value={employeeId}
                         onChange={(e) => setEmployeeId(Number(e.target.value))}
                         options={["", ...employeeList.map((emp) => emp.employeeId.toString())]}
                         placeholder="Select Employee"
                     />
 
-                    <SelectFormElement
+                    <FormFieldElement
                         label="Maintenance Type"
                         id="maintenanceType"
+                        type="select"
                         value={maintenanceType}
                         onChange={(e) => setMaintenanceType(e.target.value as reqMaintenanceType)}
                         required
@@ -143,18 +146,22 @@ const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
                         placeholder="Select Maintenance Type"
                     />
 
-                    <textarea
-                        className="border-b-2 border-mgbblue focus:outline-none focus:border-mgbblue px-2 py-1 placeholder:text-sm resize-none"
-                        placeholder="Describe the issue"
-                        rows={3}
-                        required
-                        value={maintenanceDescription}
-                        onChange={(e) => setMaintenanceDescription(e.target.value)}
-                    />
+                    <div className="flex flex-col">
+                        <label className="text-sm font-medium text-gray-700 mb-1">Describe the Issue</label>
+                        <textarea
+                            id="maintenceDescription"
+                            value={maintenanceDescription}
+                            onChange={(e) => setNotes(e.target.value)}
+                            rows={3}
+                            placeholder="Describe the issue here"
+                            className="px-4 py-2 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                        />
+                    </div>
 
-                    <SelectFormElement
+                    <FormFieldElement
                         label="Priority"
                         id="priority"
+                        type="select"
                         value={priority}
                         onChange={(e) => setPriority(e.target.value as priorityType)}
                         required
@@ -162,9 +169,10 @@ const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
                         placeholder="Select Priority"
                     />
 
-                    <SelectFormElement
+                    <FormFieldElement
                         label="Hospital"
                         id="hospital"
+                        type="select"
                         value={maintenanceHospital}
                         onChange={(e) => setMaintenanceHospital(e.target.value as mgbHospitalType)}
                         required
@@ -172,9 +180,10 @@ const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
                         placeholder="Select Hospital"
                     />
 
-                    <SelectFormElement
+                    <FormFieldElement
                         label="Department"
                         id="department"
+                        type="select"
                         value={directory}
                         onChange={(e) => setDirectory(e.target.value)}
                         required
@@ -182,21 +191,26 @@ const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
                         placeholder="Select Department"
                     />
 
-                    <input
+                    <FormFieldElement
+                        label="Maintenance Time"
+                        id="maintenanceTime"
                         type="datetime-local"
-                        className="border-b-2 border-mgbblue focus:outline-none focus:border-mgbblue px-2 py-1 text-sm"
                         value={maintenanceTime}
                         onChange={(e) => setMaintenanceTime(e.target.value)}
                         required
                     />
 
-                    <textarea
-                        className="border-b-2 border-mgbblue focus:outline-none focus:border-mgbblue px-2 py-1 placeholder:text-sm resize-none"
-                        placeholder="Additional Notes"
-                        rows={2}
-                        value={notes}
-                        onChange={(e) => setNotes(e.target.value)}
-                    />
+                    <div className="flex flex-col">
+                        <label className="text-sm font-medium text-gray-700 mb-1">Additional Comments</label>
+                        <textarea
+                            id="medicalNotes"
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
+                            rows={3}
+                            placeholder="Additional Notes"
+                            className="px-4 py-2 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                        />
+                    </div>
 
                     <input
                         type="hidden"

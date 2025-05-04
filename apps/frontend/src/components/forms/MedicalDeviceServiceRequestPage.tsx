@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import {DirectoryRequestByBuilding, getDirectory} from "@/database/gettingDirectory.ts";
+import FormFieldElement from "@/elements/FormFieldElement.tsx"
 import {
     formatDateForEdit,
     medicalDevices,
@@ -146,18 +147,20 @@ const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
                 </div>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                    <SelectFormElement
+                    <FormFieldElement
                         label="Employee"
                         id="employee"
+                        type="select"
                         value={employeeId}
                         onChange={(e) => setEmployeeId(Number(e.target.value))}
                         options={["", ...employeeList.map((emp) => emp.employeeId.toString())]}
                         placeholder="Select Employee"
                     />
 
-                    <SelectFormElement
+                    <FormFieldElement
                         label="Medical Device"
                         id="device"
+                        type="select"
                         value={device}
                         onChange={(e) => setMedicalDevice(e.target.value as medicalDeviceType)}
                         required
@@ -165,48 +168,46 @@ const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
                         placeholder="Select Device"
                     />
 
-                    <InputElement
-                        id="quantity"
-                        name="quantity"
+                    <FormFieldElement
                         label="Quantity"
-                        required
+                        id="quantity"
                         type="number"
                         value={quantity}
                         onChange={(e) => setQuantity(Number(e.target.value))}
+                        required
                     />
 
-                    <InputElement
-                        id="deviceModel"
-                        name="deviceModel"
+                    <FormFieldElement
                         label="Device Model"
+                        id="deviceModel"
                         type="text"
-                        placeholder="Enter device model (optional)"
                         value={deviceModel}
                         onChange={(e) => setDeviceModel(e.target.value)}
+                        placeholder="Enter device model (optional)"
                     />
 
-                    <InputElement
-                        id="deviceSerialNumber"
-                        name="deviceSerialNumber"
+                    <FormFieldElement
                         label="Serial Number"
-                        placeholder="Enter serial number (optional)"
+                        id="deviceSerialNumber"
                         type="text"
                         value={deviceSerialNumber}
                         onChange={(e) => setDeviceSerialNumber(e.target.value)}
+                        placeholder="Enter serial number (optional)"
                     />
 
-                    <textarea
-                        className="w-full border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300 px-2 py-1 text-sm placeholder:text-sm resize-none"
-                        placeholder="Reasoning for device needed"
-                        required
+                    <FormFieldElement
+                        label="Reasoning for device needed"
+                        id="deviceReasoning"
+                        type="text"
                         value={reasoning}
                         onChange={(e) => setReasoning(e.target.value)}
-                        rows={3}
+                        required
                     />
 
-                    <SelectFormElement
+                    <FormFieldElement
                         label="Priority"
                         id="priority"
+                        type="select"
                         value={priority}
                         onChange={(e) => setPriority(e.target.value as priorityType)}
                         required
@@ -214,9 +215,10 @@ const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
                         placeholder="Select Priority"
                     />
 
-                    <SelectFormElement
+                    <FormFieldElement
                         label="Hospital"
                         id="location"
+                        type="select"
                         value={location}
                         onChange={(e) => setLocation(e.target.value as mgbHospitalType)}
                         required
@@ -224,9 +226,10 @@ const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
                         placeholder="Select Hospital"
                     />
 
-                    <SelectFormElement
+                    <FormFieldElement
                         label="Department"
                         id="department"
+                        type="select"
                         value={department}
                         onChange={(e) => setDepartment(e.target.value)}
                         required
@@ -234,21 +237,26 @@ const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
                         placeholder="Select Department"
                     />
 
-                    <input
+                    <FormFieldElement
+                        label="Delivery Date"
+                        id="deliverDate"
                         type="datetime-local"
-                        className="border-b-2 border-mgbblue focus:outline-none focus:border-mgbblue px-2 py-1 text-sm"
                         value={deliverDate}
                         onChange={(e) => setDeliverDate(e.target.value)}
                         required
                     />
 
-                    <textarea
-                        className="w-full border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300 px-2 py-1 text-sm placeholder:text-sm resize-none"
-                        placeholder="Additional Notes"
-                        rows={2}
-                        value={notes}
-                        onChange={(e) => setNotes(e.target.value)}
-                    />
+                    <div className="flex flex-col">
+                        <label className="text-sm font-medium text-gray-700 mb-1">Additional Comments:</label>
+                        <textarea
+                            id="medicalNotes"
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
+                            rows={3}
+                            placeholder="Notes for the transport"
+                            className="px-4 py-2 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                        />
+                    </div>
 
                     <div className="flex flex-col gap-3 mt-4">
                         <MGBButton
@@ -273,3 +281,4 @@ const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
 };
 
 export default MedicalDeviceServiceRequestPage;
+

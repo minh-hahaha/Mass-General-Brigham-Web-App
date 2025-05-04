@@ -1,7 +1,7 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import MGBButton from '../../elements/MGBButton.tsx';
-import InputElement from '../../elements/InputElement.tsx';
 import ConfirmMessageComponent from '../ConfirmMessageComponent.tsx';
+import FormFieldElement from '../../elements/FormFieldElement.tsx';
 import {
     EditTransportRequest,
     editTransportRequest,
@@ -13,14 +13,15 @@ import {
     priorityType,
     mgbHospitals,
     hospitalTransportArray,
-    mgbHospitalType, priorityArray, formatDateForEdit
-} from '@/database/forms/formTypes.ts'
-import SelectFormElement from "@/elements/SelectFormElement.tsx";
+    mgbHospitalType,
+    priorityArray,
+    formatDateForEdit
+} from '@/database/forms/formTypes.ts';
 import { employeeNameId, getEmployeeNameIds } from '@/database/getEmployee.ts';
-import {RequestPageProps} from "@/routes/ServiceRequestDisplayPage.tsx";
-import HelpButton from "@/components/ServiceRequestHelp.tsx";
+import { RequestPageProps } from '@/routes/ServiceRequestDisplayPage.tsx';
+import HelpButton from '@/components/ServiceRequestHelp.tsx';
 
-const TransportRequestPage = ({editData}: RequestPageProps) => {
+const TransportRequestPage = ({ editData }: RequestPageProps) => {
     const [patientId, setPatientId] = useState(0);
     const [patientName, setPatientName] = useState('');
     const [transportType, setTransportType] = useState<hospitalTransportType>('Ambulance (BLS)');
@@ -35,9 +36,10 @@ const TransportRequestPage = ({editData}: RequestPageProps) => {
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
 
-    const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
-        if (e) e.preventDefault();
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         const formattedDate = new Date(transportDate).toISOString();
+
         const newRequest: transportRequest = {
             employeeId,
             patientId,
@@ -51,11 +53,11 @@ const TransportRequestPage = ({editData}: RequestPageProps) => {
             assignedToId,
         };
 
-        if(editData) {
+        if (editData) {
             const editRequest: editTransportRequest = {
                 transportRequest: newRequest,
                 requestId: editData.requestId
-            }
+            };
             EditTransportRequest(editRequest);
         } else {
             SubmitTransportRequest(newRequest);
@@ -87,7 +89,7 @@ const TransportRequestPage = ({editData}: RequestPageProps) => {
             } catch (e) {
                 console.error('Error fetching employee list:', e);
             }
-        }
+        };
         fetchEmployeeList();
     }, []);
 
@@ -103,7 +105,7 @@ const TransportRequestPage = ({editData}: RequestPageProps) => {
     };
 
     useEffect(() => {
-        if(editData){
+        if (editData) {
             setPatientId(editData.patientTransport.patientId);
             setPatientName('');
             setTransportType(editData.patientTransport.transportType);
@@ -124,95 +126,104 @@ const TransportRequestPage = ({editData}: RequestPageProps) => {
                     <h1 className="text-2xl font-bold text-mgbblue">Patient Transport Request</h1>
                     <HelpButton />
                 </div>
-
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                    <SelectFormElement
+                    <FormFieldElement
                         label="Employee"
                         id="employee"
+                        type="select"
                         value={employeeId}
                         onChange={(e) => setEmployeeId(Number(e.target.value))}
-                        options={["", ...employeeList.map((emp) => emp.employeeId.toString())]}
+                        options={["", ...employeeList.map(emp => emp.employeeId.toString())]}
                         placeholder="Select Employee"
                     />
 
-                    <InputElement
+                    <FormFieldElement
                         label="Patient ID"
-                        type="number"
                         id="patientId"
+                        type="number"
                         value={patientId}
                         onChange={(e) => setPatientId(Number(e.target.value))}
-                        required={true}
+                        required
                         placeholder="Enter Patient ID"
                     />
 
-                    <SelectFormElement
-                        label="Type"
-                        id="transportType"
+                    <FormFieldElement
+                        label='Type'
+                        id='transportType'
+                        type="select"
                         value={transportType}
                         onChange={(e) => setTransportType(e.target.value as hospitalTransportType)}
                         required
                         options={hospitalTransportArray}
-                        placeholder="Select Transport Type"
+                        placeholder='Select Transport Type'
                     />
 
-                    <SelectFormElement
-                        label="Priority"
-                        id="priority"
+                    <FormFieldElement
+                        label='Priority'
+                        id='priority'
+                        type="select"
                         value={priority}
                         onChange={(e) => setPriority(e.target.value as priorityType)}
                         required
                         options={priorityArray}
-                        placeholder="Select Priority"
+                        placeholder='Select Priority'
                     />
 
-                    <SelectFormElement
-                        label="Pickup"
-                        id="pickupLocation"
+                    <FormFieldElement
+                        label='Pickup'
+                        id='pickupLocation'
+                        type="select"
                         value={pickupLocation}
                         onChange={(e) => setPickupLocation(e.target.value as mgbHospitalType)}
                         required
                         options={mgbHospitals}
-                        placeholder="Select Pickup Location"
+                        placeholder='Select Pickup Location'
                     />
 
-                    <SelectFormElement
-                        label="Destination"
-                        id="destinationLocation"
+                    <FormFieldElement
+                        label='Destination'
+                        id='destinationLocation'
+                        type="select"
                         value={dropoffLocation}
                         onChange={(e) => setDropoffLocation(e.target.value as mgbHospitalType)}
                         required
                         options={mgbHospitals}
-                        placeholder="Select Destination Location"
+                        placeholder='Select Destination Location'
                     />
 
-                    <input
+                    <FormFieldElement
+                        label="Transport Date"
+                        id="transportDate"
                         type="datetime-local"
-                        className="border-b-2 border-mgbblue focus:outline-none focus:border-mgbblue px-2 py-1 text-sm"
                         value={transportDate}
                         onChange={(e) => setTransportDate(e.target.value)}
                         required
                     />
 
-                    <textarea
-                        className="border-b-2 border-mgbblue focus:outline-none focus:border-mgbblue px-2 py-1 placeholder:text-sm resize-none"
-                        placeholder="Additional Notes"
-                        rows={3}
-                        value={notes}
-                        onChange={(e) => setNotes(e.target.value)}
-                    />
+                    <div className="flex flex-col">
+                        <label className="text-sm font-medium text-gray-700 mb-1">Additional Comments:</label>
+                        <textarea
+                            id="transportationNotes"
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
+                            rows={3}
+                            placeholder="Notes for transportation"
+                            className="px-4 py-2 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                        />
+                    </div>
 
-                    <div className="flex flex-col gap-3 mt-4">
+                    <div className="flex items-center justify-center space-x-4">
                         <MGBButton
-                            variant="primary"
-                            onClick={() => handleSubmit()}
-                            className="rounded-full w-full"
+                            onClick={() => handleSubmit}
+                            variant={'primary'}
+                            disabled={false}
                         >
                             Submit Request
                         </MGBButton>
                         <MGBButton
-                            variant="secondary"
-                            onClick={handleReset}
-                            className="rounded-full w-full"
+                            onClick={() => handleReset()}
+                            variant={'secondary'}
+                            disabled={false}
                         >
                             Clear Form
                         </MGBButton>
