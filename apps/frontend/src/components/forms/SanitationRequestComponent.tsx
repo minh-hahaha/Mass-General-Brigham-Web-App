@@ -22,6 +22,7 @@ import {
     SubmitSanitationRequest
 } from "@/database/forms/sanitationRequest.ts";
 import HelpButton from "@/components/ServiceRequestHelp.tsx";
+import Confetti from 'react-confetti'
 
 // Component definition
 const SanitationRequestPage = ({editData}: RequestPageProps) => {
@@ -97,7 +98,6 @@ const SanitationRequestPage = ({editData}: RequestPageProps) => {
 
     useEffect(() => {
         if (showConfirmation) {
-            alert("Request Submitted");
             handleConfirmationClose(); // close the state after the alert
         }
     }, [showConfirmation]);
@@ -299,6 +299,17 @@ const SanitationRequestPage = ({editData}: RequestPageProps) => {
                             Clear Form
                         </MGBButton>
                     </div>
+                    {showConfirmation &&
+                        <Confetti
+                            recycle={false}
+                            width={900}
+                            height={900}
+                            initialVelocityY={4}
+                            gravity={0.6}
+                            numberOfPieces={200}
+                            tweenDuration={1000}
+                        />
+                    }
                 </form>
             </div>
         </div>
