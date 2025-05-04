@@ -164,15 +164,26 @@ const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
                 </div>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                    <FormFieldElement
-                        label="Employee"
-                        id="employee"
-                        type="select"
-                        value={employeeId}
-                        onChange={(e) => setEmployeeId(Number(e.target.value))}
-                        options={["", ...employeeList.map(emp => emp.employeeId.toString())]}
-                        placeholder="Select Employee"
-                    />
+                    {/*display employee name instead of id*/}
+                    <div className="flex flex-col gap-1 w-full">
+                        <label htmlFor="employee" className="text-sm font-medium text-gray-700 mb-1">
+                            Employee:
+                        </label>
+                        <select
+                            id={"employee"}
+                            onChange={(e) => {
+                                setEmployeeId(Number(e.target.value));
+                            }}
+                            value={employeeId}
+                            className={`w-full px-4 py-2 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300`}
+                        >
+                            {employeeList.map((employee) => (
+                                <option key={employee.employeeId} value={employee.employeeId}>
+                                    {employee.employeeName}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
 
                     <FormFieldElement
                         label="Patient ID"
@@ -279,18 +290,18 @@ const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
                         />
                     </div>
 
-                    <div className="flex items-center justify-center space-x-4">
+                    <div className="flex flex-col gap-3 mt-4">
                         <MGBButton
+                            variant="primary"
                             onClick={() => handleSubmit}
-                            variant={'primary'}
-                            disabled={false}
+                            className="rounded-full w-full py-2"
                         >
                             Submit Request
                         </MGBButton>
                         <MGBButton
-                            onClick={() => handleReset()}
-                            variant={'secondary'}
-                            disabled={false}
+                            variant="secondary"
+                            onClick={handleReset}
+                            className="rounded-full w-full py-2"
                         >
                             Clear Form
                         </MGBButton>

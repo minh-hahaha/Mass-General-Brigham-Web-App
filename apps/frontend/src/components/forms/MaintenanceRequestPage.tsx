@@ -81,8 +81,8 @@ const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
         }
     }, []);
 
-    const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
-        if (e) e.preventDefault();
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         const newRequest: maintenanceRequest = {
             employeeId,
             maintenanceType,
@@ -107,8 +107,8 @@ const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
     const handleReset = () => {
         setMaintenanceType('');
         setMaintenanceDescription('');
-        setPriority('Low');
-        setMaintenanceHospital('Chestnut Hill');
+        setPriority('');
+        setMaintenanceHospital('');
         setDirectory('');
         setMaintenanceTime('');
         setEmployeeId(0);
@@ -125,16 +125,26 @@ const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
                 </div>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                    <FormFieldElement
-                        label="Employee"
-                        id="employee"
-                        type="select"
-                        value={employeeId}
-                        onChange={(e) => setEmployeeId(Number(e.target.value))}
-                        options={["", ...employeeList.map((emp) => emp.employeeId.toString())]}
-                        placeholder="Select Employee"
-                    />
-
+                    {/*display employee name instead of id*/}
+                    <div className="flex flex-col gap-1 w-full">
+                        <label htmlFor="employee" className="text-sm font-medium text-gray-700 mb-1">
+                            Employee:
+                        </label>
+                        <select
+                            id={"employee"}
+                            onChange={(e) => {
+                                setEmployeeId(Number(e.target.value));
+                            }}
+                            value={employeeId}
+                            className={`w-full px-4 py-2 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300`}
+                        >
+                            {employeeList.map((employee) => (
+                                <option key={employee.employeeId} value={employee.employeeId}>
+                                    {employee.employeeName}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                     <FormFieldElement
                         label="Maintenance Type"
                         id="maintenanceType"
@@ -151,7 +161,7 @@ const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
                         <textarea
                             id="maintenceDescription"
                             value={maintenanceDescription}
-                            onChange={(e) => setNotes(e.target.value)}
+                            onChange={(e) => setMaintenanceDescription(e.target.value)}
                             rows={3}
                             placeholder="Describe the issue here"
                             className="px-4 py-2 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -221,7 +231,7 @@ const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
                     <div className="flex flex-col gap-3 mt-4">
                         <MGBButton
                             variant="primary"
-                            onClick={() => handleSubmit()}
+                            onClick={() => handleSubmit}
                             className="rounded-full w-full py-2"
                         >
                             Submit Request
