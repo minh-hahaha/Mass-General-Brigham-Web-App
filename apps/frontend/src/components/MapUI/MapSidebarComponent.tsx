@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+
 
 import MGBButton from '@/elements/MGBButton.tsx';
 import {
@@ -20,6 +22,7 @@ import { CiHospital1 } from 'react-icons/ci';
 import SelectElement from '@/elements/SelectElement.tsx';
 
 import VoiceCommands from "@/components/MapUI/VoiceCommands.tsx";
+import AlgorithmSelector from "@/components/AlgorithmSelector.tsx";
 
 const hospitals = [
     {
@@ -128,6 +131,15 @@ const MapSidebarComponent = ({
     const [selectedLot, setSelectedLot] = useState('');
     const [selectedAlgorithm, setSelectedAlgorithm] = useState<Algorithm>('BFS');
     const [showLine, setShowLine] = useState<boolean>(false);
+
+    const {isAuthenticated, user } = useAuth0();
+
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
+    useEffect(() => {
+        setIsAdmin(user?.["https://mgb.teamc.com/roles"]?.includes("Admin"));
+        console.log("Admin", isAdmin);
+    }, [isAuthenticated]);
 
     const placesLibrary = useMapsLibrary('places');
 
@@ -663,13 +675,16 @@ const MapSidebarComponent = ({
                 </div>
 
                 <div>
-                    <SelectElement
-                        label={'Select Algorithm'}
-                        id={'algorithm'}
-                        value={selectedAlgorithm}
-                        onChange={handleAlgorithmChange}
-                        options={['BFS', 'DFS']}
-                    />
+                    { isAdmin && (
+                        <SelectElement
+                            label={'Select Algorithm'}
+                            id={'algorithm'}
+                            value={selectedAlgorithm}
+                            onChange={handleAlgorithmChange}
+                            options={['BFS', 'DFS']}
+                        />
+                    )}
+
                 </div>
             </div>
         );

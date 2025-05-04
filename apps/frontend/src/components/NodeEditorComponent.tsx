@@ -238,7 +238,8 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
         | 'Parking Lot'
         | 'Road'
         | 'Door'
-        | 'Hallway Intersection';
+        | 'Hallway Intersection'
+        | 'Check-In Desk';
     const [nodeType, setNodeType] = useState<NodeType>('Stairs');
     const [roomNumber, setRoomNumber] = useState<string | null>(null);
     const [nodeName, setNodeName] = useState<string>('Node');
@@ -840,6 +841,8 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
                         'Road',
                         'Door',
                         'Hallway Intersection',
+                        'Check-In Desk',
+
                     ]}
                 ></SelectElement>
                 <InputElement
