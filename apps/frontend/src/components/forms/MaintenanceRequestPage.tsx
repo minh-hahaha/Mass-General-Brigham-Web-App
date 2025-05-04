@@ -1,14 +1,14 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import MGBButton from '@/elements/MGBButton.tsx';
-import ConfirmMessageComponent from '@/components/ConfirmMessageComponent.tsx';
+import FormFieldElement from '@/elements/FormFieldElement.tsx';
 import {
     SubmitMaintenanceRequest,
+    EditMaintenanceRequest,
     maintenanceRequest,
-    EditMaintenanceRequest, editMaintenanceRequest
+    editMaintenanceRequest,
 } from '@/database/forms/maintenanceRequest.ts';
-import InputElement from '@/elements/InputElement.tsx';
-import SelectElement from '@/elements/SelectElement.tsx';
-import {DirectoryRequestByBuilding, getDirectory} from "@/database/gettingDirectory.ts";
+import SelectFormElement from '@/elements/SelectFormElement.tsx';
+import HelpButton from '@/components/ServiceRequestHelp.tsx';
 import {
     formatDateForEdit,
     maintenanceTypeArray,
@@ -16,49 +16,73 @@ import {
     mgbHospitalType,
     priorityArray,
     priorityType,
-    reqMaintenanceType
-} from "@/database/forms/formTypes.ts";
-import SelectFormElement from "@/elements/SelectFormElement.tsx";
-import {employeeNameId, getEmployee, getEmployeeNameIds, getEmployeeNames} from "@/database/getEmployee.ts";
-import {RequestPageProps} from "@/routes/ServiceRequestDisplayPage.tsx";
-import {editMedicalDeviceRequest} from "@/database/forms/medicalDeviceRequest.ts";
-import HelpButton from "@/components/ServiceRequestHelp.tsx";
+    reqMaintenanceType,
+} from '@/database/forms/formTypes.ts';
+import {
+    DirectoryRequestByBuilding,
+    getDirectory,
+} from '@/database/gettingDirectory.ts';
+import {
+    getEmployeeNameIds,
+    employeeNameId,
+} from '@/database/getEmployee.ts';
+import { RequestPageProps } from '@/routes/ServiceRequestDisplayPage.tsx';
 
-// Component definition
-const MaintenanceRequestPage = ({editData}: RequestPageProps) => {
-    // const loggedIn = sessionStorage.getItem('loggedIn');
-    // if (!loggedIn) {
-    //     window.location.href = '/';
-    // }
-
-    // Maintenance Information
+const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
     const [maintenanceType, setMaintenanceType] = useState('');
     const [maintenanceDescription, setMaintenanceDescription] = useState('');
-
-    // Maintenance Details
-    const [priority, setPriority] = useState<priorityType>('Low');
-    const [maintenanceHospital, setMaintenanceHospital] = useState<mgbHospitalType>('Chestnut Hill')
-    const [maintenanceLocation, setMaintenanceLocation] = useState('');
+    const [priority, setPriority] = useState<priorityType>('');
+    const [maintenanceHospital, setMaintenanceHospital] = useState<mgbHospitalType>('');
+    const [directory, setDirectory] = useState('');
     const [maintenanceTime, setMaintenanceTime] = useState('');
-
-    // Requester Information
-    const [requester, setRequester] = useState<string>("");
     const [employeeId, setEmployeeId] = useState(0);
-    const [employeeName, setEmployeeName] = useState('');
     const [notes, setNotes] = useState('');
     const [locationId, setLocationId] = useState(1);
 
-    const [showConfirmation, setShowConfirmation] = useState(false);
-
-    const [directoryList, setDirectoryList] = useState<string[]>([""]);
-    const [directory, setDirectory] = useState<string>("");
+    const [directoryList, setDirectoryList] = useState<string[]>([]);
     const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
 
+    useEffect(() => {
+        const fetchDirectoryList = async () => {
+            try {
+                const data = await getDirectory(mgbHospitals.indexOf(maintenanceHospital) + 1);
+                setDirectoryList(data.map((d: DirectoryRequestByBuilding) => d.deptName));
+            } catch (error) {
+                console.error('Error fetching directory list:', error);
+            }
+        };
+        fetchDirectoryList();
+    }, [maintenanceHospital]);
+
+    useEffect(() => {
+        const fetchEmployeeList = async () => {
+            try {
+                const data = await getEmployeeNameIds();
+                setEmployeeList(data);
+            } catch (error) {
+                console.error('Error fetching employee list:', error);
+            }
+        };
+        fetchEmployeeList();
+    }, []);
+
+    useEffect(() => {
+        if (editData) {
+            const req = editData.maintenanceRequest;
+            setMaintenanceType(req.maintenanceType);
+            setMaintenanceDescription(req.maintenanceDescription);
+            setPriority(editData.priority);
+            setMaintenanceHospital(req.maintenanceHospital);
+            setDirectory(req.maintenanceLocation);
+            setMaintenanceTime(formatDateForEdit(req.maintenanceTime));
+            setEmployeeId(editData.employeeId);
+            setNotes(editData.comments);
+            setLocationId(editData.locationId);
+        }
+    }, []);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        //TODO: HANDLE EMPLOYEE HERE
         const newRequest: maintenanceRequest = {
             employeeId,
             maintenanceType,
@@ -69,274 +93,161 @@ const MaintenanceRequestPage = ({editData}: RequestPageProps) => {
             notes,
             locationId,
         };
-        if(editData){
-            const editRequest: editMaintenanceRequest = {
-                maintenanceRequest: newRequest,
-                requestId: editData.requestId
-            }
-            EditMaintenanceRequest(editRequest);
-        }else{
+
+        if (editData) {
+            EditMaintenanceRequest({ maintenanceRequest: newRequest, requestId: editData.requestId });
+        } else {
             SubmitMaintenanceRequest(newRequest);
         }
-        setShowConfirmation(true);
 
+        alert('Request Submitted');
         handleReset();
     };
 
     const handleReset = () => {
         setMaintenanceType('');
         setMaintenanceDescription('');
-        setPriority('Low');
-        setMaintenanceHospital('Chestnut Hill');
-        setMaintenanceLocation('');
+        setPriority('');
+        setMaintenanceHospital('');
+        setDirectory('');
         setMaintenanceTime('');
         setEmployeeId(0);
-        setEmployeeName('');
         setNotes('');
         setLocationId(1);
     };
 
-    const handleConfirmationClose = () => {
-        setShowConfirmation(false);
-    };
-
-    useEffect(() => {
-        const fetchDirectoryList = async () => {
-            try {
-                const data = await getDirectory(mgbHospitals.indexOf(maintenanceHospital) + 1);
-                const names = data.map((item: DirectoryRequestByBuilding) => item.deptName);
-                setDirectoryList(names);
-            } catch (error) {
-                console.error('Error fetching building names:', error);
-            }
-        };
-        fetchDirectoryList();
-        console.log('Updated Directory list');
-    }, [maintenanceHospital, directory]);
-
-    useEffect(() => {
-        const fetchEmployeeList = async () => {
-            try {
-                const data = await getEmployeeNameIds();
-                setEmployeeList(data); // list of employee names
-            } catch (e) {
-                console.error('Error fetching employee list:', e);
-            }
-        }
-        fetchEmployeeList();
-        console.log(employeeList);
-    }, [])
-
-    useEffect(() => {
-        if (showConfirmation) {
-            alert("Request Submitted");
-            handleConfirmationClose(); // close the state after the alert
-        }
-    }, [showConfirmation]);
-
-    useEffect(() => {
-        if(editData){
-            setMaintenanceType(editData.maintenanceRequest.maintenanceType);
-            setMaintenanceDescription(editData.maintenanceRequest.maintenanceDescription);
-            setPriority(editData.priority);
-            setMaintenanceHospital(editData.maintenanceRequest.maintenanceHospital);
-            setMaintenanceLocation(editData.maintenanceRequest.maintenanceLocation);
-            setMaintenanceTime(formatDateForEdit(editData.maintenanceRequest.maintenanceTime));
-            setEmployeeId(editData.employeeId);
-            setEmployeeName('');
-            setNotes(editData.comments);
-            setLocationId(editData.locationId);
-
-        }
-    }, []);
-
-
-
-            return (
-                // flex row container
-                <div className="flex flex-col justify-center items-center min-h-screen">
-                    {/* make the form left side */}
-                    <div className="flex flex-col items-center rounded-2xl p-8 w-full max-w-[700px] mt-10 mb-10">
-                        <div className="flex items-center justify-center gap-2 mb-2">
-                            <h1 className="text-[30px] font-bold leading-none">Maintenance Request</h1>
-                            <div className="pt-[11.5px]">
-                                <HelpButton />
-                            </div>
-                        </div>
-                        <br />
-                        <h2 className="text-[15px] font-semibold mb-6">Max Jeronimo and Haotian Liu</h2>
-
-
-                        <div>
-                            <form onSubmit={handleSubmit} className="space-y-6">
-                                <div>
-                                    <h3 className="text-xl font-semibold mb-4">
-                                        <b>Assign Employee</b>
-                                    </h3>
-                                    <div className="flex flex-row gap-2">
-                                        <div className='flex flex-row gap-2'>
-                                            <label className='w=1/4'>Employee: </label>
-                                            <select
-                                                onChange={(e) => {
-                                                    setEmployeeId(Number(e.target.value));
-                                                }}
-                                                value={employeeId}
-                                                className='w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300'
-                                            >
-                                                {employeeList.map((employee) => (
-                                                    <option key={employee.employeeId} value={employee.employeeId}>
-                                                        {employee.employeeName}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-semibold mb-4">
-                                        <b>Maintenance Information</b>
-                                    </h3>
-                                    <div className="flex flex-col gap-2">
-                                        <div className="flex flex-col gap-2">
-                                            <SelectFormElement
-                                                label = 'Maintenance Type'
-                                                id = 'maintenanceType'
-                                                value = {maintenanceType}
-                                                onChange = {(e) =>
-                                                    setMaintenanceType(e.target.value as reqMaintenanceType)
-                                                }
-                                                required
-                                                options = {maintenanceTypeArray}
-                                                placeholder = 'Select Maintenance Type'
-                                            />
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <label className="w-1/4">Issue Description</label>
-                                            <textarea
-                                                id="maintenanceDescription"
-                                                placeholder="Describe the issue"
-                                                value={maintenanceDescription}
-                                                onChange={(e) => setMaintenanceDescription(e.target.value)}
-                                                required
-                                                rows={3}
-                                                className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                            ></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <h3 className="text-xl font-semibold mb-4">
-                                        <b>Maintenance Details</b>
-                                    </h3>
-                                    <div className="flex flex-col gap-2">
-                                        <div className="flex flex-col gap-2">
-                                            <SelectFormElement
-                                                label = 'Priority'
-                                                id = 'priority'
-                                                value = {priority}
-                                                onChange = {(e) =>
-                                                    setPriority(e.target.value as priorityType)
-                                                }
-                                                required
-                                                options = {priorityArray}
-                                                placeholder = 'Select Priority'
-                                            />
-                                        </div>
-
-                                        <div className="flex flex-col pt-2">
-                                            <SelectFormElement
-                                                label = 'Hospital'
-                                                id = 'location'
-                                                value = {maintenanceHospital}
-                                                onChange = {(e) =>
-                                                    setMaintenanceHospital(e.target.value as mgbHospitalType)
-                                                }
-                                                required
-                                                options = {mgbHospitals}
-                                                placeholder = 'Select Hospital'
-                                            />
-                                        </div>
-
-                                        {/*Department Dropdown*/}
-                                        <div className="flex flex-col pt-2">
-                                            <SelectFormElement
-                                                label = 'Department'
-                                                id = 'department'
-                                                value = {directory}
-                                                onChange = {(e) =>
-                                                    setDirectory(e.target.value)
-                                                }
-                                                required
-                                                options = {directoryList}
-                                                placeholder = 'Select Department'
-                                            />
-                                        </div>
-
-                                        <div className="flex items-center gap-2">
-                                            <label className="w-1/4">Maintenance Time</label>
-                                            <input
-                                                id="maintenanceTime"
-                                                name="maintenanceTime"
-                                                placeholder="Select date and time"
-                                                required
-                                                type="datetime-local"
-                                                value={maintenanceTime}
-                                                onChange={(e) => setMaintenanceTime(e.target.value)}
-                                                className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <h3 className="text-xl font-semibold mb-4">
-                                        <b>Additional Information</b>
-                                    </h3>
-                                    <div className="flex flex-col gap-2">
-                                        <div className="flex items-center gap-2">
-                                            <label className="w-1/4">Additional Notes</label>
-                                            <textarea
-                                                id="notes"
-                                                placeholder="Enter any additional notes"
-                                                value={notes}
-                                                onChange={(e) => setNotes(e.target.value)}
-                                                rows={3}
-                                                className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                            ></textarea>
-                                        </div>
-
-                                        <input
-                                            type="hidden"
-                                            id="locationId"
-                                            value={locationId}
-                                            onChange={(e) => setLocationId(Number(e.target.value))}
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* submit button and confirmation message */}
-                                <div className="flex items-center justify-center space-x-4">
-                                    <MGBButton
-                                        onClick={() => handleSubmit}
-                                        variant={'primary'}
-                                        disabled={false}
-                                    >
-                                        Submit Request
-                                    </MGBButton>
-                                    <MGBButton
-                                        onClick={() => handleReset()}
-                                        variant={'secondary'}
-                                        disabled={false}
-                                    >
-                                        Clear Form
-                                    </MGBButton>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+    return (
+        <div className="flex justify-center items-start pt-16 pb-16 min-h-screen bg-[#f5faff] px-4">
+            <div className="bg-white border border-[#d0ebff] rounded-2xl shadow-lg px-10 py-10 w-full max-w-[500px]">
+                <div className="flex justify-between items-center mb-6">
+                    <h1 className="text-2xl font-bold text-mgbblue">Maintenance Request</h1>
+                    <HelpButton />
                 </div>
-            );
+
+                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                    {/*display employee name instead of id*/}
+                    <div className="flex flex-col gap-1 w-full">
+                        <label htmlFor="employee" className="text-sm font-medium text-gray-700 mb-1">
+                            Employee:
+                        </label>
+                        <select
+                            id={"employee"}
+                            onChange={(e) => {
+                                setEmployeeId(Number(e.target.value));
+                            }}
+                            value={employeeId}
+                            className={`w-full px-4 py-2 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300`}
+                        >
+                            {employeeList.map((employee) => (
+                                <option key={employee.employeeId} value={employee.employeeId}>
+                                    {employee.employeeName}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <FormFieldElement
+                        label="Maintenance Type"
+                        id="maintenanceType"
+                        type="select"
+                        value={maintenanceType}
+                        onChange={(e) => setMaintenanceType(e.target.value as reqMaintenanceType)}
+                        required
+                        options={maintenanceTypeArray}
+                        placeholder="Select Maintenance Type"
+                    />
+
+                    <div className="flex flex-col">
+                        <label className="text-sm font-medium text-gray-700 mb-1">Describe the Issue</label>
+                        <textarea
+                            id="maintenceDescription"
+                            value={maintenanceDescription}
+                            onChange={(e) => setMaintenanceDescription(e.target.value)}
+                            rows={3}
+                            placeholder="Describe the issue here"
+                            className="px-4 py-2 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                        />
+                    </div>
+
+                    <FormFieldElement
+                        label="Priority"
+                        id="priority"
+                        type="select"
+                        value={priority}
+                        onChange={(e) => setPriority(e.target.value as priorityType)}
+                        required
+                        options={priorityArray}
+                        placeholder="Select Priority"
+                    />
+
+                    <FormFieldElement
+                        label="Hospital"
+                        id="hospital"
+                        type="select"
+                        value={maintenanceHospital}
+                        onChange={(e) => setMaintenanceHospital(e.target.value as mgbHospitalType)}
+                        required
+                        options={mgbHospitals}
+                        placeholder="Select Hospital"
+                    />
+
+                    <FormFieldElement
+                        label="Department"
+                        id="department"
+                        type="select"
+                        value={directory}
+                        onChange={(e) => setDirectory(e.target.value)}
+                        required
+                        options={directoryList}
+                        placeholder="Select Department"
+                    />
+
+                    <FormFieldElement
+                        label="Maintenance Time"
+                        id="maintenanceTime"
+                        type="datetime-local"
+                        value={maintenanceTime}
+                        onChange={(e) => setMaintenanceTime(e.target.value)}
+                        required
+                    />
+
+                    <div className="flex flex-col">
+                        <label className="text-sm font-medium text-gray-700 mb-1">Additional Comments</label>
+                        <textarea
+                            id="medicalNotes"
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
+                            rows={3}
+                            placeholder="Additional Notes"
+                            className="px-4 py-2 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                        />
+                    </div>
+
+                    <input
+                        type="hidden"
+                        value={locationId}
+                        onChange={(e) => setLocationId(Number(e.target.value))}
+                    />
+
+                    <div className="flex flex-col gap-3 mt-4">
+                        <MGBButton
+                            variant="primary"
+                            onClick={() => handleSubmit}
+                            className="rounded-full w-full py-2"
+                        >
+                            Submit Request
+                        </MGBButton>
+                        <MGBButton
+                            variant="secondary"
+                            onClick={handleReset}
+                            className="rounded-full w-full py-2"
+                        >
+                            Clear Form
+                        </MGBButton>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
 };
 
 export default MaintenanceRequestPage;
