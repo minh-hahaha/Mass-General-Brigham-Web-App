@@ -11,7 +11,7 @@ router.get('/', async function (req: Request, res: Response) {
         //Attempt to pull from service reqs
         const SERVICE_REQS_LIST = await PrismaClient.serviceRequest.findMany({
             orderBy: {
-                requestId: 'desc',
+                requestId: 'asc',
             },
         });
         console.info('Successfully pulled service reqs list'); // Log that it was successful
