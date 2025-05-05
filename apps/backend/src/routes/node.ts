@@ -79,15 +79,16 @@ router.post('/', async (req: Request, res: Response) => {
         });
         console.log('finish clean departments');
         console.log('start clean edges');
+
         await PrismaClient.edge.deleteMany({
             where: {
                 OR: [
+                    // 1. Same floor
                     {
                         nodeFrom: {
                             is: {
                                 floor: overwriteFloor,
                                 buildingId: overwriteBuilding,
-                                nodeId: { not: { contains: 'Elevator' } },
                             },
                         },
                     },
@@ -96,9 +97,123 @@ router.post('/', async (req: Request, res: Response) => {
                             is: {
                                 floor: overwriteFloor,
                                 buildingId: overwriteBuilding,
-                                nodeId: { not: { contains: 'Elevator' } },
                             },
                         },
+                    },
+                    // 2. Current <-> Previous (Elevator to Elevator)
+                    {
+                        AND: [
+                            {
+                                nodeFrom: {
+                                    is: {
+                                        floor: overwriteFloor,
+                                        buildingId: overwriteBuilding,
+                                        OR: [
+                                            { nodeId: { contains: 'Elevator' } },
+                                            { nodeId: { contains: 'Stairs' } },
+                                        ],
+                                    },
+                                },
+                            },
+                            {
+                                nodeTo: {
+                                    is: {
+                                        floor: (Number(overwriteFloor) - 1).toString(),
+                                        buildingId: overwriteBuilding,
+                                        OR: [
+                                            { nodeId: { contains: 'Elevator' } },
+                                            { nodeId: { contains: 'Stairs' } },
+                                        ],
+                                    },
+                                },
+                            },
+                        ],
+                    },
+                    {
+                        AND: [
+                            {
+                                nodeFrom: {
+                                    is: {
+                                        floor: (Number(overwriteFloor) - 1).toString(),
+                                        buildingId: overwriteBuilding,
+                                        OR: [
+                                            { nodeId: { contains: 'Elevator' } },
+                                            { nodeId: { contains: 'Stairs' } },
+                                        ],
+                                    },
+                                },
+                            },
+                            {
+                                nodeTo: {
+                                    is: {
+                                        floor: overwriteFloor,
+                                        buildingId: overwriteBuilding,
+                                        OR: [
+                                            { nodeId: { contains: 'Elevator' } },
+                                            { nodeId: { contains: 'Stairs' } },
+                                        ],
+                                    },
+                                },
+                            },
+                        ],
+                    },
+
+                    // 3. Current <-> Next (Elevator to Elevator)
+                    {
+                        AND: [
+                            {
+                                nodeFrom: {
+                                    is: {
+                                        floor: overwriteFloor,
+                                        buildingId: overwriteBuilding,
+                                        OR: [
+                                            { nodeId: { contains: 'Elevator' } },
+                                            { nodeId: { contains: 'Stairs' } },
+                                        ],
+                                    },
+                                },
+                            },
+                            {
+                                nodeTo: {
+                                    is: {
+                                        floor: (Number(overwriteFloor) + 1).toString(),
+                                        buildingId: overwriteBuilding,
+                                        OR: [
+                                            { nodeId: { contains: 'Elevator' } },
+                                            { nodeId: { contains: 'Stairs' } },
+                                        ],
+                                    },
+                                },
+                            },
+                        ],
+                    },
+                    {
+                        AND: [
+                            {
+                                nodeFrom: {
+                                    is: {
+                                        floor: (Number(overwriteFloor) + 1).toString(),
+                                        buildingId: overwriteBuilding,
+                                        OR: [
+                                            { nodeId: { contains: 'Elevator' } },
+                                            { nodeId: { contains: 'Stairs' } },
+                                        ],
+                                    },
+                                },
+                            },
+                            {
+                                nodeTo: {
+                                    is: {
+                                        floor: overwriteFloor,
+                                        buildingId: overwriteBuilding,
+                                        OR: [
+                                            { nodeId: { contains: 'Elevator' } },
+                                            { nodeId: { contains: 'Stairs' } },
+                                        ],
+                                    },
+                                },
+                            },
+                        ],
                     },
                 ],
             },
@@ -109,16 +224,16 @@ router.post('/', async (req: Request, res: Response) => {
             where: {
                 floor: overwriteFloor,
                 buildingId: overwriteBuilding,
-                nodeId: { not: { contains: 'Elevator' } },
+                //nodeId: { not: { contains: 'Elevator' } },
             },
         });
         console.log('finish clean nodes');
     }
     for (const node of data) {
-        if (node.nodeId.includes('Elevator')) {
-            console.log('Elevator node: skipping');
-            continue;
-        }
+        // if (node.nodeId.includes('Elevator')) {
+        //     console.log('Elevator node: skipping');
+        //     continue;
+        // }
         const tempNode = {
             nodeId: node.nodeId,
             x: node.x,
