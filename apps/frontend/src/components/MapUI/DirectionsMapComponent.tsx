@@ -96,6 +96,7 @@ const DirectionsMapComponent = () => {
 
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
+    const[showBuildingDirections, setShowBuildingDirections] = useState(false);
     const [currentFloorId, setCurrentFloorId] = useState<string | undefined>('');
     const [showFloorSelector, setShowFloorSelector] = useState<boolean>(false);
     const [highlightFloorId, setHighlightFloorId] = useState<string | undefined>();
@@ -442,6 +443,7 @@ const DirectionsMapComponent = () => {
             setPathVisible(false);
             clearParking();
             setToDirectoryNodeId("")
+            setShowBuildingDirections(false);
         }
         if (currentStep === "DIRECTIONS") {
             setToLocation('');
@@ -511,6 +513,7 @@ const DirectionsMapComponent = () => {
                         drive2Directions={text2Directions}
                         showTextDirections={!!toLocation}
                         currentStep={currentStep}
+                        showBuildingDirections={showBuildingDirections}
                     />
                 </Map>
 

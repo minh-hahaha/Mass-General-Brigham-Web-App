@@ -210,6 +210,7 @@ interface Props {
     drive2Directions: string[];
     showTextDirections: boolean;
     currentStep: string;
+    showBuildingDirections: boolean;
 }
 
 const HospitalMapComponent = ({
@@ -223,6 +224,7 @@ const HospitalMapComponent = ({
     drive2Directions,
     showTextDirections,
     currentStep,
+    showBuildingDirections,
 }: Props) => {
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
     const [startNode, setStartNode] = useState<myNode>();
@@ -253,6 +255,14 @@ const HospitalMapComponent = ({
         };
         fetchNode();
     }, [startNodeId, endNodeId]);
+
+    useEffect(() => {
+        if(!showBuildingDirections){
+            setShowDirectionsAndSpeak(false)
+            setEndNode(startNode)
+        }
+
+    }, [showBuildingDirections]);
 
     useEffect(() => {
         if (currentStep==='DEPARTMENT'&&endNode){
