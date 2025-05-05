@@ -26,7 +26,7 @@ const AboutPage = () => {
                         <Member
                             image={'Andrew.png'}
                             name={'Andrew Melton'}
-                            title={'Assistant Lead Software Engineer'}
+                            title={'Co-Lead Lead Software Engineer'}
                             github={'4ndrew13'}
                         />
                     </MemberPair>
@@ -35,7 +35,7 @@ const AboutPage = () => {
                         <Member
                             image={'Pakorn.jpg'}
                             name={'Pakorn Liengsawangwong'}
-                            title={'Assistant Lead Software Engineer'}
+                            title={'Co-Lead Lead Software Engineer'}
                             github={'pako490'}
                         />
                         <Member

@@ -1,5 +1,5 @@
+import React, { useState } from 'react';
 import mgblogo from '../assets/mgblogo.png';
-import * as React from 'react';
 import { Search } from 'lucide-react';
 import {
     NavigationMenu,
@@ -17,49 +17,8 @@ import MGBButton from "@/elements/MGBButton.tsx";
 import {motion} from 'framer-motion';
 import { FaRegUserCircle } from "react-icons/fa";
 import {clsx} from 'clsx';
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import { useNavigate } from "react-router-dom";
-import {classifyInput} from "../../utils/classifyInput.ts";
-
-const [input, setInput] = useState<string>('');
-
-
-const handleSearch = async (input: string) => {
-    const result = await classifyInput(input);
-    const navigate = useNavigate();
-
-    switch (result.intent) {
-        case "create_request":
-            navigate("/requests", {
-                state: {
-                    requestType: result.requestType,
-                    location: result.location,
-                },
-            });
-            break;
-
-        case "get_hospital_directions":
-            navigate("/MapPage", {
-                state: { hospital: result.hospital }
-            });
-            break;
-
-        case "get_department_directions":
-            navigate("/MapPage", {
-                state: { destination: result.department }
-            });
-            break;
-
-        case "view_department_info":
-            navigate("/directory", {
-                state: { department: result.department }
-            });
-            break;
-
-        default:
-            alert("Sorry, I couldn’t understand that request.");
-    }
-};
 
 const aboutItems = [
     {
@@ -264,12 +223,6 @@ const LogoBar = () => {
 
             {/* Right: Add future nav, user info, etc. here if needed */}
             <div className="flex flex-row gap-4 -mr-8">
-                <Search className="my-2" />
-                <input
-                    className="text-sm w-60 px-4 border border-solid border-mgbblue rounded-md"
-                    type="text"
-                    placeholder="Search"
-                />
                 {!isAuthenticated ? (
                     <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
                         <MGBButton

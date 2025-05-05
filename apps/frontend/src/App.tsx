@@ -81,7 +81,6 @@ function App() {
 
             <div className="h-dvh flex flex-col w-full max-w-full">
                 <div className="h-16 sticky top-0 z-50 bg-white shadow-md">
-                    {isIdle && <Screensaver />}
                     <LogoBar />
                 </div>
                 <BrowserRouter>

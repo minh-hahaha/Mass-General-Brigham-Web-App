@@ -1,84 +1,69 @@
-import express, { Router, Request, Response } from 'express';
-import axios from "axios";
+import express from 'express';
+import axios from 'axios';
 
-const router: Router = express.Router();
+const router = express.Router();
 
-// Define known departments and hospitals
-const departments = [
-    "radiology", "cardiology", "ICU", "ER", "pharmacy", "orthopedics", "neurology", "oncology"
-];
-const hospitals = [
-    "Brigham and Women's Hospital", "Mass General", "Foxborough Health Care Center", "Chestnut Hill Healthcare Center"
-];
-
-// Helper: Match entity by checking if input includes one of the names
-const matchEntity = (input: string, list: string[]) =>
-    list.find(entity => input.toLowerCase().includes(entity.toLowerCase()));
-
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
     const { input } = req.body;
 
-    const labels = [
-        "create_request: sanitation",
-        "create_request: maintenance",
-        "create_request: patient transport",
-        "create_request: medical device",
-        "create_request: translation",
-        "get_hospital_directions",
-        "get_department_directions",
-        "view_department_info"
-    ];
+    const prompt = `
+You are a hospital AI assistant. A user entered the following message:
+
+"${input}"
+
+Your job is to classify this input and extract structured routing information.
+
+The hospital system includes the following known hospitals:
+- "Foxborough" or "Patriots Place" → Foxborough Health Care Center
+- "Chestnut Hill" → Chestnut Hill Healthcare Center
+- "Faulkner" → Brigham and Women's Faulkner Hospital
+- "Brigham", "Brigham and Women's", or "Main" → Brigham and Women's Hospital (Boston)
+
+Classify the intent of this message and return a JSON object with:
+- intent: one of ["create_request", "get_hospital_directions", "get_department_directions", "view_department_info", "view_about_info"]
+- requestType: one of ["sanitation", "maintenance", "transport", "medical device", "translation"] — only if intent is "create_request"
+- hospital: full name of the hospital mentioned (e.g. "Foxborough Health Care Center, Brigham and Women's Faulkner, etc.")
+- department: department mentioned (e.g. "ICU", "radiology", etc.)
+- location: any details like floor number or area, if mentioned
+
+Here are the following intent definitions. Carefully study the text to determine which intent to pick: 
+- "create_request" → The user wants to submit a request regarding a problem/situation they have input (e.g. maintenance, translation).
+- "get_hospital_directions" → The user is asking how to get to a hospital.
+- "get_department_directions" → The user is asking for directions to a department within a hospital.
+- "view_department_info" → The user is asking about a department’s services, specialties, contact info, or general information (e.g., “what does urology do?”).
+- "view_about_info" → The user asks about developers or how an app was created.
+
+Respond with only valid JSON and no extra text.
+`;
 
     try {
         const response = await axios.post(
-            "https://api-inference.huggingface.co/models/facebook/bart-large-mnli",
+            'https://api.groq.com/openai/v1/chat/completions',
             {
-                inputs: input,
-                parameters: { candidate_labels: labels }
+                model: 'llama3-8b-8192',
+                messages: [
+                    {
+                        role: 'system',
+                        content:
+                            'You classify hospital-related user messages into intents for routing.',
+                    },
+                    { role: 'user', content: prompt },
+                ],
+                temperature: 0.2,
             },
             {
                 headers: {
-                    Authorization: `Bearer ${process.env.HF_API_KEY}`,
-                    "Content-Type": "application/json"
-                }
+                    Authorization: `Bearer ${process.env.GROQ_CLOUD_KEY}`,
+                    'Content-Type': 'application/json',
+                },
             }
         );
 
-        const data = response.data;
-        const topLabel = data.labels?.[0];
-
-        const [intent, requestType] = topLabel?.includes(":")
-            ? topLabel.split(":").map((s: string) => s.trim())
-            : [topLabel, undefined];
-
-        // Extract possible named entities
-        const matchedHospital = matchEntity(input, hospitals);
-        const matchedDepartment = matchEntity(input, departments);
-
-        // Build response
-        const result: any = { intent };
-
-        if (intent === "create_request") {
-            result.requestType = requestType;
-            result.location = matchedDepartment || undefined;
-        }
-
-        if (intent === "get_hospital_directions") {
-            result.hospital = matchedHospital;
-        }
-
-        if (intent === "get_department_directions") {
-            result.department = matchedDepartment;
-        }
-
-        if (intent === "view_department_info") {
-            result.department = matchedDepartment;
-        }
-
-        res.json(result);
-    } catch (error) {
-        console.error(error)
-        res.status(500).json({ error: "Classification failed." });
+        const parsed = JSON.parse(response.data.choices[0].message.content);
+        res.json(parsed);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Groq classification failed.' });
     }
 });
 
