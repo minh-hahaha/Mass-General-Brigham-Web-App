@@ -131,7 +131,7 @@ const DirectionsMapComponent = () => {
     const [fromNodeId, setFromNodeId] = useState('');
     const [checkIn, setCheckIn] = useState(false);
     const [toDirectoryNodeId, setToDirectoryNodeId] = useState('');
-
+    const [showDirections, setShowDirections] = useState<boolean>(false);
     const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
     const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
 
@@ -143,6 +143,7 @@ const DirectionsMapComponent = () => {
 
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
+    const[showBuildingDirections, setShowBuildingDirections] = useState(false);
     const [currentFloorId, setCurrentFloorId] = useState<string | undefined>('');
     const [showFloorSelector, setShowFloorSelector] = useState<boolean>(false);
     const [highlightFloorId, setHighlightFloorId] = useState<string | undefined>();
@@ -279,10 +280,7 @@ const DirectionsMapComponent = () => {
                 destination: toLocation,
                 travelMode: googleTravelMode,
                 provideRouteAlternatives: false,
-                unitSystem:
-                    distanceUnits == 'Feet'
-                        ? google.maps.UnitSystem.IMPERIAL
-                        : google.maps.UnitSystem.METRIC,
+                unitSystem: distanceUnits == 'Feet' ? google.maps.UnitSystem.IMPERIAL : google.maps.UnitSystem.METRIC,
             })
             .then((response) => {
                 directionsRenderer.setDirections(response);
@@ -473,8 +471,7 @@ const DirectionsMapComponent = () => {
                 } else if (lotLetter === 'C') {
                     setFromNodeId('CHFloor1Parking LotC');
                 }
-            } else if (locationPrefix === 'BWH') {
-
+            }else if (locationPrefix === 'BWH') {
                 if (lotLetter === 'A') {
                     setFromNodeId('BWFloor2Parking Lot');
                 } else if (lotLetter === 'B') {
@@ -485,19 +482,19 @@ const DirectionsMapComponent = () => {
             }
         }
         // for no parking lot
-        else {
-            switch (buildingID) {
+        else{
+            switch (buildingID){
                 case 1:
-                    setFromNodeId('CHFloor1Road3');
+                    setFromNodeId("CHFloor1Road3")
                     break;
                 case 2:
-                    setFromNodeId('PPFloor1Road10');
+                    setFromNodeId("PPFloor1Road10")
                     break;
                 case 3:
-                    setFromNodeId('FKFloor1Road');
+                    setFromNodeId("FKFloor1Road")
                     break;
                 case 4:
-                    setFromNodeId('BWFloor2Road_1');
+                    setFromNodeId("BWFloor2Road_1")
                     break;
             }
         }
@@ -511,14 +508,18 @@ const DirectionsMapComponent = () => {
         if (currentStep === 'DEPARTMENT') {
             setPathVisible(false);
             clearParking();
-            setToDirectoryNodeId('');
+
             setCheckIn(false);
+            setToDirectoryNodeId("")
+            setToLocation('')
+            setShowBuildingDirections(false);
         }
-        if (currentStep === 'DIRECTIONS') {
+        if (currentStep === "DIRECTIONS") {
             setToLocation('');
+            setToDirectoryNodeId("")
         }
-        if (currentStep === 'HOSPITAL_DETAIL') {
-            setFromNodeId('');
+        if (currentStep === "HOSPITAL_DETAIL") {
+            setFromNodeId("")
             setShowFloorSelector(false);
             setBuildingID(0);
         } else {
@@ -571,25 +572,27 @@ const DirectionsMapComponent = () => {
                     disableDefaultUI={true}
                     mapId={'73fda600718f172c'}
                 >
-                    {map && (
-                        <HospitalMapComponent
-                            map={map}
-                            startNodeId={fromNodeId}
-                            endNodeId={toDirectoryNodeId}
-                            selectedAlgorithm={selectedAlgorithm}
-                            visible={pathVisible}
-                            currentFloorId={currentFloorId}
-                            onFloorChange={handleFloorHighlight}
-                            onAutoSwitchFloor={handleAutoSwitchFloor}
-                            autoFloorSwitchEnabled={autoFloorSwitchEnabled}
-                            driveDirections={textDirections}
-                            drive2Directions={text2Directions}
-                            showTextDirections={!!toLocation}
-                            currentStep={currentStep}
-                            distanceUnits={distanceUnits}
-                            setDistanceUnits={setDistanceUnits}
-                        />
-                    )}
+                    {map && <HospitalMapComponent
+                        map={map}
+                        startNodeId={fromNodeId}
+                        endNodeId={toDirectoryNodeId}
+                        selectedAlgorithm={selectedAlgorithm}
+                        visible={pathVisible}
+                        currentFloorId={currentFloorId}
+                        onFloorChange={handleFloorHighlight}
+                        onAutoSwitchFloor={handleAutoSwitchFloor}
+                        autoFloorSwitchEnabled={autoFloorSwitchEnabled}
+
+
+                        driveDirections={textDirections}
+                        drive2Directions={text2Directions}
+                        showTextDirections={!!toLocation}
+                        currentStep={currentStep}
+                        showBuildingDirections={showBuildingDirections}
+
+                        distanceUnits={distanceUnits}
+                        setDistanceUnits={setDistanceUnits}
+                    />}
                 </Map>
 
                 {/* Route Info Box */}

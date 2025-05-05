@@ -13,12 +13,24 @@ router.get('/', async (req: Request, res: Response) => {
                 nodeFrom: true,
             },
             where: {
-                nodeTo: {
-                    is: {
-                        floor: floor,
-                        buildingId: building,
+                OR: [
+                    {
+                        nodeFrom: {
+                            is: {
+                                floor: floor,
+                                buildingId: building,
+                            },
+                        },
                     },
-                },
+                    {
+                        nodeTo: {
+                            is: {
+                                floor: floor,
+                                buildingId: building,
+                            },
+                        },
+                    },
+                ],
             },
         });
         res.status(200).json(EDGES);
