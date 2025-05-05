@@ -534,7 +534,7 @@ const DirectionsMapComponent = () => {
     console.log(' ====== checkIn? ' + checkIn);
 
 
-    const [map3DOn, setMap3DOn] = useState(false)
+    const [map3DOn, setMap3DOn] = useState(true)
     const handleToggleMap3D = () => {
         const toggle = !map3DOn;
         setMap3DOn(toggle);
@@ -615,7 +615,7 @@ const DirectionsMapComponent = () => {
                     </div>
                 )}
 
-                {buildingID === 1 || buildingID === 2 ? (
+                {buildingID === 1? (
                     <div className="absolute top-2 left-1/2 justify-center ">
                         <div className="flex items-center  bg-gray-100  rounded-full px-6 py-3 shadow-md shadow-xl/30 inset-shadow-grey-300">
                             <p className="text-sm text-codGray font-bold mr-4">3D Map</p>
