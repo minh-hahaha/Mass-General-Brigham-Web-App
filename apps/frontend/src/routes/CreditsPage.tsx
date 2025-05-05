@@ -132,15 +132,18 @@ const CreditsPage = () => {
 const CreditItem = ({ picture, title, description, version, link }: { picture: string, title: string, description: string, version: string, link: string }) => {
     return (
         <div className='grid grid-cols-2 grid-cols-[200px_minmax(900px,_1fr)_100px] bg-gray-300 px-4 py-4 rounded-2xl'>
-            <div
-                className="rounded-full size-32 bg-cover bg-center"
+            <a
+                href={link}
+                target='_blank'
+                rel='noopener noreferrer'
+                className="rounded-full size-32 bg-cover bg-center block"
                 style={{ backgroundImage: `url(${picture})` }}
+                aria-label={`Visit ${title} website`}
             />
             <div className='grid grid-cols-1 text-codgray text-bold '>
                 <div className='text-lg'>{title}</div>
                 <div className='text-sm'>{description}</div>
                 <div className='text-sm'>{version}</div>
-                <div className='text-sm'>Website: <Link to={link} target='_blank' rel='noopener noreferrer' className='text-mgbblue underline transition-[delay-150 duration-300 ease-in-out] hover:text-teal-500 hover:text-lg'>{link}</Link></div>
             </div>
         </div>
     )

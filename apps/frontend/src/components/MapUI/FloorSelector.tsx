@@ -33,10 +33,9 @@ const FloorSelector: React.FC<FloorSelectorProps> = ({
                                                          highlightFloorId
                                                      }) => {
 
-    const [isPulsing, setIsPulsing] = useState(false);
-
     // Filter floors to only show the current building
     // For PP, id 2
+    //console.log("currentFloorId in FloorSelector: " + currentFloorId);
     const relevantFloors = availableFloors
         .filter(floor => floor.buildingId === "2")
         .sort((a, b) => Number(b.floor) - Number(a.floor)); // Highest floor first
