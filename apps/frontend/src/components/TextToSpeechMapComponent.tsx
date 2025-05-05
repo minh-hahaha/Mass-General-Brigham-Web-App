@@ -9,6 +9,7 @@ import {
     BsChevronLeft,
     BsChevronRight,
 } from "react-icons/bs";
+import { LuMapPinCheckInside } from "react-icons/lu";
 import { GiNothingToSay } from "react-icons/gi";
 import SelectElement from "@/elements/SelectElement.tsx";
 
@@ -81,7 +82,7 @@ const TextToSpeechMapComponent = ({
             } else if (direction === "turn right then continue straight") {
                 setIconToDisplay(<BsArrow90DegRight />);
             } else {
-                setIconToDisplay(<GiNothingToSay />);
+                setIconToDisplay(<LuMapPinCheckInside />);
             }
         } else {
             setIconToDisplay(<GiNothingToSay />);
@@ -133,7 +134,7 @@ const TextToSpeechMapComponent = ({
     };
 
     return (
-        <div className="absolute top-149 left-6 z-10">
+        <div className="absolute top-150 left-6 z-10">
             <div className="p-5 shadow-md flex flex-col items-center space-y-4 w-100 z-10 bg-white rounded-b-lg">
                 {/* Horizontal Carousel Controls */}
                 <div className="flex items-center justify-between w-full space-x-4">
@@ -145,7 +146,7 @@ const TextToSpeechMapComponent = ({
                         <BsChevronLeft />
                     </button>
 
-                    <div className="w-[300px] h-[88px] px-4 py-2 flex items-center justify-center text-black text-center text-base">
+                    <div className="w-[300px] h-[120px] mb-0 px-4 flex items-center justify-center text-black text-center text-base">
                         <div
                             className="whitespace-pre-line break-words"
                             dangerouslySetInnerHTML={{ __html: textDisplayList[counter] || '' }}
@@ -162,23 +163,43 @@ const TextToSpeechMapComponent = ({
                 </div>
 
                 {/* Controls */}
-                <div className="flex space-x-2">
-                    {/*<MGBButton onClick={handleModeSwitch} variant="primary" disabled={false}>*/}
-                    {/*    {textMode}*/}
-                    {/*</MGBButton>*/}
+                <div className="flex items-center justify-between space-x-2">
+                    {/* Speak Button */}
                     <MGBButton onClick={speakDirections} variant="secondary" disabled={false}>
                         Speak
                     </MGBButton>
-                    <SelectElement
-                        label={'Units'}
-                        id={'distanceUnits'}
-                        value={distanceUnits}
-                        onChange={(e) => setDistanceUnits(e.target.value as 'Feet' | 'Meters')}
-                        options={['Feet', 'Meters']}
-                    ></SelectElement>
-                    <div className="flex items-center justify-center p-2 bg-gray-200 rounded-md">
-                        {iconToDisplay}
+
+                    {/* Radio Button Group */}
+                    <div className="flex flex-col">
+                        <div className="flex items-center space-x-4">
+                            {/* Icon */}
+                            <div className="flex items-center justify-center p-2 bg-gray-200 rounded-md">
+                                {iconToDisplay}
+                            </div>
+                            <label className="flex items-center space-x-1">
+                                <input
+                                    type="radio"
+                                    name="distanceUnits"
+                                    value="Feet"
+                                    checked={distanceUnits === 'Feet'}
+                                    onChange={(e) => setDistanceUnits(e.target.value as 'Feet' | 'Meters')}
+                                />
+                                <span>Feet</span>
+                            </label>
+                            <label className="flex items-center space-x-1">
+                                <input
+                                    type="radio"
+                                    name="distanceUnits"
+                                    value="Meters"
+                                    checked={distanceUnits === 'Meters'}
+                                    onChange={(e) => setDistanceUnits(e.target.value as 'Feet' | 'Meters')}
+                                />
+                                <span>Meters</span>
+                            </label>
+                        </div>
                     </div>
+
+
                 </div>
             </div>
         </div>

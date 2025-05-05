@@ -450,7 +450,6 @@ const HospitalMapComponent = ({
             )}
 
             {showDirectionsAndSpeak && (
-
                 <div >
                     <TextToSpeechMapComponent
                         walkDirections={directions1}
