@@ -526,6 +526,14 @@ async function main() {
                 "nodeId": "FKFloor1Room"
             },
             {
+                "deptId": 152,
+                "deptServices": null,
+                "deptName": "Dialysis",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room_1"
+            },
+            {
                 "deptId": 49,
                 "deptServices": null,
                 "deptName": "Emergency Entrance",
