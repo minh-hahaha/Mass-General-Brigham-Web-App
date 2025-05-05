@@ -105,16 +105,6 @@ const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
         handleReset();
     };
 
-    useEffect(() => {
-        if (showConfirmation) {
-            handleConfirmationClose();
-        }
-    }, [showConfirmation]);
-
-    const handleConfirmationClose = () => {
-        setShowConfirmation(false);
-    };
-
 
     const handleReset = () => {
         setMaintenanceType('');
@@ -126,6 +116,9 @@ const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
         setEmployeeId(0);
         setNotes('');
         setLocationId(1);
+        setTimeout(() => {
+            setShowConfirmation(false);
+        }, 3000)
     };
 
     return (
