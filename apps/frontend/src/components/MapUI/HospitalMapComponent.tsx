@@ -232,7 +232,7 @@ const HospitalMapComponent = ({
     const [destinationFloorId, setDestinationFloorId] = useState<string | undefined>();
     const [showDestinationFloorAlert, setShowDestinationFloorAlert] = useState<boolean>(false);
 
-
+    const [showDirectionsAndSpeak, setShowDirectionsAndSpeak] = useState<boolean>(false);
     const [startFloor, setStartFloor] = useState<Floor>();
     const [directions1, setDirections1] = useState('');
     const [directions11, setDirections11] = useState<string[]>([]);
@@ -253,6 +253,14 @@ const HospitalMapComponent = ({
         };
         fetchNode();
     }, [startNodeId, endNodeId]);
+
+    useEffect(() => {
+        if (currentStep==='DEPARTMENT'&&endNode){
+            setShowDirectionsAndSpeak(true)
+        }else{
+            setShowDirectionsAndSpeak(false);
+        }
+    }, [currentStep, endNode]);
 
     // Find path and text directions
     useEffect(() => {
@@ -375,15 +383,7 @@ const HospitalMapComponent = ({
     return (
         <>
             {showTextDirections && (
-                currentStep === 'DEPARTMENT' ? (
-                    <TextToSpeechMapComponent
-                        walkDirections={directions1}
-                        driveDirections={driveDirections}
-                        drive22Directions={drive2Directions}
-                        walk22Directions={directions11}
-                        icons={iconsToPass}
-                    />
-                ) : (
+
                     <div className="fixed -top-34">
                         <TextToSpeechMapComponent
                             walkDirections={directions1}
@@ -391,10 +391,27 @@ const HospitalMapComponent = ({
                             drive22Directions={drive2Directions}
                             walk22Directions={directions11}
                             icons={iconsToPass}
+                            currentStep={currentStep}
                         />
                     </div>
-                )
+
             )}
+
+            {showDirectionsAndSpeak && (
+
+                <div className="fixed -top-34">
+                    <TextToSpeechMapComponent
+                        walkDirections={directions1}
+                        driveDirections={driveDirections}
+                        drive22Directions={drive2Directions}
+                        walk22Directions={directions11}
+                        icons={iconsToPass}
+                        currentStep={currentStep}
+                    />
+                </div>
+
+            )}
+
 
             {/* Destination Floor Alert */}
             {showDestinationFloorAlert && destinationFloorId && (

@@ -84,7 +84,7 @@ const DirectionsMapComponent = () => {
 
     const [fromNodeId, setFromNodeId] = useState('');
     const [toDirectoryNodeId, setToDirectoryNodeId] = useState('');
-
+    const [showDirections, setShowDirections] = useState<boolean>(false);
     const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
     const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
 
@@ -110,7 +110,13 @@ const DirectionsMapComponent = () => {
         };
         fetchOrigins();
     }, []);
-
+    // useEffect(() => {
+    //     if (currentStep==='DIRECTIONS'||currentStep==='DEPARTMENT'||){
+    //         setShowDirections(true)
+    //     }else{
+    //         setShowDirections(false);
+    //     }
+    // }, [currentStep]);
     useEffect(() => {
         if (!routesLibrary || !map) return;
         setDirectionsService(new routesLibrary.DirectionsService());

@@ -17,6 +17,7 @@ interface State {
     drive22Directions: string[];
     walk22Directions: string[];
     icons: string[];
+    currentStep: string;
 }
 
 const TextToSpeechMapComponent = ({
@@ -25,6 +26,7 @@ const TextToSpeechMapComponent = ({
                                       drive22Directions,
                                       walk22Directions,
                                       icons,
+                                      currentStep,
                                   }: State) => {
     const audioRef = useRef(new Audio());
     const [textMode, setTextMode] = useState("Mode: Transport Directions");
@@ -45,13 +47,18 @@ const TextToSpeechMapComponent = ({
         updateIcon(0);
     }, [drive22Directions, walk22Directions, textMode]);
 
+
+    useEffect(() => {
+        handleModeSwitch()
+    }, [currentStep]);
+
     const handleModeSwitch = () => {
         setCounter(0);
-        if (textMode === "Mode: Transport Directions") {
+        if (currentStep === 'DEPARTMENT') {
             setTextMode("Mode: Building Directions");
             setTextToSpeak(walk22Directions || []);
             setTextDisplayList(walk22Directions || []);
-        } else {
+        } else if(currentStep==='DIRECTIONS'){
             setTextMode("Mode: Transport Directions");
             setTextToSpeak(drive22Directions);
             setTextDisplayList(drive22Directions);
@@ -153,9 +160,9 @@ const TextToSpeechMapComponent = ({
 
                 {/* Controls */}
                 <div className="flex space-x-2">
-                    <MGBButton onClick={handleModeSwitch} variant="primary" disabled={false}>
-                        {textMode}
-                    </MGBButton>
+                    {/*<MGBButton onClick={handleModeSwitch} variant="primary" disabled={false}>*/}
+                    {/*    {textMode}*/}
+                    {/*</MGBButton>*/}
                     <MGBButton onClick={speakDirections} variant="secondary" disabled={false}>
                         Speak
                     </MGBButton>
