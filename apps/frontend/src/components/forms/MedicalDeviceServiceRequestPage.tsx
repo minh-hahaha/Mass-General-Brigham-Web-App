@@ -125,16 +125,6 @@ const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
         setShowConfirmation(true)
         handleReset();
     };
-    useEffect(() => {
-        if (showConfirmation) {
-            handleConfirmationClose();
-        }
-    }, [showConfirmation]);
-
-    const handleConfirmationClose = () => {
-        setShowConfirmation(false);
-    };
-
 
     const handleReset = () => {
         setEmployeeId(0);
@@ -148,6 +138,9 @@ const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
         setNotes('');
         setDepartment('');
         setDeliverDate('');
+        setTimeout(() => {
+            setShowConfirmation(false);
+        }, 3000)
     };
 
     return (

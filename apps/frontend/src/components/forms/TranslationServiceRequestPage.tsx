@@ -107,12 +107,6 @@ const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
         console.log(employeeList);
     }, [])
 
-    useEffect(() => {
-        if (showConfirmation) {
-            handleConfirmationClose(); // close the state after the alert
-        }
-    }, [showConfirmation]);
-
     const handleReset = () => {
         setEmployeeName('');
         setEmployeeId(0);
@@ -128,10 +122,9 @@ const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
         setStatus('');
         setNotes('');
         setDepartment('');
-    };
-
-    const handleConfirmationClose = () => {
-        setShowConfirmation(false);
+        setTimeout(() => {
+            setShowConfirmation(false);
+        }, 3000)
     };
 
     useEffect(() => {

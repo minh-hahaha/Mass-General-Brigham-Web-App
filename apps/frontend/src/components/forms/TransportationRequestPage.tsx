@@ -20,7 +20,6 @@ import {
 import { employeeNameId, getEmployeeNameIds } from '@/database/getEmployee.ts';
 import { RequestPageProps } from '@/routes/ServiceRequestDisplayPage.tsx';
 import HelpButton from '@/components/ServiceRequestHelp.tsx';
-import { useWindowSize } from 'react-use'
 import Confetti from 'react-confetti'
 
 
@@ -82,6 +81,9 @@ const TransportRequestPage = ({ editData }: RequestPageProps) => {
         setAssignedToId(0);
         setTransportDate('');
         setEmployeeId(0);
+        setTimeout(() => {
+            setShowConfirmation(false);
+        }, 3000)
     };
 
     useEffect(() => {
@@ -95,16 +97,6 @@ const TransportRequestPage = ({ editData }: RequestPageProps) => {
         };
         fetchEmployeeList();
     }, []);
-
-    useEffect(() => {
-        if (showConfirmation) {
-            handleConfirmationClose();
-        }
-    }, [showConfirmation]);
-
-    const handleConfirmationClose = () => {
-        setShowConfirmation(false);
-    };
 
     useEffect(() => {
         if (editData) {
@@ -123,7 +115,6 @@ const TransportRequestPage = ({ editData }: RequestPageProps) => {
 
     return (
         <>
-
             <div className="flex justify-center items-start pt-16 pb-16 min-h-screen bg-[#f5faff] px-4">
                 <div className="bg-white border border-[#d0ebff] rounded-2xl shadow-lg px-10 py-10 w-full max-w-[500px]">
                     <div className="flex justify-between items-center mb-6">
