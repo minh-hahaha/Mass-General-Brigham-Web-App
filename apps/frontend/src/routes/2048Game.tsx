@@ -30,82 +30,123 @@ class Vector2 {
 class Tile {
     position: Vector2;
     value: number;
+    merged: boolean;
     constructor(position: Vector2, value: number) {
         this.position = position;
         this.value = value;
+        this.merged = false;
     }
 
 }
 
 
-function moveTiles(gameBoard: (Tile | undefined)[][], direction: ('left' | 'right' | 'up' | 'down')) {
-    // Need to move tiles based on how close to respective edge they are
-    switch (direction) {
-        case 'left':
-            for(let y = 0; y < gameBoard.length; y++) {
-                for (let x = 0; x < gameBoard[y].length; x++) {
-                    const tile = gameBoard[y][x];
-                    if(tile){
-                        let movePos = new Vector2(tile.position.posX - 1, tile.position.posY);
-                        let tileAtPos = gameBoard[movePos.posY][movePos.posX];
-                        while(!tileAtPos && tile.position.posX > 0){
-                            tile.position.add(-1, 0);
-                            movePos = new Vector2(tile.position.posX - 1, tile.position.posY);
-                            tileAtPos = gameBoard[movePos.posY][movePos.posX];
-                        }
-                        gameBoard[y][x] = undefined;
-                        gameBoard[tile.position.posY][tile.position.posX] = tile;
+function moveTiles(gameBoard: (Tile | undefined)[][], direction: 'left' | 'right' | 'up' | 'down') {
+    const isHorizontal = direction === 'left' || direction === 'right';
+    const dir = direction === 'left' || direction === 'up' ? -1 : 1;
+
+    const outerLimit = isHorizontal ? gameBoard.length : gameBoard[0].length;
+    const innerLimit = isHorizontal ? gameBoard[0].length : gameBoard.length;
+
+    const getTile = (x: number, y: number) => gameBoard[y]?.[x];
+    const setTile = (x: number, y: number, tile: Tile | undefined) => {
+        if (gameBoard[y]) gameBoard[y][x] = tile;
+    };
+
+    // Reset merge flags
+    for (let y = 0; y < gameBoard.length; y++) {
+        for (let x = 0; x < gameBoard[y].length; x++) {
+            const tile = gameBoard[y][x];
+            if (tile) tile.merged = false;
+        }
+    }
+
+    for (let outer = 0; outer < outerLimit; outer++) {
+        const range = [...Array(innerLimit).keys()];
+        if (dir === 1) range.reverse();
+
+        for (const inner of range) {
+            const x = isHorizontal ? inner : outer;
+            const y = isHorizontal ? outer : inner;
+            const tile = getTile(x, y);
+
+            if (tile) {
+                let posX = tile.position.posX;
+                let posY = tile.position.posY;
+
+                let nextX = posX + (isHorizontal ? dir : 0);
+                let nextY = posY + (isHorizontal ? 0 : dir);
+
+                let merged = false;
+
+                while (
+                    nextX >= 0 && nextX < gameBoard[0].length &&
+                    nextY >= 0 && nextY < gameBoard.length
+                    ) {
+                    const nextTile = getTile(nextX, nextY);
+
+                    if (!nextTile) {
+                        tile.position.add(isHorizontal ? dir : 0, isHorizontal ? 0 : dir);
+                        posX = tile.position.posX;
+                        posY = tile.position.posY;
+                        nextX = posX + (isHorizontal ? dir : 0);
+                        nextY = posY + (isHorizontal ? 0 : dir);
+                    } else if (
+                        nextTile.value === tile.value &&
+                        !nextTile.merged &&
+                        !tile.merged
+                    ) {
+                        // Merge
+                        nextTile.value *= 2;
+                        nextTile.merged = true;
+                        setTile(x, y, undefined); // Remove original tile from original position
+                        setTile(tile.position.posX, tile.position.posY, undefined); // Remove it from wherever it was moved to
+                        merged = true;
+                        break;
+                    } else {
+                        break;
                     }
+                }
+
+                // If it moved and wasn't merged, update the grid position
+                if (!merged && (tile.position.posX !== x || tile.position.posY !== y)) {
+                    setTile(x, y, undefined);
+                    setTile(tile.position.posX, tile.position.posY, tile);
                 }
             }
-            break;
-            case 'right':
-                for(let y = 0; y < gameBoard.length; y++) {
-                    for (let x = gameBoard[y].length; x >= 0; x--) {
-                        const tile = gameBoard[y][x];
-                        if(tile){
-                            let movePos = new Vector2(tile.position.posX + 1, tile.position.posY);
-                            let tileAtPos = gameBoard[movePos.posY][movePos.posX];
-                            while(!tileAtPos && tile.position.posX < gameBoard[y].length - 1){
-                                tile.position.add(1, 0);
-                                movePos = new Vector2(tile.position.posX + 1, tile.position.posY);
-                                tileAtPos = gameBoard[movePos.posY][movePos.posX];
-                            }
-                            gameBoard[y][x] = undefined;
-                            gameBoard[tile.position.posY][tile.position.posX] = tile;
-                        }
-                    }
-                }
-                break;
-                case 'down':
-                    console.log("called")
-                    for(let y = gameBoard.length - 1; y >= 0; y--) {
-                        for (let x= 0; x < gameBoard[y].length; x++) {
-                            const tile = gameBoard[y][x];
-                            if(tile){
-                                let movePos = new Vector2(tile.position.posX, tile.position.posY + 1);
-                                let tileAtPos = gameBoard[movePos.posY][movePos.posX];
-                                while(!tileAtPos && tile.position.posY < gameBoard[y].length - 1){
-                                    tile.position.add(0, 1);
-                                    movePos = new Vector2(tile.position.posX, tile.position.posY + 1);
-                                    tileAtPos = gameBoard[movePos.posY][movePos.posX];
-                                }
-                                gameBoard[y][x] = undefined;
-                                gameBoard[tile.position.posY][tile.position.posX] = tile;
-                            }
-                        }
-                    }
-                    break;
-                    case 'up':
-                        break;
+        }
     }
+    if(!isBoardFull(gameBoard)) {
+        console.log("Hello")
+        let posX = Math.floor(Math.random() * 4);
+        let posY = Math.floor(Math.random() * 4);
+        while (getTile(posX, posY)) {
+            posX = Math.floor(Math.random() * 4);
+            posY = Math.floor(Math.random() * 4);
+        }
+        const random = Math.floor(Math.random() * 10);
+        let value = 2;
+        if(random < 2){
+            value = 4;
+        }
+        setTile(posX, posY, new Tile(new Vector2(posX, posY), value));
+    }
+}
+
+function isBoardFull(gameBoard: (Tile | undefined)[][]){
+    for(let y = 0; y < gameBoard.length; y++) {
+        for (let x = 0; x < gameBoard[y].length; x++) {
+            if(!gameBoard[y][x]) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 export default function Game2048() {
     const animationFrameId = useRef<number>(0);
     const deltaTime = useRef<number>(0);
     const bestScore = useRef<number>(0);
-    const [gameStarted, setGameStarted] = useState(true); //TODO: change back to false
     const gameStartX = 50;
     const gameStartY = 150;
     const tileStartX = gameStartX + 10;
@@ -118,29 +159,42 @@ export default function Game2048() {
         Array(4).fill(undefined)
     );
 
-    gameBoard[0][0] = new Tile(new Vector2(0, 0), 2);
-    gameBoard[1][3] = new Tile(new Vector2(3, 1), 4);
+    const posX = Math.floor(Math.random() * 4);
+    const posY = Math.floor(Math.random() * 4);
+    gameBoard[posX][posY] = new Tile(new Vector2(posX, posY), 2);
+    let posX1 = Math.floor(Math.random() * 4);
+    let posY1 = Math.floor(Math.random() * 4);
+    while(posX === posX1 || posY === posY1) {
+        posX1 = Math.floor(Math.random() * 4);
+        posY1 = Math.floor(Math.random() * 4);
+    }
+    gameBoard[posX1][posY1] = new Tile(new Vector2(posX1, posY1), 2);
 
     useEffect(() => {
-        if(!gameStarted) return;
         const canvas = document.getElementById("game-window") as HTMLCanvasElement | null;
         if(!canvas){
             return;
         }
-        canvas.addEventListener("keydown", (e) => {
-            if (e.key === 'ArrowUp') {
-                moveTiles(gameBoard, 'up');
+        const handleKeyDown = (e: KeyboardEvent) => {
+            e.preventDefault();
+
+            switch (e.key) {
+                case 'ArrowUp':
+                    moveTiles(gameBoard, 'up');
+                    break;
+                case 'ArrowDown':
+                    moveTiles(gameBoard, 'down');
+                    break;
+                case 'ArrowLeft':
+                    moveTiles(gameBoard, 'left');
+                    break;
+                case 'ArrowRight':
+                    moveTiles(gameBoard, 'right');
+                    break;
             }
-            if (e.key === 'ArrowDown') {
-                moveTiles(gameBoard, 'down');
-            }
-            if (e.key === 'ArrowLeft') {
-                moveTiles(gameBoard, 'left');
-            }
-            if (e.key === 'ArrowRight') {
-                moveTiles(gameBoard, 'right');
-            }
-        })
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
 
         // Get the 2D drawing context
         const ctx = canvas.getContext("2d");
@@ -161,6 +215,10 @@ export default function Game2048() {
             // Background
             ctx.fillStyle = "tan";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "white";
+            ctx.fillText("2048", (canvas.width / 2) - 75, 100);
+
             // Game board
             ctx.fillStyle = "gray";
             ctx.fillRect(gameStartX, gameStartY, gameWidth, gameHeight);
@@ -218,8 +276,9 @@ export default function Game2048() {
             if (animationFrameId.current) {
                 cancelAnimationFrame(animationFrameId.current);
             }
+            window.removeEventListener('keydown', handleKeyDown);
         };
-    }, [gameStarted]);
+    });
 
     return (
         <>
@@ -231,17 +290,6 @@ export default function Game2048() {
                         height={700}
                     ></canvas>
                 </div>
-            </div>
-            <div
-                hidden={gameStarted}
-                className={"absolute top-90 left-170"}
-            >
-                <MGBButton
-                    onClick={() => setGameStarted(true)}
-                    children={'Start Game'}
-                    variant={'primary'}
-                >
-                </MGBButton>
             </div>
         </>
     );
