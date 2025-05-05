@@ -22,6 +22,7 @@ import {
     SubmitSanitationRequest
 } from "@/database/forms/sanitationRequest.ts";
 import HelpButton from "@/components/ServiceRequestHelp.tsx";
+import Confetti from 'react-confetti'
 
 // Component definition
 const SanitationRequestPage = ({editData}: RequestPageProps) => {
@@ -96,13 +97,6 @@ const SanitationRequestPage = ({editData}: RequestPageProps) => {
     };
 
     useEffect(() => {
-        if (showConfirmation) {
-            alert("Request Submitted");
-            handleConfirmationClose(); // close the state after the alert
-        }
-    }, [showConfirmation]);
-
-    useEffect(() => {
         const fetchDirectoryList = async () => {
             try {
                 const data = await getDirectory(mgbHospitals.indexOf(locationId) + 1);
@@ -146,6 +140,9 @@ const SanitationRequestPage = ({editData}: RequestPageProps) => {
         setEmployee_name('');
         setRequester_department('');
         setRequester_roomnum('');
+        setTimeout(() => {
+            setShowConfirmation(false);
+        }, 3000)
     };
 
     useEffect(() => {
@@ -165,15 +162,6 @@ const SanitationRequestPage = ({editData}: RequestPageProps) => {
             setDirectory(editData.sanitation.sanitationDepartmentId ? editData.sanitation.sanitationDepartmentId.toString() : '');
         }
     }, []);
-
-    // //Data is sent to the backend
-    // async function DisplayTransportRequest(request: transportRequest) {
-    //     await axios.post(ROUTES.PATIENTTRANSPORT, request);
-    // }
-
-    const handleConfirmationClose = () => {
-        setShowConfirmation(false);
-    };
 
 
     return (
@@ -299,6 +287,17 @@ const SanitationRequestPage = ({editData}: RequestPageProps) => {
                             Clear Form
                         </MGBButton>
                     </div>
+                    {showConfirmation &&
+                        <Confetti
+                            recycle={false}
+                            width={900}
+                            height={900}
+                            initialVelocityY={4}
+                            gravity={0.6}
+                            numberOfPieces={200}
+                            tweenDuration={1000}
+                        />
+                    }
                 </form>
             </div>
         </div>

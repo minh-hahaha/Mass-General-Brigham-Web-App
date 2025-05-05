@@ -27,6 +27,7 @@ import {
     employeeNameId,
 } from '@/database/getEmployee.ts';
 import { RequestPageProps } from '@/routes/ServiceRequestDisplayPage.tsx';
+import Confetti from 'react-confetti'
 
 const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
     const [maintenanceType, setMaintenanceType] = useState('');
@@ -41,6 +42,7 @@ const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
 
     const [directoryList, setDirectoryList] = useState<string[]>([]);
     const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
+    const [showConfirmation, setShowConfirmation] = useState(false);
 
     useEffect(() => {
         const fetchDirectoryList = async () => {
@@ -99,10 +101,10 @@ const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
         } else {
             SubmitMaintenanceRequest(newRequest);
         }
-
-        alert('Request Submitted');
+        setShowConfirmation(true);
         handleReset();
     };
+
 
     const handleReset = () => {
         setMaintenanceType('');
@@ -114,6 +116,9 @@ const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
         setEmployeeId(0);
         setNotes('');
         setLocationId(1);
+        setTimeout(() => {
+            setShowConfirmation(false);
+        }, 3000)
     };
 
     return (
@@ -244,6 +249,17 @@ const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
                             Clear Form
                         </MGBButton>
                     </div>
+                    {showConfirmation &&
+                        <Confetti
+                            recycle={false}
+                            width={900}
+                            height={900}
+                            initialVelocityY={4}
+                            gravity={0.6}
+                            numberOfPieces={200}
+                            tweenDuration={1000}
+                        />
+                    }
                 </form>
             </div>
         </div>

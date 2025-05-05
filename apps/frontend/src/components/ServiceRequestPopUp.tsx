@@ -4,24 +4,34 @@ import MGBButton from "@/elements/MGBButton.tsx";
 
 const instructionPages = [
     {
-        title: "Requester Information",
-        description: "Fill in your full name and employee ID accurately.",
-        imagePath: "",
+        title: "Assign Employee",
+        description: "Select the employee responsible for this request. If unknown, leave it unassigned.",
+        imagePath: "/ServiceRequestHelp/AssignEmployee.png",
     },
     {
-        title: "Patient Information",
-        description: "Enter the patient's name and their primary language.",
-        imagePath: "",
+        title: "Fill Required Fields",
+        description: "Enter the essential details for your request. This may include things like patient ID, item type, request type, or service needed.",
+        imagePath: "/ServiceRequestHelp/FillFields.png",
     },
     {
-        title: "Meeting Details",
-        description: "Choose the meeting type, select the priority, and set date/time/location.",
-        imagePath: "",
+        title: "Set Location and Department",
+        description: "Choose the correct hospital and department to ensure the request is directed appropriately.",
+        imagePath: "/ServiceRequestHelp/Department.png",
     },
     {
-        title: "Submit Request",
-        description: "Click 'Submit Request' to send your form once complete.",
-        imagePath: "",
+        title: "Add Scheduling Info",
+        description: "Provide any relevant dates or timeframes when the service should be completed or scheduled.",
+        imagePath: "/ServiceRequestHelp/Appointment.png",
+    },
+    {
+        title: "Include Additional Notes",
+        description: "Use the comments or notes section to provide extra context or instructions to staff.",
+        imagePath: "/ServiceRequestHelp/Notes.png",
+    },
+    {
+        title: "Review and Submit",
+        description: "Double-check your form. Once complete, click 'Submit Request' to send it.",
+        imagePath: "/ServiceRequestHelp/Submit.png",
     }
 ];
 

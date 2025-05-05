@@ -18,16 +18,16 @@ const VoiceCommands: React.FC<VoiceCommandProps> = ({voiceTranscript}) => {
     }
 
     const [clicked, setClicked] = useState(false)
-    const handleClicked = () => {
+    const handleClicked = async () => {
         if(clicked){
-            SpeechRecognition.stopListening();
+            await SpeechRecognition.stopListening();
             setClicked(false);
             voiceTranscript(transcript);
             resetTranscript();
         }
         else{
             resetTranscript();
-            SpeechRecognition.startListening({ continuous: true });
+            await SpeechRecognition.startListening({ continuous: true });
             setClicked(true);
         }
     };

@@ -1,4 +1,3 @@
-import InputElement from '@/elements/InputElement.tsx';
 import MGBButton from '@/elements/MGBButton.tsx';
 import FormFieldElement from '@/elements/FormFieldElement.tsx';
 import {useEffect, useState} from 'react';
@@ -19,6 +18,7 @@ import {RequestPageProps} from "@/routes/ServiceRequestDisplayPage.tsx";
 import {editMedicalDeviceRequest} from "@/database/forms/medicalDeviceRequest.ts";
 import {EditTranslatorRequest, editTranslatorRequest} from "@/database/translationRequest.ts";
 import HelpButton from '@/components/ServiceRequestHelp.tsx'; // adjust path if needed
+import Confetti from 'react-confetti'
 
 const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
     const [employeeName, setEmployeeName] = useState('');
@@ -107,13 +107,6 @@ const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
         console.log(employeeList);
     }, [])
 
-    useEffect(() => {
-        if (showConfirmation) {
-            alert("Request Submitted");
-            handleConfirmationClose(); // close the state after the alert
-        }
-    }, [showConfirmation]);
-
     const handleReset = () => {
         setEmployeeName('');
         setEmployeeId(0);
@@ -129,10 +122,9 @@ const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
         setStatus('');
         setNotes('');
         setDepartment('');
-    };
-
-    const handleConfirmationClose = () => {
-        setShowConfirmation(false);
+        setTimeout(() => {
+            setShowConfirmation(false);
+        }, 3000)
     };
 
     useEffect(() => {
@@ -306,6 +298,17 @@ const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
                             Clear Form
                         </MGBButton>
                     </div>
+                    {showConfirmation &&
+                        <Confetti
+                            recycle={false}
+                            width={900}
+                            height={900}
+                            initialVelocityY={4}
+                            gravity={0.6}
+                            numberOfPieces={200}
+                            tweenDuration={1000}
+                        />
+                    }
                 </form>
             </div>
         </div>

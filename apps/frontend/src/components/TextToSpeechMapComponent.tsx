@@ -67,11 +67,11 @@ const TextToSpeechMapComponent = ({
     const updateIcon = (index: number) => {
         const direction = icons?.[index];
         if (textMode === "Mode: Building Directions") {
-            if (direction === "Turn Left then Continue Straight") {
+            if (direction === "turn left then continue straight") {
                 setIconToDisplay(<BsArrow90DegLeft />);
-            } else if (direction === "Continue Straight") {
+            } else if (direction === "continue straight") {
                 setIconToDisplay(<BsArrowUp />);
-            } else if (direction === "Turn Right then Continue Straight") {
+            } else if (direction === "turn right then continue straight") {
                 setIconToDisplay(<BsArrow90DegRight />);
             } else {
                 setIconToDisplay(<GiNothingToSay />);

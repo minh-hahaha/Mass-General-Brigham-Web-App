@@ -21,6 +21,7 @@ import {
 import InputElement from "@/elements/InputElement.tsx";
 import MGBButton from "@/elements/MGBButton.tsx";
 import HelpButton from "@/components/ServiceRequestHelp.tsx";
+import Confetti from 'react-confetti'
 
 export interface MedicalDeviceRequestData {
     employeeId: number;
@@ -52,6 +53,7 @@ const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
 
     const [directoryList, setDirectoryList] = useState<string[]>([]);
     const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
+    const [showConfirmation, setShowConfirmation] = useState(false);
 
     useEffect(() => {
         const fetchDirectoryList = async () => {
@@ -120,7 +122,7 @@ const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
         } else {
             SubmitMedicalDeviceRequest(newRequest);
         }
-        alert('Request Submitted');
+        setShowConfirmation(true)
         handleReset();
     };
 
@@ -136,6 +138,9 @@ const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
         setNotes('');
         setDepartment('');
         setDeliverDate('');
+        setTimeout(() => {
+            setShowConfirmation(false);
+        }, 3000)
     };
 
     return (
@@ -287,6 +292,17 @@ const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
                             Clear Form
                         </MGBButton>
                     </div>
+                    {showConfirmation &&
+                        <Confetti
+                            recycle={false}
+                            width={900}
+                            height={900}
+                            initialVelocityY={4}
+                            gravity={0.6}
+                            numberOfPieces={200}
+                            tweenDuration={1000}
+                        />
+                    }
                 </form>
             </div>
         </div>
