@@ -34,7 +34,6 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
     const [filters, setFilters] = useState({
         employeeName: '',
         department: '',
-        roomNumber: '',
         status: '',
         priority: '',
         requestDateTime: '',
@@ -84,10 +83,6 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                 req.requesterDepartmentId
                     ?.toLowerCase()
                     .includes(filters.department.toLowerCase())) &&
-            (!filters.roomNumber ||
-                req.requesterRoomNumber
-                    ?.toLowerCase()
-                    .includes(filters.roomNumber.toLowerCase())) &&
             (!filters.status || req.status?.toLowerCase().includes(filters.status.toLowerCase())) &&
             (!filters.priority ||
                 req.priority?.toLowerCase().includes(filters.priority.toLowerCase())) &&
@@ -108,124 +103,8 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
     // const [requestDate, requestTime] = splitDateTime(filters.requestDateTime);
     return (
         <>
-            <div className="fixed top-0 left-0 h-screen w-75 bg-white border-r border-gray-300 p-4 flex flex-col gap-4 mt-7">
-                <h1 className="mt-10 font-black text-2xl">Filters</h1>
-                <div className="flex flex-col gap-3">
-                    {/* Filter Inputs */}
-                    {/* employee Name Input */}
-                    <div>
-                        <label className="block text-sm font-medium">Employee Name</label>
-                        <FaRegUserCircle className="absolute mt-2 ml-1 text-codGray" size={15} />
-                        <input
-                            type="text"
-                            className="border border-mgbblue rounded-sm w-full p-1 px-6"
-                            placeholder="Filter employee name"
-                            value={filters.employeeName}
-                            onChange={(e) =>
-                                setFilters((prev) => ({ ...prev, employeeName: e.target.value }))
-                            }
-                        />
-                    </div>
-
-                    {/* dept Input */}
-                    <div>
-                        <label className="block text-sm font-medium">Department</label>
-                        <FaBuilding className="absolute mt-2 ml-1 text-codGray" size={15} />
-                        <input
-                            type="text"
-                            className="border border-mgbblue rounded-sm w-full p-1 px-6"
-                            placeholder="Filter department"
-                            value={filters.department}
-                            onChange={(e) =>
-                                setFilters((prev) => ({
-                                    ...prev,
-                                    department: e.target.value,
-                                }))
-                            }
-                        />
-                    </div>
-
-                    {/* rmNum Input */}
-                    <div>
-                        <label className="block text-sm font-medium">Room Number</label>
-                        <MdNumbers className="absolute mt-2 ml-1 text-codGray" size={15} />
-                        <input
-                            type="text"
-                            className="border border-mgbblue rounded-sm w-full p-1 px-6"
-                            placeholder="Filter room number"
-                            value={filters.roomNumber}
-                            onChange={(e) =>
-                                setFilters((prev) => ({ ...prev, roomNumber: e.target.value }))
-                            }
-                        />
-                    </div>
-
-                    {/* status Input */}
-                    <div>
-                        <label className="block text-sm font-medium">Status</label>
-                        <FaListCheck className="absolute mt-2 ml-1 text-codGray" size={15} />
-                        <input
-                            type="text"
-                            className="border border-mgbblue rounded-sm w-full p-1 px-6"
-                            placeholder="Filter status"
-                            value={filters.status}
-                            onChange={(e) =>
-                                setFilters((prev) => ({ ...prev, status: e.target.value }))
-                            }
-                        />
-                    </div>
-
-                    {/* priority Input */}
-                    <div>
-                        <label className="block text-sm font-medium">Priority</label>
-                        <MdOutlinePriorityHigh className="absolute mt-2 ml-1 text-codGray" size={15} />
-                        <input
-                            type="text"
-                            className="border border-mgbblue rounded-sm w-full p-1 px-6"
-                            placeholder="Filter priority"
-                            value={filters.priority}
-                            onChange={(e) =>
-                                setFilters((prev) => ({ ...prev, priority: e.target.value }))
-                            }
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium">Request Date</label>
-                        <FaCalendarAlt className="absolute mt-2 ml-1 text-codGray" size={15} />
-                        <input
-                            type="datetime-local"
-                            className="border border-mgbblue rounded-sm w-full p-1 px-6"
-                            placeholder="Filter date"
-                            value={filters.requestDateTime}
-                            onChange={(e) =>
-                                setFilters((prev) => ({ ...prev, requestDateTime: e.target.value }))
-                            }
-                        />
-                    </div>
-                </div>
-
-                {/* Clear Filters Button */}
-                <div className="justify-start">
-                    <MGBButton
-                        onClick={() =>
-                            setFilters({
-                                employeeName: '',
-                                department: '',
-                                roomNumber: '',
-                                status: '',
-                                priority: '',
-                                requestDateTime: '',
-                            })
-                        }
-                        variant={'secondary'}
-                        className="py-2 px-4 rounded text-sm"
-                    >
-                        Clear Filters
-                    </MGBButton>
-                </div>
-
-                <div className="flex flex-col bg-gray-200 rounded-sm pt-2 pb-2 px-3">
+            <div className="fixed top-0 left-0 h-screen w-80 bg-white border-r border-gray-300 p-4 flex flex-col gap-4 mt-7 overflow-auto">
+                <div className="flex flex-col bg-gray-200 rounded-sm mt-10 pt-2 pb-2 px-3">
                     <h1 className="font-black text-lg ml-2">Create New Request</h1>
                     <div className="flex flex-col items-center gap-2 mt-1 w-full">
                         <button
@@ -276,6 +155,121 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                         )}
                     </div>
                 </div>
+                <h1 className="mt-5 font-black text-2xl">Filters</h1>
+                <div className="flex flex-col gap-3">
+                    {/* Filter Inputs */}
+                    {/* employee Name Input */}
+                    <div>
+                        <label className="block text-sm font-medium">Employee Name</label>
+                        <FaRegUserCircle className="absolute mt-2 ml-1 text-codGray" size={15} />
+                        <input
+                            type="text"
+                            className="border border-mgbblue rounded-sm w-full p-1 px-6"
+                            placeholder="Filter employee name"
+                            value={filters.employeeName}
+                            onChange={(e) =>
+                                setFilters((prev) => ({ ...prev, employeeName: e.target.value }))
+                            }
+                        />
+                    </div>
+
+                    {/* dept Input */}
+                    <div>
+                        <label className="block text-sm font-medium">Department</label>
+                        <FaBuilding className="absolute mt-2 ml-1 text-codGray" size={15} />
+                        <input
+                            type="text"
+                            className="border border-mgbblue rounded-sm w-full p-1 px-6"
+                            placeholder="Filter department"
+                            value={filters.department}
+                            onChange={(e) =>
+                                setFilters((prev) => ({
+                                    ...prev,
+                                    department: e.target.value,
+                                }))
+                            }
+                        />
+                    </div>
+
+                    {/*/!* rmNum Input *!/*/}
+                    {/*<div>*/}
+                    {/*    <label className="block text-sm font-medium">Room Number</label>*/}
+                    {/*    <MdNumbers className="absolute mt-2 ml-1 text-codGray" size={15} />*/}
+                    {/*    <input*/}
+                    {/*        type="text"*/}
+                    {/*        className="border border-mgbblue rounded-sm w-full p-1 px-6"*/}
+                    {/*        placeholder="Filter room number"*/}
+                    {/*        value={filters.roomNumber}*/}
+                    {/*        onChange={(e) =>*/}
+                    {/*            setFilters((prev) => ({ ...prev, roomNumber: e.target.value }))*/}
+                    {/*        }*/}
+                    {/*    />*/}
+                    {/*</div>*/}
+
+                    {/* status Input */}
+                    <div>
+                        <label className="block text-sm font-medium">Status</label>
+                        <FaListCheck className="absolute mt-2 ml-1 text-codGray" size={15} />
+                        <input
+                            type="text"
+                            className="border border-mgbblue rounded-sm w-full p-1 px-6"
+                            placeholder="Filter status"
+                            value={filters.status}
+                            onChange={(e) =>
+                                setFilters((prev) => ({ ...prev, status: e.target.value }))
+                            }
+                        />
+                    </div>
+
+                    {/* priority Input */}
+                    <div>
+                        <label className="block text-sm font-medium">Priority</label>
+                        <MdOutlinePriorityHigh className="absolute mt-2 ml-1 text-codGray" size={15} />
+                        <input
+                            type="text"
+                            className="border border-mgbblue rounded-sm w-full p-1 px-6"
+                            placeholder="Filter priority"
+                            value={filters.priority}
+                            onChange={(e) =>
+                                setFilters((prev) => ({ ...prev, priority: e.target.value }))
+                            }
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium">Request Date</label>
+                        <FaCalendarAlt className="absolute mt-2 ml-1 text-codGray" size={15} />
+                        <input
+                            type="datetime-local"
+                            className="border border-mgbblue rounded-sm w-full p-1 px-6"
+                            placeholder="Filter date"
+                            value={filters.requestDateTime}
+                            onChange={(e) =>
+                                setFilters((prev) => ({ ...prev, requestDateTime: e.target.value }))
+                            }
+                        />
+                    </div>
+                </div>
+
+                {/* Clear Filters Button */}
+                <div className="justify-start mb-5">
+                    <MGBButton
+                        onClick={() =>
+                            setFilters({
+                                employeeName: '',
+                                department: '',
+                                status: '',
+                                priority: '',
+                                requestDateTime: '',
+                            })
+                        }
+                        variant={'secondary'}
+                        className="py-2 px-4 rounded text-sm"
+                    >
+                        Clear Filters
+                    </MGBButton>
+                </div>
+
             </div>
             <div className="ml-38 w-full p-6 min-h-screen bg-gray-200">
                 <div className="flex justify-center">
@@ -292,9 +286,9 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                                     <TableHead className="w-20 text-left font-semibold py-3">
                                         Department
                                     </TableHead>
-                                    <TableHead className="w-20 text-left font-semibold py-3">
-                                        Room
-                                    </TableHead>
+                                    {/*<TableHead className="w-20 text-left font-semibold py-3">*/}
+                                    {/*    Room*/}
+                                    {/*</TableHead>*/}
                                     <TableHead className="w-20 text-left font-semibold py-3">
                                         Status
                                     </TableHead>
@@ -327,9 +321,9 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                                         <TableCell className="text-left py-3">
                                             {req.requesterDepartmentId}
                                         </TableCell>
-                                        <TableCell className="text-left py-3">
-                                            {req.requesterRoomNumber}
-                                        </TableCell>
+                                        {/*<TableCell className="text-left py-3">*/}
+                                        {/*    {req.requesterRoomNumber}*/}
+                                        {/*</TableCell>*/}
                                         <TableCell className="text-left py-3">
                                             {req.status}
                                         </TableCell>

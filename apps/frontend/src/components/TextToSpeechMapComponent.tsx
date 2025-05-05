@@ -10,6 +10,7 @@ import {
     BsChevronRight,
 } from "react-icons/bs";
 import { GiNothingToSay } from "react-icons/gi";
+import SelectElement from "@/elements/SelectElement.tsx";
 
 interface State {
     walkDirections: string;
@@ -17,6 +18,9 @@ interface State {
     drive22Directions: string[];
     walk22Directions: string[];
     icons: string[];
+    distanceUnits: 'Feet' | 'Meters',
+    setDistanceUnits: (units: 'Feet' | 'Meters') => void
+    currentStep: string;
 }
 
 const TextToSpeechMapComponent = ({
@@ -25,6 +29,9 @@ const TextToSpeechMapComponent = ({
                                       drive22Directions,
                                       walk22Directions,
                                       icons,
+                                      distanceUnits,
+                                      setDistanceUnits,
+                                      currentStep,
                                   }: State) => {
     const audioRef = useRef(new Audio());
     const [textMode, setTextMode] = useState("Mode: Transport Directions");
@@ -45,13 +52,18 @@ const TextToSpeechMapComponent = ({
         updateIcon(0);
     }, [drive22Directions, walk22Directions, textMode]);
 
+
+    useEffect(() => {
+        handleModeSwitch()
+    }, [currentStep]);
+
     const handleModeSwitch = () => {
         setCounter(0);
-        if (textMode === "Mode: Transport Directions") {
+        if (currentStep === 'DEPARTMENT') {
             setTextMode("Mode: Building Directions");
             setTextToSpeak(walk22Directions || []);
             setTextDisplayList(walk22Directions || []);
-        } else {
+        } else if(currentStep==='DIRECTIONS'){
             setTextMode("Mode: Transport Directions");
             setTextToSpeak(drive22Directions);
             setTextDisplayList(drive22Directions);
@@ -62,11 +74,11 @@ const TextToSpeechMapComponent = ({
     const updateIcon = (index: number) => {
         const direction = icons?.[index];
         if (textMode === "Mode: Building Directions") {
-            if (direction === "Turn Left then Continue Straight") {
+            if (direction === "turn left then continue straight") {
                 setIconToDisplay(<BsArrow90DegLeft />);
-            } else if (direction === "Continue Straight") {
+            } else if (direction === "continue straight") {
                 setIconToDisplay(<BsArrowUp />);
-            } else if (direction === "Turn Right then Continue Straight") {
+            } else if (direction === "turn right then continue straight") {
                 setIconToDisplay(<BsArrow90DegRight />);
             } else {
                 setIconToDisplay(<GiNothingToSay />);
@@ -133,9 +145,7 @@ const TextToSpeechMapComponent = ({
                         <BsChevronLeft />
                     </button>
 
-                    <div
-                        className="w-[300px] h-[88px] px-4 py-2 flex items-center justify-center text-black text-center text-base"
-                    >
+                    <div className="w-[300px] h-[88px] px-4 py-2 flex items-center justify-center text-black text-center text-base">
                         <div
                             className="whitespace-pre-line break-words"
                             dangerouslySetInnerHTML={{ __html: textDisplayList[counter] || '' }}
@@ -153,12 +163,19 @@ const TextToSpeechMapComponent = ({
 
                 {/* Controls */}
                 <div className="flex space-x-2">
-                    <MGBButton onClick={handleModeSwitch} variant="primary" disabled={false}>
-                        {textMode}
-                    </MGBButton>
+                    {/*<MGBButton onClick={handleModeSwitch} variant="primary" disabled={false}>*/}
+                    {/*    {textMode}*/}
+                    {/*</MGBButton>*/}
                     <MGBButton onClick={speakDirections} variant="secondary" disabled={false}>
                         Speak
                     </MGBButton>
+                    <SelectElement
+                        label={'Units'}
+                        id={'distanceUnits'}
+                        value={distanceUnits}
+                        onChange={(e) => setDistanceUnits(e.target.value as 'Feet' | 'Meters')}
+                        options={['Feet', 'Meters']}
+                    ></SelectElement>
                     <div className="flex items-center justify-center p-2 bg-gray-200 rounded-md">
                         {iconToDisplay}
                     </div>

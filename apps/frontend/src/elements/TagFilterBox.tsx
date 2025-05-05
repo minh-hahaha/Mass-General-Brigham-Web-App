@@ -22,33 +22,39 @@ const TagFilterBox = ({selectTitle, tags, setTags, options}: TagFilterBoxProps) 
     };
 
     return (
-        <div className="flex flex-col p-4 border border-gray-300 rounded-lg w-80">
-            <div className="flex flex-wrap gap-2 mb-4">
-                {tags.map((tag, index) => (
-                    <div
-                        className="flex items-center bg-gray-200 px-3 py-1 rounded-full text-sm"
-                        key={index}
-                    >
-                        <span className="mr-2">{tag}</span>
-                        <button
-                            className="text-red-600 font-bold"
-                            onClick={() => handleDeleteTag(tag)}
+        <div className="flex flex-col p-4 border border-gray-300 rounded-lg w-80 h-60">
+            <div className="flex flex-col flex-grow overflow-y-auto pr-2 mb-4">
+                <div className="flex flex-wrap gap-2">
+                    {tags.map((tag, index) => (
+                        <div
+                            className="flex items-center bg-gray-200 px-3 py-1 rounded-full text-sm"
+                            key={index}
                         >
-                            X
-                        </button>
-                    </div>
-                ))}
+                            <span className="mr-2">{tag}</span>
+                            <button
+                                className="text-red-600 font-bold"
+                                onClick={() => handleDeleteTag(tag)}
+                            >
+                                X
+                            </button>
+                        </div>
+                    ))}
+                </div>
             </div>
-            <SelectElement
-                label={selectTitle}
-                placeholder={selectTitle}
-                id={'selections'}
-                value={''}
-                onChange={handleInputChange}
-                options={options}
-            ></SelectElement>
+            <div className="mt-auto">
+                <SelectElement
+                    label={selectTitle}
+                    placeholder={selectTitle}
+                    id={'selections'}
+                    value={''}
+                    onChange={handleInputChange}
+                    options={options}
+                />
+            </div>
         </div>
     );
+
+
 };
 
 export default TagFilterBox;

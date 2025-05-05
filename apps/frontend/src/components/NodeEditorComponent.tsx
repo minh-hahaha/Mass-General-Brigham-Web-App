@@ -22,7 +22,8 @@ interface MapNode {
     node: myNode; // The actual node that goes in the database
     attachedDepartments: string[]; // The departments that are attached to the node
     drawnNode: google.maps.marker.AdvancedMarkerElement; // The marker that is shown on the map
-    destinationElevator: string | null; // If the node is an elevator, this represents the elevator it goes to
+    destinationFloorStepper: string | null; // If the node is an elevator or stairs, this represents the elevator or stairs it goes to
+    fromFloorStepper: string | null; // If the node is an elevator or stairs, this represents the elevator that leads to it
 }
 
 // A container for an Edge on the map
@@ -150,8 +151,10 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
 
     // This to make sure we don't double up on nodes when rendering nodes and edges
     const lastFloor = useRef<string>('');
-    // This will hold the nodeID of the elevator the node is connected to
-    const [destinationElevator, setDestinationElevator] = useState<string>('');
+    // This will hold the nodeID of the elevator/stairs the node is connected to
+    const [destinationStepper, setDestinationStepper] = useState<string>('None');
+    const elevatorsInBuildingRef = useRef<NodeResponse[]>([]);
+    const stairsInBuildingRef = useRef<NodeResponse[]>([]);
 
     // Current Floor/building
     const [currentFloorId, setCurrentFloorId] = useState<string>('');
@@ -220,13 +223,13 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
     const edgeProps = {
         zIndex: 0,
         clickable: true,
-        strokeColor: '#000000',
+        strokeColor: 'red',
         strokeWeight: 5
     };
     // Properties for the drawn edges (Polylines) when selected
     const selectedEdgeProps = {
         ...edgeProps,
-        strokeColor: '#ff0000',
+        strokeColor: '#162456',
     };
 
     // Node Property Use States
@@ -261,9 +264,18 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
         }
     };
 
-    const fetchElevators = async (buildingProps: Floor) => {
-        const elevators = await getNodes(buildingProps.floor, buildingProps.buildingId, 'Elevator');
-        //console.log(elevators);
+    const fetchFloorSteppers = async (buildingProps: Floor) => {
+        const allFloors = availableFloors.filter(bldg => bldg.buildingId === buildingProps.buildingId);
+        const elevators: NodeResponse[] = [];
+        const stairs: NodeResponse[] = [];
+        for(const floor of allFloors) {
+            const elevatorsOnFloor = await getNodes(floor.floor, buildingProps.buildingId, 'Elevator');
+            elevatorsOnFloor.map(e => elevators.push(e));
+            const stairsOnFloor = await getNodes(floor.floor, buildingProps.buildingId, 'Stairs');
+            stairsOnFloor.map(e => stairs.push(e));
+        }
+        elevatorsInBuildingRef.current = elevators;
+        stairsInBuildingRef.current = stairs;
     }
 
     // Sync useRefs and useStates
@@ -273,14 +285,6 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
         clickedNodeRef.current = clickedNode;
         clickedEdgeRef.current = clickedEdge;
     }, [departmentOptions, mode, clickedNode, clickedEdge]);
-
-    /*
-    TODO:
-        1. Load Nodes and Edges based on the current floor DONE
-        2. Load the directory information for the current floor DONE
-        3. Apply tags to the currently selected node when the user adds a tag to it DONE
-        4. Apply new node properties to the currently selected node when they are entered into the input box DONE
-     */
 
     const getBuildingPropsByFloor = () => {
         return availableFloors.find(floor => floor.id === currentFloorId);
@@ -302,19 +306,16 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
             const toNode = newNodes.find(node => node.node.nodeId === edge.to);
             if(fromNode && toNode) {
                 createMapEdge(fromNode, toNode);
+            }else if(fromNode && !toNode) {
+                console.log("found des elevator")
+                fromNode.destinationFloorStepper = edge.to;
+            }else if(toNode && !fromNode) {
+                console.log("found from elevator")
+                toNode.fromFloorStepper = edge.from;
             }
         }
         mapNodesRef.current = newNodes;
     }
-
-    //TODO: Find a better way to handle elevators
-    /*
-        Something like if elevator type is selected, create another field to select a destination elevator
-        Then elevators can be deleted and re-added. May or may not need special handling --
-        the edges will be across floors so need to make sure that edge is deleted (should be handled)
-        ** Should query a list of elevators to choose from
-        What happens if an elevator is not assigned a destination? Can probably just be handled as a regular node
-     */
     const fetchAvailableDepartments = async (buildingProps: Floor) => {
         let building = Number(buildingProps.buildingId);
         if(building !== 1){
@@ -356,7 +357,7 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
         mapEdgesRef.current = [];
 
         // Get the nodes and edges for this building and floor
-        fetchAvailableDepartments(buildingProps).then(() => fetchNodeEdgeData(buildingProps)).then(() => fetchElevators(buildingProps))
+        fetchAvailableDepartments(buildingProps).then(() => fetchNodeEdgeData(buildingProps)).then(() => fetchFloorSteppers(buildingProps))
     }, [currentFloorId]);
 
     useEffect(() => {
@@ -366,6 +367,7 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
             currentNode.node.nodeType = nodeType;
             currentNode.node.name = nodeName;
             currentNode.node.roomNumber = roomNumber !== '' ? roomNumber : null;
+            currentNode.destinationFloorStepper = destinationStepper;
             const tagIds = tags.map(tag => departmentOptionsRef.current.find(dept => dept.deptName === tag)?.deptId.toString());
             if(tagIds[0]){
                 currentNode.attachedDepartments = tagIds as string[];
@@ -380,7 +382,7 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
                 })
             }
         }
-    }, [nodeType, nodeName, roomNumber, tags]);
+    }, [nodeType, nodeName, roomNumber, tags, destinationStepper]);
 
     // Handles creating the drawing manager
     useEffect(() => {
@@ -444,10 +446,17 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
     }
 
     function createDrawnNode(position: google.maps.LatLng) {
+        const pinCustomize = new  google.maps.marker.PinElement({
+            background: '#20499C',
+            glyphColor: "white",
+            borderColor: "#20499C",
+        });
+
         return new google.maps.marker.AdvancedMarkerElement({
             ...nodeProps,
             position: position,
             map: map,
+            content: pinCustomize.element,
         });
     }
 
@@ -466,7 +475,8 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
             ),
             drawnNode: createDrawnNode(new google.maps.LatLng(node.x, node.y)),
             attachedDepartments: node.departments,
-            destinationElevator: null //TODO: this should not be null if the loaded node is an elevator this will get complicated :( probably set it when adding edges
+            destinationFloorStepper: null,
+            fromFloorStepper: null,
         };
         return createMapNode(mapNode);
     }
@@ -482,11 +492,12 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
                 '1',
                 '1',
                 'Node',
-                null
+                null,
             ),
             drawnNode: createDrawnNode(position),
             attachedDepartments: [],
-            destinationElevator: null
+            destinationFloorStepper: null,
+            fromFloorStepper: null,
         };
         return createMapNode(mapNode);
     }
@@ -546,10 +557,16 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
             (node) => node.node.nodeId === clickedNodeRef.current
         );
         if (toNode) {
+            const currentSelectedEdge = mapEdgesRef.current.find((edge) => edge.edge.edgeId === clickedEdgeRef.current);
+            if(currentSelectedEdge) {
+                currentSelectedEdge.drawnEdge.setOptions(edgeProps);
+            }
+            setClickedEdge(null);
             setClickedNode(nodeId);
             setNodeType(toNode.node.nodeType as NodeType);
             setNodeName(toNode.node.name);
             setRoomNumber(toNode.node.roomNumber);
+            setDestinationStepper(toNode.destinationFloorStepper ? toNode.destinationFloorStepper : 'None');
             const tags = toNode.attachedDepartments.map(id => departmentOptionsRef.current.find(deptId => deptId.deptId.toString() === id)?.deptName);
             if(tags[0]) {
                 setTags(tags as string[]);
@@ -608,6 +625,7 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
         const toBeSelectedEdge = mapEdgesRef.current.find((edge) => edge.edge.edgeId === edgeId);
         const currentSelectedEdge = mapEdgesRef.current.find((edge) => edge.edge.edgeId === clickedEdgeRef.current);
         if (toBeSelectedEdge) {
+            setClickedNode(null);
             if(currentSelectedEdge){
                 currentSelectedEdge.drawnEdge.setOptions(edgeProps);
             }
@@ -659,6 +677,7 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
     async function saveNodesAndEdges() {
         setCanSave(false);
         const nodes: NodeResponse[] = [];
+        const elevatorEdges: EdgeResponse[] = [];
         const usedNodeIds = new Set<string>();
         const currentFloor = availableFloors.find((f) => f.id === currentFloorId);
 
@@ -688,6 +707,47 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
                 departments: node.attachedDepartments,
             };
             nodes.push(sendNode);
+
+            if(node.destinationFloorStepper){
+                const destElevator = elevatorsInBuildingRef.current.find(nr => nr.nodeId === node.destinationFloorStepper);
+                const destStairs = stairsInBuildingRef.current.find(nr => nr.nodeId === node.destinationFloorStepper);
+                if(destElevator){
+                    const sendEdge: EdgeResponse = {
+                        edgeId: null, // Let the database auto generate edge ids
+                        to: destElevator.nodeId,
+                        from: node.node.nodeId,
+                    };
+                    elevatorEdges.push(sendEdge);
+                }
+                if(destStairs){
+                    const sendEdge: EdgeResponse = {
+                        edgeId: null, // Let the database auto generate edge ids
+                        to: destStairs.nodeId,
+                        from: node.node.nodeId,
+                    };
+                    elevatorEdges.push(sendEdge);
+                }
+            }
+            if(node.fromFloorStepper){
+                const fromElevator = elevatorsInBuildingRef.current.find(nr => nr.nodeId === node.fromFloorStepper);
+                const fromStairs = stairsInBuildingRef.current.find(nr => nr.nodeId === node.fromFloorStepper);
+                if(fromElevator){
+                    const sendEdge: EdgeResponse = {
+                        edgeId: null, // Let the database auto generate edge ids
+                        to: node.node.nodeId,
+                        from: fromElevator.nodeId,
+                    };
+                    elevatorEdges.push(sendEdge);
+                }
+                if(fromStairs){
+                    const sendEdge: EdgeResponse = {
+                        edgeId: null, // Let the database auto generate edge ids
+                        to: node.node.nodeId,
+                        from: fromStairs.nodeId,
+                    };
+                    elevatorEdges.push(sendEdge);
+                }
+            }
         }
         await createNode(
             nodes,
@@ -702,6 +762,9 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
                 from: edge.edge.from.nodeId,
             };
             await createEdge(sendEdge);
+        }
+        for(const elevatorEdge of elevatorEdges) {
+            await createEdge(elevatorEdge);
         }
         setCanSave(true);
         setClickedNode(null);
@@ -750,7 +813,6 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
                             <div
                                 className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-3">
                                 <h3 className="text-white font-bold text-lg">{hospital.name}</h3>
-                                {/*<p className="text-white/90 text-sm">{hospital.address}</p>*/}
                             </div>
                         </div>
 
@@ -861,23 +923,14 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
                         onChange={(e) => setRoomNumber(e.target.value)}
                     ></InputElement>
                 </div>
-                <div hidden={nodeType !== 'Elevator'}>
+                <div hidden={nodeType !== 'Elevator' && nodeType !== 'Stairs'}>
                     <SelectElement
-                        label={'Select Destination Elevator'}
-                        id={'destinationElevator'}
-                        value={destinationElevator}
-                        placeholder={'Select Destination Elevator'}
-                        onChange={(e) => setDestinationElevator(e.target.value)}
-                        options={[
-                            'Elevator A',
-                            'Elevator B',
-                            'Elevator C',
-                            'Elevator D',
-                            'Elevator E',
-                            'Elevator F',
-                            'Elevator G',
-                            'Elevator H',
-                        ]}
+                        label={`Select Destination ${nodeType}`}
+                        id={'destinationStepper'}
+                        value={destinationStepper}
+                        placeholder={`Select Destination ${nodeType}`}
+                        onChange={(e) => setDestinationStepper(e.target.value)}
+                        options={nodeType === 'Elevator' ? elevatorsInBuildingRef.current.map(nr => nr.nodeId).concat("None") : stairsInBuildingRef.current.map(nr => nr.nodeId).concat("None")}
                     ></SelectElement>
                 </div>
                 <MGBButton
@@ -984,7 +1037,7 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
                                 Import/Export New Nodes and Edges
                             </h1>
                         </div>
-                        <div className="h-60 overflow-y-auto">
+                        <div className="h-70 overflow-y-auto">
                             <ImportExportDirectoryPage
                                 jsonRoute={ROUTES.NODE_EDGE_JSON}
                                 csvRoute={ROUTES.NODE_EDGE_CSV}
