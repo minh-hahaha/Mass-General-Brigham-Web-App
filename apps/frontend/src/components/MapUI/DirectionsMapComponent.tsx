@@ -443,10 +443,12 @@ const DirectionsMapComponent = () => {
             setPathVisible(false);
             clearParking();
             setToDirectoryNodeId("")
+            setToLocation('')
             setShowBuildingDirections(false);
         }
         if (currentStep === "DIRECTIONS") {
             setToLocation('');
+            setToDirectoryNodeId("")
         }
         if (currentStep === "HOSPITAL_DETAIL") {
             setFromNodeId("")

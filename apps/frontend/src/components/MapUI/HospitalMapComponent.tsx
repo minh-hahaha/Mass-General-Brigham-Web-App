@@ -392,7 +392,7 @@ const HospitalMapComponent = ({
 
     return (
         <>
-            {showTextDirections && (
+            {showTextDirections && currentStep ==='DIRECTIONS' &&(
 
                     <div className="fixed -top-34">
                         <TextToSpeechMapComponent
@@ -409,7 +409,7 @@ const HospitalMapComponent = ({
 
             {showDirectionsAndSpeak && (
 
-                <div className="fixed -top-34">
+                <div >
                     <TextToSpeechMapComponent
                         walkDirections={directions1}
                         driveDirections={driveDirections}
