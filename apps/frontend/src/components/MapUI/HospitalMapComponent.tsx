@@ -223,6 +223,7 @@ interface Props {
     onFloorChange: (floorId: string) => void;
     onAutoSwitchFloor: (startFloorId: string) => void;
     autoFloorSwitchEnabled: boolean; // New prop to control auto floor switching
+    map3DOn: boolean;
 
     visible: boolean;
     driveDirections: string;
@@ -243,6 +244,7 @@ const HospitalMapComponent = ({
     onFloorChange,
     onAutoSwitchFloor,
     autoFloorSwitchEnabled,
+    map3DOn,
     visible,
     driveDirections,
     drive2Directions,
@@ -425,6 +427,43 @@ const HospitalMapComponent = ({
     console.log( " buildingId " + buildingId);
     console.log( " floor " + floor);
 
+
+    const renderMaps = () => {
+        return (
+            <>
+                {buildingId === "1" && (
+                    map3DOn && map ? (
+                        <Map3D map={map} buildingId={buildingId} />
+                    ) : (
+                        <OverlayComponent
+                            bounds={ChestnutHillBounds}
+                            imageSrc={"/CH01.svg"}
+                        />
+                    )
+                )}
+
+                {buildingId === "2" && (
+                    map3DOn && map ? (
+                        <Map3D map={map} buildingId={buildingId} />
+                    ) : (
+                        <OverlayComponent
+                            bounds={PatriotPlaceBounds}
+                            imageSrc={patriotPlaceFloor.svgPath}
+                        />
+                    )
+                )}
+                <OverlayComponent
+                    bounds={FaulknerBounds}
+                    imageSrc={'/FK01.svg'}
+                />
+                <OverlayComponent
+                    bounds={BWHBounds}
+                    imageSrc={'/BWH02.svg'}
+                />
+            </>
+        )
+    }
+
     return (
         <>
             {showTextDirections && currentStep ==='DIRECTIONS' &&(
@@ -472,25 +511,7 @@ const HospitalMapComponent = ({
 
 
         <div className="relative w-full h-full">
-            {map && <Map3D map={map}/>}
-            {/*<OverlayComponent*/}
-            {/*    bounds={ChestnutHillBounds}*/}
-            {/*    imageSrc={"/CH01.svg"}*/}
-            {/*/>*/}
-
-
-            <OverlayComponent
-                bounds={PatriotPlaceBounds}
-                imageSrc={patriotPlaceFloor.svgPath}
-            />
-            <OverlayComponent
-                bounds={FaulknerBounds}
-                imageSrc={'/FK01.svg'}
-            />
-            <OverlayComponent
-                bounds={BWHBounds}
-                imageSrc={'/BWH02.svg'}
-            />
+            {renderMaps()}
             {visible &&
                 <DisplayPathComponent coordinates={GetPolylinePath(getCurrentFloorPath(buildingId, floor))} />
                 // <Path3D map={map} path={GetPolylinePath(getCurrentFloorPath(buildingId, floor))}/>

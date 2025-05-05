@@ -15,7 +15,6 @@ import {DirectoryRequestByBuilding, getDirectory} from "@/database/gettingDirect
 import SelectFormElement from "@/elements/SelectFormElement.tsx";
 import {employeeNameId, getEmployeeNameIds} from "@/database/getEmployee.ts";
 import {RequestPageProps} from "@/routes/ServiceRequestDisplayPage.tsx";
-import {editMedicalDeviceRequest} from "@/database/forms/medicalDeviceRequest.ts";
 import {EditTranslatorRequest, editTranslatorRequest} from "@/database/translationRequest.ts";
 import HelpButton from '@/components/ServiceRequestHelp.tsx'; // adjust path if needed
 import Confetti from 'react-confetti'
@@ -42,6 +41,7 @@ const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
     const [directoryList, setDirectoryList] = useState<string[]>([""]);
     const [directory, setDirectory] = useState<string>("");
     const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
+    const [isEditing, setIsEditing] = useState(false);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -66,7 +66,7 @@ const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
             date: formattedDate
 
         };
-        if(editData){
+        if(editData && isEditing){
             const editRequest: editTranslatorRequest = {
                 translatorRequest: newRequest,
                 requestId: editData.requestId
@@ -76,6 +76,7 @@ const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
             SubmitTranslatorRequest(newRequest);
         }
         setShowConfirmation(true);
+        setIsEditing(false);
         handleReset();
     };
 
@@ -144,6 +145,7 @@ const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
             setStatus(editData.status);
             setNotes(editData.comments);
             setDepartment(editData.translationRequest.department);
+            setIsEditing(true);
         }
     }, []);
 

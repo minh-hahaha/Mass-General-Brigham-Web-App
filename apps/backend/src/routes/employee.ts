@@ -65,6 +65,7 @@ router.get('/name=id', async function (req, res) {
             select: {
                 employeeId: true,
                 firstName: true,
+                middleName: true,
                 lastName: true,
             },
         });
@@ -72,7 +73,8 @@ router.get('/name=id', async function (req, res) {
         const EMPLOYEE_LIST_SEND = EMPLOYEE_LIST.map((employee) => {
             return {
                 employeeId: employee.employeeId,
-                employeeName: employee.firstName + ' ' + employee.lastName,
+                employeeName:
+                    employee.firstName + ' ' + employee.middleName + ' ' + employee.lastName,
             };
         });
 

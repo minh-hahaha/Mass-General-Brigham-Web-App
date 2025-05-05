@@ -521,6 +521,7 @@ const DirectionsMapComponent = () => {
             setFromNodeId("")
             setShowFloorSelector(false);
             setBuildingID(0);
+            setMap3DOn(false)
         } else {
             clearRoute();
             clearParking();
@@ -531,6 +532,13 @@ const DirectionsMapComponent = () => {
         setCheckIn(checkIn);
     };
     console.log(' ====== checkIn? ' + checkIn);
+
+
+    const [map3DOn, setMap3DOn] = useState(false)
+    const handleToggleMap3D = () => {
+        const toggle = !map3DOn;
+        setMap3DOn(toggle);
+    }
 
     return (
         <div className="flex w-screen h-screen">
@@ -581,7 +589,7 @@ const DirectionsMapComponent = () => {
                         onFloorChange={handleFloorHighlight}
                         onAutoSwitchFloor={handleAutoSwitchFloor}
                         autoFloorSwitchEnabled={autoFloorSwitchEnabled}
-
+                        map3DOn={map3DOn}
 
                         driveDirections={textDirections}
                         drive2Directions={text2Directions}
@@ -606,6 +614,29 @@ const DirectionsMapComponent = () => {
                         </p>
                     </div>
                 )}
+
+                {buildingID === 1 || buildingID === 2 ? (
+                    <div className="absolute top-2 left-1/2 justify-center ">
+                        <div className="flex items-center  bg-gray-100  rounded-full px-6 py-3 shadow-md shadow-xl/30 inset-shadow-grey-300">
+                            <p className="text-sm text-codGray font-bold mr-4">3D Map</p>
+
+                            {/* Toggle Switch */}
+                            <label className="relative inline-flex items-center cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    className="sr-only peer"
+                                    checked={map3DOn}
+                                    onChange={handleToggleMap3D}
+                                />
+                                <div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-mgbblue transition-all duration-300"></div>
+                                <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-full"></div>
+                            </label>
+                        </div>
+                    </div>
+                ) : (<></>)}
+
+
+
             </main>
         </div>
     );

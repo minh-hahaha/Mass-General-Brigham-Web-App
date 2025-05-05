@@ -18,6 +18,7 @@ import NodeEditor from '@/routes/NodeEditor.tsx';
 import AboutPage from '@/routes/AboutPage.tsx';
 import AccountPage from '@/routes/AccountPage.tsx'
 import {Auth0Provider} from "@auth0/auth0-react";
+import ServiceRequestsChartsRouter from '@/routes/ServiceRequestsChartsPage.tsx';
 import {ROUTES} from "common/src/constants.ts";
 
 import CreditsPage from "@/routes/CreditsPage.tsx";
@@ -147,6 +148,8 @@ function App() {
                                 <Route path="/AccountPage" element={<AccountPage />} />
                                 <Route path="/Dino" element={<WongDinoGame />} />
                                 <Route path="/2048" element={<Game2048 />} />
+                                <Route path="/ServiceRequestsChartsPage" element={<ServiceRequestsChartsRouter />} />
+
                             </Routes>
                         </main>
                     </div>
