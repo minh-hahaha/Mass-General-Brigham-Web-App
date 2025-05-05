@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import { BFS } from '../Algorithms/BFS.ts';
 import { DFS } from '../Algorithms/DFS.ts';
+import { DIJKSTRA } from '../Algorithms/Dijkstra.ts';
 import { AlgorithmContext } from '../Algorithms/AlgorithmContext.ts';
 import { pathfindingStrategy } from '../Algorithms/PathfindingStrategy.ts';
 
@@ -18,9 +19,13 @@ expressRouter.post('/', async function (req: Request, res: Response) {
             pathFindingStrategy = new BFS();
         } else if (currentStratergy === 'DFS') {
             pathFindingStrategy = new DFS();
+        } else if (currentStratergy === 'Dijkstra') {
+            pathFindingStrategy = new DIJKSTRA();
         } else {
             res.status(400).json({ error: 'Choose a valid path finding strategy' });
         }
+
+        console.log(currentStratergy);
         AlgoContext.setPathfindingStrategy(pathFindingStrategy);
 
         const traversalResult = await AlgoContext.findPath(startNode, targetNode);

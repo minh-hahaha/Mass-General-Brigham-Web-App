@@ -85,7 +85,7 @@ type Step = 'SELECT_HOSPITAL' | 'HOSPITAL_DETAIL' | 'DIRECTIONS' | 'DEPARTMENT';
 
 type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
 
-type Algorithm = 'BFS' | 'DFS';
+type Algorithm = 'BFS' | 'DFS' | 'DIJKSTRA';
 
 interface DirectoryItem {
     deptName: string;
@@ -245,7 +245,7 @@ const MapSidebarComponent = ({
 
     const handleAlgorithmChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedAlgorithm(e.target.value as Algorithm);
-        onChoosingAlgo(selectedAlgorithm);
+        onChoosingAlgo(e.target.value as Algorithm);
     };
 
     const handleBack = () => {
@@ -680,7 +680,7 @@ const MapSidebarComponent = ({
                             id={'algorithm'}
                             value={selectedAlgorithm}
                             onChange={handleAlgorithmChange}
-                            options={['BFS', 'DFS']}
+                            options={['BFS', 'DFS','Dijkstra']}
                         />
                     )}
 
