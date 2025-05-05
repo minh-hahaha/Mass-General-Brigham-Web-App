@@ -85,7 +85,7 @@ type Step = 'SELECT_HOSPITAL' | 'HOSPITAL_DETAIL' | 'DIRECTIONS' | 'DEPARTMENT';
 
 type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
 
-type Algorithm = 'BFS' | 'DFS';
+type Algorithm = 'BFS' | 'DFS' | 'DIJKSTRA' |'A_STAR';
 
 interface DirectoryItem {
     deptName: string;
@@ -105,6 +105,7 @@ interface HospitalSidebarProps {
     onClickingBack: (currentStep: string) => void;
     onClickFindDepartment: () => void;
     onChoosingAlgo: (algorithm: string) => void;
+    onCheckIn: (checkIn: boolean) => void;
     directoryList: DirectoryItem[];
     setCurrentStepProp: React.Dispatch<React.SetStateAction<Step>>
     currentStep: Step;
@@ -117,6 +118,7 @@ const MapSidebarComponent = ({
     onParkingSelect,
     onClickingBack,
     onClickFindDepartment,
+    onCheckIn,
     onChoosingAlgo,
     directoryList,
     setCurrentStepProp,
@@ -245,7 +247,7 @@ const MapSidebarComponent = ({
 
     const handleAlgorithmChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedAlgorithm(e.target.value as Algorithm);
-        onChoosingAlgo(selectedAlgorithm);
+        onChoosingAlgo(e.target.value as Algorithm);
     };
 
     const handleBack = () => {
@@ -300,6 +302,14 @@ const MapSidebarComponent = ({
             }
         );
 
+    }
+
+    const [checkIn, setCheckIn] = useState(false)
+    const handleToggle = () => {
+        const toggle = !checkIn;
+        setCheckIn(toggle);
+        onCheckIn(toggle)
+        handleDepartmentSelect(selectedDepartment);
     }
 
     //handle voice transcript
@@ -358,7 +368,6 @@ const MapSidebarComponent = ({
             <div className='flex justify-center'>
                 <h2 className='text-2xl font-black mb-6 text-center mr-10 pt-2.5'>Select a Hospital</h2>
                 <VoiceCommands voiceTranscript={handleVoiceTranscript}/>
-
             </div>
 
             <div className='space-y-4 mt-4'>
@@ -639,6 +648,19 @@ const MapSidebarComponent = ({
                     </div>
                 )}
 
+
+                <div className="flex items-center justify-between">
+                    <p className="mb-2 text-sm text-codGray font-bold">Stop at Check-In desk?</p>
+
+                    {/* Toggle Switch */}
+                    <label className="relative inline-flex items-center cursor-pointer mr-1">
+                        <input type="checkbox" className="sr-only peer" onChange={handleToggle} />
+                        <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-mgbblue transition-all duration-300"></div>
+                        <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-full"></div>
+                    </label>
+                </div>
+
+
                 {/*Select Department for Pathfinding*/}
                 <div className="mb-6">
                     <p className="mb-2 text-sm text-codGray font-bold">Select Department:</p>
@@ -680,7 +702,7 @@ const MapSidebarComponent = ({
                             id={'algorithm'}
                             value={selectedAlgorithm}
                             onChange={handleAlgorithmChange}
-                            options={['BFS', 'DFS']}
+                            options={['BFS', 'DFS','Dijkstra','A_STAR']}
                         />
                     )}
 
