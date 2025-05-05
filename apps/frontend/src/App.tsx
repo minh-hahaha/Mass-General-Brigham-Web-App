@@ -23,6 +23,7 @@ import CreditsPage from "@/routes/CreditsPage.tsx";
 
 import Screensaver from './ScreenSaver.tsx';
 import WongDinoGame from "@/routes/WongDinoGame.tsx";
+import Game2048 from "@/routes/2048Game.tsx";
 
 const IDLE_TIMEOUT = 15000; // 30 seconds
 
@@ -140,6 +141,7 @@ function App() {
                                 <Route path="/AboutPage" element={<AboutPage />} />
                                 <Route path="/CreditsPage" element={<CreditsPage />} />
                                 <Route path="/Dino" element={<WongDinoGame />} />
+                                <Route path="/2048" element={<Game2048 />} />
                             </Routes>
                         </main>
                     </div>
