@@ -21,10 +21,11 @@ interface PathPoint {
 interface Map3DProps {
     map: google.maps.Map | null;
     pathPoints?: PathPoint[];
+    buildingId: string;
 }
 
 const Map3D = ({map,
-                   pathPoints = [],
+                   pathPoints = [], buildingId
                }: Map3DProps) =>{
 
 
@@ -50,17 +51,31 @@ const Map3D = ({map,
             scene.add(directionalLight);
 
             loader = new GLTFLoader();
-            const source = "./CH.gltf";
-            loader.load(
-                source,
-                gltf => {
-                    gltf.scene.scale.set(0.75,0.8,0.75);
-                    gltf.scene.rotation.z = 185 * (Math.PI / 180);
-                    gltf.scene.translateX(-3)
-                    gltf.scene.translateY(-4)
-                    scene.add(gltf.scene);
-                }
-            );
+            let source ;
+            if (buildingId === "1") {
+                source = "./CH.gltf"
+                loader.load(
+                    source,
+                    gltf => {
+                        gltf.scene.scale.set(0.75,0.8,0.75);
+                        gltf.scene.rotation.z = 185 * (Math.PI / 180);
+                        gltf.scene.translateX(-3)
+                        gltf.scene.translateY(-4)
+                        scene.add(gltf.scene);
+                    }
+                );
+            }
+            else if (buildingId === "2") {
+                source = "./PP01.gltf"
+                loader.load(
+                    source,
+                    gltf => {
+                        gltf.scene.scale.set(0.75,0.8,0.75);
+                        scene.add(gltf.scene);
+                    }
+                );
+            }
+
 
         };
 
@@ -75,10 +90,27 @@ const Map3D = ({map,
         };
 
         overlay.onDraw = ({gl, transformer}) => {
-            const latLngAltitudeLiteral = {
-                lat: 42.32594590768938,
-                lng: -71.14970830931031,
-                altitude: 2,
+            let latLngAltitudeLiteral
+            if (buildingId === "1") {
+                latLngAltitudeLiteral = {
+                    lat: 42.32594590768938,
+                    lng: -71.14970830931031,
+                    altitude: 2,
+                }
+            }
+            else if (buildingId === "2") { // patriot place
+                 latLngAltitudeLiteral = {
+                     lat:42.09281215868838,
+                     lng: -71.26614168403535,
+                     altitude: 2,
+                }
+            }
+            else { // no 3d map :(
+                latLngAltitudeLiteral = {
+                    lat:0,
+                    lng: 0,
+                    altitude: 2,
+                }
             }
 
             const matrix = transformer.fromLatLngAltitude(latLngAltitudeLiteral);
@@ -93,7 +125,7 @@ const Map3D = ({map,
         overlay.setMap(map)
 
 
-    }, []);
+    }, [map, buildingId]);
 
     return (
         <></>
