@@ -15,31 +15,32 @@ interface MemberProps {
 const Member = ({image, name, title, github, schoolYear, major, quote}: MemberProps) => {
     const [isFlipped, setIsFlipped] = useState(false);
 
-    // Check if flipping should be disabled
-    const noFlip = schoolYear === "None" || quote === "None" || major === "None";
+    const noFlip = !schoolYear || schoolYear === "None" ||
+        !quote || quote === "None" ||
+        !major || major === "None";
 
-    // Handle the flip action
+    // flip
     const handleFlip = () => {
         if (!noFlip) {
             setIsFlipped(!isFlipped);
         }
     };
 
-    // no-flip card 'None'
+    // No-flip card
     if (noFlip) {
         return (
             <div className='flex items-center bg-gray-300 px-4 py-4 rounded-2xl'>
                 <div className='w-[200px] flex justify-center'>
-                    <div className={`rounded-full size-32 bg-cover bg-center transition-[delay-150 duration-300 ease-in-out] hover:shadow-[0_0_15px_5px_rgba(37,70,146,0.8)] hover:scale-150`}
+                    <div className='rounded-full size-32 bg-cover bg-center transition-[delay-150_duration-300_ease-in-out] hover:shadow-[0_0_15px_5px_rgba(37,70,146,0.8)] hover:scale-150'
                          style={{ backgroundImage: `url(/TheTeam/${image})` }} />
                 </div>
-                <div className='flex-1 text-center text-codgray font-bold'>
-                    <div className='text-lg'>{name}</div>
-                    <div className='text-sm'>{title}</div>
+                <div className='flex-1 flex flex-col items-center justify-center'>
+                    <div className='text-xl font-semibold mb-2 text-codgray'>{name}</div>
+                    <div className='text-sm mb-2 text-codgray'>{title}</div>
                     {github !== "None" && (
-                        <div className='text-sm'>Github: <Link
+                        <div className='text-sm text-codgray'>Github: <Link
                             to={`https://github.com/${github}`}
-                            className='text-mgbblue underline transition-[delay-150 duration-300 ease-in-out] hover:text-teal-500'
+                            className='text-mgbblue underline transition-[delay-150_duration-300_ease-in-out] hover:text-teal-500'
                         >
                             @{github}
                         </Link></div>
@@ -50,7 +51,7 @@ const Member = ({image, name, title, github, schoolYear, major, quote}: MemberPr
         );
     }
 
-    // flip cards
+    // Flip cards
     return (
         <div className="relative h-52 cursor-pointer" onClick={handleFlip}>
             <div className="absolute w-full h-full [perspective:1000px]">
@@ -59,19 +60,19 @@ const Member = ({image, name, title, github, schoolYear, major, quote}: MemberPr
                     animate={{ rotateY: isFlipped ? 180 : 0 }}
                     transition={{ duration: 0.6 }}
                 >
-                    {/* Front of card */}
+                    {/* Front */}
                     <div className='absolute w-full h-full flex items-center bg-gray-300 px-4 py-4 rounded-2xl [backface-visibility:hidden]'>
                         <div className='w-[200px] flex justify-center'>
-                            <div className={`rounded-full size-32 bg-cover bg-center transition-[delay-150 duration-300 ease-in-out] hover:shadow-[0_0_15px_5px_rgba(37,70,146,0.8)] hover:scale-150`}
+                            <div className='rounded-full size-32 bg-cover bg-center transition-[delay-150_duration-300_ease-in-out] hover:shadow-[0_0_15px_5px_rgba(37,70,146,0.8)] hover:scale-150'
                                  style={{ backgroundImage: `url(/TheTeam/${image})` }} />
                         </div>
-                        <div className='flex-1 text-center text-codgray font-bold'>
-                            <div className='text-lg'>{name}</div>
-                            <div className='text-sm'>{title}</div>
+                        <div className='flex-1 flex flex-col items-center justify-center'>
+                            <div className='text-xl font-semibold mb-2 text-codgray'>{name}</div>
+                            <div className='text-sm mb-2 text-codgray'>{title}</div>
                             {github !== "None" && (
-                                <div className='text-sm'>Github: <Link
+                                <div className='text-sm text-codgray'>Github: <Link
                                     to={`https://github.com/${github}`}
-                                    className='text-mgbblue underline transition-[delay-150 duration-300 ease-in-out] hover:text-teal-500'
+                                    className='text-mgbblue underline transition-[delay-150_duration-300_ease-in-out] hover:text-teal-500'
                                     onClick={(e) => e.stopPropagation()} // Prevent card flip when clicking the link
                                 >
                                     @{github}
@@ -83,17 +84,15 @@ const Member = ({image, name, title, github, schoolYear, major, quote}: MemberPr
                     </div>
 
                     {/* Back of card */}
-                    <div className='absolute w-full h-full bg-gray-300 p-6 rounded-2xl flex flex-col justify-center items-center [backface-visibility:hidden] [transform:rotateY(180deg)]'>
-                        <div className="text-xl font-semibold mb-2 text-center text-codgray">{name}</div>
-                        {schoolYear && schoolYear !== "None" && (
-                            <div className="text-lg mb-2 text-center text-codgray">School Year: {schoolYear}</div>
-                        )}
-                        {major && major !== "None" && (
-                            <div className="text-lg mb-4 text-center text-codgray">Major: {major}</div>
-                        )}
-                        {quote && quote !== "None" && (
-                            <div className="text-base italic text-center text-codgray">"{quote}"</div>
-                        )}
+                    <div className='absolute w-full h-full flex items-center justify-center bg-gray-300 px-4 py-4 rounded-2xl [backface-visibility:hidden] [transform:rotateY(180deg)]'>
+                        <div className='w-[200px]'></div>
+                        <div className='flex-1 flex flex-col items-center justify-center' style={{ marginTop: '-8px' }}>
+                            <div className='text-xl font-semibold mb-2 text-codgray'>{name}</div>
+                            <div className='text-sm mb-2 text-codgray'>School Year: {schoolYear}</div>
+                            <div className='text-sm mb-2 text-codgray'>Major: {major}</div>
+                            <div className='text-sm italic text-codgray'>"{quote}"</div>
+                        </div>
+                        <div className='w-[100px]'></div>
                         <div className="absolute bottom-2 right-4 text-xs text-gray-600">Click to flip back</div>
                     </div>
                 </motion.div>
