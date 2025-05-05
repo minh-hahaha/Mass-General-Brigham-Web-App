@@ -16,6 +16,7 @@ import MaintenanceRequestPage from "@/components/forms/MaintenanceRequestPage.ts
 import Cookies from "js-cookie";
 import NodeEditor from '@/routes/NodeEditor.tsx';
 import AboutPage from '@/routes/AboutPage.tsx';
+import AccountPage from '@/routes/AccountPage.tsx'
 import {Auth0Provider} from "@auth0/auth0-react";
 import {ROUTES} from "common/src/constants.ts";
 
@@ -23,6 +24,7 @@ import CreditsPage from "@/routes/CreditsPage.tsx";
 
 import Screensaver from './ScreenSaver.tsx';
 import WongDinoGame from "@/routes/WongDinoGame.tsx";
+import Game2048 from "@/routes/2048Game.tsx";
 
 const IDLE_TIMEOUT = 15000; // 30 seconds
 
@@ -30,6 +32,7 @@ function App() {
     const defaultOpen = Cookies.get('sidebar_state') === 'true';
     const domain = import.meta.env.VITE_AUTH0_DOMAIN;
     const clientID = import.meta.env.VITE_AUTH0_CLIENT_ID;
+    const audience = import.meta.env.VITE_AUTH0_AUDIENCE
 
     const [isIdle, setIsIdle] = useState(false);
     const idleTimer = useRef<NodeJS.Timeout | null>(null);
@@ -75,6 +78,8 @@ function App() {
             domain={domain}
             authorizationParams={{
                 redirect_uri: window.location.origin,
+                scope: 'openid profile email',
+                audience: audience,
             }}
             cacheLocation="localstorage"
             onRedirectCallback={() => (window.location.href = '/MapPage')}
@@ -139,7 +144,9 @@ function App() {
                                 />
                                 <Route path="/AboutPage" element={<AboutPage />} />
                                 <Route path="/CreditsPage" element={<CreditsPage />} />
+                                <Route path="/AccountPage" element={<AccountPage />} />
                                 <Route path="/Dino" element={<WongDinoGame />} />
+                                <Route path="/2048" element={<Game2048 />} />
                             </Routes>
                         </main>
                     </div>
