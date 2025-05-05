@@ -22,7 +22,7 @@ export class AStar implements pathfindingStrategy {
         while (openSet.size > 0) {
             // Find the node in openSet with the lowest fScore
             let current: myNode = [...openSet.values()].reduce((a, b) => {
-                return (fScore.get(a.nodeId)! < fScore.get(b.nodeId)!) ? a : b;
+                return fScore.get(a.nodeId)! < fScore.get(b.nodeId)! ? a : b;
             });
 
             if (current.nodeId === endId) {
@@ -61,21 +61,24 @@ export class AStar implements pathfindingStrategy {
     }
 
     private heuristic(a: myNode, b: myNode): number {
-        // Simple Manhattan heuristic with floor penalty
+        // heuristic: manhattan distance with a floor penalty
         const dx = Math.abs(a.x - b.x);
         const dy = Math.abs(a.y - b.y);
         const floorA = parseInt(a.floor);
         const floorB = parseInt(b.floor);
-        const floorDiff = isNaN(floorA) || isNaN(floorB)
-            ? (a.floor === b.floor ? 0 : 1)
-            : Math.abs(floorA - floorB);
+        const floorDiff =
+            isNaN(floorA) || isNaN(floorB)
+                ? a.floor === b.floor
+                    ? 0
+                    : 1
+                : Math.abs(floorA - floorB);
 
         const floorPenalty = floorDiff * 100; // Adjust this weight as needed
         return dx + dy + floorPenalty;
     }
 
-    private getNeighbors(node: myNode, edges: myEdge[]): { neighbor: myNode, distance: number }[] {
-        const neighbors: { neighbor: myNode, distance: number }[] = [];
+    private getNeighbors(node: myNode, edges: myEdge[]): { neighbor: myNode; distance: number }[] {
+        const neighbors: { neighbor: myNode; distance: number }[] = [];
 
         for (const edge of edges) {
             if (edge.from.nodeId === node.nodeId) {
