@@ -85,7 +85,7 @@ function createTextPath(traversalResult: myNode[] | undefined | null, units: 'Fe
     const directions = [];
     const icons=[];
     let currentFacing = new Vector(0, 0);
-    
+
     // Loop through all nodes
     for(let i = 0; i < traversalResult.length; i++) {
         const currentNode = traversalResult[i];
@@ -136,7 +136,7 @@ function createTextPath(traversalResult: myNode[] | undefined | null, units: 'Fe
         // Normal Directions no skipping
         directions.push(`From the ${currentNode.nodeType} ${textDirection} for ${distance.toFixed(1)} ${units.toLowerCase()} until you reach the ${nextNode.nodeType}`);
         icons.push(`${textDirection}`);
-        
+
     }
     return [directions, icons];
 }
@@ -231,6 +231,7 @@ interface Props {
     currentStep: string;
     distanceUnits: 'Feet' | 'Meters';
     setDistanceUnits: (units: 'Feet' | 'Meters') => void;
+    showBuildingDirections: boolean;
 }
 
 const HospitalMapComponent = ({
@@ -248,7 +249,8 @@ const HospitalMapComponent = ({
     showTextDirections,
     currentStep,
     distanceUnits,
-    setDistanceUnits
+    setDistanceUnits,
+    showBuildingDirections,
 }: Props) => {
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
     const [startNode, setStartNode] = useState<myNode>();
@@ -258,7 +260,7 @@ const HospitalMapComponent = ({
     const [destinationFloorId, setDestinationFloorId] = useState<string | undefined>();
     const [showDestinationFloorAlert, setShowDestinationFloorAlert] = useState<boolean>(false);
 
-
+    const [showDirectionsAndSpeak, setShowDirectionsAndSpeak] = useState<boolean>(false);
     const [startFloor, setStartFloor] = useState<Floor>();
     const [directions1, setDirections1] = useState('');
     const [directions11, setDirections11] = useState<string[]>([]);
@@ -279,6 +281,22 @@ const HospitalMapComponent = ({
         };
         fetchNode();
     }, [startNodeId, endNodeId]);
+
+    useEffect(() => {
+        if(!showBuildingDirections){
+            setShowDirectionsAndSpeak(false)
+            setEndNode(startNode)
+        }
+
+    }, [showBuildingDirections]);
+
+    useEffect(() => {
+        if (currentStep==='DEPARTMENT'&&endNode){
+            setShowDirectionsAndSpeak(true)
+        }else{
+            setShowDirectionsAndSpeak(false);
+        }
+    }, [currentStep, endNode]);
 
     // Find path and text directions
     useEffect(() => {
@@ -409,18 +427,8 @@ const HospitalMapComponent = ({
 
     return (
         <>
-            {showTextDirections && (
-                currentStep === 'DEPARTMENT' ? (
-                    <TextToSpeechMapComponent
-                        walkDirections={directions1}
-                        driveDirections={driveDirections}
-                        drive22Directions={drive2Directions}
-                        walk22Directions={directions11}
-                        distanceUnits={distanceUnits}
-                        setDistanceUnits={setDistanceUnits}
-                        icons={iconsToPass}
-                    />
-                ) : (
+            {showTextDirections && currentStep ==='DIRECTIONS' &&(
+
                     <div className="fixed -top-34">
                         <TextToSpeechMapComponent
                             walkDirections={directions1}
@@ -430,10 +438,29 @@ const HospitalMapComponent = ({
                             distanceUnits={distanceUnits}
                             setDistanceUnits={setDistanceUnits}
                             icons={iconsToPass}
+                            currentStep={currentStep}
                         />
                     </div>
-                )
+
             )}
+
+            {showDirectionsAndSpeak && (
+
+                <div >
+                    <TextToSpeechMapComponent
+                        walkDirections={directions1}
+                        driveDirections={driveDirections}
+                        drive22Directions={drive2Directions}
+                        walk22Directions={directions11}
+                        distanceUnits={distanceUnits}
+                        setDistanceUnits={setDistanceUnits}
+                        icons={iconsToPass}
+                        currentStep={currentStep}
+                    />
+                </div>
+
+            )}
+
 
             {/* Destination Floor Alert */}
             {showDestinationFloorAlert && destinationFloorId && (

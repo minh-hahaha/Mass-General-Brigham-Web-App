@@ -77,7 +77,7 @@ const DirectionsMapComponent = () => {
 
     const [fromNodeId, setFromNodeId] = useState('');
     const [toDirectoryNodeId, setToDirectoryNodeId] = useState('');
-
+    const [showDirections, setShowDirections] = useState<boolean>(false);
     const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
     const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
 
@@ -89,6 +89,7 @@ const DirectionsMapComponent = () => {
 
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
+    const[showBuildingDirections, setShowBuildingDirections] = useState(false);
     const [currentFloorId, setCurrentFloorId] = useState<string | undefined>('');
     const [showFloorSelector, setShowFloorSelector] = useState<boolean>(false);
     const [highlightFloorId, setHighlightFloorId] = useState<string | undefined>();
@@ -120,7 +121,13 @@ const DirectionsMapComponent = () => {
         };
         fetchOrigins();
     }, []);
-
+    // useEffect(() => {
+    //     if (currentStep==='DIRECTIONS'||currentStep==='DEPARTMENT'||){
+    //         setShowDirections(true)
+    //     }else{
+    //         setShowDirections(false);
+    //     }
+    // }, [currentStep]);
     useEffect(() => {
         if (!routesLibrary || !map) return;
         setDirectionsService(new routesLibrary.DirectionsService());
@@ -446,9 +453,12 @@ const DirectionsMapComponent = () => {
             setPathVisible(false);
             clearParking();
             setToDirectoryNodeId("")
+            setToLocation('')
+            setShowBuildingDirections(false);
         }
         if (currentStep === "DIRECTIONS") {
             setToLocation('');
+            setToDirectoryNodeId("")
         }
         if (currentStep === "HOSPITAL_DETAIL") {
             setFromNodeId("")
@@ -514,6 +524,8 @@ const DirectionsMapComponent = () => {
                         drive2Directions={text2Directions}
                         showTextDirections={!!toLocation}
                         currentStep={currentStep}
+                        showBuildingDirections={showBuildingDirections}
+
                         distanceUnits={distanceUnits}
                         setDistanceUnits={setDistanceUnits}
                     />}
