@@ -41,6 +41,7 @@ const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
     const [directoryList, setDirectoryList] = useState<string[]>([""]);
     const [directory, setDirectory] = useState<string>("");
     const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
+    const [isEditing, setIsEditing] = useState(false);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -65,7 +66,7 @@ const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
             date: formattedDate
 
         };
-        if(editData){
+        if(editData && isEditing){
             const editRequest: editTranslatorRequest = {
                 translatorRequest: newRequest,
                 requestId: editData.requestId
@@ -75,6 +76,7 @@ const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
             SubmitTranslatorRequest(newRequest);
         }
         setShowConfirmation(true);
+        setIsEditing(false);
         handleReset();
     };
 
@@ -143,6 +145,7 @@ const TranslationServiceRequestPage = ({editData}: RequestPageProps) => {
             setStatus(editData.status);
             setNotes(editData.comments);
             setDepartment(editData.translationRequest.department);
+            setIsEditing(true);
         }
     }, []);
 

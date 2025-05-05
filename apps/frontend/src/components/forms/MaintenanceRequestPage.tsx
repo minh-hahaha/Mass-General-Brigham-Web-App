@@ -43,6 +43,7 @@ const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
     const [directoryList, setDirectoryList] = useState<string[]>([]);
     const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
     const [showConfirmation, setShowConfirmation] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         const fetchDirectoryList = async () => {
@@ -80,6 +81,7 @@ const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
             setEmployeeId(editData.employeeId);
             setNotes(editData.comments);
             setLocationId(editData.locationId);
+            setIsEditing(true);
         }
     }, []);
 
@@ -97,11 +99,12 @@ const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
             directory,
         };
 
-        if (editData) {
+        if (editData && isEditing) {
             EditMaintenanceRequest({ maintenanceRequest: newRequest, requestId: editData.requestId });
         } else {
             SubmitMaintenanceRequest(newRequest);
         }
+        setIsEditing(false);
         setShowConfirmation(true);
         handleReset();
     };
