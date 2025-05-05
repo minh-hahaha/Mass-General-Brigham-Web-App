@@ -22,8 +22,8 @@ const TagFilterBox = ({selectTitle, tags, setTags, options}: TagFilterBoxProps) 
     };
 
     return (
-        <div className="flex flex-col p-4 border border-gray-300 rounded-lg w-80">
-            <div className="flex flex-wrap gap-2 mb-4">
+        <div className="flex flex-col p-4 border border-gray-300 rounded-lg w-80 h-80">
+            <div className="flex flex-wrap gap-2 mb-4 overflow-y-auto max-h-40 pr-2">
                 {tags.map((tag, index) => (
                     <div
                         className="flex items-center bg-gray-200 px-3 py-1 rounded-full text-sm"
@@ -46,9 +46,10 @@ const TagFilterBox = ({selectTitle, tags, setTags, options}: TagFilterBoxProps) 
                 value={''}
                 onChange={handleInputChange}
                 options={options}
-            ></SelectElement>
+            />
         </div>
     );
+
 };
 
 export default TagFilterBox;

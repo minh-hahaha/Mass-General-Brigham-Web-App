@@ -1,7 +1,7 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import MGBButton from '../../elements/MGBButton.tsx';
-import InputElement from '../../elements/InputElement.tsx';
-import ConfirmMessageComponent from '../ConfirmMessageComponent.tsx'; // Import the new component
+import ConfirmMessageComponent from '../ConfirmMessageComponent.tsx';
+import FormFieldElement from '../../elements/FormFieldElement.tsx';
 import {
     EditTransportRequest,
     editTransportRequest,
@@ -13,24 +13,21 @@ import {
     priorityType,
     mgbHospitals,
     hospitalTransportArray,
-    mgbHospitalType, priorityArray, formatDateForEdit
-} from '@/database/forms/formTypes.ts'
-import SelectFormElement from "@/elements/SelectFormElement.tsx";
+    mgbHospitalType,
+    priorityArray,
+    formatDateForEdit
+} from '@/database/forms/formTypes.ts';
 import { employeeNameId, getEmployeeNameIds } from '@/database/getEmployee.ts';
-import {RequestPageProps} from "@/routes/ServiceRequestDisplayPage.tsx";
-import {editMedicalDeviceRequest} from "@/database/forms/medicalDeviceRequest.ts";
-import HelpButton from "@/components/ServiceRequestHelp.tsx";
+import { RequestPageProps } from '@/routes/ServiceRequestDisplayPage.tsx';
+import HelpButton from '@/components/ServiceRequestHelp.tsx';
+import Confetti from 'react-confetti'
 
-// Component definition
-const TransportRequestPage = ({editData}: RequestPageProps) => {
-    // const loggedIn = sessionStorage.getItem('loggedIn');
-    // if (!loggedIn) {window.location.href = '/';}
 
+const TransportRequestPage = ({ editData }: RequestPageProps) => {
     const [patientId, setPatientId] = useState(0);
     const [patientName, setPatientName] = useState('');
-    const [transportType, setTransportType] =
-        useState<hospitalTransportType>('Ambulance (BLS)');
-    const [priority, setPriority] = useState('Select Priority');
+    const [transportType, setTransportType] = useState<hospitalTransportType>('');
+    const [priority, setPriority] = useState('');
     const [pickupLocation, setPickupLocation] = useState('');
     const [dropoffLocation, setDropoffLocation] = useState('');
     const [employeeId, setEmployeeId] = useState(0);
@@ -43,8 +40,6 @@ const TransportRequestPage = ({editData}: RequestPageProps) => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        //makes sure transportDate is the right format
         const formattedDate = new Date(transportDate).toISOString();
 
         const newRequest: transportRequest = {
@@ -60,65 +55,51 @@ const TransportRequestPage = ({editData}: RequestPageProps) => {
             assignedToId,
         };
 
-        if(editData) {
+        if (editData) {
             const editRequest: editTransportRequest = {
                 transportRequest: newRequest,
                 requestId: editData.requestId
-            }
+            };
             EditTransportRequest(editRequest);
-        }else{
+        } else {
             SubmitTransportRequest(newRequest);
         }
 
         setSubmittedRequest(newRequest);
         setShowConfirmation(true);
-
         handleReset();
     };
 
     const handleReset = () => {
         setPatientId(0);
         setPatientName('');
-        setTransportType('Ambulance (BLS)');
-        setPriority('Low');
+        setTransportType("");
+        setPriority('');
         setPickupLocation('');
         setDropoffLocation('');
         setNotes('');
         setAssignedToId(0);
         setTransportDate('');
         setEmployeeId(0);
+        setTimeout(() => {
+            setShowConfirmation(false);
+        }, 3000)
     };
 
     useEffect(() => {
         const fetchEmployeeList = async () => {
             try {
                 const data = await getEmployeeNameIds();
-                setEmployeeList(data); // list of employee names
+                setEmployeeList(data);
             } catch (e) {
                 console.error('Error fetching employee list:', e);
             }
-        }
-
+        };
         fetchEmployeeList();
-        console.log(employeeList);
-    }, [])
-
-
+    }, []);
 
     useEffect(() => {
-        if (showConfirmation) {
-            alert("Request Submitted");
-            handleConfirmationClose(); // close the state after the alert
-        }
-    }, [showConfirmation]);
-
-    const handleConfirmationClose = () => {
-        setShowConfirmation(false);
-    };
-
-
-    useEffect(() => {
-        if(editData){
+        if (editData) {
             setPatientId(editData.patientTransport.patientId);
             setPatientName('');
             setTransportType(editData.patientTransport.transportType);
@@ -133,176 +114,141 @@ const TransportRequestPage = ({editData}: RequestPageProps) => {
     }, []);
 
     return (
-        // flex row container
-        <div className="flex flex-col justify-center items-center min-h-screen">
-            {/* make the form left side */}
-            <div className="flex flex-col items-center bg-white rounded-2xl p-8 w-full max-w-[700px] mt-10 mb-10">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                    <h1 className="text-[30px] font-bold leading-none">Patient Transport Request</h1>
-                    <div className="pt-[11.5px]">
+        <>
+            <div className="flex justify-center items-start pt-16 pb-16 min-h-screen bg-[#f5faff] px-4">
+                <div className="bg-white border border-[#d0ebff] rounded-2xl shadow-lg px-10 py-10 w-full max-w-[500px]">
+                    <div className="flex justify-between items-center mb-6">
+                        <h1 className="text-2xl font-bold text-mgbblue">Patient Transport Request</h1>
                         <HelpButton />
                     </div>
-                </div>
-                <br />
-                <div>
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div>
-                            <h3 className="text-xl font-semibold mb-4">
-                                <b>Assign Employee</b>
-                            </h3>
-                            <div className="flex flex-row gap-2">
-                                <div className='flex flex-row gap-2'>
-                                    <label className='w=1/4'>Employee: </label>
-                                    <select
-                                        onChange={(e) => {
-                                            setEmployeeId(Number(e.target.value));
-                                        }}
-                                        value={employeeId}
-                                        className='w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300'
-                                    >
-                                        {employeeList.map((employee) => (
-                                            <option key={employee.employeeId} value={employee.employeeId}>
-                                                {employee.employeeName}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                        {/*display employee name instead of id*/}
+                        <div className="flex flex-col gap-1 w-full">
+                            <label htmlFor="employee" className="text-sm font-medium text-gray-700 mb-1">
+                                Employee:
+                            </label>
+                            <select
+                                id={"employee"}
+                                onChange={(e) => {
+                                    setEmployeeId(Number(e.target.value));
+                                }}
+                                value={employeeId}
+                                className={`w-full px-4 py-2 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300`}
+                            >
+                                {employeeList.map((employee) => (
+                                    <option key={employee.employeeId} value={employee.employeeId}>
+                                        {employee.employeeName}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
-                        <div>
-                            <h3 className="text-xl font-semibold mb-4">
-                                <b>Patient Information</b>
-                            </h3>
-                            <div className="flex flex-col gap-2">
-                                <div className="flex items-center gap-2">
-                                    <InputElement label={"Patient ID"}
-                                                  type={"number"}
-                                                  id={"patientId"}
-                                                  value={patientId}
-                                                  onChange={e => setPatientId(Number(e.target.value))}
-                                                  required={true}
-                                                  placeholder={"Enter Patient ID"}
-                                    />
-                                </div>
-                            </div>
-                        </div>
+                        <FormFieldElement
+                            label="Patient ID"
+                            id="patientId"
+                            type="number"
+                            value={patientId}
+                            onChange={(e) => setPatientId(Number(e.target.value))}
+                            required
+                            placeholder="Enter Patient ID"
+                        />
 
-                        <div>
-                            <h3 className="text-xl font-semibold mb-4">
-                                <b>Transport Details</b>
-                            </h3>
-                            <SelectFormElement
-                                label = 'Type'
-                                id = 'transportType'
-                                value = {transportType}
-                                onChange = {(e) =>
-                                    setTransportType(
-                                        e.target.value as hospitalTransportType
-                                    )
-                                }
-                                required
-                                options = {hospitalTransportArray}
-                                placeholder = 'Select Transport Type'
+                        <FormFieldElement
+                            label='Type'
+                            id='transportType'
+                            type="select"
+                            value={transportType}
+                            onChange={(e) => setTransportType(e.target.value as hospitalTransportType)}
+                            required
+                            options={hospitalTransportArray}
+                            placeholder='Select Transport Type'
+                        />
+
+                        <FormFieldElement
+                            label='Priority'
+                            id='priority'
+                            type="select"
+                            value={priority}
+                            onChange={(e) => setPriority(e.target.value as priorityType)}
+                            required
+                            options={priorityArray}
+                            placeholder='Select Priority'
+                        />
+
+                        <FormFieldElement
+                            label='Pickup'
+                            id='pickupLocation'
+                            type="select"
+                            value={pickupLocation}
+                            onChange={(e) => setPickupLocation(e.target.value as mgbHospitalType)}
+                            required
+                            options={mgbHospitals}
+                            placeholder='Select Pickup Location'
+                        />
+
+                        <FormFieldElement
+                            label='Destination'
+                            id='destinationLocation'
+                            type="select"
+                            value={dropoffLocation}
+                            onChange={(e) => setDropoffLocation(e.target.value as mgbHospitalType)}
+                            required
+                            options={mgbHospitals}
+                            placeholder='Select Destination Location'
+                        />
+
+                        <FormFieldElement
+                            label="Transport Date"
+                            id="transportDate"
+                            type="datetime-local"
+                            value={transportDate}
+                            onChange={(e) => setTransportDate(e.target.value)}
+                            required
+                        />
+
+                        <div className="flex flex-col">
+                            <label className="text-sm font-medium text-gray-700 mb-1">Additional Comments:</label>
+                            <textarea
+                                id="transportationNotes"
+                                value={notes}
+                                onChange={(e) => setNotes(e.target.value)}
+                                rows={3}
+                                placeholder="Notes for transportation"
+                                className="px-4 py-2 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
                             />
-
-                            <div className="flex flex-col pt-2">
-                                <SelectFormElement
-                                    label = 'Priority'
-                                    id = 'priority'
-                                    value = {priority}
-                                    onChange = {(e) =>
-                                        setPriority(e.target.value as priorityType)
-                                    }
-                                    required
-                                    options = {priorityArray}
-                                    placeholder = 'Select Priority'
-                                />
-                            </div>
-
-                            <div className="flex flex-col pt-2">
-                                <SelectFormElement
-                                    label = 'Pickup'
-                                    id = 'pickupLocation'
-                                    value = {pickupLocation}
-                                    onChange = {(e) =>
-                                        setPickupLocation(e.target.value as mgbHospitalType)
-                                    }
-                                    required
-                                    options = {mgbHospitals}
-                                    placeholder = 'Select Pickup Location'
-                                />
-                            </div>
-
-
-                            <div className="flex flex-col pt-2">
-
-                                <SelectFormElement
-                                    label = 'Destination'
-                                    id = 'destinationLocation'
-                                    value = {dropoffLocation}
-                                    onChange = {(e) =>
-                                        setDropoffLocation(e.target.value as mgbHospitalType)
-                                    }
-                                    required
-                                    options = {mgbHospitals}
-                                    placeholder = 'Select Destination Location'
-                                />
-                            </div>
-
-                            <div className="flex flex-col pt-2">
-                                <div className="flex items-center gap-2">
-                                    <InputElement label={"Transport Date"}
-                                                  type={"datetime-local"}
-                                                  id={"transportDate"}
-                                                  value={transportDate} onChange={e => setTransportDate(e.target.value)}
-                                                  required={true}
-                                    />
-                                </div>
-                            </div>
-
                         </div>
 
-                        <div>
-                            <h3 className="text-xl font-semibold mb-4">
-                                <b>Additional Information</b>
-                            </h3>
-
-                            <div className="flex flex-col pt-2">
-                                <div className="flex items-center gap-2">
-                                    <label className="w-1/4">Additional Comments</label>
-                                    <textarea
-                                        id="medicalNotes"
-                                        value={notes}
-                                        onChange={(e) => setNotes(e.target.value)}
-                                        rows={3}
-                                        placeholder="Notes for the transport"
-                                        className="w-70 px-4 py-1.5 border-2 border-mgbblue rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    ></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* submit button and confirmation message */}
-                        <div className="flex items-center justify-center space-x-4">
+                        <div className="flex flex-col gap-3 mt-4">
                             <MGBButton
+                                variant="primary"
                                 onClick={() => handleSubmit}
-                                variant={'primary'}
-                                disabled={false}
+                                className="rounded-full w-full py-2"
                             >
                                 Submit Request
                             </MGBButton>
                             <MGBButton
-                                onClick={() => handleReset()}
-                                variant={'secondary'}
-                                disabled={false}
+                                variant="secondary"
+                                onClick={handleReset}
+                                className="rounded-full w-full py-2"
                             >
                                 Clear Form
                             </MGBButton>
                         </div>
+                        {showConfirmation &&
+                            <Confetti
+                                recycle={false}
+                                width={900}
+                                height={900}
+                                initialVelocityY={4}
+                                gravity={0.6}
+                                numberOfPieces={200}
+                                tweenDuration={1000}
+                            />
+                        }
                     </form>
                 </div>
             </div>
-        </div>
+        </>
+
     );
 };
 

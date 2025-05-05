@@ -7,6 +7,7 @@ import {myEdge, myNode} from 'common/src/classes/classes.ts';
 import OverlayComponent from '@/components/MapUI/OverlayMapComponent.tsx';
 import { GetNode } from '@/database/getDepartmentNode.ts';
 import DisplayPathComponent from '@/components/MapUI/DisplayPathComponent.tsx';
+import Map3D from "@/components/MapUI/Map3D.tsx";
 
 const ChestnutHillBounds = {
     southWest: { lat: 42.32543670863917, lng: -71.15022693442262 }, // Bottom-left corner
@@ -75,94 +76,110 @@ class Vector {
     }
 }
 
-function createTextPath(traversalResult: myNode[] | undefined | null): [string[], string[] ]{
+function createTextPath(traversalResult: myNode[] | undefined | null, units: 'Feet' | 'Meters'): [string[], string[] ]{
     // Make sure a path exists
     if (!traversalResult) {
         console.log('No Path');
         return [[],[]];
     }
-
-    // Initial facing direction. TODO: need to be able to figure out direction for the first node
-    // Currently hardcoded for each location
-    const StartDirs = [
-        { key: 'CH', dir: new Vector(0, traversalResult[0].y + 50) },
-        { key: '20PP', dir: new Vector(traversalResult[0].x + 50, 0) },
-        { key: '22PP', dir: new Vector(0, traversalResult[0].y + 50) },
-        { key: 'FK', dir: new Vector(traversalResult[0].x + 50, 0) },
-    ];
     const directions = [];
     const icons=[];
-    const startDir = StartDirs.find((value) => traversalResult[0].nodeId.includes(value.key));
-    let currentDirection;
-    if (!startDir) {
-        currentDirection = new Vector(0, 0);
-    } else {
-        currentDirection = startDir.dir;
-    }
-    // Traversing floors: when the user is taking the elevator or stairs
-    let traversingFloors = false;
-    // Loop through each node in the list
-    for (let i = 0; i < traversalResult.length; i++) {
-        // Get the current and next node
+    let currentFacing = new Vector(0, 0);
+
+    // Loop through all nodes
+    for(let i = 0; i < traversalResult.length; i++) {
         const currentNode = traversalResult[i];
         const nextNode = traversalResult[i + 1];
-        // If there is no next node, we have reached the destination
+
         if (!nextNode) {
             directions.push(`You have arrived at ${currentNode.name}`);
             break;
         }
-
+        const edge = new myEdge(-1, currentNode, nextNode);
+        const distance = units === "Meters" ? edge.distanceMeters : edge.distanceFeet;
         const dy = nextNode.y - currentNode.y;
         const dx = nextNode.x - currentNode.x;
         // Get the direction the user will be facing
-        const newDirection = new Vector(dx, dy);
-        // Get the angle between the user's current facing and the next node's facing
-        const angle = currentDirection.angleTo(newDirection);
+        const newFacing = new Vector(dx, dy);
+        const textDirection = determineDirection(currentFacing.angleTo(newFacing));
         // Make the user's current direction the new direction
-        currentDirection = newDirection;
-        // If the next node is an elevator or stairs, the user will be changing floors
-        if (nextNode.nodeType === 'Elevator' || nextNode.nodeType === 'Stairs') {
-            traversingFloors = true;
-            // If the next node is not an elevator or stairs, and the user should be traversing floors,
-            // we have arrived at the next walkable node
-        } else if (
-            traversingFloors &&
-            nextNode.nodeType !== 'Elevator' &&
-            nextNode.nodeType !== 'Stairs'
-        ) {
-            traversingFloors = false;
-            // Instruct the user to take the elevator to the nth floor
-            directions.push(
-                `Take the Elevator to the ${nextNode.floor}${getNumberSuffix(nextNode.floor)} floor`
-            );
-            icons.push('elevator');
+        currentFacing = newFacing;
 
+        if(currentNode.nodeType === nextNode.nodeType && (!textDirection.includes("left") || !textDirection.includes("right"))) {
+            const nextChange = indexOfNextChange(traversalResult as myNode[], i, currentFacing, currentNode.nodeType);
+            if(nextChange !== -1) {
+                i = nextChange - 1; // Because i will increase at the end of the loop
+                const lastNode = traversalResult[i];
+                const nextNode = traversalResult[nextChange];
+                if(currentNode.nodeType === "Elevator" || currentNode.nodeType === "Stairs") {
+                    // Take elevator instructions
+                    directions.push(
+                        `Take the ${currentNode.nodeType} to the ${lastNode.floor}${getNumberSuffix(traversalResult[i].floor)} floor`
+                    );
+                    icons.push(currentNode.nodeType.toLowerCase());
+                    // Instructions to exit elevator
+                    directions.push(`From the ${lastNode.nodeType} continue straight for ${distance.toFixed(1)} ${units.toLowerCase()} until you reach the ${nextNode.nodeType}`);
+                    icons.push(`${textDirection}`);
+
+                    // Calculate new direction when exiting elevators/stairs
+                    const dy = nextNode.y - lastNode.y;
+                    const dx = nextNode.x - lastNode.x;
+                    currentFacing = new Vector(dx, dy);
+                }else {
+                    // Normal Directions for skipping middle nodes
+                    directions.push(`From the ${currentNode.nodeType} ${textDirection} for ${distance.toFixed(1)} ${units.toLowerCase()} until you reach the ${traversalResult[nextChange].nodeType}`);
+                    icons.push(`${textDirection}`);
+                }
+                continue;
+            }
         }
-        // The default instructions if not traversing floors or if getting off the elevator/stairs
-        if (
-            !traversingFloors ||
-            (traversingFloors && nextNode.nodeType !== 'Elevator' && nextNode.nodeType !== 'Stairs')
-        ) {
-            const tempEdge = new myEdge(-1, currentNode, nextNode);
-            directions.push(
-                `From the ${currentNode.nodeId} ${determineDirection(angle)} for ${tempEdge.distance.toFixed(1)} feet until you reach the ${nextNode.nodeId}`
-            );
-            icons.push(`${determineDirection(angle)}`);
-        }
+        // Normal Directions no skipping
+        directions.push(`From the ${currentNode.nodeType} ${textDirection} for ${distance.toFixed(1)} ${units.toLowerCase()} until you reach the ${nextNode.nodeType}`);
+        icons.push(`${textDirection}`);
+
     }
-
     return [directions, icons];
 }
 
-function determineDirection(angle: number): string {
-    let prefix = '';
-    if (angle < -75 && angle > -105) {
-        prefix = 'Turn Left then ';
-    } else if (angle > 75 && angle < 105) {
-        prefix = 'Turn Right then ';
+
+function indexOfNextChange(traversalResult: myNode[], startIndex: number, startFacing: Vector, startNodeType: string){
+    let currentFacing = startFacing;
+    for(let j = startIndex; j < traversalResult.length; j++) {
+        const currentNode = traversalResult[j];
+        const nextNode = traversalResult[j + 1];
+        if (!nextNode) {
+            return j;
+        }
+        // Go til next turn or different node
+        const dy = nextNode.y - currentNode.y;
+        const dx = nextNode.x - currentNode.x;
+        // Get the direction the user will be facing
+        const newFacing = new Vector(dx, dy);
+        const textDirection = determineDirection(currentFacing.angleTo(newFacing));
+        // Make the user's current direction the new direction
+        currentFacing = newFacing;
+        if(currentNode.nodeType === "Elevator" || currentNode.nodeType === "Stairs"){
+            continue;
+        }
+        if(textDirection.includes("left") || textDirection.includes("right") || currentNode.nodeType !== startNodeType) {
+            return j;
+        }
     }
-    return prefix + 'Continue Straight';
+    return -1;
 }
+
+function determineDirection(angle: number): string {
+    const absAngle = Math.abs(angle);
+
+    if (absAngle < 45) {
+        return 'continue straight';
+    } else if (angle > 0) {
+        return 'turn right then continue straight';
+    } else {
+        return 'turn left then continue straight';
+    }
+}
+
 
 function getNumberSuffix(num: string): string {
     if (num.endsWith('1') && num !== '11') {
@@ -198,32 +215,41 @@ function GetPolylinePath(path: myNode[]): { lat: number; lng: number }[] {
 
 // interface for prop
 interface Props {
+    map: google.maps.Map;
     startNodeId: string;
     endNodeId: string;
     selectedAlgorithm: string;
     currentFloorId: string | undefined;
-    onFloorChange?: (floorId: string) => void;
-
+    onFloorChange: (floorId: string) => void;
+    onAutoSwitchFloor: (startFloorId: string) => void;
+    autoFloorSwitchEnabled: boolean; // New prop to control auto floor switching
 
     visible: boolean;
     driveDirections: string;
     drive2Directions: string[];
     showTextDirections: boolean;
     currentStep: string;
+    distanceUnits: 'Feet' | 'Meters';
+    setDistanceUnits: (units: 'Feet' | 'Meters') => void;
     showBuildingDirections: boolean;
 }
 
 const HospitalMapComponent = ({
+    map,
     startNodeId,
     endNodeId,
     selectedAlgorithm,
     currentFloorId,
     onFloorChange,
+    onAutoSwitchFloor,
+    autoFloorSwitchEnabled,
     visible,
     driveDirections,
     drive2Directions,
     showTextDirections,
     currentStep,
+    distanceUnits,
+    setDistanceUnits,
     showBuildingDirections,
 }: Props) => {
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
@@ -283,7 +309,7 @@ const HospitalMapComponent = ({
                     highlightDestinationFloor(result);
 
                     // text directions
-                    const [textDirection, icons] = createTextPath(result);
+                    const [textDirection, icons] = createTextPath(result, distanceUnits);
                     setIconsToPass(icons);
                     setDirections1(textDirection.join('<br><br>'));
                     setDirections11(textDirection);
@@ -296,7 +322,7 @@ const HospitalMapComponent = ({
             }
         };
         getMyPaths();
-    }, [startNode, endNode, selectedAlgorithm]);
+    }, [startNode, endNode, selectedAlgorithm, distanceUnits]);
 
     // function to highlight the destination floor
     const highlightDestinationFloor = (path: myNode[]) => {
@@ -340,14 +366,19 @@ const HospitalMapComponent = ({
         return `Floor ${floor.floor}`;
     };
 
-    // auto-select floor id for start node
     useEffect(() => {
-        if (bfsPath.length > 0 && startNode) {
+        console.log("auto " + autoFloorSwitchEnabled)
+        if (bfsPath.length > 0 && startNode && autoFloorSwitchEnabled) {
             const startFloor = availableFloors.find(
                 (f) => f.buildingId === startNode.buildingId && f.floor === startNode.floor
             );
             if (startFloor) {
                 setStartFloor(startFloor);
+                // Only trigger the auto floor switch if enabled and not already done
+                onAutoSwitchFloor(startFloor.id);
+                highlightDestinationFloor(bfsPath);
+                console.log("auto switch floor to " + startFloor.id);
+
             }
         }
     }, [bfsPath, startNode]);
@@ -358,7 +389,11 @@ const HospitalMapComponent = ({
     // Get the current Patriot Place floor data
 
     const getCurrentPatriotPlaceFloor = () => {
-        let floorId = currentFloorId;
+        let floorId
+        if (currentFloorId){
+            floorId = currentFloorId; // dont change
+            onAutoSwitchFloor(currentFloorId);
+        }
         if (!floorId?.startsWith('PP-')) floorId = 'PP-1';
         return (
             availableFloors.find((f) => f.id === floorId) ||
@@ -400,6 +435,8 @@ const HospitalMapComponent = ({
                             driveDirections={driveDirections}
                             drive22Directions={drive2Directions}
                             walk22Directions={directions11}
+                            distanceUnits={distanceUnits}
+                            setDistanceUnits={setDistanceUnits}
                             icons={iconsToPass}
                             currentStep={currentStep}
                         />
@@ -415,6 +452,8 @@ const HospitalMapComponent = ({
                         driveDirections={driveDirections}
                         drive22Directions={drive2Directions}
                         walk22Directions={directions11}
+                        distanceUnits={distanceUnits}
+                        setDistanceUnits={setDistanceUnits}
                         icons={iconsToPass}
                         currentStep={currentStep}
                     />
@@ -433,10 +472,13 @@ const HospitalMapComponent = ({
 
 
         <div className="relative w-full h-full">
-            <OverlayComponent
-                bounds={ChestnutHillBounds}
-                imageSrc={"/CH01.svg"}
-            />
+            {map && <Map3D map={map}/>}
+            {/*<OverlayComponent*/}
+            {/*    bounds={ChestnutHillBounds}*/}
+            {/*    imageSrc={"/CH01.svg"}*/}
+            {/*/>*/}
+
+
             <OverlayComponent
                 bounds={PatriotPlaceBounds}
                 imageSrc={patriotPlaceFloor.svgPath}
@@ -450,7 +492,8 @@ const HospitalMapComponent = ({
                 imageSrc={'/BWH02.svg'}
             />
             {visible &&
-            <DisplayPathComponent coordinates={GetPolylinePath(getCurrentFloorPath(buildingId, floor))} />
+                <DisplayPathComponent coordinates={GetPolylinePath(getCurrentFloorPath(buildingId, floor))} />
+                // <Path3D map={map} path={GetPolylinePath(getCurrentFloorPath(buildingId, floor))}/>
             }
         </div>
         </>
