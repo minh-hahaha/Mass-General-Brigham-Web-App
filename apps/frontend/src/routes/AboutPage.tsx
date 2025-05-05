@@ -22,9 +22,9 @@ const AboutPage = () => {
                             name={'Minh Ha'}
                             title={'Lead Software Engineer'}
                             github={'minh-hahaha'}
-                            schoolYear={'xxx'}
-                            major={'xxx'}
-                            quote={'xxx'}
+                            schoolYear={'Class of 2027'}
+                            major={'Computer Science'}
+                            quote={'Oh fckk” at 5am. “Yo yo yo…”. “Very nice”. “Have i ever tell you that I love you?'}
                         />
                         <Member
                             image={'Andrew.png'}
@@ -85,18 +85,18 @@ const AboutPage = () => {
                             name={'Vinam Nguyen'}
                             title={'Algorithms / Project Manager'}
                             github={'vinamnguyen'}
-                            schoolYear={'xxx'}
-                            major={'xxx'}
-                            quote={'xxx'}
+                            schoolYear={'Class of 2027'}
+                            major={'Computer Science'}
+                            quote={'WE DID IT!'}
                         />
                         <Member
                             image={'Krish.png'}
                             name={'Krish Patel'}
                             title={'Algorithms / Scrum Master'}
                             github={'krishpate1'}
-                            schoolYear={'xxx'}
-                            major={'xxx'}
-                            quote={'xxx'}
+                            schoolYear={'Class of 2027'}
+                            major={'Computer Science'}
+                            quote={'Whose booking the room for the meeting?'}
                         />
                     </MemberPair>
 
@@ -115,7 +115,7 @@ const AboutPage = () => {
                             name={'Haotian(Sean) Liu'}
                             title={'Frontend / Product Owner'}
                             github={'seanliu7081'}
-                            schoolYear={'Senior'}
+                            schoolYear={'Class of 2025'}
                             major={'Robotics Engineering'}
                             quote={'I need sleep'}
                         />

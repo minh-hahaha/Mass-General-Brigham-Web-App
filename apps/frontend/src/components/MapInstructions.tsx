@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import MGBButton from "@/elements/MGBButton.tsx";
-import create_edges from '../assets/instructions/create_edges.png';
-import edit_node from '../assets/instructions/edit_node.png';
-import save_changes from '../assets/instructions/save.png';
-import select from '../assets/instructions/select_hospital.png'
-import delete_edges from '../assets/instructions/delete_edge.png'
-import import_export_nodes from '../assets/instructions/import_export_nodes.png'
+import edit_node from '../assets/instructions/edit_node.gif';
+import drag_save from '../assets/instructions/drag_save.gif';
+import select from '../assets/instructions/select_hospital.gif'
+import create_delete_edges from '../assets/instructions/create_delete_edge.gif'
+import import_export_nodes from '../assets/instructions/import_export.gif'
 
 interface MapInstructionsProps {
     onClose?: () => void;
@@ -21,27 +20,27 @@ const instructionPages = [
     {
         title: "Edit Node",
         imagePath: edit_node,
-        description: "Click \"Add Node\" button and then click on the map to place nodes."
+        description: "Click \"Edit\" button and then click on the map to place nodes."
     },
     {
-        title: "Delete Edges",
-        imagePath: delete_edges,
-        description: "Click on the node to edit its name, room number, or remove node."
+        title: "Delete and Create Edges",
+        imagePath: create_delete_edges,
+        description: "Delete or create edge for two nodes."
+    },
+    // {
+    //     title: "Create Edges",
+    //     imagePath: create_edges,
+    //     description: "Click the \"Create Edge\" button, then nodes can connected."
+    // },
+    {
+        title: "Drag and Save Nodes and Edges",
+        imagePath: drag_save,
+        description: "Drag the edited nodes to a proper place and Click the \"Save Nodes and Edges\" button to store your configuration."
     },
     {
-        title: "Create Edges",
-        imagePath: create_edges,
-        description: "Click the \"Create Edge\" button, then nodes can connected."
-    },
-    {
-        title: "Save Nodes and Edges",
-        imagePath: save_changes,
-        description: "Click the \"Save Nodes and Edges\" button to store your configuration."
-    },
-    {
-        title: "Import/Export Nodes",
+        title: "Import Export Nodes and Edges",
         imagePath: import_export_nodes,
-        description: "Click the \"Import/Export Nodes\" button to import or export nodes."
+        description: "Click the \"Import Export Nodes and Edges\" button to import or export files."
     }
 ];
 
