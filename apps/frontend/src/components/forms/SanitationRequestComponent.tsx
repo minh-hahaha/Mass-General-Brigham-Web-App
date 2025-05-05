@@ -58,7 +58,7 @@ const SanitationRequestPage = ({editData}: RequestPageProps) => {
 
 
     const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
-
+    const [isEditing, setIsEditing] = useState(false);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -81,7 +81,7 @@ const SanitationRequestPage = ({editData}: RequestPageProps) => {
             requesterRoomNumber,
         } //for Jack: I stopped here. There seems to be something off with the type declarations here
 
-        if(editData){
+        if(editData && isEditing){
             const editRequest: editSanitationRequest = {
                 sanitationRequest: newRequest,
                 requestId: editData.requestId
@@ -92,6 +92,7 @@ const SanitationRequestPage = ({editData}: RequestPageProps) => {
         }
         setSubmittedRequest(newRequest);
         setShowConfirmation(true);
+        setIsEditing(false);
 
         handleReset();
     };
@@ -143,6 +144,7 @@ const SanitationRequestPage = ({editData}: RequestPageProps) => {
         setTimeout(() => {
             setShowConfirmation(false);
         }, 3000)
+        setIsEditing(true);
     };
 
     useEffect(() => {
