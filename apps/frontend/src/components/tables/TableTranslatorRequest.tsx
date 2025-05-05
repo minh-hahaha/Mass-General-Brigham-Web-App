@@ -87,8 +87,19 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm, setEditData })
     });
     return (
         <>
-            <div className="fixed top-0 left-0 h-screen w-75 bg-white border-r border-gray-300 p-4 flex flex-col gap-4 mt-7">
-                <h1 className="mt-10 font-black text-2xl">Filters</h1>
+            <div className="fixed top-0 left-0 h-screen w-80 bg-white border-r border-gray-300 p-4 flex flex-col gap-4 mt-7">
+                <div className="flex flex-col bg-gray-200 rounded-sm mt-10 pt-2 pb-2 px-3">
+                    <h1 className="font-black text-lg ml-2">Create New Request</h1>
+                    <div className="flex flex-col items-center gap-2 mt-1 w-full">
+                        <button
+                            onClick={() => setActiveForm('translation')}
+                            className="bg-mgbblue hover:bg-blue-950 text-white px-4 py-2 rounded text-sm w-full max-w-xs"
+                        >
+                            New Translator Request +
+                        </button>
+                    </div>
+                </div>
+                <h1 className="mt-5 font-black text-2xl">Filters</h1>
                 <div className="flex flex-col gap-3">
                     {/* Filter Inputs */}
                     <div>
@@ -205,17 +216,6 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm, setEditData })
                     </MGBButton>
                 </div>
 
-                <div className="flex flex-col bg-gray-200 rounded-sm pt-2 pb-5 px-3 mt-4">
-                    <h1 className="font-black text-lg ml-2">Create New Request</h1>
-                    <div className="flex flex-col items-center gap-2 mt-1 w-full">
-                        <button
-                            onClick={() => setActiveForm('translation')}
-                            className="bg-mgbblue hover:bg-blue-950 text-white px-4 py-4 mt-2 rounded text-sm w-full max-w-xs"
-                        >
-                            New Translator Request +
-                        </button>
-                    </div>
-                </div>
             </div>
             <div className="ml-38 w-full p-6 min-h-screen bg-gray-200">
                 <div className="flex justify-center">
