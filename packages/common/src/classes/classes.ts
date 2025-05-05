@@ -36,14 +36,16 @@ export class myEdge {
     edgeId: number;
     from: myNode;
     to: myNode;
-    distance: number;
+    distanceFeet: number;
+    distanceMeters: number;
 
     constructor(edgeId: number, from: myNode, to: myNode) {
         /* Do i need the neighbors */
         this.edgeId = edgeId;
         this.from = from;
         this.to = to;
-        this.distance = this.calculateDistance(from, to);
+        this.distanceFeet = this.calculateDistance(from, to);
+        this.distanceMeters = this.distanceFeet * 0.3048;
     }
 
     calculateDistance(from: myNode, to: myNode) {

@@ -1,9 +1,9 @@
 // THIS HAS ALL THE TYPES AND ARRAYS USED BY THE FORMS
 
 //ALL
-export type mgbHospitalType = 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital';
+export type mgbHospitalType = "" | 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital';
 export const mgbHospitals = ['Chestnut Hill', '20 Patriot Place', '22 Patriot Place', 'Faulkner Hospital'];
-export type priorityType = 'Low' | 'Medium' | 'High' | 'Emergency';
+export type priorityType = "" | 'Low' | 'Medium' | 'High' | 'Emergency';
 export const priorityArray = ['Low', 'Medium', 'High', 'Emergency'];
 export type statusType = 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
 
@@ -136,7 +136,7 @@ export const reqSanitationArray = [
     "Operating Room Turnover",
     "Cleanroom Sanitation"
 ];
-export type hazardLevelType = 'Low' | 'Moderate' | 'High' | 'Extreme';
+export type hazardLevelType = "" | 'Low' | 'Moderate' | 'High' | 'Extreme';
 export const hazardLevelArray = ['Low', 'Moderate', 'High', 'Extreme'];
 
 //Translation Request
@@ -171,7 +171,7 @@ export const translateLangugeArray = [
 
 //Transport Request
 
-export type hospitalTransportType = "Ambulance (BLS)"
+export type hospitalTransportType = ""
     | "Ambulance (ALS)"
     | "Helicopter"
     | "Critical Care Transport"

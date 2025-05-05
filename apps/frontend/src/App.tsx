@@ -22,6 +22,7 @@ import {ROUTES} from "common/src/constants.ts";
 import CreditsPage from "@/routes/CreditsPage.tsx";
 
 import Screensaver from './ScreenSaver.tsx';
+import WongDinoGame from "@/routes/WongDinoGame.tsx";
 
 const IDLE_TIMEOUT = 15000; // 30 seconds
 
@@ -81,6 +82,7 @@ function App() {
 
             <div className="h-dvh flex flex-col w-full max-w-full">
                 <div className="h-16 sticky top-0 z-50 bg-white shadow-md">
+                    {/*{isIdle && <Screensaver />}*/}
                     <LogoBar />
                 </div>
                 <BrowserRouter>
@@ -137,6 +139,7 @@ function App() {
                                 />
                                 <Route path="/AboutPage" element={<AboutPage />} />
                                 <Route path="/CreditsPage" element={<CreditsPage />} />
+                                <Route path="/Dino" element={<WongDinoGame />} />
                             </Routes>
                         </main>
                     </div>

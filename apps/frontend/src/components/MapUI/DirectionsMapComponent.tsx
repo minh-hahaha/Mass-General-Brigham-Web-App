@@ -1,12 +1,8 @@
-import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
-import { Map, useMap, useMapsLibrary, RenderingType } from '@vis.gl/react-google-maps';
+import React, { useEffect, useState } from 'react';
+import { Map, RenderingType, useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
 import HospitalMapComponent from '@/components/MapUI/HospitalMapComponent.tsx';
-import {ZoomIn } from 'lucide-react';
 
-import {
-    DirectoryRequestByBuilding,
-    getDirectory,
-} from '@/database/gettingDirectory.ts';
+import { DirectoryRequestByBuilding, getDirectory } from '@/database/gettingDirectory.ts';
 import { GetRecentOrigins, RecentOrigin } from '@/database/recentOrigins.ts';
 
 import AlgorithmSelector from '@/components/AlgorithmSelector.tsx';
@@ -40,7 +36,6 @@ interface Floor {
 }
 type Step = 'SELECT_HOSPITAL' | 'HOSPITAL_DETAIL' | 'DIRECTIONS' | 'DEPARTMENT';
 
-
 // All available floors across buildings
 const availableFloors: Floor[] = [
     // Chestnut Hill
@@ -56,8 +51,6 @@ const availableFloors: Floor[] = [
     { id: "BWH-2", floor: "2", buildingId: "4", buildingName: "Main Hospital",svgPath: "/BWH02.svg" },
 
 ];
-
-
 
 // Define the interface
 interface Coordinate {
@@ -101,6 +94,23 @@ const DirectionsMapComponent = () => {
     const [highlightFloorId, setHighlightFloorId] = useState<string | undefined>();
 
     const [currentStep, setCurrentStep] = useState<Step>('SELECT_HOSPITAL');
+
+    const [distanceUnits, setDistanceUnits] = useState<'Feet' | 'Meters'>('Feet');
+
+    useEffect(() => {
+        const checkAdmin = () => {
+            console.log(sessionStorage.getItem('position'));
+            if (sessionStorage.getItem('position') === 'WebAdmin') {
+                setIsAdmin(true);
+                console.log('admin', isAdmin);
+                return;
+            }
+            setIsAdmin(false);
+            console.log('admin', isAdmin);
+            return;
+        };
+        checkAdmin();
+    }, []);
 
     useEffect(() => {
         const fetchOrigins = async () => {
@@ -184,6 +194,12 @@ const DirectionsMapComponent = () => {
         }
     }, [fromLocation, toLocation]);
 
+    useEffect(() => {
+        if(currentStep !== "DEPARTMENT") {
+            handleFindDirections();
+        }
+    }, [distanceUnits]);
+
     // update floor selector visibility
     useEffect(() => {
         setShowFloorSelector(buildingID === 2);
@@ -198,10 +214,11 @@ const DirectionsMapComponent = () => {
         setSelectedAlgorithm(algorithm);
     };
 
+    const [autoFloorSwitchEnabled, setAutoFloorSwitchEnabled] = useState<boolean>(true);
     const handleFloorChange = (floorId: string) => {
         setCurrentFloorId(floorId);
         console.log('changed floor to : ', floorId);
-    }
+    };
     // Handler for floor changes from HospitalMapComponent
     const handleFloorHighlight = (floorId: string) => {
         // Set the floor to highlight
@@ -225,6 +242,7 @@ const DirectionsMapComponent = () => {
                 destination: toLocation,
                 travelMode: googleTravelMode,
                 provideRouteAlternatives: false,
+                unitSystem: distanceUnits == 'Feet' ? google.maps.UnitSystem.IMPERIAL : google.maps.UnitSystem.METRIC,
             })
             .then((response) => {
                 directionsRenderer.setDirections(response);
@@ -242,8 +260,8 @@ const DirectionsMapComponent = () => {
                                 `${direction.instructions} and continue for ${direction.distance ? direction.distance.text : ''}`
                         )
                         .toString();
-                    console.log(htmlStr.split(","));
-                    setText2Directions(htmlStr.split(","));
+                    console.log(htmlStr.split(','));
+                    setText2Directions(htmlStr.split(','));
                     console.log(htmlStr.replace(/,/g, '<br><br>'));
                     setTextDirections(htmlStr.replace(/,/g, '<br><br>'));
                 }
@@ -260,7 +278,7 @@ const DirectionsMapComponent = () => {
         const emptyResult = {
             routes: [],
             geocoded_waypoints: [],
-            request: {} as google.maps.DirectionsRequest
+            request: {} as google.maps.DirectionsRequest,
         } as google.maps.DirectionsResult;
 
         // Reset the directions with valid empty result
@@ -274,7 +292,6 @@ const DirectionsMapComponent = () => {
         setText2Directions([]);
     };
 
-
     const handleZoomToHospital = () => {
         const hospital = Object.entries(HospitalLocations).find(
             ([name]) => BuildingIDMap[name] === buildingID
@@ -284,7 +301,6 @@ const DirectionsMapComponent = () => {
                 map.panTo({lat: hospital[1].lat, lng: hospital[1].lng}); // location
                 map.setZoom(hospital[1].zoom);
             }
-
         }
         // if (!map || !toHospital) return;
         //
@@ -295,7 +311,6 @@ const DirectionsMapComponent = () => {
         //     map.setZoom(hospitalLocation.zoom);
         // }
     };
-
 
     // step 1: choose a hospital
     // set building Id 1,2,3,4
@@ -320,9 +335,8 @@ const DirectionsMapComponent = () => {
                 map.panTo({lat: hospital[1].lat, lng: hospital[1].lng}); // location
                 map.setZoom(hospital[1].zoom);
             }
-
         }
-    }
+    };
 
     const handleDirectionRequest = (from: string, to: string, toHospital: string, mode: TravelModeType) => {
         console.log("Direction request received:", from, to, toHospital, mode);
@@ -341,27 +355,21 @@ const DirectionsMapComponent = () => {
                 setLot('');
             }
 
-            // // Make sure the map is clear before recalculating
-            // if (directionsRenderer) {
-            //     directionsRenderer.setMap(null);
-            // }
 
-            setTimeout(() => {
-                calculateRoute();
-
-            },300)
+        setTimeout(() => {
+            calculateRoute();
+        }, 300);
     };
 
     const handleFindDepartment = () =>{
         handleZoomToHospital();
-    }
-
+    };
 
     const handleDepartmentSelect = (departmentNodeId: string) => {
         setToDirectoryNodeId(departmentNodeId);
         setPathVisible(true);
         clearRoute();
-    }
+    };
 
     const [lot, setLot] = useState('');
     const [parking, setParking] = useState(true);
@@ -426,10 +434,12 @@ const DirectionsMapComponent = () => {
                     break;
             }
         }
-
     }, [lot, buildingID]);
 
 
+    const handleAutoSwitchFloor = (startFloorId: string) => {
+        setCurrentFloorId(startFloorId);
+    }
 
     const handleBack = (currentStep: string) => {
         if (currentStep === "DEPARTMENT") {
@@ -443,14 +453,12 @@ const DirectionsMapComponent = () => {
         if (currentStep === "HOSPITAL_DETAIL") {
             setFromNodeId("")
             setShowFloorSelector(false);
-            setBuildingID(0)
-        }
-        else{
+            setBuildingID(0);
+        } else {
             clearRoute();
             clearParking();
         }
-
-    }
+    };
 
     return (
         <div className="flex w-screen h-screen">
@@ -478,9 +486,7 @@ const DirectionsMapComponent = () => {
                             highlightFloorId={highlightFloorId}
                         />
                     </div>
-                )
-                }
-
+                )}
             </div>
 
             {/* MAP AREA */}
@@ -489,23 +495,28 @@ const DirectionsMapComponent = () => {
                     style={{ width: '100%', height: '100%' }}
                     defaultCenter={{ lat: 42.32598, lng: -71.14957 }}
                     defaultZoom={15}
-                    renderingType={RenderingType.RASTER}
                     disableDefaultUI={true}
                     mapId={'73fda600718f172c'}
                 >
-                    <HospitalMapComponent
+                    {map && <HospitalMapComponent
+                        map={map}
                         startNodeId={fromNodeId}
                         endNodeId={toDirectoryNodeId}
                         selectedAlgorithm={selectedAlgorithm}
                         visible={pathVisible}
                         currentFloorId={currentFloorId}
                         onFloorChange={handleFloorHighlight}
+                        onAutoSwitchFloor={handleAutoSwitchFloor}
+                        autoFloorSwitchEnabled={autoFloorSwitchEnabled}
+
 
                         driveDirections={textDirections}
                         drive2Directions={text2Directions}
                         showTextDirections={!!toLocation}
                         currentStep={currentStep}
-                    />
+                        distanceUnits={distanceUnits}
+                        setDistanceUnits={setDistanceUnits}
+                    />}
                 </Map>
 
                 {/* Route Info Box */}
@@ -520,7 +531,6 @@ const DirectionsMapComponent = () => {
                         </p>
                     </div>
                 )}
-
             </main>
         </div>
     );
