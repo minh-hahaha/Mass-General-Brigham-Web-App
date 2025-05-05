@@ -428,41 +428,7 @@ const HospitalMapComponent = ({
     console.log( " floor " + floor);
 
 
-    const renderMaps = () => {
-        return (
-            <>
-                {buildingId === "1" && (
-                    map3DOn && map ? (
-                        <Map3D map={map} buildingId={buildingId} />
-                    ) : (
-                        <OverlayComponent
-                            bounds={ChestnutHillBounds}
-                            imageSrc={"/CH01.svg"}
-                        />
-                    )
-                )}
-
-                {buildingId === "2" && (
-                    map3DOn && map ? (
-                        <Map3D map={map} buildingId={buildingId} />
-                    ) : (
-                        <OverlayComponent
-                            bounds={PatriotPlaceBounds}
-                            imageSrc={patriotPlaceFloor.svgPath}
-                        />
-                    )
-                )}
-                <OverlayComponent
-                    bounds={FaulknerBounds}
-                    imageSrc={'/FK01.svg'}
-                />
-                <OverlayComponent
-                    bounds={BWHBounds}
-                    imageSrc={'/BWH02.svg'}
-                />
-            </>
-        )
-    }
+    console.log("show3D? " + map3DOn );
 
     return (
         <>
@@ -511,7 +477,38 @@ const HospitalMapComponent = ({
 
 
         <div className="relative w-full h-full">
-            {renderMaps()}
+            {map3DOn && map ? (
+                    <Map3D map={map} />
+                ) : (
+                    <OverlayComponent
+                        bounds={ChestnutHillBounds}
+                        imageSrc={"/CH01.svg"}
+                    />
+                )
+            }
+
+            {/*{buildingId === "2" && (*/}
+            {/*    map3DOn && map ? (*/}
+            {/*        <Map3D map={map} buildingId={buildingId} />*/}
+            {/*    ) : (*/}
+            {/*        <OverlayComponent*/}
+            {/*            bounds={PatriotPlaceBounds}*/}
+            {/*            imageSrc={patriotPlaceFloor.svgPath}*/}
+            {/*        />*/}
+            {/*    )*/}
+            {/*)}*/}
+            <OverlayComponent
+                bounds={PatriotPlaceBounds}
+                imageSrc={patriotPlaceFloor.svgPath}
+            />
+            <OverlayComponent
+                bounds={FaulknerBounds}
+                imageSrc={'/FK01.svg'}
+            />
+            <OverlayComponent
+                bounds={BWHBounds}
+                imageSrc={'/BWH02.svg'}
+            />
             {visible &&
                 <DisplayPathComponent coordinates={GetPolylinePath(getCurrentFloorPath(buildingId, floor))} />
                 // <Path3D map={map} path={GetPolylinePath(getCurrentFloorPath(buildingId, floor))}/>
