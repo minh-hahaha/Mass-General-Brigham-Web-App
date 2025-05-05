@@ -557,6 +557,11 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
             (node) => node.node.nodeId === clickedNodeRef.current
         );
         if (toNode) {
+            const currentSelectedEdge = mapEdgesRef.current.find((edge) => edge.edge.edgeId === clickedEdgeRef.current);
+            if(currentSelectedEdge) {
+                currentSelectedEdge.drawnEdge.setOptions(edgeProps);
+            }
+            setClickedEdge(null);
             setClickedNode(nodeId);
             setNodeType(toNode.node.nodeType as NodeType);
             setNodeName(toNode.node.name);
@@ -620,6 +625,7 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
         const toBeSelectedEdge = mapEdgesRef.current.find((edge) => edge.edge.edgeId === edgeId);
         const currentSelectedEdge = mapEdgesRef.current.find((edge) => edge.edge.edgeId === clickedEdgeRef.current);
         if (toBeSelectedEdge) {
+            setClickedNode(null);
             if(currentSelectedEdge){
                 currentSelectedEdge.drawnEdge.setOptions(edgeProps);
             }
