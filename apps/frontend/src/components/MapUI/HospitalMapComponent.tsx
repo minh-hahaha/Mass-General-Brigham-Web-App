@@ -352,7 +352,7 @@ const HospitalMapComponent = ({
             //hide
             setTimeout(() => {
                 setShowDestinationFloorAlert(false);
-            }, 3000);
+            }, 2000);
         } else {
             setShowDestinationFloorAlert(false);
         }
@@ -383,7 +383,7 @@ const HospitalMapComponent = ({
 
             }
         }
-    }, [bfsPath, startNode]);
+    }, [bfsPath, startNode, selectedAlgorithm]);
 
 
 
@@ -502,12 +502,12 @@ const HospitalMapComponent = ({
 
 
             {/* Destination Floor Alert */}
-            {showDestinationFloorAlert && destinationFloorId && (
+            {showDestinationFloorAlert && destinationFloorId && destinationFloorId !== "PP-1" ? (
                 <div className="fixed top-20 right-6 bg-mgbblue text-white p-4 rounded-lg shadow-lg z-50 animate-bounce">
                     <p className="font-bold">Destination Floor</p>
                     <p>Your destination is on {getDestinationFloorName()}</p>
                 </div>
-            )}
+            ) : (<></>)}
 
 
         <div className="relative w-full h-full">
