@@ -1,8 +1,8 @@
 // THIS HAS ALL THE TYPES AND ARRAYS USED BY THE FORMS
 
 //ALL
-export type mgbHospitalType = "" | 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital' | 'Main Campus';
-export const mgbHospitals = ['Chestnut Hill', '20 Patriot Place', '22 Patriot Place', 'Faulkner Hospital', 'Main Campus'];
+export type mgbHospitalType = "" | 'Chestnut Hill' | '20 Patriot Place' | '22 Patriot Place' | 'Faulkner Hospital' | 'Main Hospital';
+export const mgbHospitals = ['Chestnut Hill', '20 Patriot Place', '22 Patriot Place', 'Faulkner Hospital', 'Main Hospital'];
 export type priorityType = "" | 'Low' | 'Medium' | 'High' | 'Emergency';
 export const priorityArray = ['Low', 'Medium', 'High', 'Emergency'];
 export type statusType = 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';

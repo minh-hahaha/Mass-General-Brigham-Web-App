@@ -39,6 +39,7 @@ router.post('/', async (req: Request, res: Response) => {
                     requesterDepartmentId: 'N/A',
                     //optional field
                     employeeId: req.body.employeeId ?? null, // change to user id in the future?
+                    hospital: req.body.pickupLocation,
                 },
             });
 

@@ -37,6 +37,7 @@ router.post('/', async (req: Request, res: Response) => {
                     priority: req.body.priority,
                     serviceType: 'Maintenance Request',
                     requesterDepartmentId: req.body.directory,
+                    hospital: req.body.maintenanceHospital,
                 },
             });
 
