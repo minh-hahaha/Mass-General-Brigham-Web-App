@@ -264,6 +264,8 @@ const MapSidebarComponent = ({
             onClickingBack(currentStep);
             setSelectedLot('')
             updateStep('DIRECTIONS');
+            setCheckIn(false);
+
         }
     };
 
@@ -310,6 +312,7 @@ const MapSidebarComponent = ({
         setCheckIn(toggle);
         onCheckIn(toggle)
         handleDepartmentSelect(selectedDepartment);
+
     }
 
     //handle voice transcript
@@ -654,7 +657,7 @@ const MapSidebarComponent = ({
 
                     {/* Toggle Switch */}
                     <label className="relative inline-flex items-center cursor-pointer mr-1">
-                        <input type="checkbox" className="sr-only peer" onChange={handleToggle} />
+                        <input type="checkbox" className="sr-only peer" checked={checkIn} onChange={handleToggle} />
                         <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-mgbblue transition-all duration-300"></div>
                         <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-full"></div>
                     </label>

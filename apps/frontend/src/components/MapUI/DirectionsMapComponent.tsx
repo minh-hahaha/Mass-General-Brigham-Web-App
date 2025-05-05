@@ -446,7 +446,7 @@ const DirectionsMapComponent = () => {
                     setToDirectoryNodeId('BWFloor2Check-In Desk');
                     break;
             }
-        } else {
+        } else if (pathVisible) {
             handleDepartmentSelect(tempDepartmentNodeID);
         }
         if (lot !== '') {
@@ -482,7 +482,7 @@ const DirectionsMapComponent = () => {
             }
         }
         // for no parking lot
-        else{
+        else {
             switch (buildingID){
                 case 1:
                     setFromNodeId("CHFloor1Road3")
@@ -508,7 +508,6 @@ const DirectionsMapComponent = () => {
         if (currentStep === 'DEPARTMENT') {
             setPathVisible(false);
             clearParking();
-
             setCheckIn(false);
             setToDirectoryNodeId("")
             setToLocation('')
