@@ -526,6 +526,14 @@ async function main() {
                 "nodeId": "FKFloor1Room"
             },
             {
+                "deptId": 152,
+                "deptServices": null,
+                "deptName": "Dialysis",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room_1"
+            },
+            {
                 "deptId": 49,
                 "deptServices": null,
                 "deptName": "Emergency Entrance",
@@ -1272,7 +1280,7 @@ async function main() {
                 firstName: 'Adminh',
                 lastName: 'Ha',
                 position: 'WebAdmin',
-                email: 'softengD25X@gmail.com',
+                email: 'softengd25x@gmail.com',
                 password: 'cs3733D25X', //TODO: remove?
                 departmentId: 1,
                 admin: true,
