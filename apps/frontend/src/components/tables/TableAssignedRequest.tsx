@@ -53,15 +53,14 @@ const TableAssignedRequest = () => {
     return (
         <Table className="w-full">
             <TableHeader>
-                <TableRow className="bg-fountainBlue hover:bg-fountainBlue">
-                    <TableHead className="text-left font-semibold py-3">Request ID</TableHead>
-                    <TableHead className="text-left font-semibold py-3">Department</TableHead>
-                    <TableHead className="text-left font-semibold py-3">Room</TableHead>
-                    <TableHead className="text-left font-semibold py-3">Status</TableHead>
-                    <TableHead className="text-left font-semibold py-3">Priority</TableHead>
-                    <TableHead className="text-left font-semibold py-3">Request Date</TableHead>
-                    <TableHead className="text-left font-semibold py-3">Request Time</TableHead>
-                    <TableHead className="text-left font-semibold py-3">Service Type</TableHead>
+                <TableRow className="bg-[#20499C] hover:bg-[#20499C]" >
+                    <TableHead className="text-left font-semibold py-3 text-white">Request ID</TableHead>
+                    <TableHead className="text-left font-semibold py-3 text-white">Department</TableHead>
+                    <TableHead className="text-left font-semibold py-3 text-white">Status</TableHead>
+                    <TableHead className="text-left font-semibold py-3 text-white">Priority</TableHead>
+                    <TableHead className="text-left font-semibold py-3 text-white">Request Date</TableHead>
+                    <TableHead className="text-left font-semibold py-3 text-white">Request Time</TableHead>
+                    <TableHead className="text-left font-semibold py-3 text-white">Service Type</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -69,7 +68,6 @@ const TableAssignedRequest = () => {
                     <TableRow key={req.requestId} className="border-b hover:bg-gray-200 odd:bg-gray-100">
                         <TableCell className="text-left py-3">{req.requestId}</TableCell>
                         <TableCell className="text-left py-3">{req.requesterDepartmentId}</TableCell>
-                        <TableCell className="text-left py-3">{req.requesterRoomNumber}</TableCell>
                         <TableCell className="text-left py-3">{req.status}</TableCell>
                         <TableCell className="text-left py-3">{req.priority}</TableCell>
                         <TableCell className="text-left py-3">{req.requestDateTime?.split('T')[0]}</TableCell>

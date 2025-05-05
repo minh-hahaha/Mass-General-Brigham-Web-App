@@ -57,7 +57,6 @@ router.get('/', async (req: Request, res: Response) => {
             count: item._count._all,
         }));
 
-        console.log(serviceTypeSummary);
         res.json({
             employee,
             statusSummary,
