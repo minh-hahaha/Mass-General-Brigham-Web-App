@@ -85,7 +85,7 @@ type Step = 'SELECT_HOSPITAL' | 'HOSPITAL_DETAIL' | 'DIRECTIONS' | 'DEPARTMENT';
 
 type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
 
-type Algorithm = 'BFS' | 'DFS'| 'A_STAR';
+type Algorithm = 'BFS' | 'DFS' | 'DIJKSTRA' |'A_STAR';
 
 interface DirectoryItem {
     deptName: string;
@@ -680,7 +680,7 @@ const MapSidebarComponent = ({
                             id={'algorithm'}
                             value={selectedAlgorithm}
                             onChange={handleAlgorithmChange}
-                            options={['BFS', 'DFS', 'A_STAR']}
+                            options={['BFS', 'DFS','Dijkstra','A_STAR']}
                         />
                     )}
 

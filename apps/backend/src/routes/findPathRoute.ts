@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import { BFS } from '../Algorithms/BFS.ts';
 import { DFS } from '../Algorithms/DFS.ts';
+import { DIJKSTRA } from '../Algorithms/Dijkstra.ts';
 import { AlgorithmContext } from '../Algorithms/AlgorithmContext.ts';
 import { pathfindingStrategy } from '../Algorithms/PathfindingStrategy.ts';
 import { AStar } from '../Algorithms/A_STAR.ts';
@@ -19,6 +20,8 @@ expressRouter.post('/', async function (req: Request, res: Response) {
             pathFindingStrategy = new BFS();
         } else if (currentStratergy === 'DFS') {
             pathFindingStrategy = new DFS();
+        } else if (currentStratergy === 'Dijkstra') {
+            pathFindingStrategy = new DIJKSTRA();
         } else if (currentStratergy === 'A_STAR') {
             pathFindingStrategy = new AStar();
         } else {
