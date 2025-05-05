@@ -286,14 +286,6 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
         clickedEdgeRef.current = clickedEdge;
     }, [departmentOptions, mode, clickedNode, clickedEdge]);
 
-    /*
-    TODO:
-        1. Load Nodes and Edges based on the current floor DONE
-        2. Load the directory information for the current floor DONE
-        3. Apply tags to the currently selected node when the user adds a tag to it DONE
-        4. Apply new node properties to the currently selected node when they are entered into the input box DONE
-     */
-
     const getBuildingPropsByFloor = () => {
         return availableFloors.find(floor => floor.id === currentFloorId);
     }
@@ -324,15 +316,6 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
         }
         mapNodesRef.current = newNodes;
     }
-
-    //TODO: Find a better way to handle elevators
-    /*
-        Something like if elevator type is selected, create another field to select a destination elevator
-        Then elevators can be deleted and re-added. May or may not need special handling --
-        the edges will be across floors so need to make sure that edge is deleted (should be handled)
-        ** Should query a list of elevators to choose from
-        What happens if an elevator is not assigned a destination? Can probably just be handled as a regular node
-     */
     const fetchAvailableDepartments = async (buildingProps: Floor) => {
         let building = Number(buildingProps.buildingId);
         if(building !== 1){
