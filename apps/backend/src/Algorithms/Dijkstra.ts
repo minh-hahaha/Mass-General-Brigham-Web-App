@@ -51,6 +51,23 @@ export class DIJKSTRA implements pathfindingStrategy {
                 return path;
             }
 
+            for (const edge of graph.edges) {
+                let neighbor: myNode | null = null;
+                if (edge.from.nodeId === currentNode.nodeId) {
+                    neighbor = edge.to;
+                } else if (edge.to.nodeId === currentNode.nodeId) {
+                    neighbor = edge.from;
+                }
+
+                if (neighbor && !visited.has(neighbor.nodeId)) {
+                    const alt = edge.distanceFeet + distances.get(currentNode.nodeId)!;
+                    if (alt < distances.get(neighbor.nodeId)!) {
+                        distances.set(neighbor.nodeId, alt);
+                        myPrevious.set(neighbor.nodeId, currentNode);
+                        queue.push({ node: neighbor, distance: alt });
+                    }
+                }
+            }
 
         }
 
