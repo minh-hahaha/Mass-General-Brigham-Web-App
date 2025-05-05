@@ -36,6 +36,7 @@ router.post('/', async (req: Request, res: Response) => {
                     comments: req.body.notes,
                     priority: req.body.priority,
                     serviceType: 'Maintenance Request',
+                    requesterDepartmentId: req.body.directory,
                 },
             });
 
@@ -51,6 +52,8 @@ router.post('/', async (req: Request, res: Response) => {
 
             return { serviceRequest, maintenanceRequest };
         });
+
+        console.log(result);
 
         res.status(201).json(result);
     } catch (error) {

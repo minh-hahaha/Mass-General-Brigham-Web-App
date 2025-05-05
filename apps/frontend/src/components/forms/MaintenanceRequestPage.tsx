@@ -94,6 +94,7 @@ const MaintenanceRequestPage = ({ editData }: RequestPageProps) => {
             maintenanceTime,
             notes,
             locationId,
+            directory,
         };
 
         if (editData) {

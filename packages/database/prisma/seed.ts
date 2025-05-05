@@ -1344,42 +1344,49 @@ async function main() {
                 status: "Pending",
                 priority: "High",
                 serviceType: "Maintenance Request",
+                requesterDepartmentId: "Cardiology"
             },
             {
                 employeeId: 0,
                 status: "In Progress",
                 priority: "Medium",
                 serviceType: "Sanitation",
+                requesterDepartmentId: "Headache"
             },
             {
                 employeeId: 0,
                 status: "Completed",
                 priority: "Low",
                 serviceType: "Translation",
+                requesterDepartmentId: "Oncology"
             },
             {
                 employeeId: 1,
                 status: "Pending",
                 priority: "High",
                 serviceType: "Patient Transportation",
+                requesterDepartmentId: "N/A"
             },
             {
                 employeeId: 2,
                 status: "Pending",
                 priority: "Medium",
                 serviceType: "Medical Device",
+                requesterDepartmentId: "Sports Medicine Center"
             },
             {
                 employeeId: 3,
                 status: "In Progress",
                 priority: "Low",
                 serviceType: "Maintenance Request",
+                requesterDepartmentId: "Center for Pain Medicine"
             },
             {
                 employeeId: 0,
                 status: "Completed",
                 priority: "High",
                 serviceType: "Sanitation",
+                requesterDepartmentId: "Radiology, MRI/CT scan"
             },
         ],
         skipDuplicates: true,
