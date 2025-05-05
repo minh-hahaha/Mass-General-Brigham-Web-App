@@ -31,8 +31,8 @@ const AboutPage = () => {
                             name={'Andrew Melton'}
                             title={'Assistant Lead Software Engineer'}
                             github={'4ndrew13'}
-                            schoolYear={'xxx'}
-                            major={'xxx'}
+                            schoolYear={'Class of 2027'}
+                            major={'Computer Science and Data Science'}
                             quote={'xxx'}
                         />
                     </MemberPair>
@@ -52,8 +52,8 @@ const AboutPage = () => {
                             name={'Max Jeronimo'}
                             title={'Backend / Databases'}
                             github={'max-jeronimo'}
-                            schoolYear={'xxx'}
-                            major={'xxx'}
+                            schoolYear={'Class of 2027'}
+                            major={'Computer Science'}
                             quote={'xxx'}
                         />
                     </MemberPair>
@@ -73,9 +73,9 @@ const AboutPage = () => {
                             name={'Jack Morris'}
                             title={'Backend / Databases'}
                             github={'JackMorris1234'}
-                            schoolYear={'xxx'}
-                            major={'xxx'}
-                            quote={'xxx'}
+                            schoolYear={'Class of 2026'}
+                            major={'Computer Science'}
+                            quote={'Where is my ERD?'}
                         />
                     </MemberPair>
 
