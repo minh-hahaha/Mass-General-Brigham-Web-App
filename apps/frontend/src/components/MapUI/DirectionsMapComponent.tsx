@@ -220,31 +220,6 @@ const DirectionsMapComponent = () => {
 
     // API CALLS
     // get directory list
-    useEffect(() => {
-        const fetchDirectoryList = async () => {
-            try {
-                let realBuildingID = buildingID;
-                if (realBuildingID !== 1) {
-                    realBuildingID++;
-                }
-                console.log(realBuildingID);
-                const directories: DirectoryRequestByBuilding[] = [];
-                const data = await getDirectory(realBuildingID);
-                console.log(data);
-                data.map((d) => directories.push(d));
-                if (realBuildingID === 3) {
-                    const otherPP = await getDirectory(2);
-                    otherPP.map((d) => directories.push(d));
-                }
-                console.log(directories);
-                setDirectoryList(directories);
-            } catch (error) {
-                console.error('Error fetching building names:', error);
-            }
-        };
-        fetchDirectoryList();
-        console.log('Updated Directory list');
-    }, [buildingID, toLocation]);
 
     // get the end department nodeId
     useEffect(() => {
@@ -403,14 +378,31 @@ const DirectionsMapComponent = () => {
     const handleHospitalSelect = async (hospitalId: number) => {
         setLot('');
         setPathVisible(false);
-        setBuildingID(hospitalId);
+        setBuildingID(hospitalId); // still needed for other logic
+
+        const realBuildingID = hospitalId !== 1 ? hospitalId + 1 : hospitalId;
+        const directories: DirectoryRequestByBuilding[] = [];
+
+        try {
+            const data = await getDirectory(realBuildingID);
+            data.map((d) => directories.push(d));
+
+            if (realBuildingID === 3) {
+                const otherPP = await getDirectory(2);
+                otherPP.map((d) => directories.push(d));
+            }
+
+            setDirectoryList(directories);
+            console.log("Fetched directory for hospitalId:", hospitalId, directories);
+        } catch (error) {
+            console.error('Error fetching directory:', error);
+        }
 
         const hospital = Object.entries(HospitalLocations).find(
             ([name]) => BuildingIDMap[name] === hospitalId
         );
 
         if (hospital) {
-            setBuildingID(hospitalId); // set building
             setCurrentFloorId(
                 availableFloors.find((f) => f.buildingId === hospitalId.toString())?.id
             );
@@ -418,7 +410,7 @@ const DirectionsMapComponent = () => {
                 setShowFloorSelector(true);
             }
             if (map) {
-                map.panTo({ lat: hospital[1].lat, lng: hospital[1].lng }); // location
+                map.panTo({ lat: hospital[1].lat, lng: hospital[1].lng });
                 map.setZoom(hospital[1].zoom);
             }
         }

@@ -254,7 +254,7 @@ const LogoBar = () => {
                     </motion.button>
                 )}
                 <FaRegUserCircle className={clsx(
-                    !isAuthenticated ? "mt-3 relative right-25" : "mt-3 relative right-27.5",
+                    !isAuthenticated ? "mt-2.5 relative right-25" : "mt-2.5 relative right-27.5",
                 )}/>
             </div>
         </header>
