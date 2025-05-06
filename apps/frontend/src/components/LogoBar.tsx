@@ -1,5 +1,5 @@
+import React, { useState, useEffect } from 'react';
 import mgblogo from '../assets/mgblogo.png';
-import * as React from 'react';
 import { Search } from 'lucide-react';
 import {
     NavigationMenu,
@@ -17,7 +17,7 @@ import MGBButton from "@/elements/MGBButton.tsx";
 import {motion} from 'framer-motion';
 import { FaRegUserCircle } from "react-icons/fa";
 import {clsx} from 'clsx';
-import {useEffect, useState} from "react";
+
 
 
 
@@ -116,6 +116,8 @@ const LogoBar = () => {
 
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
     useEffect(() => {
         if (user && user["https://mgb.teamc.com/roles"]) {
             console.log("Roles:", user["https://mgb.teamc.com/roles"]);
@@ -132,9 +134,9 @@ const LogoBar = () => {
     return (
         <header className="h-full w-full flex items-center justify-between px-2 mt-1 mb-1 border-b-10 border-fountainBlue">
             {/* Left: Trigger + Logo */}
-            <div className="flex items-center ml-3">
+            <div className="flex items-center ml-3 gap-2">
                 <a href="/">
-                    <img src={mgblogo} alt="MASS GENERAL BRINGHAM" className="h-13 w-80 mb-1" />
+                    <img src={mgblogo} alt="MASS GENERAL BRINGHAM" className="h-13 w-auto max-w-none mb-1" />
                 </a>
                 <NavigationMenu className="ml-6">
                     <NavigationMenuList>
@@ -216,9 +218,9 @@ const LogoBar = () => {
 
                         {/* Only visible if logged in AND admin */}
                         {isAuthenticated && isAdmin && (
-                            <NavigationMenuItem>
+                            <NavigationMenuItem className="flex items-center">
                                 <NavigationMenuLink
-                                    className="mt-1 font-medium"
+                                    className="mt-1 w-25 font-medium"
                                     onClick={() => (window.location.href = '/MapEditorPage')}
                                 >
                                     Map Editor
@@ -230,39 +232,53 @@ const LogoBar = () => {
             </div>
 
             {/* Right: Add future nav, user info, etc. here if needed */}
-            <div className="flex flex-row gap-4 -mr-8">
-                <Search className="my-2" />
-                <input
-                    className="text-sm w-60 px-4 border border-solid border-mgbblue rounded-md"
-                    type="text"
-                    placeholder="Search"
-                />
+            <div className="flex justify-end pr-2 relative w-full z-10">
                 {!isAuthenticated ? (
                     <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
                         <MGBButton
                             onClick={() => loginWithRedirect()}
                             variant={'secondary'}
                             disabled={false}
-                            className="pl-9"
                         >
                             Log In
                         </MGBButton>
                     </motion.button>
                 ) : (
-                    <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
-                        <MGBButton
-                            onClick={() => logout()}
-                            variant={'secondary'}
-                            disabled={false}
-                            className="pl-8"
+                    <div className="relative">
+                        <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                            className="p-2"
                         >
-                            Log Out
-                        </MGBButton>
-                    </motion.button>
+                            <FaRegUserCircle className="text-2xl text-gray-700" />
+                        </motion.button>
+
+                        {isDropdownOpen && (
+                            <div className="absolute top-full right-0 mt-2 w-28 bg-white border border-mgbblue rounded-md overflow-hidden shadow-md z-50">
+                                <button
+                                    className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+                                    onClick={() => {
+                                        console.log("Redirecting to Account Page");
+                                        window.location.href = '/AccountPage';
+                                        setIsDropdownOpen(false);
+                                    }}
+                                >
+                                    Account
+                                </button>
+                                <button
+                                    className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+                                    onClick={() => {
+                                        logout();
+                                        setIsDropdownOpen(false);
+                                    }}
+                                >
+                                    Log Out
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 )}
-                <FaRegUserCircle className={clsx(
-                    !isAuthenticated ? "mt-3 relative right-25" : "mt-3 relative right-27.5",
-                )}/>
             </div>
         </header>
     );

@@ -1,6 +1,7 @@
 import React from 'react';
 import DirectionsMapComponent from "@/components/MapUI/DirectionsMapComponent.tsx";
 import {APIProvider} from "@vis.gl/react-google-maps";
+import {useLocation} from "react-router-dom";
 
 export const MapPage = () => {
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;

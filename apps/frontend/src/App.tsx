@@ -19,6 +19,7 @@ import AboutPage from '@/routes/AboutPage.tsx';
 import AccountPage from '@/routes/AccountPage.tsx'
 import {Auth0Provider} from "@auth0/auth0-react";
 import ServiceRequestsChartsRouter from '@/routes/ServiceRequestsChartsPage.tsx';
+import NotFoundPage from '@/routes/NotFoundPage.tsx';
 import {ROUTES} from "common/src/constants.ts";
 
 import CreditsPage from "@/routes/CreditsPage.tsx";
@@ -150,6 +151,8 @@ function App() {
                                 <Route path="/2048" element={<Game2048 />} />
                                 <Route path="/ServiceRequestsChartsPage" element={<ServiceRequestsChartsRouter />} />
 
+                                {/*404 handler*/}
+                                <Route path="*" element={<NotFoundPage />} />
                             </Routes>
                         </main>
                     </div>

@@ -10,6 +10,10 @@ interface CarouselProps {
 const CarouselMenu: React.FC<CarouselProps> = ({ tableTabs, initialIndex = 0 }) => {
     const [selectedIndex, setSelectedIndex] = useState(initialIndex);
 
+    useEffect(() => {
+        setSelectedIndex(initialIndex);
+    }, [initialIndex]);
+
     return (
         <div className="w-full pt-10 flex flex-col min-h-0">
             {/* Tabs */}
