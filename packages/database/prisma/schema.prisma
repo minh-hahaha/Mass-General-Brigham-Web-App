@@ -39,6 +39,7 @@ model ServiceRequest {
   comments              String?
   priority              String
   serviceType           String
+  hospital              String
 
   //Requests
   patientTransport     PatientTransport?     @relation(name: "ServicePatientTransport")

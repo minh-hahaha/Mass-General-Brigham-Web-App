@@ -34,6 +34,8 @@ router.post('/', async (req: Request, res: Response) => {
                     comments: req.body.notes,
                     priority: req.body.priority,
                     serviceType: 'Medical Device',
+                    requesterDepartmentId: req.body.department,
+                    hospital: req.body.location,
                 },
             });
 

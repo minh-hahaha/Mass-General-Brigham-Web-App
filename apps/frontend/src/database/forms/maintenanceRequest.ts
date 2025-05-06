@@ -20,6 +20,7 @@ export interface maintenanceRequest {
     // Requester Information
     notes: string;
     locationId: number;
+    directory: string;
 }
 
 export interface incomingMaintenanceRequest {

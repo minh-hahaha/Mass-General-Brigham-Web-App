@@ -37,6 +37,7 @@ const TransportRequestPage = ({ editData }: RequestPageProps) => {
     const [submittedRequest, setSubmittedRequest] = useState<transportRequest | null>(null);
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
+    const [isEditing, setIsEditing] = useState(false);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -55,7 +56,7 @@ const TransportRequestPage = ({ editData }: RequestPageProps) => {
             assignedToId,
         };
 
-        if (editData) {
+        if (editData && isEditing) {
             const editRequest: editTransportRequest = {
                 transportRequest: newRequest,
                 requestId: editData.requestId
@@ -67,6 +68,7 @@ const TransportRequestPage = ({ editData }: RequestPageProps) => {
 
         setSubmittedRequest(newRequest);
         setShowConfirmation(true);
+        setIsEditing(false);
         handleReset();
     };
 
@@ -110,6 +112,7 @@ const TransportRequestPage = ({ editData }: RequestPageProps) => {
             setAssignedToId(0);
             setTransportDate(formatDateForEdit(editData.patientTransport.transportDate));
             setEmployeeId(editData.employeeId);
+            setIsEditing(true);
         }
     }, []);
 

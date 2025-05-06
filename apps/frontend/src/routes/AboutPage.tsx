@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
-import Member from '../components/Member.tsx';
-import MemberPair from '../components/MemberPair.tsx';
+import Member from '../components/Member';
+import MemberPair from '../components/MemberPair';
 
 const AboutPage = () => {
     return (
@@ -22,12 +22,18 @@ const AboutPage = () => {
                             name={'Minh Ha'}
                             title={'Lead Software Engineer'}
                             github={'minh-hahaha'}
+                            schoolYear={'Class of 2027'}
+                            major={'Computer Science'}
+                            quote={'Oh fckk” at 5am. “Yo yo yo…”. “Very nice”. “Have i ever tell you that I love you?'}
                         />
                         <Member
                             image={'Andrew.png'}
                             name={'Andrew Melton'}
                             title={'Assistant Lead Software Engineer'}
                             github={'4ndrew13'}
+                            schoolYear={'Class of 2027'}
+                            major={'Computer Science and Data Science'}
+                            quote={'xxx'}
                         />
                     </MemberPair>
 
@@ -37,12 +43,18 @@ const AboutPage = () => {
                             name={'Pakorn Liengsawangwong'}
                             title={'Assistant Lead Software Engineer'}
                             github={'pako490'}
+                            schoolYear={'xxx'}
+                            major={'xxx'}
+                            quote={'xxx'}
                         />
                         <Member
                             image={'max.png'}
                             name={'Max Jeronimo'}
                             title={'Backend / Databases'}
                             github={'max-jeronimo'}
+                            schoolYear={'Class of 2027'}
+                            major={'Computer Science'}
+                            quote={'xxx'}
                         />
                     </MemberPair>
 
@@ -52,12 +64,18 @@ const AboutPage = () => {
                             name={'Jake Lariviere'}
                             title={'Backend / Databases'}
                             github={'jlariv11'}
+                            schoolYear={'Class of 2026'}
+                            major={'Computer Science and IMGD'}
+                            quote={'RIP CSV parser'}
                         />
                         <Member
                             image={'Jack.png'}
                             name={'Jack Morris'}
                             title={'Backend / Databases'}
                             github={'JackMorris1234'}
+                            schoolYear={'Class of 2026'}
+                            major={'Computer Science'}
+                            quote={'Where is my ERD?'}
                         />
                     </MemberPair>
 
@@ -67,12 +85,18 @@ const AboutPage = () => {
                             name={'Vinam Nguyen'}
                             title={'Algorithms / Project Manager'}
                             github={'vinamnguyen'}
+                            schoolYear={'Class of 2027'}
+                            major={'Computer Science'}
+                            quote={'WE DID IT!'}
                         />
                         <Member
                             image={'Krish.png'}
                             name={'Krish Patel'}
                             title={'Algorithms / Scrum Master'}
                             github={'krishpate1'}
+                            schoolYear={'Class of 2027'}
+                            major={'Computer Science'}
+                            quote={'Whose booking the room for the meeting?'}
                         />
                     </MemberPair>
 
@@ -82,12 +106,18 @@ const AboutPage = () => {
                             name={'Yael Whitson'}
                             title={'Frontend / Documentation Analyst'}
                             github={'whywhitson'}
+                            schoolYear={'xxx'}
+                            major={'xxx'}
+                            quote={'xxx'}
                         />
                         <Member
                             image={'Sean.jpg'}
-                            name={'Haotian Liu'}
+                            name={'Haotian(Sean) Liu'}
                             title={'Frontend / Product Owner'}
                             github={'seanliu7081'}
+                            schoolYear={'Class of 2025'}
+                            major={'Robotics Engineering and Mathematics'}
+                            quote={'I need sleep'}
                         />
                     </MemberPair>
 
@@ -97,12 +127,18 @@ const AboutPage = () => {
                             name={'Kai Davidson'}
                             title={'Team Coach'}
                             github={'None'}
+                            schoolYear={'None'}
+                            major={'None'}
+                            quote={'None'}
                         />
                         <Member
                             image={'wwong2.jpg'}
                             name={'Wilson Wong'}
                             title={'Professor'}
                             github={'None'}
+                            schoolYear={'None'}
+                            major={'None'}
+                            quote={'None'}
                         />
                     </MemberPair>
 
@@ -121,17 +157,23 @@ const AboutPage = () => {
                             name={'Brigham and Women\'s Hospital'}
                             title={'Provided maps and data'}
                             github={'None'}
+                            schoolYear={'None'}
+                            major={'None'}
+                            quote={'None'}
                         />
                         <Member
                             image={'AndrewShinn.jpg'}
                             name={'Andrew Shinn'}
                             title={'Brigham and Women\'s Representative'}
                             github={'None'}
+                            schoolYear={'None'}
+                            major={'None'}
+                            quote={'None'}
                         />
                     </MemberPair>
                 </div>
                 <div className="pt-8">
-                    The Brigham & Women’s Hospital maps and data used in this application are
+                    The Brigham & Women's Hospital maps and data used in this application are
                     copyrighted and provided for the sole use of educational purposes.
                 </div>
             </div>

@@ -11,7 +11,7 @@ router.get('/', async function (req: Request, res: Response) {
         //Attempt to pull from service reqs
         const SERVICE_REQS_LIST = await PrismaClient.serviceRequest.findMany({
             orderBy: {
-                priority: 'asc',
+                requestId: 'asc',
             },
         });
         console.info('Successfully pulled service reqs list'); // Log that it was successful
@@ -39,6 +39,7 @@ router.post('/csv', async function (req: Request, res: Response) {
                 locationId: data.locationId,
                 serviceType: data.serviceType,
                 requestTime: data.requestTime,
+                hospital: data.hospital,
             };
             await PrismaClient.serviceRequest.upsert({
                 where: { requestId: data.requestId },
