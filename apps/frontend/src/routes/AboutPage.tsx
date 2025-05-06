@@ -60,7 +60,7 @@ const AboutPage = () => {
                             github={'krishpate1'}
                             schoolYear={'Class of 2027'}
                             major={'Computer Science'}
-                            quote={'Whose booking the room for the meeting?'}
+                            quote={'Deploying to AWS is the bane of my existence.'}
                             delay={baseDelay + 0.3}
                         />
                     </MemberPair>
