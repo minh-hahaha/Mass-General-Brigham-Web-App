@@ -43,9 +43,9 @@ const AboutPage = () => {
                             name={'Pakorn Liengsawangwong'}
                             title={'Co-Lead Lead Software Engineer'}
                             github={'pako490'}
-                            schoolYear={'xxx'}
-                            major={'xxx'}
-                            quote={'xxx'}
+                            schoolYear={'Class of 2027'}
+                            major={'Computer Science'}
+                            quote={'I’ll fix it later'}
                         />
                         <Member
                             image={'max.png'}
@@ -106,9 +106,9 @@ const AboutPage = () => {
                             name={'Yael Whitson'}
                             title={'Frontend / Documentation Analyst'}
                             github={'whywhitson'}
-                            schoolYear={'xxx'}
-                            major={'xxx'}
-                            quote={'xxx'}
+                            schoolYear={'Class of 2026'}
+                            major={'Robotics Engineering'}
+                            quote={'I sure hope I remembered to submit the tracking doc!'}
                         />
                         <Member
                             image={'Sean.jpg'}
