@@ -33,12 +33,12 @@ const AboutPage = () => {
                         <Member
                             image={'Andrew.png'}
                             name={'Andrew Melton'}
-                            title={'Co-Lead Lead Software Engineer'}
+                            title={'Co-Lead Software Engineer'}
                             github={'4ndrew13'}
                             schoolYear={'Class of 2027'}
                             major={'Computer Science and Data Science'}
                             quote={'xxx'}
-                            delay={baseDelay + 0.2}
+                            delay={baseDelay + 0.1}
                         />
                     </MemberPair>
 
@@ -46,11 +46,34 @@ const AboutPage = () => {
                         <Member
                             image={'Pakorn.jpg'}
                             name={'Pakorn Liengsawangwong'}
-                            title={'Co-Lead Lead Software Engineer'}
+                            title={'Co-Lead Software Engineer'}
                             github={'pako490'}
                             schoolYear={'Class of 2027'}
                             major={'Computer Science'}
                             quote={'I will fix it later'}
+                            delay={baseDelay + 0.2}
+                        />
+                        <Member
+                            image={'Krish.png'}
+                            name={'Krish Patel'}
+                            title={'Co-Lead Software Engineer'}
+                            github={'krishpate1'}
+                            schoolYear={'Class of 2027'}
+                            major={'Computer Science'}
+                            quote={'Whose booking the room for the meeting?'}
+                            delay={baseDelay + 0.3}
+                        />
+                    </MemberPair>
+
+                    <MemberPair ordinal={2}>
+                        <Member
+                            image={'Jake.jpg'}
+                            name={'Jake Lariviere'}
+                            title={'Co-Lead Software Engineer'}
+                            github={'jlariv11'}
+                            schoolYear={'Class of 2026'}
+                            major={'Computer Science and IMGD'}
+                            quote={'RIP CSV parser'}
                             delay={baseDelay + 0.4}
                         />
                         <Member
@@ -61,30 +84,7 @@ const AboutPage = () => {
                             schoolYear={'Class of 2027'}
                             major={'Computer Science'}
                             quote={'do not ask me to draw another map'}
-                            delay={baseDelay + 0.6}
-                        />
-                    </MemberPair>
-
-                    <MemberPair ordinal={2}>
-                        <Member
-                            image={'Jake.jpg'}
-                            name={'Jake Lariviere'}
-                            title={'Assistant Lead Software Engineer'}
-                            github={'jlariv11'}
-                            schoolYear={'Class of 2026'}
-                            major={'Computer Science and IMGD'}
-                            quote={'RIP CSV parser'}
-                            delay={baseDelay + 0.8}
-                        />
-                        <Member
-                            image={'Krish.png'}
-                            name={'Krish Patel'}
-                            title={'Assistant Lead Software Engineer'}
-                            github={'krishpate1'}
-                            schoolYear={'Class of 2027'}
-                            major={'Computer Science'}
-                            quote={'Whose booking the room for the meeting?'}
-                            delay={baseDelay + 1.4}
+                            delay={baseDelay + 0.5}
                         />
                     </MemberPair>
 
@@ -97,7 +97,7 @@ const AboutPage = () => {
                             schoolYear={'Class of 2027'}
                             major={'Computer Science'}
                             quote={'WE DID IT!'}
-                            delay={baseDelay + 1.2}
+                            delay={baseDelay + 0.6}
                         />
                         <Member
                             image={'Jack.png'}
@@ -107,7 +107,7 @@ const AboutPage = () => {
                             schoolYear={'Class of 2026'}
                             major={'Computer Science'}
                             quote={'Where is my ERD?'}
-                            delay={baseDelay + 1.0}
+                            delay={baseDelay + 0.7}
                         />
                     </MemberPair>
 
@@ -120,7 +120,7 @@ const AboutPage = () => {
                             schoolYear={'Class of 2026'}
                             major={'Robotics Engineering'}
                             quote={'I sure hope I remembered to submit the tracking doc!'}
-                            delay={baseDelay + 1.6}
+                            delay={baseDelay + 0.8}
                         />
                         <Member
                             image={'Sean.jpg'}
@@ -130,7 +130,7 @@ const AboutPage = () => {
                             schoolYear={'Class of 2025'}
                             major={'Robotics Engineering and Mathematics'}
                             quote={'I need sleep'}
-                            delay={baseDelay + 1.8}
+                            delay={baseDelay + 0.9}
                         />
                     </MemberPair>
 
@@ -143,7 +143,7 @@ const AboutPage = () => {
                             schoolYear={'None'}
                             major={'None'}
                             quote={'None'}
-                            delay={baseDelay + 2.0}
+                            delay={baseDelay + 1.0}
                         />
                         <Member
                             image={'wwong2.jpg'}
@@ -153,7 +153,7 @@ const AboutPage = () => {
                             schoolYear={'None'}
                             major={'None'}
                             quote={'None'}
-                            delay={baseDelay + 2.2}
+                            delay={baseDelay + 1.1}
                         />
                     </MemberPair>
 
@@ -161,7 +161,7 @@ const AboutPage = () => {
                         className="font-semibold text-4xl pb-4"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 2, delay: baseDelay + 2.4 }}
+                        transition={{ duration: 2, delay: baseDelay + 1.2 }}
                     >
                         Special Thanks to:
                     </motion.div>
@@ -175,7 +175,7 @@ const AboutPage = () => {
                             schoolYear={'None'}
                             major={'None'}
                             quote={'None'}
-                            delay={baseDelay + 2.6}
+                            delay={baseDelay + 1.3}
                         />
                         <Member
                             image={'AndrewShinn.jpg'}
@@ -185,7 +185,7 @@ const AboutPage = () => {
                             schoolYear={'None'}
                             major={'None'}
                             quote={'None'}
-                            delay={baseDelay + 2.8}
+                            delay={baseDelay + 1.4}
                         />
                     </MemberPair>
                 </div>
