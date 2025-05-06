@@ -1,10 +1,28 @@
 import { motion } from 'framer-motion';
 import Member from '../components/Member';
 import MemberPair from '../components/MemberPair';
+import team_pic from '../assets/team_picv2.png';
 
 const AboutPage = () => {
     return (
         <div className="bg-gray-200 h-2full max-w-full overflow-x-hidden">
+            {/* Full width image with no constraints */}
+            <motion.div
+                className="w-full mb-8 relative"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.5 }}
+            >
+                <div className="w-[100vw] h-[500px] left-[50%] right-[50%] mx-[-50vw] absolute overflow-hidden position-relative">
+                    <img
+                        src={team_pic}
+                        alt="Team C"
+                        className="w-full h-full object-fill"
+                    />
+                </div>
+                <div style={{ height: '500px' }}></div> {/* Spacer to maintain layout flow */}
+            </motion.div>
+
             <div className="container mx-auto grid grid-cols-1 px-24 py-12 text-left">
                 <motion.div
                     className="font-semibold text-4xl text-center pb-10"
@@ -24,7 +42,7 @@ const AboutPage = () => {
                             github={'minh-hahaha'}
                             schoolYear={'Class of 2027'}
                             major={'Computer Science'}
-                            quote={'Oh fckk" at 5am. "Yo yo yo…". "Very nice". "Have i ever tell you that I love you?'}
+                            quote={'Very nice.'}
                         />
                         <Member
                             image={'Andrew.png'}
@@ -45,7 +63,7 @@ const AboutPage = () => {
                             github={'pako490'}
                             schoolYear={'Class of 2027'}
                             major={'Computer Science'}
-                            quote={'I ll fix it later'}
+                            quote={'I will fix it later'}
                         />
                         <Member
                             image={'max.png'}
