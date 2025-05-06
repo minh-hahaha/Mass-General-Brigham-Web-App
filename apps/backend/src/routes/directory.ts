@@ -95,6 +95,9 @@ router.get('/byBuilding', async function (req: Request, res: Response) {
                     equals: buildingFilter,
                 },
             },
+            include: {
+                departmentNodes: true, // <-- this gives you access to buildingId and floor
+            },
         });
         res.json(DIRECTORY_NAMES);
     } catch (error) {
