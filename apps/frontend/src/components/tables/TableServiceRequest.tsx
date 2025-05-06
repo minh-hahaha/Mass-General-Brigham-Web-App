@@ -14,11 +14,11 @@ import { splitDateTime } from '@/database/forms/formTypes.ts';
 import { employeeNameId, getEmployeeNameIds } from '@/database/getEmployee.ts';
 import ImportExportDirectoryPage from '@/routes/ImportExportDirectoryPage.tsx';
 import { ROUTES } from 'common/src/constants.ts';
-import { FaRegUserCircle, FaBuilding, FaCalendarAlt  } from "react-icons/fa";
-import { MdNumbers } from "react-icons/md";
-import { FaListCheck } from "react-icons/fa6";
-import { MdOutlinePriorityHigh } from "react-icons/md";
-import ServiceRequestsCharts from "@/components/ServiceRequestsCharts.tsx";
+import { FaRegUserCircle, FaBuilding, FaCalendarAlt } from 'react-icons/fa';
+import { MdNumbers } from 'react-icons/md';
+import { FaListCheck } from 'react-icons/fa6';
+import { MdOutlinePriorityHigh } from 'react-icons/md';
+import ServiceRequestsCharts from '@/components/ServiceRequestsCharts.tsx';
 
 import { TbStairsUp } from 'react-icons/tb';
 
@@ -228,7 +228,10 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                     {/* priority Input */}
                     <div>
                         <label className="block text-sm font-medium">Priority</label>
-                        <MdOutlinePriorityHigh className="absolute mt-2 ml-1 text-codGray" size={15} />
+                        <MdOutlinePriorityHigh
+                            className="absolute mt-2 ml-1 text-codGray"
+                            size={15}
+                        />
                         <input
                             type="text"
                             className="border border-mgbblue rounded-sm w-full p-1 px-6"
@@ -275,16 +278,13 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                 </div>
                 <div className="justify-start mb-5">
                     <MGBButton
-                        onClick={() =>
-                            setShowBreakdownModal(true)
-                        }
+                        onClick={() => setShowBreakdownModal(true)}
                         variant={'secondary'}
                         className="py-2 px-4 rounded text-sm"
                     >
                         Request Breakdown
                     </MGBButton>
                 </div>
-
             </div>
             <div className="ml-38 w-full p-6 min-h-screen bg-gray-200">
                 <div className="flex justify-center">
@@ -343,7 +343,22 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                                             {req.status}
                                         </TableCell>
                                         <TableCell className="text-left py-3">
-                                            {req.priority}
+                                            <span
+                                                className={`px-3 py-1 rounded-full text-xs font-bold
+            ${
+                req.priority === 'Emergency'
+                    ? 'bg-red-600 text-white'
+                    : req.priority === 'High'
+                      ? 'bg-red-200 text-red-800'
+                      : req.priority === 'Medium'
+                        ? 'bg-yellow-200 text-yellow-800'
+                        : req.priority === 'Low'
+                          ? 'bg-green-200 text-green-800'
+                          : 'bg-gray-200 text-gray-800'
+            }`}
+                                            >
+                                                {req.priority}
+                                            </span>
                                         </TableCell>
                                         <TableCell className="text-left py-3">
                                             {req.requestDateTime?.split('T')[0]}

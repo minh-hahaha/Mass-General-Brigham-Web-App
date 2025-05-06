@@ -81,7 +81,7 @@ export default function RequestTablesCarousel() {
     }, [intentForm]);
 
     return (
-        <div className="bg-gray-200">
+        <div className="bg-gray-200 overflow-hidden">
             <CarouselMenu tableTabs={tableTabs(setActiveForm, setEditData)} initialIndex={initialTabIndex} />
 
             {activeForm && (
