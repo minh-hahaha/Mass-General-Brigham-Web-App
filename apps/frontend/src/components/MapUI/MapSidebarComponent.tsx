@@ -431,7 +431,7 @@ const MapSidebarComponent = ({
     const renderHospitalSelection = () => (
         <div className="w-full">
             <div className="flex justify-center">
-                <h2 className="text-2xl font-black mb-6 text-center mr-10 pt-2.5">
+                <h2 className="text-2xl font-black mb-6 text-center pt-2.5">
                     Select a Hospital
                 </h2>
                 {/*<VoiceCommands voiceTranscript={handleVoiceTranscript}/>*/}
