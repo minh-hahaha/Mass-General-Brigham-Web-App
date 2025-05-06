@@ -111,6 +111,7 @@ export default function WongDinoGame() {
             return;
         }
         canvas.addEventListener("keydown", (e) => {
+            e.preventDefault();
             if (e.key === 'ArrowUp' && wongCharacter.grounded) {
                 wongCharacter.velocity.setY(-600); // higher initial jump velocity
                 wongCharacter.grounded = false;
@@ -130,140 +131,143 @@ export default function WongDinoGame() {
         const ctx = canvas.getContext("2d");
         if(!ctx) return;
 
-            canvas.tabIndex = 0; // Make it focusable
-            canvas.focus(); // Give it focus so it receives keyboard events
+        canvas.tabIndex = 0; // Make it focusable
+        canvas.focus(); // Give it focus so it receives keyboard events
 
-            let lastTime = performance.now();
-            let secondCount = 1;
+        let lastTime = performance.now();
+        let secondCount = 1;
 
-            const gameLoop = (time: number) => {
-                const delta = (time - lastTime) / 1000;
-                lastTime = time;
-                secondCount -= delta;
-                if(secondCount <= 0){
-                    score++;
-                    secondCount = 1;
+        const gameLoop = (time: number) => {
+            const delta = (time - lastTime) / 1000;
+            lastTime = time;
+            secondCount -= delta;
+            if(secondCount <= 0){
+                score++;
+                secondCount = 1;
+            }
+            deltaTime.current = delta;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "lightblue";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+
+
+            if(lives <= 0){
+                ctx.fillStyle = "black";
+                ctx.font = "48px Arial";
+                ctx.fillText("Game Over!", (canvas.width / 2) - 125, 50);
+                setGameStarted(false);
+                return;
+            }
+
+            // Update and render game state here
+
+            // Create the ground
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 300, canvas.width, 5);
+            ctx.fillStyle = "white";
+            ctx.font = "20px Arial";
+            ctx.fillText("Lives: ", 25, 25);
+            ctx.fillText("Score: " + score, canvas.width - 150, 25);
+            ctx.fillText("Best: " + bestScore.current, canvas.width - 300, 25);
+            for(let i = 0; i < lives; i++) {
+                ctx.drawImage(lifeImg, 100 + (i*50), 5, 25, 25);
+            }
+
+            ctx.drawImage(wongCharacter.image, wongCharacter.position.posX, wongCharacter.position.posY - wongCharacter.height, wongCharacter.width, wongCharacter.height);
+            for(const obstacle of obstacles) {
+                ctx.drawImage(obstacle.image, obstacle.position.posX, obstacle.position.posY - obstacle.height, obstacle.width, obstacle.height);
+            }
+
+
+            // Physics
+
+            // Gravity
+            const gravity = 1200;
+            wongCharacter.velocity.add(0, gravity * delta);
+
+            wongCharacter.position.add(wongCharacter.velocity.posX * delta, wongCharacter.velocity.posY * delta);
+
+            obstacles.forEach((obstacle) => {
+
+                obstacle.position.add(obstacle.velocity.posX * delta, obstacle.velocity.posY * delta);
+
+                const padding = 20;
+                const collides =
+                    wongCharacter.position.posX + padding < obstacle.position.posX + obstacle.width - padding &&
+                    wongCharacter.position.posX + wongCharacter.width - padding > obstacle.position.posX + padding &&
+                    wongCharacter.position.posY + padding < obstacle.position.posY + obstacle.height - padding &&
+                    wongCharacter.position.posY + wongCharacter.height - padding > obstacle.position.posY + padding;
+
+
+                if (collides && obstacle.canHurt) {
+                    obstacle.canHurt = false;
+                    lives--;
                 }
-                deltaTime.current = delta;
 
-                // Clear canvas
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = "lightblue";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                
-
-                if(lives <= 0){
-                    ctx.fillStyle = "black";
-                    ctx.font = "48px Arial";
-                    ctx.fillText("Game Over!", (canvas.width / 2) - 125, 50);
-                    setGameStarted(false);
-                    return;
-                }
-
-                // Update and render game state here
-
-                // Create the ground
-                ctx.fillStyle = "white";
-                ctx.fillRect(0, 300, canvas.width, 5);
-                ctx.fillStyle = "white";
-                ctx.font = "20px Arial";
-                ctx.fillText("Lives: ", 25, 25);
-                ctx.fillText("Score: " + score, canvas.width - 150, 25);
-                ctx.fillText("Best: " + bestScore.current, canvas.width - 300, 25);
-                for(let i = 0; i < lives; i++) {
-                    ctx.drawImage(lifeImg, 100 + (i*50), 5, 25, 25);
-                }
-
-                ctx.drawImage(wongCharacter.image, wongCharacter.position.posX, wongCharacter.position.posY - wongCharacter.height, wongCharacter.width, wongCharacter.height);
-                for(const obstacle of obstacles) {
-                    ctx.drawImage(obstacle.image, obstacle.position.posX, obstacle.position.posY - obstacle.height, obstacle.width, obstacle.height);
-                }
-
-
-                // Physics
-
-                // Gravity
-                const gravity = 1200;
-                wongCharacter.velocity.add(0, gravity * delta);
-
-                wongCharacter.position.add(wongCharacter.velocity.posX * delta, wongCharacter.velocity.posY * delta);
-
-                obstacles.forEach((obstacle) => {
-
-                    obstacle.position.add(obstacle.velocity.posX * delta, obstacle.velocity.posY * delta);
-
-                    const padding = 20;
-                    const collides =
-                        wongCharacter.position.posX + padding < obstacle.position.posX + obstacle.width - padding &&
-                        wongCharacter.position.posX + wongCharacter.width - padding > obstacle.position.posX + padding &&
-                        wongCharacter.position.posY + padding < obstacle.position.posY + obstacle.height - padding &&
-                        wongCharacter.position.posY + wongCharacter.height - padding > obstacle.position.posY + padding;
-
-
-                    if (collides && obstacle.canHurt) {
-                        obstacle.canHurt = false;
-                        lives--;
+                if(obstacle.position.posX <= -50){
+                    if(obstacle.canHurt){
+                        score += 25;
                     }
-
-                    if(obstacle.position.posX <= -50){
-                        if(obstacle.canHurt){
-                            score += 25;
-                        }
-                        const index = Math.floor(Math.random() * obstacleImages.length);
-                        obstacle.image = obstacleImages[index];
-                        obstacle.updateSpeed(score);
-                        obstacle.resetPosition();
-                    }
-                })
-
-                // Check for ground collision
-                if (wongCharacter.position.posY >= groundLevel) {
-                    wongCharacter.position.setY(groundLevel);
-                    wongCharacter.velocity.setY(0);
-                    wongCharacter.grounded = true;
-                } else {
-                    wongCharacter.grounded = false;
+                    const index = Math.floor(Math.random() * obstacleImages.length);
+                    obstacle.image = obstacleImages[index];
+                    obstacle.updateSpeed(score);
+                    obstacle.resetPosition();
                 }
+            })
 
-                wongCharacter.position.setY(
-                    Math.min(wongCharacter.position.posY, groundLevel)
-                );
+            // Check for ground collision
+            if (wongCharacter.position.posY >= groundLevel) {
+                wongCharacter.position.setY(groundLevel);
+                wongCharacter.velocity.setY(0);
+                wongCharacter.grounded = true;
+            } else {
+                wongCharacter.grounded = false;
+            }
 
-                if(score > bestScore.current){
-                    bestScore.current = score;
-                }
-                animationFrameId.current = requestAnimationFrame(gameLoop);
-            };
+            wongCharacter.position.setY(
+                Math.min(wongCharacter.position.posY, groundLevel)
+            );
 
+            if(score > bestScore.current){
+                bestScore.current = score;
+            }
             animationFrameId.current = requestAnimationFrame(gameLoop);
+        };
 
-            return () => {
-                if (animationFrameId.current) {
-                    cancelAnimationFrame(animationFrameId.current);
-                }
-            };
+        animationFrameId.current = requestAnimationFrame(gameLoop);
+
+        return () => {
+            if (animationFrameId.current) {
+                cancelAnimationFrame(animationFrameId.current);
+            }
+        };
     }, [gameStarted]);
 
     return (
         <>
-            <canvas
-                id={'game-window'}
-                width={800}
-                height={400}
-                style={{ border: '1px solid white', display: 'block', margin: '0 auto' }}
-                className={"absolute top-50 left-85"}
-            ></canvas>
-            <div
-                hidden={gameStarted}
-                className={"absolute top-90 left-170"}
-            >
-                <MGBButton
-                    onClick={() => setGameStarted(true)}
-                    children={'Start Game'}
-                    variant={'primary'}
-                >
-                </MGBButton>
+            <div className="flex items-center justify-center h-screen">
+                <div className="bg-gray-200 p-2 rounded shadow">
+                    <canvas
+                        id={'game-window'}
+                        width={800}
+                        height={400}
+                        style={{ border: '1px solid white', display: 'block', margin: '0 auto' }}
+                    ></canvas>
+                    <div
+                        hidden={gameStarted}
+                        className={'absolute py-10'}
+                    >
+                        <MGBButton
+                            onClick={() => setGameStarted(true)}
+                            children={'Start Game'}
+                            variant={'primary'}
+                        >
+                        </MGBButton>
+                    </div>
+                </div>
             </div>
         </>
     );
