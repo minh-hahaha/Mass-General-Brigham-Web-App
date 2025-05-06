@@ -150,6 +150,8 @@ const DirectionsMapComponent = () => {
     const [currentFloorId, setCurrentFloorId] = useState<string | undefined>('');
     const [showFloorSelector, setShowFloorSelector] = useState<boolean>(false);
     const [highlightFloorId, setHighlightFloorId] = useState<string | undefined>();
+    const [highlightFloor, setHighlightFloor] = useState<boolean>(true);
+
 
     const [currentStep, setCurrentStep] = useState<Step>('SELECT_HOSPITAL');
 
@@ -570,8 +572,11 @@ const DirectionsMapComponent = () => {
 
     const handleCheckIn = (checkIn: boolean) => {
         setCheckIn(checkIn);
+        setHighlightFloor(false);
     };
     console.log(' ====== checkIn? ' + checkIn);
+
+
 
     return (
         <div className="flex w-screen h-screen">
@@ -601,6 +606,7 @@ const DirectionsMapComponent = () => {
                             currentFloorId={currentFloorId}
                             onChange={handleFloorChange}
                             highlightFloorId={highlightFloorId}
+                            highlightFloor={highlightFloor}
                         />
                     </div>
                 )}

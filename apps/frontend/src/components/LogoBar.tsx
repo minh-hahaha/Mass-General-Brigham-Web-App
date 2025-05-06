@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import mgblogo from '../assets/mgblogo.png';
 import { Search } from 'lucide-react';
 import {
@@ -13,14 +13,13 @@ import {
 } from '@/components/ui/navigation-menu';
 import { cn } from '@/lib/utils.ts';
 import { useAuth0 } from '@auth0/auth0-react';
-import MGBButton from '@/elements/MGBButton.tsx';
-import { motion } from 'framer-motion';
-import { FaRegUserCircle } from 'react-icons/fa';
-import { clsx } from 'clsx';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import VoiceCommands from '@/components/MapUI/VoiceCommands.tsx';
-import { classifyInput } from '../../utils/classifyInput.ts';
+import MGBButton from "@/elements/MGBButton.tsx";
+import {motion} from 'framer-motion';
+import { FaRegUserCircle } from "react-icons/fa";
+import {clsx} from 'clsx';
+
+
+
 
 const aboutItems = [
     {
@@ -112,88 +111,32 @@ const ListItem = React.forwardRef<React.ElementRef<'a'>, React.ComponentPropsWit
 ListItem.displayName = 'ListItem';
 
 const LogoBar = () => {
+
     const { loginWithRedirect, isAuthenticated, logout, user } = useAuth0();
 
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
-    const [showUserDropdown, setShowUserDropdown] = useState(false);
-    const toggleUserDropdown = () => setShowUserDropdown((prev) => !prev);
+
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     useEffect(() => {
-        if (user && user['https://mgb.teamc.com/roles']) {
-            console.log('Roles:', user['https://mgb.teamc.com/roles']);
-            const adminStatus = user['https://mgb.teamc.com/roles'].includes('Admin');
+        if (user && user["https://mgb.teamc.com/roles"]) {
+            console.log("Roles:", user["https://mgb.teamc.com/roles"]);
+            const adminStatus = user["https://mgb.teamc.com/roles"].includes("Admin");
             setIsAdmin(adminStatus);
-            console.log('User', user);
-            console.log('Admin', adminStatus);
+            console.log("User", user);
+            console.log("Admin", adminStatus);
         } else {
-            console.log('Roles not found or user not loaded properly');
+            console.log("Roles not found or user not loaded properly");
         }
     }, [isAuthenticated, user]);
 
-    const navigate = useNavigate(); // ✅ move this HERE
-
-    const handleSearch = async (input: string) => {
-        const result = await classifyInput(input);
-
-        console.log('Intent', result.intent);
-
-        switch (result.intent) {
-            case 'create_request':
-                navigate('/ServiceRequestDisplay', {
-                    state: {
-                        requestType: result.requestType,
-                        location: result.location || result.department,
-                    },
-                });
-                break;
-
-            case 'get_hospital_directions':
-                navigate('/MapPage', {
-                    state: {
-                        hospital: result.hospital,
-                        intent: result.intent,
-                    },
-                });
-                break;
-
-            case 'get_department_directions':
-                navigate('/MapPage', {
-                    state: {
-                        department: result.department,
-                        hospital: result.hospital,
-                        intent: result.intent,
-                    },
-                });
-                break;
-
-            case 'view_department_info':
-                navigate('/DirectoryDisplay', {
-                    state: {
-                        department: result.department,
-                        hospital: result.hospital,
-                    },
-                });
-                break;
-
-            case 'view_about_info':
-                navigate('/AboutPage');
-                break;
-
-            default:
-                alert('Sorry, I couldn’t understand that request.');
-        }
-    };
-
-    const handleVoiceTranscript = (transcript: string) => {
-        handleSearch(transcript);
-    };
 
     return (
         <header className="h-full w-full flex items-center justify-between px-2 mt-1 mb-1 border-b-10 border-fountainBlue">
             {/* Left: Trigger + Logo */}
-            <div className="flex items-center ml-3">
+            <div className="flex items-center ml-3 gap-2">
                 <a href="/">
-                    <img src={mgblogo} alt="MASS GENERAL BRINGHAM" className="h-13 w-80 mb-1" />
+                    <img src={mgblogo} alt="MASS GENERAL BRINGHAM" className="h-13 w-auto max-w-none mb-1" />
                 </a>
                 <NavigationMenu className="ml-6">
                     <NavigationMenuList>
@@ -223,9 +166,7 @@ const LogoBar = () => {
                                                 <ListItem
                                                     key={item.title}
                                                     title={item.title}
-                                                    onClick={() =>
-                                                        (window.location.href = `/DirectoryDisplay?location=${encodeURIComponent(item.title)}`)
-                                                    }
+                                                    onClick={() => window.location.href = `/DirectoryDisplay?location=${encodeURIComponent(item.title)}`}
                                                 >
                                                     {item.description}
                                                 </ListItem>
@@ -237,9 +178,7 @@ const LogoBar = () => {
                                 <NavigationMenuItem>
                                     <NavigationMenuTrigger
                                         className="mt-1"
-                                        onClick={() =>
-                                            (window.location.href = '/ServiceRequestDisplay')
-                                        }
+                                        onClick={() => (window.location.href = '/ServiceRequestDisplay')}
                                     >
                                         Service Requests
                                     </NavigationMenuTrigger>
@@ -249,9 +188,7 @@ const LogoBar = () => {
                                                 <ListItem
                                                     key={item.title}
                                                     title={item.title}
-                                                    onClick={() =>
-                                                        (window.location.href = `/ServiceRequestDisplay?form=${encodeURIComponent(item.title)}`)
-                                                    }
+                                                    onClick={() => window.location.href = `/ServiceRequestDisplay?form=${encodeURIComponent(item.title)}`}
                                                 >
                                                     {item.description}
                                                 </ListItem>
@@ -261,9 +198,7 @@ const LogoBar = () => {
                                 </NavigationMenuItem>
 
                                 <NavigationMenuItem>
-                                    <NavigationMenuTrigger className="mt-1">
-                                        About
-                                    </NavigationMenuTrigger>
+                                    <NavigationMenuTrigger className="mt-1">About</NavigationMenuTrigger>
                                     <NavigationMenuContent>
                                         <ul className="grid w-[200px] gap-3 p-2 md:w-[300px] md:grid-cols-2 lg:w-[400px]">
                                             {aboutItems.map((item) => (
@@ -283,9 +218,9 @@ const LogoBar = () => {
 
                         {/* Only visible if logged in AND admin */}
                         {isAuthenticated && isAdmin && (
-                            <NavigationMenuItem>
+                            <NavigationMenuItem className="flex items-center">
                                 <NavigationMenuLink
-                                    className="mt-1 font-medium"
+                                    className="mt-1 w-25 font-medium"
                                     onClick={() => (window.location.href = '/MapEditorPage')}
                                 >
                                     Map Editor
@@ -297,7 +232,7 @@ const LogoBar = () => {
             </div>
 
             {/* Right: Add future nav, user info, etc. here if needed */}
-            <div className="flex flex-row gap-4 mr-2">
+            <div className="flex justify-end pr-2 relative w-full z-10">
                 {!isAuthenticated ? (
                     <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
                         <MGBButton
@@ -305,41 +240,37 @@ const LogoBar = () => {
                             variant={'secondary'}
                             disabled={false}
                         >
-                            <div className="flex flex-row">
-                                <FaRegUserCircle className="mt-0.75 mr-2"/>
-                                Log In
-                            </div>
+                            Log In
                         </MGBButton>
                     </motion.button>
                 ) : (
-                    <div className="relative flex flex-row">
-                        <div className="ml-5 -mt-1">
-                            <VoiceCommands voiceTranscript={handleVoiceTranscript} />
-                        </div>
-                        <div className="flex flex-row gap-3 ml-5">
-                            <MGBButton variant={'primary'} onClick={toggleUserDropdown} className="py-2.5">
-                                <div className="flex flex-row">
-                                    <FaRegUserCircle className="mt-0.75 mr-2"/>
-                                    User
-                                </div>
-                            </MGBButton>
-                        </div>
-                        {showUserDropdown && (
-                            <div className="absolute top-full right-0 w-44 bg-white border border-gray-200 rounded shadow-lg z-50">
+                    <div className="relative">
+                        <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                            className="p-2"
+                        >
+                            <FaRegUserCircle className="text-2xl text-gray-700" />
+                        </motion.button>
+
+                        {isDropdownOpen && (
+                            <div className="absolute top-full right-0 mt-2 w-28 bg-white border border-mgbblue rounded-md overflow-hidden shadow-md z-50">
                                 <button
-                                    className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm"
+                                    className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
                                     onClick={() => {
-                                        navigate('/AccountPage');
-                                        setShowUserDropdown(false);
+                                        console.log("Redirecting to Account Page");
+                                        window.location.href = '/AccountPage';
+                                        setIsDropdownOpen(false);
                                     }}
                                 >
-                                    Account Settings
+                                    Account
                                 </button>
                                 <button
-                                    className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-red-600"
+                                    className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
                                     onClick={() => {
                                         logout();
-                                        setShowUserDropdown(false);
+                                        setIsDropdownOpen(false);
                                     }}
                                 >
                                     Log Out
