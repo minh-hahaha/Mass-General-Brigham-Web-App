@@ -235,6 +235,7 @@ interface Props {
     distanceUnits: 'Feet' | 'Meters';
     setDistanceUnits: (units: 'Feet' | 'Meters') => void;
     showBuildingDirections: boolean;
+    driveIcons:string[];
 }
 
 const HospitalMapComponent = ({
@@ -255,6 +256,7 @@ const HospitalMapComponent = ({
     distanceUnits,
     setDistanceUnits,
     showBuildingDirections,
+    driveIcons,
 }: Props) => {
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
     const [startNode, setStartNode] = useState<myNode>();
@@ -454,7 +456,7 @@ const HospitalMapComponent = ({
                             walk22Directions={directions11}
                             distanceUnits={distanceUnits}
                             setDistanceUnits={setDistanceUnits}
-                            icons={iconsToPass}
+                            icons={driveIcons}
                             currentStep={currentStep}
                         />
                     </div>

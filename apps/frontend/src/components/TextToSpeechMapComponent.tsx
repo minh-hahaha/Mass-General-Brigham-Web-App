@@ -14,6 +14,12 @@ import { FaElevator } from "react-icons/fa6";
 import { LuMapPinCheckInside } from "react-icons/lu";
 import { GiNothingToSay } from "react-icons/gi";
 import { FaStairs } from "react-icons/fa6";
+import { TbNavigationNorth } from "react-icons/tb";
+import { TbNavigationSouth } from "react-icons/tb";
+import { TbNavigationEast } from "react-icons/tb";
+import { TbNavigationWest } from "react-icons/tb";
+import { MdOutlineMerge } from "react-icons/md";
+import { MdNorthEast } from "react-icons/md";
 import SelectElement from "@/elements/SelectElement.tsx";
 
 interface State {
@@ -92,7 +98,28 @@ const TextToSpeechMapComponent = ({
                 setIconToDisplay(<LuMapPinCheckInside />);
             }
         } else {
-            setIconToDisplay(<GiNothingToSay />);
+            if (direction === 'north') {
+                setIconToDisplay(<TbNavigationNorth />);
+            } else if (direction === 'south') {
+                setIconToDisplay(<TbNavigationSouth />);
+            } else if (direction === 'east') {
+                setIconToDisplay(<TbNavigationEast />);
+            } else if (direction === 'west') {
+                setIconToDisplay(<TbNavigationWest />);
+            } else if (direction === 'continue') {
+                setIconToDisplay(<BsArrowUp />);
+            } else if (direction === 'right') {
+                setIconToDisplay(<BsArrow90DegRight />);
+            } else if (direction === 'left') {
+                setIconToDisplay(<BsArrow90DegLeft />);
+            } else if (direction === 'merge') {
+                setIconToDisplay(<MdOutlineMerge />);
+            } else if (direction === 'exit') {
+                setIconToDisplay(<MdNorthEast />);
+
+            }else {
+                setIconToDisplay(<BsArrowUp />);
+            }
         }
     };
 
@@ -180,11 +207,11 @@ const TextToSpeechMapComponent = ({
                     <div className="flex flex-col">
                         <div className="flex items-center space-x-4">
                             {/* Icon */}
-                            {currentStep==='DEPARTMENT'&&(
+
                                 <div className="flex items-center justify-center p-2 bg-gray-200 rounded-md">
                                     {iconToDisplay}
                                 </div>
-                            )}
+
 
                             <label className="flex items-center space-x-1">
                                 <input
