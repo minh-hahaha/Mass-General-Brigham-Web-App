@@ -11,6 +11,7 @@ const VoiceCommands: React.FC<VoiceCommandProps> = ({voiceTranscript}) => {
         transcript,
         browserSupportsSpeechRecognition,
         resetTranscript,
+        listening,
     } = useSpeechRecognition();
 
     if(!browserSupportsSpeechRecognition){
@@ -19,23 +20,24 @@ const VoiceCommands: React.FC<VoiceCommandProps> = ({voiceTranscript}) => {
 
     const [clicked, setClicked] = useState(false)
     const handleClicked = async () => {
-        if(clicked){
-            await SpeechRecognition.stopListening();
-            setClicked(false);
-            voiceTranscript(transcript);
+        if (!clicked) {
             resetTranscript();
-        }
-        else{
-            resetTranscript();
-            await SpeechRecognition.startListening({ continuous: true });
             setClicked(true);
+            await SpeechRecognition.startListening({continuous: false});
         }
     };
 
     useEffect(() => {
+        if (!listening && clicked && transcript) {
+            voiceTranscript(transcript);
+            SpeechRecognition.stopListening(); // Ensure cleanup
+            setClicked(false);
+            resetTranscript();
+        }
+    }, [listening, transcript, clicked]);
 
-    }, [transcript]);
-    // useEffect(() => {
+
+        // useEffect(() => {
     //     //console.log("clicked", clicked);
     //     console.log("PLEASE WORK HERE IS THE TRANSCRIPT", transcript);
     // }, [transcript]);
