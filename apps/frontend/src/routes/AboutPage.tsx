@@ -27,7 +27,7 @@ const AboutPage = () => {
                             github={'minh-hahaha'}
                             schoolYear={'Class of 2027'}
                             major={'Computer Science'}
-                            quote={'Very nice.'}
+                            quote={'Verrryyyyyy nice.'}
                             delay={baseDelay}
                         />
                         <Member
@@ -37,7 +37,7 @@ const AboutPage = () => {
                             github={'4ndrew13'}
                             schoolYear={'Class of 2027'}
                             major={'Computer Science and Data Science'}
-                            quote={'xxx'}
+                            quote={'Have we deleted the repo yet?'}
                             delay={baseDelay + 0.1}
                         />
                     </MemberPair>
