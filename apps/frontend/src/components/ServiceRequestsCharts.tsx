@@ -76,12 +76,12 @@ const ServiceRequestsCharts = () => {
             <div className="flex flex-wrap justify-center gap-4">
 
                 {/* Pie Chart for Service Types */}
-                <Card className="w-[600px] h-[300px]">
+                <Card className="w-[800px] h-[300px]">
                     <CardHeader>
                         <CardTitle>Request Types</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <ResponsiveContainer width="100%" height={200}>
+                        <ResponsiveContainer width="100%" height={210}>
                             <PieChart>
                                 <Pie
                                     data={typeSummary}
@@ -106,7 +106,7 @@ const ServiceRequestsCharts = () => {
                 </Card>
 
                 {/* Bar Chart: Requests by Building */}
-                <Card className="w-[600px] h-[300px]">
+                <Card className="w-[800px] h-[300px]">
                     <CardHeader>
                         <CardTitle>Requests by Building</CardTitle>
                     </CardHeader>
