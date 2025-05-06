@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 
-
 import MGBButton from '@/elements/MGBButton.tsx';
 import {
     ArrowLeft,
@@ -21,8 +20,8 @@ import { useMapsLibrary } from '@vis.gl/react-google-maps';
 import { CiHospital1 } from 'react-icons/ci';
 import SelectElement from '@/elements/SelectElement.tsx';
 
-import VoiceCommands from "@/components/MapUI/VoiceCommands.tsx";
-import AlgorithmSelector from "@/components/AlgorithmSelector.tsx";
+import VoiceCommands from '@/components/MapUI/VoiceCommands.tsx';
+import AlgorithmSelector from '@/components/AlgorithmSelector.tsx';
 
 const hospitals = [
     {
@@ -35,7 +34,7 @@ const hospitals = [
         hours: 'Mon-Fri: 8:00 AM - 5:30 PM',
         image: '/HospitalCards/ChestnutHillCard.jpg',
         description: 'Very Cool Chestnut Hill Hospital',
-        coordinates: {lat: 42.325988, lng: -71.149567, zoom: 18},
+        coordinates: { lat: 42.325988, lng: -71.149567, zoom: 18 },
         voiceSearchKeywords: ['chestnut hill', 'chestnut', 'chestnut hill healthcare center'],
     },
     {
@@ -48,44 +47,42 @@ const hospitals = [
         hours: 'Mon-Sat: 8:00 AM - 8:00 PM',
         image: '/HospitalCards/PatriotPlaceCard.jpg',
         description: 'Very Cool Patriot Place',
-        coordinates: {lat: 42.092617, lng: -71.266492, zoom: 18},
+        coordinates: { lat: 42.092617, lng: -71.266492, zoom: 18 },
         voiceSearchKeywords: ['foxborough', 'patriot place', 'foxborough healthcare center'],
-
     },
     {
         id: 3,
         name: "Brigham and Women's Faulkner Hospital",
         address: '1153 Centre St, Jamaica Plain, MA 02130',
         defaultParking: { lat: 42.30110395876755, lng: -71.12754584282733 },
-        noneParking: { lat: 42.30115920549337,lng: -71.1276378759752},
+        noneParking: { lat: 42.30115920549337, lng: -71.1276378759752 },
         phoneNumber: '(617) 983-7000',
         hours: 'Open 24 hours',
         image: '/HospitalCards/FaulknerHospitalCard.jpg',
         description: 'Very Cool Faulkner Hospital',
-        coordinates: {lat: 42.301684739524546, lng: -71.12816396084828, zoom: 18},
+        coordinates: { lat: 42.301684739524546, lng: -71.12816396084828, zoom: 18 },
         voiceSearchKeywords: ['faulkner hospital', 'faulkner'],
     },
     {
         id: 4,
         name: "Brigham and Women's Main Hospital",
         address: '75 Francis St, Boston, MA 02115',
-        defaultParking: { lat: 42.335379397690076,lng: -71.10618363603308 },
+        defaultParking: { lat: 42.335379397690076, lng: -71.10618363603308 },
         noneParking: { lat: 42.33539581679885, lng: -71.10609959004725 },
         phoneNumber: '(617) 732-5500',
         hours: 'Open 24 hours',
         image: '/HospitalCards/MGBMainCard.jpeg',
         description: 'Very Cool Main Hospital',
-        coordinates: {lat: 42.33629683337891, lng: -71.1067533432466, zoom: 18},
+        coordinates: { lat: 42.33629683337891, lng: -71.1067533432466, zoom: 18 },
         voiceSearchKeywords: ['main hospital', 'main'],
-
-    }
-]
+    },
+];
 
 type Step = 'SELECT_HOSPITAL' | 'HOSPITAL_DETAIL' | 'DIRECTIONS' | 'DEPARTMENT';
 
 type TravelModeType = 'DRIVING' | 'TRANSIT' | 'WALKING';
 
-type Algorithm = 'BFS' | 'DFS' | 'DIJKSTRA' |'A_STAR';
+type Algorithm = 'BFS' | 'DFS' | 'DIJKSTRA' | 'A_STAR';
 
 interface DirectoryItem {
     deptName: string;
@@ -107,10 +104,17 @@ interface HospitalSidebarProps {
     onChoosingAlgo: (algorithm: string) => void;
     onCheckIn: (checkIn: boolean) => void;
     directoryList: DirectoryItem[];
-    setCurrentStepProp: React.Dispatch<React.SetStateAction<Step>>
+    setCurrentStepProp: React.Dispatch<React.SetStateAction<Step>>;
     currentStep: Step;
+    autoNavigate?: string; // the full hospital name (e.g., "Foxborough Healthcare Center")
+    autoIntent?:
+        | 'get_hospital_directions'
+        | 'get_department_directions'
+        | 'create_request'
+        | 'view_department_info'
+        | 'view_about_info';
+    autoDepartment?: string;
 }
-
 const MapSidebarComponent = ({
     onDirectionsRequest,
     onHospitalSelect,
@@ -123,6 +127,9 @@ const MapSidebarComponent = ({
     directoryList,
     setCurrentStepProp,
     currentStep,
+    autoNavigate,
+    autoIntent,
+    autoDepartment,
 }: HospitalSidebarProps) => {
     const [selectedHospital, setSelectedHospital] = useState<(typeof hospitals)[0] | null>(null);
 
@@ -133,14 +140,51 @@ const MapSidebarComponent = ({
     const [selectedAlgorithm, setSelectedAlgorithm] = useState<Algorithm>('BFS');
     const [showLine, setShowLine] = useState<boolean>(false);
 
-    const {isAuthenticated, user } = useAuth0();
+    const { isAuthenticated, user } = useAuth0();
 
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
     useEffect(() => {
-        setIsAdmin(user?.["https://mgb.teamc.com/roles"]?.includes("Admin"));
-        console.log("Admin", isAdmin);
+        setIsAdmin(user?.['https://mgb.teamc.com/roles']?.includes('Admin'));
+        console.log('Admin', isAdmin);
     }, [isAuthenticated]);
+
+    console.log('HOSPITAL', autoNavigate);
+
+    useEffect(() => {
+        if (autoIntent === 'get_hospital_directions' && autoNavigate) {
+            const hospital = hospitals.find((h) => h.name === autoNavigate);
+            if (hospital) {
+                handleHospitalSelect(hospital);
+                setTimeout(() => {
+                    handleFindDirections();
+                    handleUseCurrentLocation();
+                }, 500); // give time for selection to render
+            }
+        }
+    }, [autoIntent, autoNavigate]);
+
+    useEffect(() => {
+        if (autoIntent === 'get_department_directions' && autoNavigate) {
+            const hospitalMatch = hospitals.find(
+                (h) => h.name.toLowerCase() === autoNavigate.toLowerCase()
+            );
+            if (hospitalMatch) {
+                handleHospitalSelect(hospitalMatch); // triggers onHospitalSelect
+            }
+        }
+    }, [autoIntent, autoNavigate]);
+
+    useEffect(() => {
+        const validDirectory =
+            directoryList.length > 0 &&
+            autoIntent === 'get_department_directions' &&
+            currentStep !== 'DEPARTMENT';
+
+        if (validDirectory) {
+            updateStep('DEPARTMENT');
+        }
+    }, [directoryList, autoIntent]);
 
     const placesLibrary = useMapsLibrary('places');
 
@@ -259,13 +303,12 @@ const MapSidebarComponent = ({
             onClickingBack(currentStep);
             updateStep('HOSPITAL_DETAIL');
             setShowLine(false);
-            setTravelMode("DRIVING")
+            setTravelMode('DRIVING');
         } else if (currentStep === 'DEPARTMENT') {
             onClickingBack(currentStep);
-            setSelectedLot('')
+            setSelectedLot('');
             updateStep('DIRECTIONS');
             setCheckIn(false);
-
         }
     };
 
@@ -303,78 +346,68 @@ const MapSidebarComponent = ({
                 alert('Unable to retrieve your location.');
             }
         );
+    };
 
-    }
-
-    const [checkIn, setCheckIn] = useState(false)
+    const [checkIn, setCheckIn] = useState(false);
     const handleToggle = () => {
         const toggle = !checkIn;
         setCheckIn(toggle);
-        onCheckIn(toggle)
+        onCheckIn(toggle);
         handleDepartmentSelect(selectedDepartment);
+    };
 
-    }
-
-    //handle voice transcript
-    const handleVoiceTranscript = (transcript: string) => {
-        if (!transcript) {
-            return;
-        }
-        const transcriptLowercase = transcript.toLowerCase()
-       // console.log(transcriptLowercase);
-
-
-
-        let foundHospital = undefined;
-
-        for(let i = 0; i < hospitals.length; i++) {
-
-            const currentHospital = hospitals[i];
-
-            const currentHospitalKeywordArray = currentHospital.voiceSearchKeywords;
-
-            for (let j = 0; j < currentHospitalKeywordArray.length; j++) {
-
-                const currentHospitalKeyword = currentHospitalKeywordArray[j];
-
-                if (transcriptLowercase.includes(currentHospitalKeyword.toLowerCase())) {
-
-                    foundHospital = currentHospital;
-
-                    // console.log("FOUND YOU DAMN KEYWORD: ", currentHospitalKeyword);
-                    //
-                    // console.log(foundHospital);
-
-                    break;
-
-                }
-
-            }
-            if(foundHospital) {
-                break;
-            }
-        }
-
-        if (foundHospital) {
-            handleHospitalSelect(foundHospital);
-            handleFindDirections();
-            handleUseCurrentLocation();
-        }
-
-    }
-
-
+    // //handle voice transcript
+    // const handleVoiceTranscript = (transcript: string) => {
+    //     if (!transcript) {
+    //         return;
+    //     }
+    //     const transcriptLowercase = transcript.toLowerCase();
+    //     // console.log(transcriptLowercase);
+    //
+    //     let foundHospital = undefined;
+    //
+    //     for (let i = 0; i < hospitals.length; i++) {
+    //         const currentHospital = hospitals[i];
+    //
+    //         const currentHospitalKeywordArray = currentHospital.voiceSearchKeywords;
+    //
+    //         for (let j = 0; j < currentHospitalKeywordArray.length; j++) {
+    //             const currentHospitalKeyword = currentHospitalKeywordArray[j];
+    //
+    //             if (transcriptLowercase.includes(currentHospitalKeyword.toLowerCase())) {
+    //                 foundHospital = currentHospital;
+    //
+    //                 // console.log("FOUND YOU DAMN KEYWORD: ", currentHospitalKeyword);
+    //                 //
+    //                 // console.log(foundHospital);
+    //
+    //                 break;
+    //             }
+    //         }
+    //         if (foundHospital) {
+    //             break;
+    //         }
+    //     }
+    //
+    //     if (foundHospital) {
+    //         handleHospitalSelect(foundHospital);
+    //         handleFindDirections();
+    //         handleUseCurrentLocation();
+    //     }
+    // };
 
     // step 1: selection card
     const renderHospitalSelection = () => (
-        <div className='w-full'>
-            <div className='flex justify-center'>
-                <h2 className='text-2xl font-black mb-6 text-center mr-10 pt-2.5'>Select a Hospital</h2>
-                <VoiceCommands voiceTranscript={handleVoiceTranscript}/>
+        <div className="w-full">
+            <div className="flex justify-center">
+                <h2 className="text-2xl font-black mb-6 text-center mr-10 pt-2.5">
+                    Select a Hospital
+                </h2>
+                {/*<VoiceCommands voiceTranscript={handleVoiceTranscript}/>*/}
             </div>
 
-            <div className='space-y-4 mt-4'>
-                {hospitals.map (hospital => (
+            <div className="space-y-4 mt-4">
+                {hospitals.map((hospital) => (
                     <div
                         key={hospital.id}
                         onClick={() => handleHospitalSelect(hospital)}
@@ -414,7 +447,6 @@ const MapSidebarComponent = ({
                         {selectedHospital.name}
                     </h2>
                 </div>
-
 
                 <div
                     className="h-40 bg-cover bg-center rounded-md mb-4 relative"
@@ -583,10 +615,10 @@ const MapSidebarComponent = ({
                 {/*Parking Lot Choosing*/}
                 {travelMode === 'DRIVING' && (
                     <div className="mb-6">
-                        {(selectedHospital.id !== 4 &&
+                        {selectedHospital.id !== 4 && (
                             <div>
                                 <p className="mb-2 text-sm text-codGray text-center font-bold">
-                                Where did you park?
+                                    Where did you park?
                                 </p>
                                 <div className="grid grid-cols-3 gap-2 mb-4">
                                     {['A', 'B', 'C'].map((lot) => (
@@ -598,25 +630,25 @@ const MapSidebarComponent = ({
                                                         selectedHospital.id === 1
                                                             ? 'CH'
                                                             : selectedHospital.id === 3
-                                                                ? 'FK'
-                                                                : selectedHospital.id === 2
-                                                                    ? 'PP'
-                                                                    : "BWH"
+                                                              ? 'FK'
+                                                              : selectedHospital.id === 2
+                                                                ? 'PP'
+                                                                : 'BWH'
                                                     }_${lot}`
                                                 )
                                             }
                                             className={clsx(
                                                 'py-1 rounded-sm transition',
                                                 selectedLot ===
-                                                `${
-                                                    selectedHospital.id === 1
-                                                        ? 'CH'
-                                                        : selectedHospital.id === 3
-                                                            ? 'FK'
-                                                            : selectedHospital.id === 2
+                                                    `${
+                                                        selectedHospital.id === 1
+                                                            ? 'CH'
+                                                            : selectedHospital.id === 3
+                                                              ? 'FK'
+                                                              : selectedHospital.id === 2
                                                                 ? 'PP'
-                                                                : "BWH"
-                                                }_${lot}`
+                                                                : 'BWH'
+                                                    }_${lot}`
                                                     ? 'bg-mgbblue text-white'
                                                     : 'bg-white text-codGray border border-mgbblue hover:bg-mgbblue hover:text-white'
                                             )}
@@ -627,20 +659,17 @@ const MapSidebarComponent = ({
                                 </div>
                             </div>
                         )}
-                        {(selectedHospital.id === 4 &&
+                        {selectedHospital.id === 4 && (
                             <div>
                                 <p className="mb-2 text-sm text-codGray text-center font-bold">
                                     Where did you park?
                                 </p>
                                 <div className="w-full mb-4">
                                     <button
-                                        onClick={() =>
-                                            handleLotSelect("BWH_A")
-                                        }
+                                        onClick={() => handleLotSelect('BWH_A')}
                                         className={clsx(
                                             'w-full py-2 rounded-sm transition text-center',
-                                            selectedLot ===
-                                            "BWH_A"
+                                            selectedLot === 'BWH_A'
                                                 ? 'bg-mgbblue text-white'
                                                 : 'bg-white text-codGray border border-mgbblue hover:bg-mgbblue hover:text-white'
                                         )}
@@ -653,18 +682,21 @@ const MapSidebarComponent = ({
                     </div>
                 )}
 
-
                 <div className="flex items-center justify-between">
                     <p className="mb-2 text-sm text-codGray font-bold">Stop at Check-In desk?</p>
 
                     {/* Toggle Switch */}
                     <label className="relative inline-flex items-center cursor-pointer mr-1">
-                        <input type="checkbox" className="sr-only peer" checked={checkIn} onChange={handleToggle} />
+                        <input
+                            type="checkbox"
+                            className="sr-only peer"
+                            checked={checkIn}
+                            onChange={handleToggle}
+                        />
                         <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-mgbblue transition-all duration-300"></div>
                         <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-full"></div>
                     </label>
                 </div>
-
 
                 {/*Select Department for Pathfinding*/}
                 <div className="mb-6">
@@ -701,16 +733,15 @@ const MapSidebarComponent = ({
                 </div>
 
                 <div>
-                    { isAdmin && (
+                    {isAdmin && (
                         <SelectElement
                             label={'Select Algorithm'}
                             id={'algorithm'}
                             value={selectedAlgorithm}
                             onChange={handleAlgorithmChange}
-                            options={['BFS', 'DFS','Dijkstra','A_STAR']}
+                            options={['BFS', 'DFS', 'Dijkstra', 'A_STAR']}
                         />
                     )}
-
                 </div>
             </div>
         );
@@ -731,11 +762,7 @@ const MapSidebarComponent = ({
         }
     };
 
-    return (
-        <div className="overflow-y-auto">
-        {renderStep()}
-        </div>
-    );
+    return <div className="overflow-y-auto">{renderStep()}</div>;
 };
 
 export default MapSidebarComponent;

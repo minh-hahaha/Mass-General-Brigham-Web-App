@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CarouselMenu from '@/components/CarouselMenu.tsx';
 
 import TransportationRequestPage from '@/components/forms/TransportationRequestPage.tsx';
@@ -13,6 +13,7 @@ import MaintenanceRequestPage from '@/components/forms/MaintenanceRequestPage.ts
 import TableTranslatorRequest from "@/components/tables/TableTranslatorRequest.tsx";
 import TranslationServiceRequestPage from "@/components/forms/TranslationServiceRequestPage.tsx";
 import {incomingRequest} from "@/database/forms/transportRequest.ts";
+import { useLocation } from "react-router-dom";
 // ...other imports...
 
 
@@ -55,6 +56,7 @@ export interface RequestPageProps {
 }
 
 export default function RequestTablesCarousel() {
+    const location = useLocation();
     const [activeForm, setActiveForm] = useState<FormType>(null);
     const [editData, setEditData] = useState<incomingRequest | undefined>();
     const searchParams = new URLSearchParams(window.location.search);
@@ -68,6 +70,15 @@ export default function RequestTablesCarousel() {
         );
         return foundIndex !== -1 ? foundIndex : 0;
     })();
+
+    //intent from groq
+    const intentForm = location.state?.requestType as FormType | undefined;
+
+    useEffect(() => {
+        if (intentForm) {
+            setActiveForm(intentForm);
+        }
+    }, [intentForm]);
 
     return (
         <div className="bg-gray-200">
