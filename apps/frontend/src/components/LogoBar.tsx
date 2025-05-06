@@ -1,5 +1,5 @@
+import React, { useState } from 'react';
 import mgblogo from '../assets/mgblogo.png';
-import * as React from 'react';
 import { Search } from 'lucide-react';
 import {
     NavigationMenu,
@@ -17,9 +17,8 @@ import MGBButton from "@/elements/MGBButton.tsx";
 import {motion} from 'framer-motion';
 import { FaRegUserCircle } from "react-icons/fa";
 import {clsx} from 'clsx';
-import {useEffect, useState} from "react";
-
-
+import {useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 
 const aboutItems = [
     {
@@ -231,12 +230,6 @@ const LogoBar = () => {
 
             {/* Right: Add future nav, user info, etc. here if needed */}
             <div className="flex flex-row gap-4 -mr-8">
-                <Search className="my-2" />
-                <input
-                    className="text-sm w-60 px-4 border border-solid border-mgbblue rounded-md"
-                    type="text"
-                    placeholder="Search"
-                />
                 {!isAuthenticated ? (
                     <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
                         <MGBButton
@@ -261,7 +254,7 @@ const LogoBar = () => {
                     </motion.button>
                 )}
                 <FaRegUserCircle className={clsx(
-                    !isAuthenticated ? "mt-3 relative right-25" : "mt-3 relative right-27.5",
+                    !isAuthenticated ? "mt-2.5 relative right-25" : "mt-2.5 relative right-27.5",
                 )}/>
             </div>
         </header>
