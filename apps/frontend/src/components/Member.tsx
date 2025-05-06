@@ -17,13 +17,14 @@ const Member = ({image, name, title, github, schoolYear, major, quote, delay = 0
     const [isFlipped, setIsFlipped] = useState(false);
     const [isHoveringImage, setIsHoveringImage] = useState(false);
     const [isHoveringGithub, setIsHoveringGithub] = useState(false);
+    const [isHoveringCard, setIsHoveringCard] = useState(false);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
 
     const noFlip = !schoolYear || schoolYear === "None" ||
         !quote || quote === "None" ||
         !major || major === "None";
 
-    // Clear timeout when component unmounts
+
     useEffect(() => {
         return () => {
             if (timerRef.current) {
@@ -32,21 +33,30 @@ const Member = ({image, name, title, github, schoolYear, major, quote, delay = 0
         };
     }, []);
 
-    const handleMouseEnter = () => {
-        if (!noFlip && !isHoveringImage && !isHoveringGithub) {
-            // Set a timeout for 1.5s before flipping
+
+    useEffect(() => {
+        if (isHoveringCard && !isHoveringImage && !isHoveringGithub && !noFlip && !isFlipped) {
             timerRef.current = setTimeout(() => {
                 setIsFlipped(true);
-            }, 1500);
+            }, 800);
         }
+
+        return () => {
+            if (timerRef.current) {
+                clearTimeout(timerRef.current);
+                timerRef.current = null;
+            }
+        };
+    }, [isHoveringCard, isHoveringImage, isHoveringGithub, noFlip, isFlipped]);
+
+    const handleMouseEnter = () => {
+        setIsHoveringCard(true);
     };
 
     const handleMouseLeave = () => {
-        // Clear the timeout when mouse leaves
-        if (timerRef.current) {
-            clearTimeout(timerRef.current);
-            timerRef.current = null;
-        }
+        setIsHoveringCard(false);
+        setIsHoveringImage(false);
+        setIsHoveringGithub(false);
 
         if (!noFlip) {
             setIsFlipped(false);
@@ -55,14 +65,6 @@ const Member = ({image, name, title, github, schoolYear, major, quote, delay = 0
 
     const handleImageMouseEnter = () => {
         setIsHoveringImage(true);
-        // Clear any pending flip timeouts
-        if (timerRef.current) {
-            clearTimeout(timerRef.current);
-            timerRef.current = null;
-        }
-        if (isFlipped) {
-            setIsFlipped(false);
-        }
     };
 
     const handleImageMouseLeave = () => {
@@ -71,14 +73,6 @@ const Member = ({image, name, title, github, schoolYear, major, quote, delay = 0
 
     const handleGithubMouseEnter = () => {
         setIsHoveringGithub(true);
-        // Clear any pending flip timeouts
-        if (timerRef.current) {
-            clearTimeout(timerRef.current);
-            timerRef.current = null;
-        }
-        if (isFlipped) {
-            setIsFlipped(false);
-        }
     };
 
     const handleGithubMouseLeave = () => {
@@ -184,7 +178,7 @@ const Member = ({image, name, title, github, schoolYear, major, quote, delay = 0
                         <div className='w-[100px]'></div>
                     </div>
 
-                    {/* Back of card - updated to center text */}
+                    {/* Back of card - centered text */}
                     <div className='absolute w-full h-full flex items-center justify-center bg-gray-300 px-4 py-4 rounded-2xl [backface-visibility:hidden] [transform:rotateY(180deg)]'>
                         <div className='w-full flex flex-col items-center justify-center text-center'>
                             <div className='text-xl font-semibold mb-2 text-codgray'>{name}</div>
