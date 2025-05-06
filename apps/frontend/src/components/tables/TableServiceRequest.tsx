@@ -364,11 +364,11 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
 
             {showBreakdownModal && (
                 <div
-                    className="fixed inset-0 z-50 bg-black/50 flex items-start justify-center backdrop-blur-sm pt-20"
+                    className="fixed inset-0 z-50 bg-black/50 flex items-start justify-center backdrop-blur-sm pt-3"
                     onClick={() => setShowBreakdownModal(false)}
                 >
                     <div
-                        className="bg-gray-200 w-[600px] rounded-lg p-4 relative"
+                        className="bg-gray-200 w-[800px] rounded-lg p-4 relative"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <button
