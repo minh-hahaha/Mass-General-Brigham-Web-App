@@ -9,10 +9,11 @@ interface MemberProps {
     github: string,
     schoolYear?: string,
     major?: string,
-    quote?: string
+    quote?: string,
+    delay?: number // Added delay prop for staggered animations
 }
 
-const Member = ({image, name, title, github, schoolYear, major, quote}: MemberProps) => {
+const Member = ({image, name, title, github, schoolYear, major, quote, delay = 0}: MemberProps) => {
     const [isFlipped, setIsFlipped] = useState(false);
 
     const noFlip = !schoolYear || schoolYear === "None" ||
@@ -24,23 +25,47 @@ const Member = ({image, name, title, github, schoolYear, major, quote}: MemberPr
             setIsFlipped(true);
         }
     };
+
     const handleMouseLeave = () => {
         if (!noFlip) {
             setIsFlipped(false);
         }
     };
 
+    // Animation variants
+    const cardVariants = {
+        hidden: {
+            opacity: 0,
+            y: 30,
+            scale: 0.95
+        },
+        visible: {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            transition: {
+                duration: 0.6,
+                delay: delay
+            }
+        }
+    };
+
     // No-flip card
     if (noFlip) {
         return (
-            <div className='flex items-center bg-gray-300 px-4 py-4 rounded-2xl'>
+            <motion.div
+                className='flex items-center bg-gray-300 px-4 py-4 rounded-2xl'
+                initial="hidden"
+                animate="visible"
+                variants={cardVariants}
+            >
                 <div className='w-[200px] flex justify-center'>
                     <div className='rounded-full size-32 bg-cover bg-center transition-[delay-150_duration-300_ease-in-out] hover:shadow-[0_0_15px_5px_rgba(37,70,146,0.8)] hover:scale-150'
                          style={{ backgroundImage: `url(/TheTeam/${image})` }} />
                 </div>
                 <div className='flex-1 flex flex-col items-center justify-center'>
                     <div className='text-xl font-semibold mb-2 text-codgray'>{name}</div>
-                    <div className='text-base mb-2 text-codgray'>{title}</div>
+                    <div className='text-sm mb-2 text-codgray'>{title}</div>
                     {github !== "None" && (
                         <div className='text-sm text-codgray'>Github: <Link
                             to={`https://github.com/${github}`}
@@ -51,25 +76,28 @@ const Member = ({image, name, title, github, schoolYear, major, quote}: MemberPr
                     )}
                 </div>
                 <div className='w-[100px]'></div>
-            </div>
+            </motion.div>
         );
     }
 
     // Flip cards
     return (
-        <div
-            className="relative h-52 transition-all duration-300"
+        <motion.div
+            className="relative h-52"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            initial="hidden"
+            animate="visible"
+            variants={cardVariants}
         >
             <div className="absolute w-full h-full [perspective:1000px]">
                 <motion.div
                     className="relative w-full h-full [transform-style:preserve-3d] transition-all duration-500"
                     animate={{ rotateY: isFlipped ? 180 : 0 }}
-                    transition={{ duration: 0.05}}
+                    transition={{ duration: 0.1 }}
                 >
                     {/* Front */}
-                    <div className='absolute inset-0 flex items-center bg-gray-300 px-4 py-4 rounded-2xl [backface-visibility:hidden]'>
+                    <div className='absolute w-full h-full flex items-center bg-gray-300 px-4 py-4 rounded-2xl [backface-visibility:hidden]'>
                         <div className='w-[200px] flex justify-center'>
                             <div className='rounded-full size-32 bg-cover bg-center transition-[delay-150_duration-300_ease-in-out] hover:shadow-[0_0_15px_5px_rgba(37,70,146,0.8)] hover:scale-150'
                                  style={{ backgroundImage: `url(/TheTeam/${image})` }} />
@@ -90,7 +118,7 @@ const Member = ({image, name, title, github, schoolYear, major, quote}: MemberPr
                     </div>
 
                     {/* Back of card */}
-                    <div className='absolute inset-0 flex items-center justify-center bg-gray-300 px-4 py-4 rounded-2xl [backface-visibility:hidden] [transform:rotateY(180deg)]'>
+                    <div className='absolute w-full h-full flex items-center justify-center bg-gray-300 px-4 py-4 rounded-2xl [backface-visibility:hidden] [transform:rotateY(180deg)]'>
                         <div className='w-[200px]'></div>
                         <div className='flex-1 flex flex-col items-center justify-center' style={{ marginTop: '-8px' }}>
                             <div className='text-xl font-semibold mb-2 text-codgray'>{name}</div>
@@ -102,7 +130,7 @@ const Member = ({image, name, title, github, schoolYear, major, quote}: MemberPr
                     </div>
                 </motion.div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 

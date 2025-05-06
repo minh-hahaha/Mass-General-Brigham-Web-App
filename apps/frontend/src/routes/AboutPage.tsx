@@ -1,28 +1,13 @@
 import { motion } from 'framer-motion';
 import Member from '../components/Member';
 import MemberPair from '../components/MemberPair';
-import team_pic from '../assets/team_picv2.png';
 
 const AboutPage = () => {
+    // Base delay for animations
+    const baseDelay = 0.5;
+
     return (
         <div className="bg-gray-200 h-2full max-w-full overflow-x-hidden">
-            {/* Full width image with no constraints */}
-            <motion.div
-                className="w-full mb-8 relative"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1.5 }}
-            >
-                <div className="w-[100vw] h-[500px] left-[50%] right-[50%] mx-[-50vw] absolute overflow-hidden position-relative">
-                    <img
-                        src={team_pic}
-                        alt="Team C"
-                        className="w-full h-full object-fill"
-                    />
-                </div>
-                <div style={{ height: '500px' }}></div> {/* Spacer to maintain layout flow */}
-            </motion.div>
-
             <div className="container mx-auto grid grid-cols-1 px-24 py-12 text-left">
                 <motion.div
                     className="font-semibold text-4xl text-center pb-10"
@@ -43,6 +28,7 @@ const AboutPage = () => {
                             schoolYear={'Class of 2027'}
                             major={'Computer Science'}
                             quote={'Very nice.'}
+                            delay={baseDelay}
                         />
                         <Member
                             image={'Andrew.png'}
@@ -52,6 +38,7 @@ const AboutPage = () => {
                             schoolYear={'Class of 2027'}
                             major={'Computer Science and Data Science'}
                             quote={'xxx'}
+                            delay={baseDelay + 0.2}
                         />
                     </MemberPair>
 
@@ -64,6 +51,7 @@ const AboutPage = () => {
                             schoolYear={'Class of 2027'}
                             major={'Computer Science'}
                             quote={'I will fix it later'}
+                            delay={baseDelay + 0.4}
                         />
                         <Member
                             image={'max.png'}
@@ -73,6 +61,7 @@ const AboutPage = () => {
                             schoolYear={'Class of 2027'}
                             major={'Computer Science'}
                             quote={'xxx'}
+                            delay={baseDelay + 0.6}
                         />
                     </MemberPair>
 
@@ -85,6 +74,7 @@ const AboutPage = () => {
                             schoolYear={'Class of 2026'}
                             major={'Computer Science and IMGD'}
                             quote={'RIP CSV parser'}
+                            delay={baseDelay + 0.8}
                         />
                         <Member
                             image={'Jack.png'}
@@ -94,6 +84,7 @@ const AboutPage = () => {
                             schoolYear={'Class of 2026'}
                             major={'Computer Science'}
                             quote={'Where is my ERD?'}
+                            delay={baseDelay + 1.0}
                         />
                     </MemberPair>
 
@@ -106,15 +97,17 @@ const AboutPage = () => {
                             schoolYear={'Class of 2027'}
                             major={'Computer Science'}
                             quote={'WE DID IT!'}
+                            delay={baseDelay + 1.2}
                         />
                         <Member
                             image={'Krish.png'}
                             name={'Krish Patel'}
-                            title={'Assistant Lead Software Engineer'}
+                            title={'Algorithms / Scrum Master'}
                             github={'krishpate1'}
                             schoolYear={'Class of 2027'}
                             major={'Computer Science'}
                             quote={'Whose booking the room for the meeting?'}
+                            delay={baseDelay + 1.4}
                         />
                     </MemberPair>
 
@@ -127,6 +120,7 @@ const AboutPage = () => {
                             schoolYear={'Class of 2026'}
                             major={'Robotics Engineering'}
                             quote={'I sure hope I remembered to submit the tracking doc!'}
+                            delay={baseDelay + 1.6}
                         />
                         <Member
                             image={'Sean.jpg'}
@@ -136,6 +130,7 @@ const AboutPage = () => {
                             schoolYear={'Class of 2025'}
                             major={'Robotics Engineering and Mathematics'}
                             quote={'I need sleep'}
+                            delay={baseDelay + 1.8}
                         />
                     </MemberPair>
 
@@ -148,6 +143,7 @@ const AboutPage = () => {
                             schoolYear={'None'}
                             major={'None'}
                             quote={'None'}
+                            delay={baseDelay + 2.0}
                         />
                         <Member
                             image={'wwong2.jpg'}
@@ -157,6 +153,7 @@ const AboutPage = () => {
                             schoolYear={'None'}
                             major={'None'}
                             quote={'None'}
+                            delay={baseDelay + 2.2}
                         />
                     </MemberPair>
 
@@ -164,7 +161,7 @@ const AboutPage = () => {
                         className="font-semibold text-4xl pb-4"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 2, delay: 2 }}
+                        transition={{ duration: 2, delay: baseDelay + 2.4 }}
                     >
                         Special Thanks to:
                     </motion.div>
@@ -178,6 +175,7 @@ const AboutPage = () => {
                             schoolYear={'None'}
                             major={'None'}
                             quote={'None'}
+                            delay={baseDelay + 2.6}
                         />
                         <Member
                             image={'AndrewShinn.jpg'}
@@ -187,6 +185,7 @@ const AboutPage = () => {
                             schoolYear={'None'}
                             major={'None'}
                             quote={'None'}
+                            delay={baseDelay + 2.8}
                         />
                     </MemberPair>
                 </div>
