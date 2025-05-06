@@ -21,6 +21,9 @@ services:
       - VITE_AUTH0_DOMAIN=${VITE_AUTH0_DOMAIN}
       - VITE_AUTH0_CLIENT_ID=${VITE_AUTH0_CLIENT_ID}
       - TTS_API_KEY_PATH=${TTS_API_KEY_PATH}
+      - VITE_AUTH0_ISSUER_BASE_URL=${VITE_AUTH0_ISSUER_BASE_URL}
+      - VITE_AUTH0_AUDIENCE=${VITE_AUTH0_AUDIENCE}
+      - GROQ_CLOUD_KEY=${GROQ_CLOUD_KEY}
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:80"]
