@@ -306,6 +306,12 @@ const HospitalMapComponent = ({
             if (startNode && endNode) {
                 try {
                     const result = await FindPath(startNode, endNode, selectedAlgorithm);
+                    if (!Array.isArray(result)) {
+                        console.error('Path result is not an array:', result);
+                        setBFSPath([]);
+                        return;
+                    }
+                    setBFSPath(result);
                     setBFSPath(result);
                     console.log("Path is " + result);
                     highlightDestinationFloor(result);
@@ -406,6 +412,10 @@ const HospitalMapComponent = ({
     const patriotPlaceFloor = getCurrentPatriotPlaceFloor();
 
     const getCurrentFloorPath = (buildingId: string, floorNumber: string) => {
+        if (!Array.isArray(bfsPath)) {
+            console.warn('bfsPath is invalid:', bfsPath);
+            return [];
+        }
         return bfsPath.filter(
             (node) => node.buildingId === buildingId && node.floor === floorNumber
         );

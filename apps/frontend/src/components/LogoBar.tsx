@@ -1,5 +1,5 @@
+import React, { useState, useEffect } from 'react';
 import mgblogo from '../assets/mgblogo.png';
-import * as React from 'react';
 import { Search } from 'lucide-react';
 import {
     NavigationMenu,
@@ -17,8 +17,7 @@ import MGBButton from "@/elements/MGBButton.tsx";
 import {motion} from 'framer-motion';
 import { FaRegUserCircle } from "react-icons/fa";
 import {clsx} from 'clsx';
-import {useEffect, useState} from "react";
-import { Link, useNavigate } from 'react-router-dom';
+
 
 
 
@@ -281,7 +280,6 @@ const LogoBar = () => {
                     </div>
                 )}
             </div>
-
         </header>
     );
 };

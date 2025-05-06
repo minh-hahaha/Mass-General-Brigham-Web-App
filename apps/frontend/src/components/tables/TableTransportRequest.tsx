@@ -242,7 +242,7 @@ const TableTransportRequest: React.FC<Props> = ({ setActiveForm, setEditData }) 
             </div>
             <div className="ml-38 w-full p-6 min-h-screen bg-gray-200">
                 <div className="flex justify-center">
-                    <div className="w-full max-w-6xl border border-gray-300 rounded-2xl shadow-md overflow-hidden bg-white">
+                    <div className="w-5xl border border-gray-300 rounded-2xl shadow-md overflow-hidden bg-white">
                         <Table>
                             <TableHeader>
                                 <TableRow className="bg-fountainBlue hover:bg-fountainBlue">
