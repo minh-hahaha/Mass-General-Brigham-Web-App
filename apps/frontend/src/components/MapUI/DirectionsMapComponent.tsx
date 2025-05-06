@@ -114,6 +114,8 @@ interface Coordinate {
 
 const DirectionsMapComponent = () => {
     const map = useMap();
+    const [map3DOn, setMap3DOn] = useState(true);
+    const handleToggleMap3D = () => setMap3DOn(!map3DOn);
     const routesLibrary = useMapsLibrary('routes');
     const [fromLocation, setFromLocation] = useState('');
     const [toLocation, setToLocation] = useState(''); // coordinates of the hospital
@@ -559,6 +561,7 @@ const DirectionsMapComponent = () => {
             setFromNodeId('');
             setShowFloorSelector(false);
             setBuildingID(0);
+            setMap3DOn(false);
         } else {
             clearRoute();
             clearParking();
@@ -630,9 +633,23 @@ const DirectionsMapComponent = () => {
                             showBuildingDirections={showBuildingDirections}
                             distanceUnits={distanceUnits}
                             setDistanceUnits={setDistanceUnits}
+                            map3DOn={map3DOn}
                         />
                     )}
                 </Map>
+
+                {buildingID === 1 && (
+                    <div className="absolute top-2 left-1/2 justify-center ">
+                        <div className="flex items-center bg-gray-100 rounded-full px-6 py-3 shadow-md shadow-xl/30 inset-shadow-grey-300">
+                            <p className="text-sm text-codGray font-bold mr-4">3D Map</p>
+                            <label className="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" className="sr-only peer" checked={map3DOn} onChange={handleToggleMap3D} />
+                                <div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-mgbblue transition-all duration-300" />
+                                <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-full" />
+                            </label>
+                        </div>
+                    </div>
+                )}
 
                 {/* Route Info Box */}
                 {showRouteInfo && (
