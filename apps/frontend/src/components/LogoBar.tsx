@@ -19,6 +19,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import {clsx} from 'clsx';
 import {useEffect} from "react";
 import { useNavigate } from "react-router-dom";
+import VoiceCommands from "@/components/MapUI/VoiceCommands.tsx";
 
 const aboutItems = [
     {
@@ -127,6 +128,16 @@ const LogoBar = () => {
         }
     }, [isAuthenticated, user]);
 
+    //handle voice transcript
+    const handleVoiceTranscript = (transcript: string) => {
+        if (!transcript) {
+            return;
+        }
+        const transcriptLowercase = transcript.toLowerCase()
+        console.log(transcriptLowercase);
+
+    }
+
 
     return (
         <header className="h-full w-full flex items-center justify-between px-2 mt-1 mb-1 border-b-10 border-fountainBlue">
@@ -228,6 +239,10 @@ const LogoBar = () => {
                 </NavigationMenu>
             </div>
 
+            <div className="flex flex-row justify-end gap-4 -mr-8">
+                <VoiceCommands voiceTranscript={handleVoiceTranscript}/>
+            </div>
+
             {/* Right: Add future nav, user info, etc. here if needed */}
             <div className="flex flex-row gap-4 -mr-8">
                 {!isAuthenticated ? (
@@ -242,6 +257,7 @@ const LogoBar = () => {
                         </MGBButton>
                     </motion.button>
                 ) : (
+
                     <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
                         <MGBButton
                             onClick={() => logout()}
