@@ -29,7 +29,7 @@ const AboutPage = () => {
                         <Member
                             image={'Andrew.png'}
                             name={'Andrew Melton'}
-                            title={'Assistant Lead Software Engineer'}
+                            title={'Co-Lead Lead Software Engineer'}
                             github={'4ndrew13'}
                             schoolYear={'Class of 2027'}
                             major={'Computer Science and Data Science'}
@@ -41,7 +41,7 @@ const AboutPage = () => {
                         <Member
                             image={'Pakorn.jpg'}
                             name={'Pakorn Liengsawangwong'}
-                            title={'Assistant Lead Software Engineer'}
+                            title={'Co-Lead Lead Software Engineer'}
                             github={'pako490'}
                             schoolYear={'Class of 2027'}
                             major={'Computer Science'}
