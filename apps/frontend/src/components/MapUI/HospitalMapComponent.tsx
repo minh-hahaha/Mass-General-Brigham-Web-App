@@ -236,6 +236,7 @@ interface Props {
     setDistanceUnits: (units: 'Feet' | 'Meters') => void;
     showBuildingDirections: boolean;
     driveIcons:string[];
+
 }
 
 const HospitalMapComponent = ({
@@ -303,6 +304,8 @@ const HospitalMapComponent = ({
             setShowDirectionsAndSpeak(false);
         }
     }, [currentStep, endNode]);
+
+
 
     // Find path and text directions
     useEffect(() => {

@@ -223,8 +223,20 @@ const MapSidebarComponent = ({
         updateStep('DIRECTIONS');
     };
 
+    // useEffect(() => {
+    //     setTravelMode(travelMode);
+    // }, [travelMode]);
+    useEffect(() => {
+        console.log("Updated travelMode:", travelMode);
+    }, [travelMode]);
+
+
+const [counter, setCounter] = useState<boolean>(false);
+
     const handleTravelModeChange = (mode: TravelModeType) => {
         setTravelMode(mode);
+        console.log("mode"+mode);
+        console.log("travelmode"+travelMode);
         setShowLine(true);
 
         // update mode
@@ -241,10 +253,22 @@ const MapSidebarComponent = ({
                     ',' +
                     selectedHospital.defaultParking.lng.toString();
             }
+            console.log("mode"+mode)
             setTimeout(() => {
+                console.log("here")
                 onDirectionsRequest(fromLocation, destination, selectedHospital.name, mode);
             }, 300);
         }
+        if(counter){
+            setCounter(false);
+
+        }else{
+            setCounter(true);
+
+        }
+
+
+
     };
 
     const handleDirectionsSubmit = () => {
@@ -262,6 +286,7 @@ const MapSidebarComponent = ({
                     ',' +
                     selectedHospital.defaultParking.lng.toString();
             }
+            console.log("i am here, travelMode:"+ travelMode);
             onDirectionsRequest(fromLocation, destination, selectedHospital.name, travelMode);
         }
         setShowLine(true);

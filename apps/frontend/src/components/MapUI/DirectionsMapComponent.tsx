@@ -441,11 +441,13 @@ const DirectionsMapComponent = () => {
         }
     };
 
+
     const handleDirectionRequest = (
         from: string,
         to: string,
         toHospital: string,
         mode: TravelModeType
+
     ) => {
         console.log('Direction request received:', from, to, toHospital, mode);
 
