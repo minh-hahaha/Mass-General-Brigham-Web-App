@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import mgblogo from '../assets/mgblogo.png';
 import { Search } from 'lucide-react';
 import {
@@ -17,9 +17,10 @@ import MGBButton from "@/elements/MGBButton.tsx";
 import {motion} from 'framer-motion';
 import { FaRegUserCircle } from "react-icons/fa";
 import {clsx} from 'clsx';
-
-
-
+import {useEffect} from "react";
+import { useNavigate } from "react-router-dom";
+import VoiceCommands from "@/components/MapUI/VoiceCommands.tsx";
+import {classifyInput} from "../../utils/classifyInput.ts";
 
 const aboutItems = [
     {
@@ -115,8 +116,62 @@ const LogoBar = () => {
     const { loginWithRedirect, isAuthenticated, logout, user } = useAuth0();
 
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
-
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const navigate = useNavigate(); // ✅ move this HERE
+
+    const handleSearch = async (input: string) => {
+        const result = await classifyInput(input);
+
+        console.log('Intent', result.intent);
+
+        switch (result.intent) {
+            case 'create_request':
+                navigate('/ServiceRequestDisplay', {
+                    state: {
+                        requestType: result.requestType,
+                        location: result.location || result.department,
+                    },
+                });
+                break;
+
+            case 'get_hospital_directions':
+                navigate('/MapPage', {
+                    state: {
+                        hospital: result.hospital,
+                        intent: result.intent,
+                    },
+                });
+                break;
+
+            case 'get_department_directions':
+                navigate('/MapPage', {
+                    state: {
+                        department: result.department,
+                        hospital: result.hospital,
+                        intent: result.intent,
+                    },
+                });
+                break;
+
+            case 'view_department_info':
+                navigate('/DirectoryDisplay', {
+                    state: {
+                        department: result.department,
+                        hospital: result.hospital,
+                    },
+                });
+                break;
+
+            case 'view_about_info':
+                navigate('/AboutPage');
+                break;
+
+            default:
+                alert('Sorry, I couldn’t understand that request.');
+        }
+    };
+
+
 
     useEffect(() => {
         if (user && user["https://mgb.teamc.com/roles"]) {
@@ -129,6 +184,16 @@ const LogoBar = () => {
             console.log("Roles not found or user not loaded properly");
         }
     }, [isAuthenticated, user]);
+
+    //handle voice transcript
+    const handleVoiceTranscript = (transcript: string) => {
+        if (!transcript) {
+            return;
+        }
+        console.log(transcript);
+        handleSearch(transcript).then(r => null);
+
+    }
 
 
     return (
@@ -231,8 +296,14 @@ const LogoBar = () => {
                 </NavigationMenu>
             </div>
 
+
             {/* Right: Add future nav, user info, etc. here if needed */}
             <div className="flex justify-end pr-2 relative w-full z-10">
+                <div className="pr-1 pb-0.5">
+                    <VoiceCommands voiceTranscript={handleVoiceTranscript}/>
+
+                </div>
+
                 {!isAuthenticated ? (
                     <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
                         <MGBButton
@@ -251,7 +322,9 @@ const LogoBar = () => {
                             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                             className="p-2"
                         >
-                            <FaRegUserCircle className="text-2xl text-gray-700" />
+                            <div className="pt-0.25">
+                                <FaRegUserCircle className="text-4xl text-mgbblue" />
+                            </div>
                         </motion.button>
 
                         {isDropdownOpen && (
