@@ -299,7 +299,11 @@ const LogoBar = () => {
 
             {/* Right: Add future nav, user info, etc. here if needed */}
             <div className="flex justify-end pr-2 relative w-full z-10">
-                <VoiceCommands voiceTranscript={handleVoiceTranscript}/>
+                <div className="pr-1 pb-0.5">
+                    <VoiceCommands voiceTranscript={handleVoiceTranscript}/>
+
+                </div>
+
                 {!isAuthenticated ? (
                     <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
                         <MGBButton
@@ -318,7 +322,9 @@ const LogoBar = () => {
                             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                             className="p-2"
                         >
-                            <FaRegUserCircle className="text-2xl text-gray-700" />
+                            <div className="pt-0.25">
+                                <FaRegUserCircle className="text-4xl text-mgbblue" />
+                            </div>
                         </motion.button>
 
                         {isDropdownOpen && (
