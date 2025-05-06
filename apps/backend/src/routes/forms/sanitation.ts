@@ -39,7 +39,7 @@ router.post('/', async (req: Request, res: Response) => {
                     serviceType: 'Sanitation',
                     employeeName: req.body.employeeName,
                     requesterRoomNumber: req.body.requesterRoomNumber,
-                    requesterDepartmentId: req.body.requesterDepartmentId,
+                    requesterDepartmentId: req.body.sanitationDepartmentId,
                     employeeId: req.body.employeeId, // change to user id in the future?
                     hospital: req.body.sanitationLocationId,
                 },

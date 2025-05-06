@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.tsx";
 import {
     PieChart, Pie, Cell,
     BarChart, Bar, XAxis, YAxis,
@@ -34,6 +34,7 @@ const ServiceRequestsChartsPage = () => {
         const fetchData = async () => {
             try {
                 const data = await getAllServiceRequests();
+                console.log(data)
 
                 // Debugging: Log fetched data
                 console.log("Fetched Data:", data);
@@ -44,6 +45,7 @@ const ServiceRequestsChartsPage = () => {
                 const buildingMap: Record<string, number> = {};
                 data.forEach(({ hospital }) => {
                     const b = hospital ?? "Unknown";
+                    console.log(b)
                     buildingMap[b] = (buildingMap[b] || 0) + 1;
                 });
 
@@ -65,19 +67,21 @@ const ServiceRequestsChartsPage = () => {
     }, []);
 
     return (
-        <div className="space-y-4">
-            <h1 className="text-3xl font-semibold text-center py-4">Service Request Charts</h1>
+        <div>
+            <h1 className="text-3xl font-semibold text-center text-white py-4 bg-[#254692] rounded-md mb-4">
+                Service Request Charts
+            </h1>
 
             {/* Flex container with responsive layout */}
             <div className="flex flex-wrap justify-center gap-4">
 
                 {/* Pie Chart for Service Types */}
-                <Card className="w-full sm:w-1/2 lg:w-1/3">
+                <Card className="w-[800px] h-[300px]">
                     <CardHeader>
                         <CardTitle>Request Types</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <ResponsiveContainer width="100%" height={300}>
+                        <ResponsiveContainer width="100%" height={210}>
                             <PieChart>
                                 <Pie
                                     data={typeSummary}
@@ -85,7 +89,7 @@ const ServiceRequestsChartsPage = () => {
                                     nameKey="name"
                                     cx="50%"
                                     cy="50%"
-                                    outerRadius={100}
+                                    outerRadius={80}
                                     label={({ name }) => name}
                                 >
                                     {typeSummary.map((entry, idx) => (
@@ -102,18 +106,18 @@ const ServiceRequestsChartsPage = () => {
                 </Card>
 
                 {/* Bar Chart: Requests by Building */}
-                <Card className="w-full sm:w-1/2 lg:w-1/3">
+                <Card className="w-[800px] h-[300px]">
                     <CardHeader>
                         <CardTitle>Requests by Building</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <ResponsiveContainer width="100%" height={400}>
-                            <BarChart data={requestsByBuilding}>
+                        <ResponsiveContainer width="100%" height={200}>
+                            <BarChart data={requestsByBuilding} margin={{ top: 20 }}>
                                 <XAxis dataKey="building" />
                                 <YAxis
-                                    tickFormatter={(value) => `${Math.floor(value)}`} // Return value as a string
-                                    domain={['dataMin', 'dataMax']} // Ensures the axis covers the full range of your data
-                                    tickCount={Math.max(requestsByBuilding.length, 5)} // Control the number of ticks based on data
+                                    tickFormatter={(value) => `${value}`}
+                                    domain={[0, 'dataMax']}
+                                    allowDecimals={false}
                                 />
                                 <RechartsTooltip />
                                 {/* Bar for the count of requests */}
@@ -134,4 +138,4 @@ const ServiceRequestsChartsPage = () => {
     );
 };
 
-export default ServiceRequestsChartsPage;
+export default ServiceRequestsCharts;

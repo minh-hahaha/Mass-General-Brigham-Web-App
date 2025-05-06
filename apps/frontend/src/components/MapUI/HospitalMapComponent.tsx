@@ -115,7 +115,9 @@ function createTextPath(traversalResult: myNode[] | undefined | null, units: 'Fe
                     // Take elevator instructions
                     directions.push(
                         `Take the ${currentNode.nodeType} to the ${lastNode.floor}${getNumberSuffix(traversalResult[i].floor)} floor`
+
                     );
+
                     icons.push(currentNode.nodeType.toLowerCase());
                     // Instructions to exit elevator
                     directions.push(`From the ${lastNode.nodeType} continue straight for ${distance.toFixed(1)} ${units.toLowerCase()} until you reach the ${nextNode.nodeType}`);
@@ -233,6 +235,8 @@ interface Props {
     distanceUnits: 'Feet' | 'Meters';
     setDistanceUnits: (units: 'Feet' | 'Meters') => void;
     showBuildingDirections: boolean;
+    driveIcons:string[];
+
 }
 
 const HospitalMapComponent = ({
@@ -253,6 +257,7 @@ const HospitalMapComponent = ({
     distanceUnits,
     setDistanceUnits,
     showBuildingDirections,
+    driveIcons,
 }: Props) => {
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
     const [startNode, setStartNode] = useState<myNode>();
@@ -300,6 +305,8 @@ const HospitalMapComponent = ({
         }
     }, [currentStep, endNode]);
 
+
+
     // Find path and text directions
     useEffect(() => {
         const getMyPaths = async () => {
@@ -338,15 +345,16 @@ const HospitalMapComponent = ({
 
         // get last node info
         const destination = path[path.length - 1];
-        const destinationBuildingId = destination.buildingId;
+        //const destinationBuildingId = destination.buildingId;
         const destinationFloorNumber = destination.floor;
 
         // Find the corresponding floor ID
         const destinationFloor = availableFloors.find(
-            f => f.buildingId === destinationBuildingId && f.floor === destinationFloorNumber
+            f => f.floor === destinationFloorNumber
         );
+        console.log("des floor id" + destinationFloor?.id);
 
-        if (destinationFloor && destinationFloor.id !== currentFloorId) {
+        if (destinationFloor && destinationFloor.id !== currentFloorId ) {
             setDestinationFloorId(destinationFloor.id);
             setShowDestinationFloorAlert(true);
 
@@ -358,7 +366,7 @@ const HospitalMapComponent = ({
             //hide
             setTimeout(() => {
                 setShowDestinationFloorAlert(false);
-            }, 2000);
+            }, 2700);
         } else {
             setShowDestinationFloorAlert(false);
         }
@@ -389,7 +397,7 @@ const HospitalMapComponent = ({
 
             }
         }
-    }, [bfsPath, startNode, selectedAlgorithm]);
+    }, [bfsPath, startNode, endNode, selectedAlgorithm]);
 
 
 
@@ -452,7 +460,7 @@ const HospitalMapComponent = ({
                             walk22Directions={directions11}
                             distanceUnits={distanceUnits}
                             setDistanceUnits={setDistanceUnits}
-                            icons={iconsToPass}
+                            icons={driveIcons}
                             currentStep={currentStep}
                         />
                     </div>
@@ -477,7 +485,7 @@ const HospitalMapComponent = ({
 
 
             {/* Destination Floor Alert */}
-            {showDestinationFloorAlert && destinationFloorId && destinationFloorId !== "PP-1" ? (
+            {showDestinationFloorAlert && destinationFloorId && currentFloorId !== "BWH-2" && currentFloorId !== "FK-1" ? (
                 <div className="fixed top-20 right-6 bg-mgbblue text-white p-4 rounded-lg shadow-lg z-50 animate-bounce">
                     <p className="font-bold">Destination Floor</p>
                     <p>Your destination is on {getDestinationFloorName()}</p>

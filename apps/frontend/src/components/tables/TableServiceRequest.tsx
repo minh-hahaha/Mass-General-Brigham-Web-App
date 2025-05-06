@@ -18,6 +18,7 @@ import { FaRegUserCircle, FaBuilding, FaCalendarAlt  } from "react-icons/fa";
 import { MdNumbers } from "react-icons/md";
 import { FaListCheck } from "react-icons/fa6";
 import { MdOutlinePriorityHigh } from "react-icons/md";
+import ServiceRequestsCharts from "@/components/ServiceRequestsCharts.tsx";
 
 import { TbStairsUp } from 'react-icons/tb';
 
@@ -42,6 +43,9 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
 
     const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
     // const [receivedRequests, setReceivedRequests] = useState<incomingServiceRequest[]>([]);
+
+    // Service Request Charts
+    const [showBreakdownModal, setShowBreakdownModal] = useState(false);
 
     useEffect(() => {
         async function fetchReqs() {
@@ -252,7 +256,7 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                 </div>
 
                 {/* Clear Filters Button */}
-                <div className="justify-start mb-5">
+                <div className="justify-start">
                     <MGBButton
                         onClick={() =>
                             setFilters({
@@ -267,6 +271,17 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                         className="py-2 px-4 rounded text-sm"
                     >
                         Clear Filters
+                    </MGBButton>
+                </div>
+                <div className="justify-start mb-5">
+                    <MGBButton
+                        onClick={() =>
+                            setShowBreakdownModal(true)
+                        }
+                        variant={'secondary'}
+                        className="py-2 px-4 rounded text-sm"
+                    >
+                        Request Breakdown
                     </MGBButton>
                 </div>
 
@@ -346,6 +361,26 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                     </div>
                 </div>
             </div>
+
+            {showBreakdownModal && (
+                <div
+                    className="fixed inset-0 z-50 bg-black/50 flex items-start justify-center backdrop-blur-sm pt-3"
+                    onClick={() => setShowBreakdownModal(false)}
+                >
+                    <div
+                        className="bg-gray-200 w-[800px] rounded-lg p-4 relative"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <button
+                            onClick={() => setShowBreakdownModal(false)}
+                            className="absolute top-7 right-8 text-white hover:text-gray-400 text-4xl font-extrabold z-10"
+                        >
+                            &times;
+                        </button>
+                        <ServiceRequestsCharts />
+                    </div>
+                </div>
+            )}
         </>
     );
 };

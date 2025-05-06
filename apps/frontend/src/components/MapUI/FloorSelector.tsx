@@ -56,7 +56,7 @@ const FloorSelector: React.FC<FloorSelectorProps> = ({
                         className={`w-10 h-10 border-1 border-mgbblue rounded-full flex items-center justify-center transition-all
                             ${currentFloorId === floor.id
                             ? 'bg-mgbblue text-white shadow-md transform scale-110'
-                            : (highlightFloorId === floor.id) && highlightFloor 
+                            : (highlightFloorId === floor.id) && false 
                                 ? 'bg-mgbblue text-black shadow-md animate-pulse'
                                 : 'bg-gray-100 text-codGray hover:bg-fountainBlue'}`}
                         onClick={() => onChange(floor.id)}

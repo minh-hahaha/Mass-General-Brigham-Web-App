@@ -74,7 +74,7 @@ const SanitationRequestPage = ({editData}: RequestPageProps) => {
             hazardLevel,
             completeBy,
             sanitationLocationId,
-            sanitationDepartmentId,
+            sanitationDepartmentId: directory,
             sanitationRoomNumber,
             employeeName,
             requesterDepartmentId,
@@ -100,7 +100,7 @@ const SanitationRequestPage = ({editData}: RequestPageProps) => {
     useEffect(() => {
         const fetchDirectoryList = async () => {
             try {
-                const data = await getDirectory(mgbHospitals.indexOf(locationId) + 1);
+                const data = await getDirectory(mgbHospitals.indexOf(sanitationLocationId) + 1);
                 const names = data.map((item: DirectoryRequestByBuilding) => item.deptName);
                 setDirectoryList(names);
             } catch (error) {
@@ -109,7 +109,7 @@ const SanitationRequestPage = ({editData}: RequestPageProps) => {
         };
         fetchDirectoryList();
         console.log('Updated Directory list');
-    }, [locationId, directory]);
+    }, [locationId, sanitationLocationId, directory]);
 
 
     useEffect(() => {
@@ -198,8 +198,8 @@ const SanitationRequestPage = ({editData}: RequestPageProps) => {
                         label="Location"
                         id="location"
                         type="select"
-                        value={locationId}
-                        onChange={(e) => setLocation_id(e.target.value)}
+                        value={sanitationLocationId}
+                        onChange={(e) => setSanitation_location_id(e.target.value)}
                         required
                         options={mgbHospitals}
                         placeholder="Select a Location"
