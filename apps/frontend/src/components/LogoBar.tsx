@@ -296,9 +296,6 @@ const LogoBar = () => {
                 </NavigationMenu>
             </div>
 
-            {/*<div className="flex flex-row justify-end gap-4 -mr-8">*/}
-            {/*    <VoiceCommands voiceTranscript={handleVoiceTranscript}/>*/}
-            {/*</div>*/}
 
             {/* Right: Add future nav, user info, etc. here if needed */}
             <div className="flex flex-row gap-4 -mr-8">

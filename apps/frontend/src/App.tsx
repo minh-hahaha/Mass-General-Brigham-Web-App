@@ -93,14 +93,13 @@ function App() {
                     {/*{isIdle && <Screensaver />}*/}
                     <LogoBar />
                 </div>
-                <BrowserRouter>
                     <div className="flex flex-row flex-1 overflow-hidden">
                         <main className="flex-1 overflow-auto">
                             <Routes>
                                 <Route path="/" element={<HomePage />} />
                                 <Route path="/Login" element={<LoginPage />} />
                                 <Route path="/Home" element={<HomePage />} />
-                                <Route path="/Logobar" element={<LogoBar />} />
+                                <Route path="/Home" element={<LogoBar />} />
                                 <Route
                                     path="/ServiceRequestDisplay"
                                     element={<ServiceRequestDisplayPage />}
@@ -158,7 +157,6 @@ function App() {
                             </Routes>
                         </main>
                     </div>
-                </BrowserRouter>
             </div>
         </Auth0Provider>
     );
