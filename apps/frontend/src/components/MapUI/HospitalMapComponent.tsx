@@ -223,6 +223,7 @@ interface Props {
     onFloorChange: (floorId: string) => void;
     onAutoSwitchFloor: (startFloorId: string) => void;
     autoFloorSwitchEnabled: boolean; // New prop to control auto floor switching
+    map3DOn: boolean;
 
     visible: boolean;
     driveDirections: string;
@@ -243,6 +244,7 @@ const HospitalMapComponent = ({
     onFloorChange,
     onAutoSwitchFloor,
     autoFloorSwitchEnabled,
+    map3DOn,
     visible,
     driveDirections,
     drive2Directions,
@@ -350,7 +352,7 @@ const HospitalMapComponent = ({
             //hide
             setTimeout(() => {
                 setShowDestinationFloorAlert(false);
-            }, 3000);
+            }, 2000);
         } else {
             setShowDestinationFloorAlert(false);
         }
@@ -381,7 +383,7 @@ const HospitalMapComponent = ({
 
             }
         }
-    }, [bfsPath, startNode]);
+    }, [bfsPath, startNode, selectedAlgorithm]);
 
 
 
@@ -425,6 +427,9 @@ const HospitalMapComponent = ({
     console.log( " buildingId " + buildingId);
     console.log( " floor " + floor);
 
+
+    console.log("show3D? " + map3DOn );
+
     return (
         <>
             {showTextDirections && currentStep ==='DIRECTIONS' &&(
@@ -445,7 +450,6 @@ const HospitalMapComponent = ({
             )}
 
             {showDirectionsAndSpeak && (
-
                 <div >
                     <TextToSpeechMapComponent
                         walkDirections={directions1}
@@ -463,22 +467,35 @@ const HospitalMapComponent = ({
 
 
             {/* Destination Floor Alert */}
-            {showDestinationFloorAlert && destinationFloorId && (
+            {showDestinationFloorAlert && destinationFloorId && destinationFloorId !== "PP-1" ? (
                 <div className="fixed top-20 right-6 bg-mgbblue text-white p-4 rounded-lg shadow-lg z-50 animate-bounce">
                     <p className="font-bold">Destination Floor</p>
                     <p>Your destination is on {getDestinationFloorName()}</p>
                 </div>
-            )}
+            ) : (<></>)}
 
 
         <div className="relative w-full h-full">
-            {map && <Map3D map={map}/>}
-            {/*<OverlayComponent*/}
-            {/*    bounds={ChestnutHillBounds}*/}
-            {/*    imageSrc={"/CH01.svg"}*/}
-            {/*/>*/}
+            {map3DOn && map ? (
+                    <Map3D map={map} />
+                ) : (
+                    <OverlayComponent
+                        bounds={ChestnutHillBounds}
+                        imageSrc={"/CH01.svg"}
+                    />
+                )
+            }
 
-
+            {/*{buildingId === "2" && (*/}
+            {/*    map3DOn && map ? (*/}
+            {/*        <Map3D map={map} buildingId={buildingId} />*/}
+            {/*    ) : (*/}
+            {/*        <OverlayComponent*/}
+            {/*            bounds={PatriotPlaceBounds}*/}
+            {/*            imageSrc={patriotPlaceFloor.svgPath}*/}
+            {/*        />*/}
+            {/*    )*/}
+            {/*)}*/}
             <OverlayComponent
                 bounds={PatriotPlaceBounds}
                 imageSrc={patriotPlaceFloor.svgPath}

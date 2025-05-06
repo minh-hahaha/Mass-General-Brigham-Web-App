@@ -36,9 +36,10 @@ router.post('/', async (req: Request, res: Response) => {
                     status: 'Pending',
                     comments: req.body.notes,
                     serviceType: 'Patient Transportation',
-
+                    requesterDepartmentId: 'N/A',
                     //optional field
                     employeeId: req.body.employeeId ?? null, // change to user id in the future?
+                    hospital: req.body.pickupLocation,
                 },
             });
 
