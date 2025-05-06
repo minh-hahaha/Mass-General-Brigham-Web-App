@@ -166,6 +166,15 @@ const LogoBar = () => {
                 navigate('/AboutPage');
                 break;
 
+            case 'view_hospital_info':
+                navigate('/MapPage', {
+                    state: {
+                        hospital: result.hospital,
+                        intent: result.intent,
+                    }
+                });
+                break;
+
             default:
                 alert('Sorry, I couldn’t understand that request.');
         }

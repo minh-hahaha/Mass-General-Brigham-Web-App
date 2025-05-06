@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { classifyInput } from '../../utils/classifyInput.ts';
 import { FiSearch } from 'react-icons/fi'; // top of file if not already
 
-
 const HomePage = () => {
     const [autoNav, setAutoNav] = useState(false);
 
@@ -64,6 +63,15 @@ const HomePage = () => {
                 navigate('/AboutPage');
                 break;
 
+            case 'view_hospital_info':
+                navigate('/MapPage', {
+                    state: {
+                        hospital: result.hospital,
+                        intent: result.intent,
+                    }
+                });
+                break;
+
             default:
                 alert('Sorry, I couldn’t understand that request.');
         }
@@ -96,10 +104,17 @@ const HomePage = () => {
                             <h2 className="text-white text-xl font-serif text-center drop-shadow-lg">
                                 Your guide to hospital locations and services
                             </h2>
-                            <RiArrowRightSLine color="white" size={28} className="mt-1 -ml-3 -mr-4" />
+                            <RiArrowRightSLine
+                                color="white"
+                                size={28}
+                                className="mt-1 -ml-3 -mr-4"
+                            />
 
                             {!autoNav && (
-                                <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
+                                <motion.button
+                                    whileHover={{ scale: 1.03 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
                                     <MGBButton
                                         onClick={() => (window.location.href = '/MapPage')}
                                         variant={'secondary'}
@@ -111,7 +126,10 @@ const HomePage = () => {
                             )}
 
                             {!autoNav && (
-                                <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
+                                <motion.button
+                                    whileHover={{ scale: 1.03 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
                                     <MGBButton
                                         onClick={() => setAutoNav(true)}
                                         variant={'primary'}
@@ -155,7 +173,6 @@ const HomePage = () => {
                             transition={{ duration: 0.6, delay: 0.4 }}
                             className="z-10 w-full px-6 sm:px-0 max-w-4xl flex items-center gap-4"
                         >
-
                             <form
                                 onSubmit={(e) => {
                                     e.preventDefault();

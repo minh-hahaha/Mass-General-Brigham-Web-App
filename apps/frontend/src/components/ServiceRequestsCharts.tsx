@@ -138,4 +138,4 @@ const ServiceRequestsChartsPage = () => {
     );
 };
 
-export default ServiceRequestsCharts;
+export default ServiceRequestsChartsPage;
