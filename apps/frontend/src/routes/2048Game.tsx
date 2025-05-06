@@ -1,6 +1,8 @@
 import {useEffect, useRef, useState} from "react";
 import MGBButton from "@/elements/MGBButton.tsx";
 
+let clearCheck = 2;
+
 class Vector2 {
     posX: number;
     posY: number;
@@ -101,6 +103,7 @@ function moveTiles(gameBoard: (Tile | undefined)[][], direction: 'left' | 'right
                         setTile(x, y, undefined); // Remove original tile from original position
                         setTile(tile.position.posX, tile.position.posY, undefined); // Remove it from wherever it was moved to
                         merged = true;
+                        clearCheck = 2;
                         break;
                     } else {
                         break;
@@ -111,6 +114,7 @@ function moveTiles(gameBoard: (Tile | undefined)[][], direction: 'left' | 'right
                 if (!merged && (tile.position.posX !== x || tile.position.posY !== y)) {
                     setTile(x, y, undefined);
                     setTile(tile.position.posX, tile.position.posY, tile);
+                    clearCheck = 2;
                 }
             }
         }
@@ -143,6 +147,11 @@ function isBoardFull(gameBoard: (Tile | undefined)[][]){
     return true;
 }
 
+//                                  REMEMBER: [y][x]
+const gameBoard: (Tile | undefined)[][] = Array.from({ length: 4 }, () =>
+    Array(4).fill(undefined)
+);
+
 export default function Game2048() {
     const animationFrameId = useRef<number>(0);
     const deltaTime = useRef<number>(0);
@@ -154,21 +163,29 @@ export default function Game2048() {
     const gameWidth = 500;
     const gameHeight = 500;
     const tileSize = gameWidth / 4;
-    //                                  REMEMBER: [y][x]
-    const gameBoard: (Tile | undefined)[][] = Array.from({ length: 4 }, () =>
-        Array(4).fill(undefined)
-    );
+    const [lose, setLose] = useState(false);
 
-    const posX = Math.floor(Math.random() * 4);
-    const posY = Math.floor(Math.random() * 4);
-    gameBoard[posX][posY] = new Tile(new Vector2(posX, posY), 2);
-    let posX1 = Math.floor(Math.random() * 4);
-    let posY1 = Math.floor(Math.random() * 4);
-    while(posX === posX1 || posY === posY1) {
-        posX1 = Math.floor(Math.random() * 4);
-        posY1 = Math.floor(Math.random() * 4);
+    function clearGameBoard() {
+        for (let row = 0; row < gameBoard.length; row++) {
+            for (let col = 0; col < gameBoard[row].length; col++) {
+                gameBoard[row][col] = undefined;
+            }
+        }
     }
-    gameBoard[posX1][posY1] = new Tile(new Vector2(posX1, posY1), 2);
+
+    if(!lose) {
+        clearGameBoard();
+        const posX = Math.floor(Math.random() * 4);
+        const posY = Math.floor(Math.random() * 4);
+        gameBoard[posX][posY] = new Tile(new Vector2(posX, posY), 2);
+        let posX1 = Math.floor(Math.random() * 4);
+        let posY1 = Math.floor(Math.random() * 4);
+        while(posX === posX1 || posY === posY1) {
+            posX1 = Math.floor(Math.random() * 4);
+            posY1 = Math.floor(Math.random() * 4);
+        }
+        gameBoard[posX1][posY1] = new Tile(new Vector2(posX1, posY1), 2);
+    }
 
     useEffect(() => {
         const canvas = document.getElementById("game-window") as HTMLCanvasElement | null;
@@ -193,8 +210,9 @@ export default function Game2048() {
                     break;
             }
         };
-
-        window.addEventListener('keydown', handleKeyDown);
+        if(!lose) {
+            window.addEventListener('keydown', handleKeyDown);
+        }
 
         // Get the 2D drawing context
         const ctx = canvas.getContext("2d");
@@ -209,6 +227,7 @@ export default function Game2048() {
             const delta = (time - lastTime) / 1000;
             lastTime = time;
             deltaTime.current = delta;
+            clearCheck -= delta;
 
             // Clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -217,7 +236,7 @@ export default function Game2048() {
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             ctx.fillStyle = "white";
-            ctx.fillText("2048", (canvas.width / 2) - 75, 100);
+            ctx.fillText(lose ? "Game Over" : "2048", (canvas.width / 2) - (lose ? 160 : 75), 100);
 
             // Game board
             ctx.fillStyle = "gray";
@@ -265,6 +284,13 @@ export default function Game2048() {
 
             // Update and render game state here
 
+            if(clearCheck <= 0) {
+                clearCheck = 2;
+                if (isBoardFull(gameBoard)) {
+                    setLose(true);
+                    window.removeEventListener('keydown', handleKeyDown);
+                }
+            }
 
 
             animationFrameId.current = requestAnimationFrame(gameLoop);
@@ -284,12 +310,20 @@ export default function Game2048() {
         <>
             <div className="flex items-center justify-center h-screen">
                 <div className="bg-gray-200 p-2 rounded shadow">
-                    <canvas
-                        id={'game-window'}
-                        width={600}
-                        height={700}
-                    ></canvas>
+                    <canvas id={'game-window'} width={600} height={700}></canvas>
                 </div>
+                {lose &&
+                    (<div hidden={!lose} className={'absolute'}>
+                        <MGBButton
+                            onClick={() => {
+                                setLose(false);
+                                clearGameBoard();
+                            }}
+                            children={'Play Again?'}
+                            variant={'primary'}
+                        ></MGBButton>
+                    </div>)
+                }
             </div>
         </>
     );
