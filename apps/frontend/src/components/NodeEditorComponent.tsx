@@ -489,7 +489,7 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
                 position.lat(),
                 position.lng(),
                 currentFloorId.charAt(currentFloorId.length - 1),
-                '1',
+                'Hallway',
                 '1',
                 'Node',
                 null,
