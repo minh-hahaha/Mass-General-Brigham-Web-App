@@ -58,7 +58,18 @@ export class myEdge {
         const feetX = toFeetX - fromFeetX;
         const feetY = toFeetY - fromFeetY;
 
-        return Math.sqrt(Math.pow(feetX, 2) + Math.pow(feetY, 2));
+        let elevatorModifier = 0;
+        let stairsModifier = 0;
+
+        // This is only for elevator to elevator and stair to stair edges
+        if(from.nodeType === 'Elevator' && to.nodeType === 'Elevator') {
+            elevatorModifier = 5;
+        }
+        if(from.nodeType === 'Stairs' && to.nodeType === 'Stairs') {
+            stairsModifier = 10;
+        }
+
+        return Math.sqrt(Math.pow(feetX, 2) + Math.pow(feetY, 2)) + elevatorModifier + stairsModifier;
     }
 }
 
