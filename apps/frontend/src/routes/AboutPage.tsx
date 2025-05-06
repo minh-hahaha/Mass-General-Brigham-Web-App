@@ -5,7 +5,7 @@ import MemberPair from '../components/MemberPair';
 const AboutPage = () => {
     return (
         <div className="bg-gray-200 h-2full max-w-full overflow-x-hidden">
-            <div className="grid grid-cols-1 px-24 py-12 text-left">
+            <div className="container mx-auto grid grid-cols-1 px-24 py-12 text-left">
                 <motion.div
                     className="font-semibold text-4xl text-center pb-10"
                     initial={{ opacity: 0 }}
@@ -24,7 +24,7 @@ const AboutPage = () => {
                             github={'minh-hahaha'}
                             schoolYear={'Class of 2027'}
                             major={'Computer Science'}
-                            quote={'Oh fckk” at 5am. “Yo yo yo…”. “Very nice”. “Have i ever tell you that I love you?'}
+                            quote={'Oh fckk" at 5am. "Yo yo yo…". "Very nice". "Have i ever tell you that I love you?'}
                         />
                         <Member
                             image={'Andrew.png'}
@@ -45,7 +45,7 @@ const AboutPage = () => {
                             github={'pako490'}
                             schoolYear={'Class of 2027'}
                             major={'Computer Science'}
-                            quote={'I’ll fix it later'}
+                            quote={'I ll fix it later'}
                         />
                         <Member
                             image={'max.png'}
@@ -62,7 +62,7 @@ const AboutPage = () => {
                         <Member
                             image={'Jake.jpg'}
                             name={'Jake Lariviere'}
-                            title={'Backend / Databases'}
+                            title={'Assistant Lead Software Engineer'}
                             github={'jlariv11'}
                             schoolYear={'Class of 2026'}
                             major={'Computer Science and IMGD'}
@@ -92,7 +92,7 @@ const AboutPage = () => {
                         <Member
                             image={'Krish.png'}
                             name={'Krish Patel'}
-                            title={'Algorithms / Scrum Master'}
+                            title={'Assistant Lead Software Engineer'}
                             github={'krishpate1'}
                             schoolYear={'Class of 2027'}
                             major={'Computer Science'}

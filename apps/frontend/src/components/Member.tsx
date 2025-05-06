@@ -19,10 +19,15 @@ const Member = ({image, name, title, github, schoolYear, major, quote}: MemberPr
         !quote || quote === "None" ||
         !major || major === "None";
 
-    // flip
-    const handleFlip = () => {
+    const handleMouseEnter = () => {
         if (!noFlip) {
-            setIsFlipped(!isFlipped);
+            setIsFlipped(true);
+        }
+    };
+
+    const handleMouseLeave = () => {
+        if (!noFlip) {
+            setIsFlipped(false);
         }
     };
 
@@ -53,7 +58,11 @@ const Member = ({image, name, title, github, schoolYear, major, quote}: MemberPr
 
     // Flip cards
     return (
-        <div className="relative h-52 cursor-pointer" onClick={handleFlip}>
+        <div
+            className="relative h-52 transition-all duration-300 hover:shadow-md"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
             <div className="absolute w-full h-full [perspective:1000px]">
                 <motion.div
                     className="relative w-full h-full [transform-style:preserve-3d] transition-all duration-500"
@@ -73,14 +82,13 @@ const Member = ({image, name, title, github, schoolYear, major, quote}: MemberPr
                                 <div className='text-sm text-codgray'>Github: <Link
                                     to={`https://github.com/${github}`}
                                     className='text-mgbblue underline transition-[delay-150_duration-300_ease-in-out] hover:text-teal-500'
-                                    onClick={(e) => e.stopPropagation()} // Prevent card flip when clicking the link
                                 >
                                     @{github}
                                 </Link></div>
                             )}
                         </div>
                         <div className='w-[100px]'></div>
-                        <div className="absolute bottom-2 right-4 text-xs text-gray-600">Click to flip</div>
+                        <div className="absolute bottom-2 right-4 text-xs text-gray-600">Hover to flip</div>
                     </div>
 
                     {/* Back of card */}
@@ -93,7 +101,6 @@ const Member = ({image, name, title, github, schoolYear, major, quote}: MemberPr
                             <div className='text-sm italic text-codgray'>"{quote}"</div>
                         </div>
                         <div className='w-[100px]'></div>
-                        <div className="absolute bottom-2 right-4 text-xs text-gray-600">Click to flip back</div>
                     </div>
                 </motion.div>
             </div>
