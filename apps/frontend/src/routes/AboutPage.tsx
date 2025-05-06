@@ -102,7 +102,7 @@ const AboutPage = () => {
                         <Member
                             image={'Krish.png'}
                             name={'Krish Patel'}
-                            title={'Algorithms / Scrum Master'}
+                            title={'Assistant Lead Software Engineer'}
                             github={'krishpate1'}
                             schoolYear={'Class of 2027'}
                             major={'Computer Science'}
