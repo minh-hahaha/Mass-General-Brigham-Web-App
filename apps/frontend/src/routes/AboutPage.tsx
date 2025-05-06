@@ -77,14 +77,14 @@ const AboutPage = () => {
                             delay={baseDelay + 0.8}
                         />
                         <Member
-                            image={'Jack.png'}
-                            name={'Jack Morris'}
-                            title={'Backend / Databases'}
-                            github={'JackMorris1234'}
-                            schoolYear={'Class of 2026'}
+                            image={'Krish.png'}
+                            name={'Krish Patel'}
+                            title={'Assistant Lead Software Engineer'}
+                            github={'krishpate1'}
+                            schoolYear={'Class of 2027'}
                             major={'Computer Science'}
-                            quote={'Where is my ERD?'}
-                            delay={baseDelay + 1.0}
+                            quote={'Whose booking the room for the meeting?'}
+                            delay={baseDelay + 1.4}
                         />
                     </MemberPair>
 
@@ -100,14 +100,14 @@ const AboutPage = () => {
                             delay={baseDelay + 1.2}
                         />
                         <Member
-                            image={'Krish.png'}
-                            name={'Krish Patel'}
-                            title={'Assistant Lead Software Engineer'}
-                            github={'krishpate1'}
-                            schoolYear={'Class of 2027'}
+                            image={'Jack.png'}
+                            name={'Jack Morris'}
+                            title={'Backend / Databases'}
+                            github={'JackMorris1234'}
+                            schoolYear={'Class of 2026'}
                             major={'Computer Science'}
-                            quote={'Whose booking the room for the meeting?'}
-                            delay={baseDelay + 1.4}
+                            quote={'Where is my ERD?'}
+                            delay={baseDelay + 1.0}
                         />
                     </MemberPair>
 
