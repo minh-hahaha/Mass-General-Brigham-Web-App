@@ -20,6 +20,7 @@ import {clsx} from 'clsx';
 import {useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import VoiceCommands from "@/components/MapUI/VoiceCommands.tsx";
+import {classifyInput} from "../../utils/classifyInput.ts";
 
 const aboutItems = [
     {
@@ -116,6 +117,62 @@ const LogoBar = () => {
 
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
+    const navigate = useNavigate(); // ✅ move this HERE
+
+    const handleSearch = async (input: string) => {
+        const result = await classifyInput(input);
+
+        console.log('Intent', result.intent);
+
+        switch (result.intent) {
+            case 'create_request':
+                navigate('/ServiceRequestDisplay', {
+                    state: {
+                        requestType: result.requestType,
+                        location: result.location || result.department,
+                    },
+                });
+                break;
+
+            case 'get_hospital_directions':
+                navigate('/MapPage', {
+                    state: {
+                        hospital: result.hospital,
+                        intent: result.intent,
+                    },
+                });
+                break;
+
+            case 'get_department_directions':
+                navigate('/MapPage', {
+                    state: {
+                        department: result.department,
+                        hospital: result.hospital,
+                        intent: result.intent,
+                    },
+                });
+                break;
+
+            case 'view_department_info':
+                navigate('/DirectoryDisplay', {
+                    state: {
+                        department: result.department,
+                        hospital: result.hospital,
+                    },
+                });
+                break;
+
+            case 'view_about_info':
+                navigate('/AboutPage');
+                break;
+
+            default:
+                alert('Sorry, I couldn’t understand that request.');
+        }
+    };
+
+
+
     useEffect(() => {
         if (user && user["https://mgb.teamc.com/roles"]) {
             console.log("Roles:", user["https://mgb.teamc.com/roles"]);
@@ -133,8 +190,8 @@ const LogoBar = () => {
         if (!transcript) {
             return;
         }
-        const transcriptLowercase = transcript.toLowerCase()
-        console.log(transcriptLowercase);
+        console.log(transcript);
+        handleSearch(transcript).then(r => null);
 
     }
 

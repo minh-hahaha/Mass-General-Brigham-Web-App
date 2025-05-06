@@ -27,6 +27,7 @@ import CreditsPage from "@/routes/CreditsPage.tsx";
 import Screensaver from './ScreenSaver.tsx';
 import WongDinoGame from "@/routes/WongDinoGame.tsx";
 import Game2048 from "@/routes/2048Game.tsx";
+import VoiceCommands from "@/components/MapUI/VoiceCommands.tsx";
 
 const IDLE_TIMEOUT = 15000; // 30 seconds
 
@@ -99,6 +100,7 @@ function App() {
                                 <Route path="/" element={<HomePage />} />
                                 <Route path="/Login" element={<LoginPage />} />
                                 <Route path="/Home" element={<HomePage />} />
+                                <Route path="/Logobar" element={<LogoBar />} />
                                 <Route
                                     path="/ServiceRequestDisplay"
                                     element={<ServiceRequestDisplayPage />}
