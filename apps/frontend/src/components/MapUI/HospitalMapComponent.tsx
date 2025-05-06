@@ -115,7 +115,9 @@ function createTextPath(traversalResult: myNode[] | undefined | null, units: 'Fe
                     // Take elevator instructions
                     directions.push(
                         `Take the ${currentNode.nodeType} to the ${lastNode.floor}${getNumberSuffix(traversalResult[i].floor)} floor`
+
                     );
+
                     icons.push(currentNode.nodeType.toLowerCase());
                     // Instructions to exit elevator
                     directions.push(`From the ${lastNode.nodeType} continue straight for ${distance.toFixed(1)} ${units.toLowerCase()} until you reach the ${nextNode.nodeType}`);
@@ -233,6 +235,8 @@ interface Props {
     distanceUnits: 'Feet' | 'Meters';
     setDistanceUnits: (units: 'Feet' | 'Meters') => void;
     showBuildingDirections: boolean;
+    driveIcons:string[];
+
 }
 
 const HospitalMapComponent = ({
@@ -253,6 +257,7 @@ const HospitalMapComponent = ({
     distanceUnits,
     setDistanceUnits,
     showBuildingDirections,
+    driveIcons,
 }: Props) => {
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
     const [startNode, setStartNode] = useState<myNode>();
@@ -299,6 +304,8 @@ const HospitalMapComponent = ({
             setShowDirectionsAndSpeak(false);
         }
     }, [currentStep, endNode]);
+
+
 
     // Find path and text directions
     useEffect(() => {
@@ -453,7 +460,7 @@ const HospitalMapComponent = ({
                             walk22Directions={directions11}
                             distanceUnits={distanceUnits}
                             setDistanceUnits={setDistanceUnits}
-                            icons={iconsToPass}
+                            icons={driveIcons}
                             currentStep={currentStep}
                         />
                     </div>

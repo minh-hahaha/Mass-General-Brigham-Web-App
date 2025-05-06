@@ -162,6 +162,8 @@ const DirectionsMapComponent = () => {
     const intent = location.state?.intent;
     const department = location.state?.department;
 
+    const [driveIcons, setDriveIcons] = useState<string[]>([]);
+
     console.log('INTENT', intent);
 
     const normalizedHospital = (name: string) => {
@@ -254,6 +256,7 @@ const DirectionsMapComponent = () => {
         }
     }, [buildingID, map]);
 
+
     // find new direction when from and to location change
     useEffect(() => {
         if (toLocation && fromLocation) {
@@ -324,17 +327,37 @@ const DirectionsMapComponent = () => {
                     setDuration(leg.duration?.text || 'N/A');
                     setShowRouteInfo(true);
 
+                    const KEYWORDS = ["north", "south", "east", "west", "continue", "right", "left", "merge", "exit"];
+                    const parser = new DOMParser();
+                    const extractedIcons: string[] = [];
+
+                    leg.steps.forEach(step => {
+                        const doc = parser.parseFromString(step.instructions, "text/html");
+                        const plainText = doc.body.textContent || "";
+
+                        const words = plainText.toLowerCase().split(/\W+/);
+
+                        // Only take the first matched keyword
+                        const firstMatch = words.find(word => KEYWORDS.includes(word));
+                        extractedIcons.push(firstMatch || "straight"); // Default to "straight" if none found
+                    });
+
+                    console.log(extractedIcons);
+                    setDriveIcons(extractedIcons);
+
                     const htmlStr: string = leg.steps
                         .map(
                             (direction) =>
                                 `${direction.instructions} and continue for ${direction.distance ? direction.distance.text : ''}`
                         )
                         .toString();
+
                     console.log(htmlStr.split(','));
                     setText2Directions(htmlStr.split(','));
                     console.log(htmlStr.replace(/,/g, '<br><br>'));
                     setTextDirections(htmlStr.replace(/,/g, '<br><br>'));
                 }
+
             });
     };
 
@@ -420,11 +443,13 @@ const DirectionsMapComponent = () => {
         }
     };
 
+
     const handleDirectionRequest = (
         from: string,
         to: string,
         toHospital: string,
         mode: TravelModeType
+
     ) => {
         console.log('Direction request received:', from, to, toHospital, mode);
 
@@ -640,6 +665,7 @@ const DirectionsMapComponent = () => {
                             distanceUnits={distanceUnits}
                             setDistanceUnits={setDistanceUnits}
                             map3DOn={map3DOn}
+                            driveIcons={driveIcons}
                         />
                     )}
                 </Map>
