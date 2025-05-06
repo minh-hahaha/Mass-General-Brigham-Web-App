@@ -115,7 +115,9 @@ function createTextPath(traversalResult: myNode[] | undefined | null, units: 'Fe
                     // Take elevator instructions
                     directions.push(
                         `Take the ${currentNode.nodeType} to the ${lastNode.floor}${getNumberSuffix(traversalResult[i].floor)} floor`
+
                     );
+
                     icons.push(currentNode.nodeType.toLowerCase());
                     // Instructions to exit elevator
                     directions.push(`From the ${lastNode.nodeType} continue straight for ${distance.toFixed(1)} ${units.toLowerCase()} until you reach the ${nextNode.nodeType}`);

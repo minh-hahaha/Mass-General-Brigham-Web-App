@@ -326,6 +326,7 @@ const DirectionsMapComponent = () => {
                         .map(
                             (direction) =>
                                 `${direction.instructions} and continue for ${direction.distance ? direction.distance.text : ''}`
+
                         )
                         .toString();
                     console.log(htmlStr.split(','));

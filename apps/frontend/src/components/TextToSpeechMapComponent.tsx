@@ -9,8 +9,11 @@ import {
     BsChevronLeft,
     BsChevronRight,
 } from "react-icons/bs";
+import { FaElevator } from "react-icons/fa6";
+
 import { LuMapPinCheckInside } from "react-icons/lu";
 import { GiNothingToSay } from "react-icons/gi";
+import { FaStairs } from "react-icons/fa6";
 import SelectElement from "@/elements/SelectElement.tsx";
 
 interface State {
@@ -81,6 +84,10 @@ const TextToSpeechMapComponent = ({
                 setIconToDisplay(<BsArrowUp />);
             } else if (direction === "turn right then continue straight") {
                 setIconToDisplay(<BsArrow90DegRight />);
+            } else if (direction === "elevator") {
+                setIconToDisplay(<FaElevator />);
+            } else if (direction === "stairs") {
+                setIconToDisplay(<FaStairs />);
             } else {
                 setIconToDisplay(<LuMapPinCheckInside />);
             }
@@ -173,9 +180,12 @@ const TextToSpeechMapComponent = ({
                     <div className="flex flex-col">
                         <div className="flex items-center space-x-4">
                             {/* Icon */}
-                            <div className="flex items-center justify-center p-2 bg-gray-200 rounded-md">
-                                {iconToDisplay}
-                            </div>
+                            {currentStep==='DEPARTMENT'&&(
+                                <div className="flex items-center justify-center p-2 bg-gray-200 rounded-md">
+                                    {iconToDisplay}
+                                </div>
+                            )}
+
                             <label className="flex items-center space-x-1">
                                 <input
                                     type="radio"
