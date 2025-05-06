@@ -60,7 +60,7 @@ const AboutPage = () => {
                             github={'max-jeronimo'}
                             schoolYear={'Class of 2027'}
                             major={'Computer Science'}
-                            quote={'xxx'}
+                            quote={'do not ask me to draw another map'}
                             delay={baseDelay + 0.6}
                         />
                     </MemberPair>
