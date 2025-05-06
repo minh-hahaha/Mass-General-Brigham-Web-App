@@ -23,6 +23,9 @@ docker build --platform=linux/amd64 --provenance=false --target production \
   --build-arg VITE_AUTH0_DOMAIN=$VITE_AUTH0_DOMAIN \
   --build-arg VITE_AUTH0_CLIENT_ID=$VITE_AUTH0_CLIENT_ID \
   --build-arg TTS_API_KEY_PATH=$TTS_API_KEY_PATH \
+  --build-arg VITE_AUTH0_ISSUER_BASE_URL=$VITE_AUTH0_ISSUER_BASE_URL \
+  --build-arg VITE_AUTH0_AUDIENCE=$VITE_AUTH0_AUDIENCE \
+  --build-arg GROQ_CLOUD_KEY=$GROQ_CLOUD_KEY \
   -t $REPOSITORY_URI:$GIT_COMMIT_HASH \
   -f ./docker/Dockerfile .
 
