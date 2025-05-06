@@ -38,6 +38,8 @@ router.post('/', async (req: Request, res: Response) => {
                     serviceType: 'Translation',
                     employeeId: req.body.employeeId,
                     requestDateTime: req.body.date,
+                    requesterDepartmentId: req.body.department,
+                    hospital: req.body.location,
                 },
             });
 

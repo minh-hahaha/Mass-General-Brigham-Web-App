@@ -54,6 +54,7 @@ const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
     const [directoryList, setDirectoryList] = useState<string[]>([]);
     const [employeeList, setEmployeeList] = useState<employeeNameId[]>([]);
     const [showConfirmation, setShowConfirmation] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         const fetchDirectoryList = async () => {
@@ -93,6 +94,7 @@ const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
             setNotes(editData.comments);
             setDepartment(editData.medicalDeviceRequest.department);
             setDeliverDate(formatDateForEdit(editData.medicalDeviceRequest.deliverDate));
+            setIsEditing(true);
         }
     }, []);
 
@@ -113,7 +115,7 @@ const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
             department,
             deliverDate: formattedDate,
         }
-        if(editData) {
+        if(editData && isEditing) {
             const editRequest: editMedicalDeviceRequest = {
                 medicalDeviceRequest: newRequest,
                 requestId: editData.requestId
@@ -122,6 +124,7 @@ const MedicalDeviceServiceRequestPage = ({editData}: RequestPageProps) => {
         } else {
             SubmitMedicalDeviceRequest(newRequest);
         }
+        setIsEditing(false);
         setShowConfirmation(true)
         handleReset();
     };

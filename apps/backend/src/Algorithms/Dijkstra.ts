@@ -68,7 +68,6 @@ export class DIJKSTRA implements pathfindingStrategy {
                     }
                 }
             }
-
         }
 
         return null;

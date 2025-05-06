@@ -415,10 +415,12 @@ const MapSidebarComponent = ({
                     </h2>
                 </div>
 
+
                 <div
                     className="h-40 bg-cover bg-center rounded-md mb-4 relative"
                     style={{ backgroundImage: `url(${selectedHospital.image})` }}
                 />
+
                 <div className="space-y-4 mb-6">
                     <p className="text-sm text-codGray">{selectedHospital.description}</p>
                     <div className="space-y-2 bg-gray-50 p-3 rounded-md">
@@ -729,7 +731,11 @@ const MapSidebarComponent = ({
         }
     };
 
-    return <div className="overflow-y-auto">{renderStep()}</div>;
+    return (
+        <div className="overflow-y-auto">
+        {renderStep()}
+        </div>
+    );
 };
 
 export default MapSidebarComponent;
