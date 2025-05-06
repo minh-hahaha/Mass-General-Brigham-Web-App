@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LogoBar from './components/LogoBar.tsx';
 import LoginPage from './routes/LoginPage.tsx';
@@ -9,19 +9,19 @@ import DirectoryDisplayPage from './routes/DirectoryDisplayPage.tsx';
 import ImportExportDirectoryPage from './routes/ImportExportDirectoryPage.tsx';
 import SanitationRequestPage from './components/forms/SanitationRequestComponent.tsx';
 import TranslationServiceRequestPage from './components/forms/TranslationServiceRequestPage.tsx';
-import MedicalDeviceServiceRequestPage from './components/forms/MedicalDeviceServiceRequestPage.tsx'
-import {MapPage} from "@/routes/MapPage.tsx";
-import MapViewPage from "@/routes/MapViewPage.tsx";
-import MaintenanceRequestPage from "@/components/forms/MaintenanceRequestPage.tsx";
-import Cookies from "js-cookie";
+import MedicalDeviceServiceRequestPage from './components/forms/MedicalDeviceServiceRequestPage.tsx';
+import { MapPage } from '@/routes/MapPage.tsx';
+import MapViewPage from '@/routes/MapViewPage.tsx';
+import MaintenanceRequestPage from '@/components/forms/MaintenanceRequestPage.tsx';
+import Cookies from 'js-cookie';
 import NodeEditor from '@/routes/NodeEditor.tsx';
 import AboutPage from '@/routes/AboutPage.tsx';
-import AccountPage from '@/routes/AccountPage.tsx'
-import {Auth0Provider} from "@auth0/auth0-react";
-import {ROUTES} from "common/src/constants.ts";
+import AccountPage from '@/routes/AccountPage.tsx';
+import { Auth0Provider } from '@auth0/auth0-react';
 import NotFoundPage from '@/routes/NotFoundPage.tsx';
+import { ROUTES } from 'common/src/constants.ts';
 
-import CreditsPage from "@/routes/CreditsPage.tsx";
+import CreditsPage from '@/routes/CreditsPage.tsx';
 
 import Screensaver from './ScreenSaver.tsx';
 import WongDinoGame from "@/routes/WongDinoGame.tsx";
@@ -34,7 +34,7 @@ function App() {
     const defaultOpen = Cookies.get('sidebar_state') === 'true';
     const domain = import.meta.env.VITE_AUTH0_DOMAIN;
     const clientID = import.meta.env.VITE_AUTH0_CLIENT_ID;
-    const audience = import.meta.env.VITE_AUTH0_AUDIENCE
+    const audience = import.meta.env.VITE_AUTH0_AUDIENCE;
 
     const [isIdle, setIsIdle] = useState(false);
     const idleTimer = useRef<NodeJS.Timeout | null>(null);

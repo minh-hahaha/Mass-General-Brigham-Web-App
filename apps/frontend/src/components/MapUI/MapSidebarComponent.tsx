@@ -112,7 +112,8 @@ interface HospitalSidebarProps {
         | 'get_department_directions'
         | 'create_request'
         | 'view_department_info'
-        | 'view_about_info';
+        | 'view_about_info'
+        | 'view_hospital_info';
     autoDepartment?: string;
 }
 const MapSidebarComponent = ({
@@ -186,6 +187,17 @@ const MapSidebarComponent = ({
         }
     }, [directoryList, autoIntent]);
 
+    useEffect(() => {
+        if (autoIntent === 'view_hospital_info' && autoNavigate) {
+            const hospitalMatch = hospitals.find(
+                (h) => h.name.toLowerCase() === autoNavigate.toLowerCase()
+            );
+            if (hospitalMatch) {
+                handleHospitalSelect(hospitalMatch); // automatically sets step to HOSPITAL_DETAIL
+            }
+        }
+    }, [autoIntent, autoNavigate]);
+
     const placesLibrary = useMapsLibrary('places');
 
     // refs for autocomplete
@@ -229,16 +241,15 @@ const MapSidebarComponent = ({
     //     setTravelMode(travelMode);
     // }, [travelMode]);
     useEffect(() => {
-        console.log("Updated travelMode:", travelMode);
+        console.log('Updated travelMode:', travelMode);
     }, [travelMode]);
 
-
-const [counter, setCounter] = useState<boolean>(false);
+    const [counter, setCounter] = useState<boolean>(false);
 
     const handleTravelModeChange = (mode: TravelModeType) => {
         setTravelMode(mode);
-        console.log("mode"+mode);
-        console.log("travelmode"+travelMode);
+        console.log('mode' + mode);
+        console.log('travelmode' + travelMode);
         setShowLine(true);
 
         // update mode
@@ -255,22 +266,17 @@ const [counter, setCounter] = useState<boolean>(false);
                     ',' +
                     selectedHospital.defaultParking.lng.toString();
             }
-            console.log("mode"+mode)
+            console.log('mode' + mode);
             setTimeout(() => {
-                console.log("here")
+                console.log('here');
                 onDirectionsRequest(fromLocation, destination, selectedHospital.name, mode);
             }, 300);
         }
-        if(counter){
+        if (counter) {
             setCounter(false);
-
-        }else{
+        } else {
             setCounter(true);
-
         }
-
-
-
     };
 
     const handleDirectionsSubmit = () => {
@@ -288,7 +294,7 @@ const [counter, setCounter] = useState<boolean>(false);
                     ',' +
                     selectedHospital.defaultParking.lng.toString();
             }
-            console.log("i am here, travelMode:"+ travelMode);
+            console.log('i am here, travelMode:' + travelMode);
             onDirectionsRequest(fromLocation, destination, selectedHospital.name, travelMode);
         }
         setShowLine(true);

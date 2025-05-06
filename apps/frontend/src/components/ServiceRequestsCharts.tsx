@@ -26,9 +26,9 @@ const summarizeByKey = <T extends keyof ServiceRequest>(data: ServiceRequest[], 
     return Object.entries(summary).map(([key, value]) => ({ name: key, value }));
 };
 
-const ServiceRequestsCharts = () => {
-    const [typeSummary, setTypeSummary] = useState<any[]>([]);
-    const [requestsByBuilding, setRequestsByBuilding] = useState<any[]>([]);
+const ServiceRequestsChartsPage = () => {
+    const [typeSummary, setTypeSummary] = useState<{ name: string; value: number }[]>([]);
+    const [requestsByBuilding, setRequestsByBuilding] = useState<{ building: string; count: number }[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -138,4 +138,4 @@ const ServiceRequestsCharts = () => {
     );
 };
 
-export default ServiceRequestsCharts;
+export default ServiceRequestsChartsPage;

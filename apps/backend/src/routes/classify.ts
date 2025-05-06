@@ -20,7 +20,7 @@ The hospital system includes the following known hospitals:
 - "Brigham", "Brigham and Women's", "Main Campus" or "Main" → Brigham and Women's Hospital
 
 Classify the intent of this message and return a JSON object with:
-- intent: one of ["create_request", "get_hospital_directions", "get_department_directions", "view_department_info", "view_about_info"]
+- intent: one of ["create_request", "get_hospital_directions", "get_department_directions", "view_department_info", "view_about_info", "view_hospital_info"]
 - requestType: one of ["sanitation", "maintenance", "transport", "medical device", "translation"] — only if intent is "create_request"
 - hospital: full name of the hospital mentioned (e.g. "Foxborough Health Care Center, Brigham and Women's Faulkner, etc.")
 - department: department mentioned (e.g. "ICU", "radiology", etc.)
@@ -32,6 +32,7 @@ Here are the following intent definitions. Carefully study the text to determine
 - "get_department_directions" → The user is asking for directions to a department within a hospital.
 - "view_department_info" → The user is asking about a department’s services, specialties, contact info, or general information (e.g., “what does urology do?”).
 - "view_about_info" → The user asks about developers or how an app was created.
+- "view_hospital_info" → The user asks about a certain hospital hours or info
 
 Respond with only valid JSON and no extra text.
 `;
