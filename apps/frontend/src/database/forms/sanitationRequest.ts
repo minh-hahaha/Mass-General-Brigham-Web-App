@@ -4,26 +4,21 @@ import { priorityType, hazardLevelType, statusType } from '@/database/forms/form
 import {incomingRequest} from "@/database/forms/transportRequest.ts";
 
 export interface sanitationRequest {
-    //Service Request fields
-    employeeName:              string;
-    priority:                   priorityType;
-    requestTime:                string;
-    locationId:                 string;
-
-    //Optional fields
-    comments:                   string;
-    requestDate:                string;
-    employeeId:                 number;
-    requesterDepartmentId:      string;
-    requesterRoomNumber: string;
-
-    //Sanitation fields
+    priority:                  priorityType;
+    requestTime: string;
+    locationId: string;
+    comments: string;
+    requestDate: string;
+    employeeId: number
+    sanitationType: string;
+    hazardLevel: hazardLevelType
+    completeBy:                 string;
     sanitationLocationId:     string;
     sanitationDepartmentId:   string;
     sanitationRoomNumber:      number;
-    sanitationType:             string;
-    hazardLevel:                hazardLevelType;
-    completeBy:                 string;
+    employeeName:              string;
+    requesterDepartmentId:      string;
+    requesterRoomNumber: string;
 }
 
 export interface incomingSanitationRequest {

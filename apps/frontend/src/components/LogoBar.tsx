@@ -19,6 +19,8 @@ import { FaRegUserCircle } from "react-icons/fa";
 import {clsx} from 'clsx';
 import {useEffect} from "react";
 import { useNavigate } from "react-router-dom";
+import VoiceCommands from "@/components/MapUI/VoiceCommands.tsx";
+import {classifyInput} from "../../utils/classifyInput.ts";
 
 const aboutItems = [
     {
@@ -114,6 +116,62 @@ const LogoBar = () => {
     const { loginWithRedirect, isAuthenticated, logout, user } = useAuth0();
 
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const navigate = useNavigate(); // ✅ move this HERE
+
+    const handleSearch = async (input: string) => {
+        const result = await classifyInput(input);
+
+        console.log('Intent', result.intent);
+
+        switch (result.intent) {
+            case 'create_request':
+                navigate('/ServiceRequestDisplay', {
+                    state: {
+                        requestType: result.requestType,
+                        location: result.location || result.department,
+                    },
+                });
+                break;
+
+            case 'get_hospital_directions':
+                navigate('/MapPage', {
+                    state: {
+                        hospital: result.hospital,
+                        intent: result.intent,
+                    },
+                });
+                break;
+
+            case 'get_department_directions':
+                navigate('/MapPage', {
+                    state: {
+                        department: result.department,
+                        hospital: result.hospital,
+                        intent: result.intent,
+                    },
+                });
+                break;
+
+            case 'view_department_info':
+                navigate('/DirectoryDisplay', {
+                    state: {
+                        department: result.department,
+                        hospital: result.hospital,
+                    },
+                });
+                break;
+
+            case 'view_about_info':
+                navigate('/AboutPage');
+                break;
+
+            default:
+                alert('Sorry, I couldn’t understand that request.');
+        }
+    };
+
+
 
     useEffect(() => {
         if (user && user["https://mgb.teamc.com/roles"]) {
@@ -127,13 +185,23 @@ const LogoBar = () => {
         }
     }, [isAuthenticated, user]);
 
+    //handle voice transcript
+    const handleVoiceTranscript = (transcript: string) => {
+        if (!transcript) {
+            return;
+        }
+        console.log(transcript);
+        handleSearch(transcript).then(r => null);
+
+    }
+
 
     return (
         <header className="h-full w-full flex items-center justify-between px-2 mt-1 mb-1 border-b-10 border-fountainBlue">
             {/* Left: Trigger + Logo */}
-            <div className="flex items-center ml-3">
+            <div className="flex items-center ml-3 gap-2">
                 <a href="/">
-                    <img src={mgblogo} alt="MASS GENERAL BRINGHAM" className="h-13 w-80 mb-1" />
+                    <img src={mgblogo} alt="MASS GENERAL BRINGHAM" className="h-13 w-auto max-w-none mb-1" />
                 </a>
                 <NavigationMenu className="ml-6">
                     <NavigationMenuList>
@@ -215,9 +283,9 @@ const LogoBar = () => {
 
                         {/* Only visible if logged in AND admin */}
                         {isAuthenticated && isAdmin && (
-                            <NavigationMenuItem>
+                            <NavigationMenuItem className="flex items-center">
                                 <NavigationMenuLink
-                                    className="mt-1 font-medium"
+                                    className="mt-1 w-25 font-medium"
                                     onClick={() => (window.location.href = '/MapEditorPage')}
                                 >
                                     Map Editor
@@ -228,34 +296,62 @@ const LogoBar = () => {
                 </NavigationMenu>
             </div>
 
+
             {/* Right: Add future nav, user info, etc. here if needed */}
-            <div className="flex flex-row gap-4 -mr-8">
+            <div className="flex justify-end pr-2 relative w-full z-10">
+                <div className="pr-1 pb-0.5">
+                    <VoiceCommands voiceTranscript={handleVoiceTranscript}/>
+
+                </div>
+
                 {!isAuthenticated ? (
                     <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
                         <MGBButton
                             onClick={() => loginWithRedirect()}
                             variant={'secondary'}
                             disabled={false}
-                            className="pl-9"
                         >
                             Log In
                         </MGBButton>
                     </motion.button>
                 ) : (
-                    <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
-                        <MGBButton
-                            onClick={() => logout()}
-                            variant={'secondary'}
-                            disabled={false}
-                            className="pl-8"
+                    <div className="relative">
+                        <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                            className="p-2"
                         >
-                            Log Out
-                        </MGBButton>
-                    </motion.button>
+                            <div className="pt-0.25">
+                                <FaRegUserCircle className="text-4xl text-mgbblue" />
+                            </div>
+                        </motion.button>
+
+                        {isDropdownOpen && (
+                            <div className="absolute top-full right-0 mt-2 w-28 bg-white border border-mgbblue rounded-md overflow-hidden shadow-md z-50">
+                                <button
+                                    className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+                                    onClick={() => {
+                                        console.log("Redirecting to Account Page");
+                                        window.location.href = '/AccountPage';
+                                        setIsDropdownOpen(false);
+                                    }}
+                                >
+                                    Account
+                                </button>
+                                <button
+                                    className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+                                    onClick={() => {
+                                        logout();
+                                        setIsDropdownOpen(false);
+                                    }}
+                                >
+                                    Log Out
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 )}
-                <FaRegUserCircle className={clsx(
-                    !isAuthenticated ? "mt-2.5 relative right-25" : "mt-2.5 relative right-27.5",
-                )}/>
             </div>
         </header>
     );

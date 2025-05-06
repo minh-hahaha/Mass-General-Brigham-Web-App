@@ -221,7 +221,7 @@ const TextToSpeechMapComponent = ({
                                     checked={distanceUnits === 'Feet'}
                                     onChange={(e) => setDistanceUnits(e.target.value as 'Feet' | 'Meters')}
                                 />
-                                <span>Feet</span>
+                                <span>Imperial</span>
                             </label>
                             <label className="flex items-center space-x-1">
                                 <input
@@ -231,7 +231,7 @@ const TextToSpeechMapComponent = ({
                                     checked={distanceUnits === 'Meters'}
                                     onChange={(e) => setDistanceUnits(e.target.value as 'Feet' | 'Meters')}
                                 />
-                                <span>Meters</span>
+                                <span>Metric</span>
                             </label>
                         </div>
                     </div>
