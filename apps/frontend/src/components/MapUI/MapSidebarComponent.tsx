@@ -108,8 +108,10 @@ interface HospitalSidebarProps {
     directoryList: DirectoryItem[];
     setCurrentStepProp: React.Dispatch<React.SetStateAction<Step>>
     currentStep: Step;
+    autoNavigate?: string; // the full hospital name (e.g., "Foxborough Healthcare Center")
+    autoIntent?: 'get_hospital_directions' | 'get_department_directions' | 'create_request' | 'view_department_info' | 'view_about_info';
+    autoDepartment?: string;
 }
-
 const MapSidebarComponent = ({
     onDirectionsRequest,
     onHospitalSelect,
@@ -121,6 +123,9 @@ const MapSidebarComponent = ({
     directoryList,
     setCurrentStepProp,
     currentStep,
+    autoNavigate,
+    autoIntent,
+    autoDepartment,
 }: HospitalSidebarProps) => {
     const [selectedHospital, setSelectedHospital] = useState<(typeof hospitals)[0] | null>(null);
 
@@ -139,6 +144,43 @@ const MapSidebarComponent = ({
         setIsAdmin(user?.["https://mgb.teamc.com/roles"]?.includes("Admin"));
         console.log("Admin", isAdmin);
     }, [isAuthenticated]);
+
+    console.log("HOSPITAL", autoNavigate);
+
+    useEffect(() => {
+        if (autoIntent === 'get_hospital_directions' && autoNavigate) {
+            const hospital = hospitals.find(h => h.name === autoNavigate);
+            if (hospital) {
+                handleHospitalSelect(hospital);
+                setTimeout(() => {
+                    handleFindDirections();
+                    handleUseCurrentLocation();
+                }, 500); // give time for selection to render
+            }
+        }
+    }, [autoIntent, autoNavigate]);
+
+    useEffect(() => {
+        if (autoIntent === 'get_department_directions' && autoNavigate) {
+            const hospitalMatch = hospitals.find(h =>
+                h.name.toLowerCase() === autoNavigate.toLowerCase()
+            );
+            if (hospitalMatch) {
+                handleHospitalSelect(hospitalMatch); // triggers onHospitalSelect
+            }
+        }
+    }, [autoIntent, autoNavigate]);
+
+    useEffect(() => {
+        const validDirectory = directoryList.length > 0 &&
+            autoIntent === 'get_department_directions' &&
+            currentStep !== 'DEPARTMENT';
+
+        if (validDirectory) {
+            updateStep('DEPARTMENT');
+        }
+    }, [directoryList, autoIntent]);
+
 
     const placesLibrary = useMapsLibrary('places');
 

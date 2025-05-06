@@ -17,7 +17,7 @@ The hospital system includes the following known hospitals:
 - "Foxborough" or "Patriots Place" → Foxborough Health Care Center
 - "Chestnut Hill" → Chestnut Hill Healthcare Center
 - "Faulkner" → Brigham and Women's Faulkner Hospital
-- "Brigham", "Brigham and Women's", or "Main" → Brigham and Women's Hospital (Boston)
+- "Brigham", "Brigham and Women's", "Main Campus" or "Main" → Brigham and Women's Hospital
 
 Classify the intent of this message and return a JSON object with:
 - intent: one of ["create_request", "get_hospital_directions", "get_department_directions", "view_department_info", "view_about_info"]

@@ -9,6 +9,7 @@ import AlgorithmSelector from '@/components/AlgorithmSelector.tsx';
 import DisplayPathComponent from "@/components/MapUI/DisplayPathComponent.tsx";
 import MapSidebarComponent from "@/components/MapUI/MapSidebarComponent.tsx";
 import FloorSelector from "@/components/MapUI/FloorSelector.tsx";
+import {useLocation} from "react-router-dom";
 
 const HospitalLocations: Record<string, {lat: number, lng: number, zoom: number}> = {
     'Chestnut Hill Healthcare Center': {lat: 42.32597821672779, lng: -71.15010553538171, zoom: 19.5},
@@ -96,6 +97,26 @@ const DirectionsMapComponent = () => {
     const [currentStep, setCurrentStep] = useState<Step>('SELECT_HOSPITAL');
 
     const [distanceUnits, setDistanceUnits] = useState<'Feet' | 'Meters'>('Feet');
+
+    const location = useLocation();
+    const hospital = location.state?.hospital;
+    const intent = location.state?.intent;
+    const department = location.state?.department;
+
+    console.log("INTENT", intent);
+
+    const normalizedHospital = (name: string) => {
+        const map: Record<string, string> = {
+            'foxborough health care center': 'Foxborough Healthcare Center',
+            'chestnut hill healthcare center': 'Chestnut Hill Healthcare Center',
+            "brigham and women's faulkner hospital": "Brigham and Women's Faulkner Hospital",
+            "brigham and women's hospital": "Brigham and Women's Main Hospital",
+        };
+        return name ? map[name.toLowerCase()] : undefined;
+    };
+
+    console.log("READ TS", normalizedHospital(hospital));
+    console.log("DEP", department);
 
     useEffect(() => {
         const checkAdmin = () => {
@@ -186,6 +207,19 @@ const DirectionsMapComponent = () => {
         };
         handleDeptChange();
     }, [currentDirectoryName]);
+
+    useEffect(() => {
+        if (!map || buildingID === 0) return;
+
+        const hospital = Object.entries(HospitalLocations).find(
+            ([name]) => BuildingIDMap[name] === buildingID
+        );
+
+        if (hospital) {
+            map.panTo({ lat: hospital[1].lat, lng: hospital[1].lng });
+            map.setZoom(hospital[1].zoom);
+        }
+    }, [buildingID, map]);
 
     // find new direction when from and to location change
     useEffect(() => {
@@ -292,24 +326,16 @@ const DirectionsMapComponent = () => {
         setText2Directions([]);
     };
 
-    const handleZoomToHospital = () => {
-        const hospital = Object.entries(HospitalLocations).find(
-            ([name]) => BuildingIDMap[name] === buildingID
-        )
-        if(hospital){
-            if (map){
-                map.panTo({lat: hospital[1].lat, lng: hospital[1].lng}); // location
-                map.setZoom(hospital[1].zoom);
-            }
+    const handleZoomToHospital = (hospitalName?: string) => {
+        const nameToUse = hospitalName || Object.entries(BuildingIDMap).find(([_, id]) => id === buildingID)?.[0];
+
+        if (!nameToUse) return;
+
+        const hospital = HospitalLocations[nameToUse];
+        if (hospital && map) {
+            map.panTo({ lat: hospital.lat, lng: hospital.lng });
+            map.setZoom(hospital.zoom);
         }
-        // if (!map || !toHospital) return;
-        //
-        // console.log("toHospital name " + toHospital);
-        // const hospitalLocation = HospitalLocations[toHospital];
-        // if (hospitalLocation) {
-        //     map.panTo({ lat: hospitalLocation.lat, lng: hospitalLocation.lng });
-        //     map.setZoom(hospitalLocation.zoom);
-        // }
     };
 
     // step 1: choose a hospital
@@ -317,22 +343,24 @@ const DirectionsMapComponent = () => {
     // set currentFloorId
     // show Floor Selector if Patriot Place
     // zoom in to hospital
-    const handleHospitalSelect = (hospitalId: number)  => {
-        setLot('');
+    const handleHospitalSelect = async (hospitalId: number) => {
+        setBuildingID(hospitalId);
         setPathVisible(false);
 
         const hospital = Object.entries(HospitalLocations).find(
             ([name]) => BuildingIDMap[name] === hospitalId
-        )
+        );
 
-        if(hospital){
-            setBuildingID(hospitalId); // set building
-            setCurrentFloorId(availableFloors.find(f => f.buildingId === hospitalId.toString())?.id)
-            if(hospitalId === 2){
-                setShowFloorSelector(true)
-            }
-            if (map){
-                map.panTo({lat: hospital[1].lat, lng: hospital[1].lng}); // location
+        if (hospital) {
+            // ✅ fetch departments for this hospital
+            const newDirectory = await getDirectory(hospitalId);
+            setDirectoryList(newDirectory); // <-- must update this
+
+            setCurrentFloorId(availableFloors.find(f => f.buildingId === hospitalId.toString())?.id);
+            setShowFloorSelector(hospitalId === 2);
+
+            if (map) {
+                map.panTo({ lat: hospital[1].lat, lng: hospital[1].lng });
                 map.setZoom(hospital[1].zoom);
             }
         }
@@ -476,6 +504,9 @@ const DirectionsMapComponent = () => {
                         directoryList={directoryList}
                         setCurrentStepProp={setCurrentStep}
                         currentStep={currentStep}
+                        autoNavigate={normalizedHospital(hospital)}
+                        autoIntent={intent}
+                        autoDepartment={department}
                     />
                 </aside>
                 {showFloorSelector && (

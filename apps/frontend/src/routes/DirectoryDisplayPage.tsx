@@ -839,7 +839,7 @@ const FaulknerDirectory = ({ onImportClick }: { onImportClick: () => void }) => 
             </div>
 
             {/* Main Content (Table) */}
-            <div className="ml-75 w-full p-6 min-h-screen bg-gray-200">
+            <div className="ml-75 w-screen p-6 min-h-screen bg-gray-200">
                 <DirectoryTable data={filteredData} />
             </div>
         </div>
@@ -992,7 +992,7 @@ const MainCampusDirectory = ({ onImportClick }: { onImportClick: () => void }) =
             </div>
 
             {/* Main Content (Table) */}
-            <div className="ml-75 w-full p-6 min-h-screen bg-gray-200">
+            <div className="ml-75 w-screen p-6 min-h-screen bg-gray-200">
                 <DirectoryTable data={filteredData} />
             </div>
         </div>

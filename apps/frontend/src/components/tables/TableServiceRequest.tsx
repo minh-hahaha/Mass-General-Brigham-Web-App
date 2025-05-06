@@ -160,7 +160,7 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                         )}
                     </div>
                 </div>
-                <h1 className="mt-5 font-black text-2xl">Filters</h1>
+                <h1 className="font-black text-2xl">Filters</h1>
                 <div className="flex flex-col gap-3">
                     {/* Filter Inputs */}
                     {/* employee Name Input */}
@@ -279,7 +279,7 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
             </div>
             <div className="ml-38 w-full p-6 min-h-screen bg-gray-200">
                 <div className="flex justify-center">
-                    <div className="w-full max-w-6xl border border-gray-300 rounded-2xl shadow-md overflow-hidden bg-white">
+                    <div className="w-5xl border border-gray-300 rounded-2xl shadow-md overflow-hidden bg-white">
                         <Table>
                             <TableHeader>
                                 <TableRow className="bg-fountainBlue hover:bg-fountainBlue">
