@@ -2,7 +2,7 @@ import createError, { HttpError } from 'http-errors';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-import assignedRouter from './routes/assigned.ts';
+import assignedRouter from './routes/assignedrequests.ts';
 import employeeRouter from './routes/employee.ts';
 import servicereqsRouter from './routes/forms/servicereqs.ts';
 import validateRouter from './routes/validate.ts';
@@ -18,6 +18,8 @@ import nodeRouter from './routes/node.ts';
 import edgeRouter from './routes/edge.ts';
 import originRouter from './routes/recentorigins.ts';
 import textToSpeechRouter from './routes/textToSpeech.ts';
+import assignedRequestsRouter from './routes/assignedrequests.ts';
+import serviceSummaryRouter from './routes/servicesummary.ts';
 import buildingRouter from './routes/building.ts';
 import classifyRouter from './routes/classify.ts';
 
@@ -92,6 +94,10 @@ app.use(ROUTES.RECENT_ORIGINS, originRouter);
 app.use(ROUTES.TTS, textToSpeechRouter);
 
 app.use(ROUTES.CLASSIFY, classifyRouter);
+
+//Account
+app.use(ROUTES.SERVICESUMMARY, serviceSummaryRouter);
+app.use(ROUTES.ASSIGNEDREQUESTS, assignedRequestsRouter);
 
 /**
  * Catch all 404 errors, and forward them to the error handler

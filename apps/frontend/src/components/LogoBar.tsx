@@ -116,9 +116,16 @@ const LogoBar = () => {
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
     useEffect(() => {
-        setIsAdmin(user?.["https://mgb.teamc.com/roles"]?.includes("Admin"));
-        console.log("Admin", isAdmin);
-    }, [isAuthenticated]);
+        if (user && user["https://mgb.teamc.com/roles"]) {
+            console.log("Roles:", user["https://mgb.teamc.com/roles"]);
+            const adminStatus = user["https://mgb.teamc.com/roles"].includes("Admin");
+            setIsAdmin(adminStatus);
+            console.log("User", user);
+            console.log("Admin", adminStatus);
+        } else {
+            console.log("Roles not found or user not loaded properly");
+        }
+    }, [isAuthenticated, user]);
 
 
     return (

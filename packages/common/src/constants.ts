@@ -51,4 +51,6 @@ export const ROUTES = {
     CLASSIFY: "/api/classify",
 
 
+    SERVICESUMMARY: "/api/servicesummary",
+    ASSIGNEDREQUESTS: "/api/assignedrequests",
 }

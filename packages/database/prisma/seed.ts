@@ -526,6 +526,14 @@ async function main() {
                 "nodeId": "FKFloor1Room"
             },
             {
+                "deptId": 152,
+                "deptServices": null,
+                "deptName": "Dialysis",
+                "buildingId": 4,
+                "deptPhone": null,
+                "nodeId": "FKFloor1Room_1"
+            },
+            {
                 "deptId": 49,
                 "deptServices": null,
                 "deptName": "Emergency Entrance",
@@ -1261,6 +1269,7 @@ async function main() {
         data: [
             {
                 firstName: 'Unassigned',
+                middleName: '',
                 lastName: '',
                 position: 'Unassigned',
                 email: '<EMAIL>',
@@ -1270,16 +1279,17 @@ async function main() {
             },
             {
                 firstName: 'Adminh',
+                middleName: "",
                 lastName: 'Ha',
                 position: 'WebAdmin',
-                email: 'softengD25X@gmail.com',
+                email: 'softengd25x@gmail.com',
                 password: 'cs3733D25X', //TODO: remove?
                 departmentId: 1,
                 admin: true,
             },
             {
 
-                firstName: 'TestA',
+                firstName: 'Test',
                 middleName: 'A',
                 lastName: 'Person',
                 position: 'Surgeon',
@@ -1290,7 +1300,7 @@ async function main() {
             },
             {
 
-                firstName: 'TestB',
+                firstName: 'Test',
                 middleName: 'B',
                 lastName: 'Person',
                 position: 'Nurse',
@@ -1301,7 +1311,7 @@ async function main() {
             },
             {
 
-                firstName: 'TestC',
+                firstName: 'Test',
                 middleName: 'C',
                 lastName: 'Person',
                 position: 'Doctor',
@@ -1312,7 +1322,7 @@ async function main() {
             },
             {
 
-                firstName: 'TestD',
+                firstName: 'Test',
                 middleName: 'D',
                 lastName: 'Person',
                 position: 'Surgeon',
@@ -1323,7 +1333,7 @@ async function main() {
             },
             {
 
-                firstName: 'TestE',
+                firstName: 'Test',
                 middleName: 'E',
                 lastName: 'Person',
                 position: 'Nurse',
@@ -1344,42 +1354,57 @@ async function main() {
                 status: "Pending",
                 priority: "High",
                 serviceType: "Maintenance Request",
+                requesterDepartmentId: "Cardiology",
+                hospital: "Faulkner Hospital"
             },
             {
                 employeeId: 0,
                 status: "In Progress",
                 priority: "Medium",
                 serviceType: "Sanitation",
+                requesterDepartmentId: "Headache",
+                hospital: "Faulkner Hospital"
+
             },
             {
                 employeeId: 0,
                 status: "Completed",
                 priority: "Low",
                 serviceType: "Translation",
+                requesterDepartmentId: "Oncology",
+                hospital: "22 Patriot Place"
             },
             {
                 employeeId: 1,
                 status: "Pending",
                 priority: "High",
                 serviceType: "Patient Transportation",
+                requesterDepartmentId: "N/A",
+                hospital: "Chestnut Hill"
             },
             {
                 employeeId: 2,
                 status: "Pending",
                 priority: "Medium",
                 serviceType: "Medical Device",
+                requesterDepartmentId: "Sports Medicine Center",
+                hospital: "20 Patriot Place"
             },
             {
                 employeeId: 3,
                 status: "In Progress",
                 priority: "Low",
                 serviceType: "Maintenance Request",
+                requesterDepartmentId: "Center for Pain Medicine",
+                hospital: "Chestnut Hill"
             },
             {
                 employeeId: 0,
                 status: "Completed",
                 priority: "High",
                 serviceType: "Sanitation",
+                requesterDepartmentId: "Radiology, MRI/CT scan",
+                hospital: "Chestnut Hill"
             },
         ],
         skipDuplicates: true,

@@ -27,7 +27,7 @@ export class DFS implements pathfindingStrategy {
 
         while (queue.length > 0) {
             //pop the first item in the list
-            const current = queue.shift()!;
+            const current = queue.pop()!;
             // change the current node and current path to that of the poped element
 
             const currentNode = current.node;

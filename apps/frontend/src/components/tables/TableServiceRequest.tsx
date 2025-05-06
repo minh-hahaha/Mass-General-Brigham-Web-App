@@ -34,7 +34,6 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
     const [filters, setFilters] = useState({
         employeeName: '',
         department: '',
-        roomNumber: '',
         status: '',
         priority: '',
         requestDateTime: '',
@@ -84,10 +83,6 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                 req.requesterDepartmentId
                     ?.toLowerCase()
                     .includes(filters.department.toLowerCase())) &&
-            (!filters.roomNumber ||
-                req.requesterRoomNumber
-                    ?.toLowerCase()
-                    .includes(filters.roomNumber.toLowerCase())) &&
             (!filters.status || req.status?.toLowerCase().includes(filters.status.toLowerCase())) &&
             (!filters.priority ||
                 req.priority?.toLowerCase().includes(filters.priority.toLowerCase())) &&
@@ -196,20 +191,20 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                         />
                     </div>
 
-                    {/* rmNum Input */}
-                    <div>
-                        <label className="block text-sm font-medium">Room Number</label>
-                        <MdNumbers className="absolute mt-2 ml-1 text-codGray" size={15} />
-                        <input
-                            type="text"
-                            className="border border-mgbblue rounded-sm w-full p-1 px-6"
-                            placeholder="Filter room number"
-                            value={filters.roomNumber}
-                            onChange={(e) =>
-                                setFilters((prev) => ({ ...prev, roomNumber: e.target.value }))
-                            }
-                        />
-                    </div>
+                    {/*/!* rmNum Input *!/*/}
+                    {/*<div>*/}
+                    {/*    <label className="block text-sm font-medium">Room Number</label>*/}
+                    {/*    <MdNumbers className="absolute mt-2 ml-1 text-codGray" size={15} />*/}
+                    {/*    <input*/}
+                    {/*        type="text"*/}
+                    {/*        className="border border-mgbblue rounded-sm w-full p-1 px-6"*/}
+                    {/*        placeholder="Filter room number"*/}
+                    {/*        value={filters.roomNumber}*/}
+                    {/*        onChange={(e) =>*/}
+                    {/*            setFilters((prev) => ({ ...prev, roomNumber: e.target.value }))*/}
+                    {/*        }*/}
+                    {/*    />*/}
+                    {/*</div>*/}
 
                     {/* status Input */}
                     <div>
@@ -263,7 +258,6 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                             setFilters({
                                 employeeName: '',
                                 department: '',
-                                roomNumber: '',
                                 status: '',
                                 priority: '',
                                 requestDateTime: '',
@@ -292,9 +286,9 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                                     <TableHead className="w-20 text-left font-semibold py-3">
                                         Department
                                     </TableHead>
-                                    <TableHead className="w-20 text-left font-semibold py-3">
-                                        Room
-                                    </TableHead>
+                                    {/*<TableHead className="w-20 text-left font-semibold py-3">*/}
+                                    {/*    Room*/}
+                                    {/*</TableHead>*/}
                                     <TableHead className="w-20 text-left font-semibold py-3">
                                         Status
                                     </TableHead>
@@ -327,9 +321,9 @@ const TableServiceRequests: React.FC<Props> = ({ setActiveForm }) => {
                                         <TableCell className="text-left py-3">
                                             {req.requesterDepartmentId}
                                         </TableCell>
-                                        <TableCell className="text-left py-3">
-                                            {req.requesterRoomNumber}
-                                        </TableCell>
+                                        {/*<TableCell className="text-left py-3">*/}
+                                        {/*    {req.requesterRoomNumber}*/}
+                                        {/*</TableCell>*/}
                                         <TableCell className="text-left py-3">
                                             {req.status}
                                         </TableCell>
