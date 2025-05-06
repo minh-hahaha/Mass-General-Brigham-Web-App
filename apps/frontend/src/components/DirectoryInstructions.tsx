@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import MGBButton from "@/elements/MGBButton.tsx";
-import filter from '../assets/instructions/filter.png';
-import export_directory from '../assets/instructions/export_directory.png';
-import import_new_directory from '../assets/instructions/import_new_directory.png';
+import filter from '../assets/instructions/filter.gif';
+import import_export_dir from '../assets/instructions/import_export_dir.gif';
 
 interface MapInstructionsProps {
     onClose?: () => void;
@@ -13,17 +12,12 @@ const instructionPages = [
     {
         title: "Filter",
         imagePath: filter,
-        description: "Use our filter component to find departments information."
+        description: "Use our filter to find departments information."
     },
     {
-        title: "Import New Directories",
-        imagePath: import_new_directory,
-        description: "Import new directory files through this procedure."
-    },
-    {
-        title: "Create Edges",
-        imagePath: export_directory,
-        description: "Export the directory to a CSV file."
+        title: "Import and Export Directories",
+        imagePath: import_export_dir,
+        description: "Import or export directory files through this procedure."
     }
 ];
 

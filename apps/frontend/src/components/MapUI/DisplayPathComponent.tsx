@@ -15,7 +15,7 @@ const DisplayPathComponent = ({ coordinates }: Props) => {
     useEffect(() => {
         let animationFrameId: number;
         let lastTimestamp: number | null = null;
-        const speed = 0.01; // Animation speed factor
+        const speed = 0.009; // Animation speed factor
         const frameTime = 1000 / 120; // Target ~60fps (8.33ms per frame)
 
         const animate = (timestamp: number) => {
