@@ -1,11 +1,14 @@
 import { motion } from 'framer-motion';
-import Member from '../components/Member.tsx';
-import MemberPair from '../components/MemberPair.tsx';
+import Member from '../components/Member';
+import MemberPair from '../components/MemberPair';
 
 const AboutPage = () => {
+    // Base delay for animations
+    const baseDelay = 0.5;
+
     return (
         <div className="bg-gray-200 h-2full max-w-full overflow-x-hidden">
-            <div className="grid grid-cols-1 px-24 py-12 text-left">
+            <div className="container mx-auto grid grid-cols-1 px-24 py-12 text-left">
                 <motion.div
                     className="font-semibold text-4xl text-center pb-10"
                     initial={{ opacity: 0 }}
@@ -22,12 +25,20 @@ const AboutPage = () => {
                             name={'Minh Ha'}
                             title={'Lead Software Engineer'}
                             github={'minh-hahaha'}
+                            schoolYear={'Class of 2027'}
+                            major={'Computer Science'}
+                            quote={'Very nice.'}
+                            delay={baseDelay}
                         />
                         <Member
                             image={'Andrew.png'}
                             name={'Andrew Melton'}
-                            title={'Assistant Lead Software Engineer'}
+                            title={'Co-Lead Software Engineer'}
                             github={'4ndrew13'}
+                            schoolYear={'Class of 2027'}
+                            major={'Computer Science and Data Science'}
+                            quote={'xxx'}
+                            delay={baseDelay + 0.1}
                         />
                     </MemberPair>
 
@@ -35,14 +46,22 @@ const AboutPage = () => {
                         <Member
                             image={'Pakorn.jpg'}
                             name={'Pakorn Liengsawangwong'}
-                            title={'Assistant Lead Software Engineer'}
+                            title={'Co-Lead Software Engineer'}
                             github={'pako490'}
+                            schoolYear={'Class of 2027'}
+                            major={'Computer Science'}
+                            quote={'I will fix it later'}
+                            delay={baseDelay + 0.2}
                         />
                         <Member
-                            image={'max.png'}
-                            name={'Max Jeronimo'}
-                            title={'Backend / Databases'}
-                            github={'max-jeronimo'}
+                            image={'Krish.png'}
+                            name={'Krish Patel'}
+                            title={'Assistant Lead Software Engineer'}
+                            github={'krishpate1'}
+                            schoolYear={'Class of 2027'}
+                            major={'Computer Science'}
+                            quote={'Whose booking the room for the meeting?'}
+                            delay={baseDelay + 0.3}
                         />
                     </MemberPair>
 
@@ -50,14 +69,22 @@ const AboutPage = () => {
                         <Member
                             image={'Jake.jpg'}
                             name={'Jake Lariviere'}
-                            title={'Backend / Databases'}
+                            title={'Assistant Lead Software Engineer'}
                             github={'jlariv11'}
+                            schoolYear={'Class of 2026'}
+                            major={'Computer Science and IMGD'}
+                            quote={'RIP CSV parser'}
+                            delay={baseDelay + 0.4}
                         />
                         <Member
-                            image={'Jack.png'}
-                            name={'Jack Morris'}
+                            image={'max.png'}
+                            name={'Max Jeronimo'}
                             title={'Backend / Databases'}
-                            github={'JackMorris1234'}
+                            github={'max-jeronimo'}
+                            schoolYear={'Class of 2027'}
+                            major={'Computer Science'}
+                            quote={'do not ask me to draw another map'}
+                            delay={baseDelay + 0.5}
                         />
                     </MemberPair>
 
@@ -67,12 +94,20 @@ const AboutPage = () => {
                             name={'Vinam Nguyen'}
                             title={'Algorithms / Project Manager'}
                             github={'vinamnguyen'}
+                            schoolYear={'Class of 2027'}
+                            major={'Computer Science'}
+                            quote={'WE DID IT!'}
+                            delay={baseDelay + 0.6}
                         />
                         <Member
-                            image={'Krish.png'}
-                            name={'Krish Patel'}
-                            title={'Algorithms / Scrum Master'}
-                            github={'krishpate1'}
+                            image={'Jack.png'}
+                            name={'Jack Morris'}
+                            title={'Backend / Databases'}
+                            github={'JackMorris1234'}
+                            schoolYear={'Class of 2026'}
+                            major={'Computer Science'}
+                            quote={'Where is my ERD?'}
+                            delay={baseDelay + 0.7}
                         />
                     </MemberPair>
 
@@ -82,12 +117,20 @@ const AboutPage = () => {
                             name={'Yael Whitson'}
                             title={'Frontend / Documentation Analyst'}
                             github={'whywhitson'}
+                            schoolYear={'Class of 2026'}
+                            major={'Robotics Engineering'}
+                            quote={'I sure hope I remembered to submit the tracking doc!'}
+                            delay={baseDelay + 0.8}
                         />
                         <Member
                             image={'Sean.jpg'}
-                            name={'Haotian Liu'}
+                            name={'Haotian(Sean) Liu'}
                             title={'Frontend / Product Owner'}
                             github={'seanliu7081'}
+                            schoolYear={'Class of 2025'}
+                            major={'Robotics Engineering and Mathematics'}
+                            quote={'I need sleep'}
+                            delay={baseDelay + 0.9}
                         />
                     </MemberPair>
 
@@ -97,12 +140,20 @@ const AboutPage = () => {
                             name={'Kai Davidson'}
                             title={'Team Coach'}
                             github={'None'}
+                            schoolYear={'None'}
+                            major={'None'}
+                            quote={'None'}
+                            delay={baseDelay + 1.0}
                         />
                         <Member
                             image={'wwong2.jpg'}
                             name={'Wilson Wong'}
                             title={'Professor'}
                             github={'None'}
+                            schoolYear={'None'}
+                            major={'None'}
+                            quote={'None'}
+                            delay={baseDelay + 1.1}
                         />
                     </MemberPair>
 
@@ -110,7 +161,7 @@ const AboutPage = () => {
                         className="font-semibold text-4xl pb-4"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 2, delay: 2 }}
+                        transition={{ duration: 2, delay: baseDelay + 1.2 }}
                     >
                         Special Thanks to:
                     </motion.div>
@@ -121,17 +172,25 @@ const AboutPage = () => {
                             name={'Brigham and Women\'s Hospital'}
                             title={'Provided maps and data'}
                             github={'None'}
+                            schoolYear={'None'}
+                            major={'None'}
+                            quote={'None'}
+                            delay={baseDelay + 1.3}
                         />
                         <Member
                             image={'AndrewShinn.jpg'}
                             name={'Andrew Shinn'}
                             title={'Brigham and Women\'s Representative'}
                             github={'None'}
+                            schoolYear={'None'}
+                            major={'None'}
+                            quote={'None'}
+                            delay={baseDelay + 1.4}
                         />
                     </MemberPair>
                 </div>
                 <div className="pt-8">
-                    The Brigham & Women’s Hospital maps and data used in this application are
+                    The Brigham & Women's Hospital maps and data used in this application are
                     copyrighted and provided for the sole use of educational purposes.
                 </div>
             </div>

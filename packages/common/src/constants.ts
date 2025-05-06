@@ -48,6 +48,9 @@ export const ROUTES = {
 
     TTS: "/api/tts",
 
+    CLASSIFY: "/api/classify",
+
+
     SERVICESUMMARY: "/api/servicesummary",
     ASSIGNEDREQUESTS: "/api/assignedrequests",
 }

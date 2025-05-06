@@ -13,9 +13,10 @@ import ImportExportDirectoryPage from '@/routes/ImportExportDirectoryPage';
 import MGBButton from '@/elements/MGBButton.tsx';
 import { FaBuilding, FaTools, FaPhoneAlt } from 'react-icons/fa';
 import { TbStairsUp } from 'react-icons/tb';
-import {ROUTES} from "common/src/constants.ts";
-import DirectoryInstructions from "@/components/DirectoryInstructions.tsx";
-import { FaRegQuestionCircle } from "react-icons/fa";
+import { ROUTES } from 'common/src/constants.ts';
+import DirectoryInstructions from '@/components/DirectoryInstructions.tsx';
+import { FaRegQuestionCircle } from 'react-icons/fa';
+import { useLocation } from 'react-router-dom';
 
 interface DirectoryTableProps {
     data: DepartmentRequest[];
@@ -59,7 +60,9 @@ const DirectoryTable: React.FC<DirectoryTableProps> = ({ data }) => {
                                     {department.building.buildingName}
                                 </TableCell>
                                 <TableCell className="text-left">
-                                    {department.departmentNodes ? department.departmentNodes.floor : 'no node'}
+                                    {department.departmentNodes
+                                        ? department.departmentNodes.floor
+                                        : 'no node'}
                                 </TableCell>
                                 <TableCell className="text-left">{department.deptPhone}</TableCell>
                             </TableRow>
@@ -72,7 +75,6 @@ const DirectoryTable: React.FC<DirectoryTableProps> = ({ data }) => {
 };
 
 const AllDirectory = ({ onImportClick }: { onImportClick: () => void }) => {
-    const [filter, setShowFilters] = useState<boolean>(true);
     const [filters, setFilters] = useState({
         deptName: '',
         deptServices: '',
@@ -94,13 +96,33 @@ const AllDirectory = ({ onImportClick }: { onImportClick: () => void }) => {
         fetchData();
     }, []);
 
+    const location = useLocation();
+    const intentDept = location.state?.department as string | undefined;
+
+    useEffect(() => {
+        if (intentDept) {
+            setFilters((prev) => ({ ...prev, deptName: intentDept }));
+        }
+    }, [intentDept]);
+
     const filteredData = data.filter((department) => {
         return (
-            (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
-            (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
-            (!filters.building || department.building?.buildingName?.toLowerCase().includes(filters.building.toLowerCase())) &&
-            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
-            (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
+            (!filters.deptName ||
+                department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
+            (!filters.deptServices ||
+                department.deptServices
+                    ?.toLowerCase()
+                    .includes(filters.deptServices.toLowerCase())) &&
+            (!filters.building ||
+                department.building?.buildingName
+                    ?.toLowerCase()
+                    .includes(filters.building.toLowerCase())) &&
+            (!filters.floor ||
+                department.departmentNodes?.floor
+                    ?.toLowerCase()
+                    .includes(filters.floor.toLowerCase())) &&
+            (!filters.phone ||
+                department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
         );
     });
 
@@ -196,7 +218,10 @@ const AllDirectory = ({ onImportClick }: { onImportClick: () => void }) => {
 
                 <div className="flex flex-col bg-gray-200 rounded-sm mt-3 pt-2">
                     <h1 className="font-black text-lg ml-2">Import New Directory</h1>
-                    <ImportExportDirectoryPage csvRoute={ROUTES.DIRECTORY_CSV} jsonRoute={ROUTES.DIRECTORY_JSON}  />
+                    <ImportExportDirectoryPage
+                        csvRoute={ROUTES.DIRECTORY_CSV}
+                        jsonRoute={ROUTES.DIRECTORY_JSON}
+                    />
                 </div>
             </div>
 
@@ -209,7 +234,6 @@ const AllDirectory = ({ onImportClick }: { onImportClick: () => void }) => {
 };
 
 const ChestnutDirectory = ({ onImportClick }: { onImportClick: () => void }) => {
-    const [filter, setShowFilters] = useState<boolean>(false);
     const [filters, setFilters] = useState({
         deptName: '',
         deptServices: '',
@@ -230,12 +254,29 @@ const ChestnutDirectory = ({ onImportClick }: { onImportClick: () => void }) => 
         fetchData();
     }, []);
 
+    const location = useLocation();
+    const intentDept = location.state?.department as string | undefined;
+
+    useEffect(() => {
+        if (intentDept) {
+            setFilters((prev) => ({ ...prev, deptName: intentDept }));
+        }
+    }, [intentDept]);
+
     const filteredData = data.filter((department) => {
         return (
-            (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
-            (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
-            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
-            (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
+            (!filters.deptName ||
+                department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
+            (!filters.deptServices ||
+                department.deptServices
+                    ?.toLowerCase()
+                    .includes(filters.deptServices.toLowerCase())) &&
+            (!filters.floor ||
+                department.departmentNodes?.floor
+                    ?.toLowerCase()
+                    .includes(filters.floor.toLowerCase())) &&
+            (!filters.phone ||
+                department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
         );
     });
     return (
@@ -330,7 +371,10 @@ const ChestnutDirectory = ({ onImportClick }: { onImportClick: () => void }) => 
 
                 <div className="flex flex-col bg-gray-200 rounded-sm mt-3 pt-2">
                     <h1 className="font-black text-lg ml-2">Import New Directory</h1>
-                    <ImportExportDirectoryPage csvRoute={ROUTES.DIRECTORY_CSV} jsonRoute={ROUTES.DIRECTORY_JSON} />
+                    <ImportExportDirectoryPage
+                        csvRoute={ROUTES.DIRECTORY_CSV}
+                        jsonRoute={ROUTES.DIRECTORY_JSON}
+                    />
                 </div>
             </div>
 
@@ -343,7 +387,6 @@ const ChestnutDirectory = ({ onImportClick }: { onImportClick: () => void }) => 
 };
 
 const Patriot20Directory = ({ onImportClick }: { onImportClick: () => void }) => {
-    const [filter, setShowFilters] = useState<boolean>(false);
     const [filters, setFilters] = useState({
         deptName: '',
         deptServices: '',
@@ -364,12 +407,29 @@ const Patriot20Directory = ({ onImportClick }: { onImportClick: () => void }) =>
         fetchData();
     }, []);
 
+    const location = useLocation();
+    const intentDept = location.state?.department as string | undefined;
+
+    useEffect(() => {
+        if (intentDept) {
+            setFilters((prev) => ({ ...prev, deptName: intentDept }));
+        }
+    }, [intentDept]);
+
     const filteredData = data.filter((department) => {
         return (
-            (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
-            (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
-            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
-            (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
+            (!filters.deptName ||
+                department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
+            (!filters.deptServices ||
+                department.deptServices
+                    ?.toLowerCase()
+                    .includes(filters.deptServices.toLowerCase())) &&
+            (!filters.floor ||
+                department.departmentNodes?.floor
+                    ?.toLowerCase()
+                    .includes(filters.floor.toLowerCase())) &&
+            (!filters.phone ||
+                department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
         );
     });
     return (
@@ -464,7 +524,10 @@ const Patriot20Directory = ({ onImportClick }: { onImportClick: () => void }) =>
 
                 <div className="flex flex-col bg-gray-200 rounded-sm mt-3 pt-2">
                     <h1 className="font-black text-lg ml-2">Import New Directory</h1>
-                    <ImportExportDirectoryPage csvRoute={ROUTES.DIRECTORY_CSV} jsonRoute={ROUTES.DIRECTORY_JSON} />
+                    <ImportExportDirectoryPage
+                        csvRoute={ROUTES.DIRECTORY_CSV}
+                        jsonRoute={ROUTES.DIRECTORY_JSON}
+                    />
                 </div>
             </div>
 
@@ -477,7 +540,6 @@ const Patriot20Directory = ({ onImportClick }: { onImportClick: () => void }) =>
 };
 
 const Patriot22Directory = ({ onImportClick }: { onImportClick: () => void }) => {
-    const [filter, setShowFilters] = useState<boolean>(false);
     const [filters, setFilters] = useState({
         deptName: '',
         deptServices: '',
@@ -498,12 +560,29 @@ const Patriot22Directory = ({ onImportClick }: { onImportClick: () => void }) =>
         fetchData();
     }, []);
 
+    const location = useLocation();
+    const intentDept = location.state?.department as string | undefined;
+
+    useEffect(() => {
+        if (intentDept) {
+            setFilters((prev) => ({ ...prev, deptName: intentDept }));
+        }
+    }, [intentDept]);
+
     const filteredData = data.filter((department) => {
         return (
-            (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
-            (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
-            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
-            (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
+            (!filters.deptName ||
+                department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
+            (!filters.deptServices ||
+                department.deptServices
+                    ?.toLowerCase()
+                    .includes(filters.deptServices.toLowerCase())) &&
+            (!filters.floor ||
+                department.departmentNodes?.floor
+                    ?.toLowerCase()
+                    .includes(filters.floor.toLowerCase())) &&
+            (!filters.phone ||
+                department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
         );
     });
     return (
@@ -598,7 +677,10 @@ const Patriot22Directory = ({ onImportClick }: { onImportClick: () => void }) =>
 
                 <div className="flex flex-col bg-gray-200 rounded-sm mt-3 pt-2">
                     <h1 className="font-black text-lg ml-2">Import New Directory</h1>
-                    <ImportExportDirectoryPage csvRoute={ROUTES.DIRECTORY_CSV} jsonRoute={ROUTES.DIRECTORY_JSON} />
+                    <ImportExportDirectoryPage
+                        csvRoute={ROUTES.DIRECTORY_CSV}
+                        jsonRoute={ROUTES.DIRECTORY_JSON}
+                    />
                 </div>
             </div>
 
@@ -632,12 +714,29 @@ const FaulknerDirectory = ({ onImportClick }: { onImportClick: () => void }) => 
         fetchData();
     }, []);
 
+    const location = useLocation();
+    const intentDept = location.state?.department as string | undefined;
+
+    useEffect(() => {
+        if (intentDept) {
+            setFilters((prev) => ({ ...prev, deptName: intentDept }));
+        }
+    }, [intentDept]);
+
     const filteredData = data.filter((department) => {
         return (
-            (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
-            (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
-            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
-            (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
+            (!filters.deptName ||
+                department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
+            (!filters.deptServices ||
+                department.deptServices
+                    ?.toLowerCase()
+                    .includes(filters.deptServices.toLowerCase())) &&
+            (!filters.floor ||
+                department.departmentNodes?.floor
+                    ?.toLowerCase()
+                    .includes(filters.floor.toLowerCase())) &&
+            (!filters.phone ||
+                department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
         );
     });
     return (
@@ -732,12 +831,15 @@ const FaulknerDirectory = ({ onImportClick }: { onImportClick: () => void }) => 
 
                 <div className="flex flex-col bg-gray-200 rounded-sm mt-3 pt-2">
                     <h1 className="font-black text-lg ml-2">Import New Directory</h1>
-                    <ImportExportDirectoryPage csvRoute={ROUTES.DIRECTORY_CSV} jsonRoute={ROUTES.DIRECTORY_JSON} />
+                    <ImportExportDirectoryPage
+                        csvRoute={ROUTES.DIRECTORY_CSV}
+                        jsonRoute={ROUTES.DIRECTORY_JSON}
+                    />
                 </div>
             </div>
 
             {/* Main Content (Table) */}
-            <div className="ml-75 w-full p-6 min-h-screen bg-gray-200">
+            <div className="ml-75 w-screen p-6 min-h-screen bg-gray-200">
                 <DirectoryTable data={filteredData} />
             </div>
         </div>
@@ -745,7 +847,6 @@ const FaulknerDirectory = ({ onImportClick }: { onImportClick: () => void }) => 
 };
 
 const MainCampusDirectory = ({ onImportClick }: { onImportClick: () => void }) => {
-    const [filter, setShowFilters] = useState<boolean>(false);
     const [filters, setFilters] = useState({
         deptName: '',
         deptServices: '',
@@ -766,12 +867,29 @@ const MainCampusDirectory = ({ onImportClick }: { onImportClick: () => void }) =
         fetchData();
     }, []);
 
+    const location = useLocation();
+    const intentDept = location.state?.department as string | undefined;
+
+    useEffect(() => {
+        if (intentDept) {
+            setFilters((prev) => ({ ...prev, deptName: intentDept }));
+        }
+    }, [intentDept]);
+
     const filteredData = data.filter((department) => {
         return (
-            (!filters.deptName || department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
-            (!filters.deptServices || department.deptServices?.toLowerCase().includes(filters.deptServices.toLowerCase())) &&
-            (!filters.floor || department.departmentNodes?.floor?.toLowerCase().includes(filters.floor.toLowerCase())) &&
-            (!filters.phone || department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
+            (!filters.deptName ||
+                department.deptName?.toLowerCase().includes(filters.deptName.toLowerCase())) &&
+            (!filters.deptServices ||
+                department.deptServices
+                    ?.toLowerCase()
+                    .includes(filters.deptServices.toLowerCase())) &&
+            (!filters.floor ||
+                department.departmentNodes?.floor
+                    ?.toLowerCase()
+                    .includes(filters.floor.toLowerCase())) &&
+            (!filters.phone ||
+                department.deptPhone?.toLowerCase().includes(filters.phone.toLowerCase()))
         );
     });
     return (
@@ -866,18 +984,20 @@ const MainCampusDirectory = ({ onImportClick }: { onImportClick: () => void }) =
 
                 <div className="flex flex-col bg-gray-200 rounded-sm mt-3 pt-2">
                     <h1 className="font-black text-lg ml-2">Import New Directory</h1>
-                    <ImportExportDirectoryPage csvRoute={ROUTES.DIRECTORY_CSV} jsonRoute={ROUTES.DIRECTORY_JSON} />
+                    <ImportExportDirectoryPage
+                        csvRoute={ROUTES.DIRECTORY_CSV}
+                        jsonRoute={ROUTES.DIRECTORY_JSON}
+                    />
                 </div>
             </div>
 
             {/* Main Content (Table) */}
-            <div className="ml-75 w-full p-6 min-h-screen bg-gray-200">
+            <div className="ml-75 w-screen p-6 min-h-screen bg-gray-200">
                 <DirectoryTable data={filteredData} />
             </div>
         </div>
     );
 };
-
 
 const DirectoryDisplayPage = () => {
     const [showImportModal, setShowImportModal] = useState(false);
@@ -919,22 +1039,48 @@ const DirectoryDisplayPage = () => {
         {
             label: 'Main Campus',
             component: () => <MainCampusDirectory onImportClick={handleOpenImport} />,
-        }
+        },
     ];
 
-    const initialTabIndex = (() => {
+    // Create a dynamic initial index from hospital state
+    const [activeTabIndex, setActiveTabIndex] = useState<number>(() => {
         if (!location) return 0;
         const foundIndex = tableTabs.findIndex((tab) =>
             tab.label.toLowerCase().includes(location.toLowerCase())
         );
         return foundIndex !== -1 ? foundIndex : 0;
-    })();
+    });
+
+    const loc = useLocation();
+    const hospital = loc.state?.hospital as string | undefined;
+
+    console.log('HOSPITAL', hospital?.toLowerCase());
+
+    const normalizeHospital = (raw: string): string => {
+        const map: Record<string, string> = {
+            'foxborough health care center': '20 patriot place',
+            'chestnut hill healthcare center': 'chestnut hill',
+            "brigham and women's faulkner hospital": 'faulkner',
+            "brigham and women's hospital": 'main campus',
+        };
+        return map[raw.toLowerCase()] || raw;
+    };
+
+    useEffect(() => {
+        if (!hospital) return;
+        const foundIndex = tableTabs.findIndex((tab) =>
+            tab.label
+                .toLowerCase()
+                .includes(normalizeHospital(hospital.toLowerCase()).toLowerCase())
+        );
+        if (foundIndex !== -1) setActiveTabIndex(foundIndex);
+    }, [hospital]);
 
     return (
         <>
             <div className="bg-gray-200">
                 <div className="">
-                    <CarouselMenu tableTabs={tableTabs} initialIndex={initialTabIndex} />
+                    <CarouselMenu tableTabs={tableTabs} initialIndex={activeTabIndex} />
                 </div>
                 <div className="fixed bottom-4 right-2">
                     <MGBButton

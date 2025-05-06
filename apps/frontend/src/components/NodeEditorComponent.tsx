@@ -242,7 +242,8 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
         | 'Road'
         | 'Door'
         | 'Hallway Intersection'
-        | 'Check-In Desk';
+        | 'Check-In Desk'
+        | 'Reception';
     const [nodeType, setNodeType] = useState<NodeType>('Stairs');
     const [roomNumber, setRoomNumber] = useState<string | null>(null);
     const [nodeName, setNodeName] = useState<string>('Node');
@@ -489,7 +490,7 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
                 position.lat(),
                 position.lng(),
                 currentFloorId.charAt(currentFloorId.length - 1),
-                '1',
+                'Hallway',
                 '1',
                 'Node',
                 null,
@@ -904,7 +905,7 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
                         'Door',
                         'Hallway Intersection',
                         'Check-In Desk',
-
+                        'Reception'
                     ]}
                 ></SelectElement>
                 <InputElement
@@ -1037,7 +1038,7 @@ const NodeEditorComponent = ({updateFloor}: Props) => {
                                 Import/Export New Nodes and Edges
                             </h1>
                         </div>
-                        <div className="h-70 overflow-y-auto">
+                        <div className="h-75 overflow-y-auto">
                             <ImportExportDirectoryPage
                                 jsonRoute={ROUTES.NODE_EDGE_JSON}
                                 csvRoute={ROUTES.NODE_EDGE_CSV}

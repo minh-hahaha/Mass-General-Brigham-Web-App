@@ -115,7 +115,9 @@ function createTextPath(traversalResult: myNode[] | undefined | null, units: 'Fe
                     // Take elevator instructions
                     directions.push(
                         `Take the ${currentNode.nodeType} to the ${lastNode.floor}${getNumberSuffix(traversalResult[i].floor)} floor`
+
                     );
+
                     icons.push(currentNode.nodeType.toLowerCase());
                     // Instructions to exit elevator
                     directions.push(`From the ${lastNode.nodeType} continue straight for ${distance.toFixed(1)} ${units.toLowerCase()} until you reach the ${nextNode.nodeType}`);
@@ -223,6 +225,7 @@ interface Props {
     onFloorChange: (floorId: string) => void;
     onAutoSwitchFloor: (startFloorId: string) => void;
     autoFloorSwitchEnabled: boolean; // New prop to control auto floor switching
+    map3DOn: boolean;
 
     visible: boolean;
     driveDirections: string;
@@ -232,6 +235,8 @@ interface Props {
     distanceUnits: 'Feet' | 'Meters';
     setDistanceUnits: (units: 'Feet' | 'Meters') => void;
     showBuildingDirections: boolean;
+    driveIcons:string[];
+
 }
 
 const HospitalMapComponent = ({
@@ -243,6 +248,7 @@ const HospitalMapComponent = ({
     onFloorChange,
     onAutoSwitchFloor,
     autoFloorSwitchEnabled,
+    map3DOn,
     visible,
     driveDirections,
     drive2Directions,
@@ -251,6 +257,7 @@ const HospitalMapComponent = ({
     distanceUnits,
     setDistanceUnits,
     showBuildingDirections,
+    driveIcons,
 }: Props) => {
     const [bfsPath, setBFSPath] = useState<myNode[]>([]);
     const [startNode, setStartNode] = useState<myNode>();
@@ -298,12 +305,20 @@ const HospitalMapComponent = ({
         }
     }, [currentStep, endNode]);
 
+
+
     // Find path and text directions
     useEffect(() => {
         const getMyPaths = async () => {
             if (startNode && endNode) {
                 try {
                     const result = await FindPath(startNode, endNode, selectedAlgorithm);
+                    if (!Array.isArray(result)) {
+                        console.error('Path result is not an array:', result);
+                        setBFSPath([]);
+                        return;
+                    }
+                    setBFSPath(result);
                     setBFSPath(result);
                     console.log("Path is " + result);
                     highlightDestinationFloor(result);
@@ -330,15 +345,16 @@ const HospitalMapComponent = ({
 
         // get last node info
         const destination = path[path.length - 1];
-        const destinationBuildingId = destination.buildingId;
+        //const destinationBuildingId = destination.buildingId;
         const destinationFloorNumber = destination.floor;
 
         // Find the corresponding floor ID
         const destinationFloor = availableFloors.find(
-            f => f.buildingId === destinationBuildingId && f.floor === destinationFloorNumber
+            f => f.floor === destinationFloorNumber
         );
+        console.log("des floor id" + destinationFloor?.id);
 
-        if (destinationFloor && destinationFloor.id !== currentFloorId) {
+        if (destinationFloor && destinationFloor.id !== currentFloorId ) {
             setDestinationFloorId(destinationFloor.id);
             setShowDestinationFloorAlert(true);
 
@@ -350,7 +366,7 @@ const HospitalMapComponent = ({
             //hide
             setTimeout(() => {
                 setShowDestinationFloorAlert(false);
-            }, 3000);
+            }, 2700);
         } else {
             setShowDestinationFloorAlert(false);
         }
@@ -381,7 +397,7 @@ const HospitalMapComponent = ({
 
             }
         }
-    }, [bfsPath, startNode]);
+    }, [bfsPath, startNode, endNode, selectedAlgorithm]);
 
 
 
@@ -404,6 +420,10 @@ const HospitalMapComponent = ({
     const patriotPlaceFloor = getCurrentPatriotPlaceFloor();
 
     const getCurrentFloorPath = (buildingId: string, floorNumber: string) => {
+        if (!Array.isArray(bfsPath)) {
+            console.warn('bfsPath is invalid:', bfsPath);
+            return [];
+        }
         return bfsPath.filter(
             (node) => node.buildingId === buildingId && node.floor === floorNumber
         );
@@ -425,6 +445,9 @@ const HospitalMapComponent = ({
     console.log( " buildingId " + buildingId);
     console.log( " floor " + floor);
 
+
+    console.log("show3D? " + map3DOn );
+
     return (
         <>
             {showTextDirections && currentStep ==='DIRECTIONS' &&(
@@ -437,7 +460,7 @@ const HospitalMapComponent = ({
                             walk22Directions={directions11}
                             distanceUnits={distanceUnits}
                             setDistanceUnits={setDistanceUnits}
-                            icons={iconsToPass}
+                            icons={driveIcons}
                             currentStep={currentStep}
                         />
                     </div>
@@ -445,7 +468,6 @@ const HospitalMapComponent = ({
             )}
 
             {showDirectionsAndSpeak && (
-
                 <div >
                     <TextToSpeechMapComponent
                         walkDirections={directions1}
@@ -463,22 +485,35 @@ const HospitalMapComponent = ({
 
 
             {/* Destination Floor Alert */}
-            {showDestinationFloorAlert && destinationFloorId && (
+            {showDestinationFloorAlert && destinationFloorId && currentFloorId !== "BWH-2" && currentFloorId !== "FK-1" ? (
                 <div className="fixed top-20 right-6 bg-mgbblue text-white p-4 rounded-lg shadow-lg z-50 animate-bounce">
                     <p className="font-bold">Destination Floor</p>
                     <p>Your destination is on {getDestinationFloorName()}</p>
                 </div>
-            )}
+            ) : (<></>)}
 
 
         <div className="relative w-full h-full">
-            {map && <Map3D map={map}/>}
-            {/*<OverlayComponent*/}
-            {/*    bounds={ChestnutHillBounds}*/}
-            {/*    imageSrc={"/CH01.svg"}*/}
-            {/*/>*/}
+            {map3DOn && map ? (
+                    <Map3D map={map} />
+                ) : (
+                    <OverlayComponent
+                        bounds={ChestnutHillBounds}
+                        imageSrc={"/CH01.svg"}
+                    />
+                )
+            }
 
-
+            {/*{buildingId === "2" && (*/}
+            {/*    map3DOn && map ? (*/}
+            {/*        <Map3D map={map} buildingId={buildingId} />*/}
+            {/*    ) : (*/}
+            {/*        <OverlayComponent*/}
+            {/*            bounds={PatriotPlaceBounds}*/}
+            {/*            imageSrc={patriotPlaceFloor.svgPath}*/}
+            {/*        />*/}
+            {/*    )*/}
+            {/*)}*/}
             <OverlayComponent
                 bounds={PatriotPlaceBounds}
                 imageSrc={patriotPlaceFloor.svgPath}
