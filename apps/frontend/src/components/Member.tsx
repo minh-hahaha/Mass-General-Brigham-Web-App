@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 interface MemberProps {
@@ -10,26 +10,79 @@ interface MemberProps {
     schoolYear?: string,
     major?: string,
     quote?: string,
-    delay?: number // Added delay prop for staggered animations
+    delay?: number
 }
 
 const Member = ({image, name, title, github, schoolYear, major, quote, delay = 0}: MemberProps) => {
     const [isFlipped, setIsFlipped] = useState(false);
+    const [isHoveringImage, setIsHoveringImage] = useState(false);
+    const [isHoveringGithub, setIsHoveringGithub] = useState(false);
+    const timerRef = useRef<NodeJS.Timeout | null>(null);
 
     const noFlip = !schoolYear || schoolYear === "None" ||
         !quote || quote === "None" ||
         !major || major === "None";
 
+    // Clear timeout when component unmounts
+    useEffect(() => {
+        return () => {
+            if (timerRef.current) {
+                clearTimeout(timerRef.current);
+            }
+        };
+    }, []);
+
     const handleMouseEnter = () => {
-        if (!noFlip) {
-            setIsFlipped(true);
+        if (!noFlip && !isHoveringImage && !isHoveringGithub) {
+            // Set a timeout for 1.5s before flipping
+            timerRef.current = setTimeout(() => {
+                setIsFlipped(true);
+            }, 1500);
         }
     };
 
     const handleMouseLeave = () => {
+        // Clear the timeout when mouse leaves
+        if (timerRef.current) {
+            clearTimeout(timerRef.current);
+            timerRef.current = null;
+        }
+
         if (!noFlip) {
             setIsFlipped(false);
         }
+    };
+
+    const handleImageMouseEnter = () => {
+        setIsHoveringImage(true);
+        // Clear any pending flip timeouts
+        if (timerRef.current) {
+            clearTimeout(timerRef.current);
+            timerRef.current = null;
+        }
+        if (isFlipped) {
+            setIsFlipped(false);
+        }
+    };
+
+    const handleImageMouseLeave = () => {
+        setIsHoveringImage(false);
+    };
+
+    const handleGithubMouseEnter = () => {
+        setIsHoveringGithub(true);
+        // Clear any pending flip timeouts
+        if (timerRef.current) {
+            clearTimeout(timerRef.current);
+            timerRef.current = null;
+        }
+        if (isFlipped) {
+            setIsFlipped(false);
+        }
+    };
+
+    const handleGithubMouseLeave = () => {
+        setIsHoveringGithub(false);
     };
 
     // Animation variants
@@ -60,8 +113,10 @@ const Member = ({image, name, title, github, schoolYear, major, quote, delay = 0
                 variants={cardVariants}
             >
                 <div className='w-[200px] flex justify-center'>
-                    <div className='rounded-full size-32 bg-cover bg-center transition-[delay-150_duration-300_ease-in-out] hover:shadow-[0_0_15px_5px_rgba(37,70,146,0.8)] hover:scale-150'
-                         style={{ backgroundImage: `url(/TheTeam/${image})` }} />
+                    <div
+                        className='rounded-full size-32 bg-cover bg-center transition-[delay-150_duration-300_ease-in-out] hover:shadow-[0_0_15px_5px_rgba(37,70,146,0.8)] hover:scale-150'
+                        style={{ backgroundImage: `url(/TheTeam/${image})` }}
+                    />
                 </div>
                 <div className='flex-1 flex flex-col items-center justify-center'>
                     <div className='text-xl font-semibold mb-2 text-codgray'>{name}</div>
@@ -98,35 +153,45 @@ const Member = ({image, name, title, github, schoolYear, major, quote, delay = 0
                 >
                     {/* Front */}
                     <div className='absolute w-full h-full flex items-center bg-gray-300 px-4 py-4 rounded-2xl [backface-visibility:hidden]'>
-                        <div className='w-[200px] flex justify-center'>
-                            <div className='rounded-full size-32 bg-cover bg-center transition-[delay-150_duration-300_ease-in-out] hover:shadow-[0_0_15px_5px_rgba(37,70,146,0.8)] hover:scale-150'
-                                 style={{ backgroundImage: `url(/TheTeam/${image})` }} />
+                        <div
+                            className='w-[200px] flex justify-center'
+                            onMouseEnter={handleImageMouseEnter}
+                            onMouseLeave={handleImageMouseLeave}
+                        >
+                            <div
+                                className='rounded-full size-32 bg-cover bg-center transition-[delay-150_duration-300_ease-in-out] hover:shadow-[0_0_15px_5px_rgba(37,70,146,0.8)] hover:scale-150 z-10'
+                                style={{ backgroundImage: `url(/TheTeam/${image})` }}
+                            />
                         </div>
                         <div className='flex-1 flex flex-col items-center justify-center'>
                             <div className='text-xl font-semibold mb-2 text-codgray'>{name}</div>
                             <div className='text-base mb-2 text-codgray'>{title}</div>
                             {github !== "None" && (
-                                <div className='text-base text-codgray'>Github: <Link
+                                <div
+                                    className='text-base text-codgray'
+                                    onMouseEnter={handleGithubMouseEnter}
+                                    onMouseLeave={handleGithubMouseLeave}
+                                >
+                                    Github: <Link
                                     to={`https://github.com/${github}`}
-                                    className='text-mgbblue underline transition-[delay-150_duration-300_ease-in-out] hover:text-teal-500'
+                                    className='text-mgbblue underline transition-[delay-150_duration-300_ease-in-out] hover:text-teal-500 z-10'
                                 >
                                     @{github}
-                                </Link></div>
+                                </Link>
+                                </div>
                             )}
                         </div>
                         <div className='w-[100px]'></div>
                     </div>
 
-                    {/* Back of card */}
+                    {/* Back of card - updated to center text */}
                     <div className='absolute w-full h-full flex items-center justify-center bg-gray-300 px-4 py-4 rounded-2xl [backface-visibility:hidden] [transform:rotateY(180deg)]'>
-                        <div className='w-[200px]'></div>
-                        <div className='flex-1 flex flex-col items-center justify-center' style={{ marginTop: '-8px' }}>
+                        <div className='w-full flex flex-col items-center justify-center text-center'>
                             <div className='text-xl font-semibold mb-2 text-codgray'>{name}</div>
                             <div className='text-sm mb-2 text-codgray'>School Year: {schoolYear}</div>
                             <div className='text-sm mb-2 text-codgray'>Major: {major}</div>
-                            <div className='text-sm italic text-codgray'>"{quote}"</div>
+                            <div className='text-sm italic text-codgray max-w-[80%]'>"{quote}"</div>
                         </div>
-                        <div className='w-[100px]'></div>
                     </div>
                 </motion.div>
             </div>
