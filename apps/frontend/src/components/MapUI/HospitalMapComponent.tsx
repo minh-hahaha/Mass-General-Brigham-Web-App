@@ -338,15 +338,16 @@ const HospitalMapComponent = ({
 
         // get last node info
         const destination = path[path.length - 1];
-        const destinationBuildingId = destination.buildingId;
+        //const destinationBuildingId = destination.buildingId;
         const destinationFloorNumber = destination.floor;
 
         // Find the corresponding floor ID
         const destinationFloor = availableFloors.find(
-            f => f.buildingId === destinationBuildingId && f.floor === destinationFloorNumber
+            f => f.floor === destinationFloorNumber
         );
+        console.log("des floor id" + destinationFloor?.id);
 
-        if (destinationFloor && destinationFloor.id !== currentFloorId) {
+        if (destinationFloor && destinationFloor.id !== currentFloorId ) {
             setDestinationFloorId(destinationFloor.id);
             setShowDestinationFloorAlert(true);
 
@@ -358,7 +359,7 @@ const HospitalMapComponent = ({
             //hide
             setTimeout(() => {
                 setShowDestinationFloorAlert(false);
-            }, 2000);
+            }, 2700);
         } else {
             setShowDestinationFloorAlert(false);
         }
@@ -389,7 +390,7 @@ const HospitalMapComponent = ({
 
             }
         }
-    }, [bfsPath, startNode, selectedAlgorithm]);
+    }, [bfsPath, startNode, endNode, selectedAlgorithm]);
 
 
 
@@ -477,7 +478,7 @@ const HospitalMapComponent = ({
 
 
             {/* Destination Floor Alert */}
-            {showDestinationFloorAlert && destinationFloorId && destinationFloorId !== "PP-1" ? (
+            {showDestinationFloorAlert && destinationFloorId && currentFloorId !== "BWH-2" && currentFloorId !== "FK-1" ? (
                 <div className="fixed top-20 right-6 bg-mgbblue text-white p-4 rounded-lg shadow-lg z-50 animate-bounce">
                     <p className="font-bold">Destination Floor</p>
                     <p>Your destination is on {getDestinationFloorName()}</p>

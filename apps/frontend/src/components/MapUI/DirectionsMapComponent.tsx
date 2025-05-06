@@ -291,7 +291,7 @@ const DirectionsMapComponent = () => {
         // Set the floor to highlight
         setHighlightFloorId(floorId);
 
-        // Clear highlight after 5 seconds
+        // Clear highlight after 2 seconds
         setTimeout(() => {
             setHighlightFloorId(undefined);
         }, 2000);
@@ -527,7 +527,7 @@ const DirectionsMapComponent = () => {
         else {
             switch (buildingID) {
                 case 1:
-                    setFromNodeId('CHFloor1Road3');
+                    setFromNodeId('CHFloor1Road3_1');
                     break;
                 case 2:
                     setFromNodeId('PPFloor1Road10');
