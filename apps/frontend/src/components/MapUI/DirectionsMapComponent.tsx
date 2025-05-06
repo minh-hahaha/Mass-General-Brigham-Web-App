@@ -437,7 +437,7 @@ const DirectionsMapComponent = () => {
                     setToDirectoryNodeId('CHFloor1Check-In Desk');
                     break;
                 case 2:
-                    setToDirectoryNodeId('PPFloor1Check-In Desk_1');
+                    setToDirectoryNodeId('PPFloor1Check-In Desk');
                     break;
                 case 3:
                     setToDirectoryNodeId('FKFloor1Check-In Desk');
@@ -528,8 +528,10 @@ const DirectionsMapComponent = () => {
         }
     };
 
+    const [highlightFloor, setHighlightFloor] = useState(true)
     const handleCheckIn = (checkIn: boolean) => {
         setCheckIn(checkIn);
+        setHighlightFloor(false)
     };
     console.log(' ====== checkIn? ' + checkIn);
 
@@ -565,6 +567,7 @@ const DirectionsMapComponent = () => {
                             currentFloorId={currentFloorId}
                             onChange={handleFloorChange}
                             highlightFloorId={highlightFloorId}
+                            highlightFloor={highlightFloor}
                         />
                     </div>
                 )}
