@@ -215,7 +215,6 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm, setEditData })
                         Clear Filters
                     </MGBButton>
                 </div>
-
             </div>
             <div className="ml-38 w-full p-6 min-h-screen bg-gray-200">
                 <div className="flex justify-center">
@@ -254,7 +253,22 @@ const TableTranslatorRequest: React.FC<Props> = ({ setActiveForm, setEditData })
                                             {req.translationRequest.patientId}
                                         </TableCell>
                                         <TableCell className="text-left py-3">
-                                            {req.priority}
+                                            <span
+                                                className={`px-3 py-1 rounded-full text-xs font-bold
+            ${
+                req.priority === 'Emergency'
+                    ? 'bg-red-600 text-white'
+                    : req.priority === 'High'
+                      ? 'bg-red-200 text-red-800'
+                      : req.priority === 'Medium'
+                        ? 'bg-yellow-200 text-yellow-800'
+                        : req.priority === 'Low'
+                          ? 'bg-green-200 text-green-800'
+                          : 'bg-gray-200 text-gray-800'
+            }`}
+                                            >
+                                                {req.priority}
+                                            </span>
                                         </TableCell>
                                         <TableCell className="text-left py-3">
                                             {req.status}
