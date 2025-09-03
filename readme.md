@@ -102,7 +102,8 @@ This application follows a modern **monorepo architecture** with the following s
    ```
 
 2. **Install dependencies**
-  - Corepack should come installed with npm. If corepack is missing, run `npm 
+
+   Corepack should come installed with npm. If corepack is missing, run `npm 
     install --g corepack` to install corepack.
    ```bash
    corepack enable
