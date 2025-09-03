@@ -2,6 +2,12 @@
 
 A comprehensive healthcare management platform designed to streamline operations across multiple Mass General Brigham hospital locations. This full-stack web application provides intelligent navigation, service request management, employee directory services, and AI-powered assistance for healthcare staff and visitors.
 
+## 📖 Manual
+
+For detailed user instructions and system documentation, please refer to the **[MGB App Manual.pdf](MGB%20App%20Manual.pdf)** file in the root directory.
+
+---
+
 ## 🏥 Overview
 
 The Mass General Brigham Hospital Management System is a modern web application that serves multiple hospital locations including:
@@ -230,16 +236,5 @@ yarn deploy
 
 ## 📝 License
 
-This project is developed for Mass General Brigham healthcare system. Please refer to the project maintainers for licensing information.
+This application was developed by a team of software engineering students for CS3733 at WPI as part of a project in collaboration with Mass General Brigham.
 
-## 👥 Team
-
-This application was developed by a team of software engineering students as part of a healthcare technology project for Mass General Brigham.
-
-## 🆘 Support
-
-For technical support or questions about the application, please contact the development team or refer to the individual package README files for specific technical details.
-
----
-
-**Note**: This application is designed specifically for Mass General Brigham healthcare facilities and includes sensitive healthcare data. Please ensure proper security protocols are followed when deploying or modifying the application.
